@@ -1,0 +1,32 @@
+using MiraAPI.GameOptions;
+using MiraAPI.Networking;
+using TownOfUs.Utilities;
+using MiraAPI.Utilities.Assets;
+using Reactor.Utilities;
+using TownOfUs.Options.Roles.Neutral;
+using TownOfUs.Roles.Neutral;
+using UnityEngine;
+
+namespace TownOfUs.Buttons.Neutral;
+
+public sealed class PestilenceKillButton : TownOfUsRoleButton<PestilenceRole, PlayerControl>
+{
+    public override string Name => "Kill";
+    public override string Keybind => "ActionSecondary";
+    public override Color TextOutlineColor => TownOfUsColors.Pestilence;
+    public override float Cooldown => OptionGroupSingleton<PlaguebearerOptions>.Instance.PestKillCooldown;
+    public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
+
+    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+
+    protected override void OnClick()
+    {
+        if (Target == null)
+        {
+            Logger<TownOfUsPlugin>.Error("Pestilence Shoot: Target is null");
+            return;
+        }
+
+        PlayerControl.LocalPlayer.RpcCustomMurder(Target);
+    }
+}

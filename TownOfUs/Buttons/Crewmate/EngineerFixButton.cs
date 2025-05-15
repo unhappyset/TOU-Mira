@@ -1,0 +1,37 @@
+﻿using MiraAPI.GameOptions;
+using MiraAPI.Utilities.Assets;
+using Reactor.Utilities.Extensions;
+using TownOfUs.Options.Roles.Crewmate;
+using TownOfUs.Roles.Crewmate;
+using UnityEngine;
+
+namespace TownOfUs.Buttons.Crewmate;
+
+public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
+{
+    public override string Name => "Fix";
+    public override string Keybind => "ActionQuaternary";
+    public override Color TextOutlineColor => TownOfUsColors.Engineer;
+    public override float Cooldown => MapCooldown;
+    public override int MaxUses => (int)OptionGroupSingleton<EngineerOptions>.Instance.MaxFixes;
+    public override LoadableAsset<Sprite> Sprite => TouCrewAssets.FixButtonSprite;
+
+    public override bool CanUse()
+    {
+        var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
+
+        return base.CanUse() && system is { AnyActive: true };
+    }
+
+    protected override void OnClick()
+    {
+        var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
+
+        if (system is { AnyActive: true })
+        {
+            List<LoadableAsset<AudioClip>> audio = [TouAudio.EngiFix1, TouAudio.EngiFix2, TouAudio.EngiFix3];
+            TouAudio.PlaySound(audio.Random()!);
+            EngineerTouRole.EngineerFix(PlayerControl.LocalPlayer);
+        }
+    }
+}

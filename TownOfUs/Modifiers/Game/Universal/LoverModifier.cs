@@ -1,0 +1,171 @@
+﻿using MiraAPI.GameEnd;
+using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
+using MiraAPI.Networking;
+using MiraAPI.Roles;
+using MiraAPI.Utilities;
+using MiraAPI.Utilities.Assets;
+using Reactor.Networking.Attributes;
+using Reactor.Utilities;
+using TownOfUs.GameOver;
+using TownOfUs.Modifiers.Neutral;
+using TownOfUs.Modules.Wiki;
+using TownOfUs.Options.Modifiers;
+using TownOfUs.Options.Modifiers.Alliance;
+using TownOfUs.Roles;
+using TownOfUs.Roles.Neutral;
+using TownOfUs.Utilities;
+
+namespace TownOfUs.Modifiers.Game.Alliance;
+
+public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable
+{
+    public override string ModifierName => "Lover";
+    public override string Symbol => "♥";
+    public override string IntroInfo => LoverString();
+    public override float IntroSize => 3f;
+    public override bool HideOnUi => false;
+    public override LoadableAsset<UnityEngine.Sprite>? ModifierIcon => TouModifierIcons.Lover;
+    public override string GetDescription() => LoverString();
+    public PlayerControl? OtherLover { get; set; }
+    public override int GetAmountPerGame() => 0;
+    public override int GetAssignmentChance() => 0;
+
+    public override void OnActivate()
+    {
+        if (!Player.AmOwner) return;
+        HudManager.Instance.Chat.gameObject.SetActive(true);
+    }
+
+    public override bool? DidWin(GameOverReason reason)
+    {
+        return reason == CustomGameOver.GameOverReason<LoverGameOver>() ? true : null;
+    }
+
+    public static bool WinConditionMet(LoverModifier[] lovers)
+    {
+        var bothLoversAlive = Helpers.GetAlivePlayers().Count(x => x.HasModifier<LoverModifier>()) >= 2;
+
+        return Helpers.GetAlivePlayers().Count <= 3 && lovers.Length == 2 && bothLoversAlive;
+    }
+
+    public void OnRoundStart()
+    {
+        if (!Player.AmOwner) return;
+        HudManager.Instance.Chat.SetVisible(true);
+    }
+
+    public string LoverString()
+    {
+        return !OtherLover ? "You are in love with nobody" : $"You are in love with {OtherLover!.Data.PlayerName}";
+    }
+
+    public void KillOther()
+    {
+        if (!Player.AmOwner) return;
+
+        if (!Player || !OtherLover || OtherLover!.Data.IsDead)
+        {
+            Logger<TownOfUsPlugin>.Error("Invalid Lover");
+            return;
+        }
+
+        if (OtherLover?.Data.Role is not PestilenceRole)
+        {
+            OtherLover!.RpcCustomMurder(OtherLover!);
+        }
+    }
+    public PlayerControl? GetOtherLover()
+    {
+        return OtherLover;
+    }
+
+    public static void SelectLoverTargets()
+    {
+        foreach (var lover in PlayerControl.AllPlayerControls.ToArray().Where(x => x.HasModifier<LoverModifier>()).ToList())
+        {
+            lover.RemoveModifier<LoverModifier>();
+        }
+
+        Random rnd = new();
+        var chance = rnd.Next(0, 100);
+
+        if (chance <= (int)OptionGroupSingleton<AllianceModifierOptions>.Instance.LoversChance)
+        {
+            var impTargetPercent = (int)OptionGroupSingleton<LoversOptions>.Instance.LovingImpPercent;
+
+            var players = PlayerControl.AllPlayerControls.ToArray()
+                .Where(x => !x.HasDied() && !x.HasModifier<ExecutionerTargetModifier>()).ToList();
+            players.Shuffle();
+
+            Random rndIndex1 = new();
+            var randomLover = players[rndIndex1.Next(0, players.Count)];
+            players.Remove(randomLover);
+
+            var crewmates = new List<PlayerControl>();
+            var impostors = new List<PlayerControl>();
+
+            foreach (var player in players.SelectMany(_ => players))
+            {
+                if (player.IsImpostor() || (player.Is(RoleAlignment.NeutralKilling) && OptionGroupSingleton<LoversOptions>.Instance.NeutralLovers))
+                    impostors.Add(player);
+                else if (player.Is(ModdedRoleTeams.Crewmate) || ((player.Is(RoleAlignment.NeutralBenign) || player.Is(RoleAlignment.NeutralEvil)) && OptionGroupSingleton<LoversOptions>.Instance.NeutralLovers))
+                    crewmates.Add(player);
+            }
+
+            if (crewmates.Count < 2 || impostors.Count < 1)
+            {
+                Logger<TownOfUsPlugin>.Error("Not enough players to select lovers");
+                return;
+            }
+
+            if (randomLover.IsImpostor() && !OptionGroupSingleton<LoversOptions>.Instance.ImpLovers)
+            {
+                impostors = impostors.Where(player => !player.IsImpostor()).ToList();
+                players = players.Where(player => !player.IsImpostor()).ToList();
+            }
+
+            if (impTargetPercent > 0f)
+            {
+                Random rnd2 = new();
+                var chance2 = rnd2.Next(0, 100);
+
+                if (chance2 < impTargetPercent)
+                {
+                    players = impostors;
+                }
+            }
+            else
+            {
+                players = crewmates;
+            }
+
+            Random rndIndex = new();
+            var randomTarget = players[rndIndex.Next(0, players.Count)];
+            RpcSetOtherLover(randomLover, randomTarget);
+        }
+    }
+
+    [MethodRpc((uint)TownOfUsRpc.SetOtherLover, SendImmediately = true)]
+    private static void RpcSetOtherLover(PlayerControl player, PlayerControl target)
+    {
+        if (PlayerControl.AllPlayerControls.ToArray().Where(x => x.HasModifier<LoverModifier>()).ToList().Count > 0)
+        {
+            Logger<TownOfUsPlugin>.Error("RpcSetOtherLover - Lovers Already Spawned!");
+            return;
+        }
+
+        var targetModifier = target.AddModifier<LoverModifier>();
+        var sourceModifier = player.AddModifier<LoverModifier>();
+        targetModifier!.OtherLover = player;
+        sourceModifier!.OtherLover = target;
+    }
+    public string GetAdvancedDescription()
+    {
+        return
+            $"As a lover, you can chat with your other lover (signified with <color=#FF66CCFF>♥</color>) during the round, and you can win with your lover if you are both a part of the final 3 players."
+               + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+}

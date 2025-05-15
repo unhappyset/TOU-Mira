@@ -1,0 +1,132 @@
+﻿using AmongUs.Data;
+using MiraAPI.GameOptions;
+using MiraAPI.Utilities.Assets;
+using TownOfUs.Modules.Wiki;
+using TownOfUs.Options.Modifiers;
+using TownOfUs.Options.Modifiers.Universal;
+using TownOfUs.Roles.Impostor;
+using TownOfUs.Utilities;
+using TownOfUs.Utilities.Appearances;
+using UnityEngine;
+
+namespace TownOfUs.Modifiers.Game.Universal;
+
+public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
+{
+    public override string ModifierName => "Shy";
+    public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Shy;
+    public override string GetDescription() => "You become transparent when \nstanding still for a short duration.";
+    public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ShyChance;
+    public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ShyAmount;
+
+    private static float FinalTransparency => OptionGroupSingleton<ShyOptions>.Instance.FinalTransparency;
+    private static float InvisDelay => OptionGroupSingleton<ShyOptions>.Instance.InvisDelay;
+    private static float TransformInvisDuration => OptionGroupSingleton<ShyOptions>.Instance.TransformInvisDuration;
+
+    private DateTime LastMoved { get; set; }
+    public void OnRoundStart()
+    {
+        LastMoved = DateTime.UtcNow;
+        SetVisibility(Player, 1f);
+    }
+
+    public override void Update()
+    {
+        if (IntroCutscene.Instance) return;
+
+        // check movement by animation
+        PlayerPhysics playerPhysics = Player.MyPhysics;
+        var currentPhysicsAnim = playerPhysics.Animations.Animator.GetCurrentAnimation();
+        if (currentPhysicsAnim != playerPhysics.Animations.group.IdleAnim)
+        {
+            LastMoved = DateTime.UtcNow;
+        }
+
+        if (Player.GetAppearanceType() == TownOfUsAppearances.Swooper)
+        {
+            var opacity = 0f;
+
+            if ((PlayerControl.LocalPlayer.IsImpostor() && Player.Data.Role is SwooperRole) ||
+                (PlayerControl.LocalPlayer == Player && Player.Data.Role is SwooperRole))
+                opacity = 0.1f;
+
+            SetVisibility(Player, opacity, true);
+        }
+        else if (Player.GetAppearanceType() == TownOfUsAppearances.Camouflage)
+        {
+            SetVisibility(Player, 1f, true);
+        }
+        else if (Player.HasDied() || Player.GetAppearanceType() == TownOfUsAppearances.Morph)
+        {
+            SetVisibility(Player, 1f);
+        }
+        else
+        {
+            var timeSpan = DateTime.UtcNow - LastMoved;
+
+            if (timeSpan.TotalMilliseconds / 1000f < InvisDelay)
+            {
+                SetVisibility(Player, 1f);
+            }
+            else if (timeSpan.TotalMilliseconds / 1000f < TransformInvisDuration + InvisDelay)
+            {
+                timeSpan = DateTime.UtcNow - LastMoved.AddSeconds(InvisDelay);
+                var opacity = 1f - ((float)timeSpan.TotalMilliseconds / 1000f / TransformInvisDuration * (100f - FinalTransparency) / 100f);
+                SetVisibility(Player, opacity);
+            }
+            else
+            {
+                var opacity = FinalTransparency / 100;
+                SetVisibility(Player, opacity);
+            }
+        }
+    }
+
+    public static void SetVisibility(PlayerControl player, float transparency, bool hideName = false)
+    {
+        var colour = player.cosmetics.currentBodySprite.BodySprite.color;
+        var cosmetics = player.cosmetics;
+
+        colour.a = transparency;
+        player.cosmetics.currentBodySprite.BodySprite.color = colour;
+
+        if (hideName)
+        {
+            transparency = 0f;
+        }
+
+        cosmetics.nameText.color = cosmetics.nameText.color.SetAlpha(transparency);
+
+        if (DataManager.Settings.Accessibility.ColorBlindMode)
+            cosmetics.colorBlindText.color = cosmetics.colorBlindText.color.SetAlpha(transparency);
+
+        player.SetHatAndVisorAlpha(transparency);
+        cosmetics.skin.layer.color = cosmetics.skin.layer.color.SetAlpha(transparency);
+
+        foreach (var rend in player.cosmetics.currentPet.renderers)
+        {
+            rend.color = rend.color.SetAlpha(transparency);
+        }
+
+        foreach (var shadow in player.cosmetics.currentPet.shadows)
+        {
+            shadow.color = shadow.color.SetAlpha(transparency);
+        }
+        foreach (var animation in player.transform.GetChild(2).GetComponentsInParent<SpriteRenderer>())
+        {
+            animation.color = animation.color.SetAlpha(transparency);
+        }
+        foreach (var animation in player.transform.GetChild(2).GetComponentsInChildren<SpriteRenderer>())
+        {
+            animation.color = animation.color.SetAlpha(transparency);
+        }
+    }
+    public string GetAdvancedDescription()
+    {
+        return
+            "You blend in with the environment, becoming transparent when staying still."
+               + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+}

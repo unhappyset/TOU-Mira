@@ -1,0 +1,80 @@
+﻿using HarmonyLib;
+using MiraAPI.GameOptions;
+using MiraAPI.Hud;
+using MiraAPI.Modifiers.Types;
+using TownOfUs.Options.Roles.Neutral;
+using TownOfUs.Utilities;
+using UnityEngine;
+
+namespace TownOfUs.Modifiers.Neutral;
+
+public sealed class GlitchHackedModifier : TimedModifier
+{
+    public override string ModifierName => "Hacked";
+    public override float Duration => OptionGroupSingleton<GlitchOptions>.Instance.HackDuration;
+    public override bool AutoStart => false;
+    public override bool HideOnUi => ShouldHideHacked;
+
+    public bool ShouldHideHacked { get; set; } = true;
+    private GameObject? ReportButtonHackedSprite { get; set; }
+    private GameObject? KillButtonHackedSprite { get; set; }
+    private GameObject? VentButtonHackedSprite { get; set; }
+    private GameObject? UseButtonHackedSprite { get; set; }
+    private GameObject? SabotageButtonHackedSprite { get; set; }
+    private List<GameObject> CustomButtonHackedSprites { get; set; } = [];
+
+    public override void OnActivate()
+    {
+        if (Player.AmOwner)
+        {
+            ReportButtonHackedSprite = HudManager.Instance.ReportButton.CreateHackedIcon();
+            KillButtonHackedSprite = HudManager.Instance.KillButton.CreateHackedIcon();
+            VentButtonHackedSprite = HudManager.Instance.ImpostorVentButton.CreateHackedIcon();
+            UseButtonHackedSprite = HudManager.Instance.UseButton.CreateHackedIcon();
+            SabotageButtonHackedSprite = HudManager.Instance.SabotageButton.CreateHackedIcon();
+
+            foreach (var button in CustomButtonManager.Buttons)
+            {
+                CustomButtonHackedSprites.Add(button!.Button!.CreateHackedIcon());
+            }
+        }
+    }
+
+    public void ShowHacked()
+    {
+        if (!ShouldHideHacked) return;
+
+        ShouldHideHacked = false;
+
+        if (Player.AmOwner)
+        {
+            TouAudio.PlaySound(TouAudio.HackedSound);
+
+            ReportButtonHackedSprite?.SetHackActive(true);
+            KillButtonHackedSprite?.SetHackActive(true);
+            VentButtonHackedSprite?.SetHackActive(true);
+            UseButtonHackedSprite?.SetHackActive(true);
+            SabotageButtonHackedSprite?.SetHackActive(true);
+
+            CustomButtonHackedSprites.Do(x => x.SetHackActive(true));
+
+            StartTimer();
+        }
+    }
+
+    public override void OnDeactivate()
+    {
+        if (Player.AmOwner)
+        {
+            TouAudio.PlaySound(TouAudio.UnhackedSound);
+
+            ReportButtonHackedSprite?.SetHackActive(false);
+            KillButtonHackedSprite?.SetHackActive(false);
+            VentButtonHackedSprite?.SetHackActive(false);
+            UseButtonHackedSprite?.SetHackActive(false);
+            SabotageButtonHackedSprite?.SetHackActive(false);
+
+            CustomButtonHackedSprites.Do(x => x.SetHackActive(false));
+        }
+    }
+}

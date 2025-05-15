@@ -1,0 +1,268 @@
+﻿using HarmonyLib;
+using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
+using MiraAPI.Networking;
+using MiraAPI.Utilities;
+using Reactor.Utilities;
+using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modifiers.Game.Crewmate;
+using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Modifiers.Impostor;
+using TownOfUs.Modules;
+using TownOfUs.Modules.Components;
+using TownOfUs.Options;
+using TownOfUs.Roles;
+using TownOfUs.Roles.Impostor;
+using TownOfUs.Roles.Neutral;
+using TownOfUs.Utilities;
+using UnityEngine;
+
+namespace TownOfUs.Modifiers.Game.Impostor;
+
+public sealed class AssassinModifier : GameModifier
+{
+    public override string ModifierName => "Assassin";
+    //public override string Description => "Guess during meetings";
+
+    public override int GetAssignmentChance() => 100;
+
+    public override int GetAmountPerGame() => (int)(OptionGroupSingleton<AssassinOptions>.Instance.NumberOfImpostorAssassins +
+                                                    OptionGroupSingleton<AssassinOptions>.Instance.NumberOfNeutralAssassins);
+
+    public override int Priority() => 0;
+
+    public override bool HideOnUi => true;
+
+    private int maxKills;
+    private MeetingMenu meetingMenu;
+
+    public override bool IsModifierValidOn(RoleBehaviour role)
+    {
+        if (OptionGroupSingleton<AssassinOptions>.Instance.NumberOfImpostorAssassins > 0)
+        {
+            return role.TeamType == RoleTeamTypes.Impostor;
+        }
+
+        if (OptionGroupSingleton<AssassinOptions>.Instance.NumberOfNeutralAssassins > 0)
+        {
+            return role is ITownOfUsRole { RoleAlignment: RoleAlignment.NeutralKilling };
+        }
+
+        return false;
+    }
+
+    public override void OnActivate()
+    {
+        base.OnActivate();
+
+        maxKills = (int)OptionGroupSingleton<AssassinOptions>.Instance.AssassinKills;
+
+        // Logger<TownOfUsPlugin>.Error($"AssassinModifier.OnActivate maxKills: {maxKills}");
+        if (Player.AmOwner)
+        {
+            meetingMenu = new MeetingMenu(
+                Player!.Data.Role,
+                ClickGuess,
+                MeetingAbilityType.Click,
+                TouAssets.Guess,
+                null!,
+                IsExempt);
+        }
+    }
+
+    public override void OnMeetingStart()
+    {
+        // Logger<TownOfUsPlugin>.Error($"AssassinModifier.OnMeetingStart maxKills: {maxKills}");
+        if (Player.AmOwner)
+        {
+            meetingMenu!.GenButtons(MeetingHud.Instance, Player!.AmOwner && !Player.HasDied() && maxKills > 0 && !Player.HasModifier<JailedModifier>());
+        }
+    }
+
+    public void OnVotingComplete()
+    {
+        if (Player.AmOwner)
+        {
+            meetingMenu?.Dispose();
+        }
+    }
+
+    public override void OnDeactivate()
+    {
+        if (Player.AmOwner)
+        {
+            meetingMenu?.Dispose();
+            meetingMenu = null!;
+        }
+    }
+
+    public void ClickGuess(PlayerVoteArea voteArea, MeetingHud meetingHud)
+    {
+        if (meetingHud.state == MeetingHud.VoteStates.Discussion)
+        {
+            return;
+        }
+
+        var player = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId).Object;
+
+        var shapeMenu = GuesserMenu.Create();
+        shapeMenu.Begin(IsRoleValid, ClickRoleHandle, IsModifierValid, ClickModifierHandle);
+
+        void ClickRoleHandle(RoleBehaviour role)
+        {
+            var pickVictim = role.Role == player.Data.Role.Role;
+
+            if (player.IsImpostor())
+            {
+                if (role.Role == player.Data.Role.Role && !player.HasModifier<TraitorCacheModifier>())
+                    pickVictim = true;
+                else if (role is TraitorRole && player.HasModifier<TraitorCacheModifier>())
+                    pickVictim = true;
+                else
+                    pickVictim = false;
+            }
+
+            var victim = pickVictim ? player : Player!;
+
+            ClickHandler(victim);
+        }
+
+        void ClickModifierHandle(BaseModifier modifier)
+        {
+            var pickVictim = player.HasModifier(modifier.TypeId);
+            var victim = pickVictim ? player : Player!;
+
+            ClickHandler(victim);
+        }
+
+        void ClickHandler(PlayerControl victim)
+        {
+            if (victim == Player && Player!.TryGetModifier<DoubleShotModifier>(out var modifier) && !modifier.Used)
+            {
+                modifier!.Used = true;
+
+                Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Impostor));
+
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>{TownOfUsColors.ImpSoft.ToTextColor()} Your Double Shot has prevented you from dying this meeting!</color></b>", Color.white, spr: TouModifierIcons.DoubleShot.LoadAsset());
+
+                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+
+                shapeMenu.Close();
+
+                return;
+            }
+
+            Player!.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false, playKillSound: false);
+
+            if (victim != Player)
+                MeetingMenu.Instances.Do(x => x.HideSingle(victim.PlayerId));
+
+            maxKills--;
+
+            if (!OptionGroupSingleton<AssassinOptions>.Instance.AssassinMultiKill || maxKills == 0 || victim == Player)
+            {
+                meetingMenu?.HideButtons();
+            }
+
+            shapeMenu.Close();
+        }
+    }
+
+    public bool IsExempt(PlayerVoteArea voteArea)
+    {
+        return voteArea?.TargetPlayerId == Player!.PlayerId ||
+            Player.Data.IsDead ||
+            voteArea!.AmDead ||
+            (Player.IsImpostor() && voteArea.GetPlayer()?.IsImpostor() == true) ||
+            voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
+    }
+
+    private bool IsRoleValid(RoleBehaviour role)
+    {
+        if (role.IsDead)
+        {
+            return false;
+        }
+
+        var options = OptionGroupSingleton<AssassinOptions>.Instance;
+        var touRole = role as ITownOfUsRole;
+        var assassinRole = Player.Data.Role as ITownOfUsRole;
+
+        if (touRole is IGhostRole)
+        {
+            return false;
+        }
+
+        if (role is CrewmateRole && OptionGroupSingleton<AssassinOptions>.Instance.AssassinCrewmateGuess)
+        {
+            return true;
+        }
+
+        if (touRole?.RoleAlignment == RoleAlignment.CrewmateInvestigative)
+        {
+            return options.AssassinGuessInvest;
+        }
+
+        if (role.IsCrewmate() && role is not CrewmateRole)
+        {
+            return true;
+        }
+
+        if (role.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessImpostors && assassinRole?.RoleAlignment is RoleAlignment.NeutralKilling or RoleAlignment.NeutralEvil)
+        {
+            return true;
+        }
+
+        if (touRole?.RoleAlignment == RoleAlignment.NeutralBenign)
+        {
+            return options.AssassinGuessNeutralBenign;
+        }
+
+        if (touRole?.RoleAlignment == RoleAlignment.NeutralEvil)
+        {
+            return options.AssassinGuessNeutralEvil;
+        }
+
+        if (touRole?.RoleAlignment == RoleAlignment.NeutralKilling && touRole is not PestilenceRole)
+        {
+            return options.AssassinGuessNeutralKilling;
+        }
+
+        return false;
+    }
+
+    private static bool IsModifierValid(BaseModifier modifier)
+    {
+        if (OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessLovers && modifier is LoverModifier)
+        {
+            return true;
+        }
+
+        if (!OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessModifiers)
+        {
+            return false;
+        }
+
+        if (!OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessInvModifier && modifier is InvestigatorModifier)
+        {
+            return false;
+        }
+
+        if (!OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessSpyModifier && modifier is SpyModifier)
+        {
+            return false;
+        }
+
+        if (modifier is AftermathModifier or DiseasedModifier
+            or FrostyModifier or
+            MultitaskerModifier or TorchModifier or SpyModifier or InvestigatorModifier)
+        {
+            return true;
+        }
+
+        return false;
+    }
+}

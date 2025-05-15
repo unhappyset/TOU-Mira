@@ -1,0 +1,48 @@
+﻿using System.Reflection;
+using HarmonyLib;
+using TownOfUs.Roles;
+
+namespace TownOfUs.Patches.Roles;
+
+[HarmonyPatch]
+public static class GhostRoleCanUsePatches
+{
+    public static IEnumerable<MethodBase> TargetMethods()
+    {
+        yield return AccessTools.Method(typeof(Console), nameof(Console.CanUse));
+        yield return AccessTools.Method(typeof(Ladder), nameof(Ladder.CanUse));
+        yield return AccessTools.Method(typeof(PlatformConsole), nameof(PlatformConsole.CanUse));
+        yield return AccessTools.Method(typeof(OpenDoorConsole), nameof(OpenDoorConsole.CanUse));
+        yield return AccessTools.Method(typeof(DoorConsole), nameof(DoorConsole.CanUse));
+        yield return AccessTools.Method(typeof(ZiplineConsole), nameof(ZiplineConsole.CanUse));
+        yield return AccessTools.Method(typeof(DeconControl), nameof(DeconControl.CanUse));
+    }
+
+    [HarmonyPriority(Priority.Last)]
+    [HarmonyPrefix]
+    public static bool CanUsePrefixPatch(Il2CppSystem.Object __instance, [HarmonyArgument(0)] NetworkedPlayerInfo pc, ref bool __state)
+    {
+        __state = false;
+        var playerControl = pc.Object;
+
+        if (playerControl.Data.Role is IGhostRole ghost && ghost.GhostActive && pc.IsDead)
+        {
+            // Logger<TownOfUsPlugin>.Message($"CanUsePrefixPatch IsDead");
+            pc.IsDead = false;
+            __state = true;
+        }
+
+        return true;
+    }
+
+    [HarmonyPriority(Priority.Last)]
+    [HarmonyPostfix]
+    public static void CanUsePostfixPatch(Il2CppSystem.Object __instance, [HarmonyArgument(0)] NetworkedPlayerInfo pc, ref bool __state)
+    {
+        if (__state)
+        {
+            // Logger<TownOfUsPlugin>.Message($"CanUsePostfixPatch IsDead");
+            pc.IsDead = true;
+        }
+    }
+}

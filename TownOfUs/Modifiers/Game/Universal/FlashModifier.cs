@@ -1,0 +1,44 @@
+﻿using MiraAPI.GameOptions;
+using MiraAPI.Utilities.Assets;
+using TownOfUs.Modules.Wiki;
+using TownOfUs.Options.Modifiers;
+using TownOfUs.Options.Modifiers.Universal;
+using TownOfUs.Utilities.Appearances;
+using UnityEngine;
+
+namespace TownOfUs.Modifiers.Game.Universal;
+
+public sealed class FlashModifier : UniversalGameModifier, IWikiDiscoverable, IVisualAppearance
+{
+    public override string ModifierName => "Flash";
+    public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Flash;
+    public override string GetDescription() => $"You move {Math.Round(OptionGroupSingleton<FlashOptions>.Instance.FlashSpeed, 2)}x faster.";
+
+    public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.FlashChance;
+    public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.FlashAmount;
+    
+    public VisualAppearance? GetVisualAppearance()
+    {
+        var appearance = Player.GetDefaultAppearance();
+        appearance.Speed = OptionGroupSingleton<FlashOptions>.Instance.FlashSpeed;
+        return Player == null ? null : appearance;
+    }
+    public override void OnActivate()
+    {        if (Player == null) return;
+        Player?.RawSetAppearance(this);
+    }
+
+    public override void OnDeactivate()
+    {
+        if (Player == null) return;
+        Player?.ResetAppearance(fullReset: true);
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return
+            $"You move {Math.Round(OptionGroupSingleton<FlashOptions>.Instance.FlashSpeed, 2)}x faster than regular players.";
+    }
+
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+}

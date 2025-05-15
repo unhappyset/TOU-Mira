@@ -1,0 +1,28 @@
+﻿using MiraAPI.GameOptions;
+using MiraAPI.GameOptions.Attributes;
+using MiraAPI.Utilities;
+using TownOfUs.Roles.Crewmate;
+
+namespace TownOfUs.Options.Roles.Crewmate;
+
+public sealed class SheriffOptions : AbstractOptionGroup<SheriffRole>
+{
+    public override string GroupName => "Sheriff";
+
+    [ModdedNumberOption("Kill Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
+    public float KillCooldown { get; set; } = 25f;
+
+    [ModdedToggleOption("Can Self Report")]
+    public bool SheriffBodyReport { get; set; } = false;
+    [ModdedToggleOption("Allow Shooting in First Round")]
+    public bool FirstRoundUse { get; set; } = false;
+
+    [ModdedToggleOption("Can Shoot Neutral Evil Roles")]
+    public bool ShootNeutralEvil { get; set; } = true;
+
+    [ModdedToggleOption("Can Shoot Neutral Killing Roles")]
+    public bool ShootNeutralKiller { get; set; } = true;
+
+    [ModdedToggleOption("Misfire Kills Sheriff and Target")]
+    public bool MisfireKillsBoth { get; set; } = false;
+}

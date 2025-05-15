@@ -1,0 +1,199 @@
+﻿using HarmonyLib;
+using MiraAPI.GameOptions;
+using MiraAPI.Hud;
+using MiraAPI.Modifiers;
+using MiraAPI.PluginLoading;
+using Reactor.Utilities;
+using Reactor.Utilities.Extensions;
+using Rewired;
+using TownOfUs.Modifiers.Neutral;
+using TownOfUs.Options;
+using TownOfUs.Utilities;
+using UnityEngine;
+
+namespace TownOfUs.Buttons;
+
+[MiraIgnore]
+public abstract class TownOfUsButton : CustomActionButton
+{
+    public override string Name => string.Empty;
+    public static float MapCooldown => OptionGroupSingleton<TownOfUsMapOptions>.Instance.GetMapBasedCooldownDifference();
+    public override float InitialCooldown => 10;
+    public override ButtonLocation Location => ButtonLocation.BottomRight;
+
+    /// <summary>
+    /// Gets the keybind used for the button.<br/>
+    /// Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons, tou.ActionCustom for tertiary abilities, and tou.ActionCustom2 for modifier buttons.
+    /// </summary>
+    public virtual string Keybind => string.Empty;
+
+    public override void SetActive(bool visible, RoleBehaviour role)
+    {
+        Button?.ToggleVisible(visible && Enabled(role) && !role.Player.HasDied());
+    }
+
+    public override bool CanUse()
+    {
+        if (!PlayerControl.LocalPlayer.CanMove) return false;
+        return base.CanUse();
+    }
+
+    protected override void FixedUpdate(PlayerControl playerControl)
+    {
+        if (MeetingHud.Instance)
+        {
+            return;
+        }
+
+        Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled);
+
+        if (Keybind != string.Empty && ReInput.players.GetPlayer(0).GetButtonDown(Keybind))
+        {
+            ClickHandler();
+        }
+    }
+}
+
+[MiraIgnore]
+public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : MonoBehaviour
+{
+    public override string Name => string.Empty;
+    public static float MapCooldown => OptionGroupSingleton<TownOfUsMapOptions>.Instance.GetMapBasedCooldownDifference();
+    public override float InitialCooldown => 10;
+    public override ButtonLocation Location => ButtonLocation.BottomRight;
+
+    /// <summary>
+    /// Gets the keybind used for the button.
+    /// Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons, tou.ActionCustom for tertiary abilities, and tou.ActionCustom2 for modifier buttons.
+    /// </summary>
+    public virtual string Keybind => string.Empty;
+
+    public override void SetActive(bool visible, RoleBehaviour role)
+    {
+        Button?.ToggleVisible(visible && Enabled(role) && !role.Player.HasDied());
+    }
+
+    public override bool CanUse()
+    {
+        if (!PlayerControl.LocalPlayer.CanMove) return false;
+        return base.CanUse();
+    }
+
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        if (Button == null)
+        {
+            Logger<TownOfUsPlugin>.Error($"Button is null for {GetType().FullName}");
+            return;
+        }
+
+        switch(typeof(T))
+        {
+            case Type t when t == typeof(Vent):
+                Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterVentSprite.LoadAsset();
+                break;
+            case Type t when t == typeof(DeadBody):
+                Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterBodySprite.LoadAsset();
+                break;
+            default:
+                Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterPlayerSprite.LoadAsset();
+                break;
+        }
+    }
+
+    public override void ClickHandler()
+    {
+        if (CanClick() && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>())
+        {
+            if (LimitedUses)
+            {
+                UsesLeft--;
+                Button?.SetUsesRemaining(UsesLeft);
+            }
+
+            OnClick();
+            if (HasEffect)
+            {
+                EffectActive = true;
+                Timer = EffectDuration;
+            }
+            else
+            {
+                Timer = Cooldown;
+            }
+        }
+    }
+
+    protected override void FixedUpdate(PlayerControl playerControl)
+    {
+        if (MeetingHud.Instance)
+        {
+            return;
+        }
+
+        Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled);
+
+        if (Keybind != string.Empty && ReInput.players.GetPlayer(0).GetButtonDown(Keybind))
+        {
+            ClickHandler();
+        }
+    }
+}
+
+[MiraIgnore]
+public abstract class TownOfUsRoleButton<TRole> : TownOfUsButton where TRole : RoleBehaviour
+{
+    public TRole Role => PlayerControl.LocalPlayer.GetRole<TRole>()!;
+
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return role is TRole;
+    }
+}
+
+[MiraIgnore]
+public abstract class TownOfUsRoleButton<TRole, TTarget> : TownOfUsTargetButton<TTarget> where TTarget : MonoBehaviour where TRole : RoleBehaviour
+{
+    public TRole Role => PlayerControl.LocalPlayer.GetRole<TRole>()!;
+
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return role is TRole;
+    }
+
+    public override void SetOutline(bool active)
+    {
+        if (Target != null && !PlayerControl.LocalPlayer.HasDied())
+        {
+            if (Target is PlayerControl target)
+            {
+                target.cosmetics.currentBodySprite.BodySprite.SetOutline(active ? Role.TeamColor : null);
+            }
+            else if (Target is DeadBody body)
+            {
+                body.bodyRenderers.Do(x => x.SetOutline(active ? Role.TeamColor : null));
+            }
+            else if (Target is Vent vent)
+            {
+                vent.SetOutline(active, true, Role.TeamColor);
+            }
+        }
+    }
+
+}
+
+public interface IAftermathablePlayerButton : IAftermathableButton
+{
+    PlayerControl? Target { get; set; }
+}
+
+public interface IAftermathableBodyButton : IAftermathableButton
+{
+    DeadBody? Target { get; set; }
+}
+
+public interface IAftermathableButton
+{
+    void ClickHandler();
+}

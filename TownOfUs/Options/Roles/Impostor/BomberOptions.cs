@@ -1,0 +1,26 @@
+﻿using MiraAPI.GameOptions;
+using MiraAPI.GameOptions.Attributes;
+using MiraAPI.Utilities;
+using TownOfUs.Roles.Impostor;
+
+namespace TownOfUs.Options.Roles.Impostor;
+
+public sealed class BomberOptions : AbstractOptionGroup<BomberRole>
+{
+    public override string GroupName => "Bomber";
+
+    [ModdedNumberOption("Detonate Delay", 1f, 15f, 1f, MiraNumberSuffixes.Seconds)]
+    public float DetonateDelay { get; set; } = 5f;
+
+    [ModdedNumberOption("Detonate Radius", 0.05f, 1f, 0.05f, MiraNumberSuffixes.Multiplier, "0.00")]
+    public float DetonateRadius { get; set; } = 0.25f;
+
+    [ModdedNumberOption("Max Kills In Detonation", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
+    public float MaxKillsInDetonation { get; set; } = 5f;
+
+    [ModdedToggleOption("All Impostors See Bomb")]
+    public bool AllImpsSeeBomb { get; set; }
+
+    [ModdedToggleOption("Bomber Can Vent")]
+    public bool BomberVent { get; set; }
+}

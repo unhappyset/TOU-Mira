@@ -1,0 +1,75 @@
+using HarmonyLib;
+using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
+using Reactor.Networking.Attributes;
+using Reactor.Networking.Rpc;
+using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Options;
+using TownOfUs.Utilities;
+
+namespace TownOfUs.Patches.Roles;
+
+[HarmonyPatch]
+public static class LoverChatPatches
+{
+    private static bool LoverMessage;
+
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    [HarmonyPostfix]
+    public static void UpdatePatch(HudManager __instance)
+    {
+        if (PlayerControl.LocalPlayer == null) return;
+        if (PlayerControl.LocalPlayer.Data == null) return;
+
+        if (PlayerControl.LocalPlayer.HasModifier<LoverModifier>() && !__instance.Chat.isActiveAndEnabled)
+            __instance.Chat.SetVisible(true);
+    }
+
+    [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
+    [HarmonyPrefix]
+    public static bool SendChatPatch(ChatController __instance)
+    {
+        if (MeetingHud.Instance || ExileController.Instance != null || PlayerControl.LocalPlayer.Data.IsDead)
+            return true;
+
+        var text = __instance.freeChatField.Text;
+
+        if (PlayerControl.LocalPlayer.HasModifier<LoverModifier>())
+        {
+            LoverMessage = true;
+            RpcSendLoveChat(PlayerControl.LocalPlayer, text);
+            HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
+
+            __instance.freeChatField.Clear();
+            __instance.quickChatMenu.Clear();
+            __instance.quickChatField.Clear();
+            __instance.UpdateChatMode();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    [MethodRpc((uint)TownOfUsRpc.SendLoveChat, SendImmediately = true)]
+    public static void RpcSendLoveChat(PlayerControl player, string text)
+    {
+        if ((PlayerControl.LocalPlayer.IsLover() && player != PlayerControl.LocalPlayer) || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        {
+            LoverMessage = true;
+            if (player != PlayerControl.LocalPlayer) HudManager.Instance.Chat.AddChat(player, text);
+        }
+    }
+
+    [HarmonyPatch(typeof(ChatBubble), nameof(ChatBubble.SetName))]
+    [HarmonyPostfix]
+    public static void SetNamePatch(ChatBubble __instance, [HarmonyArgument(0)] string playerName)
+    {
+       if (LoverMessage)
+       {
+           __instance.NameText.color = TownOfUsColors.Lover;
+           __instance.NameText.text = playerName + " (Lover)";
+           LoverMessage = false;
+       }
+    }
+}

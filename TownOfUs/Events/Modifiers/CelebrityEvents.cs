@@ -1,0 +1,40 @@
+﻿using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Modifiers;
+using TownOfUs.Modifiers.Game.Crewmate;
+using TownOfUs.Utilities;
+
+namespace TownOfUs.Events.Modifiers;
+
+public static class CelebrityEvents
+{
+    [RegisterEvent]
+    public static void AfterMurderEventHandler(AfterMurderEvent @event)
+    {
+        var source = @event.Source;
+        var target = @event.Target;
+
+        if (target.HasModifier<CelebrityModifier>() && target.AmOwner)
+        {
+            var roomStr = HudManager.Instance.roomTracker.text.text;
+
+            CelebrityModifier.RpcCelebrityKilled(source, target, roomStr);
+        }
+    }
+
+    [RegisterEvent]
+    public static void ReportBodyEventHandler(ReportBodyEvent @event)
+    {
+        if (@event.Reporter.AmOwner)
+        {
+            var celebrity = ModifierUtils.GetActiveModifiers<CelebrityModifier>(x => x.Player.HasDied() && !x.Announced).FirstOrDefault();
+            if (celebrity != null)
+            {
+                var milliSeconds = (float)(DateTime.UtcNow - celebrity.DeathTime).TotalMilliseconds;
+
+                CelebrityModifier.RpcUpdateCelebrityKilled(celebrity.Player, milliSeconds);
+            }
+        }
+    }
+}

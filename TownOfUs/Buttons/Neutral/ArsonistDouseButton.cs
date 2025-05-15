@@ -1,0 +1,41 @@
+using MiraAPI.GameOptions;
+using MiraAPI.Hud;
+using MiraAPI.Modifiers;
+using TownOfUs.Utilities;
+using MiraAPI.Utilities.Assets;
+using Reactor.Utilities;
+using TownOfUs.Modifiers.Neutral;
+using TownOfUs.Options.Roles.Neutral;
+using TownOfUs.Roles.Neutral;
+using UnityEngine;
+
+namespace TownOfUs.Buttons.Neutral;
+
+public sealed class ArsonistDouseButton : TownOfUsRoleButton<ArsonistRole, PlayerControl>
+{
+    public override string Name => "Douse";
+    public override string Keybind => "ActionQuaternary";
+    public override Color TextOutlineColor => TownOfUsColors.Arsonist;
+    public override float Cooldown => OptionGroupSingleton<ArsonistOptions>.Instance.DouseCooldown + MapCooldown;
+    public override LoadableAsset<Sprite> Sprite => TouNeutAssets.DouseButtonSprite;
+
+    protected override void OnClick()
+    {
+        if (Target == null)
+        {
+            Logger<TownOfUsPlugin>.Error("Arsonist Attack: Target is null");
+            return;
+        }
+
+        Target.RpcAddModifier<ArsonistDousedModifier>(PlayerControl.LocalPlayer.PlayerId);
+
+        CustomButtonSingleton<ArsonistIgniteButton>.Instance.SetTimer(CustomButtonSingleton<ArsonistIgniteButton>.Instance.Cooldown);
+    }
+
+    public override bool IsTargetValid(PlayerControl? target)
+    {
+        return base.IsTargetValid(target) && !target!.HasModifier<ArsonistDousedModifier>();
+    }
+
+    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: x => !x.HasModifier<ArsonistDousedModifier>());
+}

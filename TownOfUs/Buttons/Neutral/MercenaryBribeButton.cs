@@ -1,0 +1,37 @@
+﻿using MiraAPI.Modifiers;
+using TownOfUs.Utilities;
+using MiraAPI.Utilities.Assets;
+using Reactor.Utilities;
+using TownOfUs.Modifiers.Neutral;
+using TownOfUs.Roles.Neutral;
+using UnityEngine;
+
+namespace TownOfUs.Buttons.Neutral;
+
+public sealed class MercenaryBribeButton : TownOfUsRoleButton<MercenaryRole, PlayerControl>
+{
+    public override string Name => "Bribe";
+    public override string Keybind => "ActionSecondary";
+    public override Color TextOutlineColor => TownOfUsColors.Mercenary;
+    public override float Cooldown => MapCooldown;
+    public override LoadableAsset<Sprite> Sprite => TouNeutAssets.BribeSprite;
+
+    public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && Role.CanBribe;
+
+    protected override void OnClick()
+    {
+        if (Target == null)
+        {
+            Logger<TownOfUsPlugin>.Error("Mercenary Bribed: Target is null");
+            return;
+        }
+
+        Target.RpcAddModifier<MercenaryBribedModifier>(PlayerControl.LocalPlayer);
+
+        Role!.Gold -= MercenaryRole.BrideCost;
+
+        SetActive(false, Role);
+    }
+
+    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: x => !x.HasModifier<MercenaryBribedModifier>());
+}
