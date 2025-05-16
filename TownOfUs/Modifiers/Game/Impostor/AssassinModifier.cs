@@ -8,13 +8,10 @@ using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Crewmate;
 using TownOfUs.Modifiers.Game.Alliance;
-using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Components;
 using TownOfUs.Options;
 using TownOfUs.Roles;
-using TownOfUs.Roles.Impostor;
-using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -244,7 +241,7 @@ public sealed class AssassinModifier : GameModifier
             return true;
         }
 
-        if (!OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessModifiers)
+        if (!OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessCrewModifiers)
         {
             return false;
         }

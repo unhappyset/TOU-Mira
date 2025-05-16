@@ -50,16 +50,16 @@ public sealed class AssassinOptions : AbstractOptionGroup
     public bool AssassinGuessImpostors { get; set; } = false;
 
     [ModdedToggleOption("Assassin Can Guess Crewmate Modifiers")]
-    public bool AssassinGuessModifiers { get; set; } = false;
+    public bool AssassinGuessCrewModifiers { get; set; } = false;
 
     public ModdedToggleOption AssassinGuessInvModifier { get; } = new ModdedToggleOption("Assassin Can Guess Investigator Modifier", false)
     {
-        Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessModifiers,
+        Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessCrewModifiers,
     };
 
     public ModdedToggleOption AssassinGuessSpyModifier { get; } = new ModdedToggleOption("Assassin Can Guess Spy Modifier", false)
     {
-        Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessModifiers,
+        Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessCrewModifiers,
     };
 
     [ModdedToggleOption("Assassin Can Guess Lovers")]
