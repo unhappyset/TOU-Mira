@@ -17,8 +17,8 @@ namespace TownOfUs.Patches;
         public static ChatController Chat => HUD.Chat;
         public static void Postfix(PlayerPhysics __instance)
         {
-            if (AmongUsClient.Instance) ChatPatches.DoHostSetup();
-            if (!AmongUsClient.Instance || !PlayerControl.LocalPlayer || !__instance.myPlayer)
+            if (AmongUsClient.Instance && !TutorialManager.InstanceExists) ChatPatches.DoHostSetup();
+            if (!AmongUsClient.Instance || !PlayerControl.LocalPlayer || !__instance.myPlayer || TutorialManager.InstanceExists)
                 return;
             if (__instance.myPlayer == PlayerControl.LocalPlayer && GameHistory.EndGameSummary != string.Empty && TownOfUsPlugin.ShowSummaryMessage.Value)
             {
