@@ -185,7 +185,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
         if (HudManager.Instance && report.Length > 0)
         {
             var title = $"<color=#{TownOfUsColors.Doomsayer.ToHtmlStringRGBA()}>Doomsayer Report</color>";
-            MiscUtils.AddFakeChat(Player.Data, title, report, true, true);
+            MiscUtils.AddFakeChat(Player.Data, title, report, false, true);
         }
     }
 

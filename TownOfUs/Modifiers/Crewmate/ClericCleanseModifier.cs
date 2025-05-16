@@ -45,7 +45,7 @@ public sealed class ClericCleanseModifier(PlayerControl cleric) : BaseModifier
             text = text.Remove(text.Length - 1, 1);
 
             var title = $"<color=#{TownOfUsColors.Cleric.ToHtmlStringRGBA()}>Cleric Feedback</color>";
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, text.ToString(), true, true);
+            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, text.ToString(), false, true);
         }
     }
 

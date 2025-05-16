@@ -117,7 +117,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         else
         {
             var title = $"<color=#{TownOfUsColors.Deputy.ToHtmlStringRGBA()}>Deputy Feedback</color>";
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, "You missed your shot! They are either not the killer or are invincible.", true, true);
+            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, "You missed your shot! They are either not the killer or are invincible.", false, true);
             var notif1 = Helpers.CreateAndShowNotification($"<b>{TownOfUsColors.Deputy.ToTextColor()}You missed your shot! They are either not the killer or are invincible.</b></color>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Deputy.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
         }

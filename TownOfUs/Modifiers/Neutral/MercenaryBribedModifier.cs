@@ -23,7 +23,7 @@ public sealed class MercenaryBribedModifier(PlayerControl mercenary) : BaseModif
         if (alerted) return;
 
         var title = $"<color=#{TownOfUsColors.Mercenary.ToHtmlStringRGBA()}>Mercenary Feedback</color>";
-        MiscUtils.AddFakeChat(Player.Data, title, "You have been bribed by a Mercenary!", true, true);
+        MiscUtils.AddFakeChat(Player.Data, title, "You have been bribed by a Mercenary!", false, true);
 
         alerted = true;
     }

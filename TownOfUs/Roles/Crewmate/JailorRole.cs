@@ -75,7 +75,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             var title = $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailee Feedback</color>";
             var text = "You are jailed, convince the Jailor that you are Crew to avoid being executed";
             if (PlayerControl.LocalPlayer.Is(ModdedRoleTeams.Crewmate)) text = "You are jailed, provide relevant information to the Jailor to prove you are Crew";
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, text, true, true);
+            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, text, false, true);
 
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.Jailor.ToTextColor()}{text}</color></b>", Color.white, spr: TouRoleIcons.Jailor.LoadAsset());
@@ -89,7 +89,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             if (Jailed!.HasDied())
                 return;
             var title = $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailor Feedback</color>";
-            MiscUtils.AddFakeChat(Jailed.Data, title, "Use /jail to communicate with your jailee", true, true);
+            MiscUtils.AddFakeChat(Jailed.Data, title, "Use /jail to communicate with your jailee", false, true);
         }
 
         if (MeetingHud.Instance)

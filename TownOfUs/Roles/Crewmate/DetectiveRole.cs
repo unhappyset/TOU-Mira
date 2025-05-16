@@ -104,7 +104,7 @@ public sealed class DetectiveRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
         var title = $"<color=#{TownOfUsColors.Detective.ToHtmlStringRGBA()}>Detective Report</color>";
         var reported = Player;
         if (br.Body != null) reported = br.Body;
-        MiscUtils.AddFakeChat(reported.Data, title, reportMsg, true, true);
+        MiscUtils.AddFakeChat(reported.Data, title, reportMsg, false, true);
     }
 
     [HideFromIl2Cpp]

@@ -187,7 +187,7 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
         var title = $"<color=#{TownOfUsColors.Medic.ToHtmlStringRGBA()}>Medic Report</color>";
         var reported = Player;
         if (br.Body != null) reported = br.Body;
-        MiscUtils.AddFakeChat(reported.Data, title, reportMsg, true, true);
+        MiscUtils.AddFakeChat(reported.Data, title, reportMsg, false, true);
     }
 
     public static string GetColorTypeForPlayer(PlayerControl player)

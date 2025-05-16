@@ -84,7 +84,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
         }
 
         var title = $"<color=#{TownOfUsColors.Trapper.ToHtmlStringRGBA()}>Trapper Report</color>";
-        MiscUtils.AddFakeChat(Player.Data, title, msg, true, true);
+        MiscUtils.AddFakeChat(Player.Data, title, msg, false, true);
     }
 
     [HideFromIl2Cpp]

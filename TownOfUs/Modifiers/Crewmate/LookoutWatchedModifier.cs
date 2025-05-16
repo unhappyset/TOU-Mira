@@ -56,7 +56,7 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
             msg = final;
         }
 
-        MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, true, true);
+        MiscUtils.AddFakeChat(Player.Data, title, msg, false, true);
 
         SeenPlayers.Clear();
     }

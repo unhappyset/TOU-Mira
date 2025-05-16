@@ -55,7 +55,7 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         var report = BuildReport(confessing);
 
         var title = $"<color=#{TownOfUsColors.Oracle.ToHtmlStringRGBA()}>Oracle Confession</color>";
-        MiscUtils.AddFakeChat(confessing.Data, title, report, true, true);
+        MiscUtils.AddFakeChat(confessing.Data, title, report, false, true);
     }
 
     public static string BuildReport(PlayerControl player)

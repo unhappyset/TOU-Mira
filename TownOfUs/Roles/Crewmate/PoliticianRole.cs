@@ -110,7 +110,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
         {
             CanCampaign = false;
             var title = $"<color=#{TownOfUsColors.Mayor.ToHtmlStringRGBA()}>Politician Feedback</color>";
-            MiscUtils.AddFakeChat(Player.Data, title, "You need to campaign more Crewmates! However, you may not campaign next round", true, true);
+            MiscUtils.AddFakeChat(Player.Data, title, "You need to campaign more Crewmates! However, you may not campaign next round", false, true);
         }
     }
 

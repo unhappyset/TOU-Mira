@@ -39,7 +39,7 @@ public static class CelebrityMeetingIntroPatch
         if (HudManager.Instance != null)
         {
             var title = $"<color=#{TownOfUsColors.Celebrity.ToHtmlStringRGBA()}>Celebrity Report</color>";
-            MiscUtils.AddFakeChat(celebrity.Player.Data, title, celebrity.DeathMessage, true, true);
+            MiscUtils.AddFakeChat(celebrity.Player.Data, title, celebrity.DeathMessage, false, true);
         }
     }
 }
