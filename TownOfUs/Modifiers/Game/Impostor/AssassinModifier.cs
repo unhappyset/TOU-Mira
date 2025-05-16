@@ -187,16 +187,22 @@ public sealed class AssassinModifier : GameModifier
         var options = OptionGroupSingleton<AssassinOptions>.Instance;
         var touRole = role as ITownOfUsRole;
         var assassinRole = Player.Data.Role as ITownOfUsRole;
+        var unguessableRole = role as IUnguessable;
 
         if (touRole is IGhostRole)
         {
             return false;
         }
 
-        if (role is CrewmateRole && OptionGroupSingleton<AssassinOptions>.Instance.AssassinCrewmateGuess)
+        if (unguessableRole != null && !unguessableRole.IsGuessable)
         {
-            return true;
+            return false;
         }
+
+        if (role is CrewmateRole && OptionGroupSingleton<AssassinOptions>.Instance.AssassinCrewmateGuess)
+            {
+                return true;
+            }
 
         if (touRole?.RoleAlignment == RoleAlignment.CrewmateInvestigative)
         {
@@ -223,7 +229,7 @@ public sealed class AssassinModifier : GameModifier
             return options.AssassinGuessNeutralEvil;
         }
 
-        if (touRole?.RoleAlignment == RoleAlignment.NeutralKilling && touRole is not PestilenceRole)
+        if (touRole?.RoleAlignment == RoleAlignment.NeutralKilling)
         {
             return options.AssassinGuessNeutralKilling;
         }
@@ -253,9 +259,8 @@ public sealed class AssassinModifier : GameModifier
             return false;
         }
 
-        if (modifier is AftermathModifier or DiseasedModifier
-            or FrostyModifier or
-            MultitaskerModifier or TorchModifier or SpyModifier or InvestigatorModifier)
+        var crewMod = modifier as TouGameModifier;
+        if (crewMod != null && crewMod.FactionType == ModifierFaction.Crewmate)
         {
             return true;
         }

@@ -16,7 +16,6 @@ using TownOfUs.Modules.Components;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Patches.Stubs;
-using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -295,7 +294,8 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
 
     private static bool IsRoleValid(RoleBehaviour role)
     {
-        if (role.IsDead || role is IGhostRole || role is PestilenceRole || role is MayorRole)
+        var unguessableRole = role as IUnguessable;
+        if (role.IsDead || role is IGhostRole || (unguessableRole != null && !unguessableRole.IsGuessable))
         {
             return false;
         }

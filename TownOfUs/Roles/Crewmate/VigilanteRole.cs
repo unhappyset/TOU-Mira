@@ -19,6 +19,7 @@ using TownOfUs.Roles.Impostor;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
+using TownOfUs.Modifiers.Game;
 
 namespace TownOfUs.Roles.Crewmate;
 
@@ -162,6 +163,12 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
         var options = OptionGroupSingleton<VigilanteOptions>.Instance;
         var touRole = role as ITownOfUsRole;
+        var unguessableRole = role as IUnguessable;
+
+        if (unguessableRole != null && !unguessableRole.IsGuessable)
+        {
+            return false;
+        }
 
         if (role.IsCrewmate())
         {
@@ -202,8 +209,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         {
             return true;
         }
-
-        if (modifier is DoubleShotModifier or SaboteurModifier or DisperserModifier or UnderdogModifier)
+        var impMod = modifier as TouGameModifier;
+        if (impMod != null && impMod.FactionType == ModifierFaction.Impostor)
         {
             return OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteGuessImpMods;
         }
