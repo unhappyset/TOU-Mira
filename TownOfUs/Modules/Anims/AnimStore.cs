@@ -1,6 +1,6 @@
 ﻿using MiraAPI.Modifiers;
 using PowerTools;
-using Sidemen.Animations;
+using AuAvengers.Animations;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Utilities;
 using UnityEngine;

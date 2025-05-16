@@ -433,7 +433,7 @@ public static class MiscUtils
 
         Object.Destroy(spherePrimitive.GetComponent<SphereCollider>());
 
-        spherePrimitive.GetComponent<MeshRenderer>().material = SidemenAnims.BombMaterial.LoadAsset();
+        spherePrimitive.GetComponent<MeshRenderer>().material = AuAvengersAnims.BombMaterial.LoadAsset();
         spherePrimitive.transform.position = location;
 
         return spherePrimitive;

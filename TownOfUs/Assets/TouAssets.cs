@@ -82,6 +82,6 @@ public static class TouAssets
 
     public static void Initialize()
     {
-        SidemenAnims.Initialize();
+        AuAvengersAnims.Initialize();
     }
 }

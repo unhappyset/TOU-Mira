@@ -3,7 +3,7 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using Reactor.Utilities.Attributes;
 using UnityEngine;
 
-namespace Sidemen.Animations;
+namespace AuAvengers.Animations;
 
 [RegisterInIl2Cpp]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1051:Do not declare visible instance fields", Justification = "Unity")]

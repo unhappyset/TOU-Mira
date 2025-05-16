@@ -90,7 +90,7 @@ public sealed class Trap : IDisposable
         trapPref.name = "Trap";
         trapPref.transform.localScale = new Vector3(trapSize, trapSize, trapSize);
         GameObject.Destroy(trapPref.GetComponent<SphereCollider>());
-        trapPref.GetComponent<MeshRenderer>().material = SidemenAnims.TrapMaterial.LoadAsset();
+        trapPref.GetComponent<MeshRenderer>().material = AuAvengersAnims.TrapMaterial.LoadAsset();
         trapPref.transform.position = location;
 
         var trap = new Trap

@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace TownOfUs.Assets;
 
-public static class SidemenAnims
+public static class AuAvengersAnims
 {
-    public static AssetBundle TrapperShaderBundle { get; } = AssetBundleManager.Load(typeof(SidemenAnims).Assembly, "trappershader");
-    public static AssetBundle SoundVisionBundle { get; } = AssetBundleManager.Load(typeof(SidemenAnims).Assembly, "soundvision"); // unused?
+    public static AssetBundle TrapperShaderBundle { get; } = AssetBundleManager.Load(typeof(AuAvengersAnims).Assembly, "trappershader");
+    public static AssetBundle SoundVisionBundle { get; } = AssetBundleManager.Load(typeof(AuAvengersAnims).Assembly, "soundvision"); // unused?
 
     // bomb visualizer thing
     public static LoadableAsset<Material> BombMaterial { get; private set; }
