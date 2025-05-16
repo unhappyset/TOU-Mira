@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable
+public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Swapper";
     public string RoleDescription => "Swap Votes To Save The Crew!";
@@ -22,6 +22,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public Color RoleColor => TownOfUsColors.Swapper;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
+    public DoomableType DoomHintType => DoomableType.Trickster;
     public bool IsPowerCrew => true; // Always disable end game checks because a swapper can still screw people over
     public CustomRoleConfiguration Configuration => new(this)
     {

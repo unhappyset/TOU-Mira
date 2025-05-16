@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Impostor;
 
-public sealed class VenererRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class VenererRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Venerer";
     public string RoleDescription => "With Each Kill Your Ability Becomes Stronger";
@@ -18,6 +18,7 @@ public sealed class VenererRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorConcealing;
+    public DoomableType DoomHintType => DoomableType.Trickster;
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Venerer,

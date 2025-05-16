@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable
+public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Veteran";
     public string RoleDescription => "Alert To Kill Anyone Who Interacts With You";
@@ -19,6 +19,7 @@ public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public Color RoleColor => TownOfUsColors.Veteran;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
+    public DoomableType DoomHintType => DoomableType.Trickster;
     public override bool IsAffectedByComms => false;
     public bool IsPowerCrew => Alerts > 0; // Stop end game checks if the veteran can still alert
     public CustomRoleConfiguration Configuration => new(this)

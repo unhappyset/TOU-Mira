@@ -22,7 +22,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable
+public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Vigilante";
     public string RoleDescription => "Kill Impostors If You Can Guess Their Roles";
@@ -30,6 +30,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     public Color RoleColor => TownOfUsColors.Vigilante;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
+    public DoomableType DoomHintType => DoomableType.Relentless;
     public bool IsPowerCrew => MaxKills > 0; // Always disable end game checks with a vigi running around
     public CustomRoleConfiguration Configuration => new(this)
     {

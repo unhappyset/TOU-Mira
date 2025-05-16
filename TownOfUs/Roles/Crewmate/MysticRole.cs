@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class MysticRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class MysticRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Mystic";
     public string RoleDescription => "Know When and Where Kills Happen";
@@ -16,6 +16,7 @@ public sealed class MysticRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public Color RoleColor => TownOfUsColors.Mystic;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
+    public DoomableType DoomHintType => DoomableType.Perception;
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Mystic,

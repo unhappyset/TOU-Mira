@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable
+public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Deputy";
     public string RoleDescription => "Camp Crewmates To Catch Their Killer";
@@ -24,6 +24,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     public Color RoleColor => TownOfUsColors.Deputy;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
+    public DoomableType DoomHintType => DoomableType.Relentless;
     public override bool IsAffectedByComms => false;
     public bool IsPowerCrew => Killer; // Only stop end game checks if the deputy can actually kill someone
     public CustomRoleConfiguration Configuration => new(this)

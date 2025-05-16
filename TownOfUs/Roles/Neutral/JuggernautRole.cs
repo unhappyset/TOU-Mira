@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class JuggernautRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class JuggernautRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Juggernaut";
     public string RoleDescription => "Your Power Grows With Every Kill";
@@ -20,6 +20,7 @@ public sealed class JuggernautRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public Color RoleColor => TownOfUsColors.Juggernaut;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
+    public DoomableType DoomHintType => DoomableType.Relentless;
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<JuggernautOptions>.Instance.CanVent,

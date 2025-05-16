@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Tracker";
     public string RoleDescription => "Track Everyone's Movement";
@@ -20,6 +20,7 @@ public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
     public Color RoleColor => TownOfUsColors.Tracker;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
+    public DoomableType DoomHintType => DoomableType.Hunter;
     public override bool IsAffectedByComms => false;
     public CustomRoleConfiguration Configuration => new(this)
     {

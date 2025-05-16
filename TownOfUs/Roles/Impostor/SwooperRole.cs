@@ -10,7 +10,7 @@ using TownOfUs.Utilities;
 
 namespace TownOfUs.Roles.Impostor;
 
-public sealed class SwooperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class SwooperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Swooper";
     public string RoleDescription => "Turn Invisible Temporarily";
@@ -18,6 +18,7 @@ public sealed class SwooperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorConcealing;
+    public DoomableType DoomHintType => DoomableType.Hunter;
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<SwooperOptions>.Instance.CanVent,

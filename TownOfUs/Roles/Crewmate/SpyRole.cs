@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class SpyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class SpyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Spy";
     public string RoleDescription => "Snoop Around And Find Stuff Out";
@@ -16,6 +16,7 @@ public sealed class SpyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole
     public Color RoleColor => TownOfUsColors.Spy;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
+    public DoomableType DoomHintType => DoomableType.Perception;
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Spy,

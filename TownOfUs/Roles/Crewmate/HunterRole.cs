@@ -15,7 +15,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable
+public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Hunter";
     public string RoleDescription => "Stalk The <color=#FF0000FF>Impostor</color>";
@@ -23,6 +23,7 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     public Color RoleColor => TownOfUsColors.Hunter;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
+    public DoomableType DoomHintType => DoomableType.Hunter;
     public bool IsPowerCrew => CaughtPlayers.Any(x => !x.HasDied()); // Disable end game checks if a Hunter has alive targets
     public override bool IsAffectedByComms => false;
     public CustomRoleConfiguration Configuration => new(this)

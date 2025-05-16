@@ -20,7 +20,7 @@ using TownOfUs.Modules.Wiki;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Amnesiac";
     public string RoleDescription => "Remember A Role Of A Deceased Player";
@@ -28,6 +28,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     public Color RoleColor => TownOfUsColors.Amnesiac;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
+    public DoomableType DoomHintType => DoomableType.Death;
     public CustomRoleConfiguration Configuration => new(this)
     {
         IntroSound = TouAudio.MediumIntroSound,

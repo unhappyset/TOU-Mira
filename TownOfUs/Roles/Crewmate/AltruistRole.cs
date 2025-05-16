@@ -21,7 +21,7 @@ using Object = UnityEngine.Object;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Altruist";
     public string RoleDescription => "Revive Dead Crewmates";
@@ -29,6 +29,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     public Color RoleColor => TownOfUsColors.Altruist;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
+    public DoomableType DoomHintType => DoomableType.Death;
     public CustomRoleConfiguration Configuration => new(this)
     {
         IntroSound = TouAudio.AltruistReviveSound,

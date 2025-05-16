@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Impostor;
 
-public sealed class ScavengerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class ScavengerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Scavenger";
     public string RoleDescription => "Hunt Down Your Prey";
@@ -22,6 +22,7 @@ public sealed class ScavengerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
+    public DoomableType DoomHintType => DoomableType.Hunter;
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Scavenger,

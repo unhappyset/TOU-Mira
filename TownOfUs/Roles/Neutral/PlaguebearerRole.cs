@@ -17,7 +17,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class PlaguebearerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class PlaguebearerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Plaguebearer";
     public string RoleDescription => "Infect Everyone To Become <color=#4D4D4DFF>Pestilence</color>";
@@ -25,6 +25,7 @@ public sealed class PlaguebearerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
     public Color RoleColor => TownOfUsColors.Plaguebearer;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
+    public DoomableType DoomHintType => DoomableType.Fearmonger;
     public CustomRoleConfiguration Configuration => new(this)
     {
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Phantom),

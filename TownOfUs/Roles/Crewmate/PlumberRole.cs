@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Plumber";
     public string RoleDescription => "Get The Rats Out Of The Sewers";
@@ -24,6 +24,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     public Color RoleColor => TownOfUsColors.Plumber;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
+    public DoomableType DoomHintType => DoomableType.Trickster;
     public override bool IsAffectedByComms => false;
 
     public CustomRoleConfiguration Configuration => new(this)

@@ -17,7 +17,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Arsonist";
     public string RoleDescription => "Douse Players And Ignite The Light";
@@ -25,6 +25,7 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     public Color RoleColor => TownOfUsColors.Arsonist;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
+    public DoomableType DoomHintType => DoomableType.Fearmonger;
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<ArsonistOptions>.Instance.CanVent,

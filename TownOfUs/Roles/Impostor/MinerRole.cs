@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Impostor;
 
-public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Miner";
     public string RoleDescription => "From The Top, Make It Drop, That's A Vent";
@@ -18,6 +18,7 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
+    public DoomableType DoomHintType => DoomableType.Fearmonger;
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Miner,

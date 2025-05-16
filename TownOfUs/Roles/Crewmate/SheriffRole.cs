@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable
+public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Sheriff";
     public string RoleDescription => "Shoot The <color=#FF0000FF>Impostor</color>";
@@ -20,6 +20,7 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public Color RoleColor => TownOfUsColors.Sheriff;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
+    public DoomableType DoomHintType => DoomableType.Relentless;
     public bool IsPowerCrew => true; // Always disable end game checks with a sheriff around
     public override bool IsAffectedByComms => false;
     public CustomRoleConfiguration Configuration => new(this)

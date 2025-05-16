@@ -18,7 +18,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Medic";
     public string RoleDescription => "Create A Shield To Protect A Crewmate";
@@ -26,6 +26,7 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
     public Color RoleColor => TownOfUsColors.Medic;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
+    public DoomableType DoomHintType => DoomableType.Protective;
     public override bool IsAffectedByComms => false;
     public CustomRoleConfiguration Configuration => new(this)
     {
@@ -183,14 +184,10 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
         if (string.IsNullOrWhiteSpace(reportMsg))
             return;
 
-        // Send the message through chat only visible to the medic
-        if (HudManager.Instance)
-        {
-            var title = $"<color=#{TownOfUsColors.Medic.ToHtmlStringRGBA()}>Medic Report</color>";
-            var reported = Player;
-            if (br.Body != null) reported = br.Body;
-            MiscUtils.AddFakeChat(reported.Data, title, reportMsg, true, true);
-        }
+        var title = $"<color=#{TownOfUsColors.Medic.ToHtmlStringRGBA()}>Medic Report</color>";
+        var reported = Player;
+        if (br.Body != null) reported = br.Body;
+        MiscUtils.AddFakeChat(reported.Data, title, reportMsg, true, true);
     }
 
     public static string GetColorTypeForPlayer(PlayerControl player)

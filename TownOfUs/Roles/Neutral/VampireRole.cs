@@ -19,7 +19,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IAnimated, IWikiDiscoverable
+public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IAnimated, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Vampire";
     public string RoleDescription => "Convert Crewmates And Kill The Rest";
@@ -27,6 +27,7 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
     public Color RoleColor => TownOfUsColors.Vampire;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
+    public DoomableType DoomHintType => DoomableType.Death;
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<VampireOptions>.Instance.CanVent,

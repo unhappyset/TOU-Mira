@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class SoulCollectorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class SoulCollectorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Soul Collector";
     public string RoleDescription => "Reap The Souls From Your Crewmates";
@@ -21,6 +21,7 @@ public sealed class SoulCollectorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITow
     public Color RoleColor => TownOfUsColors.SoulCollector;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
+    public DoomableType DoomHintType => DoomableType.Death;
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<SoulCollectorOptions>.Instance.CanVent,

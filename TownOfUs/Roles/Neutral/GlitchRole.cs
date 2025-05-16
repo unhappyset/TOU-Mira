@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class GlitchRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class GlitchRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Glitch";
     public string RoleDescription => "Murder, Mimic, Hack... Data Lost";
@@ -19,6 +19,7 @@ public sealed class GlitchRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     public Color RoleColor => TownOfUsColors.Glitch;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
+    public DoomableType DoomHintType => DoomableType.Perception;
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<GlitchOptions>.Instance.CanVent,

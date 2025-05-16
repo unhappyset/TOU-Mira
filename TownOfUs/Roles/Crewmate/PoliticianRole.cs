@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable
+public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Politician";
     public string RoleDescription => "Campaign To Become The Mayor!";
@@ -20,6 +20,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
     public Color RoleColor => TownOfUsColors.Politician;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
+    public DoomableType DoomHintType => DoomableType.Trickster;
     public override bool IsAffectedByComms => false;
     public bool IsPowerCrew => true;
     public CustomRoleConfiguration Configuration => new(this)

@@ -111,18 +111,15 @@ public sealed class AssassinModifier : GameModifier
 
         void ClickRoleHandle(RoleBehaviour role)
         {
-            var pickVictim = role.Role == player.Data.Role.Role;
+            var realRole = player.Data.Role;
 
-            if (player.IsImpostor())
+            var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole) as ICachedRole;
+            if (cachedMod != null)
             {
-                if (role.Role == player.Data.Role.Role && !player.HasModifier<TraitorCacheModifier>())
-                    pickVictim = true;
-                else if (role is TraitorRole && player.HasModifier<TraitorCacheModifier>())
-                    pickVictim = true;
-                else
-                    pickVictim = false;
+                realRole = cachedMod.CachedRole;
             }
 
+            var pickVictim = role.Role == realRole.Role;
             var victim = pickVictim ? player : Player!;
 
             ClickHandler(victim);

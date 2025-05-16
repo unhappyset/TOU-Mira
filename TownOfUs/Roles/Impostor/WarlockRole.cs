@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Impostor;
 
-public sealed class WarlockRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class WarlockRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Warlock";
     public string RoleDescription => "Charge Up Your Kill Button To Multi Kill";
@@ -15,6 +15,7 @@ public sealed class WarlockRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
+    public DoomableType DoomHintType => DoomableType.Relentless;
     public CustomRoleConfiguration Configuration => new(this)
     {
         UseVanillaKillButton = false,

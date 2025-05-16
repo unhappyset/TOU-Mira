@@ -15,7 +15,7 @@ using Object = UnityEngine.Object;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class AurialRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class AurialRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Aurial";
     public string RoleDescription => "Sense Disturbances In Your Aura.";
@@ -23,6 +23,7 @@ public sealed class AurialRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public Color RoleColor => TownOfUsColors.Aurial;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
+    public DoomableType DoomHintType => DoomableType.Perception;
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Aurial,

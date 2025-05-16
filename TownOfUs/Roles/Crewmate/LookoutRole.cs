@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class LookoutRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class LookoutRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Lookout";
     public string RoleDescription => "Keep Your Eyes Wide Open";
@@ -15,6 +15,7 @@ public sealed class LookoutRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     public Color RoleColor => TownOfUsColors.Lookout;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
+    public DoomableType DoomHintType => DoomableType.Hunter;
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Lookout,

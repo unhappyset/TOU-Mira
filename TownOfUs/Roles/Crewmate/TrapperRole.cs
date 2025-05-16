@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Trapper";
     public string RoleDescription => "Catch Killers In The Act";
@@ -21,6 +21,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     public Color RoleColor => TownOfUsColors.Trapper;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
+    public DoomableType DoomHintType => DoomableType.Insight;
     public override bool IsAffectedByComms => false;
     public CustomRoleConfiguration Configuration => new(this)
     {
@@ -82,11 +83,8 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
             msg = finalMessage;
         }
 
-        if (HudManager.Instance)
-        {
-            var title = $"<color=#{TownOfUsColors.Trapper.ToHtmlStringRGBA()}>Trapper Report</color>";
-            MiscUtils.AddFakeChat(Player.Data, title, msg, true, true);
-        }
+        var title = $"<color=#{TownOfUsColors.Trapper.ToHtmlStringRGBA()}>Trapper Report</color>";
+        MiscUtils.AddFakeChat(Player.Data, title, msg, true, true);
     }
 
     [HideFromIl2Cpp]

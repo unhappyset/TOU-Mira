@@ -23,7 +23,7 @@ using Object = UnityEngine.Object;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable
+public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Jailor";
     public string RoleDescription => "Jail And Execute The <color=#FF0000FF>Impostors</color>";
@@ -31,6 +31,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     public Color RoleColor => TownOfUsColors.Jailor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
+    public DoomableType DoomHintType => DoomableType.Relentless;
     public bool IsPowerCrew => Executes > 0; // Stop end game checks if the Jailor can still execute someone
     public override bool IsAffectedByComms => false;
     public CustomRoleConfiguration Configuration => new(this)

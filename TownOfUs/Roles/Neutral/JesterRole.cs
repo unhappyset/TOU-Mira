@@ -17,7 +17,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Jester";
     public string RoleDescription => "Get voted out!";
@@ -25,6 +25,7 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     public Color RoleColor => TownOfUsColors.Jester;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
+    public DoomableType DoomHintType => DoomableType.Trickster;
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<JesterOptions>.Instance.CanVent,

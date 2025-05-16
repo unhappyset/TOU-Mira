@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class PestilenceRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class PestilenceRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IUnguessable
 {
     public string RoleName => "Pestilence";
     public string RoleDescription => "Kill everyone with your unstoppable abilities!";
@@ -19,6 +19,9 @@ public sealed class PestilenceRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public Color RoleColor => TownOfUsColors.Pestilence;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
+    public DoomableType DoomHintType => DoomableType.Fearmonger;
+    public bool IsGuessable => false;
+    public RoleBehaviour AppearAs => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<PlaguebearerRole>());
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<PlaguebearerOptions>.Instance.CanVent,
@@ -31,6 +34,7 @@ public sealed class PestilenceRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         Icon = TouRoleIcons.Pestilence,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };
+
 
     public override bool CanUse(IUsable usable)
     {

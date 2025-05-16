@@ -15,7 +15,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class DetectiveRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class DetectiveRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Detective";
     public string RoleDescription => "Inspect Crime Scenes To Catch The Killer";
@@ -23,6 +23,7 @@ public sealed class DetectiveRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     public Color RoleColor => TownOfUsColors.Detective;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
+    public DoomableType DoomHintType => DoomableType.Insight;
     public override bool IsAffectedByComms => false;
     public CustomRoleConfiguration Configuration => new(this)
     {
@@ -100,13 +101,10 @@ public sealed class DetectiveRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
             return;
 
         // Send the message through chat only visible to the detective
-        if (HudManager.Instance)
-        {
-            var title = $"<color=#{TownOfUsColors.Detective.ToHtmlStringRGBA()}>Detective Report</color>";
-            var reported = Player;
-            if (br.Body != null) reported = br.Body;
-            MiscUtils.AddFakeChat(reported.Data, title, reportMsg, true, true);
-        }
+        var title = $"<color=#{TownOfUsColors.Detective.ToHtmlStringRGBA()}>Detective Report</color>";
+        var reported = Player;
+        if (br.Body != null) reported = br.Body;
+        MiscUtils.AddFakeChat(reported.Data, title, reportMsg, true, true);
     }
 
     [HideFromIl2Cpp]

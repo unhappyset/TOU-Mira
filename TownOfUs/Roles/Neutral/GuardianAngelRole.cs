@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Guardian Angel";
     public string RoleDescription => TargetString();
@@ -24,6 +24,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
     public Color RoleColor => TownOfUsColors.GuardianAngel;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
+    public DoomableType DoomHintType => DoomableType.Protective;
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.GuardianAngel,

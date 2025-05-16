@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Warden";
     public string RoleDescription => "Fortify Crewmates";
@@ -22,6 +22,7 @@ public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public Color RoleColor => TownOfUsColors.Warden;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
+    public DoomableType DoomHintType => DoomableType.Protective;
     public override bool IsAffectedByComms => false;
     public CustomRoleConfiguration Configuration => new(this)
     {

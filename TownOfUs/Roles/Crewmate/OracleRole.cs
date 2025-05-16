@@ -15,7 +15,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Oracle";
     public string RoleDescription => "Get Other Player's To Confess Their Sins";
@@ -23,6 +23,7 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public Color RoleColor => TownOfUsColors.Oracle;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
+    public DoomableType DoomHintType => DoomableType.Insight;
     public override bool IsAffectedByComms => false;
     public CustomRoleConfiguration Configuration => new(this)
     {
@@ -53,11 +54,8 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
         var report = BuildReport(confessing);
 
-        if (HudManager.Instance)
-        {
-            var title = $"<color=#{TownOfUsColors.Oracle.ToHtmlStringRGBA()}>Oracle Confession</color>";
-            MiscUtils.AddFakeChat(confessing.Data, title, report, true, true);
-        }
+        var title = $"<color=#{TownOfUsColors.Oracle.ToHtmlStringRGBA()}>Oracle Confession</color>";
+        MiscUtils.AddFakeChat(confessing.Data, title, report, true, true);
     }
 
     public static string BuildReport(PlayerControl player)

@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Impostor;
 
-public sealed class BomberRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class BomberRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Bomber";
     public string RoleDescription => "Plant Bombs To Kill Multiple Crewmates At Once";
@@ -20,6 +20,7 @@ public sealed class BomberRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
+    public DoomableType DoomHintType => DoomableType.Relentless;
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Bomber,

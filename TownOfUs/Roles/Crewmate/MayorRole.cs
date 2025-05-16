@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Text;
+using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Roles;
 using PowerTools;
@@ -11,7 +12,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable
+public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable, IUnguessable
 {
     public string RoleName => "Mayor";
     public string RoleDescription => "Reveal Yourself To Save The Crew";
@@ -21,6 +22,9 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
     public bool Revealed { get; set; }
     public static GameObject MayorPlayer;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
+    public DoomableType DoomHintType => DoomableType.Trickster;
+    public bool IsGuessable => false;
+    public RoleBehaviour AppearAs => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<PoliticianRole>());
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Mayor,

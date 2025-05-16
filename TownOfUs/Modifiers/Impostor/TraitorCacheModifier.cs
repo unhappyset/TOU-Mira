@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
@@ -7,10 +8,12 @@ using UnityEngine;
 
 namespace TownOfUs.Modifiers.Impostor;
 
-public sealed class TraitorCacheModifier : BaseModifier
+public sealed class TraitorCacheModifier : BaseModifier, ICachedRole
 {
     public override string ModifierName => "Traitor";
     public override bool HideOnUi => true;
+    public bool ShowCurrentRoleFirst => true;
+    public RoleBehaviour CachedRole => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TraitorRole>());
 
     public override void OnDeath(DeathReason reason)
     {

@@ -17,7 +17,7 @@ using TownOfUs.Modules.Wiki;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class MercenaryRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class MercenaryRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Mercenary";
     public string RoleDescription => "Bribe The Crewmates";
@@ -25,6 +25,7 @@ public sealed class MercenaryRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
     public Color RoleColor => TownOfUsColors.Mercenary;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
+    public DoomableType DoomHintType => DoomableType.Insight;
     public CustomRoleConfiguration Configuration => new(this)
     {
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Crewmate),

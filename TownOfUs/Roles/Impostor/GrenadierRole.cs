@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Impostor;
 
-public sealed class GrenadierRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class GrenadierRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Grenadier";
     public string RoleDescription => "Hinder The Crewmates' Vision";
@@ -17,6 +17,7 @@ public sealed class GrenadierRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorConcealing;
+    public DoomableType DoomHintType => DoomableType.Protective;
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Grenadier,

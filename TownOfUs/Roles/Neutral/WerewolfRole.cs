@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class WerewolfRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class WerewolfRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Werewolf";
     public string RoleDescription => "Rampage To Kill Everyone";
@@ -19,6 +19,7 @@ public sealed class WerewolfRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     public Color RoleColor => TownOfUsColors.Werewolf;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
+    public DoomableType DoomHintType => DoomableType.Hunter;
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<WerewolfOptions>.Instance.CanVent/* && (Rampaging || Player.inVent)*/,

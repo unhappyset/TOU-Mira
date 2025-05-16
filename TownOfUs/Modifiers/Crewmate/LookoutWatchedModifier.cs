@@ -1,10 +1,6 @@
-﻿using AmongUs.GameOptions;
-using MiraAPI.Modifiers;
-using MiraAPI.Roles;
+﻿using MiraAPI.Modifiers;
 using Reactor.Utilities.Extensions;
 using System.Text;
-using TownOfUs.Modifiers.Impostor;
-using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -60,21 +56,21 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
             msg = final;
         }
 
-        if (HudManager.Instance)
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, true, true);
+        MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, true, true);
 
         SeenPlayers.Clear();
     }
 
     public void SeePlayer(PlayerControl source)
     {
-        if (source.HasModifier<TraitorCacheModifier>())
+        var role = source.Data.Role;
+
+        var cachedMod = source.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole) as ICachedRole;
+        if (cachedMod != null)
         {
-            SeenPlayers.Add(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TraitorRole>()));
+            role = cachedMod.CachedRole;
         }
-        else
-        {
-            SeenPlayers.Add(source.Data.Role);
-        }
+
+        SeenPlayers.Add(role);
     }
 }

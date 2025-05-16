@@ -1,14 +1,10 @@
 ﻿using System.Collections;
-using AmongUs.GameOptions;
 using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using MiraAPI.Roles;
 using Reactor.Utilities;
-using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
-using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -46,8 +42,6 @@ public sealed class Trap : IDisposable
             return;
         }
 
-        var traitorRole = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TraitorRole>());
-
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             if (player.HasDied()) continue;
@@ -69,8 +63,11 @@ public sealed class Trap : IDisposable
 
                 var role = entry.Data.Role;
 
-                if (entry.HasModifier<TraitorCacheModifier>())
-                    role = traitorRole;
+                var cachedMod = entry.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole) as ICachedRole;
+                if (cachedMod != null)
+                {
+                    role = cachedMod.CachedRole;
+                }
 
                 // Logger<TownOfUsPlugin>.Error($"player with byte {entry.PlayerId} is logged with time {_players[entry.PlayerId]}");
                 if (_players[entry.PlayerId] > MinAmountOfTimeInTrap && !_owner!.TrappedPlayers.Contains(role) && entry != _owner.Player)

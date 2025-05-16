@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Survivor";
     public string RoleDescription => "Do Whatever It Takes To Live";
@@ -21,6 +21,7 @@ public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     public Color RoleColor => TownOfUsColors.Survivor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
+    public DoomableType DoomHintType => DoomableType.Protective;
     public CustomRoleConfiguration Configuration => new(this)
     {
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Crewmate),

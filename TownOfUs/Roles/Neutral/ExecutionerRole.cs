@@ -18,7 +18,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Executioner";
     public string RoleDescription => TargetString();
@@ -26,6 +26,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
     public Color RoleColor => TownOfUsColors.Executioner;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
+    public DoomableType DoomHintType => DoomableType.Trickster;
     public CustomRoleConfiguration Configuration => new(this)
     {
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Shapeshifter),

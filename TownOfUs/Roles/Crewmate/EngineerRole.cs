@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Engineer";
     public string RoleDescription => "Maintain Important Systems On The Ship";
@@ -21,6 +21,7 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     public Color RoleColor => TownOfUsColors.Engineer;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
+    public DoomableType DoomHintType => DoomableType.Protective;
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = true,
