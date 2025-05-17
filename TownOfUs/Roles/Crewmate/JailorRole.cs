@@ -6,7 +6,6 @@ using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Roles;
-using MiraAPI.Utilities;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TMPro;
@@ -44,7 +43,6 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     public int Executes { get; set; } = (int)OptionGroupSingleton<JailorOptions>.Instance.MaxExecutes;
     public PlayerControl Jailed => PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.GetModifier<JailedModifier>()?.JailorId == Player.PlayerId)!;
 
-    private GameObject? jailCell;
     private GameObject? executeButton;
     private TMP_Text? usesText;
 
@@ -70,20 +68,6 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
         if (Player.HasDied()) return;
 
-        if (PlayerControl.LocalPlayer.GetModifier<JailedModifier>()?.JailorId == Player.PlayerId)
-        {
-            var title = $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailee Feedback</color>";
-            var text = "You are jailed, convince the Jailor that you are Crew to avoid being executed";
-            if (PlayerControl.LocalPlayer.Is(ModdedRoleTeams.Crewmate)) text = "You are jailed, provide relevant information to the Jailor to prove you are Crew";
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, text, false, true);
-
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfUsColors.Jailor.ToTextColor()}{text}</color></b>", Color.white, spr: TouRoleIcons.Jailor.LoadAsset());
-
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-        }
-
         if (Player.AmOwner)
         {
             if (Jailed!.HasDied())
@@ -106,7 +90,6 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
     public void Clear()
     {
-        jailCell?.Destroy();
         executeButton?.Destroy();
         usesText?.Destroy();
     }
@@ -119,14 +102,6 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     private void AddMeetingButtons(MeetingHud __instance)
     {
         if (Jailed == null || Jailed?.HasDied() == true) return;
-
-        foreach (var voteArea in __instance.playerStates)
-        {
-            if (Jailed?.PlayerId == voteArea.TargetPlayerId)
-            {
-                GenCell(voteArea);
-            }
-        }
 
         if (!Player.AmOwner) return;
 
@@ -142,27 +117,6 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         }
     }
 
-    private void GenCell(PlayerVoteArea voteArea)
-    {
-        var confirmButton = voteArea.Buttons.transform.GetChild(0).gameObject;
-        var parent = confirmButton.transform.parent.parent;
-
-        var jailCellObj = Object.Instantiate(confirmButton, voteArea.transform);
-
-        var cellRenderer = jailCellObj.GetComponent<SpriteRenderer>();
-        cellRenderer.sprite = TouAssets.InJailSprite.LoadAsset();
-
-        jailCellObj.transform.localPosition = new Vector3(-0.95f, 0f, -2f);
-        jailCellObj.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
-        jailCellObj.layer = 5;
-        jailCellObj.transform.parent = parent;
-        jailCellObj.transform.GetChild(0).gameObject.Destroy();
-
-        var passive = jailCellObj.GetComponent<PassiveButton>();
-        passive.OnClick = new Button.ButtonClickedEvent();
-
-        jailCell = jailCellObj;
-    }
 
     private void GenButton(PlayerVoteArea voteArea)
     {
