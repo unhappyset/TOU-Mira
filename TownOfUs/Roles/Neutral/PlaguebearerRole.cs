@@ -12,6 +12,7 @@ using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
+using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -33,6 +34,11 @@ public sealed class PlaguebearerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         MaxRoleCount = 1,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };
+    public override void Initialize(PlayerControl player)
+    {
+        RoleStubs.RoleBehaviourInitialize(this, player);
+        player.AddModifier<PlaguebearerInfectedModifier>(Player.PlayerId);
+    }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
