@@ -2,6 +2,7 @@
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
+using MiraAPI.Networking;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
@@ -58,6 +59,97 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             return;
         }
 
+        var play1 = MiscUtils.PlayerById(player1)!;
+        var play2 = MiscUtils.PlayerById(player2)!;
+
+        var warden = play1.GetModifier<WardenFortifiedModifier>()?.Warden.GetRole<WardenRole>();
+        if (warden != null)
+        {
+            if (transporter.AmOwner) WardenRole.RpcWardenNotify(warden.Player, transporter, play1);
+            return;
+        }
+
+        var warden2 = play2.GetModifier<WardenFortifiedModifier>()?.Warden.GetRole<WardenRole>();
+        if (warden2 != null)
+        {
+            if (transporter.AmOwner) WardenRole.RpcWardenNotify(warden2.Player, transporter, play2);
+            return;
+        }
+
+        var cleric = play1.GetModifier<ClericBarrierModifier>()?.Cleric.GetRole<ClericRole>();
+        if (cleric != null)
+        {
+            if (transporter.AmOwner) ClericRole.RpcClericBarrierAttacked(cleric.Player, transporter, play1);
+            return;
+        }
+
+        var cleric2 = play2.GetModifier<ClericBarrierModifier>()?.Cleric.GetRole<ClericRole>();
+        if (cleric2 != null)
+        {
+            if (transporter.AmOwner) ClericRole.RpcClericBarrierAttacked(cleric2.Player, transporter, play2);
+            return;
+        }
+
+        var infectedtrans = transporter.GetModifier<PlaguebearerInfectedModifier>();
+        var infectedplayer1 = play1.GetModifier<PlaguebearerInfectedModifier>();
+        var infectedplayer2 = play2.GetModifier<PlaguebearerInfectedModifier>();
+        if (infectedtrans != null)
+        {
+            if (infectedplayer1 == null) play1.AddModifier<PlaguebearerInfectedModifier>(infectedtrans.PlagueBearerId);
+            if (infectedplayer2 == null) play2.AddModifier<PlaguebearerInfectedModifier>(infectedtrans.PlagueBearerId);
+        }
+        else if (infectedtrans == null && infectedplayer1 != null)
+        {
+            transporter.AddModifier<PlaguebearerInfectedModifier>(infectedplayer1.PlagueBearerId);
+        }
+        else if (infectedtrans == null && infectedplayer2 != null)
+        {
+            transporter.AddModifier<PlaguebearerInfectedModifier>(infectedplayer2.PlagueBearerId);
+        }
+
+        LookoutEvents.CheckForLookoutWatched(transporter, play1);
+        LookoutEvents.CheckForLookoutWatched(transporter, play2);
+
+        var mercenary = PlayerControl.LocalPlayer.Data.Role as MercenaryRole;
+        if (play1.HasModifier<MercenaryGuardModifier>() || play2.HasModifier<MercenaryGuardModifier>() && mercenary)
+        {
+            mercenary!.AddPayment();
+        }
+
+        if (play1.Data.Role is PestilenceRole)
+        {
+            if (transporter.AmOwner) play1.RpcCustomMurder(transporter);
+            return;
+        }
+
+        if (play2.Data.Role is PestilenceRole)
+        {
+            if (transporter.AmOwner) play2.RpcCustomMurder(transporter);
+            return;
+        }
+
+        if (play1.HasModifier<VeteranAlertModifier>())
+        {
+            if (transporter.AmOwner) play1.RpcCustomMurder(transporter);
+            return;
+        }
+
+        if (play2.HasModifier<VeteranAlertModifier>())
+        {
+            if (transporter.AmOwner) play2.RpcCustomMurder(transporter);
+            return;
+        }
+
+        if (play1.TryGetModifier<ShyModifier>(out var shy))
+        {
+            shy.OnRoundStart();
+        }
+
+        if (play2.TryGetModifier<ShyModifier>(out var shy2))
+        {
+            shy2.OnRoundStart();
+        }
+
         if (t1.TryCast<DeadBody>()) PreCheckUndertaker(t1.TryCast<DeadBody>()!);
         if (t2.TryCast<DeadBody>()) PreCheckUndertaker(t2.TryCast<DeadBody>()!);
 
@@ -66,8 +158,6 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         Transport(t1, positions.Item2);
         Transport(t2, positions.Item1);
 
-        HandleOtherRoles((transporter.Data.Role as TransporterRole)!, MiscUtils.PlayerById(player1)!, MiscUtils.PlayerById(player2)!);
-
         if (transporter.AmOwner)
         {
             var button = CustomButtonSingleton<TransporterTransportButton>.Instance;
@@ -75,19 +165,13 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             button.ResetCooldownAndOrEffect();
         }
 
-        var p1 = t1.TryCast<CustomNetworkTransform>();
-        var p2 = t2.TryCast<CustomNetworkTransform>();
-
-        if (transporter.AmOwner || (p1 != null && p1.AmOwner) || (p2 != null && p2.AmOwner))
+        if (play1.AmOwner || play2.AmOwner)
         {
-            if (!transporter.AmOwner)
-            {
-                var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfUsColors.Transporter.ToTextColor()} You were transported!</color></b>", Color.white, spr: TouRoleIcons.Transporter.LoadAsset());
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>{TownOfUsColors.Transporter.ToTextColor()} You were transported!</color></b>", Color.white, spr: TouRoleIcons.Transporter.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-            }
+            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
         }
 
         MonoBehaviour? GetTarget(byte id)
@@ -156,48 +240,6 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             else
             {
                 mono.transform.position = position;
-            }
-        }
-
-        void HandleOtherRoles(TransporterRole transporter, PlayerControl player1, PlayerControl player2)
-        {
-            // TODO: medic, guardian angel, pestilence, veteran, shy?, cleric
-            LookoutEvents.CheckForLookoutWatched(transporter.Player, player1);
-            LookoutEvents.CheckForLookoutWatched(transporter.Player, player2);
-
-            var warden = player1.GetModifier<WardenFortifiedModifier>()?.Warden.GetRole<WardenRole>();
-            if (warden != null && transporter.Player.AmOwner)
-            {
-                WardenRole.RpcWardenNotify(warden.Player, transporter.Player, player1);
-            }
-
-            var warden2 = player2.GetModifier<WardenFortifiedModifier>()?.Warden.GetRole<WardenRole>();
-            if (warden2 != null && transporter.Player.AmOwner)
-            {
-                WardenRole.RpcWardenNotify(warden2.Player, transporter.Player, player2);
-            }
-
-            var mercenary = PlayerControl.LocalPlayer.Data.Role as MercenaryRole;
-            if (player1.HasModifier<MercenaryGuardModifier>() || player2.HasModifier<MercenaryGuardModifier>() && mercenary)
-            {
-                mercenary!.AddPayment();
-            }
-
-            var infectedtrans = transporter.Player.GetModifier<PlaguebearerInfectedModifier>();
-            var infectedplayer1 = player1.GetModifier<PlaguebearerInfectedModifier>();
-            var infectedplayer2 = player2.GetModifier<PlaguebearerInfectedModifier>();
-            if (infectedtrans != null)
-            {
-                if (infectedplayer1 == null) player1.AddModifier<PlaguebearerInfectedModifier>(infectedtrans.PlagueBearerId);
-                if (infectedplayer2 == null) player2.AddModifier<PlaguebearerInfectedModifier>(infectedtrans.PlagueBearerId);
-            }
-            else if (infectedtrans == null && infectedplayer1 != null)
-            {
-                transporter.Player.AddModifier<PlaguebearerInfectedModifier>(infectedplayer1.PlagueBearerId);
-            }
-            else if (infectedtrans == null && infectedplayer2 != null)
-            {
-                transporter.Player.AddModifier<PlaguebearerInfectedModifier>(infectedplayer2.PlagueBearerId);
             }
         }
 

@@ -20,7 +20,7 @@ public static class PlaguebearerEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        PlaguebearerRole.CheckInfected(@event.Source, @event.Target);
+        PlaguebearerRole.RpcCheckInfected(@event.Source, @event.Target);
     }
 
     [RegisterEvent]
@@ -32,6 +32,6 @@ public static class PlaguebearerEvents
 
         if (target == null || button == null || !button.CanClick()) return;
 
-        PlaguebearerRole.CheckInfected(source, target);
+        PlaguebearerRole.RpcCheckInfected(source, target);
     }
 }
