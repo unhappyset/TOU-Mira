@@ -17,6 +17,7 @@ Join The official [Discord](https://discord.gg/ugyc4EVUYZ) if you have any probl
   <summary> v5.9 Beta 1 </summary>
   <ul> <li>First Beta Release</li> </ul>
     </details>
+</details>
   
 ---------------------------------------
 # Roles and Modifiers
