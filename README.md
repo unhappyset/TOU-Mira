@@ -19,6 +19,7 @@ Join The official [Discord](https://discord.gg/ugyc4EVUYZ) if you have any probl
     </details>
   
 ---------------------------------------
+# Roles and Modifiers
 
 | **Impostor Roles**           | **Crewmate Roles**                | **Neutral Roles**                | **Modifiers**                |
 |:----------------------------:|:---------------------------------:|:--------------------------------:|:----------------------------:|
