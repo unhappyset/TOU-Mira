@@ -70,10 +70,10 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 
             foreach (var role in TrappedPlayers)
             {
-                message.Append(TownOfUsPlugin.Culture, $" {role.NiceName},");
+                message.Append(TownOfUsPlugin.Culture, $"{role.NiceName}, ");
             }
 
-            message = message.Remove(message.Length - 1, 1);
+            message = message.Remove(message.Length - 2, 2);
 
             var finalMessage = message.ToString();
 

@@ -49,11 +49,7 @@ public static class LookoutEvents
 
     public static void CheckForLookoutWatched(PlayerControl source, PlayerControl target)
     {
-        if (!target.HasModifier<LookoutWatchedModifier>()) return;
-
-        var mod = target.GetModifier<LookoutWatchedModifier>();
-
-        if (mod == null) return;
+        if (!target.TryGetModifier<LookoutWatchedModifier>(out var mod)) return;
 
         mod.SeePlayer(source);
     }
