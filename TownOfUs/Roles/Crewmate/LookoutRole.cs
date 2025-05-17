@@ -1,6 +1,10 @@
 ﻿using System.Text;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using Reactor.Networking.Attributes;
+using Reactor.Utilities;
+using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -27,6 +31,26 @@ public sealed class LookoutRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     public StringBuilder SetTabText()
     {
         return ITownOfUsRole.SetNewTabText(this);
+    }
+    [MethodRpc((uint)TownOfUsRpc.LookoutSeePlayer, SendImmediately = true)]
+    public static void RpcSeePlayer(PlayerControl target, PlayerControl source)
+    {
+        if (!target.TryGetModifier<LookoutWatchedModifier>(out var mod))
+        {
+            Logger<TownOfUsPlugin>.Error("Not a watched player");
+            return;
+        }
+
+        var role = source.Data.Role;
+
+        var cachedMod = source.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole) as ICachedRole;
+        if (cachedMod != null)
+        {
+            role = cachedMod.CachedRole;
+        }
+
+        mod.SeenPlayers.Add(role);
+
     }
 
     public string GetAdvancedDescription() 

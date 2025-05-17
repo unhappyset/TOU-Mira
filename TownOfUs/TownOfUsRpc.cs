@@ -61,4 +61,5 @@ public enum TownOfUsRpc : uint
     DetonateRpc,
     AurialSense,
     ButtonBarry,
+    LookoutSeePlayer,
 }

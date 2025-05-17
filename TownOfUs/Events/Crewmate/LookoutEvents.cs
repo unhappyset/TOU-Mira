@@ -9,6 +9,7 @@ using MiraAPI.Modifiers;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Options.Roles.Crewmate;
+using TownOfUs.Roles.Crewmate;
 
 namespace TownOfUs.Events.Crewmate;
 
@@ -49,8 +50,7 @@ public static class LookoutEvents
 
     public static void CheckForLookoutWatched(PlayerControl source, PlayerControl target)
     {
-        if (!target.TryGetModifier<LookoutWatchedModifier>(out var mod)) return;
-
-        mod.SeePlayer(source);
+        if (!target.HasModifier<LookoutWatchedModifier>()) return;
+        LookoutRole.RpcSeePlayer(target, source);
     }
 }
