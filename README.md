@@ -1,7 +1,10 @@
 # tou-mira
 Note: This repository is the WIP Beta Version of Town of Us using the Newest Interface and rebuilt from the ground up!
-Note: This version is not cross compatible with the Official TOU release version. This is its own Standalone version tha all players must have to play.
+
+Note: This version is not cross compatible with the Official TOU release version. This is its own Standalone version that all players must have to play.
+
 Join The official [Discord](https://discord.gg/ugyc4EVUYZ) if you have any problems or want to find people to play with!
+
 ----------------------------------------
 # Releases
 | Among Us - Version| Mod Version | Link |
