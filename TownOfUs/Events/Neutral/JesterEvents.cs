@@ -2,7 +2,9 @@
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
+using MiraAPI.Modifiers;
 using MiraAPI.Networking;
+using TownOfUs.Modifiers;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -19,7 +21,7 @@ public static class JesterEvents
         if (PlayerControl.LocalPlayer.Data.Role is not JesterRole jester) return;
 
         var voters = jester.Voters.ToArray();
-        Func<PlayerControl, bool> _playerMatch = plr => voters.Contains(plr.PlayerId) && !plr.HasDied() && !plr.IsRole<PestilenceRole>() && plr != PlayerControl.LocalPlayer;
+        Func<PlayerControl, bool> _playerMatch = plr => voters.Contains(plr.PlayerId) && !plr.HasDied() && !plr.HasModifier<InvulnerabilityModifier>() && plr != PlayerControl.LocalPlayer;
 
         var killMenu = CustomPlayerMenu.Create();
         killMenu.Begin(

@@ -6,11 +6,11 @@ using MiraAPI.Networking;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Patches.Stubs;
-using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -110,7 +110,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         var target = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId).Object;
         var role = Player.GetRole<DeputyRole>()!;
 
-        if (role.Killer == target && !target.IsRole<PestilenceRole>())
+        if (role.Killer == target && !target.HasModifier<InvulnerabilityModifier>())
         {
             Player.RpcCustomMurder(target, createDeadBody: false, teleportMurderer: false);
         }

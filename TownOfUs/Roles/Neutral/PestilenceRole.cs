@@ -1,11 +1,14 @@
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using System.Text;
+using TownOfUs.Modifiers;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
+using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -34,6 +37,16 @@ public sealed class PestilenceRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         Icon = TouRoleIcons.Pestilence,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };
+    public override void Initialize(PlayerControl player)
+    {
+        RoleStubs.RoleBehaviourInitialize(this, player);
+        player.AddModifier<InvulnerabilityModifier>(true, true, false);
+    }
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        targetPlayer.RemoveModifier<InvulnerabilityModifier>();
+    }
 
 
     public override bool CanUse(IUsable usable)

@@ -48,8 +48,8 @@ public sealed class LookoutRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
         {
             role = cachedMod.CachedRole;
         }
-
-        mod.SeenPlayers.Add(role);
+        // Prevents duplicate role entries
+        if (!mod.SeenPlayers.Contains(role)) mod.SeenPlayers.Add(role);
 
     }
 

@@ -13,7 +13,6 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Modifiers.Alliance;
 using TownOfUs.Roles;
-using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 
 namespace TownOfUs.Modifiers.Game.Alliance;
@@ -70,7 +69,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable
             return;
         }
 
-        if (OtherLover?.Data.Role is not PestilenceRole)
+        if (!OtherLover.HasModifier<InvulnerabilityModifier>())
         {
             OtherLover!.RpcCustomMurder(OtherLover!);
         }

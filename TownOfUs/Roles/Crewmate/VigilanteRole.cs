@@ -194,7 +194,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             return options.VigilanteGuessNeutralEvil;
         }
 
-        if (touRole?.RoleAlignment == RoleAlignment.NeutralKilling && touRole is not PestilenceRole)
+        if (touRole?.RoleAlignment == RoleAlignment.NeutralKilling)
         {
             return options.VigilanteGuessNeutralKilling;
         }

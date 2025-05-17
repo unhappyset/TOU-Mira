@@ -4,8 +4,10 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
+using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Roles;
+using TownOfUs.Modifiers;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -40,7 +42,7 @@ public static class ExecutionerEvents
             if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
             {
                 var voters = exe.Voters.ToArray();
-                Func<PlayerControl, bool> _playerMatch = plr => plr != exe.Target && plr != exe.Player && voters.Contains(plr.PlayerId) && !plr.HasDied() && !plr.IsRole<PestilenceRole>();
+                Func<PlayerControl, bool> _playerMatch = plr => plr != exe.Target && plr != exe.Player && voters.Contains(plr.PlayerId) && !plr.HasDied() && !plr.HasModifier<InvulnerabilityModifier>();
 
                 var killMenu = CustomPlayerMenu.Create();
                 killMenu.Begin(

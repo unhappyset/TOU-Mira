@@ -8,7 +8,6 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using TownOfUs.Buttons.Neutral;
-using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
@@ -38,6 +37,11 @@ public sealed class PlaguebearerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
     {
         RoleStubs.RoleBehaviourInitialize(this, player);
         player.AddModifier<PlaguebearerInfectedModifier>(Player.PlayerId);
+    }
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        targetPlayer.RemoveModifier<PlaguebearerInfectedModifier>();
     }
 
     [HideFromIl2Cpp]
@@ -69,8 +73,6 @@ public sealed class PlaguebearerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         if (allInfected.Count() == Helpers.GetAlivePlayers().Count - 1 && (MeetingHud.Instance == null || Helpers.GetAlivePlayers().Count > 2))
         {
             Player.ChangeRole(RoleId.Get<PestilenceRole>());
-
-            Player.AddModifier<InvulnerabilityModifier>();
 
             CustomButtonSingleton<PestilenceKillButton>.Instance.SetTimer(OptionGroupSingleton<PlaguebearerOptions>.Instance.PestKillCooldown);
 
