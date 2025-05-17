@@ -22,7 +22,7 @@ public sealed class GuardianAngelProtectModifier : BaseShieldModifier
         {
           var showProtect = OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect;
           var showProtectEveryone = showProtect == ProtectOptions.Everyone;
-          var showProtectSelf = PlayerControl.LocalPlayer.PlayerId == Player?.PlayerId &&
+          var showProtectSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
               showProtect is ProtectOptions.Self or ProtectOptions.SelfAndGA;
             return !TownOfUsPlugin.ShowShieldHud.Value && (!showProtectEveryone || !showProtectSelf);
         }
@@ -34,14 +34,14 @@ public sealed class GuardianAngelProtectModifier : BaseShieldModifier
         var ga = CustomRoleUtils.GetActiveRolesOfType<GuardianAngelTouRole>().FirstOrDefault(x => x.Target == Player);
 
         var showProtectEveryone = showProtect == ProtectOptions.Everyone;
-        var showProtectSelf = PlayerControl.LocalPlayer.PlayerId == Player?.PlayerId &&
+        var showProtectSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
             showProtect is ProtectOptions.Self or ProtectOptions.SelfAndGA;
         var showProtectGA = PlayerControl.LocalPlayer.PlayerId == ga?.Player.PlayerId &&
                  showProtect is ProtectOptions.GA or ProtectOptions.SelfAndGA;
 
         if (showProtectEveryone || showProtectSelf || showProtectGA || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
         {
-            RoleEffectAnimation roleEffectAnimation = UnityEngine.Object.Instantiate<RoleEffectAnimation>(DestroyableSingleton<RoleManager>.Instance.protectLoopAnim, Player!.gameObject.transform);
+            RoleEffectAnimation roleEffectAnimation = UnityEngine.Object.Instantiate<RoleEffectAnimation>(DestroyableSingleton<RoleManager>.Instance.protectLoopAnim, Player.gameObject.transform);
             roleEffectAnimation.SetMaterialColor(7); // This is white, if it's not, make sure it is set to white from the int
             roleEffectAnimation.SetMaskLayerBasedOnWhoShouldSee(true);
             roleEffectAnimation.Play(Player, new Action(OnDeactivate), Player.cosmetics.FlipX, RoleEffectAnimation.SoundType.Local, Duration);

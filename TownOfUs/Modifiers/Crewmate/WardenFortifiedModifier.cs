@@ -16,7 +16,7 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
         {
             var show = OptionGroupSingleton<WardenOptions>.Instance.ShowFortified;
             var showShieldedEveryone = show == FortifyOptions.Everyone;
-            var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player?.PlayerId &&
+            var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
             (show is FortifyOptions.Self or FortifyOptions.SelfAndWarden);
             return !TownOfUsPlugin.ShowShieldHud.Value && (!showShieldedSelf || !showShieldedEveryone);
         }
@@ -27,7 +27,7 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
         {
             var show = OptionGroupSingleton<WardenOptions>.Instance.ShowFortified;
             var showShieldedEveryone = show == FortifyOptions.Everyone;
-            var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player?.PlayerId &&
+            var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
             (show is FortifyOptions.Self or FortifyOptions.SelfAndWarden);
             return showShieldedSelf || showShieldedEveryone;
         }
@@ -36,7 +36,7 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
 
     public override void OnDeactivate()
     {
-        Player?.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Warden));
+        Player.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Warden));
     }
 
     public override void Update()
@@ -44,7 +44,7 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
         var show = OptionGroupSingleton<WardenOptions>.Instance.ShowFortified;
 
         var showShieldedEveryone = show == FortifyOptions.Everyone;
-        var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player?.PlayerId &&
+        var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
             (show is FortifyOptions.Self or FortifyOptions.SelfAndWarden);
         var showShieldedWarden = PlayerControl.LocalPlayer.PlayerId == Warden.PlayerId &&
                  (show is FortifyOptions.Warden or FortifyOptions.SelfAndWarden);
@@ -57,6 +57,6 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
 
     public override void OnDeath(DeathReason reason)
     {
-        Player?.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Warden));
+        Player.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Warden));
     }
 }

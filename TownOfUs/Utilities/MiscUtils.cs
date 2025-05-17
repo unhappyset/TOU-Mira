@@ -61,7 +61,7 @@ public static class MiscUtils
                     builder.AppendLine(option.Title + ": " + toggleOption.Value);
                     break;
                 case ModdedEnumOption enumOption:
-                    builder.AppendLine(enumOption.Title + ": " + enumOption.Values![enumOption.Value]);
+                    builder.AppendLine(enumOption.Title + ": " + enumOption.Values[enumOption.Value]);
                     break;
                 case ModdedNumberOption numberOption:
                     builder.AppendLine(numberOption.Title + ": " + numberOption.Value + Helpers.GetSuffix(numberOption.SuffixType));

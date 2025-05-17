@@ -19,7 +19,7 @@ public sealed class MultitaskerModifier : TouGameModifier, IWikiDiscoverable
 
     public override void Update()
     {
-        if (!Player || Player!.Data.IsDead || !Player.AmOwner)
+        if (!Player || Player.Data.IsDead || !Player.AmOwner)
         {
             return;
         }

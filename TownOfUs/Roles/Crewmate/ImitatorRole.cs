@@ -134,7 +134,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         if (player != null && player.Object.GetRoleWhenAlive() is MayorRole && PlayerControl.AllPlayerControls.ToArray().Any(x => x.Data.Role is ImitatorRole && !x.Data.IsDead && !x != Player)) return true;
         if (player != null && player.Object.GetRoleWhenAlive() is ImitatorRole) return true;
 
-        return voteArea.TargetPlayerId == Player!.PlayerId || Player.Data.IsDead || !voteArea!.AmDead;
+        return voteArea.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || !voteArea!.AmDead;
     }
 
     [HideFromIl2Cpp]

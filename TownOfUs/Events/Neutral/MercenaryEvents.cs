@@ -22,7 +22,7 @@ public static class MercenaryEvents
         if (target == null || button == null || !button.CanClick()) return;
 
         // only check if this interaction was via a custom button
-        CheckForMercenaryGuard(source, target!);
+        CheckForMercenaryGuard(source, target);
     }
 
     [RegisterEvent]

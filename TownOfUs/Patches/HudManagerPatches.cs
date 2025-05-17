@@ -280,28 +280,28 @@ public static class HudManagerPatches
 
                 if ((player.HasModifier<GuardianAngelTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<GuardianAngelTouRole>())
                     || (player.HasModifier<GuardianAngelTargetModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)
-                    || (PlayerControl.LocalPlayer == player && OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows))))
+                    || (player.AmOwner && OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows))))
                 {
                     playerName += "<color=#B3FFFFFF> ★</color>";
                 }
 
                 if ((player.HasModifier<MedicShieldModifier>(x => x.Medic == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MedicRole>())
                     || (player.HasModifier<MedicShieldModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)
-                    || (PlayerControl.LocalPlayer == player && player.TryGetModifier<MedicShieldModifier>(out var med) && med.VisibleSymbol))))
+                    || (player.AmOwner && player.TryGetModifier<MedicShieldModifier>(out var med) && med.VisibleSymbol))))
                 {
                     playerName += "<color=#006600FF> +</color>";
                 }
 
                 if ((player.HasModifier<ClericBarrierModifier>(x => x.Cleric == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<ClericRole>())
                     || (player.HasModifier<ClericBarrierModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)
-                    || (PlayerControl.LocalPlayer == player && player.TryGetModifier<ClericBarrierModifier>(out var cleric) && cleric.VisibleSymbol))))
+                    || (player.AmOwner && player.TryGetModifier<ClericBarrierModifier>(out var cleric) && cleric.VisibleSymbol))))
                 {
                     playerName += "<color=#00FFB3FF> Ω</color>";
                 }
 
                 if ((player.HasModifier<WardenFortifiedModifier>(x => x.Warden == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<WardenRole>())
                     || (player.HasModifier<WardenFortifiedModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)
-                    || (PlayerControl.LocalPlayer == player && player.TryGetModifier<WardenFortifiedModifier>(out var warden) && warden.VisibleSymbol))))
+                    || (player.AmOwner && player.TryGetModifier<WardenFortifiedModifier>(out var warden) && warden.VisibleSymbol))))
                 {
                     playerName += "<color=#9900FFFF> π</color>";
                 }
@@ -359,7 +359,7 @@ public static class HudManagerPatches
                 if (player.TryGetModifier<OracleConfessModifier>(out var confess, x => x.ConfessToAll))
                 {
                     var accuracy = OptionGroupSingleton<OracleOptions>.Instance.RevealAccuracyPercentage;
-                    var revealText = confess!.RevealedFaction switch
+                    var revealText = confess.RevealedFaction switch
                     {
                         ModdedRoleTeams.Crewmate => $" {TownOfUsColors.Crewmate.ToTextColor()}({accuracy}% Crew) </color>",
                         ModdedRoleTeams.Custom => $" {TownOfUsColors.Neutral.ToTextColor()}({accuracy}% Neut) </color>",
@@ -436,28 +436,28 @@ public static class HudManagerPatches
 
                 if ((player.HasModifier<GuardianAngelTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<GuardianAngelTouRole>())
                     || (player.HasModifier<GuardianAngelTargetModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body)
-                    || (PlayerControl.LocalPlayer == player && OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows))))
+                    || (player.AmOwner && OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows))))
                 {
                     playerName += player.HasModifier<GuardianAngelProtectModifier>() ? "<color=#FFD900FF> ★</color>": "<color=#B3FFFFFF> ★</color>";
                 }
 
                 if ((player.HasModifier<MedicShieldModifier>(x => x.Medic == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MedicRole>())
                     || (player.HasModifier<MedicShieldModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body)
-                    || (PlayerControl.LocalPlayer == player && player.TryGetModifier<MedicShieldModifier>(out var med) && med.VisibleSymbol))))
+                    || (player.AmOwner && player.TryGetModifier<MedicShieldModifier>(out var med) && med.VisibleSymbol))))
                 {
                     playerName += "<color=#006600FF> +</color>";
                 }
 
                 if ((player.HasModifier<ClericBarrierModifier>(x => x.Cleric == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<ClericRole>())
                     || (player.HasModifier<ClericBarrierModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body)
-                    || (PlayerControl.LocalPlayer == player && player.TryGetModifier<ClericBarrierModifier>(out var cleric) && cleric.VisibleSymbol))))
+                    || (player.AmOwner && player.TryGetModifier<ClericBarrierModifier>(out var cleric) && cleric.VisibleSymbol))))
                 {
                     playerName += "<color=#00FFB3FF> Ω</color>";
                 }
 
                 if ((player.HasModifier<WardenFortifiedModifier>(x => x.Warden == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<WardenRole>())
                     || (player.HasModifier<WardenFortifiedModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body)
-                    || (PlayerControl.LocalPlayer == player && player.TryGetModifier<WardenFortifiedModifier>(out var warden) && warden.VisibleSymbol))))
+                    || (player.AmOwner && player.TryGetModifier<WardenFortifiedModifier>(out var warden) && warden.VisibleSymbol))))
                 {
                     playerName += "<color=#9900FFFF> π</color>";
                 }

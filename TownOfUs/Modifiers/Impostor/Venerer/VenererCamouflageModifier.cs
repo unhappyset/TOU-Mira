@@ -13,21 +13,11 @@ public sealed class VenererCamouflageModifier : TimedModifier, IVenererModifier
 
     public override void OnActivate()
     {
-        if (Player == null)
-        {
-            return;
-        }
-
         Player.SetCamouflage();
     }
 
     public override void OnDeactivate()
     {
-        if (Player == null)
-        {
-            return;
-        }
-
         Player.SetCamouflage(false);
     }
 }

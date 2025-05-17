@@ -57,7 +57,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
         if (Player.AmOwner)
         {
-            meetingMenu!.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
+            meetingMenu.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
         }
     }
 
@@ -67,7 +67,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
         if (Player.AmOwner)
         {
-            meetingMenu!.HideButtons();
+            meetingMenu.HideButtons();
         }
     }
 
@@ -99,29 +99,29 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
         if (!Swap1)
         {
             Swap1 = voteArea;
-            meetingMenu!.Actives[voteArea.TargetPlayerId] = true;
+            meetingMenu.Actives[voteArea.TargetPlayerId] = true;
         }
         else if (!Swap2)
         {
             Swap2 = voteArea;
-            meetingMenu!.Actives[voteArea.TargetPlayerId] = true;
+            meetingMenu.Actives[voteArea.TargetPlayerId] = true;
         }
         else if (Swap1 == voteArea)
         {
-            meetingMenu!.Actives[Swap1!.TargetPlayerId] = false;
+            meetingMenu.Actives[Swap1!.TargetPlayerId] = false;
             Swap1 = null;
         }
         else if (Swap2 == voteArea)
         {
-            meetingMenu!.Actives[Swap2!.TargetPlayerId] = false;
+            meetingMenu.Actives[Swap2!.TargetPlayerId] = false;
             Swap2 = null;
         }
         else
         {
-            meetingMenu!.Actives[Swap1!.TargetPlayerId] = false;
+            meetingMenu.Actives[Swap1!.TargetPlayerId] = false;
             Swap1 = Swap2;
             Swap2 = voteArea;
-            meetingMenu!.Actives[voteArea.TargetPlayerId] = !meetingMenu!.Actives[voteArea.TargetPlayerId];
+            meetingMenu.Actives[voteArea.TargetPlayerId] = !meetingMenu.Actives[voteArea.TargetPlayerId];
         }
 
         RpcSyncSwaps(Player, Swap1?.TargetPlayerId ?? 255, Swap2?.TargetPlayerId ?? 255);

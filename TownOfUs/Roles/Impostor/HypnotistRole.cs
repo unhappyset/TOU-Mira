@@ -56,7 +56,7 @@ public sealed class HypnotistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
         if (Player.AmOwner)
         {
-            meetingMenu!.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && !HysteriaActive && !Player.HasModifier<JailedModifier>());
+            meetingMenu.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && !HysteriaActive && !Player.HasModifier<JailedModifier>());
         }
     }
 
@@ -66,7 +66,7 @@ public sealed class HypnotistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
         if (Player.AmOwner)
         {
-            meetingMenu!.HideButtons();
+            meetingMenu.HideButtons();
         }
     }
 
@@ -89,13 +89,13 @@ public sealed class HypnotistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
         if (Player.AmOwner)
         {
-            meetingMenu!.HideButtons();
+            meetingMenu.HideButtons();
         }
     }
 
     public bool IsExempt(PlayerVoteArea voteArea)
     {
-        return voteArea?.TargetPlayerId != Player!.PlayerId;
+        return voteArea?.TargetPlayerId != Player.PlayerId;
     }
 
     [MethodRpc((uint)TownOfUsRpc.Hysteria, SendImmediately = true)]

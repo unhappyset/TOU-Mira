@@ -23,7 +23,7 @@ public static class GuardianAngelEvents
 
         if (target == null || button == null || !button.CanClick()) return;
 
-        CheckForGaProtection(@event, target!);
+        CheckForGaProtection(@event, target);
     }
 
     [RegisterEvent]
@@ -57,9 +57,17 @@ public static class GuardianAngelEvents
         }
     }
 
-    private static bool CheckForGaProtection(MiraCancelableEvent @event, PlayerControl target, PlayerControl? source = null)
+    private static bool CheckForGaProtection(MiraCancelableEvent @event, PlayerControl target, PlayerControl? source=null)
     {
-        if (!target.HasModifier<GuardianAngelProtectModifier>() || source == target || MeetingHud.Instance || (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield)) return false;
+        if (!target.HasModifier<GuardianAngelProtectModifier>() ||
+            MeetingHud.Instance ||
+            source == null ||
+            source.PlayerId == target.PlayerId ||
+            (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield))
+        {
+            return false;
+        }
+
         @event.Cancel();
 
         return true;

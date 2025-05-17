@@ -26,7 +26,7 @@ public sealed class MediatedModifier(byte mediumId) : BaseModifier
         _medium = GameData.Instance.GetPlayerById(MediumId).Role as MediumRole;
         _mediumPlayer = _medium?.Player;
 
-        if (Player == null || _mediumPlayer == null || _medium == null || !Player.Data.IsDead)
+        if (_mediumPlayer == null || _medium == null || !Player.Data.IsDead)
         {
             ModifierComponent?.RemoveModifier(this);
             return;
@@ -60,7 +60,7 @@ public sealed class MediatedModifier(byte mediumId) : BaseModifier
 
     public override void OnDeactivate()
     {
-        if (Player == null || _mediumPlayer == null)
+        if (_mediumPlayer == null)
         {
             return;
         }
@@ -89,7 +89,7 @@ public sealed class MediatedModifier(byte mediumId) : BaseModifier
 
     public override void FixedUpdate()
     {
-        if (Player?.Data.IsDead == false)
+        if (!Player.Data.IsDead)
         {
             ModifierComponent?.RemoveModifier(this);
             return;
@@ -97,7 +97,7 @@ public sealed class MediatedModifier(byte mediumId) : BaseModifier
 
         if (_mediumPlayer != null && _mediumPlayer.AmOwner)
         {
-            Player!.Visible = true;
+            Player.Visible = true;
         }
 
         if (_arrow != null && _arrow.target != _arrow.transform.parent.position)

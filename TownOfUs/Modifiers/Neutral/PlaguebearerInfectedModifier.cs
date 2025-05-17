@@ -22,6 +22,6 @@ public sealed class PlaguebearerInfectedModifier(byte plaguebearerId) : BaseModi
 
     public override void OnDeactivate()
     {
-        Player?.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(color));
+        Player.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(color));
     }
 }

@@ -24,6 +24,6 @@ public sealed class ArsonistDousedModifier(byte arsonistId) : BaseModifier
 
     public override void OnDeactivate()
     {
-        Player?.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(Color.yellow));
+        Player.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(Color.yellow));
     }
 }

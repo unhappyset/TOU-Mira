@@ -36,7 +36,7 @@ public sealed class InvestigatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
         }
 
         Helpers.GetAlivePlayers().Where(plr => !plr.HasModifier<FootstepsModifier>())
-            .ToList().ForEach(plr => plr.GetModifierComponent()!.AddModifier<FootstepsModifier>());
+            .ToList().ForEach(plr => plr.GetModifierComponent().AddModifier<FootstepsModifier>());
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -49,7 +49,7 @@ public sealed class InvestigatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
         }
 
         PlayerControl.AllPlayerControls.ToArray().Where(plr => plr.HasModifier<FootstepsModifier>())
-            .ToList().ForEach(plr => plr.GetModifierComponent()!.RemoveModifier<FootstepsModifier>());
+            .ToList().ForEach(plr => plr.GetModifierComponent().RemoveModifier<FootstepsModifier>());
     }
 
     [HideFromIl2Cpp]

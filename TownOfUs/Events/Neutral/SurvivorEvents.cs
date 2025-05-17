@@ -20,7 +20,7 @@ public static class SurvivorEvents
 
         if (target == null || button == null || !button.CanClick()) return;
 
-        CheckForSurvivorVest(@event, target!);
+        CheckForSurvivorVest(@event, target);
     }
 
     [RegisterEvent]

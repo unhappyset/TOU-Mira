@@ -13,18 +13,18 @@ public sealed class MorphlingMorphModifier(PlayerControl target) : TimedModifier
     public override bool AutoStart => true;
     public bool VisualPriority => true;
 
-    public VisualAppearance? GetVisualAppearance()
+    public VisualAppearance GetVisualAppearance()
     {
-        return Player == null ? null : new VisualAppearance(target.GetDefaultModifiedAppearance(), TownOfUsAppearances.Morph);
+        return new VisualAppearance(target.GetDefaultModifiedAppearance(), TownOfUsAppearances.Morph);
     }
 
     public override void OnActivate()
     {
-        Player?.RawSetAppearance(this);
+        Player.RawSetAppearance(this);
     }
 
     public override void OnDeactivate()
     {
-        Player?.ResetAppearance();
+        Player.ResetAppearance();
     }
 }

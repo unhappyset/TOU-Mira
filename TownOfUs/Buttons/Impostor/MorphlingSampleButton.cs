@@ -26,7 +26,7 @@ public sealed class MorphlingSampleButton : TownOfUsRoleButton<MorphlingRole, Pl
             return;
         }
 
-        Role!.Sampled = Target;
+        Role.Sampled = Target;
         
         var notif1 = Helpers.CreateAndShowNotification(
             $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You have sampled {Target.Data.PlayerName}. The sample will be reset after this round.</b></color>", Color.white, spr: TouRoleIcons.Morphling.LoadAsset());

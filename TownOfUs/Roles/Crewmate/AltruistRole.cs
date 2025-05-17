@@ -118,7 +118,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         dead.Revive();
 
             dead.transform.position = new Vector2(position.x, position.y);
-            if (PlayerControl.LocalPlayer == dead) PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(position.x, position.y));
+            if (dead.AmOwner) PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(position.x, position.y));
 
         if (ModCompatibility.IsSubmerged() && PlayerControl.LocalPlayer.PlayerId == dead.PlayerId)
         {

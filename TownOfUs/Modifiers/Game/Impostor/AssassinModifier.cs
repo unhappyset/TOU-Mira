@@ -59,7 +59,7 @@ public sealed class AssassinModifier : GameModifier
         if (Player.AmOwner)
         {
             meetingMenu = new MeetingMenu(
-                Player!.Data.Role,
+                Player.Data.Role,
                 ClickGuess,
                 MeetingAbilityType.Click,
                 TouAssets.Guess,
@@ -73,7 +73,7 @@ public sealed class AssassinModifier : GameModifier
         // Logger<TownOfUsPlugin>.Error($"AssassinModifier.OnMeetingStart maxKills: {maxKills}");
         if (Player.AmOwner)
         {
-            meetingMenu!.GenButtons(MeetingHud.Instance, Player!.AmOwner && !Player.HasDied() && maxKills > 0 && !Player.HasModifier<JailedModifier>());
+            meetingMenu.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && maxKills > 0 && !Player.HasModifier<JailedModifier>());
         }
     }
 
@@ -117,7 +117,7 @@ public sealed class AssassinModifier : GameModifier
             }
 
             var pickVictim = role.Role == realRole.Role;
-            var victim = pickVictim ? player : Player!;
+            var victim = pickVictim ? player : Player;
 
             ClickHandler(victim);
         }
@@ -125,14 +125,14 @@ public sealed class AssassinModifier : GameModifier
         void ClickModifierHandle(BaseModifier modifier)
         {
             var pickVictim = player.HasModifier(modifier.TypeId);
-            var victim = pickVictim ? player : Player!;
+            var victim = pickVictim ? player : Player;
 
             ClickHandler(victim);
         }
 
         void ClickHandler(PlayerControl victim)
         {
-            if (victim == Player && Player!.TryGetModifier<DoubleShotModifier>(out var modifier) && !modifier.Used)
+            if (victim == Player && Player.TryGetModifier<DoubleShotModifier>(out var modifier) && !modifier.Used)
             {
                 modifier!.Used = true;
 
@@ -149,7 +149,7 @@ public sealed class AssassinModifier : GameModifier
                 return;
             }
 
-            Player!.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false, playKillSound: false);
+            Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false, playKillSound: false);
 
             if (victim != Player)
                 MeetingMenu.Instances.Do(x => x.HideSingle(victim.PlayerId));
@@ -167,7 +167,7 @@ public sealed class AssassinModifier : GameModifier
 
     public bool IsExempt(PlayerVoteArea voteArea)
     {
-        return voteArea?.TargetPlayerId == Player!.PlayerId ||
+        return voteArea?.TargetPlayerId == Player.PlayerId ||
             Player.Data.IsDead ||
             voteArea!.AmDead ||
             (Player.IsImpostor() && voteArea.GetPlayer()?.IsImpostor() == true) ||

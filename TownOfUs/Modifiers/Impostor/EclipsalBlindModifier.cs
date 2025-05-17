@@ -24,7 +24,7 @@ public sealed class EclipsalBlindModifier : TimedModifier
 
         if (PlayerControl.LocalPlayer.IsImpostor())
         {
-            Player!.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
+            Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
         }
         if (Player.AmOwner)
         {
@@ -51,7 +51,7 @@ public sealed class EclipsalBlindModifier : TimedModifier
 
         if (PlayerControl.LocalPlayer.IsImpostor())
         {
-            Player!.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Color.black);
+            Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Color.black);
         }
 
         if (TimeRemaining > opts.BlindDuration - 1f)
@@ -76,7 +76,7 @@ public sealed class EclipsalBlindModifier : TimedModifier
 
         if (PlayerControl.LocalPlayer.IsImpostor())
         {
-            Player!.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
+            Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
         }
     }
 }

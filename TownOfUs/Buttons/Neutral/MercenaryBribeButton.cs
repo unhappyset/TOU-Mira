@@ -28,7 +28,7 @@ public sealed class MercenaryBribeButton : TownOfUsRoleButton<MercenaryRole, Pla
 
         Target.RpcAddModifier<MercenaryBribedModifier>(PlayerControl.LocalPlayer);
 
-        Role!.Gold -= MercenaryRole.BrideCost;
+        Role.Gold -= MercenaryRole.BrideCost;
 
         SetActive(false, Role);
     }

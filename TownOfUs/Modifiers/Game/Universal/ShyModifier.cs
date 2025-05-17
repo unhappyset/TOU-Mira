@@ -47,7 +47,7 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
             var opacity = 0f;
 
             if ((PlayerControl.LocalPlayer.IsImpostor() && Player.Data.Role is SwooperRole) ||
-                (PlayerControl.LocalPlayer == Player && Player.Data.Role is SwooperRole))
+                (Player.AmOwner && Player.Data.Role is SwooperRole))
                 opacity = 0.1f;
 
             SetVisibility(Player, opacity, true);

@@ -52,10 +52,7 @@ public sealed class ToBecomeTraitorModifier : GameModifier
     [MethodRpc((uint)TownOfUsRpc.SetTraitor, SendImmediately = true)]
     public static void RpcSetTraitor(PlayerControl player)
     {
-        if (player == null || !player.HasModifier<ToBecomeTraitorModifier>())
-        {
-            return;
-        }
+        if (!player.HasModifier<ToBecomeTraitorModifier>()) return;
 
         player.RemoveModifier<ToBecomeTraitorModifier>();
         player.ChangeRole(RoleId.Get<TraitorRole>());

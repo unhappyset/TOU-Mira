@@ -26,7 +26,7 @@ public abstract class ArrowTargetModifier(PlayerControl owner, Color color, floa
 
     public override void OnActivate()
     {
-        _arrow = MiscUtils.CreateArrow(Owner!.transform, color);
+        _arrow = MiscUtils.CreateArrow(Owner.transform, color);
     }
 
     public override void OnDeath(DeathReason reason)

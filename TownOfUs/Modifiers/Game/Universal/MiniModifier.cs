@@ -17,23 +17,21 @@ public sealed class MiniModifier : UniversalGameModifier, IWikiDiscoverable, IVi
         (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.MiniChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.MiniAmount;
 
-    public VisualAppearance? GetVisualAppearance()
+    public VisualAppearance GetVisualAppearance()
     {
         var appearance = Player.GetDefaultAppearance();
         appearance.Speed = 4f / 3f;
         appearance.Size = new Vector3(0.49f, 0.49f, 1f);
-        return Player == null ? null : appearance;
+        return appearance;
     }
     
     public override void OnActivate()
     {
-        if (Player == null) return;
-        Player?.RawSetAppearance(this);
+        Player.RawSetAppearance(this);
     }
 
     public override void OnDeactivate()
     {
-        if (Player == null) return;
         Player?.ResetAppearance(fullReset: true);
     }
     public string GetAdvancedDescription()

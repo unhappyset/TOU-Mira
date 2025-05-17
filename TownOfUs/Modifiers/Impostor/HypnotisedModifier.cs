@@ -30,8 +30,8 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
 
     public void Hysteria()
     {
-        if (Player!.HasDied()) return;
-        if (!Player!.AmOwner) return;
+        if (Player.HasDied()) return;
+        if (!Player.AmOwner) return;
         if (HysteriaActive) return;
 
         // Logger<TownOfUsPlugin>.Message($"HypnotisedModifier.Hysteria - {Player.Data.PlayerName}");
@@ -82,13 +82,13 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
 
     public void UnHysteria()
     {
-        if (!Player!.AmOwner) return;
+        if (!Player.AmOwner) return;
         if (!HysteriaActive) return;
 
         // Logger<TownOfUsPlugin>.Message($"HypnotisedModifier.UnHysteria - {Player.Data.PlayerName}");
         foreach (var player in players)
         {
-            player?.ResetAppearance();
+            Player.ResetAppearance();
             player?.cosmetics.ToggleNameVisible(true);
         }
 

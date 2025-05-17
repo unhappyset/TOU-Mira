@@ -55,7 +55,7 @@ public static class ModCompatibility
         SubPlugin = (plugin!.Instance as BasePlugin)!;
         SubVersion = plugin.Metadata.Version;
 
-        SubAssembly = SubPlugin!.GetType().Assembly;
+        SubAssembly = SubPlugin.GetType().Assembly;
         SubTypes = AccessTools.GetTypesFromAssembly(SubAssembly);
 
         SubInjectedTypes = (Dictionary<string, Type>)AccessTools.PropertyGetter(SubTypes.FirstOrDefault(t => t.Name == "ComponentExtensions"), "RegisteredTypes").Invoke(null, null)!;

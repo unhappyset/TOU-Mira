@@ -66,7 +66,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
         if (Player.AmOwner)
         {
-            meetingMenu!.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && MaxKills > 0 && !Player.HasModifier<JailedModifier>());
+            meetingMenu.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && MaxKills > 0 && !Player.HasModifier<JailedModifier>());
         }
     }
 
@@ -76,7 +76,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
         if (Player.AmOwner)
         {
-            meetingMenu!.HideButtons();
+            meetingMenu.HideButtons();
         }
     }
 
@@ -117,7 +117,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
                     pickVictim = false;
             }
 
-            var victim = pickVictim ? player : Player!;
+            var victim = pickVictim ? player : Player;
 
             ClickHandler(victim);
         }
@@ -125,7 +125,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         void ClickModifierHandle(BaseModifier modifier)
         {
             var pickVictim = player.HasModifier(modifier.TypeId);
-            var victim = pickVictim ? player : Player!;
+            var victim = pickVictim ? player : Player;
 
             ClickHandler(victim);
         }
@@ -150,7 +150,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
     public bool IsExempt(PlayerVoteArea voteArea)
     {
-        return voteArea?.TargetPlayerId == Player!.PlayerId || Player.Data.IsDead || voteArea!.AmDead || voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
+        return voteArea?.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || voteArea!.AmDead || voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
     }
 
     private static bool IsRoleValid(RoleBehaviour role)

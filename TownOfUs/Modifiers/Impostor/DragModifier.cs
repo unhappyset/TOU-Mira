@@ -64,7 +64,7 @@ public sealed class DragModifier(byte bodyId) : BaseModifier
 
     public override void Update()
     {
-        if (DeadBody == null || Player == null)
+        if (DeadBody == null)
         {
             return;
         }

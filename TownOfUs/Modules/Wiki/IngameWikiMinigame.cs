@@ -192,7 +192,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
             var comparer = new RoleComparer((ushort)PlayerControl.LocalPlayer.Data.Role.Role);
             if (PlayerControl.LocalPlayer.Data.IsDead && PlayerControl.LocalPlayer.Data.Role is not PhantomTouRole or HaunterRole)
             {
-                comparer = new RoleComparer((ushort)PlayerControl.LocalPlayer.GetRoleWhenAlive().Role);
+                comparer = new RoleComparer((ushort?)PlayerControl.LocalPlayer.GetRoleWhenAlive()?.Role);
             }
             var roles = _pluginInfo.Roles.Values.OrderBy(x => x, comparer).OfType<ITownOfUsRole>();
 

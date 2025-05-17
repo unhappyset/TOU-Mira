@@ -40,7 +40,7 @@ public sealed class BomberRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
             return;
         }
 
-        if (PlayerControl.LocalPlayer == player)
+        if (player.AmOwner)
         {
             role.Bomb = Bomb.CreateBomb(player, position);
         }

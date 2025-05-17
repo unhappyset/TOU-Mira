@@ -27,25 +27,23 @@ public sealed class SwoopModifier : TimedModifier, IVisualAppearance
         Player.RemoveModifier(this);
     }
 
-    public VisualAppearance? GetVisualAppearance()
+    public VisualAppearance GetVisualAppearance()
     {
         var playerColor = PlayerControl.LocalPlayer.IsImpostor()
             ? new Color(0f, 0f, 0f, 0.1f)
             : Color.clear;
 
-        return Player == null
-            ? null
-            : new VisualAppearance(Player.GetDefaultModifiedAppearance(), TownOfUsAppearances.Swooper)
-            {
-                HatId = string.Empty,
-                SkinId = string.Empty,
-                VisorId = string.Empty,
-                PlayerName = string.Empty,
-                PetId = string.Empty,
-                RendererColor = playerColor,
-                NameColor = Color.clear,
-                ColorBlindTextColor = Color.clear,
-            };
+        return new VisualAppearance(Player.GetDefaultModifiedAppearance(), TownOfUsAppearances.Swooper)
+        {
+            HatId = string.Empty,
+            SkinId = string.Empty,
+            VisorId = string.Empty,
+            PlayerName = string.Empty,
+            PetId = string.Empty,
+            RendererColor = playerColor,
+            NameColor = Color.clear,
+            ColorBlindTextColor = Color.clear,
+        };
     }
 
     public override void OnActivate()

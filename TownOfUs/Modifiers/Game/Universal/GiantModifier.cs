@@ -18,23 +18,21 @@ public sealed class GiantModifier : UniversalGameModifier, IWikiDiscoverable, IV
         (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.GiantChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.GiantAmount;
 
-    public VisualAppearance? GetVisualAppearance()
+    public VisualAppearance GetVisualAppearance()
     {
         var appearance = Player.GetDefaultAppearance();
         appearance.Speed = OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed;
         appearance.Size = new Vector3(1f, 1f, 1f);
-        return Player == null ? null : appearance;
+        return appearance;
     }
 
     public override void OnActivate()
     {
-        if (Player == null) return;
-        Player?.RawSetAppearance(this);
+        Player.RawSetAppearance(this);
     }
 
     public override void OnDeactivate()
     {
-        if (Player == null) return;
         Player?.ResetAppearance(fullReset: true);
     }
     public string GetAdvancedDescription()

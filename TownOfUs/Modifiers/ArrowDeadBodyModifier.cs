@@ -27,7 +27,7 @@ public abstract class ArrowDeadBodyModifier(DeadBody deadBody, Color color, floa
 
     public override void OnActivate()
     {
-        _arrow = MiscUtils.CreateArrow(Player!.transform, color);
+        _arrow = MiscUtils.CreateArrow(Player.transform, color);
     }
 
     public override void OnDeath(DeathReason reason)

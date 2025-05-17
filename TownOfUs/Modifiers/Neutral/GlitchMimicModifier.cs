@@ -14,19 +14,19 @@ public sealed class GlitchMimicModifier(PlayerControl target) : TimedModifier, I
     public override bool HideOnUi => true;
     public bool VisualPriority => true;
 
-    public VisualAppearance? GetVisualAppearance()
+    public VisualAppearance GetVisualAppearance()
     {
-        return Player == null ? null : new VisualAppearance(target.GetDefaultModifiedAppearance(), TownOfUsAppearances.Mimic);
+        return new VisualAppearance(target.GetDefaultModifiedAppearance(), TownOfUsAppearances.Mimic);
     }
 
     public override void OnActivate()
     {
-        Player?.RawSetAppearance(this);
+        Player.RawSetAppearance(this);
     }
 
     public override void OnDeactivate()
     {
         CustomButtonSingleton<GlitchMimicButton>.Instance.SetTimer(OptionGroupSingleton<GlitchOptions>.Instance.MimicCooldown);
-        Player?.ResetAppearance();
+        Player.ResetAppearance();
     }
 }

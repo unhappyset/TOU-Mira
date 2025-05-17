@@ -17,20 +17,19 @@ public sealed class FlashModifier : UniversalGameModifier, IWikiDiscoverable, IV
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.FlashChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.FlashAmount;
     
-    public VisualAppearance? GetVisualAppearance()
+    public VisualAppearance GetVisualAppearance()
     {
         var appearance = Player.GetDefaultAppearance();
         appearance.Speed = OptionGroupSingleton<FlashOptions>.Instance.FlashSpeed;
-        return Player == null ? null : appearance;
+        return appearance;
     }
     public override void OnActivate()
-    {        if (Player == null) return;
-        Player?.RawSetAppearance(this);
+    {
+        Player.RawSetAppearance(this);
     }
 
     public override void OnDeactivate()
     {
-        if (Player == null) return;
         Player?.ResetAppearance(fullReset: true);
     }
 

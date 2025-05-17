@@ -55,7 +55,7 @@ public static class JailorChatPatches
 
         if (sourcePlayer.IsJailed() && MeetingHud.Instance)
         {
-            if (PlayerControl.LocalPlayer == sourcePlayer || PlayerControl.LocalPlayer.GetRole<JailorRole>())
+            if (sourcePlayer.AmOwner || PlayerControl.LocalPlayer.GetRole<JailorRole>())
             {
                 return true;
             }

@@ -71,7 +71,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
 
         if (Player.AmOwner)
         {
-            meetingMenu!.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
+            meetingMenu.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
 
             NumberOfGuesses = 0;
             IncorrectGuesses = 0;
@@ -87,7 +87,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
 
         if (Player.AmOwner)
         {
-            meetingMenu!.HideButtons();
+            meetingMenu.HideButtons();
         }
     }
 
@@ -235,7 +235,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
             }
 
             var pickVictim = role.Role == realRole.Role;
-            var victim = pickVictim ? player : Player!;
+            var victim = pickVictim ? player : Player;
 
             ClickHandler(victim, voteArea.TargetPlayerId);
         }
@@ -289,7 +289,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
 
     public bool IsExempt(PlayerVoteArea voteArea)
     {
-        return voteArea.TargetPlayerId == Player!.PlayerId || Player.Data.IsDead || voteArea.AmDead || voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
+        return voteArea.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || voteArea.AmDead || voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
     }
 
     private static bool IsRoleValid(RoleBehaviour role)

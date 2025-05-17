@@ -132,13 +132,17 @@ public static class AppearanceExtensions
             appearance = visualRole.GetVisualAppearance()!;
         }
 
-        var visualMod2 = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is IVisualAppearance visual && !visual.VisualPriority) as IVisualAppearance;
-        if (visualMod2 != null && visualMod2.GetVisualAppearance() != null) appearance = visualMod2.GetVisualAppearance()!;
-        
-        var visualMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is IVisualAppearance visual && visual.VisualPriority) as IVisualAppearance;
-        if (visualMod != null && visualMod.VisualPriority && visualMod.GetVisualAppearance() != null) appearance = visualMod.GetVisualAppearance()!;
-        
-            return appearance;
+        if (player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is IVisualAppearance
+            {
+                VisualPriority: false
+            }) is IVisualAppearance visualMod2 &&
+            visualMod2.GetVisualAppearance() != null) appearance = visualMod2.GetVisualAppearance()!;
+
+        if (player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is IVisualAppearance { VisualPriority: true }) is
+                IVisualAppearance { VisualPriority: true } visualMod &&
+            visualMod.GetVisualAppearance() != null) appearance = visualMod.GetVisualAppearance()!;
+
+        return appearance;
     }
 
     public static VisualAppearance GetDefaultAppearance(this PlayerControl playerControl)
@@ -150,7 +154,7 @@ public static class AppearanceExtensions
         var appearance = new VisualAppearance(playerControl.Data.DefaultOutfit, TownOfUsAppearances.Default);
         if (playerControl.HasModifier<MiniModifier>()) appearance = playerControl.GetModifier<MiniModifier>()!.GetVisualAppearance()!;
         else if (playerControl.HasModifier<GiantModifier>()) appearance = playerControl.GetModifier<GiantModifier>()!.GetVisualAppearance()!;
-        else if (playerControl.HasModifier<FlashModifier>()) appearance = playerControl.GetModifier<FlashModifier>()!.GetVisualAppearance()!;
+        else if (playerControl.HasModifier<FlashModifier>()) appearance = playerControl.GetModifier<FlashModifier>()!.GetVisualAppearance();
         return appearance;
     }
 }

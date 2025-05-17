@@ -53,7 +53,14 @@ public static class MedicEvents
 
     private static bool CheckForMedicShield(MiraCancelableEvent @event, PlayerControl source, PlayerControl target)
     {
-        if (!target.HasModifier<MedicShieldModifier>() || source == target || MeetingHud.Instance || (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield)) return false;
+        if (!target.HasModifier<MedicShieldModifier>() || 
+            MeetingHud.Instance ||
+            source == null ||
+            target.PlayerId == source.PlayerId || 
+            (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield))
+        {
+            return false;
+        }
 
         @event.Cancel();
 

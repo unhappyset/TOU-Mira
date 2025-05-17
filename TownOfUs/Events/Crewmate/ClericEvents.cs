@@ -30,7 +30,7 @@ public static class ClericEvents
 
         if (target == null || button == null || !button.CanClick()) return;
 
-        CheckForClericBarrier(@event, target!);
+        CheckForClericBarrier(@event, target);
     }
 
     [RegisterEvent]
@@ -57,9 +57,17 @@ public static class ClericEvents
         }
     }
 
-    private static bool CheckForClericBarrier(MiraCancelableEvent @event, PlayerControl target, PlayerControl? source = null)
+    private static bool CheckForClericBarrier(MiraCancelableEvent @event, PlayerControl target, PlayerControl? source=null)
     {
-        if (!target.HasModifier<ClericBarrierModifier>() || target == source || MeetingHud.Instance || (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield)) return false;
+        if (!target.HasModifier<ClericBarrierModifier>() || 
+            MeetingHud.Instance ||
+            source == null ||
+            target.PlayerId == source.PlayerId || 
+            (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield))
+        {
+            return false;
+        }
+
         @event.Cancel();
 
         var cleric = target.GetModifier<ClericBarrierModifier>()?.Cleric.GetRole<ClericRole>();

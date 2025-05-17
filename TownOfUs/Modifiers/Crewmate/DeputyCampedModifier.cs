@@ -17,7 +17,7 @@ public sealed class DeputyCampedModifier(PlayerControl deputy) : BaseModifier
     {
         base.FixedUpdate();
 
-        if (PlayerControl.LocalPlayer == Deputy)
+        if (Deputy.AmOwner)
         {
             Player?.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Deputy));
         }
@@ -25,11 +25,11 @@ public sealed class DeputyCampedModifier(PlayerControl deputy) : BaseModifier
 
     public override void OnDeath(DeathReason reason)
     {
-        Player?.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Deputy));
-        if (PlayerControl.LocalPlayer == Deputy)
+        Player.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Deputy));
+        if (Deputy.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfUsColors.Deputy.ToTextColor()}Your camped target, {Player!.Data.PlayerName}, has died! Avenge them in the meeting.</color></b>",
+                $"<b>{TownOfUsColors.Deputy.ToTextColor()}Your camped target, {Player.Data.PlayerName}, has died! Avenge them in the meeting.</color></b>",
                 Color.white, spr: TouRoleIcons.Deputy.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
@@ -40,6 +40,6 @@ public sealed class DeputyCampedModifier(PlayerControl deputy) : BaseModifier
 
     public override void OnDeactivate()
     {
-        Player?.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Deputy));
+        Player.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Deputy));
     }
 }

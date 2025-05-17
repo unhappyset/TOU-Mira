@@ -42,17 +42,17 @@ public sealed class GrenadierFlashModifier : TimedModifier, IDisposable
     {
         base.FixedUpdate();
 
-        if (Player?.HasDied() == true) return;
+        if (Player.HasDied()) return;
 
-        if (!Player!.IsImpostor() && PlayerControl.LocalPlayer.IsImpostor())
+        if (!Player.IsImpostor() && PlayerControl.LocalPlayer.IsImpostor())
         {
             if (TimeRemaining <= Duration - 0.5f && TimeRemaining >= 0.5f)
-                Player!.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Color.black);
+                Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Color.black);
             else
-                Player!.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
+                Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
         }
 
-        if (PlayerControl.LocalPlayer.PlayerId == Player!.PlayerId)
+        if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId)
         {
             if (TimeRemaining > Duration - 0.5f)
             {
@@ -114,16 +114,16 @@ public sealed class GrenadierFlashModifier : TimedModifier, IDisposable
 
     public override void OnDeactivate()
     {
-        if (Player!.AmOwner)
+        if (Player.AmOwner)
         {
             SetFlash(normalVision);
 
             flash?.Destroy();
         }
 
-        if (!Player!.IsImpostor() && PlayerControl.LocalPlayer.IsImpostor())
+        if (!Player.IsImpostor() && PlayerControl.LocalPlayer.IsImpostor())
         {
-            Player!.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
+            Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
         }
     }
 
