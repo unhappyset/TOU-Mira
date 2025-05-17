@@ -60,17 +60,4 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
 
         SeenPlayers.Clear();
     }
-
-    public void SeePlayer(PlayerControl source)
-    {
-        var role = source.Data.Role;
-
-        var cachedMod = source.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole) as ICachedRole;
-        if (cachedMod != null)
-        {
-            role = cachedMod.CachedRole;
-        }
-
-        SeenPlayers.Add(role);
-    }
 }
