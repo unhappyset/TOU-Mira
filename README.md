@@ -1,4 +1,4 @@
-# tou-mira
+# Town of Us - Mira Beta
 Note: This repository is the WIP Beta Version of Town of Us using the Newest Interface and rebuilt from the ground up!
 
 Note: This version is not cross compatible with the Official TOU release version. This is its own Standalone version that all players must have to play.
