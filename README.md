@@ -10,6 +10,14 @@ Join The official [Discord](https://discord.gg/ugyc4EVUYZ) if you have any probl
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
 | 16.0.2s & 16.0.2e | v5.9 Beta 1 | [Download](TBD) |
+
+<details>
+  <summary> Changelog </summary>
+  <details>
+  <summary> v5.9 Beta 1 </summary>
+  <ul> <li>First Beta Release</li> </ul>
+    </details>
+  
 ---------------------------------------
 
 | **Impostor Roles**           | **Crewmate Roles**                | **Neutral Roles**                | **Modifiers**                |
