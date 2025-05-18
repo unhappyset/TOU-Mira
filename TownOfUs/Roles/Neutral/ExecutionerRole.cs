@@ -18,7 +18,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IAssignableTargets
 {
     public string RoleName => "Executioner";
     public string RoleDescription => TargetString();
@@ -150,7 +150,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
         }
     }
 
-    public static void SelectExeTargets()
+    public void AssignTargets()
     {
         // Logger<TownOfUsPlugin>.Error($"SelectExeTargets");
         var exes = PlayerControl.AllPlayerControls.ToArray()

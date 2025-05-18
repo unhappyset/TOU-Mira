@@ -10,7 +10,7 @@ using TownOfUs.Utilities;
 
 namespace TownOfUs.Modifiers.Crewmate;
 
-public sealed class ToBecomeTraitorModifier : GameModifier
+public sealed class ToBecomeTraitorModifier : GameModifier, IAssignableTargets
 {
     public override string ModifierName => "Possible Traitor";
     public override bool HideOnUi => true;
@@ -18,7 +18,7 @@ public sealed class ToBecomeTraitorModifier : GameModifier
     public override int GetAssignmentChance() => 0;
     public void Clear()
     {
-        RerollTraitor();
+        AssignTargets();
         ModifierComponent?.RemoveModifier(this);
     }
 
@@ -27,7 +27,7 @@ public sealed class ToBecomeTraitorModifier : GameModifier
         Clear();
     }
 
-    public static void RerollTraitor()
+    public void AssignTargets()
     {
         Random rnd = new();
         var chance = rnd.Next(0, 100);

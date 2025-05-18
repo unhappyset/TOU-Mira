@@ -17,7 +17,7 @@ using TownOfUs.Utilities;
 
 namespace TownOfUs.Modifiers.Game.Alliance;
 
-public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable
+public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAssignableTargets
 {
     public override string ModifierName => "Lover";
     public override string Symbol => "♥";
@@ -79,7 +79,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable
         return OtherLover;
     }
 
-    public static void SelectLoverTargets()
+    public void AssignTargets()
     {
         foreach (var lover in PlayerControl.AllPlayerControls.ToArray().Where(x => x.HasModifier<LoverModifier>()).ToList())
         {

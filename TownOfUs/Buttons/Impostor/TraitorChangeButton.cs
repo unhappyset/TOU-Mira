@@ -42,6 +42,7 @@ public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
 
             var roleList = MiscUtils.GetPotentialRoles()
                 .Where(role => role is ICustomRole)
+                .Where(role => role is not ITraitorIgnore ignore || !ignore.IsIgnored)
                 .Where(role => impRoles.Contains(RoleId.Get(role.GetType())))
                 .Where(role => role is not TraitorRole)
                 .ToList();

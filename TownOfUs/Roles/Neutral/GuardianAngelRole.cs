@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IAssignableTargets
 {
     public string RoleName => "Guardian Angel";
     public string RoleDescription => TargetString();
@@ -112,7 +112,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         return $"Protect {Target?.Data.PlayerName} With Your Life!";
     }
 
-    public static void SelectGATargets()
+    public void AssignTargets()
     {
         // Logger<TownOfUsPlugin>.Error($"SelectGATargets");
         var evilTargetPercent = (int)OptionGroupSingleton<GuardianAngelOptions>.Instance.EvilTargetPercent;

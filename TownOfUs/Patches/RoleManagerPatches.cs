@@ -3,8 +3,6 @@ using HarmonyLib;
 using Hazel;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
-using TownOfUs.Modifiers.Crewmate;
-using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Roles;
@@ -756,10 +754,16 @@ public static class TouRoleManagerPatches
 
     public static void AssignTargets()
     {
-        LoverModifier.SelectLoverTargets();
-        GuardianAngelTouRole.SelectGATargets();
-        ExecutionerRole.SelectExeTargets();
-        ToBecomeTraitorModifier.RerollTraitor();
+        foreach (var role in MiscUtils.AllRoles.Where(x => x is IAssignableTargets))
+        {
+            var assignRole = role as IAssignableTargets;
+            if (assignRole != null) assignRole.AssignTargets();
+        }
+        foreach (var modifier in MiscUtils.AllModifiers.Where(x => x is IAssignableTargets))
+        {
+            var assignMod = modifier as IAssignableTargets;
+            if (assignMod != null) assignMod.AssignTargets();
+        }
         GhostRoleSetup();
     }
 
