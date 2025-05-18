@@ -9,9 +9,11 @@ using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace TownOfUs.Modules;
+public record PlayerEvent(byte PlayerId, float Unix, Vector3 Position);
 public record DeadPlayer(byte KillerId, byte VictimId, DateTime KillTime);
 
 public sealed class PlayerStats(byte playerId)
@@ -79,6 +81,8 @@ public static class GameHistory
 {
     public static readonly Dictionary<byte, RoleBehaviour> RoleDictionary = [];
     public static readonly List<KeyValuePair<byte, RoleBehaviour>> RoleHistory = [];
+    // Unused for now
+    public static readonly List<PlayerEvent> PlayerEvents = []; //local player events
     public static readonly List<DeadPlayer> KilledPlayers = [];
     public static readonly List<(byte, DeathReason)> DeathHistory = [];
     public static readonly Dictionary<byte, PlayerStats> PlayerStats = [];
@@ -143,6 +147,7 @@ public static class GameHistory
         KilledPlayers.Clear();
         DeathHistory.Clear();
         PlayerStats.Clear();
+        PlayerEvents.Clear();
     }
 
     public static RoleBehaviour? GetRoleWhenAlive(this PlayerControl player)
