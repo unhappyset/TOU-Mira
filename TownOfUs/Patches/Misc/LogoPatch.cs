@@ -23,7 +23,7 @@ public static class LogoPatch
         }
         if (sizer != null)
         {
-            sizer.GetComponent<AspectSize>().PercentWidth = 0.33f;
+            sizer.GetComponent<AspectSize>().PercentWidth = 0.32f;
         }
     }
 }
