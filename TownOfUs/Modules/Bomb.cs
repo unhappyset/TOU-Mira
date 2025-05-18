@@ -22,6 +22,7 @@ public sealed class Bomb : IDisposable
 
     private IEnumerator CoDetonate()
     {
+        _bomber?.RpcAddModifier<IndirectAttackerModifier>(false);
         yield return new WaitForSeconds(0.1f);
 
         var radius = OptionGroupSingleton<BomberOptions>.Instance.DetonateRadius * ShipStatus.Instance.MaxLightRadius;
@@ -33,7 +34,6 @@ public sealed class Bomb : IDisposable
         while (affected.Count > OptionGroupSingleton<BomberOptions>.Instance.MaxKillsInDetonation)
             affected.Remove(affected[^1]);
 
-        _bomber?.RpcAddModifier<IndirectAttackerModifier>(false);
         foreach (var player in affected)
         {
             if (player.HasDied()) continue;
