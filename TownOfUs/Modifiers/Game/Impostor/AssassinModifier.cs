@@ -197,9 +197,9 @@ public sealed class AssassinModifier : GameModifier
         }
 
         if (role is CrewmateRole && OptionGroupSingleton<AssassinOptions>.Instance.AssassinCrewmateGuess)
-            {
-                return true;
-            }
+        {
+            return true;
+        }
 
         if (touRole?.RoleAlignment == RoleAlignment.CrewmateInvestigative)
         {

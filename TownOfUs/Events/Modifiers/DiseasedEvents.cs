@@ -33,7 +33,7 @@ public static class DiseasedEvents
         }
 
         source.SetKillTimer(source.GetKillCooldown() * cdMultiplier);
-        var buttons = CustomButtonManager.Buttons.Where(x => x.Enabled(source.Data.Role) && x.Timer <= 0).OfType<IDiseaseableButton>();
+        var buttons = CustomButtonManager.Buttons.Where(x => x.Enabled(source.Data.Role)).OfType<IDiseaseableButton>();
 
         foreach (var button in buttons)
         {
