@@ -12,13 +12,17 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Crewmate;
 
-public sealed class HunterKillButton : TownOfUsRoleButton<HunterRole, PlayerControl>
+public sealed class HunterKillButton : TownOfUsRoleButton<HunterRole, PlayerControl>, IDiseaseableButton
 {
     public override string Name => "Kill";
     public override string Keybind => "ActionSecondary";
     public override Color TextOutlineColor => TownOfUsColors.Hunter;
     public override float Cooldown => OptionGroupSingleton<HunterOptions>.Instance.HunterKillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     private static IEnumerator CoSetBodyReportable(byte bodyId)
     {

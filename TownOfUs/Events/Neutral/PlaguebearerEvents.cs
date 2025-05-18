@@ -20,7 +20,7 @@ public static class PlaguebearerEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        PlaguebearerRole.RpcCheckInfected(@event.Source, @event.Target);
+        PlaguebearerRole.CheckInfected(@event.Source, @event.Target);
     }
 
     [RegisterEvent]

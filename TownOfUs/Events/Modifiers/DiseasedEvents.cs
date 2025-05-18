@@ -4,12 +4,9 @@ using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
-using TownOfUs.Buttons.Impostor;
-using TownOfUs.Buttons.Neutral;
+using TownOfUs.Buttons;
 using TownOfUs.Modifiers.Game.Crewmate;
 using TownOfUs.Options.Modifiers.Crewmate;
-using TownOfUs.Roles.Impostor;
-using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -36,52 +33,11 @@ public static class DiseasedEvents
         }
 
         source.SetKillTimer(source.GetKillCooldown() * cdMultiplier);
+        var buttons = CustomButtonManager.Buttons.Where(x => x.Enabled(source.Data.Role) && x.Timer <= 0).OfType<IDiseaseableButton>();
 
-        // I don't like this, I'd rather have something more dynamic but it should work
-        if (source.Data.Role is JuggernautRole)
+        foreach (var button in buttons)
         {
-            var button = CustomButtonSingleton<JuggernautKillButton>.Instance;
-            button.SetTimer(button.Cooldown * cdMultiplier);
-        }
-        else if (source.Data.Role is GlitchRole)
-        {
-            var button = CustomButtonSingleton<GlitchKillButton>.Instance;
-            button.SetTimer(button.Cooldown * cdMultiplier);
-        }
-        else if (source.Data.Role is WerewolfRole)
-        {
-            var button = CustomButtonSingleton<WerewolfKillButton>.Instance;
-            button.SetTimer(button.Cooldown * cdMultiplier);
-        }
-        else if (source.Data.Role is VampireRole)
-        {
-            var button = CustomButtonSingleton<VampireBiteButton>.Instance;
-            button.SetTimer(button.Cooldown * cdMultiplier);
-        }
-        else if (source.Data.Role is SoulCollectorRole)
-        {
-            var button = CustomButtonSingleton<SoulCollectorReapButton>.Instance;
-            button.SetTimer(button.Cooldown * cdMultiplier);
-        }
-        else if (source.Data.Role is PestilenceRole)
-        {
-            var button = CustomButtonSingleton<PestilenceKillButton>.Instance;
-            button.SetTimer(button.Cooldown * cdMultiplier);
-        }
-        else if (source.Data.Role is BomberRole)
-        {
-            var button = CustomButtonSingleton<BomberPlantButton>.Instance;
-            button.SetTimer(button.Cooldown * cdMultiplier);
-        }
-        else if (source.Data.Role is JanitorRole)
-        {
-            var button = CustomButtonSingleton<JanitorCleanButton>.Instance;
-            button.SetTimer(button.Cooldown * cdMultiplier);
-        }
-        else if (source.Data.Role is WarlockRole)
-        {
-            var button = CustomButtonSingleton<WarlockKillButton>.Instance;
-            button.SetTimer(button.Cooldown * cdMultiplier);
+            button.SetDiseasedTimer(cdMultiplier);
         }
     }
 }

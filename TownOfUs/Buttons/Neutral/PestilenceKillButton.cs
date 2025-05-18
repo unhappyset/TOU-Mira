@@ -9,13 +9,17 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Neutral;
 
-public sealed class PestilenceKillButton : TownOfUsRoleButton<PestilenceRole, PlayerControl>
+public sealed class PestilenceKillButton : TownOfUsRoleButton<PestilenceRole, PlayerControl>, IDiseaseableButton
 {
     public override string Name => "Kill";
     public override string Keybind => "ActionSecondary";
     public override Color TextOutlineColor => TownOfUsColors.Pestilence;
     public override float Cooldown => OptionGroupSingleton<PlaguebearerOptions>.Instance.PestKillCooldown;
     public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
 

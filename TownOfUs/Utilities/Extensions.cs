@@ -18,6 +18,7 @@ using TownOfUs.Utilities.Appearances;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
+using TownOfUs.Modifiers;
 
 namespace TownOfUs.Utilities;
 
@@ -514,6 +515,7 @@ public static class Extensions
             .Where(
                 playerInfo => !playerInfo.Data.Disconnected &&
                               playerInfo.PlayerId != playerControl.PlayerId &&
+                              ((playerInfo.TryGetModifier<DisabledModifier>(out var mod) && mod.IsConsideredAlive) || !playerInfo.HasModifier<DisabledModifier>()) &&
                               !playerInfo.Data.IsDead &&
                               (includeImpostors || !playerInfo.Data.Role.IsImpostor))
             .ToList();

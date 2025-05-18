@@ -9,13 +9,17 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Neutral;
 
-public sealed class JuggernautKillButton : TownOfUsRoleButton<JuggernautRole, PlayerControl>
+public sealed class JuggernautKillButton : TownOfUsRoleButton<JuggernautRole, PlayerControl>, IDiseaseableButton
 {
     public override string Name => "Kill";
     public override string Keybind => "ActionSecondary";
     public override Color TextOutlineColor => TownOfUsColors.Juggernaut;
     public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
     public override float Cooldown => GetCooldown();
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public static float BaseCooldown => OptionGroupSingleton<JuggernautOptions>.Instance.KillCooldown + MapCooldown;
 

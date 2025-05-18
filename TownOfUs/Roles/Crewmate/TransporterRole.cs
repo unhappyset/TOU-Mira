@@ -9,6 +9,7 @@ using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Events.Crewmate;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modifiers.Impostor;
@@ -194,7 +195,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
                 return null;
             }
 
-            if (pc.moveable || pc.inVent)
+            if (pc.moveable || pc.inVent || (pc.TryGetModifier<DisabledModifier>(out var mod) && (!mod.IsConsideredAlive || !mod.CanBeInteractedWith)))
             {
                 if (pc.inVent)
                 {

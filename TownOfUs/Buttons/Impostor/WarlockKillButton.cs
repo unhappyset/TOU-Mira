@@ -8,13 +8,17 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Impostor;
 
-public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerControl>
+public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerControl>, IDiseaseableButton
 {
     public override string Name => "Kill";
     public override string Keybind => "ActionSecondary";
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => PlayerControl.LocalPlayer.GetKillCooldown() + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public float Charge { get; set; }
     public bool BurstActive { get; set; }

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Impostor;
 
-public sealed class BomberPlantButton : TownOfUsRoleButton<BomberRole>, IAftermathableButton
+public sealed class BomberPlantButton : TownOfUsRoleButton<BomberRole>, IAftermathableButton, IDiseaseableButton
 {
     public override string Name => "Place";
     public override string Keybind => "ActionQuaternary";
@@ -15,6 +15,10 @@ public sealed class BomberPlantButton : TownOfUsRoleButton<BomberRole>, IAfterma
     public override float Cooldown => PlayerControl.LocalPlayer.GetKillCooldown() + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.PlaceSprite;
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     protected override void OnClick()
     {

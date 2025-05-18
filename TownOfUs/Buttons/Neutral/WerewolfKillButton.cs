@@ -9,13 +9,17 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Neutral;
 
-public sealed class WerewolfKillButton : TownOfUsRoleButton<WerewolfRole, PlayerControl>
+public sealed class WerewolfKillButton : TownOfUsRoleButton<WerewolfRole, PlayerControl>, IDiseaseableButton
 {
     public override string Name => "Kill";
     public override string Keybind => "ActionSecondary";
     public override Color TextOutlineColor => TownOfUsColors.Werewolf;
     public override float Cooldown => OptionGroupSingleton<WerewolfOptions>.Instance.RampageKillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override bool Enabled(RoleBehaviour? role) => role is WerewolfRole { Rampaging: true };
 

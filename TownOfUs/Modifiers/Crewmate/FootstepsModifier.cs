@@ -41,7 +41,7 @@ public sealed class FootstepsModifier : BaseModifier
 
     public override void FixedUpdate()
     {
-        if (_currentSteps == null || Player.HasModifier<SwoopModifier>() || Vector3.Distance(_lastPos, Player.transform.position) < OptionGroupSingleton<InvestigatorOptions>.Instance.FootprintInterval)
+        if (_currentSteps == null || Player.HasModifier<SwoopModifier>() || (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive) || Vector3.Distance(_lastPos, Player.transform.position) < OptionGroupSingleton<InvestigatorOptions>.Instance.FootprintInterval)
         {
             return;
         }

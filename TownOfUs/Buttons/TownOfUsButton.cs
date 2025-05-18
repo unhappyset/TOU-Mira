@@ -6,6 +6,7 @@ using MiraAPI.PluginLoading;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using Rewired;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options;
 using TownOfUs.Utilities;
@@ -34,7 +35,7 @@ public abstract class TownOfUsButton : CustomActionButton
 
     public override bool CanUse()
     {
-        if (!PlayerControl.LocalPlayer.CanMove) return false;
+        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>()) return false;
         return base.CanUse();
     }
 
@@ -75,7 +76,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
 
     public override bool CanUse()
     {
-        if (!PlayerControl.LocalPlayer.CanMove) return false;
+        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>()) return false;
         return base.CanUse();
     }
 
@@ -180,6 +181,12 @@ public abstract class TownOfUsRoleButton<TRole, TTarget> : TownOfUsTargetButton<
             }
         }
     }
+    public override bool IsTargetValid(TTarget? target)
+    {
+        if (target is PlayerControl playerTarget) return base.IsTargetValid(target) && !(playerTarget.TryGetModifier<DisabledModifier>(out var mod) && !mod.CanBeInteractedWith);
+
+        return base.IsTargetValid(target);
+    }
 
 }
 
@@ -196,4 +203,8 @@ public interface IAftermathableBodyButton : IAftermathableButton
 public interface IAftermathableButton
 {
     void ClickHandler();
+}
+public interface IDiseaseableButton
+{
+    void SetDiseasedTimer(float multiplier);
 }

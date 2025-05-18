@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Impostor;
 
-public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBody>, IAftermathableBodyButton
+public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBody>, IAftermathableBodyButton, IDiseaseableButton
 {
     public override string Name => "Clean";
     public override string Keybind => "ActionQuaternary";
@@ -15,6 +15,10 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.CleanButtonSprite;
 
     public override DeadBody? GetTarget() => PlayerControl.LocalPlayer.GetNearestDeadBody(Distance);
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     protected override void OnClick()
     {

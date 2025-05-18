@@ -397,4 +397,5 @@ public static class ModCompatibility
        if (playersToDie?.Count is null or 0)
             return;
     }
+    public static bool IsWikiButtonOffset { get; set; }
 }

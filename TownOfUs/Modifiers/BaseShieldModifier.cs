@@ -31,7 +31,7 @@ public abstract class BaseShieldModifier : TimedModifier
     public bool IsConcealed()
     {
         if (Player.HasModifier<MorphlingMorphModifier>() || Player.HasModifier<GlitchMimicModifier>() || Player.HasModifier<VenererCamouflageModifier>()
-            || Player.HasModifier<SwoopModifier>() || !Player.Visible)
+            || Player.HasModifier<SwoopModifier>() || !Player.Visible || (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive))
         {
             return true;
         }
