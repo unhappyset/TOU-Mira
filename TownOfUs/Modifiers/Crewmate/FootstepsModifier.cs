@@ -3,7 +3,6 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
-using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -41,7 +40,7 @@ public sealed class FootstepsModifier : BaseModifier
 
     public override void FixedUpdate()
     {
-        if (_currentSteps == null || Player.HasModifier<SwoopModifier>() || (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive) || Vector3.Distance(_lastPos, Player.transform.position) < OptionGroupSingleton<InvestigatorOptions>.Instance.FootprintInterval)
+        if (_currentSteps == null || Player.HasModifier<ConcealedModifier>() || (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive) || Vector3.Distance(_lastPos, Player.transform.position) < OptionGroupSingleton<InvestigatorOptions>.Instance.FootprintInterval)
         {
             return;
         }

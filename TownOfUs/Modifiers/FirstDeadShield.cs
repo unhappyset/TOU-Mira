@@ -3,9 +3,6 @@ using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities.Extensions;
-using TownOfUs.Modifiers.Impostor;
-using TownOfUs.Modifiers.Impostor.Venerer;
-using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Anims;
 using TownOfUs.Options;
 using TownOfUs.Patches;
@@ -60,8 +57,7 @@ public sealed class FirstDeadShield : GameModifier
 
     public bool IsConcealed()
     {
-        if (Player.HasModifier<MorphlingMorphModifier>() || Player.HasModifier<GlitchMimicModifier>() || Player.HasModifier<VenererCamouflageModifier>()
-            || Player.HasModifier<SwoopModifier>() || !Player.Visible || (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive))
+        if (Player.HasModifier<ConcealedModifier>() || !Player.Visible || (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive))
         {
             return true;
         }

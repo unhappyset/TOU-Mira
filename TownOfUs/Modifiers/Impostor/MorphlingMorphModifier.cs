@@ -1,11 +1,10 @@
 ﻿using MiraAPI.GameOptions;
-using MiraAPI.Modifiers.Types;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities.Appearances;
 
 namespace TownOfUs.Modifiers.Impostor;
 
-public sealed class MorphlingMorphModifier(PlayerControl target) : TimedModifier, IVisualAppearance
+public sealed class MorphlingMorphModifier(PlayerControl target) : ConcealedModifier, IVisualAppearance
 {
     public override float Duration => OptionGroupSingleton<MorphlingOptions>.Instance.MorphlingDuration;
     public override string ModifierName => "Morph";

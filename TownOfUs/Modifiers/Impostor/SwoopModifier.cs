@@ -1,7 +1,6 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
-using MiraAPI.Modifiers.Types;
 using TownOfUs.Buttons.Impostor;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
@@ -10,11 +9,12 @@ using UnityEngine;
 
 namespace TownOfUs.Modifiers.Impostor;
 
-public sealed class SwoopModifier : TimedModifier, IVisualAppearance
+public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
 {
     public override string ModifierName => "Swooped";
     public override float Duration => OptionGroupSingleton<SwooperOptions>.Instance.SwoopDuration;
     public override bool HideOnUi => true;
+    public override bool AutoStart => true;
     public bool VisualPriority => true;
 
     public override void OnDeath(DeathReason reason)
