@@ -15,30 +15,15 @@ public static class LogoPatch
         RoleManager.Instance.GetRole(RoleTypes.ImpostorGhost).StringName =
             CustomStringName.CreateAndRegister("Impostor Ghost");
 
-        var touLogo = new GameObject("bannerLogo_TownOfUs")
+        var newLogo = GameObject.Find("LOGO-AU");
+        var sizer = GameObject.Find("Sizer");
+        if (newLogo != null)
         {
-            transform =
-            {
-                localScale = new Vector3(0.8f, 0.8f, 1f),
-            },
-        };
-
-        var renderer = touLogo.AddComponent<SpriteRenderer>();
-        renderer.sprite = TouAssets.Banner.LoadAsset();
-
-        var position = touLogo.AddComponent<AspectPosition>();
-        position.DistanceFromEdge = new Vector3(-0.2f, 2.3f, 8f);
-        position.Alignment = AspectPosition.EdgeAlignments.Top;
-
-        position.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) => { position.AdjustPosition(); })));
-
-        var scaler = touLogo.AddComponent<AspectScaledAsset>();
-        var renderers = new Il2CppSystem.Collections.Generic.List<SpriteRenderer>();
-        renderers.Add(renderer);
-
-        scaler.spritesToScale = renderers;
-        scaler.aspectPosition = position;
-
-        touLogo.transform.SetParent(GameObject.Find("RightPanel").transform);
+            newLogo.GetComponent<SpriteRenderer>().sprite = TouAssets.Banner.LoadAsset();
+        }
+        if (sizer != null)
+        {
+            sizer.GetComponent<AspectSize>().PercentWidth = 0.33f;
+        }
     }
 }
