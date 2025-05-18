@@ -50,7 +50,7 @@ public static class LookoutEvents
 
     public static void CheckForLookoutWatched(PlayerControl source, PlayerControl target)
     {
-        if (!target.HasModifier<LookoutWatchedModifier>()) return;
+        if (!target.HasModifier<LookoutWatchedModifier>() || !source.AmOwner) return;
         LookoutRole.RpcSeePlayer(target, source);
     }
 }

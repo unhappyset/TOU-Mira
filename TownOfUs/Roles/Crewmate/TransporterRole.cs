@@ -117,13 +117,13 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             mercenary!.AddPayment();
         }
 
-        if (play1.Data.Role is PestilenceRole)
+        if (play1.TryGetModifier<InvulnerabilityModifier>(out var invic) && invic.AttackAllInteractions)
         {
             if (transporter.AmOwner) play1.RpcCustomMurder(transporter);
             return;
         }
 
-        if (play2.Data.Role is PestilenceRole)
+        if (play2.TryGetModifier<InvulnerabilityModifier>(out var invic2) && invic2.AttackAllInteractions)
         {
             if (transporter.AmOwner) play2.RpcCustomMurder(transporter);
             return;
