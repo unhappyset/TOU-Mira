@@ -1,5 +1,6 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
 using TownOfUs.Roles.Crewmate;
 
@@ -14,10 +15,12 @@ public sealed class DetectiveOptions : AbstractOptionGroup<DetectiveRole>
 
     [ModdedToggleOption("Show Detective Reports")]
     public bool DetectiveReportOn { get; set; } = true;
-
-    [ModdedNumberOption("Time Where Detective Will Have Role", 0f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float DetectiveRoleDuration { get; set; } = 15f;
-
-    [ModdedNumberOption("Time Where Detective Will Have Faction", 0f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float DetectiveFactionDuration { get; set; } = 30f;
+    public ModdedNumberOption DetectiveRoleDuration { get; set; } = new("Time Where Detective Will Have Role", 7.5f, 0f, 60f, 2.5f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => !OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveReportOn
+    };
+    public ModdedNumberOption DetectiveFactionDuration { get; set; } = new("Time Where Detective Will Have Faction", 30f, 0f, 60f, 2.5f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => !OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveReportOn
+    };
 }

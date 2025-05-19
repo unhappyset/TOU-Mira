@@ -18,7 +18,7 @@ public static class IntroScenePatches
     [HarmonyPrefix]
     public static bool ImpostorBeginPatch(IntroCutscene __instance)
     {
-        if (OptionGroupSingleton<GeneralOptions>.Instance.ImpsKnowRoles) return true;
+        if (OptionGroupSingleton<GeneralOptions>.Instance.ImpsKnowRoles && !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode) return true;
         __instance.TeamTitle.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Impostor, Array.Empty<Il2CppSystem.Object>());
         __instance.TeamTitle.color = Palette.ImpostorRed;
 

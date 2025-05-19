@@ -110,6 +110,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         }
 
         yield return new WaitForSeconds(waitfor);
+        if (MeetingHud.Instance) yield break;
 
         Player.moveable = true;
 

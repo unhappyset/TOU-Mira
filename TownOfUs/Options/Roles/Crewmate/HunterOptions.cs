@@ -22,7 +22,7 @@ public sealed class HunterOptions : AbstractOptionGroup<HunterRole>
     public float StalkUses { get; set; } = 5;
 
     [ModdedToggleOption("Hunter Kills Last Voter If Voted Out")]
-    public bool RetributionOnVote { get; set; } = false;
+    public bool RetributionOnVote { get; set; } = true;
 
     [ModdedToggleOption("Hunter Can Report Who They've Killed")]
     public bool HunterBodyReport { get; set; } = false;

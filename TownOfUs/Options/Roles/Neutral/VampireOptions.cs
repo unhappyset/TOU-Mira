@@ -19,13 +19,13 @@ public sealed class VampireOptions : AbstractOptionGroup<VampireRole>
     public bool HasVision { get; set; } = true;
 
     [ModdedToggleOption("New Vampires Can Assassinate")]
-    public bool CanGuessAsNewVamp { get; set; } = false;
+    public bool CanGuessAsNewVamp { get; set; } = true;
 
     [ModdedToggleOption("Can Convert Neutral Benign Roles")]
-    public bool CanConvertNeutralBenign { get; set; } = false;
+    public bool CanConvertNeutralBenign { get; set; } = true;
 
     [ModdedToggleOption("Can Convert Neutral Evil Roles")]
-    public bool CanConvertNeutralEvil { get; set; } = false;
+    public bool CanConvertNeutralEvil { get; set; } = true;
 
     [ModdedToggleOption("New Vampires Can Convert")]
     public bool CanConvertAsNewVamp { get; set; } = true;

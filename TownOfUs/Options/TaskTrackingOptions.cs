@@ -9,11 +9,11 @@ public sealed class TaskTrackingOptions : AbstractOptionGroup
     public override uint GroupPriority => 3;
 
     [ModdedToggleOption("See Tasks During Round")]
-    public bool ShowTaskRound { get; set; } = false;
+    public bool ShowTaskRound { get; set; } = true;
 
     [ModdedToggleOption("See Tasks During Meetings")]
-    public bool ShowTaskInMeetings { get; set; } = false;
+    public bool ShowTaskInMeetings { get; set; } = true;
 
     [ModdedToggleOption("See Tasks When Dead")]
-    public bool ShowTaskDead { get; set; } = false;
+    public bool ShowTaskDead { get; set; } = true;
 }

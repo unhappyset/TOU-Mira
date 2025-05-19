@@ -9,7 +9,7 @@ public static class ImpostorValidTargetPatch
 {
     public static bool Prefix(ImpostorRole __instance, [HarmonyArgument(0)] NetworkedPlayerInfo target, ref bool __result)
     {
-        if (OptionGroupSingleton<GeneralOptions>.Instance.ImpsKnowRoles)
+        if (OptionGroupSingleton<GeneralOptions>.Instance.ImpsKnowRoles && !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode)
         {
             return true;
         }

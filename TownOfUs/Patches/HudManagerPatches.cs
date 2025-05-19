@@ -329,7 +329,7 @@ public static class HudManagerPatches
 
                 if (player.AmOwner ||
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
-                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles: true, FFAImpostorMode: false }) ||
+                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
                     (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
                     SnitchRole.SnitchVisibilityFlag(player) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
@@ -482,7 +482,7 @@ public static class HudManagerPatches
 
                 if (player.AmOwner ||
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body) ||
-                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles: true, FFAImpostorMode: false }) ||
+                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
                     (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
                     SnitchRole.SnitchVisibilityFlag(player) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||

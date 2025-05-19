@@ -19,7 +19,7 @@ public sealed class BomberOptions : AbstractOptionGroup<BomberRole>
     public float MaxKillsInDetonation { get; set; } = 5f;
 
     [ModdedToggleOption("All Impostors See Bomb")]
-    public bool AllImpsSeeBomb { get; set; }
+    public bool AllImpsSeeBomb { get; set; } = true;
 
     [ModdedToggleOption("Bomber Can Vent")]
     public bool BomberVent { get; set; }

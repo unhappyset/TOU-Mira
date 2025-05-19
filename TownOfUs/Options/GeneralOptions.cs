@@ -1,5 +1,6 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
 
 namespace TownOfUs.Options;
@@ -15,8 +16,12 @@ public sealed class GeneralOptions : AbstractOptionGroup
     [ModdedToggleOption("Kill Anyone During Camouflage")]
     public bool KillDuringCamoComms { get; set; } = true;
 
-    [ModdedToggleOption("Impostors Know Each Other's Roles")]
-    public bool ImpsKnowRoles { get; set; } = true;
+    [ModdedToggleOption("Impostors Don't Know Each Other")]
+    public bool FFAImpostorMode { get; set; } = false;
+    public ModdedToggleOption ImpsKnowRoles { get; set; } = new("Impostors Know Each Other's Roles", true)
+    {
+        Visible = () => !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode
+    };
 
     [ModdedToggleOption("The Dead Know Roles")]
     public bool TheDeadKnow { get; set; } = true;
@@ -25,7 +30,7 @@ public sealed class GeneralOptions : AbstractOptionGroup
     public float GameStartCd { get; set; } = 10f;
 
     [ModdedNumberOption("Temp Save Cooldown Reset", 0f, 15f, 0.5f, MiraNumberSuffixes.Seconds, "0.#")]
-    public float TempSaveCdReset { get; set; } = 5f;
+    public float TempSaveCdReset { get; set; } = 2.5f;
 
     [ModdedToggleOption("Parallel Medbay Scans")]
     public bool ParallelMedbay { get; set; } = true;
@@ -38,9 +43,6 @@ public sealed class GeneralOptions : AbstractOptionGroup
 
     [ModdedToggleOption("Powerful Crew Continue The Game")]
     public bool CrewKillersContinue { get; set; } = true;
-
-    [ModdedToggleOption("Impostors Don't Know Each Other")]
-    public bool FFAImpostorMode { get; set; } = false;
 }
 
 public enum SkipState

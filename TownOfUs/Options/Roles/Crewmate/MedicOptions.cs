@@ -20,7 +20,7 @@ public sealed class MedicOptions : AbstractOptionGroup<MedicRole>
     public bool ShieldBreaks { get; set; } = false;
 
     [ModdedToggleOption("Show Medic Reports")]
-    public bool ShowReports { get; set; } = false;
+    public bool ShowReports { get; set; } = true;
 
     public ModdedNumberOption MedicReportNameDuration { get; } = new ModdedNumberOption("Time Where Medic Will Have Name", 0f, 0f, 60f, 2.5f, MiraNumberSuffixes.Seconds)
     {

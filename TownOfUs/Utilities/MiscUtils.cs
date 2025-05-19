@@ -527,4 +527,10 @@ public static class MiscUtils
         PlayerControl.LocalPlayer.lightSource.transform.parent = lightParent;
         PlayerControl.LocalPlayer.lightSource.Initialize(PlayerControl.LocalPlayer.Collider.offset / 2);
     }
+    public static void SnapPlayerCamera(MonoBehaviour target)
+    {
+        var cam = HudManager.Instance.PlayerCam;
+        cam.SetTarget(target);
+        cam.centerPosition = cam.Target.transform.position;
+    }
 }

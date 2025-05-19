@@ -13,7 +13,7 @@ public sealed class ButtonBarryOptions : AbstractOptionGroup<ButtonBarryModifier
     public override Color GroupColor => TownOfUsColors.ButtonBarry;
 
     [ModdedNumberOption("Button Cooldown", 2.5f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float Cooldown { get; set; } = 5f;
+    public float Cooldown { get; set; } = 30f;
 
     [ModdedNumberOption("Max Uses", 1f, 3f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxNumButtons { get; set; } = 1f;

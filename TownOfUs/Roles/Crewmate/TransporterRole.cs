@@ -328,6 +328,11 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             {
                 mono.transform.position = position;
             }
+            
+            if (mono.TryCast<PlayerControl>() is PlayerControl player2 && player2.AmOwner)
+        {
+            MiscUtils.SnapPlayerCamera(PlayerControl.LocalPlayer);
+        }
         }
 
     [HideFromIl2Cpp]

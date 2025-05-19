@@ -13,5 +13,5 @@ public sealed class FlashOptions : AbstractOptionGroup<FlashModifier>
     public override Color GroupColor => TownOfUsColors.Flash;
 
     [ModdedNumberOption("Flash Speed", 1.05f, 2.5f, 0.05f, MiraNumberSuffixes.Multiplier, "0.00")]
-    public float FlashSpeed { get; set; } = 1.25f;
+    public float FlashSpeed { get; set; } = 1.75f;
 }

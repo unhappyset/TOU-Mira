@@ -28,10 +28,10 @@ public sealed class GuardianAngelOptions : AbstractOptionGroup<GuardianAngelTouR
     public bool TargetNeutEvils { get; set; } = false;
 
     [ModdedToggleOption("Target Knows GA Exists")]
-    public bool GATargetKnows { get; set; } = false;
+    public bool GATargetKnows { get; set; } = true;
 
     [ModdedToggleOption("GA Knows Targets Role")]
-    public bool GAKnowsTargetRole { get; set; } = false;
+    public bool GAKnowsTargetRole { get; set; } = true;
 
     [ModdedNumberOption("Odds Of Target Being Evil", 0f, 100f, 10f, MiraNumberSuffixes.Percent, "0")]
     public float EvilTargetPercent { get; set; } = 20f;
