@@ -27,7 +27,7 @@ public static class AmnesiacEvents
 
     private static IEnumerator CoCreateArrow(PlayerControl target)
     {
-        yield return new WaitForSeconds(OptionGroupSingleton<AmnesiacOptions>.Instance.RememberArrowDelay);
+        yield return new WaitForSeconds(OptionGroupSingleton<AmnesiacOptions>.Instance.RememberArrowDelay.Value);
 
         var deadBody = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == target.PlayerId);
 
