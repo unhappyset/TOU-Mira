@@ -85,11 +85,13 @@ public static class EndGamePatches
                     playerRoleString.Append(TownOfUsPlugin.Culture, $" (");
             foreach (var modifierName in modifierNames)
             {
+                var modColor = MiscUtils.GetRoleColour(modifierName.Replace(" ", string.Empty));
+                if (modifiers.FirstOrDefault(x => x.ModifierName == modifierName) is IColoredModifier colorMod) modColor = colorMod.ModifierColor;
                 modifierCount--;
                 if (modifierCount == 0)
-                    playerRoleString.Append(TownOfUsPlugin.Culture, $"{MiscUtils.GetRoleColour(modifierName.Replace(" ", string.Empty)).ToTextColor()}{modifierName}</color>)");
+                    playerRoleString.Append(TownOfUsPlugin.Culture, $"{modColor.ToTextColor()}{modifierName}</color>)");
                 else
-                    playerRoleString.Append(TownOfUsPlugin.Culture, $"{MiscUtils.GetRoleColour(modifierName.Replace(" ", string.Empty)).ToTextColor()}{modifierName}</color>, ");
+                    playerRoleString.Append(TownOfUsPlugin.Culture, $"{modColor.ToTextColor()}{modifierName}</color>, ");
             }
 
             if (playerControl.IsRole<PhantomTouRole>() || playerTeam == ModdedRoleTeams.Crewmate)
@@ -143,8 +145,14 @@ public static class EndGamePatches
             {
                 playerName.Append(playerControl.Data.PlayerName);
             }
-                var alliance = playerControl.GetModifiers<AllianceGameModifier>().FirstOrDefault();
-                if (alliance != null) playerName.Append(TownOfUsPlugin.Culture, $" <b>{MiscUtils.GetRoleColour(alliance.ModifierName.Replace(" ", string.Empty)).ToTextColor()}<size=60%>{alliance.Symbol}</size></color></b>");
+
+            var alliance = playerControl.GetModifiers<AllianceGameModifier>().FirstOrDefault();
+            if (alliance != null)
+            {
+                var modColor = MiscUtils.GetRoleColour(alliance.ModifierName.Replace(" ", string.Empty));
+                if (alliance is IColoredModifier colorMod) modColor = colorMod.ModifierColor;
+                playerName.Append(TownOfUsPlugin.Culture, $" <b>{modColor.ToTextColor()}<size=60%>{alliance.Symbol}</size></color></b>");
+            }
 
             EndGameData.PlayerRecords.Add(new EndGameData.PlayerRecord()
             {

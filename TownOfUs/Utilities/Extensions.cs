@@ -326,6 +326,7 @@ public static class Extensions
 
         var finalString = $"{modifier.ModifierName}\n<size=70%><color=white>{teamName}</color></size>";
         var color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
+        if (modifier is IColoredModifier colorMod) color = colorMod.ModifierColor;
 
         material.SetColor(PlayerMaterial.BackColor, color.DarkenColor(0.35f));
         material.SetColor(PlayerMaterial.BodyColor, color);

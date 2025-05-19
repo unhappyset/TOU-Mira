@@ -180,6 +180,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 team.text =
                     $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Masked\">{alignment}</font>";
                 team.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
+                if (modifier is IColoredModifier colorMod) team.color = colorMod.ModifierColor;
                 team.gameObject.SetActive(true);
                 team.SetOutlineColor(Color.black);
                 team.SetOutlineThickness(0.35f);

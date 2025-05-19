@@ -111,6 +111,7 @@ public static class ModifierIntroPatch
                 ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
 
                 ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
+                if (modifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
                 ModifierText.transform.position =
                 __instance.__4__this.transform.position - new Vector3(0f, 1.6f, 0f);
                 ModifierText.gameObject.SetActive(true);
@@ -129,6 +130,7 @@ public static class ModifierIntroPatch
                 ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
 
                 ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
+                if (modifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
                 ModifierText.transform.position =
                 __instance.__4__this.transform.position - new Vector3(0f, 1.6f, 0f);
                 ModifierText.gameObject.SetActive(true);
@@ -147,6 +149,7 @@ public static class ModifierIntroPatch
                 ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
 
                 ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
+                if (modifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
                 ModifierText.transform.position =
                 __instance.__4__this.transform.position - new Vector3(0f, 1.6f, 0f);
                 ModifierText.gameObject.SetActive(true);
