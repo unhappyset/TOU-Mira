@@ -14,7 +14,6 @@ public sealed class VisualAppearance : NetworkedPlayerInfo.PlayerOutfit
     // ---------------------------------
     // I should do this
 
-    // TODO: Implement these
     public float Speed { get; set; } = 1f;
     public Vector3 Size { get; set; } = new Vector3(0.7f, 0.7f, 1f);
 

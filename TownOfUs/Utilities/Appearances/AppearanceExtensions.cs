@@ -9,8 +9,6 @@ public static class AppearanceExtensions
 {
     public static void ResetAppearance(this PlayerControl player, bool override_checks = false, bool fullReset = false)
     {
-        // TODO: NEEDS TESTING
-
         // swooper unswoop mid camo - needs testing
         if (OptionGroupSingleton<GeneralOptions>.Instance.CamouflageComms && player.GetAppearanceType() == TownOfUsAppearances.Swooper)
         {
