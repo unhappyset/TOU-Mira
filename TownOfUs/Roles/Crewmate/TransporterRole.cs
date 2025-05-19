@@ -208,42 +208,6 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             return null;
         }
 
-        void Transport(MonoBehaviour mono, Vector3 position)
-        {
-            if (mono.TryCast<PlayerControl>() is PlayerControl player && player.HasModifier<ImmovableModifier>())
-            {
-                return;
-            }
-
-            if (mono.TryCast<DeadBody>() is DeadBody deadBody && MiscUtils.PlayerById(deadBody.ParentId)?.HasModifier<ImmovableModifier>() == true)
-            {
-                return;
-            }
-
-            var cnt = mono.TryCast<CustomNetworkTransform>();
-            if (cnt != null)
-            {
-                cnt.SnapTo(position, (ushort)(cnt.lastSequenceId + 1));
-
-                if (cnt.AmOwner)
-                {
-                    try
-                    {
-                        Minigame.Instance.Close();
-                        Minigame.Instance.Close();
-                    }
-                    catch
-                    {
-                        //ignore
-                    }
-                }
-            }
-            else
-            {
-                mono.transform.position = position;
-            }
-        }
-
         void PreCheckUndertaker(DeadBody body)
         {
             if (PlayerControl.LocalPlayer.Data.Role is not TransporterRole)
@@ -330,6 +294,41 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             return (TP1Position, TP2Position);
         }
     }
+        public static void Transport(MonoBehaviour mono, Vector3 position)
+        {
+            if (mono.TryCast<PlayerControl>() is PlayerControl player && player.HasModifier<ImmovableModifier>())
+            {
+                return;
+            }
+
+            if (mono.TryCast<DeadBody>() is DeadBody deadBody && MiscUtils.PlayerById(deadBody.ParentId)?.HasModifier<ImmovableModifier>() == true)
+            {
+                return;
+            }
+
+            var cnt = mono.TryCast<CustomNetworkTransform>();
+            if (cnt != null)
+            {
+                cnt.SnapTo(position, (ushort)(cnt.lastSequenceId + 1));
+
+                if (cnt.AmOwner)
+                {
+                    try
+                    {
+                        Minigame.Instance.Close();
+                        Minigame.Instance.Close();
+                    }
+                    catch
+                    {
+                        //ignore
+                    }
+                }
+            }
+            else
+            {
+                mono.transform.position = position;
+            }
+        }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()

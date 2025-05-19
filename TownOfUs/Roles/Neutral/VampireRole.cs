@@ -7,19 +7,16 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
-using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modifiers.Neutral;
-using TownOfUs.Modules.Anims;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IAnimated, IWikiDiscoverable, IDoomable
+public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Vampire";
     public string RoleDescription => "Convert Crewmates And Kill The Rest";
@@ -39,33 +36,6 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
     public bool HasImpostorVision => OptionGroupSingleton<VampireOptions>.Instance.HasVision;
 
     //public bool CanChangeRole => false;
-
-    public GameObject? Wings { get; set; }
-
-    public override void Initialize(PlayerControl player)
-    {
-        RoleStubs.RoleBehaviourInitialize(this, player);
-    }
-
-    public override void Deinitialize(PlayerControl targetPlayer)
-    {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
-
-        Wings?.DestroyImmediate();
-    }
-
-    public void LobbyStart()
-    {
-        Wings?.DestroyImmediate();
-    }
-
-    public override void OnDeath(DeathReason reason)
-    {
-        RoleStubs.RoleBehaviourOnDeath(this, reason);
-
-        Wings?.DestroyImmediate();
-    }
-
     public override bool CanUse(IUsable usable)
     {
         if (!GameManager.Instance.LogicUsables.CanUse(usable, Player))
@@ -117,11 +87,6 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
     public StringBuilder SetTabText()
     {
         return ITownOfUsRole.SetNewTabText(this);
-    }
-    public bool IsVisible { get; set; } = true;
-    public void SetVisible()
-    {
-        if (Wings != null) Wings.SetActive(IsVisible);
     }
 
     public string GetAdvancedDescription()
