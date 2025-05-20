@@ -359,372 +359,447 @@ public static class TouRoleManagerPatches
         var impKillingRoles = MiscUtils.GetRolesToAssign(RoleAlignment.ImpostorKilling, filter: impFilter);
         var impSupportRoles = MiscUtils.GetRolesToAssign(RoleAlignment.ImpostorSupport);
 
+        //// imp buckets
+        //while (buckets.Contains(RoleListOption.ImpConceal))
+        //{
+        //    if (impConcealRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.ImpConceal))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.ImpConceal));
+        //            buckets.Add(RoleListOption.ImpCommon);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = impConcealRoles.TakeFirst();
+        //    impRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.ImpConceal);
+        //}
+
+        //var commonImpRoles = impConcealRoles;
+
+        //while (buckets.Contains(RoleListOption.ImpSupport))
+        //{
+        //    if (impSupportRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.ImpSupport))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.ImpSupport));
+        //            buckets.Add(RoleListOption.ImpCommon);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = impSupportRoles.TakeFirst();
+        //    impRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.ImpSupport);
+        //}
+
+        //commonImpRoles.AddRange(impSupportRoles);
+
+        //while (buckets.Contains(RoleListOption.ImpKilling))
+        //{
+        //    if (impKillingRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.ImpKilling))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.ImpKilling));
+        //            buckets.Add(RoleListOption.ImpRandom);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = impKillingRoles.TakeFirst();
+        //    impRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.ImpKilling);
+        //}
+
+        //var randomImpRoles = impKillingRoles;
+
+        //while (buckets.Contains(RoleListOption.ImpCommon))
+        //{
+        //    if (commonImpRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.ImpCommon))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.ImpCommon));
+        //            buckets.Add(RoleListOption.ImpRandom);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = commonImpRoles.TakeFirst();
+        //    impRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.ImpCommon);
+        //}
+
+        //randomImpRoles.AddRange(commonImpRoles);
+
+        //while (buckets.Contains(RoleListOption.ImpRandom))
+        //{
+        //    if (randomImpRoles.Count == 0)
+        //    {
+        //        buckets.RemoveAll(x => x == RoleListOption.ImpRandom);
+        //        break;
+        //    }
+
+        //    var addedRole = randomImpRoles.TakeFirst();
+        //    impRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.ImpRandom);
+        //}
+
+        //// crew buckets
+        //while (buckets.Contains(RoleListOption.CrewInvest))
+        //{
+        //    if (crewInvestRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.CrewInvest))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.CrewInvest));
+        //            buckets.Add(RoleListOption.CrewCommon);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = crewInvestRoles.TakeFirst();
+        //    crewRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.CrewInvest);
+        //}
+
+        //var commonCrewRoles = crewInvestRoles;
+
+        //while (buckets.Contains(RoleListOption.CrewProtective))
+        //{
+        //    if (crewProtectRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.CrewProtective))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.CrewProtective));
+        //            buckets.Add(RoleListOption.CrewCommon);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = crewProtectRoles.TakeFirst();
+        //    crewRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.CrewProtective);
+        //}
+
+        //commonCrewRoles.AddRange(crewProtectRoles);
+
+        //while (buckets.Contains(RoleListOption.CrewSupport))
+        //{
+        //    if (crewSupportRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.CrewSupport))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.CrewSupport));
+        //            buckets.Add(RoleListOption.CrewCommon);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = crewSupportRoles.TakeFirst();
+        //    crewRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.CrewSupport);
+        //}
+
+        //commonCrewRoles.AddRange(crewSupportRoles);
+
+        //while (buckets.Contains(RoleListOption.CrewKilling))
+        //{
+        //    if (crewKillingRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.CrewKilling))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.CrewKilling));
+        //            buckets.Add(RoleListOption.CrewSpecial);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = crewKillingRoles.TakeFirst();
+        //    crewRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.CrewKilling);
+        //}
+
+        //var specialCrewRoles = crewKillingRoles;
+
+        //while (buckets.Contains(RoleListOption.CrewPower))
+        //{
+        //    if (crewPowerRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.CrewPower))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.CrewPower));
+        //            buckets.Add(RoleListOption.CrewSpecial);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = crewPowerRoles.TakeFirst();
+        //    crewRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.CrewPower);
+        //}
+
+        //specialCrewRoles.AddRange(crewPowerRoles);
+
+        //while (buckets.Contains(RoleListOption.CrewCommon))
+        //{
+        //    if (commonCrewRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.CrewCommon))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.CrewCommon));
+        //            buckets.Add(RoleListOption.CrewRandom);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = commonCrewRoles.TakeFirst();
+        //    crewRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.CrewCommon);
+        //}
+
+        //var randomCrewRoles = commonCrewRoles;
+
+        //while (buckets.Contains(RoleListOption.CrewSpecial))
+        //{
+        //    if (specialCrewRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.CrewSpecial))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.CrewSpecial));
+        //            buckets.Add(RoleListOption.CrewRandom);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = specialCrewRoles.TakeFirst();
+        //    crewRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.CrewSpecial);
+        //}
+
+        //randomCrewRoles.AddRange(specialCrewRoles);
+
+        //while (buckets.Contains(RoleListOption.CrewRandom))
+        //{
+        //    if (randomCrewRoles.Count == 0)
+        //    {
+        //        buckets.RemoveAll(x => x == RoleListOption.CrewRandom);
+        //        break;
+        //    }
+
+        //    var addedRole = randomCrewRoles.TakeFirst();
+        //    crewRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.CrewRandom);
+        //}
+
+        //var randomNonImpRoles = randomCrewRoles;
+
+        //// neutral buckets
+        //while (buckets.Contains(RoleListOption.NeutBenign))
+        //{
+        //    if (neutBenignRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.NeutBenign))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.NeutBenign));
+        //            buckets.Add(RoleListOption.NeutCommon);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = neutBenignRoles.TakeFirst();
+        //    crewRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.NeutBenign);
+        //}
+
+        //var commonNeutRoles = neutBenignRoles;
+
+        //while (buckets.Contains(RoleListOption.NeutEvil))
+        //{
+        //    if (neutEvilRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.NeutEvil))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.NeutEvil));
+        //            buckets.Add(RoleListOption.NeutCommon);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = neutEvilRoles.TakeFirst();
+        //    crewRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.NeutEvil);
+        //}
+
+        //commonNeutRoles.AddRange(neutEvilRoles);
+
+        //while (buckets.Contains(RoleListOption.NeutKilling))
+        //{
+        //    if (neutKillingRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.NeutKilling))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.NeutKilling));
+        //            buckets.Add(RoleListOption.NeutRandom);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = neutKillingRoles.TakeFirst();
+        //    crewRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.NeutKilling);
+        //}
+
+        //var randomNeutRoles = neutKillingRoles;
+
+        //while (buckets.Contains(RoleListOption.NeutCommon))
+        //{
+        //    if (commonNeutRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.NeutCommon))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.NeutCommon));
+        //            buckets.Add(RoleListOption.NeutRandom);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = commonNeutRoles.TakeFirst();
+        //    crewRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.NeutCommon);
+        //}
+
+        //randomNeutRoles.AddRange(commonNeutRoles);
+
+        //while (buckets.Contains(RoleListOption.NeutRandom))
+        //{
+        //    if (randomNeutRoles.Count == 0)
+        //    {
+        //        while (buckets.Contains(RoleListOption.NeutRandom))
+        //        {
+        //            buckets.Remove(buckets.FindLast(x => x == RoleListOption.NeutRandom));
+        //            buckets.Add(RoleListOption.NonImp);
+        //        }
+        //        break;
+        //    }
+
+        //    var addedRole = randomNeutRoles.TakeFirst();
+        //    crewRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.NeutRandom);
+        //}
+
+        //randomNonImpRoles.AddRange(randomNeutRoles);
+
+        //while (buckets.Contains(RoleListOption.NonImp))
+        //{
+        //    if (randomNonImpRoles.Count == 0)
+        //    {
+        //        buckets.RemoveAll(x => x == RoleListOption.NonImp);
+        //        break;
+        //    }
+
+        //    var addedRole = randomNonImpRoles.TakeFirst();
+        //    crewRoles.Add(addedRole);
+
+        //    buckets.Remove(RoleListOption.NonImp);
+        //}
+
         // imp buckets
-        while (buckets.Contains(RoleListOption.ImpConceal))
-        {
-            if (impConcealRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.ImpConceal))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.ImpConceal));
-                    buckets.Add(RoleListOption.ImpCommon);
-                }
-                break;
-            }
-
-            var addedRole = impConcealRoles.TakeFirst();
-            impRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.ImpConceal);
-        }
+        impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, impConcealRoles, RoleListOption.ImpConceal, RoleListOption.ImpCommon));
 
         var commonImpRoles = impConcealRoles;
 
-        while (buckets.Contains(RoleListOption.ImpSupport))
-        {
-            if (impSupportRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.ImpSupport))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.ImpSupport));
-                    buckets.Add(RoleListOption.ImpCommon);
-                }
-                break;
-            }
-
-            var addedRole = impSupportRoles.TakeFirst();
-            impRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.ImpSupport);
-        }
+        impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, impSupportRoles, RoleListOption.ImpSupport, RoleListOption.ImpCommon));
 
         commonImpRoles.AddRange(impSupportRoles);
 
-        while (buckets.Contains(RoleListOption.ImpKilling))
-        {
-            if (impKillingRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.ImpKilling))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.ImpKilling));
-                    buckets.Add(RoleListOption.ImpRandom);
-                }
-                break;
-            }
-
-            var addedRole = impKillingRoles.TakeFirst();
-            impRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.ImpKilling);
-        }
+        impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, impKillingRoles, RoleListOption.ImpKilling, RoleListOption.ImpRandom));
 
         var randomImpRoles = impKillingRoles;
 
-        while (buckets.Contains(RoleListOption.ImpCommon))
-        {
-            if (commonImpRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.ImpCommon))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.ImpCommon));
-                    buckets.Add(RoleListOption.ImpRandom);
-                }
-                break;
-            }
-
-            var addedRole = commonImpRoles.TakeFirst();
-            impRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.ImpCommon);
-        }
+        impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, commonImpRoles, RoleListOption.ImpCommon, RoleListOption.ImpRandom));
 
         randomImpRoles.AddRange(commonImpRoles);
 
-        while (buckets.Contains(RoleListOption.ImpRandom))
-        {
-            if (randomImpRoles.Count == 0)
-            {
-                buckets.RemoveAll(x => x == RoleListOption.ImpRandom);
-                break;
-            }
-
-            var addedRole = randomImpRoles.TakeFirst();
-            impRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.ImpRandom);
-        }
+        impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, randomImpRoles, RoleListOption.ImpRandom));
 
         // crew buckets
-        while (buckets.Contains(RoleListOption.CrewInvest))
-        {
-            if (crewInvestRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.CrewInvest))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.CrewInvest));
-                    buckets.Add(RoleListOption.CrewCommon);
-                }
-                break;
-            }
-
-            var addedRole = crewInvestRoles.TakeFirst();
-            crewRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.CrewInvest);
-        }
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, crewInvestRoles, RoleListOption.CrewInvest, RoleListOption.CrewCommon));
 
         var commonCrewRoles = crewInvestRoles;
 
-        while (buckets.Contains(RoleListOption.CrewProtective))
-        {
-            if (crewProtectRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.CrewProtective))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.CrewProtective));
-                    buckets.Add(RoleListOption.CrewCommon);
-                }
-                break;
-            }
-
-            var addedRole = crewProtectRoles.TakeFirst();
-            crewRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.CrewProtective);
-        }
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, crewProtectRoles, RoleListOption.CrewProtective, RoleListOption.CrewCommon));
 
         commonCrewRoles.AddRange(crewProtectRoles);
 
-        while (buckets.Contains(RoleListOption.CrewSupport))
-        {
-            if (crewSupportRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.CrewSupport))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.CrewSupport));
-                    buckets.Add(RoleListOption.CrewCommon);
-                }
-                break;
-            }
-
-            var addedRole = crewSupportRoles.TakeFirst();
-            crewRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.CrewSupport);
-        }
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, crewSupportRoles, RoleListOption.CrewSupport, RoleListOption.CrewCommon));
 
         commonCrewRoles.AddRange(crewSupportRoles);
 
-        while (buckets.Contains(RoleListOption.CrewKilling))
-        {
-            if (crewKillingRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.CrewKilling))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.CrewKilling));
-                    buckets.Add(RoleListOption.CrewSpecial);
-                }
-                break;
-            }
-
-            var addedRole = crewKillingRoles.TakeFirst();
-            crewRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.CrewKilling);
-        }
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, crewKillingRoles, RoleListOption.CrewKilling, RoleListOption.CrewSpecial));
 
         var specialCrewRoles = crewKillingRoles;
 
-        while (buckets.Contains(RoleListOption.CrewPower))
-        {
-            if (crewPowerRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.CrewPower))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.CrewPower));
-                    buckets.Add(RoleListOption.CrewSpecial);
-                }
-                break;
-            }
-
-            var addedRole = crewPowerRoles.TakeFirst();
-            crewRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.CrewPower);
-        }
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, crewPowerRoles, RoleListOption.CrewPower, RoleListOption.CrewSpecial));
 
         specialCrewRoles.AddRange(crewPowerRoles);
 
-        while (buckets.Contains(RoleListOption.CrewCommon))
-        {
-            if (commonCrewRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.CrewCommon))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.CrewCommon));
-                    buckets.Add(RoleListOption.CrewRandom);
-                }
-                break;
-            }
-
-            var addedRole = commonCrewRoles.TakeFirst();
-            crewRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.CrewCommon);
-        }
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, commonCrewRoles, RoleListOption.CrewCommon, RoleListOption.CrewRandom));
 
         var randomCrewRoles = commonCrewRoles;
 
-        while (buckets.Contains(RoleListOption.CrewSpecial))
-        {
-            if (specialCrewRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.CrewSpecial))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.CrewSpecial));
-                    buckets.Add(RoleListOption.CrewRandom);
-                }
-                break;
-            }
-
-            var addedRole = specialCrewRoles.TakeFirst();
-            crewRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.CrewSpecial);
-        }
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, specialCrewRoles, RoleListOption.CrewSpecial, RoleListOption.CrewRandom));
 
         randomCrewRoles.AddRange(specialCrewRoles);
 
-        while (buckets.Contains(RoleListOption.CrewRandom))
-        {
-            if (randomCrewRoles.Count == 0)
-            {
-                buckets.RemoveAll(x => x == RoleListOption.CrewRandom);
-                break;
-            }
-
-            var addedRole = randomCrewRoles.TakeFirst();
-            crewRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.CrewRandom);
-        }
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, randomCrewRoles, RoleListOption.CrewRandom));
 
         var randomNonImpRoles = randomCrewRoles;
 
         // neutral buckets
-        while (buckets.Contains(RoleListOption.NeutBenign))
-        {
-            if (neutBenignRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.NeutBenign))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.NeutBenign));
-                    buckets.Add(RoleListOption.NeutCommon);
-                }
-                break;
-            }
-
-            var addedRole = neutBenignRoles.TakeFirst();
-            crewRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.NeutBenign);
-        }
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, neutBenignRoles, RoleListOption.NeutBenign, RoleListOption.NeutCommon));
 
         var commonNeutRoles = neutBenignRoles;
 
-        while (buckets.Contains(RoleListOption.NeutEvil))
-        {
-            if (neutEvilRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.NeutEvil))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.NeutEvil));
-                    buckets.Add(RoleListOption.NeutCommon);
-                }
-                break;
-            }
-
-            var addedRole = neutEvilRoles.TakeFirst();
-            crewRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.NeutEvil);
-        }
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, neutEvilRoles, RoleListOption.NeutEvil, RoleListOption.NeutCommon));
 
         commonNeutRoles.AddRange(neutEvilRoles);
 
-        while (buckets.Contains(RoleListOption.NeutKilling))
-        {
-            if (neutKillingRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.NeutKilling))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.NeutKilling));
-                    buckets.Add(RoleListOption.NeutRandom);
-                }
-                break;
-            }
-
-            var addedRole = neutKillingRoles.TakeFirst();
-            crewRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.NeutKilling);
-        }
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, neutKillingRoles, RoleListOption.NeutKilling, RoleListOption.NeutRandom));
 
         var randomNeutRoles = neutKillingRoles;
 
-        while (buckets.Contains(RoleListOption.NeutCommon))
-        {
-            if (commonNeutRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.NeutCommon))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.NeutCommon));
-                    buckets.Add(RoleListOption.NeutRandom);
-                }
-                break;
-            }
-
-            var addedRole = commonNeutRoles.TakeFirst();
-            crewRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.NeutCommon);
-        }
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, commonNeutRoles, RoleListOption.NeutCommon, RoleListOption.NeutRandom));
 
         randomNeutRoles.AddRange(commonNeutRoles);
 
-        while (buckets.Contains(RoleListOption.NeutRandom))
-        {
-            if (randomNeutRoles.Count == 0)
-            {
-                while (buckets.Contains(RoleListOption.NeutRandom))
-                {
-                    buckets.Remove(buckets.FindLast(x => x == RoleListOption.NeutRandom));
-                    buckets.Add(RoleListOption.NonImp);
-                }
-                break;
-            }
-
-            var addedRole = randomNeutRoles.TakeFirst();
-            crewRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.NeutRandom);
-        }
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, randomNeutRoles, RoleListOption.NeutRandom, RoleListOption.NonImp));
 
         randomNonImpRoles.AddRange(randomNeutRoles);
 
-        while (buckets.Contains(RoleListOption.NonImp))
-        {
-            if (randomNonImpRoles.Count == 0)
-            {
-                buckets.RemoveAll(x => x == RoleListOption.NonImp);
-                break;
-            }
-
-            var addedRole = randomNonImpRoles.TakeFirst();
-            crewRoles.Add(addedRole);
-
-            buckets.Remove(RoleListOption.NonImp);
-        }
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, randomNonImpRoles, RoleListOption.NonImp));
 
         // Shuffle roles before handing them out.
         // This should ensure a statistically equal chance of all permutations of roles.

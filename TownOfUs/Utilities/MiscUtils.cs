@@ -19,7 +19,6 @@ namespace TownOfUs.Utilities;
 
 public static class MiscUtils
 {
-
     public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
@@ -527,10 +526,56 @@ public static class MiscUtils
         PlayerControl.LocalPlayer.lightSource.transform.parent = lightParent;
         PlayerControl.LocalPlayer.lightSource.Initialize(PlayerControl.LocalPlayer.Collider.offset / 2);
     }
+
     public static void SnapPlayerCamera(MonoBehaviour target)
     {
         var cam = HudManager.Instance.PlayerCam;
         cam.SetTarget(target);
         cam.centerPosition = cam.Target.transform.position;
+    }
+
+    public static List<ushort> ReadFromBucket(List<RoleListOption> buckets, List<ushort> roles, RoleListOption roleType, RoleListOption replaceType)
+    {
+        var result = new List<ushort>();
+
+        while (buckets.Contains(roleType))
+        {
+            if (roles.Count == 0)
+            {
+                var count = buckets.RemoveAll(x => x == roleType);
+                buckets.AddRange(Enumerable.Repeat(replaceType, count));
+
+                break;
+            }
+
+            var addedRole = roles.TakeFirst();
+            result.Add(addedRole);
+
+            buckets.Remove(roleType);
+        }
+
+        return result;
+    }
+
+    public static List<ushort> ReadFromBucket(List<RoleListOption> buckets, List<ushort> roles, RoleListOption roleType)
+    {
+        var result = new List<ushort>();
+
+        while (buckets.Contains(roleType))
+        {
+            if (roles.Count == 0)
+            {
+                buckets.RemoveAll(x => x == roleType);
+
+                break;
+            }
+
+            var addedRole = roles.TakeFirst();
+            result.Add(addedRole);
+
+            buckets.Remove(roleType);
+        }
+
+        return result;
     }
 }
