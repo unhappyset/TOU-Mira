@@ -20,6 +20,8 @@ namespace TownOfUs.Patches;
             if (AmongUsClient.Instance && !TutorialManager.InstanceExists) ChatPatches.DoHostSetup();
             if (!AmongUsClient.Instance || !PlayerControl.LocalPlayer || !__instance.myPlayer || TutorialManager.InstanceExists)
                 return;
+                
+            TouRoleManagerPatches.ReplaceRoleManager = false;
             if (__instance.myPlayer == PlayerControl.LocalPlayer && GameHistory.EndGameSummary != string.Empty && TownOfUsPlugin.ShowSummaryMessage.Value)
             {
                 var factionText = string.Empty;

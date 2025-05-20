@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Impostor;
 
-public sealed class TraitorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class TraitorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ISpawnChange
 {
     public string RoleName => "Traitor";
     public string RoleDescription => "Betray The Crewmates!";
@@ -17,6 +17,7 @@ public sealed class TraitorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
+    public bool NoSpawn => true;
     public DoomableType DoomHintType => DoomableType.Trickster;
     public CustomRoleConfiguration Configuration => new(this)
     {

@@ -13,6 +13,7 @@ namespace TownOfUs.Patches.Roles;
 public static class LoverChatPatches
 {
     private static bool LoverMessage;
+    public static bool overrideMessages;
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     [HarmonyPostfix]
@@ -29,7 +30,7 @@ public static class LoverChatPatches
     [HarmonyPrefix]
     public static bool SendChatPatch(ChatController __instance)
     {
-        if (MeetingHud.Instance || ExileController.Instance != null || PlayerControl.LocalPlayer.Data.IsDead)
+        if (MeetingHud.Instance || ExileController.Instance != null || PlayerControl.LocalPlayer.Data.IsDead || overrideMessages)
             return true;
 
         var text = __instance.freeChatField.Text;
@@ -65,7 +66,7 @@ public static class LoverChatPatches
     [HarmonyPostfix]
     public static void SetNamePatch(ChatBubble __instance, [HarmonyArgument(0)] string playerName)
     {
-       if (LoverMessage)
+       if (LoverMessage && !overrideMessages)
        {
            __instance.NameText.color = TownOfUsColors.Lover;
            __instance.NameText.text = playerName + " (Lover)";
