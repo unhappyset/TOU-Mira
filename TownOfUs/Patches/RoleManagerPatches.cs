@@ -440,9 +440,9 @@ public static class TouRoleManagerPatches
         impRoles.Shuffle();
 
         var chosenImpRoles = impRoles.Take(impCount).ToList();
-        
-        var uniqueRole = MiscUtils.AllRoles.FirstOrDefault(x => x is ISpawnChange change2 && !change2.NoSpawn);
+        chosenImpRoles = chosenImpRoles.Pad(impCount, (ushort)RoleTypes.Impostor);
 
+        var uniqueRole = MiscUtils.AllRoles.FirstOrDefault(x => x is ISpawnChange change2 && !change2.NoSpawn);
         if (uniqueRole != null && chosenImpRoles.Contains(RoleId.Get(uniqueRole.GetType())))
         {
             impCount = 1;
@@ -451,6 +451,8 @@ public static class TouRoleManagerPatches
             {
                 crewmates.Add(impostors.TakeFirst());
             }
+
+            chosenImpRoles.RemoveAll(x => x != RoleId.Get(uniqueRole.GetType()));
         }
 
         foreach (var role in chosenImpRoles)

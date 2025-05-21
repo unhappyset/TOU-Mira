@@ -474,6 +474,21 @@ public static class Extensions
 
     public static T TakeFirst<T>(this List<T> list) => list.RemoveAndReturn(0);
 
+    public static List<T> Pad<T>(this List<T> list, int max, T item)
+    {
+        if (list.Count < max)
+        {
+            var diff = max - list.Count;
+
+            for (var i = 0; i < diff; i++)
+            {
+                list.Add(item);
+            }
+        }
+
+        return list;
+    }
+
     [MethodRpc((uint)TownOfUsRpc.CatchGhost, SendImmediately = true)]
     public static void RpcCatchGhost(this PlayerControl player)
     {
