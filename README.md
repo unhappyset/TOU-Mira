@@ -5,7 +5,7 @@
 -----------------------
 
 <p align="center">
-  <img width="" height="" src="./Images/Logo.png" align="center" alt="logo" />
+  <img src="./Images/Logo.png" />
   <p align="center">Town Of Us Reactivated Rewritten!</p>
 </p>
 
@@ -47,23 +47,23 @@ An [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod based on T
 -----------------------
 
 <p align="center">
-  <img width="" height="" src="./Images/Groups/CrewInvest.png" align="center" alt="logo" />
-  <img width="375" height="" src="./Images/RoleHeaders/Altruist.png" align="left" alt="logo" />
-  <img width="375" height="" src="./Images/RoleHeaders/Amnesiac.png" align="center" alt="logo" />
-  <img width="375" height="" src="./Images/RoleHeaders/Arsonist.png" align="right" alt="logo" />
-  <img width="" height="" src="./Images/Groups/CrewKilling.png" align="center" alt="logo" />
-  <img width="" height="" src="./Images/Groups/CrewPower.png" align="center" alt="logo" />
-  <img width="" height="" src="./Images/Groups/CrewProtect.png" align="center" alt="logo" />
-  <img width="" height="" src="./Images/Groups/ImpConcealing.png" align="center" alt="logo" />
-  <img width="" height="" src="./Images/Groups/ImpKilling.png" align="center" alt="logo" />
-  <img width="" height="" src="./Images/Groups/ImpSupport.png" align="center" alt="logo" />
-  <img width="" height="" src="./Images/Groups/NeutBenign.png" align="center" alt="logo" />
-  <img width="" height="" src="./Images/Groups/NeutEvil.png" align="center" alt="logo" />
-  <img width="" height="" src="./Images/Groups/NeutKilling.png" align="center" alt="logo" />
-  <img width="" height="" src="./Images/Groups/AllianceMods.png" align="center" alt="logo" />
-  <img width="" height="" src="./Images/Groups/CrewMods.png" align="center" alt="logo" />
-  <img width="" height="" src="./Images/Groups/ImpMods.png" align="center" alt="logo" />
-  <img width="" height="" src="./Images/Groups/UniMods.png" align="center" alt="logo" />
+  <img src="./Images/Groups/CrewInvest.png" align="center" />
+  <img width="33%" src="./Images/RoleHeaders/Altruist.png" align="left" />
+  <img width="33%" src="./Images/RoleHeaders/Amnesiac.png" />
+  <img width="33%" src="./Images/RoleHeaders/Arsonist.png" align="right" />
+  <img src="./Images/Groups/CrewKilling.png" />
+  <img src="./Images/Groups/CrewPower.png" />
+  <img src="./Images/Groups/CrewProtect.png" />
+  <img src="./Images/Groups/ImpConcealing.png" />
+  <img src="./Images/Groups/ImpKilling.png" />
+  <img src="./Images/Groups/ImpSupport.png" />
+  <img src="./Images/Groups/NeutBenign.png" />
+  <img src="./Images/Groups/NeutEvil.png" />
+  <img src="./Images/Groups/NeutKilling.png" />
+  <img src="./Images/Groups/AllianceMods.png" />
+  <img src="./Images/Groups/CrewMods.png" />
+  <img src="./Images/Groups/ImpMods.png" />
+  <img src="./Images/Groups/UniMods.png" />
 </p>
 
 -----------------------
