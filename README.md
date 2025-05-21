@@ -5,15 +5,15 @@
 -----------------------
 
 <p align="center">
-    <img width="" height="" src="./Images/Logo.png" align="center" alt="logo" />
-    <p align="center">Town Of Us Reactivated Rewritten!</p>
+  <img width="" height="" src="./Images/Logo.png" align="center" alt="logo" />
+  <p align="center">Town Of Us Reactivated Rewritten!</p>
 </p>
 
 <p align="center">
-    <a href="https://store.steampowered.com/app/945360/Among_Us"><img alt="Latest AU Version" src="https://badgen.net/static/AmongUs/2025.5.20/yellow">
-    <a href="https://github.com/AU-Avengers/TOU-Mira/releases/"><img alt="Latest Release" src="https://badgen.net/github/release/AU-Avengers/TOU-Mira?icon=github"></a>
-    <a href="https://github.com/AU-Avengers/TOU-Mira/releases"><img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/AU-Avengers/TOU-Mira/total"></a>
-    <a href="https://discord.gg/ugyc4EVUYZ"> <img alt="Mod Discord" src="https://img.shields.io/discord/1039196456667582555.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2"></a>
+  <a href="https://store.steampowered.com/app/945360/Among_Us"><img alt="Latest AU Version" src="https://badgen.net/static/AmongUs/2025.5.20/yellow">
+  <a href="https://github.com/AU-Avengers/TOU-Mira/releases/"><img alt="Latest Release" src="https://badgen.net/github/release/AU-Avengers/TOU-Mira?icon=github"></a>
+  <a href="https://github.com/AU-Avengers/TOU-Mira/releases"><img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/AU-Avengers/TOU-Mira/total"></a>
+  <a href="https://discord.gg/ugyc4EVUYZ"> <img alt="Mod Discord" src="https://img.shields.io/discord/1039196456667582555.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2"></a>
 </p>
 
 An [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod based on Town of Salem, designed to be a rewrite of Town of Us Reactivated!
@@ -43,6 +43,28 @@ An [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod based on T
 - [**Credits & Resources**](https://github.com/AU-Avengers/TOU-Mira/wiki/Credits)
 - [**License**](#license)
 - [**Copyright**](#copyright)
+
+-----------------------
+
+<p align="center">
+  <img width="1500" height="" src="./Images/Groups/CrewInvest.png" align="center" alt="logo" />
+  <img width="500" height="" src="./Images/RoleHeaders/Altruist.png" align="left" alt="logo" />
+  <img width="500" height="" src="./Images/RoleHeaders/Amnesiac.png" align="center" alt="logo" />
+  <img width="500" height="" src="./Images/RoleHeaders/Arsonist.png" align="right" alt="logo" />
+  <img width="" height="" src="./Images/Groups/CrewKilling.png" align="center" alt="logo" />
+  <img width="" height="" src="./Images/Groups/CrewPower.png" align="center" alt="logo" />
+  <img width="" height="" src="./Images/Groups/CrewProtect.png" align="center" alt="logo" />
+  <img width="" height="" src="./Images/Groups/ImpConcealing.png" align="center" alt="logo" />
+  <img width="" height="" src="./Images/Groups/ImpKilling.png" align="center" alt="logo" />
+  <img width="" height="" src="./Images/Groups/ImpSupport.png" align="center" alt="logo" />
+  <img width="" height="" src="./Images/Groups/NeutBenign.png" align="center" alt="logo" />
+  <img width="" height="" src="./Images/Groups/NeutEvil.png" align="center" alt="logo" />
+  <img width="" height="" src="./Images/Groups/NeutKilling.png" align="center" alt="logo" />
+  <img width="" height="" src="./Images/Groups/AllianceMods.png" align="center" alt="logo" />
+  <img width="" height="" src="./Images/Groups/CrewMods.png" align="center" alt="logo" />
+  <img width="" height="" src="./Images/Groups/ImpMods.png" align="center" alt="logo" />
+  <img width="" height="" src="./Images/Groups/UniMods.png" align="center" alt="logo" />
+</p>
 
 -----------------------
 
