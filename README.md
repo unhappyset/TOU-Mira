@@ -12,8 +12,7 @@
 <a href="https://github.com/AU-Avengers/TOU-Mira/releases"><img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/AU-Avengers/TOU-Mira/total"></a>
 <a href="https://discord.gg/ugyc4EVUYZ"> <img alt="Mod Discord" src="https://img.shields.io/discord/1039196456667582555.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2"></a>
 </div>
-
-<br>
+<br/>
 
 An [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod based on Town of Salem, designed to be a rewrite of Town of Us Reactivated!
 
