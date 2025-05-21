@@ -48,7 +48,7 @@ An [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod based on T
 
 <p align="center">
   <img src="./Images/Groups/CrewInvest.png" align="center" />
-  <img width="25%" src="./Images/RoleHeaders/Altruist.png" /> <img width="25%" src="./Images/RoleHeaders/Amnesiac.png" /> <img width="25%" src="./Images/RoleHeaders/Arsonist.png" />
+  <img width="30%" src="./Images/RoleHeaders/Altruist.png" /> <img width="30%" src="./Images/RoleHeaders/Amnesiac.png" /> <img width="30%" src="./Images/RoleHeaders/Arsonist.png" />
   <img src="./Images/Groups/CrewKilling.png" />
   <img src="./Images/Groups/CrewPower.png" />
   <img src="./Images/Groups/CrewProtect.png" />
