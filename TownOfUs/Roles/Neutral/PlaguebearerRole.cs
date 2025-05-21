@@ -95,37 +95,21 @@ public sealed class PlaguebearerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
 
     public static void CheckInfected(PlayerControl source, PlayerControl target)
     {
-        if (!source.HasModifier<PlaguebearerInfectedModifier>() && source.Data.Role is PlaguebearerRole)
+        if (source.Data.Role is PlaguebearerRole)
         {
-            source.AddModifier<PlaguebearerInfectedModifier>(source.PlayerId);
             target.AddModifier<PlaguebearerInfectedModifier>(source.PlayerId);
         }
-
-        if (!target.HasModifier<PlaguebearerInfectedModifier>() && target.Data.Role is PlaguebearerRole)
+        else if (target.Data.Role is PlaguebearerRole)
         {
             source.AddModifier<PlaguebearerInfectedModifier>(target.PlayerId);
-            target.AddModifier<PlaguebearerInfectedModifier>(target.PlayerId);
         }
-
-
-        if (source.HasModifier<PlaguebearerInfectedModifier>() && !target.HasModifier<PlaguebearerInfectedModifier>())
+        else if (source.TryGetModifier<PlaguebearerInfectedModifier>(out var mod) && !target.HasModifier<PlaguebearerInfectedModifier>())
         {
-            var plaguebearerId = source.GetModifier<PlaguebearerInfectedModifier>()?.PlagueBearerId;
-
-            if (plaguebearerId != null)
-            {
-                target.AddModifier<PlaguebearerInfectedModifier>((byte)plaguebearerId);
-            }
-        }
-
-        if (!source.HasModifier<PlaguebearerInfectedModifier>() && target.HasModifier<PlaguebearerInfectedModifier>() && source.Data.Role is not PlaguebearerRole)
+            target.AddModifier<PlaguebearerInfectedModifier>(mod.PlagueBearerId);
+        } 
+        else if (target.TryGetModifier<PlaguebearerInfectedModifier>(out var mod2) && !source.HasModifier<PlaguebearerInfectedModifier>())
         {
-            var plaguebearerId = target.GetModifier<PlaguebearerInfectedModifier>()?.PlagueBearerId;
-
-            if (plaguebearerId != null)
-            {
-                source.AddModifier<PlaguebearerInfectedModifier>((byte)plaguebearerId);
-            }
+            source.AddModifier<PlaguebearerInfectedModifier>(mod2.PlagueBearerId);
         }
     }
 
