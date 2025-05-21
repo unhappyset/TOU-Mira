@@ -47,10 +47,10 @@ An [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod based on T
 -----------------------
 
 <p align="center">
-  <img width="1500" height="" src="./Images/Groups/CrewInvest.png" align="center" alt="logo" />
-  <img width="500" height="" src="./Images/RoleHeaders/Altruist.png" align="left" alt="logo" />
-  <img width="500" height="" src="./Images/RoleHeaders/Amnesiac.png" align="center" alt="logo" />
-  <img width="500" height="" src="./Images/RoleHeaders/Arsonist.png" align="right" alt="logo" />
+  <img width="" height="" src="./Images/Groups/CrewInvest.png" align="center" alt="logo" />
+  <img width="375" height="" src="./Images/RoleHeaders/Altruist.png" align="left" alt="logo" />
+  <img width="375" height="" src="./Images/RoleHeaders/Amnesiac.png" align="center" alt="logo" />
+  <img width="375" height="" src="./Images/RoleHeaders/Arsonist.png" align="right" alt="logo" />
   <img width="" height="" src="./Images/Groups/CrewKilling.png" align="center" alt="logo" />
   <img width="" height="" src="./Images/Groups/CrewPower.png" align="center" alt="logo" />
   <img width="" height="" src="./Images/Groups/CrewProtect.png" align="center" alt="logo" />
