@@ -1,6 +1,6 @@
 > [!NOTE]
 > This repo is a fork of [Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R) and is under constant development, expect bugs.\
-> This mod is NOT for mobile or console versions of Among Us and is NOT host only either, please do not ask for a port or a rewrite.
+> This mod is NOT for console versions of Among Us and is NOT host only either, please do not ask for a port or a rewrite.
 
 -----------------------
 
@@ -19,7 +19,7 @@
 An [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod based on Town of Salem, designed to be a rewrite of Town of Us Reactivated!
 
 > [!TIP]
-> Join the Reactivated [Discord](https://discord.gg/cd27aDQDY9) if you have any problems or want to find people to play with!\
+> Join the Reactivated [Discord](https://discord.gg/ugyc4EVUYZ) if you have any problems or want to find people to play with!\
 > Check out the mod's [wiki](https://github.com/AU-Avengers/TOU-Mira/wiki) for info!
 
 -----------------------
@@ -42,3 +42,31 @@ An [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod based on T
 - [**Mod Info**](https://github.com/AU-Avengers/TOU-Mira/wiki/Mod-Info)
 - [**Credits & Resources**](https://github.com/AU-Avengers/TOU-Mira/wiki/Credits)
 - [**License**](#license)
+- [**Copyright**](#copyright)
+
+-----------------------
+
+# Releases
+
+**Disclaimer: The mod is *not* guaranteed to work on the latest versions of Among Us when the game updates.**
+
+| Among Us   | Mod Version | Download Link                                                                                   |
+|------------|-------------|-------------------------------------------------------------------------------------------------|
+| 2025.5.20  | 1.0.0       | [Download](TBD) |
+
+<details>
+<summary>Older Versions</summary>
+
+| Among Us   | Mod Version  | Download Link                                                                                                         |
+|------------|--------------|-----------------------------------------------------------------------------------------------------------------------|
+
+</details>
+
+-----------------------
+
+# License
+This software is distributed under the GNU GPLv3 License. BepInEx is distributed under the LGPL-2.1 License.
+
+# Copyright
+<p align="center">This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC.</p>
+<p align="center">© Innersloth LLC.</p>
