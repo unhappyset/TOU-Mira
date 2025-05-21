@@ -110,65 +110,66 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         }
 
         yield return new WaitForSeconds(waitfor);
-        if (MeetingHud.Instance) yield break;
+        
+        if (!MeetingHud.Instance)
+        {
+            GameHistory.ClearMurder(dead);
 
-        Player.moveable = true;
-
-        GameHistory.ClearMurder(dead);
-
-        dead.Revive();
+            dead.Revive();
 
             dead.transform.position = new Vector2(position.x, position.y);
             if (dead.AmOwner) PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(position.x, position.y));
 
-        if (ModCompatibility.IsSubmerged() && PlayerControl.LocalPlayer.PlayerId == dead.PlayerId)
-        {
-            ModCompatibility.ChangeFloor(dead.transform.position.y > -7);
-        }
-
-        // return player from ghost role back to what they were when alive
-        dead.ChangeRole((ushort)roleWhenAlive!.Role, false);
-
-        if (dead.Data.Role is IAnimated animated)
-        {
-            animated.IsVisible = true;
-            animated.SetVisible();
-        }
-        foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(dead.Data.Role)).OfType<IAnimated>())
-        {
-            button.IsVisible = true;
-            button.SetVisible();
-        }
-        foreach (var modifier in dead.GetModifiers<GameModifier>().Where(x => x is IAnimated))
-        {
-            var animatedMod = modifier as IAnimated;
-            if (animatedMod != null)
+            if (ModCompatibility.IsSubmerged() && PlayerControl.LocalPlayer.PlayerId == dead.PlayerId)
             {
-                animatedMod.IsVisible = true;
-                animatedMod.SetVisible();
-            }
-        }
-
-        dead.RemainingEmergencies = 0;
-
-        Player.RemainingEmergencies = 0;
-
-        body = Object.FindObjectsOfType<DeadBody>()
-            .FirstOrDefault(b => b.ParentId == dead.PlayerId);
-        if (!OptionGroupSingleton<AltruistOptions>.Instance.HideAtBeginningOfRevive && body != null) Object.Destroy(body.gameObject);
-
-        if (PlayerControl.LocalPlayer.IsImpostor() || PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling))
-        {
-            if (Player.HasModifier<AltruistArrowModifier>())
-            {
-                Player.RemoveModifier<AltruistArrowModifier>();
+                ModCompatibility.ChangeFloor(dead.transform.position.y > -7);
             }
 
-            if (!dead.HasModifier<AltruistArrowModifier>() && dead != PlayerControl.LocalPlayer)
+            // return player from ghost role back to what they were when alive
+            dead.ChangeRole((ushort)roleWhenAlive!.Role, false);
+
+            if (dead.Data.Role is IAnimated animated)
             {
-                dead.AddModifier<AltruistArrowModifier>(PlayerControl.LocalPlayer, Color.white);
+                animated.IsVisible = true;
+                animated.SetVisible();
+            }
+            foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(dead.Data.Role)).OfType<IAnimated>())
+            {
+                button.IsVisible = true;
+                button.SetVisible();
+            }
+            foreach (var modifier in dead.GetModifiers<GameModifier>().Where(x => x is IAnimated))
+            {
+                var animatedMod = modifier as IAnimated;
+                if (animatedMod != null)
+                {
+                    animatedMod.IsVisible = true;
+                    animatedMod.SetVisible();
+                }
+            }
+
+            dead.RemainingEmergencies = 0;
+
+            Player.RemainingEmergencies = 0;
+
+            body = Object.FindObjectsOfType<DeadBody>()
+                .FirstOrDefault(b => b.ParentId == dead.PlayerId);
+            if (!OptionGroupSingleton<AltruistOptions>.Instance.HideAtBeginningOfRevive && body != null) Object.Destroy(body.gameObject);
+
+            if (PlayerControl.LocalPlayer.IsImpostor() || PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling))
+            {
+                if (Player.HasModifier<AltruistArrowModifier>())
+                {
+                    Player.RemoveModifier<AltruistArrowModifier>();
+                }
+
+                if (!dead.HasModifier<AltruistArrowModifier>() && dead != PlayerControl.LocalPlayer)
+                {
+                    dead.AddModifier<AltruistArrowModifier>(PlayerControl.LocalPlayer, Color.white);
+                }
             }
         }
+        Player.moveable = true;
     }
 
     [MethodRpc((uint)TownOfUsRpc.AltruistRevive, SendImmediately = true)]

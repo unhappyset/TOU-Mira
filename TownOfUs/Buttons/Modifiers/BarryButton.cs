@@ -53,7 +53,7 @@ public sealed class BarryButton : TownOfUsButton
             }
 
             HudManager.Instance.OpenMeetingRoom(player);
-            PlayerControl.LocalPlayer.RpcStartMeeting(null);
+            player.RpcStartMeeting(null);
         }
     }
 }
