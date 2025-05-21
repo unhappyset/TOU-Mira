@@ -9,7 +9,7 @@ Join The official [Discord](https://discord.gg/ugyc4EVUYZ) if you have any probl
 # Releases
 | Among Us - Version| Mod Version | Link |
 |----------|-------------|-----------------|
-| 16.0.2s & 16.0.2e | v5.9 Beta 1 | [Download](TBD) |
+| 16.0.5s & 16.0.5e | v5.9 Beta 1 | [Download](TBD) |
 
 <details>
   <summary> Changelog </summary>
