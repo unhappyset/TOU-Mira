@@ -11,7 +11,6 @@ using TownOfUs.Buttons.Neutral;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -33,16 +32,6 @@ public sealed class PlaguebearerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         MaxRoleCount = 1,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };
-    public override void Initialize(PlayerControl player)
-    {
-        RoleStubs.RoleBehaviourInitialize(this, player);
-        player.AddModifier<PlaguebearerInfectedModifier>(Player.PlayerId);
-    }
-    public override void Deinitialize(PlayerControl targetPlayer)
-    {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
-        targetPlayer.RemoveModifier<PlaguebearerInfectedModifier>();
-    }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
@@ -111,6 +100,13 @@ public sealed class PlaguebearerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
             source.AddModifier<PlaguebearerInfectedModifier>(source.PlayerId);
             target.AddModifier<PlaguebearerInfectedModifier>(source.PlayerId);
         }
+
+        if (!target.HasModifier<PlaguebearerInfectedModifier>() && target.Data.Role is PlaguebearerRole)
+        {
+            source.AddModifier<PlaguebearerInfectedModifier>(target.PlayerId);
+            target.AddModifier<PlaguebearerInfectedModifier>(target.PlayerId);
+        }
+
 
         if (source.HasModifier<PlaguebearerInfectedModifier>() && !target.HasModifier<PlaguebearerInfectedModifier>())
         {
