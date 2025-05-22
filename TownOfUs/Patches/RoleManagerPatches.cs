@@ -507,7 +507,11 @@ public static class TouRoleManagerPatches
     [HarmonyPriority(Priority.First)]
     public static bool SelectRolesPatch(RoleManager __instance)
     {
+        //Logger<TownOfUsPlugin>.Error($"RoleManager.SelectRoles - ReplaceRoleManager: {ReplaceRoleManager}");
+
         if (TutorialManager.InstanceExists || ReplaceRoleManager) return true;
+
+        //Logger<TownOfUsPlugin>.Error($"RoleManager.SelectRoles 2");
 
         var players = GameData.Instance.AllPlayers.ToArray().ToList();
         players.Shuffle();

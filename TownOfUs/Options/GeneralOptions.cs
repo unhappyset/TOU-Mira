@@ -43,6 +43,9 @@ public sealed class GeneralOptions : AbstractOptionGroup
 
     [ModdedToggleOption("Powerful Crew Continue The Game")]
     public bool CrewKillersContinue { get; set; } = true;
+
+    [ModdedToggleOption("Hide Vent Animations Not In Vision")]
+    public bool HideVentAnimationNotInVision { get; set; } = true;
 }
 
 public enum SkipState
