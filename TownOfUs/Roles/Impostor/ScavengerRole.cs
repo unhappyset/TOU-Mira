@@ -9,6 +9,7 @@ using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Patches.Stubs;
+using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -48,8 +49,9 @@ public sealed class ScavengerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         Clear();
     }
 
-    public void PlayerControlFixedUpdate(PlayerControl playerControl)
+    public void FixedUpdate()
     {
+        if (Player == null || Player.Data.Role is not ScavengerRole) return;
         if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
         if (!Player.AmOwner) return;
 

@@ -13,6 +13,7 @@ using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Patches.Stubs;
+using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -139,8 +140,9 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
         }
     }
 
-    public void PlayerControlFixedUpdate(PlayerControl playerControl)
+    public void FixedUpdate()
     {
+        if (Player == null || Player.Data.Role is not MedicRole) return;
         if (Shielded != null && Shielded.HasDied())
             Clear();
     }

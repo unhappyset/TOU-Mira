@@ -11,6 +11,7 @@ using TMPro;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Patches.Stubs;
+using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
@@ -98,11 +99,13 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
         HasProsecuted = false;
     }
 
-    public void PlayerControlFixedUpdate(PlayerControl playerControl)
+    public void FixedUpdate()
     {
+        if (Player == null || Player.Data.Role is not ProsecutorRole) return;
+
         var meeting = MeetingHud.Instance;
 
-        if (!playerControl.AmOwner || meeting == null || ProsecuteButton == null) return;
+        if (!Player.AmOwner || meeting == null || ProsecuteButton == null) return;
 
         ProsecuteButton.gameObject.SetActive(meeting.SkipVoteButton.gameObject.active && !SelectingProsecuteVictim);
 

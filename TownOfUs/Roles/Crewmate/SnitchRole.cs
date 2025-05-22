@@ -192,6 +192,8 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
     private void FixedUpdate()
     {
+        if (Player == null || Player.Data.Role is not SnitchRole) return;
+
         if (SnitchRevealArrow != null && SnitchRevealArrow.target != SnitchRevealArrow.transform.parent.position)
         {
             SnitchRevealArrow.target = Player.transform.position;

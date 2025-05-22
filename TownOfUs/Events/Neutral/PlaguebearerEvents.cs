@@ -3,6 +3,7 @@ using MiraAPI.Events.Mira;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Hud;
+using TownOfUs.Buttons.Neutral;
 using TownOfUs.Roles.Neutral;
 
 namespace TownOfUs.Events.Neutral;
@@ -30,6 +31,7 @@ public static class PlaguebearerEvents
         var source = PlayerControl.LocalPlayer;
         var target = button?.Target;
 
+        if (@event.Button is PlaguebearerInfectButton) return;
         if (target == null || button == null || !button.CanClick()) return;
 
         PlaguebearerRole.RpcCheckInfected(source, target);

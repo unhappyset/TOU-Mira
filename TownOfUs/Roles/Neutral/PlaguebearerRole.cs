@@ -1,5 +1,6 @@
 using System.Text;
 using AmongUs.GameOptions;
+using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
@@ -55,17 +56,21 @@ public sealed class PlaguebearerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         return stringB;
     }
 
-    public void PlayerControlFixedUpdate(PlayerControl playerControl)
+    public void FixedUpdate()
     {
-        var allInfected = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.HasDied() && x != Player && x.GetModifier<PlaguebearerInfectedModifier>()?.PlagueBearerId == Player.PlayerId);
+        if (Player == null || Player.Data.Role is not PlaguebearerRole || Player.HasDied()) return;
 
-        if (allInfected.Count() == Helpers.GetAlivePlayers().Count - 1 && (MeetingHud.Instance == null || Helpers.GetAlivePlayers().Count > 2))
+        var allInfected = ModifierUtils.GetPlayersWithModifier<PlaguebearerInfectedModifier>(x => x.PlagueBearerId == Player.PlayerId && !x.Player.HasDied());
+
+        if (allInfected.Count() >= Helpers.GetAlivePlayers().Count - 1 && (MeetingHud.Instance == null || Helpers.GetAlivePlayers().Count > 2))
         {
+            var players = ModifierUtils.GetPlayersWithModifier<PlaguebearerInfectedModifier>(x => x.PlagueBearerId == Player.PlayerId);
+
+            players.Do(x => x.RemoveModifier<PlaguebearerInfectedModifier>(x => x.PlagueBearerId == Player.PlayerId));
+
             Player.ChangeRole(RoleId.Get<PestilenceRole>());
 
             CustomButtonSingleton<PestilenceKillButton>.Instance.SetTimer(OptionGroupSingleton<PlaguebearerOptions>.Instance.PestKillCooldown);
-
-            allInfected.ToList().ForEach(x => x.RemoveModifier<PlaguebearerInfectedModifier>());
         }
     }
 

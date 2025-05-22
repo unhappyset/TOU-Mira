@@ -64,8 +64,9 @@ public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         Clear();
     }
 
-    public void PlayerControlFixedUpdate(PlayerControl playerControl)
+    public void FixedUpdate()
     {
+        if (Player == null || Player.Data.Role is not WardenRole) return;
         if (Fortified != null && Fortified.HasDied())
             Clear();
     }
