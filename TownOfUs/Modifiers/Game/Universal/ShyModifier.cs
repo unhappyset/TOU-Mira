@@ -4,7 +4,9 @@ using MiraAPI.Utilities.Assets;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Modifiers.Universal;
+using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Impostor;
+using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
@@ -18,6 +20,18 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
     public override string GetDescription() => "You become transparent when \nstanding still for a short duration.";
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ShyChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ShyAmount;
+
+    public override bool IsModifierValidOn(RoleBehaviour role)
+    {
+        var isValid = true;
+        if ((role is JesterRole && OptionGroupSingleton<JesterOptions>.Instance.ScatterOn) ||
+            (role is SurvivorRole && OptionGroupSingleton<SurvivorOptions>.Instance.ScatterOn))
+        {
+            isValid = false;
+        }
+
+        return base.IsModifierValidOn(role) && isValid;
+    }
 
     private static float FinalTransparency => OptionGroupSingleton<ShyOptions>.Instance.FinalTransparency;
     private static float InvisDelay => OptionGroupSingleton<ShyOptions>.Instance.InvisDelay;

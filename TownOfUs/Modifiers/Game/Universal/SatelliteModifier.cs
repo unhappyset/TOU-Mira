@@ -10,6 +10,7 @@ using TownOfUs.Modules.Anims;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Modifiers.Universal;
+using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ public sealed class SatelliteModifier : UniversalGameModifier, IWikiDiscoverable
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        return base.IsModifierValidOn(role) && !role.Player.GetModifierComponent().HasModifier<DisperserModifier>(true);
+        return base.IsModifierValidOn(role) && !role.Player.GetModifierComponent().HasModifier<DisperserModifier>(true) && role is not MysticRole;
     }
     public void OnRoundStart()
     {
