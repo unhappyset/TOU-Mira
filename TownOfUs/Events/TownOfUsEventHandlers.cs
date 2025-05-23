@@ -44,12 +44,18 @@ public static class TownOfUsEventHandlers
         var target = murderEvent.Target;
 
         GameHistory.AddMurder(source, target);
+        
+        if (target.AmOwner)
+        {
+            HudManager.Instance.SetHudActive(target, target.Data.Role, false);
+            HudManager.Instance.SetHudActive(target, target.Data.Role, true);
+        }
 
         if (target.Data.Role is IAnimated animated)
-        {
-            animated.IsVisible = false;
-            animated.SetVisible();
-        }
+            {
+                animated.IsVisible = false;
+                animated.SetVisible();
+            }
         foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(target.Data.Role)).OfType<IAnimated>())
         {
             button.IsVisible = false;
@@ -74,7 +80,7 @@ public static class TownOfUsEventHandlers
         {
             var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == target.PlayerId);
 
-            if (target.HasModifier<MiniModifier>() && body != null) 
+            if (target.HasModifier<MiniModifier>() && body != null)
             {
                 body.transform.localScale *= 0.7f;
             }
