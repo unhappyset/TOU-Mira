@@ -9,5 +9,5 @@ public sealed class SwapperOptions : AbstractOptionGroup<SwapperRole>
     public override string GroupName => "Swapper";
 
     [ModdedToggleOption("Swapper Can Call Button")]
-    public bool CanButton { get; set; } = false;
+    public bool CanButton { get; set; } = true;
 }

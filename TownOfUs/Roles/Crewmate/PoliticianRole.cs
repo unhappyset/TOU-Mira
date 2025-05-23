@@ -1,11 +1,13 @@
 using System.Text;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
+using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -108,9 +110,14 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
         }
         else
         {
-            CanCampaign = false;
+            var text = "You need to campaign more Crewmates! You may not reveal again in this meeting.";
+            if (OptionGroupSingleton<PoliticianOptions>.Instance.PreventCampaign)
+            {
+                CanCampaign = false;
+                text = "You need to campaign more Crewmates! However, you may not campaign next round.";
+            }
             var title = $"<color=#{TownOfUsColors.Mayor.ToHtmlStringRGBA()}>Politician Feedback</color>";
-            MiscUtils.AddFakeChat(Player.Data, title, "You need to campaign more Crewmates! However, you may not campaign next round", false, true);
+            MiscUtils.AddFakeChat(Player.Data, title, text, false, true);
         }
     }
 
@@ -136,7 +143,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
             $"Give a player a ballot, which will only be useful to you if they are a Crewmate.",
             TouCrewAssets.CampaignButtonSprite),
         new("Reveal (Meeting)",
-            $"If you reveal and you have more than half of the crewmates campaigned (or no other crewmates remain), you will become the Mayor! Otherwise, your ability will fail and you cannot campaign the following round.",
+            $"If you reveal and you have more than half of the crewmates campaigned (or no other crewmates remain), you will become the Mayor! Otherwise, your ability will fail and you " + (OptionGroupSingleton<PoliticianOptions>.Instance.PreventCampaign ? "cannot" : "can") + " campaign the following round.",
             TouAssets.RevealCleanSprite),
     ];
 }

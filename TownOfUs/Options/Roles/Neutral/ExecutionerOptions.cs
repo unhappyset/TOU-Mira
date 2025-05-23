@@ -13,7 +13,7 @@ public sealed class ExecutionerOptions : AbstractOptionGroup<ExecutionerRole>
     public BecomeOptions OnTargetDeath { get; set; } = BecomeOptions.Jester;
 
     [ModdedToggleOption("Executioner Can Call Meeting")]
-    public bool CanButton { get; set; } = false;
+    public bool CanButton { get; set; } = true;
     
     [ModdedEnumOption("Executioner Win", typeof(ExeWinOptions), ["Ends Game", "Torments", "Nothing"])]
     public ExeWinOptions ExeWin { get; set; } = ExeWinOptions.EndsGame;

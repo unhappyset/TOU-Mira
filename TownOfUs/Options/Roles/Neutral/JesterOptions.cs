@@ -11,7 +11,7 @@ public sealed class JesterOptions : AbstractOptionGroup<JesterRole>
     public override string GroupName => "Jester";
 
     [ModdedToggleOption("Jester Can Button")]
-    public bool CanButton { get; set; } = false;
+    public bool CanButton { get; set; } = true;
 
     [ModdedToggleOption("Jester Can Hide In Vents")]
     public bool CanVent { get; set; } = true;

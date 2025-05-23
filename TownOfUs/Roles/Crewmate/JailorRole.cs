@@ -123,7 +123,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         var confirmButton = voteArea.Buttons.transform.GetChild(0).gameObject;
 
         var newButtonObj = Object.Instantiate(confirmButton, voteArea.transform);
-        newButtonObj.transform.position = confirmButton.transform.position - new Vector3(0.75f, 0f, 0f);
+        newButtonObj.transform.position = confirmButton.transform.position - new Vector3(0.75f, 0f, -2.1f);
         newButtonObj.transform.localScale *= 0.8f;
         newButtonObj.layer = 5;
         newButtonObj.transform.parent = confirmButton.transform.parent.parent;
@@ -138,7 +138,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         passive.OnClick.AddListener(Execute());
 
         var usesTextObj = Object.Instantiate(voteArea.NameText, voteArea.transform);
-        usesTextObj.transform.localPosition = new Vector3(-0.22f, 0.12f, 0f);
+        usesTextObj.transform.localPosition = new Vector3(-0.22f, 0.16f, 0f);
         usesTextObj.text = $"{Executes}";
         usesTextObj.transform.localScale = usesTextObj.transform.localScale * 0.65f;
 
@@ -197,6 +197,6 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             TouCrewAssets.JailSprite),
         new("Execute (Meeting)",
             "Execute the detained player. If the player is a crewmate the Jailor will lose the ability to Jail.",
-            TouAssets.ExecuteSprite)
+            TouAssets.ExecuteCleanSprite)
     ];
 }
