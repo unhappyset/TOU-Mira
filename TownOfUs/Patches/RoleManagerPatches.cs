@@ -504,7 +504,7 @@ public static class TouRoleManagerPatches
 
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
     [HarmonyPrefix]
-    [HarmonyPriority(Priority.First)]
+    [HarmonyPriority(Priority.Last)]
     public static bool SelectRolesPatch(RoleManager __instance)
     {
         //Logger<TownOfUsPlugin>.Error($"RoleManager.SelectRoles - ReplaceRoleManager: {ReplaceRoleManager}");
