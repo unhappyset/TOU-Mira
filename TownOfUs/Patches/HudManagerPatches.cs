@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using MiraAPI.GameOptions;
-using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using TownOfUs.Modifiers;
@@ -47,45 +46,9 @@ public static class HudManagerPatches
             if (cam?.gameObject.name == "UI Camera")
                 cam.orthographicSize = size;
         }
-
-        // TODO: figure out a replacement for this as it breaks chat
-        //ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
-        List<GameObject> uiList =
-        [
-            HudManager.Instance.UICamera.gameObject,
-            HudManager.Instance.TaskStuff.gameObject,
-            HudManager.Instance.MapButton.gameObject,
-            HudManager.Instance.KillButton.gameObject,
-            HudManager.Instance.ImpostorVentButton.gameObject,
-            HudManager.Instance.AdminButton.gameObject,
-            HudManager.Instance.UseButton.gameObject,
-            HudManager.Instance.PetButton.gameObject,
-            HudManager.Instance.ReportButton.gameObject,
-            HudManager.Instance.AbilityButton.gameObject,
-            HudManager.Instance.SabotageButton.gameObject
-        ];
-
-        foreach (var obj in uiList)
-        {
-            if (obj.active)
-            {
-                //Logger<TownOfUsPlugin>.Message($"OBJECT ACTIVE: {obj.name}");
-                if (obj.TryGetComponent<ActionButton>(out var button) && button.gameObject.active)
-                {
-                    //Logger<TownOfUsPlugin>.Message($"OBJECT (BUTTON) ACTIVE: {obj.name}");
-                    button.gameObject.SetActive(false);
-                    button.gameObject.SetActive(true);
-                }
-                obj.SetActive(false);
-                obj.SetActive(true);
-            }
-        }
-
-        foreach (var button in CustomButtonManager.Buttons.Where(x => x.Button != null && x.Button.gameObject.active).Select(x => x.Button!.gameObject))
-        {
-            button.SetActive(false);
-            button.SetActive(true);
-        }
+        
+        HudManager.Instance.SetHudActive(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data.Role, false);
+        if (!MeetingHud.Instance) HudManager.Instance.SetHudActive(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data.Role, true);
     }
 
     public static void CheckForScrollZoom()

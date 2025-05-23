@@ -44,11 +44,11 @@ public static class TownOfUsEventHandlers
         var target = murderEvent.Target;
 
         GameHistory.AddMurder(source, target);
-        
+
         if (target.AmOwner)
         {
-            HudManager.Instance.SetHudActive(target, target.Data.Role, false);
-            HudManager.Instance.SetHudActive(target, target.Data.Role, true);
+            HudManager.Instance.SetHudActive(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data.Role, false);
+            if (!MeetingHud.Instance) HudManager.Instance.SetHudActive(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data.Role, true);
         }
 
         if (target.Data.Role is IAnimated animated)

@@ -31,7 +31,6 @@ public static class IntroScenePatches
     [HarmonyPrefix]
     public static void IntroCutsceneOnDestroyPatch()
     {
-        HudManager.Instance.SetHudActive(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data.Role, false);
         HudManager.Instance.SetHudActive(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data.Role, true);
 
         foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(PlayerControl.LocalPlayer.Data.Role)))
