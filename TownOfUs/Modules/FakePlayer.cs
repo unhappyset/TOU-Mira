@@ -15,13 +15,13 @@ namespace TownOfUs.Modules;
 // Code Review: Should be using a MonoBehaviour
 public sealed class FakePlayer : IDisposable
 {
-    private static readonly List<FakePlayer> FakePlayers = [];
+    public static readonly List<FakePlayer> FakePlayers = [];
 
     private const string DefaultPetName = "EmptyPet(Clone)";
     private const string NameTextObjName = "NameText_TMP";
     private const string ColorBindTextName = "ColorblindName_TMP";
 
-    private readonly GameObject? body;
+    public readonly GameObject? body;
     private readonly SpriteRenderer? rend;
     private GameObject? colorBindTextObj;
 
@@ -53,7 +53,9 @@ public sealed class FakePlayer : IDisposable
 
         cosmicInfo.Cosmetics.Visible = true;
 
-        body = new GameObject("FakePlayer");
+        body = new GameObject($"Fake {player.gameObject.name}");
+
+
         body.layer = LayerMask.NameToLayer("Players");
 
         CreateNameTextParentObj(player, body, cosmicInfo);
