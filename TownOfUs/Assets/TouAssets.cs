@@ -49,7 +49,8 @@ public static class TouAssets
     public static LoadableAsset<Sprite> KillSprite { get; } = new LoadableResourceAsset($"{ShortPath}.KillButton.png");
     public static LoadableAsset<Sprite> RangeSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Range.png");
 
-    public static LoadableAsset<Sprite> HysteriaSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Hysteria.png");
+    public static LoadableAsset<Sprite> HysteriaSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Hysteria.png", 254);
+    public static LoadableAsset<Sprite> HysteriaCleanSprite { get; } = new LoadableResourceAsset($"{ShortPath}.HysteriaClean.png", 254);
     public static LoadableAsset<Sprite> ShootMeetingSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Shoot.png", 254);
     public static LoadableAsset<Sprite> BlackmailLetterSprite { get; } = new LoadableResourceAsset($"{ShortPath}.BlackmailLetter.png");
     public static LoadableAsset<Sprite> BlackmailOverlaySprite { get; } = new LoadableResourceAsset($"{ShortPath}.BlackmailOverlay.png");

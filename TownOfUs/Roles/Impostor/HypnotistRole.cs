@@ -130,6 +130,6 @@ public sealed class HypnotistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
             TouImpAssets.HypnotiseButtonSprite),
         new("Mass Hysteria (Meeting)",
             "Cause all hypnotised players to have different visuals applied to players on their screen the following round.",
-            TouAssets.HysteriaSprite)
+            TouAssets.HysteriaCleanSprite)
     ];
 }
