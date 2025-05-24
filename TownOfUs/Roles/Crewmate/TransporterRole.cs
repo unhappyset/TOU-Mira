@@ -194,6 +194,13 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             {
                 return null;
             }
+            // FAKE PLAYER MUST BE A MONO BEHAVIOUR FOR THIS TO WORK
+            /*var fakePlayer = Utilities.MiscUtils.GetFakePlayer(pc)?.body;
+
+            if (fakePlayer)
+            {
+                return fakePlayer;
+            } */
 
             if (pc.moveable || pc.inVent || (pc.TryGetModifier<DisabledModifier>(out var mod) && (!mod.IsConsideredAlive || !mod.CanBeInteractedWith)))
             {

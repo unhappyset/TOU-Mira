@@ -10,6 +10,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.PluginLoading;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Roles;
 using UnityEngine;
@@ -577,5 +578,14 @@ public static class MiscUtils
         }
 
         return result;
+    }
+    /// <summary>
+    /// Gets a FakePlayer by comparing PlayerControl.
+    /// </summary>
+    /// <param name="player">The player themselves.</param>
+    /// <returns>A fake player or null if its not found.</returns>
+    public static FakePlayer? GetFakePlayer(PlayerControl player)
+    {
+        return FakePlayer.FakePlayers.FirstOrDefault(x => x?.body?.name == $"Fake {player.gameObject.name}");
     }
 }

@@ -4,6 +4,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
+using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -28,7 +29,8 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
         {
             var playerMenu = CustomPlayerMenu.Create();
             playerMenu.Begin(
-                plr => !plr.HasDied() && plr != PlayerControl.LocalPlayer,
+                plr => (!plr.HasDied() || GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId) ||
+                FakePlayer.FakePlayers.FirstOrDefault(x => x?.body?.name == $"Fake {PlayerControl.LocalPlayer.gameObject.name}")?.body) && plr != PlayerControl.LocalPlayer,
                 plr =>
                 {
                     playerMenu.ForceClose();
@@ -36,8 +38,6 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
                     if (plr != null)
                     {
                         TouAudio.PlaySound(TouAudio.MimicSound);
-                        // THE ANIMATION NEEDS TO BE DONE IN SUCH A WAY THAT THE PLAYER DOESN'T MIMIC UNTIL THE ANIMATION ENDS
-                        // GOStore.SpawnGOATPlayer(PlayerControl.LocalPlayer, GOStore.GlitchMimic).AddComponent<UE_DeleteAfter>().endTime = 3;
                         PlayerControl.LocalPlayer.RpcAddModifier<GlitchMimicModifier>(plr);
 
                         EffectActive = true;
