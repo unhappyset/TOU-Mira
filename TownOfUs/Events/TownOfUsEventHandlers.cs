@@ -277,11 +277,11 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void PlayerJoinEvent(PlayerJoinEvent @event)
     {
-        Coroutines.Start(CoSetSentOnce(@event));
+        Coroutines.Start(CoWaitForJoin(@event));
     }
-    private static IEnumerator CoSetSentOnce(PlayerJoinEvent @event)
+    private static IEnumerator CoWaitForJoin(PlayerJoinEvent @event)
     {
-        yield return new WaitForSeconds(2.48f);
+        while (!PlayerControl.LocalPlayer) yield return null;
 
         var player = @event.ClientData.Character;
 
@@ -305,11 +305,11 @@ public static class TownOfUsEventHandlers
             var name = $"<color=#8BFDFD>System</color>";
             var msg = $"Welcome to Town of Us Mira v{TownOfUsPlugin.Version}!\nUse the wiki (the globe icon) to get more info on roles or modifiers, where you can use the searchbar. Otherwise use /help in the chat to get a list of commands.\nYou can also disable this message through your options menu.";
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, name, msg, true);
-            time = 2.52f;
+            time = 5f;
         }
         else if (!TownOfUsPlugin.ShowWelcomeMessage.Value)
         {
-            time = 0.01f;
+            time = 2.48f;
         }
         if (time == 0) yield break;
         yield return new WaitForSeconds(time);
