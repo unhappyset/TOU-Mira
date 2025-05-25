@@ -23,6 +23,7 @@ using TownOfUs.Utilities.Appearances;
 using UnityEngine;
 using UnityEngine.Events;
 using Color = UnityEngine.Color;
+using TownOfUs.Events;
 
 namespace TownOfUs.Patches;
 
@@ -47,8 +48,8 @@ public static class HudManagerPatches
                 cam.orthographicSize = size;
         }
         
-        HudManager.Instance.SetHudActive(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data.Role, false);
-        if (!MeetingHud.Instance) HudManager.Instance.SetHudActive(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data.Role, true);
+        HudManager.Instance.SetHudActive(false);
+        if (!MeetingHud.Instance) HudManager.Instance.SetHudActive(true);
     }
 
     public static void CheckForScrollZoom()
@@ -118,7 +119,7 @@ public static class HudManagerPatches
             var aspectPosition = WikiButton.GetComponentInChildren<AspectPosition>();
             var distanceFromEdge = aspectPosition.DistanceFromEdge;
             distanceFromEdge.x = isChatButtonVisible ? 2.73f : 2.15f;
-            if (((ModCompatibility.IsWikiButtonOffset && !ZoomButton.active) || ZoomButton.active) && MeetingHud.Instance == null && Minigame.Instance == null && (PlayerJoinPatch.SentOnce || TutorialManager.InstanceExists)) distanceFromEdge.x += 0.84f;
+            if (((ModCompatibility.IsWikiButtonOffset && !ZoomButton.active) || ZoomButton.active) && MeetingHud.Instance == null && Minigame.Instance == null && (TownOfUsEventHandlers.SentOnce || TutorialManager.InstanceExists)) distanceFromEdge.x += 0.84f;
             distanceFromEdge.y = 0.485f;
             WikiButton.SetActive(true);
             aspectPosition.DistanceFromEdge = distanceFromEdge;

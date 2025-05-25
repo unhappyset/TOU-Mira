@@ -93,6 +93,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             Player.SpawnAtRandomVent();
             Player.MyPhysics.ResetMoveState();
 
+            HudManager.Instance.SetHudActive(false);
             HudManager.Instance.SetHudActive(true);
             HudManager.Instance.AbilityButton.SetDisabled();
             Patches.HudManagerPatches.ZoomButton.SetActive(false);

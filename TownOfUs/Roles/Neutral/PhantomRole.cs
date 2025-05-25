@@ -86,6 +86,7 @@ public sealed class PhantomTouRole(IntPtr cppPtr) : NeutralGhostRole(cppPtr), IT
             Player.SpawnAtRandomVent();
             Player.MyPhysics.ResetMoveState();
 
+            HudManager.Instance.SetHudActive(false);
             HudManager.Instance.SetHudActive(true);
             HudManager.Instance.AbilityButton.SetDisabled();
             Patches.HudManagerPatches.ZoomButton.SetActive(false);
