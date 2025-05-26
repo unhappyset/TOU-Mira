@@ -449,7 +449,7 @@ public static class HudManagerPatches
                     roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color></size>";
 
                     var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole) as ICachedRole;
-                    if (cachedMod != null)
+                    if (cachedMod != null && player.Data.Role != cachedMod.CachedRole)
                     {
                         if (cachedMod.ShowCurrentRoleFirst) roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color> ({cachedMod.CachedRole.TeamColor.ToTextColor()}{cachedMod.CachedRole.NiceName}</color>)</size>";
                         else roleName = $"<size=80%>{cachedMod.CachedRole.TeamColor.ToTextColor()}{cachedMod.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
