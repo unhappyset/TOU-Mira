@@ -12,4 +12,8 @@
     <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(AmongUs)/BepInEx/plugins/" UseSymboliclinksIfPossible="true" />
     </Target>
+
+    <ItemGroup>
+        <EmbeddedResource Include="TownOfUs\Resources\*.bundle" Exclude="Resources\*.png"/>
+    </ItemGroup>
 </Project>
