@@ -23,7 +23,6 @@ using TownOfUs.Utilities.Appearances;
 using UnityEngine;
 using UnityEngine.Events;
 using Color = UnityEngine.Color;
-using TownOfUs.Events;
 
 namespace TownOfUs.Patches;
 
@@ -40,16 +39,21 @@ public static class HudManagerPatches
         var size = Zooming ? 12f : 3f;
         ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlus.LoadAsset() : TouAssets.ZoomMinus.LoadAsset();
         ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlusActive.LoadAsset() : TouAssets.ZoomMinusActive.LoadAsset();
-        Camera.main.orthographicSize = size;
 
-        foreach (var cam in Camera.allCameras)
-        {
-            if (cam?.gameObject.name == "UI Camera")
-                cam.orthographicSize = size;
-        }
-        
-        HudManager.Instance.SetHudActive(false);
-        if (!MeetingHud.Instance) HudManager.Instance.SetHudActive(true);
+        Camera.main.orthographicSize = size;
+        HudManager.Instance.UICamera.orthographicSize = size;
+        ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
+    }
+    public static void ResetZoom()
+    {
+        Zooming = false;
+        var size = 3f;
+        ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = TouAssets.ZoomMinus.LoadAsset();
+        ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = TouAssets.ZoomMinusActive.LoadAsset();
+
+        Camera.main.orthographicSize = size;
+        HudManager.Instance.UICamera.orthographicSize = size;
+        ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
 
     public static void CheckForScrollZoom()
@@ -119,7 +123,7 @@ public static class HudManagerPatches
             var aspectPosition = WikiButton.GetComponentInChildren<AspectPosition>();
             var distanceFromEdge = aspectPosition.DistanceFromEdge;
             distanceFromEdge.x = isChatButtonVisible ? 2.73f : 2.15f;
-            if (((ModCompatibility.IsWikiButtonOffset && !ZoomButton.active) || ZoomButton.active) && MeetingHud.Instance == null && Minigame.Instance == null && (TownOfUsEventHandlers.SentOnce || TutorialManager.InstanceExists)) distanceFromEdge.x += 0.84f;
+            if (((ModCompatibility.IsWikiButtonOffset && !ZoomButton.active) || ZoomButton.active) && MeetingHud.Instance == null && Minigame.Instance == null && (PlayerJoinPatch.SentOnce || TutorialManager.InstanceExists)) distanceFromEdge.x += 0.84f;
             distanceFromEdge.y = 0.485f;
             WikiButton.SetActive(true);
             aspectPosition.DistanceFromEdge = distanceFromEdge;
@@ -146,17 +150,6 @@ public static class HudManagerPatches
         UpdateCamouflageComms(__instance);
         UpdateRoleNameText(__instance);
         UpdateGhostRoles(__instance);
-        ResetZoom(__instance);
-    }
-
-
-    public static void ResetZoom(HudManager instance)
-    {
-        if (MeetingHud.Instance != null && !Zooming)
-        {
-            Zooming = true;
-            Zoom();
-        }
     }
 
     public static void UpdateCamouflageComms(HudManager instance)
@@ -461,8 +454,8 @@ public static class HudManagerPatches
                         if (cachedMod.ShowCurrentRoleFirst) roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color> ({cachedMod.CachedRole.TeamColor.ToTextColor()}{cachedMod.CachedRole.NiceName}</color>)</size>";
                         else roleName = $"<size=80%>{cachedMod.CachedRole.TeamColor.ToTextColor()}{cachedMod.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
                     }
-
-                    if (player.Data.IsDead && role is not PhantomTouRole or HaunterRole)
+                    // Guardian Angel here is vanilla's GA, NOT Town of Us GA
+                    if (player.Data.IsDead && role is not PhantomTouRole or HaunterRole or GuardianAngelRole)
                     {
                         var roleWhenAlive = player.GetRoleWhenAlive();
                         color = roleWhenAlive!.TeamColor;

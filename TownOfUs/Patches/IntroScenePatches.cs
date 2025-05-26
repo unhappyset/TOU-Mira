@@ -106,6 +106,7 @@ public static class ModifierIntroPatch
     {
         public static void Postfix(IntroCutscene._ShowRole_d__41 __instance)
         {
+            HudManagerPatches.ResetZoom();
             var modifier = PlayerControl.LocalPlayer.GetModifiers<AllianceGameModifier>().FirstOrDefault();
 
             if (ModifierText != null && modifier != null)

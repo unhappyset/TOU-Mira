@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using InnerNet;
 using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Modifiers;
@@ -587,5 +588,10 @@ public static class MiscUtils
     public static FakePlayer? GetFakePlayer(PlayerControl player)
     {
         return FakePlayer.FakePlayers.FirstOrDefault(x => x?.body?.name == $"Fake {player.gameObject.name}");
+    }
+    public static ClientData GetClientById(int id)
+    {
+        try { return AmongUsClient.Instance.allClients.ToArray().FirstOrDefault(cd => cd.Id == id); }
+        catch { return null; }
     }
 }

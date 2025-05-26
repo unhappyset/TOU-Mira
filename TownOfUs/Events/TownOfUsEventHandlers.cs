@@ -20,7 +20,6 @@ using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modules.Anims;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers.Types;
-using TownOfUs.Patches.Misc;
 
 namespace TownOfUs.Events;
 
@@ -272,47 +271,5 @@ public static class TownOfUsEventHandlers
         { 
             instance.CheckForEndVoting();
         }
-    }
-    public static bool SentOnce { get; private set; }
-    [RegisterEvent]
-    public static void PlayerJoinEvent(PlayerJoinEvent @event)
-    {
-        Coroutines.Start(CoWaitForJoin(@event));
-    }
-    private static IEnumerator CoWaitForJoin(PlayerJoinEvent @event)
-    {
-        while (!PlayerControl.LocalPlayer) yield return null;
-
-        var player = @event.ClientData.Character;
-
-        if (!player) yield break;
-        if (AmongUsClient.Instance && !TutorialManager.InstanceExists) ChatPatches.DoHostSetup();
-
-        if (!player.AmOwner) yield break;
-        TouRoleManagerPatches.ReplaceRoleManager = false;
-
-        var time = 0f;
-        if (GameHistory.EndGameSummary != string.Empty && TownOfUsPlugin.ShowSummaryMessage.Value)
-        {
-            var factionText = string.Empty;
-            var msg = string.Empty;
-            if (GameHistory.WinningFaction != string.Empty) factionText = $"<size=80%>Winning Team: {GameHistory.WinningFaction}</size>\n";
-            var title = $"<color=#8BFDFD>System (Toggleable In Options)</color>\n<size=62%>{factionText}{GameHistory.EndGameSummary}</size>";
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg);
-        }
-        if (!SentOnce && TownOfUsPlugin.ShowWelcomeMessage.Value)
-        {
-            var name = $"<color=#8BFDFD>System</color>";
-            var msg = $"Welcome to Town of Us Mira v{TownOfUsPlugin.Version}!\nUse the wiki (the globe icon) to get more info on roles or modifiers, where you can use the searchbar. Otherwise use /help in the chat to get a list of commands.\nYou can also disable this message through your options menu.";
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, name, msg, true);
-            time = 5f;
-        }
-        else if (!TownOfUsPlugin.ShowWelcomeMessage.Value)
-        {
-            time = 2.48f;
-        }
-        if (time == 0) yield break;
-        yield return new WaitForSeconds(time);
-        SentOnce = true;
     }
 }

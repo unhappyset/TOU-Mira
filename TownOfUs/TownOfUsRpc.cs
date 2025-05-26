@@ -5,6 +5,7 @@ public enum TownOfUsRpc : uint
     
     ChangeHost,
     ChangeName,
+    SendJoinMsg,
 
     SetMap,
     ChangeRole,

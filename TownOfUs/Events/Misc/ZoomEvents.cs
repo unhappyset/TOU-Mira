@@ -23,6 +23,7 @@ public static class ZoomEvents
     public static void ReportBodyEventHandler(ReportBodyEvent @event)
     {
         HudManagerPatches.ZoomButton.SetActive(false);
+        Patches.HudManagerPatches.ResetZoom();
         if (HudManagerPatches.Zooming) HudManagerPatches.Zoom();
     }
 }
