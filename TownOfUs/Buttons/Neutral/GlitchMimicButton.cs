@@ -29,8 +29,8 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
         {
             var playerMenu = CustomPlayerMenu.Create();
             playerMenu.Begin(
-                plr => (!plr.HasDied() || GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId) ||
-                FakePlayer.FakePlayers.FirstOrDefault(x => x?.body?.name == $"Fake {PlayerControl.LocalPlayer.gameObject.name}")?.body) && plr != PlayerControl.LocalPlayer,
+                plr => (!plr.HasDied() || GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == plr.PlayerId) ||
+                FakePlayer.FakePlayers.FirstOrDefault(x => x?.body?.name == $"Fake {plr.gameObject.name}")?.body) && plr != PlayerControl.LocalPlayer,
                 plr =>
                 {
                     playerMenu.ForceClose();
