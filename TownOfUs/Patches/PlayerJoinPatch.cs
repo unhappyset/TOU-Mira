@@ -1,7 +1,5 @@
 using System.Collections;
 using HarmonyLib;
-using InnerNet;
-using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Modules;
 using TownOfUs.Patches.Misc;
@@ -11,46 +9,30 @@ using UnityEngine;
 namespace TownOfUs.Patches;
 
 
-[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CreatePlayer))]
+[HarmonyPatch(typeof(LobbyBehaviour), nameof(LobbyBehaviour.Start))]
 public static class PlayerJoinPatch
 {
     public static bool SentOnce { get; private set; }
     public static HudManager HUD => HudManager.Instance;
     public static ChatController Chat => HUD.Chat;
-    public static void Postfix(ClientData clientData)
+    public static void Postfix()
     {
-        if (AmongUsClient.Instance.AmHost)
-        {
-            Coroutines.Start(CoSendJoinMsg(clientData));
-        }
-        else
-        {
-            Coroutines.Start(DelaySend(clientData));
-        }
+        Coroutines.Start(CoSendJoinMsg());
     }
-    private static IEnumerator DelaySend(ClientData clientData)
+    private static IEnumerator CoSendJoinMsg()
     {
-        yield return new WaitForSeconds(0.5f);
         while (!AmongUsClient.Instance) yield return null;
-        Logger<TownOfUsPlugin>.Message("Client Initialized?");
-        RpcSendMsg(clientData);
-    }
-    [MethodRpc((uint)TownOfUsRpc.SendJoinMsg, SendImmediately = false)]
-    public static void RpcSendMsg(ClientData clientData)
-    {
-        Coroutines.Start(CoSendJoinMsg(clientData));
-    }
-    private static IEnumerator CoSendJoinMsg(ClientData clientData)
-    {
+        Logger<TownOfUsPlugin>.Info("Client Initialized?");
+
         while (!PlayerControl.LocalPlayer) yield return null;
-        var player = clientData.Character;
+        var player = PlayerControl.LocalPlayer;
 
         while (!player) yield return null;
-        Logger<TownOfUsPlugin>.Message("New Player Joined, Resetting Host");
+        Logger<TownOfUsPlugin>.Info("New Player Joined, Resetting Host");
         if (AmongUsClient.Instance && !TutorialManager.InstanceExists) ChatPatches.DoHostSetup();
 
         if (!player.AmOwner) yield break;
-        Logger<TownOfUsPlugin>.Message("Sending Message to Local Player...");
+        Logger<TownOfUsPlugin>.Info("Sending Message to Local Player...");
         TouRoleManagerPatches.ReplaceRoleManager = false;
 
         var time = 0f;
@@ -75,7 +57,7 @@ public static class PlayerJoinPatch
         }
         if (time == 0) yield break;
         yield return new WaitForSeconds(time);
-        Logger<TownOfUsPlugin>.Message("Offset Wiki Button (if needed)");
+        Logger<TownOfUsPlugin>.Info("Offset Wiki Button (if needed)");
         SentOnce = true;
     }
 }
