@@ -1,5 +1,6 @@
 using System.Text;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
@@ -7,6 +8,7 @@ using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
+using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -24,6 +26,7 @@ public sealed class HypnotistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public CustomRoleConfiguration Configuration => new(this)
     {
+        UseVanillaKillButton = OptionGroupSingleton<HypnotistOptions>.Instance.HypnoKill,
         Icon = TouRoleIcons.Hypnotist,
     };
 

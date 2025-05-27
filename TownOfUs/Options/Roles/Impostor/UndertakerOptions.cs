@@ -25,4 +25,6 @@ public sealed class UndertakerOptions : AbstractOptionGroup<UndertakerRole>
     {
         Visible = () => OptionGroupSingleton<UndertakerOptions>.Instance.CanVent,
     };
+    [ModdedToggleOption("Undertaker Can Kill")]
+    public bool UndertakerKill { get; set; } = true;
 }

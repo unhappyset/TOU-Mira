@@ -16,8 +16,8 @@ public sealed class ClericBarrierButton : TownOfUsRoleButton<ClericRole, PlayerC
     public override string Name => "Barrier";
     public override string Keybind => "ActionQuaternary";
     public override Color TextOutlineColor => TownOfUsColors.Cleric;
-    public override float Cooldown => MapCooldown;
-    public override float EffectDuration => OptionGroupSingleton<ClericOptions>.Instance.BarrierCooldown;
+    public override float Cooldown => OptionGroupSingleton<ClericOptions>.Instance.BarrierCooldown + MapCooldown;
+    public override float EffectDuration => OptionGroupSingleton<ClericOptions>.Instance.BarrierDuration;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.BarrierSprite;
 
     public override bool IsTargetValid(PlayerControl? target)

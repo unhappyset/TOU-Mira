@@ -10,10 +10,10 @@ namespace TownOfUs.Buttons.Crewmate;
 
 public sealed class PlumberBlockButton : TownOfUsRoleButton<PlumberRole, Vent>
 {
-    public override string Name => "Barricade";
+    public override string Name => "Block";
     public override string Keybind => "ActionSecondary";
     public override Color TextOutlineColor => TownOfUsColors.Plumber;
-    public override float Cooldown => OptionGroupSingleton<PlumberOptions>.Instance.FlushCooldown + MapCooldown;
+    public override float Cooldown => OptionGroupSingleton<PlumberOptions>.Instance.BlockCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<PlumberOptions>.Instance.MaxBarricades;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.BarricadeSprite;
 

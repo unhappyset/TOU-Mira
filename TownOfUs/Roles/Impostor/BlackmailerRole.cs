@@ -1,11 +1,13 @@
 ﻿using System.Text;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Networking.Rpc;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modules.Wiki;
+using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -22,6 +24,7 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
     public DoomableType DoomHintType => DoomableType.Insight;
     public CustomRoleConfiguration Configuration => new(this)
     {
+        UseVanillaKillButton = OptionGroupSingleton<BlackmailerOptions>.Instance.BlackmailerKill,
         Icon = TouRoleIcons.Blackmailer,
     };
 

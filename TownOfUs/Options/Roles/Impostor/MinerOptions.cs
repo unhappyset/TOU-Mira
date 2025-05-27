@@ -11,4 +11,6 @@ public sealed class MinerOptions : AbstractOptionGroup<MinerRole>
 
     [ModdedNumberOption("Mine Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float MineCooldown { get; set; } = 25f;
+    [ModdedToggleOption("Miner Can Kill")]
+    public bool MinerKill { get; set; } = true;
 }

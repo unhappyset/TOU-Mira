@@ -1,10 +1,12 @@
 ﻿using System.Text;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
+using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -21,6 +23,7 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public CustomRoleConfiguration Configuration => new(this)
     {
+        UseVanillaKillButton = OptionGroupSingleton<MinerOptions>.Instance.MinerKill,
         Icon = TouRoleIcons.Miner,
         OptionsScreenshot = TouImpAssets.MinerRoleBanner,
         IntroSound = TouAudio.MineSound,

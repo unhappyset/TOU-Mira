@@ -72,6 +72,10 @@ public static class TownOfUsEventHandlers
                 animatedMod.SetVisible();
             }
         }
+        if (@target.TryGetModifier<MedicShieldModifier>(out var medMod)
+        && PlayerControl.LocalPlayer.Data.Role is MedicRole
+        && medMod.Medic == PlayerControl.LocalPlayer)
+            CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
 
         // here we're adding support for kills during a meeting
         if (MeetingHud.Instance)

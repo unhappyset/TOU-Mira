@@ -25,5 +25,5 @@ public sealed class SeerOptions : AbstractOptionGroup<SeerRole>
     public bool ShowNeutralKillingAsRed { get; set; } = true;
 
     [ModdedToggleOption("Traitor Swaps Colors")]
-    public bool SwapTraitorColors { get; set; } = false;
+    public bool SwapTraitorColors { get; set; } = true;
 }

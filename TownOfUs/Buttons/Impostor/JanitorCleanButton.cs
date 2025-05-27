@@ -1,5 +1,7 @@
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
+using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -11,7 +13,7 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
     public override string Name => "Clean";
     public override string Keybind => "ActionQuaternary";
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
-    public override float Cooldown => PlayerControl.LocalPlayer.GetKillCooldown() + MapCooldown;
+    public override float Cooldown => OptionGroupSingleton<JanitorOptions>.Instance.CleanCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.CleanButtonSprite;
 
     public override DeadBody? GetTarget() => PlayerControl.LocalPlayer.GetNearestDeadBody(Distance);
@@ -33,7 +35,7 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
         PlayerControl.LocalPlayer.SetKillTimer(PlayerControl.LocalPlayer.GetKillCooldown());
     }
 
-    public override void FixedUpdateHandler(PlayerControl playerControl)
+    /* public override void FixedUpdateHandler(PlayerControl playerControl)
     {
         Timer = PlayerControl.LocalPlayer.killTimer;
 
@@ -48,5 +50,5 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
 
         Button?.SetCoolDown(Timer, Cooldown);
         FixedUpdate(playerControl);
-    }
+    } */
 }

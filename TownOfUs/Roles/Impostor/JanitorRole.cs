@@ -1,5 +1,6 @@
 using System.Text;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
@@ -7,6 +8,7 @@ using Reactor.Networking.Rpc;
 using Reactor.Utilities;
 using TownOfUs.Modules.Components;
 using TownOfUs.Modules.Wiki;
+using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -23,6 +25,7 @@ public sealed class JanitorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
     public DoomableType DoomHintType => DoomableType.Death;
     public CustomRoleConfiguration Configuration => new(this)
     {
+        UseVanillaKillButton = OptionGroupSingleton<JanitorOptions>.Instance.JanitorKill,
         Icon = TouRoleIcons.Janitor,
         IntroSound = TouAudio.JanitorCleanSound,
     };
