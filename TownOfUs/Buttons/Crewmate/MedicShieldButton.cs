@@ -3,6 +3,8 @@ using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TownOfUs.Roles.Crewmate;
 using UnityEngine;
+using MiraAPI.GameOptions;
+using TownOfUs.Options.Roles.Crewmate;
 
 namespace TownOfUs.Buttons.Crewmate;
 
@@ -13,10 +15,11 @@ public sealed class MedicShieldButton : TownOfUsRoleButton<MedicRole, PlayerCont
     public override Color TextOutlineColor => TownOfUsColors.Medic;
     public override float Cooldown => MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.MedicSprite;
+    public bool CanChangeTarget = OptionGroupSingleton<MedicOptions>.Instance.ChangeTarget;
 
     public override bool CanUse()
     {
-        return base.CanUse() && Role is { Shielded: null };
+        return base.CanUse() && (Role is { Shielded: null } || CanChangeTarget);
     }
 
     public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
@@ -30,5 +33,6 @@ public sealed class MedicShieldButton : TownOfUsRoleButton<MedicRole, PlayerCont
         }
 
         MedicRole.RpcMedicShield(PlayerControl.LocalPlayer, Target);
+        CanChangeTarget = false;
     }
 }

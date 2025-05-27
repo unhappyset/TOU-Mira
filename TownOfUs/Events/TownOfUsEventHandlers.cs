@@ -20,6 +20,8 @@ using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modules.Anims;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers.Types;
+using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Buttons.Crewmate;
 
 namespace TownOfUs.Events;
 
@@ -140,6 +142,11 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void PlayerLeaveEventHandler(PlayerLeaveEvent @event)
     {
+        if (@event.ClientData.Character.TryGetModifier<MedicShieldModifier>(out var medMod)
+        && PlayerControl.LocalPlayer.Data.Role is MedicRole
+        && medMod.Medic == PlayerControl.LocalPlayer)
+            CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
+
         if (MeetingHud.Instance == null) return;
 
         var player = @event.ClientData.Character;

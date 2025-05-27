@@ -16,6 +16,9 @@ public sealed class MedicOptions : AbstractOptionGroup<MedicRole>
     [ModdedEnumOption("Who Gets Murder Attempt Indicator", typeof(MedicOption), ["Medic", "Shielded", "Shielded + Medic", "Everyone", "No One"])]
     public MedicOption WhoGetsNotification { get; set; } = MedicOption.Medic;
 
+    [ModdedToggleOption("Allow Medic To Give Shield Away Next Round")]
+    public bool ChangeTarget { get; set; } = true;
+
     [ModdedToggleOption("Shield Breaks On Murder Attempt")]
     public bool ShieldBreaks { get; set; } = false;
 

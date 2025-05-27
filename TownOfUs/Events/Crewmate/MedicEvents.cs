@@ -1,5 +1,4 @@
-﻿using HarmonyLib;
-using MiraAPI.Events;
+﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Hud;
@@ -14,6 +13,11 @@ namespace TownOfUs.Events.Crewmate;
 
 public static class MedicEvents
 {
+    [RegisterEvent]
+    public static void RoundStartHandler(RoundStartEvent @event)
+    {
+        if (PlayerControl.LocalPlayer.Data.Role is MedicRole) MedicRole.OnRoundStart();
+    }
     [RegisterEvent]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
@@ -41,8 +45,6 @@ public static class MedicEvents
     [RegisterEvent]
     public static void ReportBodyEventHandler(ReportBodyEvent @event)
     {
-        CustomRoleUtils.GetActiveRolesOfType<MedicRole>().Do(x => MedicRole.RpcClearMedicShield(x.Player));
-
         if (@event.Target == null) return;
 
         if (@event.Reporter.Data.Role is MedicRole medic)
