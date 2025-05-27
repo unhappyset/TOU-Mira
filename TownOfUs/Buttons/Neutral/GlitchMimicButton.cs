@@ -47,7 +47,7 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
                     else
                     {
                         EffectActive = false;
-                        Timer = 1f;
+                        Timer = 0.01f;
                     }
                 });
         }

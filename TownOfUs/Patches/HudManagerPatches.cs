@@ -23,6 +23,8 @@ using TownOfUs.Utilities.Appearances;
 using UnityEngine;
 using UnityEngine.Events;
 using Color = UnityEngine.Color;
+using TMPro;
+using System.Text;
 
 namespace TownOfUs.Patches;
 
@@ -31,6 +33,31 @@ public static class HudManagerPatches
 {
     public static GameObject ZoomButton;
     public static GameObject WikiButton;
+    public static GameObject RoleList;
+
+    private static readonly List<string> roleListText = new List<string>
+    {
+        "<color=#66FFFFFF>Crew</color> Investigative",
+        "<color=#66FFFFFF>Crew</color> Killing",
+        "<color=#66FFFFFF>Crew</color> Power",
+        "<color=#66FFFFFF>Crew</color> Protective",
+        "<color=#66FFFFFF>Crew</color> Support",
+        "Common <color=#66FFFFFF>Crew</color>",
+        "Special <color=#66FFFFFF>Crew</color>",
+        "Random <color=#66FFFFFF>Crew</color>",
+        "<color=#999999FF>Neutral</color> Benign",
+        "<color=#999999FF>Neutral</color> Evil",
+        "<color=#999999FF>Neutral</color> Killing",
+        "Common <color=#999999FF>Neutral</color>",
+        "Random <color=#999999FF>Neutral</color>",
+        "<color=#FF0000FF>Imp</color> Concealing",
+        "<color=#FF0000FF>Imp</color> Killing",
+        "<color=#FF0000FF>Imp</color> Support",
+        "Common <color=#FF0000FF>Imp</color>",
+        "Random <color=#FF0000FF>Imp</color>",
+        "Non-<color=#FF0000FF>Imp</color>",
+        "Any"
+    };
 
     public static bool Zooming;
     public static void Zoom()
@@ -130,6 +157,7 @@ public static class HudManagerPatches
             aspectPosition.AdjustPosition();
         }
 
+        UpdateRoleList(__instance);
 
         if (PlayerControl.LocalPlayer == null ||
             PlayerControl.LocalPlayer.Data == null ||
@@ -506,6 +534,81 @@ public static class HudManagerPatches
         {
             if (haunter.Player.Data != null && haunter.Player.Data.Disconnected) continue;
             haunter.FadeUpdate(instance);
+        }
+    }
+    private static string GetRoleForSlot(int slotValue)
+    {
+        if (slotValue >= 0 && slotValue < roleListText.Count)
+        {
+            return roleListText[slotValue]; 
+        }
+        else
+        {
+            return "<color=#696969>Unknown</color>"; 
+        }
+    }
+    public static void UpdateRoleList(HudManager instance)
+    {
+        if (RoleList != null) RoleList.SetActive(false);
+        if (!LobbyBehaviour.Instance) return;
+
+        if (RoleList == null)
+        {
+            var pingTracker = UnityEngine.Object.FindObjectOfType<PingTracker>(true);
+            RoleList = UnityEngine.Object.Instantiate(pingTracker.gameObject, instance.transform);
+            RoleList.name = "RoleListText";
+            RoleList.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(-4.9f, 5.9f);
+        }
+        else
+        {
+            var objText = RoleList.GetComponent<TextMeshPro>();
+            var rolelistBuilder = new StringBuilder();
+
+            var players = GameData.Instance.PlayerCount;
+            int maxSlots = players < 15 ? players : 15;
+
+            var list = OptionGroupSingleton<RoleOptions>.Instance;
+            if (list.RoleListEnabled)
+            {
+                for (int i = 0; i < maxSlots; i++)
+                {
+                    int slotValue = i switch
+                    {
+                        0 => list.Slot1,
+                        1 => list.Slot2,
+                        2 => list.Slot3,
+                        3 => list.Slot4,
+                        4 => list.Slot5,
+                        5 => list.Slot6,
+                        6 => list.Slot7,
+                        7 => list.Slot8,
+                        8 => list.Slot9,
+                        9 => list.Slot10,
+                        10 => list.Slot11,
+                        11 => list.Slot12,
+                        12 => list.Slot13,
+                        13 => list.Slot14,
+                        14 => list.Slot15,
+                        _ => -1
+                    };
+
+                    rolelistBuilder.AppendLine(GetRoleForSlot(slotValue));
+                    objText.text = $"<color=#FFD700>Set Role List:</color>\n{rolelistBuilder}";
+                }
+            }
+            else
+            {
+                rolelistBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"<color=#999999FF>Neutral</color> Benigns: {list.MinNeutralBenign.Value} Min, {list.MaxNeutralBenign.Value} Max");
+                rolelistBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"<color=#999999FF>Neutral</color> Evils: {list.MinNeutralEvil.Value} Min, {list.MaxNeutralEvil.Value} Max");
+                rolelistBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"<color=#999999FF>Neutral</color> Killers: {list.MinNeutralKiller.Value} Min, {list.MaxNeutralKiller.Value} Max");
+                objText.text = $"<color=#FFD700>Neutral Faction List:</color>\n{rolelistBuilder}";
+            }
+
+            objText.alignment = TextAlignmentOptions.TopLeft;
+            objText.verticalAlignment = VerticalAlignmentOptions.Top;
+            objText.fontSize = objText.fontSizeMin = objText.fontSizeMax = 3f;
+
+            RoleList.SetActive(true);
         }
     }
 }

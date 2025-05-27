@@ -10,7 +10,7 @@ public sealed class RoleOptions : AbstractOptionGroup
     public override string GroupName => "Role";
     public override uint GroupPriority => 3;
 
-    private static string[] roleOptions =
+    public static readonly string[] roleOptions =
     [
         "Common <color=#66FFFFFF>Crew</color>",
         "Random <color=#66FFFFFF>Crew</color>",
