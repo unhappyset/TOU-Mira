@@ -1,5 +1,6 @@
 using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
 using TownOfUs.Roles.Neutral;
 
@@ -12,8 +13,12 @@ public sealed class ArsonistOptions : AbstractOptionGroup<ArsonistRole>
     [ModdedNumberOption("Douse Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float DouseCooldown { get; set; } = 25f;
 
-    [ModdedNumberOption("Ignite Radius", 0.05f, 1f, 0.05f, MiraNumberSuffixes.Multiplier, "0.00")]
-    public float IgniteRadius { get; set; } = 0.25f;
+    [ModdedToggleOption("Legacy Arsonist (No Radius)")]
+    public bool LegacyArsonist { get; set; }
+    public ModdedNumberOption IgniteRadius { get; set; } = new("Ignite Radius", 0.25f, 0.05f, 1f, 0.05f, MiraNumberSuffixes.Multiplier, "0.00")
+    {
+        Visible = () => !OptionGroupSingleton<ArsonistOptions>.Instance.LegacyArsonist
+    };
 
     [ModdedToggleOption("Arsonist Can Vent")]
     public bool CanVent { get; set; }

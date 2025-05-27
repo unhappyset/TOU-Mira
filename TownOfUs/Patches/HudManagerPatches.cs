@@ -34,31 +34,6 @@ public static class HudManagerPatches
     public static GameObject ZoomButton;
     public static GameObject WikiButton;
     public static GameObject RoleList;
-
-    private static readonly List<string> roleListText = new List<string>
-    {
-        "<color=#66FFFFFF>Crew</color> Investigative",
-        "<color=#66FFFFFF>Crew</color> Killing",
-        "<color=#66FFFFFF>Crew</color> Power",
-        "<color=#66FFFFFF>Crew</color> Protective",
-        "<color=#66FFFFFF>Crew</color> Support",
-        "Common <color=#66FFFFFF>Crew</color>",
-        "Special <color=#66FFFFFF>Crew</color>",
-        "Random <color=#66FFFFFF>Crew</color>",
-        "<color=#999999FF>Neutral</color> Benign",
-        "<color=#999999FF>Neutral</color> Evil",
-        "<color=#999999FF>Neutral</color> Killing",
-        "Common <color=#999999FF>Neutral</color>",
-        "Random <color=#999999FF>Neutral</color>",
-        "<color=#FF0000FF>Imp</color> Concealing",
-        "<color=#FF0000FF>Imp</color> Killing",
-        "<color=#FF0000FF>Imp</color> Support",
-        "Common <color=#FF0000FF>Imp</color>",
-        "Random <color=#FF0000FF>Imp</color>",
-        "Non-<color=#FF0000FF>Imp</color>",
-        "Any"
-    };
-
     public static bool Zooming;
     public static void Zoom()
     {
@@ -538,13 +513,14 @@ public static class HudManagerPatches
     }
     private static string GetRoleForSlot(int slotValue)
     {
+        var roleListText = RoleOptions.roleOptions.ToList();
         if (slotValue >= 0 && slotValue < roleListText.Count)
         {
-            return roleListText[slotValue]; 
+            return roleListText[slotValue];
         }
         else
         {
-            return "<color=#696969>Unknown</color>"; 
+            return "<color=#696969>Unknown</color>";
         }
     }
     public static void UpdateRoleList(HudManager instance)
