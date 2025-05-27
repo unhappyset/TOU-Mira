@@ -19,6 +19,7 @@ using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 using TownOfUs.Modifiers.Game;
+using Reactor.Utilities;
 
 namespace TownOfUs.Roles.Crewmate;
 
@@ -39,6 +40,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     };
 
     public int MaxKills { get; set; }
+    public int SafeShotsLeft { get; set; }
 
     private MeetingMenu meetingMenu;
 
@@ -47,6 +49,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         RoleStubs.RoleBehaviourInitialize(this, player);
 
         MaxKills = (int)OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteKills;
+        SafeShotsLeft = (int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots;
 
         if (Player.AmOwner)
         {
@@ -132,16 +135,34 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
         void ClickHandler(PlayerControl victim)
         {
-            Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false, playKillSound: false);
-
-            if (victim != Player)
-                meetingMenu?.HideSingle(victim.PlayerId);
-
-            MaxKills--;
-
             if (!OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteMultiKill || MaxKills == 0 || victim == Player)
             {
                 meetingMenu?.HideButtons();
+            }
+
+            if (victim == Player && SafeShotsLeft != 1)
+            {
+                SafeShotsLeft--;
+                Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Impostor));
+
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>{TownOfUsColors.Vigilante.ToTextColor()} Your Multi Shot has prevented you from dying this meeting! You have {SafeShotsLeft} shot(s) left before you die!</color></b>", Color.white, spr: TouRoleIcons.Vigilante.LoadAsset());
+
+                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+
+                shapeMenu.Close();
+
+                return;
+            }
+            else
+            {
+                Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false, playKillSound: false);
+
+                if (victim != Player)
+                    meetingMenu?.HideSingle(victim.PlayerId);
+
+                MaxKills--;
             }
 
             shapeMenu.Close();
