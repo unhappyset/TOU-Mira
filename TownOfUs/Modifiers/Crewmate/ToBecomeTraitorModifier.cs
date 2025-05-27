@@ -22,11 +22,6 @@ public sealed class ToBecomeTraitorModifier : GameModifier, IAssignableTargets
         ModifierComponent?.RemoveModifier(this);
     }
 
-    public override void OnDeath(DeathReason reason)
-    {
-        Clear();
-    }
-
     public void AssignTargets()
     {
         Random rnd = new();

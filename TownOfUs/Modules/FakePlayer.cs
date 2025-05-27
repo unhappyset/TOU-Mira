@@ -22,6 +22,7 @@ public sealed class FakePlayer : IDisposable
     private const string ColorBindTextName = "ColorblindName_TMP";
 
     public readonly GameObject? body;
+    public int PlayerId;
     private readonly SpriteRenderer? rend;
     private GameObject? colorBindTextObj;
 
@@ -54,6 +55,7 @@ public sealed class FakePlayer : IDisposable
         cosmicInfo.Cosmetics.Visible = true;
 
         body = new GameObject($"Fake {player.gameObject.name}");
+        PlayerId = player.PlayerId;
 
 
         body.layer = LayerMask.NameToLayer("Players");

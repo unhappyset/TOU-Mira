@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Text;
 using AmongUs.GameOptions;
+using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Roles;
 using PowerTools;
 using Reactor.Utilities;
+using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
@@ -63,6 +65,12 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
     }
     private static IEnumerator CoAnimateReveal(PlayerVoteArea voteArea)
     {
+        // hide meeting menu buttons (such as for guessers) for everyone but the mayor
+        if (voteArea.TargetPlayerId != PlayerControl.LocalPlayer.PlayerId)
+        {
+            MeetingMenu.Instances.Do(x => x.HideSingle(voteArea.TargetPlayerId));
+        }
+        
         MayorPlayer = UnityEngine.Object.Instantiate(TouAssets.MayorRevealPrefab.LoadAsset(), voteArea.transform);
         MayorPlayer.transform.localPosition = new Vector3(-0.8f, 0, 0);
         MayorPlayer.transform.localScale = new Vector3(0.375f, 0.375f, 1f);

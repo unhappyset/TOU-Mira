@@ -22,6 +22,7 @@ using MiraAPI.Hud;
 using MiraAPI.Modifiers.Types;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Buttons.Crewmate;
+using MiraAPI.Events.Vanilla.Meeting;
 
 namespace TownOfUs.Events;
 
@@ -39,6 +40,42 @@ public static class TownOfUsEventHandlers
         }
     }
 
+    [RegisterEvent]
+    public static void EjectionEventHandler(EjectionEvent @event)
+    {
+        var exiled = @event.ExileController?.initData?.networkedPlayer?.Object;
+        if (exiled == null) return;
+
+        if (exiled.AmOwner)
+        {
+            HudManager.Instance.SetHudActive(false);
+            if (!MeetingHud.Instance) HudManager.Instance.SetHudActive(true);
+        }
+
+        if (exiled.Data.Role is IAnimated animated)
+            {
+                animated.IsVisible = false;
+                animated.SetVisible();
+            }
+        foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(exiled.Data.Role)).OfType<IAnimated>())
+        {
+            button.IsVisible = false;
+            button.SetVisible();
+        }
+        foreach (var modifier in exiled.GetModifiers<GameModifier>().Where(x => x is IAnimated))
+        {
+            var animatedMod = modifier as IAnimated;
+            if (animatedMod != null)
+            {
+                animatedMod.IsVisible = false;
+                animatedMod.SetVisible();
+            }
+        }
+        if (@exiled.TryGetModifier<MedicShieldModifier>(out var medMod)
+        && PlayerControl.LocalPlayer.Data.Role is MedicRole
+        && medMod.Medic == PlayerControl.LocalPlayer)
+            CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
+    }
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent murderEvent)
     {
@@ -239,12 +276,9 @@ public static class TownOfUsEventHandlers
         targetVoteArea.XMark.gameObject.SetActive(false);
         targetVoteArea.XMark.transform.localScale = Vector3.one;
 
-        if (instance.state != MeetingHud.VoteStates.Animating && instance.state != MeetingHud.VoteStates.Discussion)
-        {
             targetVoteArea.Overlay.gameObject.SetActive(false);
             if (target.Data.Role is MayorRole) MayorRole.DestroyReveal(targetVoteArea);
             Coroutines.Start(CoAnimateDeath(targetVoteArea));
-        }
 
         // hide meeting menu button for victim
         if (!source.AmOwner && !target.AmOwner)

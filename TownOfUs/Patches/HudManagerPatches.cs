@@ -359,7 +359,7 @@ public static class HudManagerPatches
         else
         {
             var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
-            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.body?.name == $"Fake {PlayerControl.LocalPlayer.gameObject.name}");
+            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId);
 
             foreach (var player in PlayerControl.AllPlayerControls)
             {
