@@ -82,11 +82,6 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
         Voters.Clear();
 
-        if (!AmongUsClient.Instance.AmHost)
-        {
-            return;
-        }
-
         foreach (var state in MeetingHudGetVotesPatch.States)
         {
             if (state.VotedForId == Player.PlayerId)

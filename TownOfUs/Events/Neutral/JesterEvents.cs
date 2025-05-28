@@ -22,6 +22,7 @@ public static class JesterEvents
         var role = PlayerControl.LocalPlayer.GetRoleWhenAlive();
         if (PlayerControl.LocalPlayer.Data.Role is JesterRole) role = PlayerControl.LocalPlayer.Data.Role;
         if (role is not JesterRole jester) return;
+        if (!jester.Voted) return;
 
         var voters = jester.Voters.ToArray();
         Func<PlayerControl, bool> _playerMatch = plr => voters.Contains(plr.PlayerId) && !plr.HasDied() && !plr.HasModifier<InvulnerabilityModifier>() && plr != PlayerControl.LocalPlayer;
