@@ -6,12 +6,13 @@ using TownOfUs.Utilities;
 
 namespace TownOfUs.Modifiers.Crewmate;
 
-public sealed class ImitatorCacheModifier : BaseModifier, ICachedRole
+public sealed class ImitatorCacheModifier(RoleBehaviour oldRole) : BaseModifier, ICachedRole
 {
     public override string ModifierName => "Imitator";
     public override bool HideOnUi => true;
     public bool ShowCurrentRoleFirst => true;
     public RoleBehaviour CachedRole => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<ImitatorRole>());
+    public RoleBehaviour OldRole => oldRole;
 
     public override void OnDeath(DeathReason reason)
     {
@@ -22,6 +23,7 @@ public sealed class ImitatorCacheModifier : BaseModifier, ICachedRole
     {
         if (Player == null || Player.IsRole<ImitatorRole>()) return;
 
-        Player.RpcChangeRole(RoleId.Get<ImitatorRole>(), false);
+        Player.ChangeRole(RoleId.Get<ImitatorRole>(), false);
+        if (Player.Data.Role is ImitatorRole imitator) imitator.OldRole = OldRole;
     }
 }

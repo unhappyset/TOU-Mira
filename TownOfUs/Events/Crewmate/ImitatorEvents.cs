@@ -11,9 +11,10 @@ public static class ImitatorEvents
     [RegisterEvent]
     public static void MeetingHandler(StartMeetingEvent @event)
     {
-        if (PlayerControl.LocalPlayer.TryGetModifier<ImitatorCacheModifier>(out var imitatorCacheModifier))
+        var imitators = ModifierUtils.GetActiveModifiers<ImitatorCacheModifier>();
+        foreach (var mod in imitators)
         {
-            imitatorCacheModifier.ModifierComponent?.RemoveModifier(imitatorCacheModifier);
+            mod.ModifierComponent?.RemoveModifier(mod);
         }
     }
 

@@ -21,6 +21,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
     public DoomableType DoomHintType => DoomableType.Perception;
+    public RoleBehaviour OldRole { get; set; }
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Imitator,
@@ -87,7 +88,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         var roleWhenAlive = _selectedPlr.Object.GetRoleWhenAlive();
 
         Player.RpcChangeRole((ushort)roleWhenAlive!.Role, false);
-        Player.RpcAddModifier<ImitatorCacheModifier>();
+        Player.RpcAddModifier<ImitatorCacheModifier>(roleWhenAlive!);
 
         _selectedPlr = null;
     }
