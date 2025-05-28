@@ -51,6 +51,7 @@ public static class HudManagerPatches
         var size = 3f;
         ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = TouAssets.ZoomMinus.LoadAsset();
         ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = TouAssets.ZoomMinusActive.LoadAsset();
+        ZoomButton.SetActive(false);
 
         Camera.main.orthographicSize = size;
         HudManager.Instance.UICamera.orthographicSize = size;

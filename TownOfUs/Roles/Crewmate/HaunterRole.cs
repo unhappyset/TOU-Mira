@@ -96,7 +96,6 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             HudManager.Instance.SetHudActive(false);
             HudManager.Instance.SetHudActive(true);
             HudManager.Instance.AbilityButton.SetDisabled();
-            Patches.HudManagerPatches.ZoomButton.SetActive(false);
             Patches.HudManagerPatches.ResetZoom();
         }
     }

@@ -76,9 +76,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
         }
         if (MeetingHud.Instance != null)
         {
-            cod = "guessed";
-            if (source.Data.Role is HunterRole) cod = "killed";
-            if (source.Data.Role is DeputyRole or VigilanteRole) cod = "shot";
+            celeb.Announced = true;
         }
 
         if (source == player)
