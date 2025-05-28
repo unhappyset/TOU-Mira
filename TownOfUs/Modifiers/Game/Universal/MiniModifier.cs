@@ -12,7 +12,7 @@ public sealed class MiniModifier : UniversalGameModifier, IWikiDiscoverable, IVi
 {
     public override string ModifierName => "Mini";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Mini;
-    public override string GetDescription() => "You are smaller than\nthe average player.";
+    public override string GetDescription() => $"You are smaller than the average player, moving {Math.Round(OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed, 2)}x faster.";
 
     public override int GetAssignmentChance() =>
         (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.MiniChance;
@@ -38,7 +38,7 @@ public sealed class MiniModifier : UniversalGameModifier, IWikiDiscoverable, IVi
     public string GetAdvancedDescription()
     {
         return
-            $"You are smaller than regular players, and you also move faster than regular players.";
+            $"You are smaller than regular players, and you also move {Math.Round(OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed, 2)}x faster than regular players.";
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
