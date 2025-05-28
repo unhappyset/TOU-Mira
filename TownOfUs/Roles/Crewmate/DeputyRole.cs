@@ -49,7 +49,10 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
                 MeetingAbilityType.Click,
                 TouAssets.ShootMeetingSprite,
                 null!,
-                IsExempt);
+                IsExempt)
+            {
+                Position = new Vector3(-0.40f, 0f, -3f),
+            };
         }
     }
 
