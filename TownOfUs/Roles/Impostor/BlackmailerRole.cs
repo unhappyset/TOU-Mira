@@ -24,7 +24,7 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
     public DoomableType DoomHintType => DoomableType.Insight;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        UseVanillaKillButton = OptionGroupSingleton<BlackmailerOptions>.Instance.BlackmailerKill,
+        UseVanillaKillButton = OptionGroupSingleton<BlackmailerOptions>.Instance.BlackmailerKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)),
         Icon = TouRoleIcons.Blackmailer,
     };
 

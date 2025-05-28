@@ -140,7 +140,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         passive.OnClick.AddListener(Execute());
 
         var usesTextObj = Object.Instantiate(voteArea.NameText, voteArea.transform);
-        usesTextObj.transform.localPosition = new Vector3(-0.22f, 0.16f, 0f);
+        usesTextObj.transform.localPosition = new Vector3(-0.22f, 0.16f, newButtonObj.transform.position.z - 0.1f);
         usesTextObj.text = $"{Executes}";
         usesTextObj.transform.localScale = usesTextObj.transform.localScale * 0.65f;
 
