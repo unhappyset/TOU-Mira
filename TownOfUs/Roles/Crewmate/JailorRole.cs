@@ -6,15 +6,16 @@ using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Buttons.Crewmate;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Patches.Stubs;
-using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -123,7 +124,8 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         var confirmButton = voteArea.Buttons.transform.GetChild(0).gameObject;
 
         var newButtonObj = Object.Instantiate(confirmButton, voteArea.transform);
-        newButtonObj.transform.position = confirmButton.transform.position - new Vector3(0.75f, 0f, -2.1f);
+        //newButtonObj.transform.position = confirmButton.transform.position - new Vector3(0.75f, 0f, -2.1f);
+        newButtonObj.transform.position = confirmButton.transform.position - new Vector3(0.75f, 0f, 0f);
         newButtonObj.transform.localScale *= 0.8f;
         newButtonObj.layer = 5;
         newButtonObj.transform.parent = confirmButton.transform.parent.parent;
@@ -156,7 +158,17 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
             Executes--;
 
-            if (!Jailed.IsRole<PestilenceRole>())
+            if (Jailed.HasModifier<InvulnerabilityModifier>())
+            {
+                Coroutines.Start(MiscUtils.CoFlash(Color.red));
+
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>{TownOfUsColors.Jailor.ToTextColor()} {Jailed.Data.PlayerName} cannot be executed! They must be Invulnerable!</color></b>", Color.white, spr: TouRoleIcons.Jailor.LoadAsset());
+
+                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            }
+            else
             {
                 if (Jailed.Is(ModdedRoleTeams.Crewmate))
                 {

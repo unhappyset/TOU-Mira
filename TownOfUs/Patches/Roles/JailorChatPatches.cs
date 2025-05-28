@@ -82,17 +82,17 @@ public static class JailorChatPatches
         if ((PlayerControl.LocalPlayer.IsRole<JailorRole>() || PlayerControl.LocalPlayer.Data.Role is ImitatorRole imi && imi.OldRole is JailorRole) && MeetingHud.Instance)
         {
             var jailor = PlayerControl.LocalPlayer.GetRole<JailorRole>()!;
-            var jailed = jailor.Jailed;
+            var jailed = jailor != null ? jailor.Jailed : null;
             if (PlayerControl.LocalPlayer.Data.Role is ImitatorRole imi2 && imi2.OldRole is JailorRole) jailed = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.GetModifier<JailedModifier>()?.JailorId == PlayerControl.LocalPlayer.PlayerId)!;
 
             if (jailed != null && jailed.Data.PlayerName == playerName)
             {
-                __instance.NameText.color = jailor.RoleColor;
+                __instance.NameText.color = TownOfUsColors.Jailor;
                 __instance.NameText.text = playerName + " (Jailed)";
             }
             else if (jailorMessage)
             {
-                __instance.NameText.color = jailor.RoleColor;
+                __instance.NameText.color = TownOfUsColors.Jailor;
                 __instance.NameText.text = "Jailor";
                 __instance.SetCosmetics(PlayerControl.LocalPlayer.Data);
                 jailorMessage = false;
