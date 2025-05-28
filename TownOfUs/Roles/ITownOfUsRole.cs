@@ -3,6 +3,7 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using System.Globalization;
 using System.Text;
+using TownOfUs.Utilities;
 
 namespace TownOfUs.Roles;
 
@@ -40,8 +41,13 @@ public interface ITownOfUsRole : ICustomRole
             alignment = alignment.Replace("Neutral", "<color=#8A8A8AFF>Neutral");
         }
 
+        var prefix = " a";
+        if (role.RoleName.StartsWithVowel()) prefix = " an";
+        if (role.Configuration.MaxRoleCount is 0 or 1) prefix = " the";
+        if (role.RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase)) prefix = "";
+
         var stringB = new StringBuilder();
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"{role.RoleColor.ToTextColor()}You are a <b>{role.RoleName}.</b></color>");
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"{role.RoleColor.ToTextColor()}You are{prefix}<b> {role.RoleName}.</b></color>");
         stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>Alignment: <b>{alignment}</color></b></size>");
         stringB.Append("<size=70%>");
         stringB.AppendLine(CultureInfo.InvariantCulture, $"{role.RoleLongDescription}");

@@ -2,6 +2,7 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using TMPro;
 using TownOfUs.Modifiers.Game;
@@ -45,7 +46,7 @@ public static class IntroScenePatches
         }
 
         var modsTab = MiraAPI.Modifiers.ModifierDisplay.ModifierDisplayComponent.Instance;
-        if (modsTab != null && !modsTab.IsOpen)
+        if (modsTab != null && !modsTab.IsOpen && PlayerControl.LocalPlayer.GetModifiers<GameModifier>().Any(x => !x.HideOnUi && x.GetDescription() != string.Empty))
         {
             modsTab.ToggleTab();
         }

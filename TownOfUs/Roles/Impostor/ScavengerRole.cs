@@ -63,7 +63,7 @@ public sealed class ScavengerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
             Scavenging = true;
             TimeRemaining = OptionGroupSingleton<ScavengerOptions>.Instance.ScavengeDuration;
 
-            Target = Player.GetClosestLivingPlayer(false, float.MaxValue, predicate: x => !x.HasModifier<FirstDeadShield>())!;
+            Target = Player.GetClosestLivingPlayer(false, float.MaxValue, true, predicate: x => !x.HasModifier<FirstDeadShield>())!;
 
             Target.AddModifier<ScavengerArrowModifier>(Player, TownOfUsColors.Impostor);
         }
@@ -123,7 +123,7 @@ public sealed class ScavengerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
             Player.SetKillTimer(OptionGroupSingleton<ScavengerOptions>.Instance.ScavengeCorrectKillCooldown);
 
             // get new target
-            Target = Player.GetClosestLivingPlayer(false, float.MaxValue)!;
+            Target = Player.GetClosestLivingPlayer(false, float.MaxValue, true)!;
 
             // update arrow to point to new target
             Target.AddModifier<ScavengerArrowModifier>(Player, TownOfUsColors.Impostor);

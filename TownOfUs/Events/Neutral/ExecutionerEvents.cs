@@ -34,7 +34,7 @@ public static class ExecutionerEvents
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (@event.TriggeredByIntro) return;
-        if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is not ExeWinOptions.Nothing) return;
+        if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Nothing) return;
         if (PlayerControl.LocalPlayer.Data.Role is not ExecutionerRole exe) return;
 
         if (exe.TargetVoted && !PlayerControl.LocalPlayer.HasDied())
