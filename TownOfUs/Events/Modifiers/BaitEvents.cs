@@ -11,7 +11,7 @@ public static class BaitEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (@event.Target.HasModifier<BaitModifier>())
+        if (@event.Target.HasModifier<BaitModifier>() && MeetingHud.Instance == null)
         {
             Coroutines.Start(BaitModifier.CoReportDelay(@event.Source, @event.Target));
         }
