@@ -1,12 +1,12 @@
 > [!NOTE]
-> This repo is a fork of [Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R) and is under constant development, expect bugs.\
+> This repo is a rewrite of [Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R) and is under constant development, expect bugs.\
 > This mod is NOT for console versions of Among Us and is NOT host only either, please do not ask for a port or a rewrite.
 
 -----------------------
 
 <div align="center">
   <img src="./Images/Logo.png" alt="Town of Us Mira"/>
-  <p>Town Of Us Reactivated Rewritten!</p>
+  <p>Town Of Us Mira</p>
   <a href="https://store.steampowered.com/app/945360/Among_Us"> <img alt="Latest AU Version" src="https://badgen.net/static/AmongUs/2025.5.20/yellow"></a>
   <a href="https://github.com/AU-Avengers/TOU-Mira/releases/"> <img alt="Latest Release" src="https://badgen.net/github/release/AU-Avengers/TOU-Mira?icon=github"></a>
   <a href="https://github.com/AU-Avengers/TOU-Mira/releases"> <img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/AU-Avengers/TOU-Mira/total"></a>
