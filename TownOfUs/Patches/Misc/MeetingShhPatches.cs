@@ -2,6 +2,7 @@ using System.Collections;
 using HarmonyLib;
 using MiraAPI.Modifiers;
 using Reactor.Utilities;
+using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Impostor;
 using UnityEngine;
@@ -26,9 +27,9 @@ public static class MeetingShhPatches
         HudManager.Instance.shhhEmblem.transform.localPosition.x,
         HudManager.Instance.shhhEmblem.transform.localPosition.y,
         HudManager.Instance.FullScreen.transform.position.z + 1f);
+        var jailCell = new GameObject("jailCell");
         if (PlayerControl.LocalPlayer.HasModifier<JailedModifier>())
         {
-            var jailCell = new GameObject("jailCell");
             jailCell.transform.SetParent(HudManager.Instance.shhhEmblem!.transform);
             jailCell.transform.localPosition = new Vector3(0, 0, HudManager.Instance.shhhEmblem.Hand.transform.localPosition.z);
             jailCell.transform.localScale = new Vector3(0.83f, 0.83f, 1f);
@@ -50,6 +51,7 @@ public static class MeetingShhPatches
         HudManager.Instance.shhhEmblem.transform.localPosition = tempPosition;
         HudManager.Instance.shhhEmblem.HoldDuration = tempDuration;
         yield return HudManager.Instance.CoFadeFullScreen(new Color(0f, 0f, 0f, 0.98f), Color.clear);
+        jailCell.Destroy();
         yield return null;
     }
 }
