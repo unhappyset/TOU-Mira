@@ -52,8 +52,10 @@ public static class VisionPatch
             if (player._object.HasModifier<TorchModifier>()) t = 1;
 
             __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, t) * GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod * visionFactor;
-
-            if (!player.Role.IsImpostor && OptionGroupSingleton<TownOfUsMapOptions>.Instance.SmallMapHalfVision)
+            var mapId = (MapNames)GameOptionsManager.Instance.currentNormalGameOptions.MapId;
+            if (TutorialManager.InstanceExists) mapId = (MapNames)AmongUsClient.Instance.TutorialMapId;
+            if (!player.Role.IsImpostor && OptionGroupSingleton<TownOfUsMapOptions>.Instance.SmallMapHalfVision &&
+            mapId is MapNames.MiraHQ or MapNames.Skeld or MapNames.Dleks)
             {
                 __result /= 2;
             }
