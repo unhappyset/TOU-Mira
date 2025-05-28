@@ -7,7 +7,7 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
-using TownOfUs.Modifiers.Game;
+using TownOfUs.Modifiers.Game.Neutral;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
@@ -74,7 +74,7 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         target.AddModifier<VampireBittenModifier>();
         if (OptionGroupSingleton<VampireOptions>.Instance.CanGuessAsNewVamp)
         {
-            target.AddModifier<AssassinModifier>();
+            target.AddModifier<NeutralKillerAssassinModifier>();
         }
 
         // if (source.AmOwner && target.TryGetModifier<LoverModifier>(out var lovers) && lovers.OtherLover!.Data.Role is not VampireRole)
