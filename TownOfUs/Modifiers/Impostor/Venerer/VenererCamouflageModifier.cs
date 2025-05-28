@@ -1,4 +1,7 @@
 ﻿using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
+using TownOfUs.Modifiers.Game.Universal;
+using TownOfUs.Options.Modifiers.Universal;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
@@ -13,8 +16,11 @@ public sealed class VenererCamouflageModifier : ConcealedModifier, IVenererModif
 
     public VisualAppearance GetVisualAppearance()
     {
-        var appearance = Player.GetDefaultModifiedAppearance();
-        appearance.Speed = 1f / appearance.Speed;
+        var appearance = Player.GetDefaultAppearance();
+        appearance.Speed = 1f;
+        if (Player.HasModifier<MiniModifier>()) appearance.Speed = 1f / OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed;
+        else if (Player.HasModifier<GiantModifier>()) appearance.Speed = 1f / OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed;
+        else if (Player.HasModifier<FlashModifier>()) appearance.Speed = 1f / OptionGroupSingleton<FlashOptions>.Instance.FlashSpeed;
         appearance.Size = new Vector3(0.7f, 0.7f, 1f);
         appearance.ColorId = Player.Data.DefaultOutfit.ColorId;
         appearance.HatId = string.Empty;

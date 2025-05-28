@@ -36,7 +36,7 @@ public sealed class DragModifier(byte bodyId) : BaseModifier
                 }
                 else if (dragged.HasModifier<MiniModifier>())
                 {
-                    Player.MyPhysics.Speed /= 0.75f;
+                    Player.MyPhysics.Speed *= OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed;
                 }
             }
         }
@@ -56,7 +56,7 @@ public sealed class DragModifier(byte bodyId) : BaseModifier
                 }
                 else if (dragged.HasModifier<MiniModifier>())
                 {
-                    Player.MyPhysics.Speed *= 0.75f;
+                    Player.MyPhysics.Speed /= OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed;
                 }
             }
         }

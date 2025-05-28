@@ -2,6 +2,7 @@
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
+using TownOfUs.Options.Modifiers.Universal;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ public sealed class MiniModifier : UniversalGameModifier, IWikiDiscoverable, IVi
     public VisualAppearance GetVisualAppearance()
     {
         var appearance = Player.GetDefaultAppearance();
-        appearance.Speed = 4f / 3f;
+        appearance.Speed = OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed;
         appearance.Size = new Vector3(0.49f, 0.49f, 1f);
         return appearance;
     }
