@@ -8,7 +8,6 @@ using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
-using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Patches.Stubs;
@@ -17,6 +16,7 @@ using UnityEngine;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Modules.Wiki;
+using TownOfUs.Modifiers.Game;
 
 namespace TownOfUs.Roles.Neutral;
 

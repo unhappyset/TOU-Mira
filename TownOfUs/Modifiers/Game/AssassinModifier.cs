@@ -14,18 +14,17 @@ using TownOfUs.Options;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
+using TownOfUs.Modifiers.Game.Impostor;
 
-namespace TownOfUs.Modifiers.Game.Impostor;
+namespace TownOfUs.Modifiers.Game;
 
-public sealed class AssassinModifier : GameModifier
+public abstract class AssassinModifier : GameModifier
 {
     public override string ModifierName => "Assassin";
-    //public override string Description => "Guess during meetings";
 
     public override int GetAssignmentChance() => 100;
 
-    public override int GetAmountPerGame() => (int)(OptionGroupSingleton<AssassinOptions>.Instance.NumberOfImpostorAssassins +
-                                                    OptionGroupSingleton<AssassinOptions>.Instance.NumberOfNeutralAssassins);
+    public override int GetAmountPerGame() => 0;
 
     public override int Priority() => 0;
 
@@ -36,16 +35,6 @@ public sealed class AssassinModifier : GameModifier
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        if (OptionGroupSingleton<AssassinOptions>.Instance.NumberOfImpostorAssassins > 0)
-        {
-            return role.TeamType == RoleTeamTypes.Impostor;
-        }
-
-        if (OptionGroupSingleton<AssassinOptions>.Instance.NumberOfNeutralAssassins > 0)
-        {
-            return role is ITownOfUsRole { RoleAlignment: RoleAlignment.NeutralKilling };
-        }
-
         return false;
     }
 
@@ -55,7 +44,7 @@ public sealed class AssassinModifier : GameModifier
 
         maxKills = (int)OptionGroupSingleton<AssassinOptions>.Instance.AssassinKills;
 
-        // Logger<TownOfUsPlugin>.Error($"AssassinModifier.OnActivate maxKills: {maxKills}");
+        //Logger<TownOfUsPlugin>.Error($"AssassinModifier.OnActivate maxKills: {maxKills}");
         if (Player.AmOwner)
         {
             meetingMenu = new MeetingMenu(
@@ -70,7 +59,7 @@ public sealed class AssassinModifier : GameModifier
 
     public override void OnMeetingStart()
     {
-        // Logger<TownOfUsPlugin>.Error($"AssassinModifier.OnMeetingStart maxKills: {maxKills}");
+        //Logger<TownOfUsPlugin>.Error($"AssassinModifier.OnMeetingStart maxKills: {maxKills}");
         if (Player.AmOwner)
         {
             meetingMenu.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && maxKills > 0 && !Player.HasModifier<JailedModifier>());
@@ -170,7 +159,7 @@ public sealed class AssassinModifier : GameModifier
         return voteArea?.TargetPlayerId == Player.PlayerId ||
             Player.Data.IsDead ||
             voteArea!.AmDead ||
-            (Player.IsImpostor() && voteArea.GetPlayer()?.IsImpostor() == true) ||
+            Player.IsImpostor() && voteArea.GetPlayer()?.IsImpostor() == true ||
             voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
     }
 
