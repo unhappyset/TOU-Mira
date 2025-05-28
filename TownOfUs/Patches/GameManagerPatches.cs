@@ -3,17 +3,20 @@ using MiraAPI.Roles;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
+using UnityEngine;
 
 namespace TownOfUs.Patches;
 
 [HarmonyPatch]
 public static class GameManagerPatches
 {
+    public static int winType;
     [HarmonyPatch(typeof(GameManager), nameof(GameManager.DidImpostorsWin))]
     [HarmonyPatch(typeof(GameManager), nameof(GameManager.DidHumansWin))]
     [HarmonyPrefix]
     public static bool DidHumansOrImpostorsWinPatch(GameManager __instance, GameOverReason reason, ref bool __result)
     {
+        winType = 0;
         var neutralWinner = CustomRoleUtils.GetActiveRolesOfTeam(ModdedRoleTeams.Custom).Any(x => x is ITownOfUsRole role && role.WinConditionMet());
 
         if (neutralWinner)
@@ -21,11 +24,17 @@ public static class GameManagerPatches
             __result = false;
             return false;
         }
-        
+
         if (reason is GameOverReason.CrewmatesByVote or GameOverReason.CrewmatesByTask or GameOverReason.ImpostorDisconnect)
+        {
+            winType = 1;
             GameHistory.WinningFaction = $"<color=#{Palette.CrewmateBlue.ToHtmlStringRGBA()}>Crewmates</color>";
+        }
         else if (reason is GameOverReason.ImpostorsByKill or GameOverReason.ImpostorsBySabotage or GameOverReason.ImpostorsByVote or GameOverReason.CrewmateDisconnect)
+        {
+            winType = 2;
             GameHistory.WinningFaction = $"<color=#{Palette.ImpostorRed.ToHtmlStringRGBA()}>Impostors</color>";
+        }
 
         return true;
     }
