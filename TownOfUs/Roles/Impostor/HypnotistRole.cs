@@ -26,7 +26,7 @@ public sealed class HypnotistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        UseVanillaKillButton = OptionGroupSingleton<HypnotistOptions>.Instance.HypnoKill,
+        UseVanillaKillButton = OptionGroupSingleton<HypnotistOptions>.Instance.HypnoKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)),
         Icon = TouRoleIcons.Hypnotist,
     };
 

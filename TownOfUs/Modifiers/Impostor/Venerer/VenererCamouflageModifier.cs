@@ -1,22 +1,39 @@
 ﻿using MiraAPI.GameOptions;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities.Appearances;
+using UnityEngine;
 
 namespace TownOfUs.Modifiers.Impostor.Venerer;
 
-public sealed class VenererCamouflageModifier : ConcealedModifier, IVenererModifier
+public sealed class VenererCamouflageModifier : ConcealedModifier, IVenererModifier, IVisualAppearance
 {
     public override string ModifierName => "Camouflaged";
     public override float Duration => OptionGroupSingleton<VenererOptions>.Instance.AbilityDuration;
     public override bool AutoStart => true;
 
+    public VisualAppearance GetVisualAppearance()
+    {
+        var appearance = Player.GetDefaultModifiedAppearance();
+        appearance.Speed = 1f / appearance.Speed;
+        appearance.Size = new Vector3(0.7f, 0.7f, 1f);
+        appearance.ColorId = Player.Data.DefaultOutfit.ColorId;
+        appearance.HatId = string.Empty;
+        appearance.SkinId = string.Empty;
+        appearance.VisorId = string.Empty;
+        appearance.PlayerName = string.Empty;
+        appearance.PetId = string.Empty;
+        appearance.NameVisible = false;
+        appearance.PlayerMaterialColor = Color.grey;
+        return appearance;
+    }
+    
     public override void OnActivate()
     {
-        Player.SetCamouflage();
+        Player.RawSetAppearance(this);
     }
 
     public override void OnDeactivate()
     {
-        Player.SetCamouflage(false);
+        Player?.ResetAppearance();
     }
 }

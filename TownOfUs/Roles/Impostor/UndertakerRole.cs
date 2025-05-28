@@ -26,7 +26,7 @@ public sealed class UndertakerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
     public DoomableType DoomHintType => DoomableType.Death;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        UseVanillaKillButton = OptionGroupSingleton<UndertakerOptions>.Instance.UndertakerKill,
+        UseVanillaKillButton = OptionGroupSingleton<UndertakerOptions>.Instance.UndertakerKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)),
         CanUseVent = OptionGroupSingleton<UndertakerOptions>.Instance.CanVent,
         Icon = TouRoleIcons.Undertaker,
     };

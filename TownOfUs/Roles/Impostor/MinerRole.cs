@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
@@ -23,7 +24,7 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        UseVanillaKillButton = OptionGroupSingleton<MinerOptions>.Instance.MinerKill,
+        UseVanillaKillButton = OptionGroupSingleton<MinerOptions>.Instance.MinerKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)),
         Icon = TouRoleIcons.Miner,
         OptionsScreenshot = TouImpAssets.MinerRoleBanner,
         IntroSound = TouAudio.MineSound,
