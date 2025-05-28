@@ -5,7 +5,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using TownOfUs.Modifiers.Crewmate;
-using TownOfUs.Modifiers.Game;
+using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles;
@@ -42,7 +42,7 @@ public static class TraitorEvents
             ToBecomeTraitorModifier.RpcSetTraitor(traitorPlayer);
             if (OptionGroupSingleton<AssassinOptions>.Instance.TraitorCanAssassin)
             {
-                traitorPlayer.RpcAddModifier<AssassinModifier>();
+                traitorPlayer.RpcAddModifier<ImpostorAssassinModifier>();
             }
         }
 

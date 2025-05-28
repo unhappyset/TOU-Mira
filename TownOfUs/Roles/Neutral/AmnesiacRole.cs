@@ -16,7 +16,8 @@ using UnityEngine;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Modules.Wiki;
-using TownOfUs.Modifiers.Game;
+using TownOfUs.Modifiers.Game.Impostor;
+using TownOfUs.Modifiers.Game.Neutral;
 
 namespace TownOfUs.Roles.Neutral;
 
@@ -70,10 +71,13 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
             mayor.Revealed = true;
         }
 
-        if ((target.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnImpAssassin) ||
-           (target.IsNeutral() && target.Is(RoleAlignment.NeutralKilling) && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnNeutAssassin))
+        if (target.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnImpAssassin)
         {
-            player.AddModifier<AssassinModifier>();
+            player.AddModifier<ImpostorAssassinModifier>();
+        }
+        else if (target.IsNeutral() && target.Is(RoleAlignment.NeutralKilling) && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnNeutAssassin)
+        {
+            player.AddModifier<NeutralKillerAssassinModifier>();
         }
         
         if (target.Data.Role is not VampireRole && target.Data.Role.MaxCount <= PlayerControl.AllPlayerControls.ToArray().Count(x => x.Data.Role.Role == target.Data.Role.Role))

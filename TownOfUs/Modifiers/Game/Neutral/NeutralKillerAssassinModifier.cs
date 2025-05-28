@@ -2,7 +2,7 @@
 using TownOfUs.Options;
 using TownOfUs.Roles;
 
-namespace TownOfUs.Modifiers.Game.Impostor;
+namespace TownOfUs.Modifiers.Game.Neutral;
 
 public sealed class NeutralKillerAssassinModifier : AssassinModifier
 {

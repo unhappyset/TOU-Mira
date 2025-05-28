@@ -15,9 +15,11 @@ using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
 using TownOfUs.Modifiers.Game.Impostor;
+using MiraAPI.PluginLoading;
 
 namespace TownOfUs.Modifiers.Game;
 
+[MiraIgnore]
 public abstract class AssassinModifier : GameModifier
 {
     public override string ModifierName => "Assassin";

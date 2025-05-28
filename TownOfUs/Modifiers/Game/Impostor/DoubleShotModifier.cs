@@ -24,7 +24,7 @@ public sealed class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
     {
         if (
             role.Player.IsImpostor() 
-            && role.Player.GetModifierComponent().HasModifier<AssassinModifier>(true)
+            && role.Player.GetModifierComponent().HasModifier<ImpostorAssassinModifier>(true)
             && base.IsModifierValidOn(role)
             )
         {
