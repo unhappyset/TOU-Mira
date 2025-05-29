@@ -15,10 +15,8 @@ public sealed class NoisemakerModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Noisemaker";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Noisemaker;
-    public override string GetDescription() => "When you die, you will send an alert to all players on the map.";
+    public override string GetDescription() => $"When you die, you will send an alert to all players on the map for {OptionGroupSingleton<NoisemakerOptions>.Instance.AlertDuration} second(s)";
     public override ModifierFaction FactionType => ModifierFaction.Crewmate;
-	private GameObject deathArrowPrefab;
-	private NoisemakerArrow deathArrow;
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.NoisemakerChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.NoisemakerAmount;
@@ -44,19 +42,26 @@ public sealed class NoisemakerModifier : TouGameModifier, IWikiDiscoverable
 		{
 			return;
 		}
-		if (PlayerControl.LocalPlayer.AreCommsAffected())
+		if (PlayerControl.LocalPlayer.AreCommsAffected() && OptionGroupSingleton<NoisemakerOptions>.Instance.CommsAffected)
 		{
 			return;
 		}
+		if (GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId) == null && OptionGroupSingleton<NoisemakerOptions>.Instance.BodyCheck)
+		{
+			return;
+		}
+		
 		if (Constants.ShouldPlaySfx())
 		{
-            var audio = SoundManager.Instance.PlaySound(TouAudio.NoisemakerDeathSound.LoadAsset(), false, 1, SoundManager.Instance.SfxChannel);
-            SoundDynamics(audio);
+			var audio = SoundManager.Instance.PlaySound(TouAudio.NoisemakerDeathSound.LoadAsset(), false, 1, SoundManager.Instance.SfxChannel);
+			SoundDynamics(audio);
 			VibrationManager.Vibrate(1f, PlayerControl.LocalPlayer.GetTruePosition(), 7f, 1.2f, VibrationManager.VibrationFalloff.None, null, false);
 		}
+
         var noise = RoleManager.Instance.GetRole(RoleTypes.Noisemaker).Cast<NoisemakerRole>();
-		deathArrowPrefab = UnityEngine.Object.Instantiate<GameObject>(noise.deathArrowPrefab, Player.transform.position, Quaternion.identity);
-		deathArrow = deathArrowPrefab.GetComponent<NoisemakerArrow>();
+		var deathArrowPrefab = UnityEngine.Object.Instantiate<GameObject>(noise.deathArrowPrefab, Player.transform.position, Quaternion.identity);
+
+		var deathArrow = deathArrowPrefab.GetComponent<NoisemakerArrow>();
 		deathArrow.SetDuration(OptionGroupSingleton<NoisemakerOptions>.Instance.AlertDuration);
 		if (Player == PlayerControl.LocalPlayer)
 		{
@@ -73,7 +78,8 @@ public sealed class NoisemakerModifier : TouGameModifier, IWikiDiscoverable
     public string GetAdvancedDescription()
     {
         return
-            $"After your death, you will show a red body indicator to everyone on the map.";
+            $"After your death, you will show a red body indicator to everyone on the map."
+               + MiscUtils.AppendOptionsText(GetType());
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
