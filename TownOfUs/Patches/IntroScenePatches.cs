@@ -50,6 +50,7 @@ public static class IntroScenePatches
         {
             modsTab.ToggleTab();
         }
+
         var panelThing = HudManager.Instance.TaskStuff.transform.FindChild("RolePanel");
         if (panelThing != null)
         {
@@ -81,6 +82,7 @@ public static class IntroScenePatches
 public static class ModifierIntroPatch
 {
     private static TextMeshPro ModifierText;
+
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
     public static class IntroCutscene_BeginCrewmate
     {
@@ -115,6 +117,7 @@ public static class ModifierIntroPatch
             ModifierText.color.SetAlpha(0.8f);
         }
     }
+
     [HarmonyPatch(typeof(IntroCutscene._ShowTeam_d__38), nameof(IntroCutscene._ShowTeam_d__38.MoveNext))]
     public static class ShowModifierPatch_MoveNext
     {
@@ -145,6 +148,7 @@ public static class ModifierIntroPatch
             ModifierText.color.SetAlpha(0.8f);
         }
     }
+
     public static void RunModChecks()
     {
         var option = OptionGroupSingleton<GeneralOptions>.Instance.ModifierReveal;
@@ -172,6 +176,10 @@ public static class ModifierIntroPatch
 
             ModifierText.color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
             if (teamModifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
+        }
+        else
+        {
+            ModifierText.text = string.Empty;
         }
     }
 }
