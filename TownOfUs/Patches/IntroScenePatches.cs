@@ -86,9 +86,7 @@ public static class ModifierIntroPatch
     {
         public static void Postfix(IntroCutscene __instance)
         {
-            var modifier = PlayerControl.LocalPlayer.GetModifiers<AllianceGameModifier>().FirstOrDefault();
-            if (modifier != null)
-                ModifierText = UnityEngine.Object.Instantiate(__instance.RoleText, __instance.RoleText.transform.parent, false);
+            ModifierText = UnityEngine.Object.Instantiate(__instance.RoleText, __instance.RoleText.transform.parent, false);
         }
     }
 
@@ -97,29 +95,24 @@ public static class ModifierIntroPatch
     {
         public static void Postfix(IntroCutscene __instance)
         {
-            var modifier = PlayerControl.LocalPlayer.GetModifiers<AllianceGameModifier>().FirstOrDefault();
-            if (modifier != null)
-                ModifierText = UnityEngine.Object.Instantiate(__instance.RoleText, __instance.RoleText.transform.parent, false);
+            ModifierText = UnityEngine.Object.Instantiate(__instance.RoleText, __instance.RoleText.transform.parent, false);
         }
     }
+
     [HarmonyPatch(typeof(IntroCutscene._CoBegin_d__35), nameof(IntroCutscene._CoBegin_d__35.MoveNext))]
     public static class ShowModifierPatch_CoBegin
     {
         public static void Postfix(IntroCutscene._ShowRole_d__41 __instance)
         {
             HudManagerPatches.ResetZoom();
-            var modifier = PlayerControl.LocalPlayer.GetModifiers<AllianceGameModifier>().FirstOrDefault();
+            if (ModifierText == null) return;
 
-            if (ModifierText != null && modifier != null)
-            {
-                ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
+            RunModChecks();
 
-                ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-                if (modifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
-                ModifierText.transform.position =
-                __instance.__4__this.transform.position - new Vector3(0f, 1.6f, 0f);
-                ModifierText.gameObject.SetActive(true);
-            }
+            ModifierText.transform.position =
+            __instance.__4__this.transform.position - new Vector3(0f, 1.6f, -10f);
+            ModifierText.gameObject.SetActive(true);
+            ModifierText.color.SetAlpha(0.8f);
         }
     }
     [HarmonyPatch(typeof(IntroCutscene._ShowTeam_d__38), nameof(IntroCutscene._ShowTeam_d__38.MoveNext))]
@@ -127,18 +120,14 @@ public static class ModifierIntroPatch
     {
         public static void Postfix(IntroCutscene._ShowRole_d__41 __instance)
         {
-            var modifier = PlayerControl.LocalPlayer.GetModifiers<AllianceGameModifier>().FirstOrDefault();
-            
-            if (ModifierText != null && modifier != null)
-            {
-                ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
+            if (ModifierText == null) return;
 
-                ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-                if (modifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
-                ModifierText.transform.position =
-                __instance.__4__this.transform.position - new Vector3(0f, 1.6f, 0f);
-                ModifierText.gameObject.SetActive(true);
-            }
+            RunModChecks();
+
+            ModifierText.transform.position =
+            __instance.__4__this.transform.position - new Vector3(0f, 1.6f, -10f);
+            ModifierText.gameObject.SetActive(true);
+            ModifierText.color.SetAlpha(0.8f);
         }
     }
     [HarmonyPatch(typeof(IntroCutscene._ShowRole_d__41), nameof(IntroCutscene._ShowRole_d__41.MoveNext))]
@@ -146,18 +135,43 @@ public static class ModifierIntroPatch
     {
         public static void Postfix(IntroCutscene._ShowRole_d__41 __instance)
         {
-            var modifier = PlayerControl.LocalPlayer.GetModifiers<AllianceGameModifier>().FirstOrDefault();
-            
-            if (ModifierText != null && modifier != null)
-            {
-                ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
+            if (ModifierText == null) return;
 
-                ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-                if (modifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
-                ModifierText.transform.position =
-                __instance.__4__this.transform.position - new Vector3(0f, 1.6f, 0f);
-                ModifierText.gameObject.SetActive(true);
-            }
+            RunModChecks();
+
+            ModifierText.transform.position =
+            __instance.__4__this.transform.position - new Vector3(0f, 1.6f, -10f);
+            ModifierText.gameObject.SetActive(true);
+            ModifierText.color.SetAlpha(0.8f);
+        }
+    }
+    public static void RunModChecks()
+    {
+        var option = OptionGroupSingleton<GeneralOptions>.Instance.ModifierReveal;
+        var modifier = PlayerControl.LocalPlayer.GetModifiers<AllianceGameModifier>().FirstOrDefault();
+        var uniModifier = PlayerControl.LocalPlayer.GetModifiers<UniversalGameModifier>().FirstOrDefault();
+        var teamModifier = PlayerControl.LocalPlayer.GetModifiers<TouGameModifier>().FirstOrDefault();
+
+        if (modifier != null && option is ModReveal.Alliance)
+        {
+            ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
+
+            ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
+            if (modifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
+        }
+        else if (uniModifier != null && option is ModReveal.Universal)
+        {
+            ModifierText.text = $"<size=4><color=#FFFFFF>Modifier: </color>{uniModifier.ModifierName}</size>";
+
+            ModifierText.color = MiscUtils.GetRoleColour(uniModifier.ModifierName.Replace(" ", string.Empty));
+            if (uniModifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
+        }
+        else if (teamModifier != null && option is ModReveal.Faction)
+        {
+            ModifierText.text = $"<size=4><color=#FFFFFF>Modifier: </color>{teamModifier.ModifierName}</size>";
+
+            ModifierText.color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
+            if (teamModifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
         }
     }
 }

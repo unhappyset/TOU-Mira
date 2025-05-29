@@ -10,6 +10,9 @@ public sealed class GeneralOptions : AbstractOptionGroup
     public override string GroupName => "General";
     public override uint GroupPriority => 2;
 
+    [ModdedEnumOption("Modifier Type To Show In Role Intro", typeof(ModReveal))]
+    public ModReveal ModifierReveal { get; set; } = ModReveal.Faction;
+
     [ModdedToggleOption("Camouflage Comms")]
     public bool CamouflageComms { get; set; } = true;
 
@@ -46,6 +49,14 @@ public sealed class GeneralOptions : AbstractOptionGroup
 
     [ModdedToggleOption("Hide Vent Animations Not In Vision")]
     public bool HideVentAnimationNotInVision { get; set; } = true;
+}
+
+public enum ModReveal
+{
+    Alliance,
+    Universal,
+    Faction,
+    None,
 }
 
 public enum SkipState
