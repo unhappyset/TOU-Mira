@@ -535,23 +535,6 @@ public static class TouRoleManagerPatches
         return false;
     }
 
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
-    [HarmonyPrefix]
-    public static bool RpcSetRolePatch(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType, [HarmonyArgument(1)] bool canOverrideRole = false)
-    {
-        if (AmongUsClient.Instance.AmClient)
-        {
-            __instance.StartCoroutine(__instance.CoSetRole(roleType, canOverrideRole));
-        }
-
-        MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 44, SendOption.Reliable);
-        messageWriter.Write((ushort)roleType);
-        messageWriter.Write(canOverrideRole);
-        AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
-
-        return false;
-    }
-
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.AssignRoleOnDeath))]
     [HarmonyPrefix]
     public static bool AssignRoleOnDeathPatch(RoleManager __instance, PlayerControl player, bool specialRolesAllowed)
