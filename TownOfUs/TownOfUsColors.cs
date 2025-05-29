@@ -52,7 +52,7 @@ public static class TownOfUsColors
     public static Color Pestilence => new(0.3f, 0.3f, 0.3f, 1f);
     public static Color Werewolf => new(0.66f, 0.4f, 0.16f, 1f);
     public static Color Doomsayer => new(0f, 1f, 0.5f, 1f);
-    public static Color Vampire => new(0.15f, 0.15f, 0.15f, 1f);
+    public static Color Vampire => new(0.64f, 0.16f, 0.16f, 1f);
     public static Color SoulCollector => new(0.6f, 1f, 0.8f, 1f);
     public static Color GuardianAngel => new(0.7f, 1f, 1f, 1f);
     public static Color Phantom => new(0.4f, 0.16f, 0.38f, 1f);
@@ -86,5 +86,6 @@ public static class TownOfUsColors
     public static Color Immovable => new(0.9f, 0.9f, 0.8f, 1f);
     public static Color Rotting => new(0.67f, 0.5f, 0.41f, 1f);
     public static Color Noisemaker => new(0.91f, 0.41f, 0.62f, 1f);
+    public static Color Scientist => new(0f, 0.78f, 0.41f, 1f);
 
 }
