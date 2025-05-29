@@ -29,7 +29,7 @@ public sealed class EclipsalBlindModifier : TimedModifier
         if (Player.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfUsColors.ImpSoft.ToTextColor()} You were blinded by an Eclipsal!</color></b>", Color.white, spr: TouRoleIcons.Eclipsal.LoadAsset());
+                $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You were blinded by an Eclipsal!</color></b>", Color.white, spr: TouRoleIcons.Eclipsal.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);

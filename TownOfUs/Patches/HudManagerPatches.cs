@@ -326,9 +326,9 @@ public static class HudManagerPatches
                     var accuracy = OptionGroupSingleton<OracleOptions>.Instance.RevealAccuracyPercentage;
                     var revealText = confess.RevealedFaction switch
                     {
-                        ModdedRoleTeams.Crewmate => $" {TownOfUsColors.Crewmate.ToTextColor()}({accuracy}% Crew) </color>",
+                        ModdedRoleTeams.Crewmate => $" {Palette.CrewmateBlue.ToTextColor()}({accuracy}% Crew) </color>",
                         ModdedRoleTeams.Custom => $" {TownOfUsColors.Neutral.ToTextColor()}({accuracy}% Neut) </color>",
-                        ModdedRoleTeams.Impostor => $" {TownOfUsColors.Impostor.ToTextColor()}({accuracy}% Imp) </color>",
+                        ModdedRoleTeams.Impostor => $" {TownOfUsColors.ImpSoft.ToTextColor()}({accuracy}% Imp) </color>",
                         _ => string.Empty,
                     };
 

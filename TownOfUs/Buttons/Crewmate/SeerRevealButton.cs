@@ -73,7 +73,7 @@ public sealed class SeerRevealButton : TownOfUsRoleButton<SeerRole, PlayerContro
             if (!options.ShowNeutralEvilAsRed) possiblyGood = "probably";
             if (!options.ShowNeutralKillingAsRed) possiblyGood = "possibly";
 
-            var notif1 = Helpers.CreateAndShowNotification($"<b>{TownOfUsColors.Crewmate.ToTextColor()}You have revealed that {target.Data.PlayerName} is {possiblyGood} good!</color></b>", Color.white, spr: TouRoleIcons.Seer.LoadAsset());
+            var notif1 = Helpers.CreateAndShowNotification($"<b>{Palette.CrewmateBlue.ToTextColor()}You have revealed that {target.Data.PlayerName} is {possiblyGood} good!</color></b>", Color.white, spr: TouRoleIcons.Seer.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
 
@@ -85,7 +85,7 @@ public sealed class SeerRevealButton : TownOfUsRoleButton<SeerRole, PlayerContro
                 possibleAlignment = possibleAlignment.Remove(possibleAlignment.Length - 2, 2);
             var impString = possibleAlignment.Length > 1 ? ", or Crewmate!" : "Crewmate!";
             possibleAlignment.Append(impString);
-            var notif2 = Helpers.CreateAndShowNotification($"<b>They must be a {possibleAlignment}</b>", TownOfUsColors.Crewmate);
+            var notif2 = Helpers.CreateAndShowNotification($"<b>They must be a {possibleAlignment}</b>", Palette.CrewmateBlue);
             notif2.Text.SetOutlineThickness(0.35f);
             notif2.transform.localPosition = new Vector3(0f, 1f, -20f);
         }

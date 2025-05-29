@@ -24,7 +24,7 @@ public sealed class TraitorCacheModifier : BaseModifier, ICachedRole
         if (Player.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfUsColors.ImpSoft.ToTextColor()} You are a new role, and you are only guessable as Traitor now!</color></b>", Color.white, spr: TouRoleIcons.Traitor.LoadAsset());
+                $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You are a new role, and you are only guessable as Traitor now!</color></b>", Color.white, spr: TouRoleIcons.Traitor.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);

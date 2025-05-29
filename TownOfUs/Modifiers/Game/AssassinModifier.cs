@@ -130,7 +130,7 @@ public abstract class AssassinModifier : GameModifier
                 Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Impostor));
 
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfUsColors.ImpSoft.ToTextColor()} Your Double Shot has prevented you from dying this meeting!</color></b>", Color.white, spr: TouModifierIcons.DoubleShot.LoadAsset());
+                    $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}Your Double Shot has prevented you from dying this meeting!</color></b>", Color.white, spr: TouModifierIcons.DoubleShot.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
