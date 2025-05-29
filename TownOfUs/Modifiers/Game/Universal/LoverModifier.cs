@@ -29,6 +29,15 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
     public PlayerControl? OtherLover { get; set; }
     public override int GetAmountPerGame() => 0;
     public override int GetAssignmentChance() => 0;
+    public int Priority { get; set; } = 4;
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public string GetAdvancedDescription()
+    {
+        return
+            $"As a lover, you can chat with your other lover (signified with <color=#FF66CCFF>♥</color>) during the round, and you can win with your lover if you are both a part of the final 3 players."
+               + MiscUtils.AppendOptionsText(GetType());
+    }
 
     public override void OnActivate()
     {
@@ -74,6 +83,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
             OtherLover!.RpcCustomMurder(OtherLover!);
         }
     }
+
     public PlayerControl? GetOtherLover()
     {
         return OtherLover;
@@ -159,12 +169,4 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
         targetModifier!.OtherLover = player;
         sourceModifier!.OtherLover = target;
     }
-    public string GetAdvancedDescription()
-    {
-        return
-            $"As a lover, you can chat with your other lover (signified with <color=#FF66CCFF>♥</color>) during the round, and you can win with your lover if you are both a part of the final 3 players."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
 }

@@ -31,7 +31,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         IntroSound = TouAudio.GuardianAngelSound,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };
-
+    public int Priority { get; set; } = 1;
     public PlayerControl? Target { get; set; }
 
     public bool SetupIntroTeam(IntroCutscene instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
@@ -124,7 +124,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         {
             var filtered = PlayerControl.AllPlayerControls.ToArray()
                 .Where(x => !x.IsRole<GuardianAngelTouRole>() && !x.HasDied() &&
-                    !x.HasModifier<PlayerTargetModifier>() && !x.HasModifier<LoverModifier>()).ToList();
+                    !x.HasModifier<ExecutionerTargetModifier>() && !x.HasModifier<LoverModifier>()).ToList();
 
             if (evilTargetPercent > 0f)
             {

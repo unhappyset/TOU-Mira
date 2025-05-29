@@ -16,6 +16,8 @@ public sealed class ToBecomeTraitorModifier : GameModifier, IAssignableTargets
     public override bool HideOnUi => true;
     public override int GetAmountPerGame() => 0;
     public override int GetAssignmentChance() => 0;
+    public int Priority { get; set; } = 3;
+
     public void Clear()
     {
         AssignTargets();

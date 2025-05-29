@@ -33,6 +33,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
         Icon = TouRoleIcons.Executioner,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };
+    public int Priority { get; set; } = 2;
 
     public PlayerControl? Target { get; set; }
     public bool TargetVoted { get; set; }
@@ -161,7 +162,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
             var filtered = PlayerControl.AllPlayerControls.ToArray()
                 .Where(x => !x.IsRole<ExecutionerRole>() && !x.HasDied() &&
                     x.Is(ModdedRoleTeams.Crewmate) &&
-                    !x.HasModifier<PlayerTargetModifier>() &&
+                    !x.HasModifier<GuardianAngelTargetModifier>() &&
                     !x.HasModifier<LoverModifier>() &&
                     x.Data.Role is not SwapperRole &&
                     x.Data.Role is not ProsecutorRole &&
