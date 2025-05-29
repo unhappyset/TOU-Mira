@@ -16,6 +16,11 @@ public sealed class ImmovableModifier : UniversalGameModifier, IWikiDiscoverable
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ImmovableChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ImmovableAmount;
 
+    public override bool IsModifierValidOn(RoleBehaviour role)
+    {
+        return base.IsModifierValidOn(role) && !(GameOptionsManager.Instance.currentNormalGameOptions.MapId is 4 or 6);
+    }
+
     public Vector3 Location { get; set; } = Vector3.zero;
 
     public override void FixedUpdate()
