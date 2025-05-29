@@ -8,6 +8,7 @@ public static class TouAudio
     private const string AudioPath = "TownOfUs.Resources.Audio";
 
     // THIS FILE SHOULD ONLY HOLD AUDIO
+    public static LoadableAsset<AudioClip> NoisemakerDeathSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.NoisemakerDeath.wav");
     public static LoadableAsset<AudioClip> TrackerActivateSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.TrackerActivate.wav");
     public static LoadableAsset<AudioClip> TrackerDeactivateSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.TrackerDeactivate.wav");
     public static LoadableAsset<AudioClip> TrapperPlaceSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.TrapperPlace.wav");
