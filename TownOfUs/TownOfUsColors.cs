@@ -87,5 +87,6 @@ public static class TownOfUsColors
     public static Color Rotting => new(0.67f, 0.5f, 0.41f, 1f);
     public static Color Noisemaker => new(0.91f, 0.41f, 0.62f, 1f);
     public static Color Scientist => new(0f, 0.78f, 0.41f, 1f);
+    public static Color Operative => new(0.6f, 0.03f, 0.07f, 1f);
 
 }
