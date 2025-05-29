@@ -3,7 +3,6 @@ using MiraAPI.Roles;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
-using UnityEngine;
 
 namespace TownOfUs.Patches;
 

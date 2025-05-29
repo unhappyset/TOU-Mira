@@ -73,7 +73,7 @@ public sealed class ArsonistIgniteButton : TownOfUsRoleButton<ArsonistRole>
             if (doused.HasModifier<FirstDeadShield>()) continue;
             if (doused.HasModifier<BaseShieldModifier>()) continue;
 
-            PlayerControl.LocalPlayer.RpcCustomMurder(doused, resetKillTimer: false, teleportMurderer: false);
+            PlayerControl.LocalPlayer.RpcCustomMurder(doused, resetKillTimer: false, teleportMurderer: false, playKillSound: false);
             RpcIgniteSound(doused);
         }
         PlayerControl.LocalPlayer.RpcRemoveModifier<IndirectAttackerModifier>();
@@ -90,7 +90,7 @@ public sealed class ArsonistIgniteButton : TownOfUsRoleButton<ArsonistRole>
             return;
         }
         var killDistances = GameOptionsManager.Instance.currentNormalGameOptions.GetFloatArray(FloatArrayOptionNames.KillDistances);
-        ClosestTarget = PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, killDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance]);
+        ClosestTarget = PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, killDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance], predicate: x => x.HasModifier<ArsonistDousedModifier>());
     }
 
     [MethodRpc((uint)TownOfUsRpc.IgniteSound, SendImmediately = true)]
