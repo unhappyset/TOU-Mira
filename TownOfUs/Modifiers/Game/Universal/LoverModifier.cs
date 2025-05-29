@@ -8,6 +8,7 @@ using MiraAPI.Utilities.Assets;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.GameOver;
+using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Modifiers.Alliance;
@@ -103,7 +104,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
             var impTargetPercent = (int)OptionGroupSingleton<LoversOptions>.Instance.LovingImpPercent;
 
             var players = PlayerControl.AllPlayerControls.ToArray()
-                .Where(x => !x.HasDied() && !x.HasModifier<PlayerTargetModifier>()).ToList();
+                .Where(x => !x.HasDied() && !x.HasModifier<ExecutionerTargetModifier>()).ToList();
             players.Shuffle();
 
             Random rndIndex1 = new();

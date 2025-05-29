@@ -35,7 +35,7 @@ public sealed class ToBecomeTraitorModifier : GameModifier, IAssignableTargets
                 .Where(x => x.Is(ModdedRoleTeams.Crewmate) && 
                                     !x.Data.IsDead && 
                                     !x.Data.Disconnected && 
-                                    !x.HasModifier<PlayerTargetModifier>() &&
+                                    !x.HasModifier<ExecutionerTargetModifier>() &&
                                     x.Data.Role is not MayorRole).ToList();
 
             Random rndIndex = new();

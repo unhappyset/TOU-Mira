@@ -124,7 +124,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         {
             var filtered = PlayerControl.AllPlayerControls.ToArray()
                 .Where(x => !x.IsRole<GuardianAngelTouRole>() && !x.HasDied() &&
-                    !x.HasModifier<PlayerTargetModifier>() && !x.HasModifier<LoverModifier>()).ToList();
+                    !x.HasModifier<ExecutionerTargetModifier>() && !x.HasModifier<LoverModifier>()).ToList();
 
             if (evilTargetPercent > 0f)
             {
