@@ -58,6 +58,13 @@ public sealed class CrewmateModifierOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<CrewmateModifierOptions>.Instance.MultitaskerAmount > 0,
     };
 
+    [ModdedNumberOption("Rotting Amount", 0, 5, 1)]
+    public float RottingAmount { get; set; } = 0;
+    public ModdedNumberOption RottingChance { get; } = new ModdedNumberOption("Rotting Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    {
+        Visible = () => OptionGroupSingleton<CrewmateModifierOptions>.Instance.RottingAmount > 0,
+    };
+
     [ModdedNumberOption("Spy Amount", 0, 5, 1)]
     public float SpyAmount { get; set; } = 0;
     public ModdedNumberOption SpyChance { get; } = new ModdedNumberOption("Spy Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
