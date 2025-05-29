@@ -42,7 +42,10 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
         if (Player.AmOwner)
         {
-            meetingMenu = new MeetingMenu(this, SetActive, MeetingAbilityType.Toggle, TouAssets.SwapActive, TouAssets.SwapInactive, IsExempt);
+            meetingMenu = new MeetingMenu(this, SetActive, MeetingAbilityType.Toggle, TouAssets.SwapActive, TouAssets.SwapInactive, IsExempt)
+            {
+                Position = new Vector3(-0.40f, 0f, -3f),
+            };
         }
 
         if (!OptionGroupSingleton<SwapperOptions>.Instance.CanButton)

@@ -21,7 +21,7 @@ public sealed class TaskmasterModifier : TouGameModifier, IWikiDiscoverable
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        return base.IsModifierValidOn(role) && role.IsCrewmate();
+        return base.IsModifierValidOn(role) && role.IsCrewmate() && !(GameOptionsManager.Instance.currentNormalGameOptions.MapId is 4 or 6);
     }
 
     public void OnRoundStart()

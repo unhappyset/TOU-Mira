@@ -169,7 +169,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         if (play1.AmOwner || play2.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfUsColors.Transporter.ToTextColor()} You were transported!</color></b>", Color.white, spr: TouRoleIcons.Transporter.LoadAsset());
+                $"<b>{TownOfUsColors.Transporter.ToTextColor()}You were transported!</color></b>", Color.white, spr: TouRoleIcons.Transporter.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);

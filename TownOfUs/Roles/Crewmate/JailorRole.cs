@@ -163,7 +163,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
                 Coroutines.Start(MiscUtils.CoFlash(Color.red));
 
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfUsColors.Jailor.ToTextColor()} {Jailed.Data.PlayerName} cannot be executed! They must be Invulnerable!</color></b>", Color.white, spr: TouRoleIcons.Jailor.LoadAsset());
+                    $"<b>{TownOfUsColors.Jailor.ToTextColor()}{Jailed.Data.PlayerName} cannot be executed! They must be Invulnerable!</color></b>", Color.white, spr: TouRoleIcons.Jailor.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);

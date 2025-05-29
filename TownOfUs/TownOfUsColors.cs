@@ -84,5 +84,7 @@ public static class TownOfUsColors
     public static Color Taskmaster => new(0.4f, 0.6f, 0.4f, 1f);
     public static Color Celebrity => new(1f, 0.6f, 0.6f, 1f);
     public static Color Immovable => new(0.9f, 0.9f, 0.8f, 1f);
+    public static Color Rotting => new(0.67f, 0.5f, 0.41f, 1f);
+    public static Color Noisemaker => new(0.91f, 0.41f, 0.62f, 1f);
 
 }

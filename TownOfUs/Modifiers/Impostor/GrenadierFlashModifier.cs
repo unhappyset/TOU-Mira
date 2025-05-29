@@ -31,7 +31,7 @@ public sealed class GrenadierFlashModifier : TimedModifier, IDisposable
         if (Player.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfUsColors.ImpSoft.ToTextColor()} You were flashed by a Grenadier!</color></b>", Color.white, spr: TouRoleIcons.Grenadier.LoadAsset());
+                $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You were flashed by a Grenadier!</color></b>", Color.white, spr: TouRoleIcons.Grenadier.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);

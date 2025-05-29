@@ -2,6 +2,7 @@
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
+using TownOfUs.Roles.Crewmate;
 using UnityEngine;
 
 namespace TownOfUs.Modifiers.Game.Universal;
@@ -14,6 +15,10 @@ public sealed class SixthSenseModifier : UniversalGameModifier, IWikiDiscoverabl
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SixthSenseChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SixthSenseAmount;
+    public override bool IsModifierValidOn(RoleBehaviour role)
+    {
+        return base.IsModifierValidOn(role) && role is not AurialRole;
+    }
     public string GetAdvancedDescription()
     {
         return
