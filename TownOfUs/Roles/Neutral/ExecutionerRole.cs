@@ -33,6 +33,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
         Icon = TouRoleIcons.Executioner,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };
+    public int Priority { get; set; } = 2;
 
     public PlayerControl? Target { get; set; }
     public bool TargetVoted { get; set; }

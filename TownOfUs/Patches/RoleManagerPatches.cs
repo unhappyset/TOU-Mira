@@ -347,9 +347,9 @@ public static class TouRoleManagerPatches
         var excluded = MiscUtils.AllRoles.Where(x => x is ISpawnChange && ((ISpawnChange)x).NoSpawn).Select(x => x.Role).ToList();
         Func<RoleBehaviour, bool>? impFilter = (x => !excluded.Contains(x.Role));
 
-        var crewInvestRoles = MiscUtils.GetRolesToAssign(RoleAlignment.CrewmateInvestigative, filter: crewFilter);
-        var crewKillingRoles = MiscUtils.GetRolesToAssign(RoleAlignment.CrewmateKilling);
-        var crewProtectRoles = MiscUtils.GetRolesToAssign(RoleAlignment.CrewmateProtective);
+        var crewInvestRoles = MiscUtils.GetRolesToAssign(RoleAlignment.CrewmateInvestigative, filter: crewFilter);        
+        var crewKillingRoles = MiscUtils.GetRolesToAssign(RoleAlignment.CrewmateKilling);        
+        var crewProtectRoles = MiscUtils.GetRolesToAssign(RoleAlignment.CrewmateProtective);        
         var crewPowerRoles = MiscUtils.GetRolesToAssign(RoleAlignment.CrewmatePower);
         var crewSupportRoles = MiscUtils.GetRolesToAssign(RoleAlignment.CrewmateSupport);
         var neutBenignRoles = MiscUtils.GetRolesToAssign(RoleAlignment.NeutralBenign);
@@ -489,16 +489,18 @@ public static class TouRoleManagerPatches
 
     public static void AssignTargets()
     {
-        foreach (var role in MiscUtils.AllRoles.Where(x => x is IAssignableTargets))
+        foreach (var role in MiscUtils.AllRoles.Where(x => x is IAssignableTargets).OrderBy(x => (x as IAssignableTargets)!.Priority))
         {
             var assignRole = role as IAssignableTargets;
             if (assignRole != null) assignRole.AssignTargets();
         }
-        foreach (var modifier in MiscUtils.AllModifiers.Where(x => x is IAssignableTargets))
+
+        foreach (var modifier in MiscUtils.AllModifiers.Where(x => x is IAssignableTargets).OrderBy(x => (x as IAssignableTargets)!.Priority))
         {
             var assignMod = modifier as IAssignableTargets;
             if (assignMod != null) assignMod.AssignTargets();
         }
+
         GhostRoleSetup();
     }
 

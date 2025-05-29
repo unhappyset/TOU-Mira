@@ -8,7 +8,6 @@ using MiraAPI.Utilities.Assets;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.GameOver;
-using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Modifiers.Alliance;
@@ -29,6 +28,15 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
     public PlayerControl? OtherLover { get; set; }
     public override int GetAmountPerGame() => 0;
     public override int GetAssignmentChance() => 0;
+    public int Priority { get; set; } = 4;
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public string GetAdvancedDescription()
+    {
+        return
+            $"As a lover, you can chat with your other lover (signified with <color=#FF66CCFF>♥</color>) during the round, and you can win with your lover if you are both a part of the final 3 players."
+               + MiscUtils.AppendOptionsText(GetType());
+    }
 
     public override void OnActivate()
     {
@@ -74,6 +82,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
             OtherLover!.RpcCustomMurder(OtherLover!);
         }
     }
+
     public PlayerControl? GetOtherLover()
     {
         return OtherLover;
@@ -94,7 +103,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
             var impTargetPercent = (int)OptionGroupSingleton<LoversOptions>.Instance.LovingImpPercent;
 
             var players = PlayerControl.AllPlayerControls.ToArray()
-                .Where(x => !x.HasDied() && !x.HasModifier<ExecutionerTargetModifier>()).ToList();
+                .Where(x => !x.HasDied() && !x.HasModifier<PlayerTargetModifier>()).ToList();
             players.Shuffle();
 
             Random rndIndex1 = new();
@@ -159,12 +168,4 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
         targetModifier!.OtherLover = player;
         sourceModifier!.OtherLover = target;
     }
-    public string GetAdvancedDescription()
-    {
-        return
-            $"As a lover, you can chat with your other lover (signified with <color=#FF66CCFF>♥</color>) during the round, and you can win with your lover if you are both a part of the final 3 players."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
 }

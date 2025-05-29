@@ -16,6 +16,8 @@ public sealed class ToBecomeTraitorModifier : GameModifier, IAssignableTargets
     public override bool HideOnUi => true;
     public override int GetAmountPerGame() => 0;
     public override int GetAssignmentChance() => 0;
+    public int Priority { get; set; } = 3;
+
     public void Clear()
     {
         AssignTargets();
@@ -33,7 +35,7 @@ public sealed class ToBecomeTraitorModifier : GameModifier, IAssignableTargets
                 .Where(x => x.Is(ModdedRoleTeams.Crewmate) && 
                                     !x.Data.IsDead && 
                                     !x.Data.Disconnected && 
-                                    !x.HasModifier<ExecutionerTargetModifier>() &&
+                                    !x.HasModifier<PlayerTargetModifier>() &&
                                     x.Data.Role is not MayorRole).ToList();
 
             Random rndIndex = new();
