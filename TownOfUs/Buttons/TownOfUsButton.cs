@@ -105,7 +105,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
 
     public override void ClickHandler()
     {
-        if (CanClick() && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>())
+        if (CanClick() && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
         {
             if (LimitedUses)
             {
