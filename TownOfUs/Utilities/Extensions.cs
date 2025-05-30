@@ -360,11 +360,14 @@ public static class Extensions
 
         roleBehaviour.Initialize(player);
 
-        HudManager.Instance.SetHudActive(player, roleBehaviour, true);
-
-        if (MeetingHud.Instance)
+        if (player.AmOwner)
         {
-            HudManager.Instance.SetHudActive(player, roleBehaviour, false);
+            HudManager.Instance.SetHudActive(player, roleBehaviour, true);
+
+            if (MeetingHud.Instance)
+            {
+                HudManager.Instance.SetHudActive(player, roleBehaviour, false);
+            }
         }
 
         player.Data.Role = roleBehaviour;
