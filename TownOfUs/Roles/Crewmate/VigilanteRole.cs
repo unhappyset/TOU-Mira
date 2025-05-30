@@ -20,6 +20,7 @@ using TownOfUs.Utilities;
 using UnityEngine;
 using TownOfUs.Modifiers.Game;
 using Reactor.Utilities;
+using System.Globalization;
 
 namespace TownOfUs.Roles.Crewmate;
 
@@ -241,7 +242,14 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
-        return ITownOfUsRole.SetNewTabText(this);
+        var stringB = ITownOfUsRole.SetNewTabText(this);
+        if ((int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots > 1)
+        {
+            var newText = SafeShotsLeft == 1 ? $"\nYou have no more safe shots left." : $"\n{SafeShotsLeft - 1} safe shot(s) left.";
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
+        }
+
+        return stringB;
     }
 
     public string GetAdvancedDescription()

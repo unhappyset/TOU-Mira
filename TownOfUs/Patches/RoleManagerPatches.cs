@@ -1,6 +1,5 @@
 ﻿using AmongUs.GameOptions;
 using HarmonyLib;
-using Hazel;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using TownOfUs.Modules;
