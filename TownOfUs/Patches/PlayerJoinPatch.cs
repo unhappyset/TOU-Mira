@@ -14,7 +14,6 @@ public static class PlayerJoinPatch
 {
     public static bool SentOnce { get; private set; }
     public static HudManager HUD => HudManager.Instance;
-    public static ChatController Chat => HUD.Chat;
     public static void Postfix()
     {
         Coroutines.Start(CoSendJoinMsg());

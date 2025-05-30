@@ -24,6 +24,7 @@ using UnityEngine.Events;
 using Color = UnityEngine.Color;
 using TMPro;
 using System.Text;
+using TownOfUs.Patches.Roles;
 
 namespace TownOfUs.Patches;
 
@@ -33,6 +34,7 @@ public static class HudManagerPatches
     public static GameObject ZoomButton;
     public static GameObject WikiButton;
     public static GameObject RoleList;
+    public static GameObject TeamChatButton;
     public static bool Zooming;
     public static void Zoom()
     {
@@ -100,6 +102,19 @@ public static class HudManagerPatches
             aspectPosition.AdjustPosition();
         }
 
+        if (!TeamChatButton)
+        {
+            TeamChatButton =
+                UnityEngine.Object.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
+            TeamChatButton.GetComponent<PassiveButton>().OnClick = new();
+            TeamChatButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(TeamChatPatches.ToggleTeamChat));
+            TeamChatButton.name = "FactionChat";
+            TeamChatButton.transform.Find("Background").localPosition = Vector3.zero;
+            TeamChatButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatInactive.LoadAsset();
+            TeamChatButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatActive.LoadAsset();
+            TeamChatButton.transform.Find("Selected").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatSelected.LoadAsset();
+        }
+
         if (!WikiButton)
         {
             WikiButton =
@@ -125,7 +140,8 @@ public static class HudManagerPatches
             var aspectPosition = WikiButton.GetComponentInChildren<AspectPosition>();
             var distanceFromEdge = aspectPosition.DistanceFromEdge;
             distanceFromEdge.x = isChatButtonVisible ? 2.73f : 2.15f;
-            if (((ModCompatibility.IsWikiButtonOffset && !ZoomButton.active) || ZoomButton.active) && MeetingHud.Instance == null && Minigame.Instance == null && (PlayerJoinPatch.SentOnce || TutorialManager.InstanceExists)) distanceFromEdge.x += 0.84f;
+            if (((ModCompatibility.IsWikiButtonOffset && !ZoomButton.active) || ZoomButton.active) && (MeetingHud.Instance == null) && Minigame.Instance == null && (PlayerJoinPatch.SentOnce || TutorialManager.InstanceExists)) distanceFromEdge.x += 0.84f;
+            if (TeamChatButton.active) distanceFromEdge.x += 0.84f;
             distanceFromEdge.y = 0.485f;
             WikiButton.SetActive(true);
             aspectPosition.DistanceFromEdge = distanceFromEdge;
@@ -149,12 +165,39 @@ public static class HudManagerPatches
         {
             CheckForScrollZoom();
         }
-
+        UpdateTeamChat(__instance);
         UpdateCamouflageComms(__instance);
         UpdateRoleNameText(__instance);
         UpdateGhostRoles(__instance);
     }
 
+    public static void UpdateTeamChat(HudManager instance)
+    {
+        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
+
+        var isValid = MeetingHud.Instance &&
+            ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
+            (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true }) ||
+            (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat));
+
+        if (TeamChatButton)
+        {
+            TeamChatButton.SetActive(isValid);
+            var aspectPosition = TeamChatButton.GetComponentInChildren<AspectPosition>();
+            var distanceFromEdge = aspectPosition.DistanceFromEdge;
+            distanceFromEdge.x = HudManager.Instance.Chat.isActiveAndEnabled ? 2.73f : 2.15f;
+            distanceFromEdge.y = 0.485f;
+            aspectPosition.DistanceFromEdge = distanceFromEdge;
+            aspectPosition.AdjustPosition();
+            TeamChatButton.transform.Find("Selected").gameObject.SetActive(false);
+            if (TeamChatPatches.TeamChatActive)
+            { 
+                TeamChatButton.transform.Find("Inactive").gameObject.SetActive(false);
+                TeamChatButton.transform.Find("Active").gameObject.SetActive(false);
+                TeamChatButton.transform.Find("Selected").gameObject.SetActive(true);
+            }
+        }
+    }
     public static void UpdateCamouflageComms(HudManager instance)
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;

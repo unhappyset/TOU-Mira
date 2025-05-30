@@ -25,6 +25,13 @@ public sealed class GeneralOptions : AbstractOptionGroup
     {
         Visible = () => !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode
     };
+    public ModdedToggleOption ImpostorChat { get; set; } = new("Impostors Get A Private Meeting Chat", true)
+    {
+        Visible = () => !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode
+    };
+
+    [ModdedToggleOption("Vampires Get A Private Meeting Chat")]
+    public bool VampireChat { get; set; } = true;
 
     [ModdedToggleOption("The Dead Know Roles")]
     public bool TheDeadKnow { get; set; } = true;
