@@ -68,7 +68,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
         return !OtherLover ? "You are in love with nobody" : $"You are in love with {OtherLover!.Data.PlayerName}";
     }
 
-    public void KillOther()
+    public void KillOther(bool isHidden = false)
     {
         if (!Player.AmOwner) return;
 
@@ -80,7 +80,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
 
         if (!OtherLover.HasModifier<InvulnerabilityModifier>())
         {
-            OtherLover!.RpcCustomMurder(OtherLover!);
+            OtherLover!.RpcCustomMurder(OtherLover!, createDeadBody: !isHidden, showKillAnim: !isHidden);
         }
     }
 

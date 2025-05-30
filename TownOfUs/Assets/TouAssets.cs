@@ -62,7 +62,7 @@ public static class TouAssets
     public static LoadableAsset<Sprite> SwapInactive { get; } = new LoadableResourceAsset($"{ShortPath}.SwapDisabled.png", 300);
     public static LoadableAsset<Sprite> RevealButtonSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Reveal.png", 300);
     public static LoadableAsset<Sprite> RevealCleanSprite { get; } = new LoadableResourceAsset($"{ShortPath}.RevealClean.png", 300);
-    public static LoadableAsset<Sprite> Guess { get; } = new LoadableResourceAsset($"{ShortPath}.Guess.png");
+    public static LoadableAsset<Sprite> Guess { get; } = new LoadableResourceAsset($"{ShortPath}.Guess.png", 300);
     public static LoadableAsset<Sprite> InJailSprite { get; } = new LoadableResourceAsset($"{ShortPath}.InJail.png");
     public static LoadableAsset<Sprite> JailCellSprite { get; } = new LoadableResourceAsset($"{ShortPath}.JailCell.png");
     public static LoadableAsset<Sprite> ImitateSelectSprite { get; } = new LoadableResourceAsset($"{ShortPath}.ImitateSelect.png", 300);
@@ -75,7 +75,7 @@ public static class TouAssets
     public static LoadableAsset<Sprite> LighterSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Lighter.png");
     public static LoadableAsset<Sprite> DarkerSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Darker.png");
 
-    public static LoadableAsset<Sprite> ArrowSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Arrow.png", 145);
+    public static LoadableAsset<Sprite> ArrowSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Arrow.png", 135);
     public static LoadableAsset<Sprite> BasicArrowSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Arrow-OLD.png");
     public static LoadableAsset<Sprite> CrimeSceneSprite { get; } = new LoadableResourceAsset($"{ShortPath}.CrimeScene.png");
     public static LoadableAsset<Sprite> ScreenFlash { get; } = new LoadableResourceAsset($"{ShortPath}.ScreenFlash.png");
