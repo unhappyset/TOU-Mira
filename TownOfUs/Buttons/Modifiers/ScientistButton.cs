@@ -102,8 +102,7 @@ public sealed class ScientistButton : TownOfUsButton
     {
 		if (!OptionGroupSingleton<ScientistOptions>.Instance.MoveWithMenu) PlayerControl.LocalPlayer.NetTransform.Halt();
 
-        var science = RoleManager.Instance.GetRole(RoleTypes.Scientist).Cast<ScientistRole>();
-		vitals = UnityEngine.Object.Instantiate<VitalsMinigame>(science.VitalsPrefab);
+		vitals = UnityEngine.Object.Instantiate<VitalsMinigame>(RoleManager.Instance.GetRole(RoleTypes.Scientist).Cast<ScientistRole>().VitalsPrefab);
 		vitals.transform.SetParent(Camera.main.transform, false);
 		vitals.transform.localPosition = new Vector3(0f, 0f, -50f);
 		vitals.BatteryText.gameObject.SetActive(true);

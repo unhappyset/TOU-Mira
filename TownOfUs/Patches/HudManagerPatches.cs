@@ -404,7 +404,7 @@ public static class HudManagerPatches
                     || (player.HasModifier<GuardianAngelTargetModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body)
                     || (player.AmOwner && OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows))))
                 {
-                    playerName += player.HasModifier<GuardianAngelProtectModifier>() ? "<color=#FFD900FF> ★</color>": "<color=#B3FFFFFF> ★</color>";
+                    playerName += player.HasModifier<GuardianAngelProtectModifier>() ? "<color=#FFD900FF> ★</color>" : "<color=#B3FFFFFF> ★</color>";
                 }
 
                 if ((player.HasModifier<MedicShieldModifier>(x => x.Medic == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MedicRole>())
