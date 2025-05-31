@@ -9,7 +9,7 @@ namespace TownOfUs.Options.Modifiers.Crewmate;
 public sealed class ScientistOptions : AbstractOptionGroup<ScientistModifier>
 {
     public override string GroupName => "Scientist";
-    public override uint GroupPriority => 36;
+    public override uint GroupPriority => 37;
     public override Color GroupColor => TownOfUsColors.Scientist;
 
     [ModdedToggleOption("Move While Using Vitals")]
@@ -19,10 +19,10 @@ public sealed class ScientistOptions : AbstractOptionGroup<ScientistModifier>
     public float StartingCharge { get; set; } = 20f;
 
     [ModdedNumberOption("Battery Charged Each Round", 0f, 30f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float RoundCharge { get; set; } = 7.5f;
+    public float RoundCharge { get; set; } = 15f;
 
     [ModdedNumberOption("Battery Charged Per Task", 0f, 30f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float TaskCharge { get; set; } = 7.5f;
+    public float TaskCharge { get; set; } = 10f;
 
     [ModdedNumberOption("Vitals Display Cooldown", 0f, 30f, 5f, MiraNumberSuffixes.Seconds)]
     public float DisplayCooldown { get; set; } = 15f;

@@ -1,9 +1,12 @@
 ﻿using MiraAPI.GameOptions;
+using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
+using TownOfUs.Buttons.Modifiers;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
+using TownOfUs.Options.Modifiers.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -15,6 +18,22 @@ public sealed class OperativeModifier : TouGameModifier, IWikiDiscoverable
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Operative;
     public override string GetDescription() => $"Utilize the Cameras from anywhere";
     public override ModifierFaction FactionType => ModifierFaction.Crewmate;
+
+    public override void OnActivate()
+    {
+        base.OnActivate();
+
+        if (!Player.AmOwner) return;
+        CustomButtonSingleton<SecurityButton>.Instance.AvailableCharge = OptionGroupSingleton<OperativeOptions>.Instance.StartingCharge;
+    }
+    public static void OnRoundStart(PlayerControl playerControl)
+    {
+        if (playerControl.HasModifier<ScientistModifier>()) CustomButtonSingleton<SecurityButton>.Instance.AvailableCharge += OptionGroupSingleton<OperativeOptions>.Instance.RoundCharge;
+    }
+    public static void OnTaskComplete(PlayerControl playerControl)
+    {
+        if (playerControl.HasModifier<ScientistModifier>()) CustomButtonSingleton<SecurityButton>.Instance.AvailableCharge += OptionGroupSingleton<OperativeOptions>.Instance.TaskCharge;
+    }
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.OperativeChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.OperativeAmount;

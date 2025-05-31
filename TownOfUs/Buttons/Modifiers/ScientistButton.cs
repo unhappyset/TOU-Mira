@@ -29,15 +29,20 @@ public sealed class ScientistButton : TownOfUsButton
                PlayerControl.LocalPlayer.HasModifier<ScientistModifier>() &&
                !PlayerControl.LocalPlayer.Data.IsDead;
     }
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        AvailableCharge = OptionGroupSingleton<ScientistOptions>.Instance.StartingCharge;
+    }
 
 	private void RefreshAbilityButton()
 	{
 		if (AvailableCharge > 0f && !PlayerControl.LocalPlayer.AreCommsAffected())
 		{
-			DestroyableSingleton<HudManager>.Instance.AbilityButton.SetEnabled();
+			Button?.SetEnabled();
 			return;
 		}
-		DestroyableSingleton<HudManager>.Instance.AbilityButton.SetDisabled();
+		Button?.SetDisabled();
 	}
     
     protected override void FixedUpdate(PlayerControl playerControl)
@@ -54,6 +59,8 @@ public sealed class ScientistButton : TownOfUsButton
             {
                 vitals.Close();
                 RefreshAbilityButton();
+                ResetCooldownAndOrEffect();
+                vitals = null;
                 return;
             }
         }
@@ -65,6 +72,7 @@ public sealed class ScientistButton : TownOfUsButton
         Button?.usesRemainingText.gameObject.SetActive(true);
         Button?.usesRemainingSprite.gameObject.SetActive(true);
         Button!.usesRemainingText.text = (int)AvailableCharge + "%";
+        if (vitals == null && EffectActive) ResetCooldownAndOrEffect();
     }
 
     public override bool CanUse()

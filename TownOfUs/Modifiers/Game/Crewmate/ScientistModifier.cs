@@ -18,6 +18,13 @@ public sealed class ScientistModifier : TouGameModifier, IWikiDiscoverable
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Scientist;
     public override string GetDescription() => $"Access vitals anytime, anywhere, as long as you have charge";
     public override ModifierFaction FactionType => ModifierFaction.Crewmate;
+    public override void OnActivate()
+    {
+        base.OnActivate();
+
+        if (!Player.AmOwner) return;
+        CustomButtonSingleton<ScientistButton>.Instance.AvailableCharge = OptionGroupSingleton<ScientistOptions>.Instance.StartingCharge;
+    }
     public static void OnRoundStart(PlayerControl playerControl)
     {
         if (playerControl.HasModifier<ScientistModifier>()) CustomButtonSingleton<ScientistButton>.Instance.AvailableCharge += OptionGroupSingleton<ScientistOptions>.Instance.RoundCharge;
