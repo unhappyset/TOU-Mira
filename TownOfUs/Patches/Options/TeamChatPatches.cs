@@ -1,12 +1,15 @@
 ﻿using HarmonyLib;
 using MiraAPI.GameOptions;
+using Reactor.Networking.Attributes;
+using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Options;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace TownOfUs.Patches.Roles;
+namespace TownOfUs.Patches.Options;
 
 public static class TeamChatPatches
 {
@@ -20,6 +23,26 @@ public static class TeamChatPatches
         {
             HudManagerPatches.TeamChatButton.transform.Find("Inactive").gameObject.SetActive(true);
         }
+        else
+        {
+            HudManager.Instance.Chat.Toggle();
+        }
+    }
+    [MethodRpc((uint)TownOfUsRpc.SendVampTeamChat, SendImmediately = true)]
+    public static void RpcSendVampTeamChat(PlayerControl player, string text)
+    {
+        if ((PlayerControl.LocalPlayer.Data.Role is VampireRole && player != PlayerControl.LocalPlayer) || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        {
+            MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfUsColors.Vampire.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Vampire Chat)</color>", text);
+        }
+    }
+    [MethodRpc((uint)TownOfUsRpc.SendImpTeamChat, SendImmediately = true)]
+    public static void RpcSendImpTeamChat(PlayerControl player, string text)
+    {
+        if ((PlayerControl.LocalPlayer.IsImpostor() && player != PlayerControl.LocalPlayer) || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        {
+            MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfUsColors.ImpSoft.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Impostor Chat)</color>", text);
+        }
     }
 
     [HarmonyPostfix]
@@ -31,9 +54,30 @@ public static class TeamChatPatches
     }
 
     [HarmonyPostfix]
-    [HarmonyPatch(typeof(ChatController), nameof(ChatController.UpdateChatMode))]
+    [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
     public static void UpdatePostfix(ChatController __instance)
     {
+        var ChatScreenContainer = GameObject.Find("ChatScreenContainer");
+        var Background = ChatScreenContainer.transform.FindChild("Background");
+
+        if (TeamChatActive)
+        {
+            Background.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.27f, 0.6f);
+            if (MeetingHud.Instance)
+            {
+                ChatScreenContainer.transform.localPosition = new Vector3(-4.19f, -2.236f, 0);
+            }
+            else
+            {
+                ChatScreenContainer.transform.localPosition = new Vector3(-3.49f, -2.236f, 0);
+            }
+        }
+        else
+        {
+            Background.GetComponent<SpriteRenderer>().color = Color.white;
+            ChatScreenContainer.transform.localPosition = new Vector3(-3.49f, -2.236f, 0);
+        }
+
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
         if (_noticeText == null)
         {

@@ -24,7 +24,7 @@ using UnityEngine.Events;
 using Color = UnityEngine.Color;
 using TMPro;
 using System.Text;
-using TownOfUs.Patches.Roles;
+using TownOfUs.Patches.Options;
 
 namespace TownOfUs.Patches;
 
