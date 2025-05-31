@@ -41,10 +41,15 @@ public static class TouAssets
     public static LoadableAsset<Sprite> ZoomMinus { get; } = new LoadableResourceAsset($"{ShortPath}.Minus.png");
     public static LoadableAsset<Sprite> ZoomPlusActive { get; } = new LoadableResourceAsset($"{ShortPath}.PlusActive.png");
     public static LoadableAsset<Sprite> ZoomMinusActive { get; } = new LoadableResourceAsset($"{ShortPath}.MinusActive.png");
+    public static LoadableAsset<Sprite> TeamChatInactive { get; } = new LoadableResourceAsset($"{ShortPath}.TeamChatInactive.png");
+    public static LoadableAsset<Sprite> TeamChatActive { get; } = new LoadableResourceAsset($"{ShortPath}.TeamChatActive.png");
+    public static LoadableAsset<Sprite> TeamChatSelected { get; } = new LoadableResourceAsset($"{ShortPath}.TeamChatSelected.png");
 
     public static LoadableAsset<Sprite> BarryButtonSprite { get; } = new LoadableResourceAsset($"{ShortPath}.BarryButton.png");
     public static LoadableAsset<Sprite> BroadcastSprite { get; } = new LoadableResourceAsset($"{ShortPath}.BroadcastButton.png");
     public static LoadableAsset<Sprite> DisperseSprite { get; } = new LoadableResourceAsset($"{ShortPath}.DisperseButton.png");
+    public static LoadableAsset<Sprite> VitalsSprite { get; } = new LoadableResourceAsset($"{ShortPath}.VitalsButton.png");
+    public static LoadableAsset<Sprite> CameraSprite { get; } = new LoadableResourceAsset($"{ShortPath}.CamButton.png");
 
     public static LoadableAsset<Sprite> KillSprite { get; } = new LoadableResourceAsset($"{ShortPath}.KillButton.png");
     public static LoadableAsset<Sprite> RangeSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Range.png");

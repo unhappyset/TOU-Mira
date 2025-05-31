@@ -1,10 +1,8 @@
 ﻿using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
-using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Buttons.Modifiers;
-using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Modifiers.Universal;
@@ -22,6 +20,7 @@ public sealed class ButtonBarryModifier : UniversalGameModifier, IWikiDiscoverab
     public override string ModifierName => "Button Barry";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.ButtonBarry;
     public override string GetDescription() => "You can call a meeting\n from anywhere on the map.";
+    public int Priority { get; set; } = 5;
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ButtonBarryChance;
     public override bool IsModifierValidOn(RoleBehaviour role)
@@ -39,7 +38,7 @@ public sealed class ButtonBarryModifier : UniversalGameModifier, IWikiDiscoverab
             return false;
         }
 
-        return base.IsModifierValidOn(role) && !role.Player.GetModifierComponent().HasModifier<DisperserModifier>(true);
+        return base.IsModifierValidOn(role);
     }
 
     public static void OnRoundStart()

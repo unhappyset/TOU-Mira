@@ -1,5 +1,4 @@
 ﻿using MiraAPI.GameOptions;
-using MiraAPI.Modifiers.Types;
 using MiraAPI.Utilities;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
@@ -7,7 +6,7 @@ using UnityEngine;
 
 namespace TownOfUs.Modifiers.Impostor;
 
-public sealed class EclipsalBlindModifier : TimedModifier
+public sealed class EclipsalBlindModifier : DisabledModifier
 {
     public override string ModifierName => "Blinded";
     public override bool HideOnUi => true;

@@ -517,7 +517,7 @@ public static class Extensions
     }
 
     /// <summary>
-    /// Gets the closest player that matches the given criteria that also isn't eaten by a Cannibal.
+    /// Gets the closest player that matches the given criteria that also isn't hidden by other roles.
     /// </summary>
     /// <param name="playerControl">The player object.</param>
     /// <param name="includeImpostors">Whether impostors should be included in the search.</param>

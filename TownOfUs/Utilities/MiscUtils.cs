@@ -64,7 +64,8 @@ public static class MiscUtils
                     builder.AppendLine(enumOption.Title + ": " + enumOption.Values[enumOption.Value]);
                     break;
                 case ModdedNumberOption numberOption:
-                    builder.AppendLine(numberOption.Title + ": " + numberOption.Value + Helpers.GetSuffix(numberOption.SuffixType));
+                    if (numberOption.ZeroInfinity) builder.AppendLine(numberOption.Title + ": ∞");
+                    else builder.AppendLine(numberOption.Title + ": " + numberOption.Value + Helpers.GetSuffix(numberOption.SuffixType));
                     break;
             }
         }
@@ -204,8 +205,6 @@ public static class MiscUtils
             pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
             if (AltColors)
             {
-                //pooledBubble.Xmark.enabled = true;
-                //pooledBubble.Xmark.transform.localPosition += Vector3.right * 0.8f;
                 pooledBubble.Background.color = Color.black;
                 pooledBubble.TextArea.color = Color.white;
             }
@@ -221,6 +220,44 @@ public static class MiscUtils
 			if (ShowHeadsup && !Chat.IsOpenOrOpening)
 			{
 				SoundManager.Instance.PlaySound(Chat.messageSound, false, 1f, null).pitch = 0.5f + (float)PlayerControl.LocalPlayer.PlayerId / 15f;
+				Chat.chatNotification.SetUp(PlayerControl.LocalPlayer, Message);
+			}
+    }
+    public static void AddTeamChat(NetworkedPlayerInfo BasePlayer, string NameText, string Message, bool ShowHeadsup = false, bool OnLeft = true)
+    {
+        var Chat = HudManager.Instance.Chat;
+        
+        var pooledBubble = Chat.GetPooledBubble();
+
+            pooledBubble.transform.SetParent(Chat.scroller.Inner);
+            pooledBubble.transform.localScale = Vector3.one;
+            if (OnLeft) pooledBubble.SetLeft();
+            else pooledBubble.SetRight();
+            pooledBubble.SetCosmetics(BasePlayer);
+            pooledBubble.NameText.text = NameText;
+            pooledBubble.NameText.color = Color.white;
+            pooledBubble.NameText.ForceMeshUpdate(true, true);
+            pooledBubble.votedMark.enabled = false;
+            pooledBubble.Xmark.enabled = false;
+            pooledBubble.TextArea.text = Message;
+            pooledBubble.TextArea.ForceMeshUpdate(true, true);
+            pooledBubble.Background.size = new(5.52f, 0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
+            pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
+
+            pooledBubble.Background.color = new Color(0.2f, 0.2f, 0.27f, 1f);
+            pooledBubble.TextArea.color = Color.white;
+
+            pooledBubble.AlignChildren();
+            var pos = pooledBubble.NameText.transform.localPosition;
+            pooledBubble.NameText.transform.localPosition = pos;
+            Chat.AlignAllBubbles();
+			if (!Chat.IsOpenOrOpening && Chat.notificationRoutine == null)
+			{
+				Chat.notificationRoutine = Chat.StartCoroutine(Chat.BounceDot());
+			}
+			if (ShowHeadsup && !Chat.IsOpenOrOpening)
+			{
+				SoundManager.Instance.PlaySound(Chat.messageSound, false, 1f, null).pitch = 0.1f;
 				Chat.chatNotification.SetUp(PlayerControl.LocalPlayer, Message);
 			}
     }
