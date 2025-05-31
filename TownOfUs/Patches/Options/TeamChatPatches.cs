@@ -13,7 +13,7 @@ namespace TownOfUs.Patches.Options;
 
 public static class TeamChatPatches
 {
-    private static TextMeshPro? _noticeText;
+    private static TextMeshPro? _teamText;
     public static bool TeamChatActive;
     public static void ToggleTeamChat()
     {
@@ -44,57 +44,109 @@ public static class TeamChatPatches
             MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfUsColors.ImpSoft.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Impostor Chat)</color>", text);
         }
     }
-
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ChatController), nameof(ChatController.Awake))]
-    public static void AwakePostfix(ChatController __instance)
+    /* [HarmonyPatch(typeof(ChatController), nameof(ChatController.LateUpdate))]
+    public static class LateUpdatePatch
     {
-        _noticeText = Object.Instantiate(__instance.sendRateMessageText, __instance.sendRateMessageText.transform.parent);
-        _noticeText.text = string.Empty;
+        public static void Postfix(ChatController __instance)
+        {
+            if (TeamChatActive)
+            {
+                var FreeChat = GameObject.Find("FreeChatInputField");
+                var typeBg = FreeChat.transform.FindChild("Background");
+                var typeText = FreeChat.transform.FindChild("Text");
+
+                typeBg.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.1f, 0.1f, 0.6f);
+                typeBg.GetComponent<ButtonRolloverHandler>().ChangeOutColor(new Color(0.2f, 0.1f, 0.1f, 0.6f));
+                typeBg.GetComponent<ButtonRolloverHandler>().OverColor = new Color(0.6f, 0.1f, 0.1f, 1f);
+                if (typeText.TryGetComponent<TextMeshPro>(out var txt))
+                {
+                    txt.color = Color.white;
+                    txt.SetFaceColor(Color.white);
+                }
+            }
+        }
+    } */
+    [HarmonyPatch(typeof(ChatController), nameof(ChatController.Toggle))]
+    public static class TogglePatch
+    {
+        public static void Postfix(ChatController __instance)
+        {
+            if (__instance.IsOpenOrOpening)
+            {
+                if (_teamText == null)
+                {
+                    _teamText = Object.Instantiate(__instance.sendRateMessageText, __instance.sendRateMessageText.transform.parent);
+                    _teamText.text = string.Empty;
+                    _teamText.color = TownOfUsColors.ImpSoft;
+                }
+                _teamText.text = string.Empty;
+                var ChatScreenContainer = GameObject.Find("ChatScreenContainer");
+                // var FreeChat = GameObject.Find("FreeChatInputField");
+                var Background = ChatScreenContainer.transform.FindChild("Background");
+                // var typeBg = FreeChat.transform.FindChild("Background");
+                // var typeText = FreeChat.transform.FindChild("Text");
+
+                if (TeamChatActive)
+                {
+                    var ogChat = HudManager.Instance.Chat.chatButton;
+                    ogChat.transform.Find("Inactive").gameObject.SetActive(true);
+                    ogChat.transform.Find("Active").gameObject.SetActive(false);
+                    ogChat.transform.Find("Selected").gameObject.SetActive(false);
+
+                    var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
+                    Background.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.1f, 0.1f, 0.8f);
+                    //typeBg.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.1f, 0.1f, 0.6f);
+                    //typeText.GetComponent<TextMeshPro>().color = Color.white;
+                    if (MeetingHud.Instance)
+                    {
+                        ChatScreenContainer.transform.localPosition = new Vector3(-4.33f, -2.236f, 0);
+                    }
+                    else
+                    {
+                        ChatScreenContainer.transform.localPosition = new Vector3(-3.49f, -2.236f, 0);
+                    }
+
+                    if (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true } && !PlayerControl.LocalPlayer.Data.IsDead && _teamText != null)
+                    {
+                        _teamText.text = "Impostor Chat is Open. Only Impostors can see this.";
+                        _teamText.color = TownOfUsColors.ImpSoft;
+                    }
+                    else if (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat && !PlayerControl.LocalPlayer.Data.IsDead && _teamText != null)
+                    {
+                        _teamText.text = "Vampire Chat is Open. Only Vampires can see this.";
+                        _teamText.color = TownOfUsColors.Vampire;
+                    }
+                }
+                else
+                {
+                    Background.GetComponent<SpriteRenderer>().color = Color.white;
+                    /* typeBg.GetComponent<SpriteRenderer>().color = Color.white;
+                    typeBg.GetComponent<ButtonRolloverHandler>().ChangeOutColor(Color.white);
+                    typeBg.GetComponent<ButtonRolloverHandler>().OverColor = new Color(0f, 1f, 0f, 1f);
+                    if (typeText.TryGetComponent<TextMeshPro>(out var txt))
+                    {
+                        txt.color = new Color(0.6706f, 0.8902f, 0.8667f, 1f);
+                        txt.SetFaceColor(new Color(0.6706f, 0.8902f, 0.8667f, 1f));
+                    }
+                    typeText.GetComponent<TextMeshPro>().color = new Color(0.6706f, 0.8902f, 0.8667f, 1f); */
+                    ChatScreenContainer.transform.localPosition = new Vector3(-3.49f, -2.236f, 0);
+                }
+            }
+            else if (__instance.IsClosedOrClosing && TeamChatActive)
+            {
+                ToggleTeamChat();
+            }
+        }
     }
-
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
-    public static void UpdatePostfix(ChatController __instance)
+    [HarmonyPatch(typeof(ChatController), nameof(ChatController.ForceClosed))]
+    public static class ForceClosePatch
     {
-        var ChatScreenContainer = GameObject.Find("ChatScreenContainer");
-        var Background = ChatScreenContainer.transform.FindChild("Background");
-
-        if (TeamChatActive)
+        public static void Postfix(ChatController __instance)
         {
-            Background.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.27f, 0.6f);
-            if (MeetingHud.Instance)
+            if (TeamChatActive)
             {
-                ChatScreenContainer.transform.localPosition = new Vector3(-4.19f, -2.236f, 0);
+                ToggleTeamChat();
             }
-            else
-            {
-                ChatScreenContainer.transform.localPosition = new Vector3(-3.49f, -2.236f, 0);
-            }
-        }
-        else
-        {
-            Background.GetComponent<SpriteRenderer>().color = Color.white;
-            ChatScreenContainer.transform.localPosition = new Vector3(-3.49f, -2.236f, 0);
-        }
-
-        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-        if (_noticeText == null)
-        {
-            return;
-        }
-
-        if (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true } && !PlayerControl.LocalPlayer.Data.IsDead)
-        {
-            _noticeText.text = "Impostor Chat is Open. Only Impostors can see this.";
-        }
-        else if (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat && !PlayerControl.LocalPlayer.Data.IsDead)
-        {
-            _noticeText.text = "Vampire Chat is Open. Only Vampires can see this.";
-        }
-        else
-        {
-            _noticeText.text = string.Empty;
         }
     }
 }
