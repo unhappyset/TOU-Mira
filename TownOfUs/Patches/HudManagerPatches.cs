@@ -47,6 +47,29 @@ public static class HudManagerPatches
         HudManager.Instance.UICamera.orthographicSize = size;
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
+    public static void ScrollZoom(bool zoomOut = false)
+    {
+        var size = Camera.main.orthographicSize;
+        if (zoomOut) size *= 1.25f;
+        else size /= 1.25f;
+        if (size != 3f) Zooming = true;
+        if (size <= 3f)
+        {
+            Zooming = false;
+            size = 3f;
+        }
+        else if (size >= 12f)
+        {
+            Zooming = true;
+        }
+        if (size >= 15f) size = 15f;
+        ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlus.LoadAsset() : TouAssets.ZoomMinus.LoadAsset();
+        ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlusActive.LoadAsset() : TouAssets.ZoomMinusActive.LoadAsset();
+
+        Camera.main.orthographicSize = size;
+        HudManager.Instance.UICamera.orthographicSize = size;
+        ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
+    }
     public static void ResetZoom()
     {
         Zooming = false;
@@ -64,13 +87,12 @@ public static class HudManagerPatches
     {
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
-            Zooming = true;
+            ScrollZoom();
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            Zooming = false;
+            ScrollZoom(true);
         }
-        Zoom();
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
