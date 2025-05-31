@@ -15,6 +15,7 @@ using TownOfUs.Options;
 using TownOfUs.Roles;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace TownOfUs.Utilities;
 
@@ -279,23 +280,53 @@ public static class MiscUtils
         return infected.Select(impData => impData.Object).ToList();
     }
 
-    public static List<ushort> GetRolesToAssign(ModdedRoleTeams team, int max = -1, Func<RoleBehaviour, bool>? filter = null)
+    public static List<(ushort RoleType, int Chance)> GetRolesToAssign(ModdedRoleTeams team, Func<RoleBehaviour, bool>? filter = null)
     {
         var roles = GetRegisteredRoles(team);
 
-        return GetRolesToAssign(roles, max, filter);
+        return GetRolesToAssign(roles, filter);
     }
 
-    public static List<ushort> GetRolesToAssign(RoleAlignment alignment, int max = -1, Func<RoleBehaviour, bool>? filter = null)
+    public static List<(ushort RoleType, int Chance)> GetRolesToAssign(RoleAlignment alignment, Func<RoleBehaviour, bool>? filter = null)
     {
         var roles = GetRegisteredRoles(alignment);
 
-        return GetRolesToAssign(roles, max, filter);
+        return GetRolesToAssign(roles, filter);
     }
 
-    private static List<ushort> GetRolesToAssign(IEnumerable<RoleBehaviour> roles, int max = -1, Func<RoleBehaviour, bool>? filter = null)
+    private static List<(ushort RoleType, int Chance)> GetRolesToAssign(IEnumerable<RoleBehaviour> roles, Func<RoleBehaviour, bool>? filter = null)
     {
-        if (max == 0) return [];
+        var currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
+        var roleOptions = currentGameOptions.RoleOptions;
+
+        var assignmentData = roles.Where(x => !x.IsDead && (filter == null || filter(x))).Select(role => new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role), roleOptions.GetChancePerGame(role.Role))).ToList();
+
+        var chosenRoles = GetPossibleRoles(assignmentData);
+
+        var rolesToKeep = chosenRoles.ToList();
+        rolesToKeep.Shuffle();
+
+        // Log.Message($"GetRolesToKeep Kept - Count: {rolesToKeep.Count}");
+        return rolesToKeep;
+    }
+
+    public static List<ushort> GetMaxRolesToAssign(ModdedRoleTeams team, int max = 1, Func<RoleBehaviour, bool>? filter = null)
+    {
+        var roles = GetRegisteredRoles(team);
+
+        return GetMaxRolesToAssign(roles, max, filter);
+    }
+
+    public static List<ushort> GetMaxRolesToAssign(RoleAlignment alignment, int max, Func<RoleBehaviour, bool>? filter = null)
+    {
+        var roles = GetRegisteredRoles(alignment);
+
+        return GetMaxRolesToAssign(roles, max, filter);
+    }
+
+    private static List<ushort> GetMaxRolesToAssign(IEnumerable<RoleBehaviour> roles, int max, Func<RoleBehaviour, bool>? filter = null)
+    {
+        if (max <= 0) return [];
 
         var currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
         var roleOptions = currentGameOptions.RoleOptions;
@@ -304,46 +335,38 @@ public static class MiscUtils
 
         List<(ushort RoleType, int Chance)> chosenRoles;
 
-        if (max > 0)
+        chosenRoles = GetPossibleRoles(assignmentData, x => x.Chance == 100);
+
+        // Shuffle to ensure that the same 100% roles do not appear in
+        // every game if there are more than the maximum.
+        chosenRoles.Shuffle();
+        // Truncate the list if there are more 100% roles than the max.
+        chosenRoles = chosenRoles.GetRange(0, Math.Min(max, chosenRoles.Count));
+
+        if (chosenRoles.Count < max)
         {
-            chosenRoles = GetPossibleRoles(assignmentData, x => x.Chance == 100);
+            var potentialRoles = GetPossibleRoles(assignmentData, x => x.Chance < 100);
 
-            // Shuffle to ensure that the same 100% roles do not appear in
-            // every game if there are more than the maximum.
-            chosenRoles.Shuffle();
-            // Truncate the list if there are more 100% roles than the max.
-            chosenRoles = chosenRoles.GetRange(0, Math.Min(max, chosenRoles.Count));
+            // Determine which roles appear in this game.
+            var optionalRoles = potentialRoles.Where(x => HashRandom.Next(101) < x.Chance).ToList();
+            potentialRoles = potentialRoles.Where(x => !optionalRoles.Contains(x)).ToList();
 
+            optionalRoles.Shuffle();
+            chosenRoles.AddRange(optionalRoles.GetRange(0, Math.Min(max - chosenRoles.Count, optionalRoles.Count)));
+
+            // If there are not enough roles after that, randomly add
+            // ones which were previously eliminated, up to the max.
             if (chosenRoles.Count < max)
             {
-                var potentialRoles = GetPossibleRoles(assignmentData, x => x.Chance < 100);
-
-                // Determine which roles appear in this game.
-                var optionalRoles = potentialRoles.Where(x => HashRandom.Next(101) < x.Chance).ToList();
-                potentialRoles = potentialRoles.Where(x => !optionalRoles.Contains(x)).ToList();
-
-                optionalRoles.Shuffle();
-                chosenRoles.AddRange(optionalRoles.GetRange(0, Math.Min(max - chosenRoles.Count, optionalRoles.Count)));
-
-                // If there are not enough roles after that, randomly add
-                // ones which were previously eliminated, up to the max.
-                if (chosenRoles.Count < max)
-                {
-                    potentialRoles.Shuffle();
-                    chosenRoles.AddRange(potentialRoles.GetRange(0, Math.Min(max - chosenRoles.Count, potentialRoles.Count)));
-                }
+                potentialRoles.Shuffle();
+                chosenRoles.AddRange(potentialRoles.GetRange(0, Math.Min(max - chosenRoles.Count, potentialRoles.Count)));
             }
-        }
-        else
-        {
-            var potentialRoles = GetPossibleRoles(assignmentData);
-            chosenRoles = potentialRoles.Where(x => HashRandom.Next(101) < x.Chance).ToList();
         }
 
         var rolesToKeep = chosenRoles.Select(x => x.RoleType).ToList();
         rolesToKeep.Shuffle();
 
-        // Log.Message($"GetRolesToKeep Kept - Count: {rolesToKeep.Count}");
+        // Log.Message($"GetMaxRolesToAssign Kept - Count: {rolesToKeep.Count}");
         return rolesToKeep;
     }
 
@@ -572,7 +595,7 @@ public static class MiscUtils
         cam.centerPosition = cam.Target.transform.position;
     }
 
-    public static List<ushort> ReadFromBucket(List<RoleListOption> buckets, List<ushort> roles, RoleListOption roleType, RoleListOption replaceType)
+    public static List<ushort> ReadFromBucket(List<RoleListOption> buckets, List<(ushort RoleType, int Chance)> roles, RoleListOption roleType, RoleListOption replaceType)
     {
         var result = new List<ushort>();
 
@@ -586,8 +609,11 @@ public static class MiscUtils
                 break;
             }
 
-            var addedRole = roles.TakeFirst();
-            result.Add(addedRole);
+            var addedRole = SelectRole(roles);
+            result.Add(addedRole.RoleType);
+
+            if (addedRole.Chance >= 100) addedRole.Chance -= 5;
+            if (addedRole.Chance > 0) roles.Add(addedRole);
 
             buckets.Remove(roleType);
         }
@@ -595,7 +621,7 @@ public static class MiscUtils
         return result;
     }
 
-    public static List<ushort> ReadFromBucket(List<RoleListOption> buckets, List<ushort> roles, RoleListOption roleType)
+    public static List<ushort> ReadFromBucket(List<RoleListOption> buckets, List<(ushort RoleType, int Chance)> roles, RoleListOption roleType)
     {
         var result = new List<ushort>();
 
@@ -608,14 +634,47 @@ public static class MiscUtils
                 break;
             }
 
-            var addedRole = roles.TakeFirst();
-            result.Add(addedRole);
+            var addedRole = SelectRole(roles);
+            result.Add(addedRole.RoleType);
+
+            if (addedRole.Chance >= 100) addedRole.Chance -= 5;
+            if (addedRole.Chance > 0) roles.Add(addedRole);
 
             buckets.Remove(roleType);
         }
 
         return result;
     }
+
+    public static (ushort RoleType, int Chance) SelectRole(List<(ushort RoleType, int Chance)> roles)
+    {
+        var chosenRoles = roles.Where(x => x.Item2 == 100).ToList();
+        if (chosenRoles.Count > 0)
+        {
+            chosenRoles.Shuffle();
+            return chosenRoles.TakeFirst();
+        }
+
+        chosenRoles = roles.Where(x => x.Chance < 100).ToList();
+        int total = chosenRoles.Sum(x => x.Chance);
+        int random = Random.RandomRangeInt(1, total + 1);
+
+        int cumulative = 0;
+        (ushort RoleType, int SpawnChance) selectedRole = default;
+
+        foreach (var role in chosenRoles)
+        {
+            cumulative += role.Chance;
+            if (random <= cumulative)
+            {
+                selectedRole = role;
+                break;
+            }
+        }
+
+        return selectedRole;
+    }
+
     /// <summary>
     /// Gets a FakePlayer by comparing PlayerControl.
     /// </summary>

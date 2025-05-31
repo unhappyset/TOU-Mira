@@ -37,8 +37,7 @@ public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
         {
             Func<RoleBehaviour, bool>? impFilter = x => x.Role != (RoleTypes)RoleId.Get<TraitorRole>();
 
-
-            var impRoles = MiscUtils.GetRolesToAssign(ModdedRoleTeams.Impostor, filter: impFilter);
+            var impRoles = MiscUtils.GetRolesToAssign(ModdedRoleTeams.Impostor, filter: impFilter).Select(x => x.RoleType).ToList();
 
             var roleList = MiscUtils.GetPotentialRoles()
                 .Where(role => role is ICustomRole)
@@ -54,7 +53,8 @@ public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
                     if (player.IsImpostor() && !player.AmOwner)
                     {
                         var role = player.GetRoleWhenAlive();
-                        if (role) impRoles.Remove((ushort)role!.Role);
+                        if (role) 
+                            impRoles.Remove((ushort)role!.Role);
                     }
                 }
             }

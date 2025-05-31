@@ -139,7 +139,7 @@ public static class TouRoleManagerPatches
         var excluded = MiscUtils.AllRoles.Where(x => x is ISpawnChange change && change.NoSpawn).Select(x => x.Role);
         Func<RoleBehaviour, bool>? impFilter = (x => !excluded.Contains(x.Role));
 
-        var impRoles = MiscUtils.GetRolesToAssign(ModdedRoleTeams.Impostor, impCount, impFilter);
+        var impRoles = MiscUtils.GetMaxRolesToAssign(ModdedRoleTeams.Impostor, impCount, impFilter);
 
         var uniqueRole = MiscUtils.AllRoles.FirstOrDefault(x => x is ISpawnChange change2 && !change2.NoSpawn);
         if (uniqueRole != null && impRoles.Contains(RoleId.Get(uniqueRole.GetType())))
@@ -153,9 +153,9 @@ public static class TouRoleManagerPatches
             }
         }
         
-        var nbRoles = MiscUtils.GetRolesToAssign(RoleAlignment.NeutralBenign, nbCount);
-        var neRoles = MiscUtils.GetRolesToAssign(RoleAlignment.NeutralEvil, neCount);
-        var nkRoles = MiscUtils.GetRolesToAssign(RoleAlignment.NeutralKilling, nkCount);
+        var nbRoles = MiscUtils.GetMaxRolesToAssign(RoleAlignment.NeutralBenign, nbCount);
+        var neRoles = MiscUtils.GetMaxRolesToAssign(RoleAlignment.NeutralEvil, neCount);
+        var nkRoles = MiscUtils.GetMaxRolesToAssign(RoleAlignment.NeutralKilling, nkCount);
 
         var crewCount = crewmates.Count - nbRoles.Count - neRoles.Count - nkRoles.Count;
 
@@ -166,7 +166,7 @@ public static class TouRoleManagerPatches
             crewFilter = (x => x.Role != (RoleTypes)RoleId.Get<SpyRole>());
         }
 
-        var crewRoles = MiscUtils.GetRolesToAssign(ModdedRoleTeams.Crewmate, crewCount, crewFilter);
+        var crewRoles = MiscUtils.GetMaxRolesToAssign(ModdedRoleTeams.Crewmate, crewCount, crewFilter);
 
         var crewAndNeutRoles = new List<ushort>();
         crewAndNeutRoles.AddRange(nbRoles);
