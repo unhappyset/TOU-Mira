@@ -3,6 +3,7 @@ using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Buttons.Modifiers;
+using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Modifiers.Crewmate;
@@ -31,7 +32,7 @@ public sealed class ScientistModifier : TouGameModifier, IWikiDiscoverable
 
     public override bool IsModifierValidOn(RoleBehaviour role)
 	{
-		return base.IsModifierValidOn(role) && role.IsCrewmate() && role is not ScientistRole;
+		return base.IsModifierValidOn(role) && role.IsCrewmate() && role is not ScientistRole && !role.Player.GetModifierComponent().HasModifier<SatelliteModifier>(true) && !role.Player.GetModifierComponent().HasModifier<ButtonBarryModifier>(true);
 	}
     public string GetAdvancedDescription()
     {

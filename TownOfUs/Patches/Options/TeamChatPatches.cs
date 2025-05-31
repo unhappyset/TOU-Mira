@@ -83,6 +83,7 @@ public static class TeamChatPatches
                 var ChatScreenContainer = GameObject.Find("ChatScreenContainer");
                 // var FreeChat = GameObject.Find("FreeChatInputField");
                 var Background = ChatScreenContainer.transform.FindChild("Background");
+                var bubbleItems = GameObject.Find("Items");
                 // var typeBg = FreeChat.transform.FindChild("Background");
                 // var typeText = FreeChat.transform.FindChild("Text");
 
@@ -116,9 +117,30 @@ public static class TeamChatPatches
                         _teamText.text = "Vampire Chat is Open. Only Vampires can see this.";
                         _teamText.color = TownOfUsColors.Vampire;
                     }
+                    foreach (var bubble in bubbleItems.GetAllChilds())
+                    {
+                        bubble.gameObject.SetActive(true);
+                        var bg = bubble.transform.Find("Background").gameObject;
+                        if (bg != null)
+                        {
+                            var sprite = bg.GetComponent<SpriteRenderer>();
+                            if (sprite.color == Color.white || sprite.color == Color.black) bubble.gameObject.SetActive(false);
+                        }
+                    }
+                    __instance.AlignAllBubbles();
                 }
                 else
                 {
+                    foreach (var bubble in bubbleItems.GetAllChilds())
+                    {
+                        bubble.gameObject.SetActive(true);
+                        var bg = bubble.transform.Find("Background").gameObject;
+                        if (bg != null)
+                        {
+                            var sprite = bg.GetComponent<SpriteRenderer>();
+                            if (sprite.color != Color.white && sprite.color != Color.black) bubble.gameObject.SetActive(false);
+                        }
+                    }
                     Background.GetComponent<SpriteRenderer>().color = Color.white;
                     /* typeBg.GetComponent<SpriteRenderer>().color = Color.white;
                     typeBg.GetComponent<ButtonRolloverHandler>().ChangeOutColor(Color.white);
@@ -136,6 +158,88 @@ public static class TeamChatPatches
             {
                 ToggleTeamChat();
             }
+        }
+    }
+    [HarmonyPatch(typeof(ChatController), nameof(ChatController.AlignAllBubbles))]
+    public static class AlignBubblesPatch
+    {
+        public static void Postfix(ChatController __instance)
+        {
+            var bubbleItems = GameObject.Find("Items");
+            float num = 0f;
+            Il2CppSystem.Collections.Generic.List<PoolableBehavior> activeChildren = __instance.chatBubblePool.activeChildren;
+            if (TeamChatActive)
+            {
+                foreach (var bubble in bubbleItems.GetAllChilds())
+                {
+                    bubble.gameObject.SetActive(true);
+                    var bg = bubble.transform.Find("Background").gameObject;
+                    if (bg != null)
+                    {
+                        var sprite = bg.GetComponent<SpriteRenderer>();
+                        if (sprite.color == Color.white || sprite.color == Color.black) bubble.gameObject.SetActive(false);
+                    }
+                }
+                var topPos = bubbleItems.transform.GetChild(0).transform.localPosition;
+                for (int i = activeChildren.Count - 1; i >= 0; i--)
+                {
+                    var chatBubbleObj = activeChildren[i] as ChatBubble;
+                    if (chatBubbleObj == null) continue;
+                    ChatBubble chatBubble = chatBubbleObj!;
+                    var bg = chatBubble.transform.Find("Background").gameObject;
+                    if (bg != null)
+                    {
+                        var sprite = bg.GetComponent<SpriteRenderer>();
+                        if (sprite.color == Color.white || sprite.color == Color.black)
+                        {
+                            chatBubble.gameObject.SetActive(false);
+                            continue;
+                        }
+                    }
+                    num += chatBubble.Background.size.y;
+                    Vector3 localPosition = topPos;
+                    localPosition.y = -1.85f + num;
+                    chatBubble.transform.localPosition = localPosition;
+                    num += 0.15f;
+                }
+            }
+            else
+            {
+                foreach (var bubble in bubbleItems.GetAllChilds())
+                {
+                    bubble.gameObject.SetActive(true);
+                    var bg = bubble.transform.Find("Background").gameObject;
+                    if (bg != null)
+                    {
+                        var sprite = bg.GetComponent<SpriteRenderer>();
+                        if (sprite.color != Color.white && sprite.color != Color.black) bubble.gameObject.SetActive(false);
+                    }
+                }
+                var topPos = bubbleItems.transform.GetChild(0).transform.localPosition;
+                for (int i = activeChildren.Count - 1; i >= 0; i--)
+                {
+                    var chatBubbleObj = activeChildren[i] as ChatBubble;
+                    if (chatBubbleObj == null) continue;
+                    ChatBubble chatBubble = chatBubbleObj!;
+                    var bg = chatBubble.transform.Find("Background").gameObject;
+                    if (bg != null)
+                    {
+                        var sprite = bg.GetComponent<SpriteRenderer>();
+                        if (sprite.color != Color.white && sprite.color != Color.black)
+                        {
+                            chatBubble.gameObject.SetActive(false);
+                            continue;
+                        }
+                    }
+                    num += chatBubble.Background.size.y;
+                    Vector3 localPosition = topPos;
+                    localPosition.y = -1.85f + num;
+                    chatBubble.transform.localPosition = localPosition;
+                    num += 0.15f;
+                }
+            }
+            float num2 = -0.3f;
+            __instance.scroller.SetYBoundsMin(Mathf.Min(0f, -num + __instance.scroller.Hitbox.bounds.size.y + num2));
         }
     }
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.ForceClosed))]
