@@ -17,10 +17,23 @@ public sealed class SecurityButton : TownOfUsButton
     public override string Keybind => "tou.ActionCustom2";
     public override Color TextOutlineColor => TownOfUsColors.Operative;
     public override float Cooldown => OptionGroupSingleton<OperativeOptions>.Instance.DisplayCooldown + MapCooldown;
-    public override float EffectDuration => AvailableCharge < OptionGroupSingleton<OperativeOptions>.Instance.DisplayDuration ? AvailableCharge : OptionGroupSingleton<OperativeOptions>.Instance.DisplayDuration;
+    public float AvailableCharge { get; set; } = OptionGroupSingleton<OperativeOptions>.Instance.StartingCharge;
+    public override float EffectDuration
+    {
+        get
+        {
+            if (OptionGroupSingleton<OperativeOptions>.Instance.DisplayDuration == 0)
+            {
+                return AvailableCharge;
+            }
+            else
+            {
+                return AvailableCharge < OptionGroupSingleton<OperativeOptions>.Instance.DisplayDuration ? AvailableCharge : OptionGroupSingleton<OperativeOptions>.Instance.DisplayDuration;
+            }
+        }
+    }
     public override ButtonLocation Location => ButtonLocation.BottomLeft;
     public override LoadableAsset<Sprite> Sprite => TouAssets.CameraSprite;
-    public float AvailableCharge { get; set; } = OptionGroupSingleton<OperativeOptions>.Instance.StartingCharge;
     public Minigame? securityMinigame;
     public bool canMoveWithMinigame { get; set; }
 
@@ -119,38 +132,32 @@ public sealed class SecurityButton : TownOfUsButton
         {
             Logger<TownOfUsPlugin>.Warning($"Checking Airship Conditions");
             basicCams = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("task_cams"));
-            if (!OptionGroupSingleton<OperativeOptions>.Instance.MoveWithCams)
+            PlayerControl.LocalPlayer.NetTransform.Halt();
+            canMoveWithMinigame = false;
+        }
+        else if (mapId is MapNames.Skeld or MapNames.Dleks)
+        {
+            Logger<TownOfUsPlugin>.Warning($"Checking Skeld Conditions");
+            basicCams = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("SurvConsole"));
+            PlayerControl.LocalPlayer.NetTransform.Halt();
+            canMoveWithMinigame = false;
+        }
+        else if (mapId is MapNames.MiraHQ)
+        {
+            Logger<TownOfUsPlugin>.Warning($"Checking Mira HQ Conditions");
+            basicCams = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("SurvLogConsole"));
+            if (!OptionGroupSingleton<OperativeOptions>.Instance.MoveOnMira)
             {
                 PlayerControl.LocalPlayer.NetTransform.Halt();
                 canMoveWithMinigame = false;
             }
         }
-            else if (mapId is MapNames.Skeld or MapNames.Dleks)
-            {
-                Logger<TownOfUsPlugin>.Warning($"Checking Skeld Conditions");
-                basicCams = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("SurvConsole"));
-                if (!OptionGroupSingleton<OperativeOptions>.Instance.MoveWithCams)
-            {
-                PlayerControl.LocalPlayer.NetTransform.Halt();
-                canMoveWithMinigame = false;
-            }
-            }
-            else if (mapId is MapNames.MiraHQ)
-            {
-                Logger<TownOfUsPlugin>.Warning($"Checking Mira HQ Conditions");
-                basicCams = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("SurvLogConsole"));
-                if (!OptionGroupSingleton<OperativeOptions>.Instance.MoveOnMira)
-            {
-                PlayerControl.LocalPlayer.NetTransform.Halt();
-                canMoveWithMinigame = false;
-            }
-            }
-            else if (mapId is MapNames.Fungle && !OptionGroupSingleton<OperativeOptions>.Instance.MoveOnFungle)
-            {
-                Logger<TownOfUsPlugin>.Warning($"Checking Fungle Conditions");
-                PlayerControl.LocalPlayer.NetTransform.Halt();
-                canMoveWithMinigame = false;
-            }
+        else if (mapId is MapNames.Fungle)
+        {
+            Logger<TownOfUsPlugin>.Warning($"Checking Fungle Conditions");
+            PlayerControl.LocalPlayer.NetTransform.Halt();
+            canMoveWithMinigame = false;
+        }
 
         if (basicCams == null)
         {

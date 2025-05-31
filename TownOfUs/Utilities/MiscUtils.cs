@@ -64,7 +64,8 @@ public static class MiscUtils
                     builder.AppendLine(enumOption.Title + ": " + enumOption.Values[enumOption.Value]);
                     break;
                 case ModdedNumberOption numberOption:
-                    builder.AppendLine(numberOption.Title + ": " + numberOption.Value + Helpers.GetSuffix(numberOption.SuffixType));
+                    if (numberOption.ZeroInfinity) builder.AppendLine(numberOption.Title + ": ∞");
+                    else builder.AppendLine(numberOption.Title + ": " + numberOption.Value + Helpers.GetSuffix(numberOption.SuffixType));
                     break;
             }
         }

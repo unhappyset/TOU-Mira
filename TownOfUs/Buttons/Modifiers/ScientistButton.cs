@@ -17,10 +17,23 @@ public sealed class ScientistButton : TownOfUsButton
     public override string Keybind => "tou.ActionCustom2";
     public override Color TextOutlineColor => TownOfUsColors.Scientist;
     public override float Cooldown => OptionGroupSingleton<ScientistOptions>.Instance.DisplayCooldown + MapCooldown;
-    public override float EffectDuration => AvailableCharge < OptionGroupSingleton<ScientistOptions>.Instance.DisplayDuration ? AvailableCharge : OptionGroupSingleton<ScientistOptions>.Instance.DisplayDuration;
+    public float AvailableCharge { get; set; } = OptionGroupSingleton<ScientistOptions>.Instance.StartingCharge;
+    public override float EffectDuration
+    {
+        get
+        {
+            if (OptionGroupSingleton<ScientistOptions>.Instance.DisplayDuration == 0)
+            {
+                return AvailableCharge;
+            }
+            else
+            {
+                return AvailableCharge < OptionGroupSingleton<ScientistOptions>.Instance.DisplayDuration ? AvailableCharge : OptionGroupSingleton<ScientistOptions>.Instance.DisplayDuration;
+            }
+        }
+    }
     public override ButtonLocation Location => ButtonLocation.BottomLeft;
     public override LoadableAsset<Sprite> Sprite => TouAssets.VitalsSprite;
-    public float AvailableCharge { get; set; } = OptionGroupSingleton<ScientistOptions>.Instance.StartingCharge;
     public VitalsMinigame? vitals;
 
     public override bool Enabled(RoleBehaviour? role)

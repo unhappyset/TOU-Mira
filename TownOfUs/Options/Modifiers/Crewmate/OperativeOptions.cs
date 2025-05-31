@@ -11,13 +11,14 @@ public sealed class OperativeOptions : AbstractOptionGroup<OperativeModifier>
     public override string GroupName => "Operative";
     public override uint GroupPriority => 35;
     public override Color GroupColor => TownOfUsColors.Operative;
+    // THESE BREAK THE CAMERA MINIGAME!!
+/* 
+        [ModdedToggleOption("Move While Using Cameras")]
+        public bool MoveWithCams { get; set; } = false;
 
-    [ModdedToggleOption("Move While Using Cameras")]
-    public bool MoveWithCams { get; set; } = false;
-
-    [ModdedToggleOption("Move While Using Fungle Binoculars")]
-    public bool MoveOnFungle { get; set; } = false;
-
+        [ModdedToggleOption("Move While Using Fungle Binoculars")]
+        public bool MoveOnFungle { get; set; } = false;
+     */
     [ModdedToggleOption("Move While Using Mira Doorlog")]
     public bool MoveOnMira { get; set; } = true;
 
