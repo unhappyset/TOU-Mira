@@ -13,9 +13,11 @@ public sealed class MinerPlaceVentButton : TownOfUsRoleButton<MinerRole>, IAfter
     public override string Keybind => "ActionQuaternary";
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<MinerOptions>.Instance.MineCooldown + MapCooldown;
+    public override float EffectDuration => OptionGroupSingleton<MinerOptions>.Instance.MineDelay + 0.001f;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.MineSprite;
 
     public Vector2 VentSize { get; set; }
+    public Vector3? SavedPos { get; set; }
 
     public override void CreateButton(Transform parent)
     {
@@ -47,11 +49,18 @@ public sealed class MinerPlaceVentButton : TownOfUsRoleButton<MinerRole>, IAfter
 
     protected override void OnClick()
     {
-        var position = PlayerControl.LocalPlayer.transform.position;
+        SavedPos = PlayerControl.LocalPlayer.transform.position;
+    }
+
+    public override void OnEffectEnd()
+    {
+        base.OnEffectEnd();
+
         var id = GetNextVentId();
 
-        MinerRole.RpcPlaceVent(PlayerControl.LocalPlayer, id, position, position.z + 0.0004f);
+        MinerRole.RpcPlaceVent(PlayerControl.LocalPlayer, id, SavedPos!.Value, SavedPos.Value.z + 0.0004f);
         TouAudio.PlaySound(TouAudio.MineSound);
+        SavedPos = null;
     }
 
     public static int GetNextVentId()
