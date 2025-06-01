@@ -18,6 +18,7 @@ public static class TouModifierIcons
     public static LoadableAsset<Sprite> Operative { get; } = new LoadableResourceAsset($"{iconPath}.Operative.png");
     public static LoadableAsset<Sprite> Rotting { get; } = new LoadableResourceAsset($"{iconPath}.Rotting.png");
     public static LoadableAsset<Sprite> Scientist { get; } = new LoadableResourceAsset($"{iconPath}.Scientist.png");
+    public static LoadableAsset<Sprite> Scout { get; } = new LoadableResourceAsset($"{iconPath}.Scout.png");
     public static LoadableAsset<Sprite> Taskmaster { get; } = new LoadableResourceAsset($"{iconPath}.Taskmaster.png");
     public static LoadableAsset<Sprite> Torch { get; } = new LoadableResourceAsset($"{iconPath}.Torch.png");
 
