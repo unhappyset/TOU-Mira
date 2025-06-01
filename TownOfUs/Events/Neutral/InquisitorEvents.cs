@@ -9,6 +9,7 @@ using MiraAPI.Utilities;
 using Reactor.Utilities;
 using TownOfUs.Buttons.Neutral;
 using TownOfUs.Modifiers.Neutral;
+using TownOfUs.Modules;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -22,6 +23,18 @@ public static class InquisitorEvents
     {
         var source = @event.Source;
         var victim = @event.Target;
+
+        if (source.Data.Role is InquisitorRole && GameHistory.PlayerStats.TryGetValue(source.PlayerId, out var stats))
+        {
+            if (victim.HasModifier<InquisitorHereticModifier>())
+            {
+                stats.CorrectKills += 1;
+            }
+            else if (source != victim)
+            {
+                stats.IncorrectKills += 1;
+            }
+        }
 
         if (PlayerControl.LocalPlayer.Data.Role is InquisitorRole)
         {
@@ -68,6 +81,12 @@ public static class InquisitorEvents
         if (inquis.TargetsDead && !PlayerControl.LocalPlayer.HasDied())
         {
             PlayerControl.LocalPlayer.RpcPlayerExile();
+
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>{TownOfUsColors.Inquisitor.ToTextColor()}You have successfully won, as all Heretics have perished!</color></b>", Color.white, spr: TouRoleIcons.Inquisitor.LoadAsset());
+
+            notif1.Text.SetOutlineThickness(0.35f);
+                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
         }
     }
 }

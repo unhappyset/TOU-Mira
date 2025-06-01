@@ -108,7 +108,7 @@ public static class EndGamePatches
 
             var killedPlayers = GameHistory.KilledPlayers.Count(x => x.KillerId == playerControl.PlayerId && x.VictimId != playerControl.PlayerId);
 
-            if (killedPlayers > 0 && !playerControl.IsCrewmate())
+            if (killedPlayers > 0 && !playerControl.IsCrewmate() && !playerControl.Is(RoleAlignment.NeutralEvil))
             {
                 playerRoleString.Append(TownOfUsPlugin.Culture, $" |{TownOfUsColors.Impostor.ToTextColor()} Kills: {killedPlayers}</color>");
             }

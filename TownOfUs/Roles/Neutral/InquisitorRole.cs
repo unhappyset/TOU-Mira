@@ -53,7 +53,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         if (Targets.Count == 0)
         {
             Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>([HideFromIl2Cpp] (x) => x.OwnerId == Player.PlayerId).ToList();
-            TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select(x => x.TargetRole).ToList();
+            TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select(x => x.TargetRole).OrderBy(x => x.NiceName).ToList();
         }
     }
     public override void OnMeetingStart()
@@ -147,12 +147,34 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
             players.Shuffle();
             players.Shuffle();
             players.RemoveAll(x => x.Data.Role is InquisitorRole);
-            List<PlayerControl> filtered = [players[0], players[1], players[2]];
-            if (required is 4 or 5 && players.Count >= 4) filtered.Add(players[3]);
-            if (required is 5 && players.Count >= 5) filtered.Add(players[4]);
+            players.Shuffle();
+
+            var neut = players.Any(x => x.IsNeutral()) ? players.FirstOrDefault(x => x.IsNeutral()) : players.Random();
+            players.Remove(neut);
+            players.Shuffle();
+
+            var imp = players.Any(x => x.IsImpostor()) ? players.FirstOrDefault(x => x.IsImpostor()) : players.Random();
+            players.Remove(imp);
+            players.Shuffle();
+
+            var crew = players.Any(x => x.IsCrewmate()) ? players.FirstOrDefault(x => x.IsCrewmate()) : players.Random();
+            players.Remove(crew);
+            players.Shuffle();
+
+            List<PlayerControl> filtered = [neut, imp, crew];
+            var other = players.Random();
+            if (required is 4 or 5 && players.Count >= 1 && other != null)
+            {
+                filtered.Add(other);
+                players.Remove(other);
+            }
+            players.Shuffle();
+            other = players.Random();
+            if (required is 5 && players.Count >= 1 && other != null) filtered.Add(other);
 
             if (filtered.Count > 0)
             {
+                filtered = filtered.OrderBy(x => x.Data.Role.NiceName).ToList();
                 foreach (var player in filtered)
                 {
                     players.Remove(player);

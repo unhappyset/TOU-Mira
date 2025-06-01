@@ -13,6 +13,7 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Modifiers.Alliance;
 using TownOfUs.Roles;
+using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 
 namespace TownOfUs.Modifiers.Game.Alliance;
@@ -105,7 +106,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
             var impTargetPercent = (int)OptionGroupSingleton<LoversOptions>.Instance.LovingImpPercent;
 
             var players = PlayerControl.AllPlayerControls.ToArray()
-                .Where(x => !x.HasDied() && !x.HasModifier<ExecutionerTargetModifier>()).ToList();
+                .Where(x => !x.HasDied() && !x.HasModifier<ExecutionerTargetModifier>() && x.Data.Role is not InquisitorRole).ToList();
             players.Shuffle();
 
             Random rndIndex1 = new();
