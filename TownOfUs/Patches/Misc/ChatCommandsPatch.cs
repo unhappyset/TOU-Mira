@@ -1,10 +1,14 @@
 using System.Globalization;
 using HarmonyLib;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modules;
+using TownOfUs.Options;
+using TownOfUs.Patches.Options;
+using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -148,6 +152,35 @@ public static class ChatPatches
             __instance.quickChatMenu.Clear();
             __instance.quickChatField.Clear();
             __instance.UpdateChatMode();
+            return false;
+        }
+        if (!TeamChatPatches.TeamChatActive)
+            return true;
+
+        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
+
+        if (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat)
+        {
+            TeamChatPatches.RpcSendVampTeamChat(PlayerControl.LocalPlayer, textRegular);
+            MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.Vampire.ToHtmlStringRGBA()}>{PlayerControl.LocalPlayer.Data.PlayerName} (Vampire Chat)</color>", textRegular, OnLeft: false);
+
+            __instance.freeChatField.Clear();
+            __instance.quickChatMenu.Clear();
+            __instance.quickChatField.Clear();
+            __instance.UpdateChatMode();
+
+            return false;
+        }
+        else if (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true })
+        {
+            TeamChatPatches.RpcSendImpTeamChat(PlayerControl.LocalPlayer, textRegular);
+            MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.ImpSoft.ToHtmlStringRGBA()}>{PlayerControl.LocalPlayer.Data.PlayerName} (Impostor Chat)</color>", textRegular, OnLeft: false);
+
+            __instance.freeChatField.Clear();
+            __instance.quickChatMenu.Clear();
+            __instance.quickChatField.Clear();
+            __instance.UpdateChatMode();
+
             return false;
         }
         return true;
