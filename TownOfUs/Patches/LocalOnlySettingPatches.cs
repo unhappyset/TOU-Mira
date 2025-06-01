@@ -39,6 +39,12 @@ public static class LocalSettings
                 OnClick = () => { return TownOfUsPlugin.ShowSummaryMessage.Value = !TownOfUsPlugin.ShowSummaryMessage.Value; },
                 DefaultValue = TownOfUsPlugin.ShowSummaryMessage.Value
             },
+            new()
+            {
+                Title = "Colored Player Name",
+                OnClick = () => { return TownOfUsPlugin.ColorPlayerName.Value = !TownOfUsPlugin.ColorPlayerName.Value; },
+                DefaultValue = TownOfUsPlugin.ColorPlayerName.Value
+            },
         ];
 
     private static GameObject popUp;

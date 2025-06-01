@@ -73,7 +73,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         return (player.IsImpostor() && !player.IsTraitor()) || (player.IsTraitor() && OptionGroupSingleton<SnitchOptions>.Instance.SnitchSeesTraitor) || (player.Is(RoleAlignment.NeutralKilling) && OptionGroupSingleton<SnitchOptions>.Instance.SnitchNeutralRoles);
     }
 
-    public static bool SnitchVisibilityFlag(PlayerControl player)
+    public static bool SnitchVisibilityFlag(PlayerControl player, bool showRole = false)
     {
         var snitchRevealed = PlayerControl.LocalPlayer.Data.Role is SnitchRole snitch && snitch.CompletedAllTasks;
         var showSnitch = IsTargetOfSnitch(PlayerControl.LocalPlayer) && player.Data.Role is SnitchRole snitch2 && snitch2.OnLastTask;
@@ -83,7 +83,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             snitchRevealed = false;
         }
 
-        return (snitchRevealed && IsTargetOfSnitch(player)) || showSnitch;
+        return (snitchRevealed && IsTargetOfSnitch(player) && ((showRole && OptionGroupSingleton<SnitchOptions>.Instance.SnitchSeesRoles) || !showRole)) || showSnitch;
     }
 
     public override void OnDeath(DeathReason reason)

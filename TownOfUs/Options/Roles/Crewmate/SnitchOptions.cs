@@ -11,6 +11,9 @@ public sealed class SnitchOptions : AbstractOptionGroup<SnitchRole>
     [ModdedToggleOption("Snitch Reveals Neutral Killers")]
     public bool SnitchNeutralRoles { get; set; } = false;
 
+    [ModdedToggleOption("Snitch Sees Revealed Players' Roles")]
+    public bool SnitchSeesRoles { get; set; } = true;
+
     [ModdedToggleOption("Snitch Sees Traitor")]
     public bool SnitchSeesTraitor { get; set; } = true;
 
