@@ -1,13 +1,8 @@
 using System.Globalization;
 using HarmonyLib;
-using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers.Crewmate;
-using TownOfUs.Options;
-using TownOfUs.Patches.Options;
 using TownOfUs.Roles.Crewmate;
-using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 
 namespace TownOfUs.Patches.Roles;
@@ -74,37 +69,6 @@ public static class JailorChatPatches
 
         if (PlayerControl.LocalPlayer.IsJailed() && MeetingHud.Instance)
         {
-            return false;
-        }
-
-        if (!TeamChatPatches.TeamChatActive)
-            return true;
-
-        var text = __instance.freeChatField.Text;
-        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-
-        if (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat)
-        {
-            TeamChatPatches.RpcSendVampTeamChat(PlayerControl.LocalPlayer, text);
-            MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.Vampire.ToHtmlStringRGBA()}>{PlayerControl.LocalPlayer.Data.PlayerName} (Vampire Chat)</color>", text, OnLeft: false);
-
-            __instance.freeChatField.Clear();
-            __instance.quickChatMenu.Clear();
-            __instance.quickChatField.Clear();
-            __instance.UpdateChatMode();
-
-            return false;
-        }
-        else if (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true })
-        {
-            TeamChatPatches.RpcSendImpTeamChat(PlayerControl.LocalPlayer, text);
-            MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.ImpSoft.ToHtmlStringRGBA()}>{PlayerControl.LocalPlayer.Data.PlayerName} (Impostor Chat)</color>", text, OnLeft: false);
-
-            __instance.freeChatField.Clear();
-            __instance.quickChatMenu.Clear();
-            __instance.quickChatField.Clear();
-            __instance.UpdateChatMode();
-
             return false;
         }
 

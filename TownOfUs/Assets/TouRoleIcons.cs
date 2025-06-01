@@ -49,6 +49,7 @@ public static class TouRoleIcons
 
     public static LoadableAsset<Sprite> Doomsayer { get; } = new LoadableResourceAsset($"{iconPath}.Doomsayer.png");
     public static LoadableAsset<Sprite> Executioner { get; } = new LoadableResourceAsset($"{iconPath}.Executioner.png");
+    public static LoadableAsset<Sprite> Inquisitor { get; } = new LoadableResourceAsset($"{iconPath}.Inquisitor.png");
     public static LoadableAsset<Sprite> Jester { get; } = new LoadableResourceAsset($"{iconPath}.Jester.png");
     public static LoadableAsset<Sprite> Phantom { get; } = new LoadableResourceAsset($"{iconPath}.Phantom.png");
 

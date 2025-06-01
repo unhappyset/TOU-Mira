@@ -57,6 +57,7 @@ public static class TownOfUsColors
     public static Color GuardianAngel => new(0.7f, 1f, 1f, 1f);
     public static Color Phantom => new(0.4f, 0.16f, 0.38f, 1f);
     public static Color Mercenary => new(0.55f, 0.4f, 0.6f, 1f);
+    public static Color Inquisitor = new(0.85f, 0.26f, 0.57f, 1f);
 
     // Impostor Colors
     public static Color Impostor => Palette.ImpostorRed;
