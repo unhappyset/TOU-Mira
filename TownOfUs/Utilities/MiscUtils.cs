@@ -612,9 +612,6 @@ public static class MiscUtils
             var addedRole = SelectRole(roles);
             result.Add(addedRole.RoleType);
 
-            if (addedRole.Chance >= 100) addedRole.Chance -= 5;
-            if (addedRole.Chance > 0) roles.Add(addedRole);
-
             buckets.Remove(roleType);
         }
 
@@ -636,9 +633,6 @@ public static class MiscUtils
 
             var addedRole = SelectRole(roles);
             result.Add(addedRole.RoleType);
-
-            if (addedRole.Chance >= 100) addedRole.Chance -= 5;
-            if (addedRole.Chance > 0) roles.Add(addedRole);
 
             buckets.Remove(roleType);
         }
