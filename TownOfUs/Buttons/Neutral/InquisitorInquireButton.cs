@@ -14,6 +14,7 @@ public sealed class InquisitorInquireButton : TownOfUsRoleButton<InquisitorRole,
 {
     public override string Name => "Inquire";
     public override string Keybind => "ActionQuaternary";
+    public override int MaxUses => (int)OptionGroupSingleton<InquisitorOptions>.Instance.MaxUses;
     public override Color TextOutlineColor => TownOfUsColors.Inquisitor;
     public override float Cooldown => OptionGroupSingleton<InquisitorOptions>.Instance.InquireCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.Observe;

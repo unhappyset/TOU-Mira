@@ -50,11 +50,11 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         CustomButtonSingleton<InquisitorVanquishButton>.Instance.Usable = true;
 
         // if Inuquisitor was revived
-        /* if (Targets.Count == 0)
+        if (Targets.Count == 0)
         {
             Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>([HideFromIl2Cpp] (x) => x.OwnerId == Player.PlayerId).ToList();
             TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select(x => x.TargetRole).ToList();
-        } */
+        }
     }
     public override void OnMeetingStart()
     {
