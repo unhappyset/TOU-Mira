@@ -83,6 +83,13 @@ public sealed class CrewmateModifierOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<CrewmateModifierOptions>.Instance.ScientistAmount > 0,
     };
 
+    [ModdedNumberOption("Scout Amount", 0, 5, 1)]
+    public float ScoutAmount { get; set; } = 0;
+    public ModdedNumberOption ScoutChance { get; } = new ModdedNumberOption("Scout Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    {
+        Visible = () => OptionGroupSingleton<CrewmateModifierOptions>.Instance.ScoutAmount > 0,
+    };
+
     [ModdedNumberOption("Spy Amount", 0, 5, 1)]
     public float SpyAmount { get; set; } = 0;
     public ModdedNumberOption SpyChance { get; } = new ModdedNumberOption("Spy Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)

@@ -49,8 +49,9 @@ public static class VisionPatch
 
             var t = switchSystem?.Level ?? 1;
 
-            if (player._object.HasModifier<TorchModifier>()) t = 1;
 
+            if (player._object.HasModifier<TorchModifier>()) t = 1;
+            
             __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, t) * GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod * visionFactor;
             var mapId = (MapNames)GameOptionsManager.Instance.currentNormalGameOptions.MapId;
             if (TutorialManager.InstanceExists) mapId = (MapNames)AmongUsClient.Instance.TutorialMapId;
@@ -59,6 +60,7 @@ public static class VisionPatch
             {
                 __result /= 2;
             }
+            if (player._object.HasModifier<ScoutModifier>()) __result = t == 1 ? __result * 1.5f : __result / 2;
         }
 
         if (NerfMe && !PlayerControl.LocalPlayer.HasDied())

@@ -356,7 +356,7 @@ public static class HudManagerPatches
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                     (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
                     (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
-                    SnitchRole.SnitchVisibilityFlag(player) ||
+                    SnitchRole.SnitchVisibilityFlag(player, true) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
                     SleuthModifier.SleuthVisibilityFlag(player) ||
                     MayorRole.MayorVisibilityFlag(player))
@@ -399,6 +399,7 @@ public static class HudManagerPatches
 
                     playerName += revealText;
                 }
+                if (SnitchRole.SnitchVisibilityFlag(player)) playerColor = TownOfUsColors.Impostor;
 
                 if (player?.Data?.Disconnected == true)
                 {
@@ -419,7 +420,8 @@ public static class HudManagerPatches
 
                 if (!string.IsNullOrEmpty(roleName))
                 {
-                    playerName = $"{roleName}\n{playerName}";
+                    if (TownOfUsPlugin.ColorPlayerName.Value) playerName = $"{roleName}\n{color.ToTextColor()}{playerName}</color>";
+                    else  playerName = $"{roleName}\n{playerName}";
                 }
 
                 playerVA.NameText.text = playerName;
@@ -515,7 +517,7 @@ public static class HudManagerPatches
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body) ||
                     (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
                     (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
-                    SnitchRole.SnitchVisibilityFlag(player) ||
+                    SnitchRole.SnitchVisibilityFlag(player, true) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
                     MayorRole.MayorVisibilityFlag(player))
                 {
@@ -554,10 +556,12 @@ public static class HudManagerPatches
                 {
                     playerColor = Color.clear;
                 }
+                if (SnitchRole.SnitchVisibilityFlag(player)) playerColor = TownOfUsColors.Impostor;
 
                 if (!string.IsNullOrEmpty(roleName))
                 {
-                    playerName = $"{roleName}\n{playerName}";
+                    if (TownOfUsPlugin.ColorPlayerName.Value) playerName = $"{roleName}\n{color.ToTextColor()}{playerName}</color>";
+                    else  playerName = $"{roleName}\n{playerName}";
                 }
 
                 player.cosmetics.nameText.text = playerName;

@@ -16,6 +16,9 @@ public sealed class SnitchOptions : AbstractOptionGroup<SnitchRole>
 
     [ModdedToggleOption("Snitch Sees Impostors In Meetings")]
     public bool SnitchSeesImpostorsMeetings { get; set; } = true;
+    
+    [ModdedToggleOption("Snitch Sees Revealed Players' Roles")]
+    public bool SnitchSeesRoles { get; set; } = false;
 
     [ModdedNumberOption("Tasks Remaining When Revealed", 1, 3, 1)]
     public float TaskRemainingWhenRevealed { get; set; } = 1;

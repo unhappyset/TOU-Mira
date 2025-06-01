@@ -18,12 +18,14 @@ public static class TouModifierIcons
     public static LoadableAsset<Sprite> Operative { get; } = new LoadableResourceAsset($"{iconPath}.Operative.png");
     public static LoadableAsset<Sprite> Rotting { get; } = new LoadableResourceAsset($"{iconPath}.Rotting.png");
     public static LoadableAsset<Sprite> Scientist { get; } = new LoadableResourceAsset($"{iconPath}.Scientist.png");
+    public static LoadableAsset<Sprite> Scout { get; } = new LoadableResourceAsset($"{iconPath}.Scout.png");
     public static LoadableAsset<Sprite> Taskmaster { get; } = new LoadableResourceAsset($"{iconPath}.Taskmaster.png");
     public static LoadableAsset<Sprite> Torch { get; } = new LoadableResourceAsset($"{iconPath}.Torch.png");
 
     public static LoadableAsset<Sprite> Disperser { get; } = new LoadableResourceAsset($"{iconPath}.Disperser.png");
     public static LoadableAsset<Sprite> DoubleShot { get; } = new LoadableResourceAsset($"{iconPath}.DoubleShot.png");
     public static LoadableAsset<Sprite> Saboteur { get; } = new LoadableResourceAsset($"{iconPath}.Saboteur.png");
+    public static LoadableAsset<Sprite> Telepath { get; } = new LoadableResourceAsset($"{iconPath}.Telepath.png");
     public static LoadableAsset<Sprite> Underdog { get; } = new LoadableResourceAsset($"{iconPath}.Underdog.png");
 
     public static LoadableAsset<Sprite> Flash { get; } = new LoadableResourceAsset($"{iconPath}.Flash.png");

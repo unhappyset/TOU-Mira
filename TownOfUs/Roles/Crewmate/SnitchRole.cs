@@ -43,23 +43,44 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         if (IsTargetOfSnitch(PlayerControl.LocalPlayer) && OnLastTask)
         {
             CreateRevealingArrow();
-        }
-
-        if (OnLastTask && Player.AmOwner)
-        {
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Snitch, alpha: 0.5f));
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>{TownOfUsColors.Snitch.ToTextColor()}The Snitch is getting closer to reveal you!</color></b>", Color.white, spr: TouRoleIcons.Snitch.LoadAsset());
+
+            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
         }
 
         CompletedAllTasks = completedTasks == Player.myTasks.Count;
 
+        if (OnLastTask && Player.AmOwner && !CompletedAllTasks)
+        {
+            Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Snitch, alpha: 0.5f));
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>{TownOfUsColors.Snitch.ToTextColor()}The impostors know of your whereabouts!</color></b>", Color.white, spr: TouRoleIcons.Snitch.LoadAsset());
+
+            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        }
+
         if (CompletedAllTasks && IsTargetOfSnitch(PlayerControl.LocalPlayer))
         {
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Snitch, alpha: 0.5f));
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>{TownOfUsColors.Snitch.ToTextColor()}The Snitch knows what you are now!</color></b>", Color.white, spr: TouRoleIcons.Snitch.LoadAsset());
+
+            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
         }
 
         if (CompletedAllTasks && Player.AmOwner)
         {
             CreateSnitchArrows();
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>{TownOfUsColors.Snitch.ToTextColor()}You have revealed the impostors!</color></b>", Color.white, spr: TouRoleIcons.Snitch.LoadAsset());
+
+            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
         }
     }
 
@@ -73,7 +94,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         return (player.IsImpostor() && !player.IsTraitor()) || (player.IsTraitor() && OptionGroupSingleton<SnitchOptions>.Instance.SnitchSeesTraitor) || (player.Is(RoleAlignment.NeutralKilling) && OptionGroupSingleton<SnitchOptions>.Instance.SnitchNeutralRoles);
     }
 
-    public static bool SnitchVisibilityFlag(PlayerControl player)
+    public static bool SnitchVisibilityFlag(PlayerControl player, bool showRole = false)
     {
         var snitchRevealed = PlayerControl.LocalPlayer.Data.Role is SnitchRole snitch && snitch.CompletedAllTasks;
         var showSnitch = IsTargetOfSnitch(PlayerControl.LocalPlayer) && player.Data.Role is SnitchRole snitch2 && snitch2.OnLastTask;
@@ -83,7 +104,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             snitchRevealed = false;
         }
 
-        return (snitchRevealed && IsTargetOfSnitch(player)) || showSnitch;
+        return (snitchRevealed && IsTargetOfSnitch(player) && ((showRole && OptionGroupSingleton<SnitchOptions>.Instance.SnitchSeesRoles) || !showRole)) || showSnitch;
     }
 
     public override void OnDeath(DeathReason reason)
