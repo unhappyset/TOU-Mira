@@ -25,6 +25,7 @@ public static class TouModifierIcons
     public static LoadableAsset<Sprite> Disperser { get; } = new LoadableResourceAsset($"{iconPath}.Disperser.png");
     public static LoadableAsset<Sprite> DoubleShot { get; } = new LoadableResourceAsset($"{iconPath}.DoubleShot.png");
     public static LoadableAsset<Sprite> Saboteur { get; } = new LoadableResourceAsset($"{iconPath}.Saboteur.png");
+    public static LoadableAsset<Sprite> Telepath { get; } = new LoadableResourceAsset($"{iconPath}.Telepath.png");
     public static LoadableAsset<Sprite> Underdog { get; } = new LoadableResourceAsset($"{iconPath}.Underdog.png");
 
     public static LoadableAsset<Sprite> Flash { get; } = new LoadableResourceAsset($"{iconPath}.Flash.png");

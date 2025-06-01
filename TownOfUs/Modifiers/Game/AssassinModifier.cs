@@ -16,6 +16,7 @@ using TownOfUs.Utilities;
 using UnityEngine;
 using TownOfUs.Modifiers.Game.Impostor;
 using MiraAPI.PluginLoading;
+using Il2CppSystem.Linq;
 
 namespace TownOfUs.Modifiers.Game;
 
@@ -23,6 +24,8 @@ namespace TownOfUs.Modifiers.Game;
 public abstract class AssassinModifier : GameModifier
 {
     public override string ModifierName => "Assassin";
+    public string LastGuessedItem { get; set; }
+    public PlayerControl? LastAttemptedVictim { get; set; }
 
     public override int GetAssignmentChance() => 100;
 
@@ -111,6 +114,8 @@ public abstract class AssassinModifier : GameModifier
             var victim = pickVictim ? player : Player;
 
             ClickHandler(victim);
+            LastAttemptedVictim = player;
+            LastGuessedItem = $"{role.TeamColor.ToTextColor()}{role.NiceName}</color>";
         }
 
         void ClickModifierHandle(BaseModifier modifier)
@@ -119,6 +124,8 @@ public abstract class AssassinModifier : GameModifier
             var victim = pickVictim ? player : Player;
 
             ClickHandler(victim);
+            LastAttemptedVictim = player;
+            LastGuessedItem = $"{MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty)).ToTextColor()}{modifier.ModifierName}</color>";
         }
 
         void ClickHandler(PlayerControl victim)
@@ -136,6 +143,8 @@ public abstract class AssassinModifier : GameModifier
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
 
                 shapeMenu.Close();
+                LastGuessedItem = string.Empty;
+                LastAttemptedVictim = null;
 
                 return;
             }
@@ -143,7 +152,11 @@ public abstract class AssassinModifier : GameModifier
             Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false, playKillSound: false);
 
             if (victim != Player)
+            {
+                LastGuessedItem = string.Empty;
+                LastAttemptedVictim = null;
                 MeetingMenu.Instances.Do(x => x.HideSingle(victim.PlayerId));
+            }
 
             maxKills--;
 
