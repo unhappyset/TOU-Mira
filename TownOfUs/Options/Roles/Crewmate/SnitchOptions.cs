@@ -11,14 +11,14 @@ public sealed class SnitchOptions : AbstractOptionGroup<SnitchRole>
     [ModdedToggleOption("Snitch Reveals Neutral Killers")]
     public bool SnitchNeutralRoles { get; set; } = false;
 
-    [ModdedToggleOption("Snitch Sees Revealed Players' Roles")]
-    public bool SnitchSeesRoles { get; set; } = true;
-
     [ModdedToggleOption("Snitch Sees Traitor")]
     public bool SnitchSeesTraitor { get; set; } = true;
 
     [ModdedToggleOption("Snitch Sees Impostors In Meetings")]
     public bool SnitchSeesImpostorsMeetings { get; set; } = true;
+    
+    [ModdedToggleOption("Snitch Sees Revealed Players' Roles")]
+    public bool SnitchSeesRoles { get; set; } = false;
 
     [ModdedNumberOption("Tasks Remaining When Revealed", 1, 3, 1)]
     public float TaskRemainingWhenRevealed { get; set; } = 1;
