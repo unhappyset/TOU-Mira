@@ -13,6 +13,7 @@ using MiraAPI.Utilities;
 using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Roles;
+using TownOfUs.Roles.Neutral;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -21,12 +22,12 @@ namespace TownOfUs.Utilities;
 
 public static class MiscUtils
 {
-    public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
+    public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.CanVanquish) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
-    public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling));
+    public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.CanVanquish));
 
-    public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>  x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
+    public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>  x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.CanVanquish) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
     public static int ImpAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor());

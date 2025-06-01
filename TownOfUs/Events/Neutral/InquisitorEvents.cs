@@ -2,12 +2,10 @@
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Player;
-using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
-using TownOfUs.Buttons.Neutral;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
 using TownOfUs.Roles.Neutral;
@@ -24,7 +22,7 @@ public static class InquisitorEvents
         var source = @event.Source;
         var victim = @event.Target;
 
-        if (source.Data.Role is InquisitorRole && GameHistory.PlayerStats.TryGetValue(source.PlayerId, out var stats))
+        if (source.Data.Role is InquisitorRole inquis && GameHistory.PlayerStats.TryGetValue(source.PlayerId, out var stats))
         {
             if (victim.HasModifier<InquisitorHereticModifier>())
             {
@@ -33,6 +31,7 @@ public static class InquisitorEvents
             else if (source != victim)
             {
                 stats.IncorrectKills += 1;
+                inquis.CanVanquish = false;
             }
         }
 
@@ -51,7 +50,6 @@ public static class InquisitorEvents
                 var notif1 = Helpers.CreateAndShowNotification($"<b>{TownOfUsColors.Inquisitor.ToTextColor()}{victim.Data.PlayerName} was not a heretic!\nYou can no longer vanquish players.</b></color>", Color.white, spr: TouRoleIcons.Inquisitor.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-                CustomButtonSingleton<InquisitorVanquishButton>.Instance.Usable = false;
             }
             else if (victim.HasModifier<InquisitorHereticModifier>() && !victim.AmOwner && source.AmOwner)
             {

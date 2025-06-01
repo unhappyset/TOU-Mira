@@ -16,14 +16,13 @@ public sealed class InquisitorVanquishButton : TownOfUsRoleButton<InquisitorRole
     public override Color TextOutlineColor => TownOfUsColors.Inquisitor;
     public override float Cooldown => OptionGroupSingleton<InquisitorOptions>.Instance.VanquishCooldown;
     public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
-    public bool Usable { get; set; } = true;
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
     }
     public override bool CanUse()
     {
-        return base.CanUse() && Usable;
+        return base.CanUse() && Role.CanVanquish;
     }
 
     public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);

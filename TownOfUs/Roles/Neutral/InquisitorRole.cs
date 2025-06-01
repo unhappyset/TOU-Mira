@@ -3,13 +3,12 @@ using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
-using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
-using TownOfUs.Buttons.Neutral;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
@@ -25,6 +24,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public string RoleDescription => "Vanquish The Heretics!";
     public string RoleLongDescription => "Vanquish your Heretics or get them killed.\nYou will win after every heretic dies.\nIf they're all dead after a meeting ends, you'll leave & win.";
     public Color RoleColor => TownOfUsColors.Inquisitor;
+    public bool CanVanquish { get; set; } = true;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
     public DoomableType DoomHintType => DoomableType.Hunter;
@@ -47,7 +47,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public override void Initialize(PlayerControl player)
     {
         RoleStubs.RoleBehaviourInitialize(this, player);
-        CustomButtonSingleton<InquisitorVanquishButton>.Instance.Usable = true;
+        CanVanquish = true;
 
         // if Inuquisitor was revived
         if (Targets.Count == 0)
@@ -120,7 +120,16 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
-        return TargetsDead;
+        return TargetsDead || WinConditionMet();
+    }
+    public bool WinConditionMet()
+    {
+        if (Player.HasDied()) return false;
+        if (!CanVanquish) return false;
+        if (!TargetsDead) return false;
+
+        var result = Helpers.GetAlivePlayers().Count <= 2 && MiscUtils.KillersAliveCount == 1;
+        return result;
     }
 
     public void CheckTargetDeath(PlayerControl exiled)
