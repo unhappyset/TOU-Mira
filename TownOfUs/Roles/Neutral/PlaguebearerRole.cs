@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -8,10 +9,12 @@ using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
+using Reactor.Utilities;
 using TownOfUs.Buttons.Neutral;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
+using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -33,6 +36,27 @@ public sealed class PlaguebearerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         MaxRoleCount = 1,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };
+    public override void Initialize(PlayerControl player)
+    {
+        RoleStubs.RoleBehaviourInitialize(this, player);
+        if (Player.AmOwner)
+        {
+            Coroutines.Start(CheckForPestChance(Player));
+        }
+    }
+    private static IEnumerator CheckForPestChance(PlayerControl player)
+    {
+        yield return new WaitForSeconds(0.01f);
+
+        System.Random rnd = new();
+        var chance = rnd.Next(0, 100);
+
+        if (chance <= OptionGroupSingleton<PlaguebearerOptions>.Instance.PestChance)
+        {
+            player.RpcChangeRole(RoleId.Get<PestilenceRole>());
+            CustomButtonSingleton<PestilenceKillButton>.Instance.SetTimer(OptionGroupSingleton<PlaguebearerOptions>.Instance.PestKillCooldown);
+        }
+    }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()

@@ -12,6 +12,9 @@ public sealed class DoomsayerOptions : AbstractOptionGroup<DoomsayerRole>
     [ModdedNumberOption("Observe Cooldown", 1f, 30f, 1f, MiraNumberSuffixes.Seconds)]
     public float ObserveCooldown { get; set; } = 20f;
 
+    [ModdedNumberOption("Number Of Guesses Needed To Win", 2f, 5f, 1f, MiraNumberSuffixes.None, "0")]
+    public float DoomsayerGuessesToWin { get; set; } = 3f;
+
     [ModdedToggleOption("Doomsayer Guesses All Roles At Once")]
     public bool DoomsayerGuessAllAtOnce { get; set; } = false;
 

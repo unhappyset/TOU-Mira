@@ -12,9 +12,17 @@ public sealed class AssassinOptions : AbstractOptionGroup
 
     [ModdedNumberOption("Number Of Impostor Assassins", 0, 4, 1, MiraNumberSuffixes.None, "0")]
     public float NumberOfImpostorAssassins { get; set; } = 1;
+    public ModdedNumberOption ImpAssassinChance { get; } = new ModdedNumberOption("Impostor Assassin Chance", 100f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    {
+        Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.NumberOfImpostorAssassins > 0,
+    };
 
     [ModdedNumberOption("Number Of Neutral Assassins", 0, 5, 1, MiraNumberSuffixes.None, "0")]
     public float NumberOfNeutralAssassins { get; set; } = 1;
+    public ModdedNumberOption NeutAssassinChance { get; } = new ModdedNumberOption("Neutral Assassin Chance", 100f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    {
+        Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.NumberOfNeutralAssassins > 0,
+    };
 
     [ModdedToggleOption("Amnesiac Turned Impostor Gets Ability")]
     public bool AmneTurnImpAssassin { get; set; } = true;

@@ -25,7 +25,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
 {
     public string RoleName => "Doomsayer";
     public string RoleDescription => "Guess People's Roles To Win!";
-    public string RoleLongDescription => "Win by guessing player's roles";
+    public string RoleLongDescription => $"Win by guessing the roles of {(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin} players";
     public Color RoleColor => TownOfUsColors.Doomsayer;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
@@ -265,7 +265,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
                 Coroutines.Start(MiscUtils.CoFlash(Color.green));
             }
 
-            if ((NumberOfGuesses < 2 && playersAlive < 3) || (NumberOfGuesses < 3 && playersAlive > 2))
+            if ((NumberOfGuesses < 2 && playersAlive < 3) || (NumberOfGuesses < (int)opts.DoomsayerGuessesToWin && playersAlive > 2))
             {
                 shapeMenu.Close();
                 return;
@@ -323,7 +323,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
 
     public string GetAdvancedDescription()
     {
-        return "The Doomsayer is a Neutral Evil role that wins by guessing 3 players' roles in the meeting. They can also observe players to get a hint of what their roles are the following meeting." + MiscUtils.AppendOptionsText(GetType());
+        return $"The Doomsayer is a Neutral Evil role that wins by guessing {(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin} players' roles in the meeting. They can also observe players to get a hint of what their roles are the following meeting." + MiscUtils.AppendOptionsText(GetType());
     }
 
     [HideFromIl2Cpp]
