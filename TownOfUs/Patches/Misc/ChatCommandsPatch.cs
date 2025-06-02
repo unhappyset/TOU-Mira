@@ -154,7 +154,7 @@ public static class ChatPatches
             __instance.UpdateChatMode();
             return false;
         }
-        else if (TeamChatPatches.TeamChatActive && (PlayerControl.LocalPlayer.Data.Role is VampireRole || PlayerControl.LocalPlayer.IsImpostor()))
+        else if (TeamChatPatches.TeamChatActive && !PlayerControl.LocalPlayer.HasDied() && (PlayerControl.LocalPlayer.Data.Role is VampireRole || PlayerControl.LocalPlayer.IsImpostor()))
         {
             var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 

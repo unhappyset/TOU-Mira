@@ -124,7 +124,8 @@ public static class TeamChatPatches
                         if (bg != null)
                         {
                             var sprite = bg.GetComponent<SpriteRenderer>();
-                            if (sprite.color == Color.white || sprite.color == Color.black) bubble.gameObject.SetActive(false);
+                            var color = sprite.color.SetAlpha(1f);
+                            if (color == Color.white || color == Color.black) bubble.gameObject.SetActive(false);
                         }
                     }
                     __instance.AlignAllBubbles();
@@ -138,7 +139,8 @@ public static class TeamChatPatches
                         if (bg != null)
                         {
                             var sprite = bg.GetComponent<SpriteRenderer>();
-                            if (sprite.color != Color.white && sprite.color != Color.black) bubble.gameObject.SetActive(false);
+                            var color = sprite.color.SetAlpha(1f);
+                            if (color != Color.white && color != Color.black) bubble.gameObject.SetActive(false);
                         }
                     }
                     Background.GetComponent<SpriteRenderer>().color = Color.white;
@@ -177,7 +179,8 @@ public static class TeamChatPatches
                     if (bg != null)
                     {
                         var sprite = bg.GetComponent<SpriteRenderer>();
-                        if (sprite.color == Color.white || sprite.color == Color.black) bubble.gameObject.SetActive(false);
+                        var color = sprite.color.SetAlpha(1f);
+                        if (color == Color.white || color == Color.black) bubble.gameObject.SetActive(false);
                     }
                 }
                 var topPos = bubbleItems.transform.GetChild(0).transform.localPosition;
@@ -190,7 +193,8 @@ public static class TeamChatPatches
                     if (bg != null)
                     {
                         var sprite = bg.GetComponent<SpriteRenderer>();
-                        if (sprite.color == Color.white || sprite.color == Color.black)
+                        var color = sprite.color.SetAlpha(1f);
+                        if (color == Color.white || color == Color.black)
                         {
                             chatBubble.gameObject.SetActive(false);
                             continue;
@@ -212,7 +216,8 @@ public static class TeamChatPatches
                     if (bg != null)
                     {
                         var sprite = bg.GetComponent<SpriteRenderer>();
-                        if (sprite.color != Color.white && sprite.color != Color.black) bubble.gameObject.SetActive(false);
+                        var color = sprite.color.SetAlpha(1f);
+                        if (color != Color.white && color != Color.black) bubble.gameObject.SetActive(false);
                     }
                 }
                 var topPos = bubbleItems.transform.GetChild(0).transform.localPosition;
@@ -225,7 +230,8 @@ public static class TeamChatPatches
                     if (bg != null)
                     {
                         var sprite = bg.GetComponent<SpriteRenderer>();
-                        if (sprite.color != Color.white && sprite.color != Color.black)
+                        var color = sprite.color.SetAlpha(1f);
+                        if (color != Color.white && color != Color.black)
                         {
                             chatBubble.gameObject.SetActive(false);
                             continue;
