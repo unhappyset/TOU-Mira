@@ -171,7 +171,7 @@ public static class HudManagerPatches
         }
 
         UpdateRoleList(__instance);
-        UpdateColorNameText(__instance);
+        if (PlayerControl.LocalPlayer != null) UpdateColorNameText(__instance);
 
         if (PlayerControl.LocalPlayer == null ||
             PlayerControl.LocalPlayer.Data == null ||

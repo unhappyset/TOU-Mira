@@ -257,9 +257,12 @@ public static class EndGamePatches
         GameSummaryButton.gameObject.SetActive(true);
         GameSummaryButton.sprite = TouAssets.GameSummarySprite.LoadAsset();
         GameSummaryButton.transform.position += Vector3.up * 1.5f;
-        GameSummaryButton.transform.GetChild(1).gameObject.SetActive(false);
-        //var ButtonText = GameSummaryButton.transform.GetChild(1).GetComponentInParent<TMP_Text>();
-        //if (ButtonText != null) ButtonText.text = "Toggle Summary";
+        if (GameSummaryButton.transform.GetChild(1).TryGetComponent<TextTranslatorTMP>(out var tmp2))
+        {
+            tmp2.defaultStr = $"<size=70%>Game</size>\n<size=55%>Summary</size>";
+            tmp2.TargetText = StringNames.None;
+            tmp2.ResetText();
+        }
             switch (TownOfUsPlugin.GameSummaryMode.Value)
             {
                 default:
@@ -322,6 +325,7 @@ public static class EndGamePatches
         var text = Object.Instantiate(instance.WinText);
         text.text = $"<size=4>Crewmates Win!</size>";
         text.color = Palette.CrewmateBlue;
+        instance.BackgroundBar.material.SetColor(ShaderID.Color, Palette.CrewmateBlue);
 
         var pos = instance.WinText.transform.localPosition;
         pos.y = 1.5f;
@@ -334,6 +338,7 @@ public static class EndGamePatches
 
         text.text = $"<size=4>Impostors Win!</size>";
         text.color = Palette.ImpostorRed;
+        instance.BackgroundBar.material.SetColor(ShaderID.Color, Palette.ImpostorRed);
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
