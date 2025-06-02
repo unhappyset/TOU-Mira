@@ -4,6 +4,7 @@ using MiraAPI.Networking;
 using MiraAPI.Roles;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
+using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
 using TownOfUs.Options.Modifiers.Alliance;
@@ -68,7 +69,11 @@ public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerCo
 
         var canConvertRole = true;
 
-        if (target.Is(RoleAlignment.NeutralBenign))
+        if (target.HasModifier<LoverModifier>())
+        {
+            canConvertRole = options.CanConvertLovers;
+        }
+        else if (target.Is(RoleAlignment.NeutralBenign))
         {
             canConvertRole = options.CanConvertNeutralBenign;
         }

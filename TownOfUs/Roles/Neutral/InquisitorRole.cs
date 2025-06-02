@@ -28,7 +28,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public string RoleLongDescription => "Vanquish your Heretics or get them killed.\nYou will win after every heretic dies.\nIf they're all dead after a meeting ends, you'll leave & win.";
     public Color RoleColor => TownOfUsColors.Inquisitor;
     public bool CanVanquish { get; set; } = true;
-    public bool ContinueGame => CanVanquish && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame;
+    public bool ContinueGame => OptionGroupSingleton<InquisitorOptions>.Instance.StallGame;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
     public DoomableType DoomHintType => DoomableType.Hunter;
@@ -148,6 +148,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     {
         if (Player.HasDied()) return false;
         if (!ContinueGame) return false;
+        if (!CanVanquish) return false;
         if (!TargetsDead) return false;
 
         var result = Helpers.GetAlivePlayers().Count <= 2 && MiscUtils.KillersAliveCount == 1;
@@ -169,15 +170,19 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public void AssignTargets()
     {
         var inquis = PlayerControl.AllPlayerControls.ToArray()
-            .Where(x => x.IsRole<InquisitorRole>() && !x.HasDied());
+            .FirstOrDefault(x => x.IsRole<InquisitorRole>() && !x.HasDied());
 
-        foreach (var exe in inquis)
-        {
+            if (inquis == null)
+            {
+                Logger<TownOfUsPlugin>.Error("Inquisitor not found.");
+                return;
+            }
+
             var required = (int)OptionGroupSingleton<InquisitorOptions>.Instance.AmountOfHeretics;
             var players = PlayerControl.AllPlayerControls.ToArray().ToList();
             players.Shuffle();
             players.Shuffle();
-            players.RemoveAll(x => x.Data.Role is InquisitorRole);
+            players.Remove(inquis);
             players.Shuffle();
 
             var neut = players.Any(x => x.IsNeutral()) ? players.FirstOrDefault(x => x.IsNeutral()) : players.Random();
@@ -203,14 +208,13 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
             other = players.Random();
             if (required is 5 && players.Count >= 1 && other != null) filtered.Add(other);
 
-            if (filtered.Count > 0)
+        if (filtered.Count > 0)
+        {
+            filtered = filtered.OrderBy(x => x.Data.Role.NiceName).ToList();
+            foreach (var player in filtered)
             {
-                filtered = filtered.OrderBy(x => x.Data.Role.NiceName).ToList();
-                foreach (var player in filtered)
-                {
-                    players.Remove(player);
-                    RpcAddInquisTarget(exe, player);
-                }
+                players.Remove(player);
+                RpcAddInquisTarget(inquis, player);
             }
         }
     }

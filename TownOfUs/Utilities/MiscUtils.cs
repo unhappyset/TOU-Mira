@@ -23,12 +23,12 @@ namespace TownOfUs.Utilities;
 
 public static class MiscUtils
 {
-    public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.ContinueGame) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
+    public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.ContinueGame && inquis.CanVanquish) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
-    public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.ContinueGame));
+    public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.ContinueGame && inquis.CanVanquish));
 
-    public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>  x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.ContinueGame) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
+    public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>  x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.ContinueGame && inquis.CanVanquish) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
     public static int ImpAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor());

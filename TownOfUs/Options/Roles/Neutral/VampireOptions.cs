@@ -27,6 +27,9 @@ public sealed class VampireOptions : AbstractOptionGroup<VampireRole>
     [ModdedToggleOption("Can Convert Neutral Evil Roles")]
     public bool CanConvertNeutralEvil { get; set; } = true;
 
+    [ModdedToggleOption("Can Convert Lovers")]
+    public bool CanConvertLovers { get; set; } = false;
+
     [ModdedToggleOption("New Vampires Can Convert")]
     public bool CanConvertAsNewVamp { get; set; } = true;
 
