@@ -190,7 +190,7 @@ public static class HudManagerPatches
         }
 
         if (((PlayerControl.LocalPlayer.Data.IsDead && (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } || PlayerControl.LocalPlayer.Data.Role is not IGhostRole)) || TutorialManager.InstanceExists)
-            && Input.GetAxis("Mouse ScrollWheel") != 0 && MeetingHud.Instance == null && Minigame.Instance == null)
+            && Input.GetAxis("Mouse ScrollWheel") != 0 && MeetingHud.Instance == null && Minigame.Instance == null && !HudManager.Instance.Chat.IsOpenOrOpening)
         {
             CheckForScrollZoom();
         }

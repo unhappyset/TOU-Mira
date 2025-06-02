@@ -202,7 +202,7 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
         if (CurrentCard == 0)
         {
             randY = 0f;
-            randZ = -6f;
+            randZ = -2f;
         }
         card.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, -randZ));
         card.transform.localPosition = new Vector3(card.transform.localPosition.x, card.transform.localPosition.y -5f, card.transform.localPosition.z);
