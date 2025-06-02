@@ -1,9 +1,12 @@
+using System.Collections;
 using System.Globalization;
 using System.Text;
 using AmongUs.GameOptions;
+using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
@@ -55,6 +58,24 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         {
             Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>([HideFromIl2Cpp] (x) => x.OwnerId == Player.PlayerId).ToList();
             TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select(x => x.TargetRole).OrderBy(x => x.NiceName).ToList();
+        }
+        if (TutorialManager.InstanceExists && Player.AmOwner)
+        {
+            Coroutines.Start(SetTutorialTargets(this));
+        }
+    }
+    private static IEnumerator SetTutorialTargets(InquisitorRole inquis)
+    {
+        yield return new WaitForSeconds(0.01f);
+        inquis.AssignTargets();
+    }
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+        if (TutorialManager.InstanceExists && Player.AmOwner)
+        {
+            var players = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>([HideFromIl2Cpp] (x) => x.OwnerId == Player.PlayerId).ToList();
+            players.Do(x => x.RpcRemoveModifier<InquisitorHereticModifier>());
         }
     }
     public override void OnMeetingStart()

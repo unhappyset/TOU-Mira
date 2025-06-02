@@ -18,6 +18,15 @@ public static class ZoomEvents
             HudManagerPatches.ZoomButton.SetActive(true);
         }
     }
+    
+    [RegisterEvent]
+    public static void AfterMurderEventHandler(AfterMurderEvent @event)
+    {
+        if (TutorialManager.InstanceExists && PlayerControl.LocalPlayer.Data.IsDead && (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } || PlayerControl.LocalPlayer.Data.Role is not IGhostRole))
+        {
+            HudManagerPatches.ZoomButton.SetActive(true);
+        }
+    }
 
     [RegisterEvent]
     public static void ReportBodyEventHandler(ReportBodyEvent @event)

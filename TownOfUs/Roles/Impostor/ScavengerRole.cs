@@ -2,6 +2,8 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using Reactor.Utilities;
+using System.Collections;
 using System.Globalization;
 using System.Text;
 using TownOfUs.Modifiers;
@@ -40,18 +42,41 @@ public sealed class ScavengerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
         Clear();
     }
+    public override void Initialize(PlayerControl player)
+    {
+        RoleStubs.RoleBehaviourInitialize(this, player);
+        if (TutorialManager.InstanceExists && Player.AmOwner)
+        {
+            Coroutines.Start(SetTutorialTarget(this, Player));
+        }
+    }
+    private static IEnumerator SetTutorialTarget(ScavengerRole scav, PlayerControl player)
+    {
+        yield return new WaitForSeconds(0.01f);
+        scav.GameStarted = true;
+        scav.Scavenging = false;
+        if (player.killTimer <= 0f && !player.HasDied())
+        {
+            // Logger<TownOfUsPlugin>.Message($"Scavenge Begin");
+            scav.Scavenging = true;
+            scav.TimeRemaining = OptionGroupSingleton<ScavengerOptions>.Instance.ScavengeDuration;
+
+            scav.Target = player.GetClosestLivingPlayer(false, float.MaxValue, true, predicate: x => !x.HasModifier<FirstDeadShield>())!;
+
+            scav.Target.AddModifier<ScavengerArrowModifier>(player, TownOfUsColors.Impostor);
+        }
+    }
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
-
         Clear();
     }
 
     public void FixedUpdate()
     {
         if (Player == null || Player.Data.Role is not ScavengerRole) return;
-        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started && !TutorialManager.InstanceExists) return;
         if (!Player.AmOwner) return;
 
         if (!GameStarted && Player.killTimer > 0f) GameStarted = true;

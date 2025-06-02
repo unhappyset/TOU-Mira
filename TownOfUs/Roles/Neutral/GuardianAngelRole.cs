@@ -1,8 +1,11 @@
-﻿using System.Text;
+﻿using System.Collections;
+using System.Text;
 using AmongUs.GameOptions;
+using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
@@ -11,6 +14,7 @@ using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
+using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -34,6 +38,28 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
     public int Priority { get; set; } = 1;
     public PlayerControl? Target { get; set; }
 
+    public override void Initialize(PlayerControl player)
+    {
+        RoleStubs.RoleBehaviourInitialize(this, player);
+        if (TutorialManager.InstanceExists && Player.AmOwner)
+        {
+            Coroutines.Start(SetTutorialTargets(this));
+        }
+    }
+    private static IEnumerator SetTutorialTargets(GuardianAngelTouRole ga)
+    {
+        yield return new WaitForSeconds(0.01f);
+        ga.AssignTargets();
+    }
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+        if (TutorialManager.InstanceExists && Player.AmOwner)
+        {
+            var players = ModifierUtils.GetPlayersWithModifier<ExecutionerTargetModifier>([HideFromIl2Cpp] (x) => x.OwnerId == Player.PlayerId).ToList();
+            players.Do(x => x.RpcRemoveModifier<ExecutionerTargetModifier>());
+        }
+    }
     public bool SetupIntroTeam(IntroCutscene instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
     {
         if (Player != PlayerControl.LocalPlayer)

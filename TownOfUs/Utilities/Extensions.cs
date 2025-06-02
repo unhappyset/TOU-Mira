@@ -19,6 +19,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 using TownOfUs.Modifiers;
+using TownOfUs.Patches;
 
 namespace TownOfUs.Utilities;
 
@@ -388,6 +389,15 @@ public static class Extensions
         player.MyPhysics.ResetMoveState();
 
         player.Data.Role.SpawnTaskHeader(player);
+
+        if (TutorialManager.InstanceExists && player.AmOwner && player.Data.IsDead && (player.Data.Role is IGhostRole { Caught: true } || player.Data.Role is not IGhostRole))
+        {
+            HudManagerPatches.ZoomButton.SetActive(true);
+        }
+        else if (TutorialManager.InstanceExists && player.AmOwner && !player.Data.IsDead)
+        {
+            HudManagerPatches.ZoomButton.SetActive(false);
+        }
     }
 
     [MethodRpc((uint)TownOfUsRpc.PlayerExile, SendImmediately = true)]

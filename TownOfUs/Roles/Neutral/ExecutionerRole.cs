@@ -1,8 +1,11 @@
+using System.Collections;
 using System.Text;
 using AmongUs.GameOptions;
+using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
@@ -54,6 +57,24 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
         if (Target == null)
         {
             Target = ModifierUtils.GetPlayersWithModifier<ExecutionerTargetModifier>([HideFromIl2Cpp] (x) => x.OwnerId == Player.PlayerId).FirstOrDefault();
+        }
+        if (TutorialManager.InstanceExists && Player.AmOwner)
+        {
+            Coroutines.Start(SetTutorialTargets(this));
+        }
+    }
+    private static IEnumerator SetTutorialTargets(ExecutionerRole exe)
+    {
+        yield return new WaitForSeconds(0.01f);
+        exe.AssignTargets();
+    }
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+        if (TutorialManager.InstanceExists && Player.AmOwner)
+        {
+            var players = ModifierUtils.GetPlayersWithModifier<ExecutionerTargetModifier>([HideFromIl2Cpp] (x) => x.OwnerId == Player.PlayerId).ToList();
+            players.Do(x => x.RpcRemoveModifier<ExecutionerTargetModifier>());
         }
     }
 

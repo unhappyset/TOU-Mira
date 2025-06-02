@@ -1,4 +1,8 @@
-﻿using MiraAPI.GameEnd;
+﻿using System.Collections;
+using HarmonyLib;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.GameEnd;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
@@ -44,6 +48,71 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
     {
         if (!Player.AmOwner) return;
         HudManager.Instance.Chat.gameObject.SetActive(true);
+        if (TutorialManager.InstanceExists)
+        {
+            Coroutines.Start(SetTutorialTarget(this, Player));
+        }
+    }
+    private static IEnumerator SetTutorialTarget(LoverModifier loverMod, PlayerControl localPlr)
+    {
+        yield return new UnityEngine.WaitForSeconds(0.01f);
+        var impTargetPercent = (int)OptionGroupSingleton<LoversOptions>.Instance.LovingImpPercent;
+
+        var players = PlayerControl.AllPlayerControls.ToArray()
+            .Where(x => !x.HasDied() && !x.HasModifier<ExecutionerTargetModifier>() && x.Data.Role is not InquisitorRole).ToList();
+        players.Shuffle();
+
+        players.Remove(localPlr);
+
+        var crewmates = new List<PlayerControl>();
+        var impostors = new List<PlayerControl>();
+
+        foreach (var player in players.SelectMany(_ => players))
+        {
+            if (player.IsImpostor() || (player.Is(RoleAlignment.NeutralKilling) && OptionGroupSingleton<LoversOptions>.Instance.NeutralLovers))
+                impostors.Add(player);
+            else if (player.Is(ModdedRoleTeams.Crewmate) || ((player.Is(RoleAlignment.NeutralBenign) || player.Is(RoleAlignment.NeutralEvil)) && OptionGroupSingleton<LoversOptions>.Instance.NeutralLovers))
+                crewmates.Add(player);
+        }
+
+        if (localPlr.IsImpostor() && !OptionGroupSingleton<LoversOptions>.Instance.ImpLovers)
+        {
+            impostors = impostors.Where(player => !player.IsImpostor()).ToList();
+            players = players.Where(player => !player.IsImpostor()).ToList();
+        }
+
+        if (impTargetPercent > 0f && impostors.Count != 0)
+        {
+            Random rnd = new();
+            var chance2 = rnd.Next(0, 100);
+
+            if (chance2 < impTargetPercent)
+            {
+                players = impostors;
+            }
+        }
+        else
+        {
+            players = crewmates;
+        }
+
+        Random rndIndex = new();
+        var randomTarget = players[rndIndex.Next(0, players.Count)];
+        
+        var sourceModifier = randomTarget.AddModifier<LoverModifier>();
+        yield return new UnityEngine.WaitForSeconds(0.01f);
+        sourceModifier!.OtherLover = localPlr;
+        loverMod!.OtherLover = randomTarget;
+    }
+    public override void OnDeactivate()
+    {
+        if (!Player.AmOwner) return;
+        HudManager.Instance.Chat.gameObject.SetActive(false);
+        if (TutorialManager.InstanceExists)
+        {
+            var players = ModifierUtils.GetPlayersWithModifier<LoverModifier>().ToList();
+            players.Do(x => x.RpcRemoveModifier<LoverModifier>());
+        }
     }
 
     public override bool? DidWin(GameOverReason reason)
@@ -71,8 +140,6 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
 
     public void KillOther(bool isHidden = false)
     {
-        if (!Player.AmOwner) return;
-
         if (!Player || !OtherLover || OtherLover!.Data.IsDead)
         {
             Logger<TownOfUsPlugin>.Error("Invalid Lover");
@@ -82,7 +149,19 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
 
         if (!OtherLover.HasModifier<InvulnerabilityModifier>())
         {
-            OtherLover!.RpcCustomMurder(OtherLover!, createDeadBody: !isHidden, showKillAnim: !isHidden);
+            var murderResultFlags = MurderResultFlags.Succeeded;
+
+            var beforeMurderEvent = new BeforeMurderEvent(OtherLover!, OtherLover!);
+            MiraEventManager.InvokeEvent(beforeMurderEvent);
+
+            if (beforeMurderEvent.IsCancelled)
+            {
+                murderResultFlags = MurderResultFlags.FailedError;
+            }
+
+            var murderResultFlags2 = MurderResultFlags.DecisionByHost | murderResultFlags;
+
+            OtherLover!.CustomMurder(OtherLover!, murderResultFlags2, true, !isHidden, true, !isHidden, true);
         }
     }
 
