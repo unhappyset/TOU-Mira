@@ -624,6 +624,7 @@ public static class MiscUtils
 
             var addedRole = SelectRole(roles);
             result.Add(addedRole.RoleType);
+            roles.Remove(addedRole);
 
             buckets.Remove(roleType);
         }
@@ -646,6 +647,7 @@ public static class MiscUtils
 
             var addedRole = SelectRole(roles);
             result.Add(addedRole.RoleType);
+            roles.Remove(addedRole);
 
             buckets.Remove(roleType);
         }
