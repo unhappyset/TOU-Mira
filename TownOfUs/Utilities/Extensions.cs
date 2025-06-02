@@ -390,13 +390,9 @@ public static class Extensions
 
         player.Data.Role.SpawnTaskHeader(player);
 
-        if (TutorialManager.InstanceExists && player.AmOwner && player.Data.IsDead && (player.Data.Role is IGhostRole { Caught: true } || player.Data.Role is not IGhostRole))
+        if (TutorialManager.InstanceExists)
         {
             HudManagerPatches.ZoomButton.SetActive(true);
-        }
-        else if (TutorialManager.InstanceExists && player.AmOwner && !player.Data.IsDead)
-        {
-            HudManagerPatches.ZoomButton.SetActive(false);
         }
     }
 

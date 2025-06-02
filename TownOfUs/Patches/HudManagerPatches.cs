@@ -45,6 +45,8 @@ public static class HudManagerPatches
 
         Camera.main.orthographicSize = size;
         HudManager.Instance.UICamera.orthographicSize = size;
+        HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f) * (size / 3f);
+        if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
     public static void ScrollZoom(bool zoomOut = false)
@@ -68,6 +70,8 @@ public static class HudManagerPatches
 
         Camera.main.orthographicSize = size;
         HudManager.Instance.UICamera.orthographicSize = size;
+        HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f) * (size / 3f);
+        if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
     public static void ResetZoom()
@@ -80,6 +84,8 @@ public static class HudManagerPatches
 
         Camera.main.orthographicSize = size;
         HudManager.Instance.UICamera.orthographicSize = size;
+        HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f);
+        if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
 
@@ -183,7 +189,7 @@ public static class HudManagerPatches
             return;
         }
 
-        if (PlayerControl.LocalPlayer.Data.IsDead && (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } || PlayerControl.LocalPlayer.Data.Role is not IGhostRole)
+        if (((PlayerControl.LocalPlayer.Data.IsDead && (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } || PlayerControl.LocalPlayer.Data.Role is not IGhostRole)) || TutorialManager.InstanceExists)
             && Input.GetAxis("Mouse ScrollWheel") != 0 && MeetingHud.Instance == null && Minigame.Instance == null)
         {
             CheckForScrollZoom();
@@ -268,9 +274,9 @@ public static class HudManagerPatches
     {
         if (MeetingHud.Instance != null)
         {
-            foreach (var playerVA in MeetingHud.Instance.playerStates)
+            foreach (var colorBlindName in MeetingHud.Instance.playerStates.Select(playerVA => playerVA.ColorBlindName))
             {
-                playerVA.ColorBlindName.text = playerVA.ColorBlindName.text.ToTitleCase();
+                colorBlindName.text = colorBlindName.text.ToTitleCase();
             }
         }
         else
