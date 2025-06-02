@@ -167,7 +167,8 @@ public static class LocalSettings
         var title = Object.Instantiate(titleText, popUp.transform);
         title.GetComponent<RectTransform>().localPosition = Vector3.up * 2.3f;
         title.gameObject.SetActive(true);
-        title.text = "TOU options";
+        title.gameObject.layer = LayerMask.NameToLayer("UI");
+        title.text = $"<size=80%>Town of Us Mira\n</size><size=60%>Client Options</size>\n";
         title.name = "TitleText";
     }
 

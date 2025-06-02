@@ -10,7 +10,7 @@ public sealed class OperativeOptions : AbstractOptionGroup<OperativeModifier>
 {
     public override string GroupName => "Operative";
     public override uint GroupPriority => 35;
-    public override Color GroupColor => TownOfUsColors.Operative;
+    public override Color GroupColor => new(0.8f, 0.33f, 0.37f, 1f);
     // THESE BREAK THE CAMERA MINIGAME!!
 /* 
         [ModdedToggleOption("Move While Using Cameras")]

@@ -1,7 +1,6 @@
 using HarmonyLib;
 using MiraAPI.Roles;
 using Reactor.Utilities.Extensions;
-using TownOfUs.Roles.Impostor;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 
@@ -16,7 +15,7 @@ public static class DummyBehaviourPatches
     {
         var roleList = MiscUtils.AllRoles
             .Where(role => role is ICustomRole)
-            .Where(role => role is not TraitorRole)
+            .Where(role => !role.IsImpostor())
             .Where(role => role is not NeutralGhostRole)
             .Where(role => !role.TryCast<CrewmateGhostRole>())
             .Where(role => !role.TryCast<ImpostorGhostRole>())
