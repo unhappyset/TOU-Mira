@@ -170,6 +170,7 @@ public static class TeamChatPatches
             var bubbleItems = GameObject.Find("Items");
             float num = 0f;
             Il2CppSystem.Collections.Generic.List<PoolableBehavior> activeChildren = __instance.chatBubblePool.activeChildren;
+            if (bubbleItems == null || bubbleItems.transform.GetChildCount() == 0) return;
             if (TeamChatActive)
             {
                 foreach (var bubble in bubbleItems.GetAllChilds())
