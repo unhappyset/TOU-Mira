@@ -18,8 +18,8 @@ public static class DummyBehaviourPatches
             .Where(role => role is ICustomRole)
             .Where(role => role is not TraitorRole)
             .Where(role => role is not NeutralGhostRole)
-            .Where(role => role is not CrewmateGhostRole)
-            .Where(role => role is not ImpostorGhostRole)
+            .Where(role => !role.TryCast<CrewmateGhostRole>())
+            .Where(role => !role.TryCast<ImpostorGhostRole>())
             .ToList();
 
         var roleType = RoleId.Get(roleList.Random()!.GetType());

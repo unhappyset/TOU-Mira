@@ -168,9 +168,9 @@ public static class TeamChatPatches
         public static void Postfix(ChatController __instance)
         {
             var bubbleItems = GameObject.Find("Items");
-            float num = 0f;
+            //float num = 0f;
             Il2CppSystem.Collections.Generic.List<PoolableBehavior> activeChildren = __instance.chatBubblePool.activeChildren;
-            if (bubbleItems == null || bubbleItems.transform.GetChildCount() == 0) return;
+            if (bubbleItems == null || bubbleItems.transform.GetChildCount() == 0 || activeChildren == null) return;
             if (TeamChatActive)
             {
                 foreach (var bubble in bubbleItems.GetAllChilds())
@@ -184,7 +184,7 @@ public static class TeamChatPatches
                         if (color == Color.white || color == Color.black) bubble.gameObject.SetActive(false);
                     }
                 }
-                var topPos = bubbleItems.transform.GetChild(0).transform.localPosition;
+                //var topPos = bubbleItems.transform.GetChild(0).transform.localPosition;
                 for (int i = activeChildren.Count - 1; i >= 0; i--)
                 {
                     var chatBubbleObj = activeChildren[i] as ChatBubble;
@@ -201,11 +201,11 @@ public static class TeamChatPatches
                             continue;
                         }
                     }
-                    num += chatBubble.Background.size.y;
+                    /* num += chatBubble.Background.size.y;
                     Vector3 localPosition = topPos;
                     localPosition.y = -1.85f + num;
                     chatBubble.transform.localPosition = localPosition;
-                    num += 0.15f;
+                    num += 0.15f; */
                 }
             }
             else
@@ -221,7 +221,7 @@ public static class TeamChatPatches
                         if (color != Color.white && color != Color.black) bubble.gameObject.SetActive(false);
                     }
                 }
-                var topPos = bubbleItems.transform.GetChild(0).transform.localPosition;
+                //var topPos = bubbleItems.transform.GetChild(0).transform.localPosition;
                 for (int i = activeChildren.Count - 1; i >= 0; i--)
                 {
                     var chatBubbleObj = activeChildren[i] as ChatBubble;
@@ -238,15 +238,15 @@ public static class TeamChatPatches
                             continue;
                         }
                     }
-                    num += chatBubble.Background.size.y;
+                    /* num += chatBubble.Background.size.y;
                     Vector3 localPosition = topPos;
                     localPosition.y = -1.85f + num;
                     chatBubble.transform.localPosition = localPosition;
-                    num += 0.15f;
+                    num += 0.15f; */
                 }
             }
-            float num2 = -0.3f;
-            __instance.scroller.SetYBoundsMin(Mathf.Min(0f, -num + __instance.scroller.Hitbox.bounds.size.y + num2));
+            //float num2 = -0.3f;
+            //__instance.scroller.SetYBoundsMin(Mathf.Min(0f, -num + __instance.scroller.Hitbox.bounds.size.y + num2));
         }
     }
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.ForceClosed))]
