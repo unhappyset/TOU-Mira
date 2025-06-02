@@ -14,6 +14,8 @@ public sealed class InquisitorOptions : AbstractOptionGroup<InquisitorRole>
 
     [ModdedNumberOption("Inquire Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float InquireCooldown { get; set; } = 25f;
+    [ModdedToggleOption("Inquisitor Continues Game")]
+    public bool StallGame { get; set; } = true;
     [ModdedToggleOption("Inquisitor Can't Inquire")]
     public bool CantInquire { get; set; } = false;
 

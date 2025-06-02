@@ -25,6 +25,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public string RoleLongDescription => "Vanquish your Heretics or get them killed.\nYou will win after every heretic dies.\nIf they're all dead after a meeting ends, you'll leave & win.";
     public Color RoleColor => TownOfUsColors.Inquisitor;
     public bool CanVanquish { get; set; } = true;
+    public bool ContinueGame => CanVanquish && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
     public DoomableType DoomHintType => DoomableType.Hunter;
@@ -125,7 +126,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public bool WinConditionMet()
     {
         if (Player.HasDied()) return false;
-        if (!CanVanquish) return false;
+        if (!ContinueGame) return false;
         if (!TargetsDead) return false;
 
         var result = Helpers.GetAlivePlayers().Count <= 2 && MiscUtils.KillersAliveCount == 1;

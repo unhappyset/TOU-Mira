@@ -154,34 +154,35 @@ public static class ChatPatches
             __instance.UpdateChatMode();
             return false;
         }
-        if (!TeamChatPatches.TeamChatActive)
+        else if (TeamChatPatches.TeamChatActive && (PlayerControl.LocalPlayer.Data.Role is VampireRole || PlayerControl.LocalPlayer.IsImpostor()))
+        {
+            var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
+
+            if (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat)
+            {
+                TeamChatPatches.RpcSendVampTeamChat(PlayerControl.LocalPlayer, textRegular);
+                MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.Vampire.ToHtmlStringRGBA()}>{PlayerControl.LocalPlayer.Data.PlayerName} (Vampire Chat)</color>", textRegular, OnLeft: false);
+
+                __instance.freeChatField.Clear();
+                __instance.quickChatMenu.Clear();
+                __instance.quickChatField.Clear();
+                __instance.UpdateChatMode();
+
+                return false;
+            }
+            else if (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true })
+            {
+                TeamChatPatches.RpcSendImpTeamChat(PlayerControl.LocalPlayer, textRegular);
+                MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.ImpSoft.ToHtmlStringRGBA()}>{PlayerControl.LocalPlayer.Data.PlayerName} (Impostor Chat)</color>", textRegular, OnLeft: false);
+
+                __instance.freeChatField.Clear();
+                __instance.quickChatMenu.Clear();
+                __instance.quickChatField.Clear();
+                __instance.UpdateChatMode();
+
+                return false;
+            }
             return true;
-
-        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-
-        if (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat)
-        {
-            TeamChatPatches.RpcSendVampTeamChat(PlayerControl.LocalPlayer, textRegular);
-            MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.Vampire.ToHtmlStringRGBA()}>{PlayerControl.LocalPlayer.Data.PlayerName} (Vampire Chat)</color>", textRegular, OnLeft: false);
-
-            __instance.freeChatField.Clear();
-            __instance.quickChatMenu.Clear();
-            __instance.quickChatField.Clear();
-            __instance.UpdateChatMode();
-
-            return false;
-        }
-        else if (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true })
-        {
-            TeamChatPatches.RpcSendImpTeamChat(PlayerControl.LocalPlayer, textRegular);
-            MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.ImpSoft.ToHtmlStringRGBA()}>{PlayerControl.LocalPlayer.Data.PlayerName} (Impostor Chat)</color>", textRegular, OnLeft: false);
-
-            __instance.freeChatField.Clear();
-            __instance.quickChatMenu.Clear();
-            __instance.quickChatField.Clear();
-            __instance.UpdateChatMode();
-
-            return false;
         }
         return true;
     }

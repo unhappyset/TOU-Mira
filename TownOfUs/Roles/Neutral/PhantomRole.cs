@@ -1,9 +1,15 @@
-﻿using System.Text;
+﻿using System.Collections;
+using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
+using MiraAPI.Hud;
+using MiraAPI.Modifiers;
+using MiraAPI.Networking;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using Reactor.Utilities;
+using TownOfUs.Modifiers;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -23,6 +29,7 @@ public sealed class PhantomTouRole(IntPtr cppPtr) : NeutralGhostRole(cppPtr), IT
     {
         Icon = TouRoleIcons.Phantom,
         HideSettings = false,
+        ShowInFreeplay = true,
     };
 
     public bool Setup { get; set; }
@@ -42,9 +49,49 @@ public sealed class PhantomTouRole(IntPtr cppPtr) : NeutralGhostRole(cppPtr), IT
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
+        if (TutorialManager.InstanceExists)
+        {
+            Setup = true;
+
+            Coroutines.Start(SetTutorialCollider(Player));
+
+            if (Player.AmOwner)
+            {
+                Player.MyPhysics.ResetMoveState();
+
+                HudManager.Instance.SetHudActive(false);
+                HudManager.Instance.SetHudActive(true);
+                HudManager.Instance.AbilityButton.SetDisabled();
+                Patches.HudManagerPatches.ResetZoom();
+            }
+        }
         MiscUtils.AdjustGhostTasks(player);
     }
+    private static IEnumerator SetTutorialCollider(PlayerControl player)
+    {
+        yield return new WaitForSeconds(0.01f);
 
+        player.gameObject.layer = LayerMask.NameToLayer("Players");
+
+        player.gameObject.GetComponent<PassiveButton>().OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
+        player.gameObject.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => player.OnClick()));
+        player.gameObject.GetComponent<BoxCollider2D>().enabled = true;
+    }
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+        if (TutorialManager.InstanceExists)
+        {
+            Player.ResetAppearance();
+            Player.cosmetics.ToggleNameVisible(true);
+
+            Player.cosmetics.currentBodySprite.BodySprite.color = Color.white;
+            Player.gameObject.layer = LayerMask.NameToLayer("Ghost");
+            Player.MyPhysics.ResetMoveState();
+
+            Faded = false;
+        }
+    }
     public override bool CanUse(IUsable console)
     {
         var validUsable = console.TryCast<Console>() ||
@@ -65,7 +112,7 @@ public sealed class PhantomTouRole(IntPtr cppPtr) : NeutralGhostRole(cppPtr), IT
 
     public override bool WinConditionMet()
     {
-        return OptionGroupSingleton<PhantomOptions>.Instance.WinEndsGame && CompletedAllTasks;
+        return OptionGroupSingleton<PhantomOptions>.Instance.PhantomWin is PhantomWinOptions.EndsGame && CompletedAllTasks;
     }
 
     public bool CanCatch() => true;
@@ -141,6 +188,23 @@ public sealed class PhantomTouRole(IntPtr cppPtr) : NeutralGhostRole(cppPtr), IT
             notif1.Text.SetOutlineThickness(0.35f);
         }
         CompletedAllTasks = completedTasks == Player.myTasks.Count;
+
+        if (OptionGroupSingleton<PhantomOptions>.Instance.PhantomWin is not PhantomWinOptions.Spooks || !CompletedAllTasks) return;
+        if (!Player.AmOwner) return;
+
+        Func<PlayerControl, bool> _playerMatch = plr => !plr.HasDied() && !plr.HasModifier<InvulnerabilityModifier>() && plr != PlayerControl.LocalPlayer;
+        var killMenu = CustomPlayerMenu.Create();
+        killMenu.Begin(
+            _playerMatch,
+            plr =>
+            {
+                killMenu.ForceClose();
+
+                if (plr != null)
+                {
+                    PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
+                }
+            });
     }
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()

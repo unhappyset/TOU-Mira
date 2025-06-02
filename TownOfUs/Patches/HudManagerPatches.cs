@@ -171,6 +171,7 @@ public static class HudManagerPatches
         }
 
         UpdateRoleList(__instance);
+        UpdateColorNameText(__instance);
 
         if (PlayerControl.LocalPlayer == null ||
             PlayerControl.LocalPlayer.Data == null ||
@@ -263,6 +264,23 @@ public static class HudManagerPatches
         }
     }
 
+    public static void UpdateColorNameText(HudManager instance)
+    {
+        if (MeetingHud.Instance != null)
+        {
+            foreach (var playerVA in MeetingHud.Instance.playerStates)
+            {
+                playerVA.ColorBlindName.text = playerVA.ColorBlindName.text.ToTitleCase();
+            }
+        }
+        else
+        {
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                player.cosmetics.colorBlindText.text = player.cosmetics.colorBlindText.text.ToTitleCase();
+            }
+        }
+    }
     public static void UpdateRoleNameText(HudManager instance)
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;

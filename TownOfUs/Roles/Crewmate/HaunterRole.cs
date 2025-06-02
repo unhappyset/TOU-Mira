@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections;
+using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
@@ -28,6 +29,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         Icon = TouRoleIcons.Haunter,
         TasksCountForProgress = false,
         HideSettings = false,
+        ShowInFreeplay = true,
     };
 
     public bool Setup { get; set; }
@@ -48,8 +50,49 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
+        if (TutorialManager.InstanceExists)
+        {
+            Setup = true;
+
+            Coroutines.Start(SetTutorialCollider(Player));
+
+            if (Player.AmOwner)
+            {
+                Player.MyPhysics.ResetMoveState();
+
+                HudManager.Instance.SetHudActive(false);
+                HudManager.Instance.SetHudActive(true);
+                HudManager.Instance.AbilityButton.SetDisabled();
+                Patches.HudManagerPatches.ResetZoom();
+            }
+        }
         MiscUtils.AdjustGhostTasks(player);
     }
+    private static IEnumerator SetTutorialCollider(PlayerControl player)
+    {
+        yield return new WaitForSeconds(0.01f);
+        player.gameObject.layer = LayerMask.NameToLayer("Players");
+
+        player.gameObject.GetComponent<PassiveButton>().OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
+        player.gameObject.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => player.OnClick()));
+        player.gameObject.GetComponent<BoxCollider2D>().enabled = true;
+    }
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+        if (TutorialManager.InstanceExists)
+        {
+            Player.ResetAppearance();
+            Player.cosmetics.ToggleNameVisible(true);
+
+            Player.cosmetics.currentBodySprite.BodySprite.color = Color.white;
+            Player.gameObject.layer = LayerMask.NameToLayer("Ghost");
+            Player.MyPhysics.ResetMoveState();
+
+            Faded = false;
+        }
+    }
+
 
     public override bool CanUse(IUsable console)
     {
@@ -86,7 +129,6 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
 
         Player.gameObject.GetComponent<PassiveButton>().OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
         Player.gameObject.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => Player.OnClick()));
-        Player.gameObject.GetComponent<BoxCollider2D>().enabled = true;
 
         if (Player.AmOwner)
         {

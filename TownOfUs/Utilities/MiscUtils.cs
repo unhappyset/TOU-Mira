@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using AmongUs.GameOptions;
@@ -22,12 +23,12 @@ namespace TownOfUs.Utilities;
 
 public static class MiscUtils
 {
-    public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.CanVanquish) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
+    public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.ContinueGame) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
-    public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.CanVanquish));
+    public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.ContinueGame));
 
-    public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>  x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.CanVanquish) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
+    public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>  x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && inquis.ContinueGame) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
     public static int ImpAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor());
@@ -499,6 +500,17 @@ public static class MiscUtils
 
         return spherePrimitive;
     }
+    public static string ToTitleCase(this string input)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            return input; // Return empty or null string if input is empty or null
+        }
+
+        TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+        return textInfo.ToTitleCase(input.ToLower(CultureInfo.CurrentCulture)); // Convert to lowercase first and then title case
+    }
+
 
     public static ArrowBehaviour CreateArrow(Transform parent, Color color)
     {
