@@ -319,6 +319,9 @@ public static class HudManagerPatches
                 || (player.HasModifier<ExecutionerTargetModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
                     playerName += "<color=#8C4005FF> X</color>";
 
+                if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole))
+                    playerName += "<color=#D94291FF> $</color>";
+
                 if (player.HasModifier<MercenaryBribedModifier>(x => x.Mercenary == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MercenaryRole>())
                 {
                     playerColor = Color.green;
@@ -415,9 +418,9 @@ public static class HudManagerPatches
                     var accuracy = OptionGroupSingleton<OracleOptions>.Instance.RevealAccuracyPercentage;
                     var revealText = confess.RevealedFaction switch
                     {
-                        ModdedRoleTeams.Crewmate => $" {Palette.CrewmateBlue.ToTextColor()}({accuracy}% Crew) </color>",
-                        ModdedRoleTeams.Custom => $" {TownOfUsColors.Neutral.ToTextColor()}({accuracy}% Neut) </color>",
-                        ModdedRoleTeams.Impostor => $" {TownOfUsColors.ImpSoft.ToTextColor()}({accuracy}% Imp) </color>",
+                        ModdedRoleTeams.Crewmate => $"\n<size=75%>{Palette.CrewmateBlue.ToTextColor()}({accuracy}% Crew) </color></size>",
+                        ModdedRoleTeams.Custom => $"\n<size=75%>{TownOfUsColors.Neutral.ToTextColor()}({accuracy}% Neut) </color></size>",
+                        ModdedRoleTeams.Impostor => $"\n<size=75%>{TownOfUsColors.ImpSoft.ToTextColor()}({accuracy}% Imp) </color></size>",
                         _ => string.Empty,
                     };
 
@@ -482,6 +485,9 @@ public static class HudManagerPatches
                 if ((player.HasModifier<ExecutionerTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ExecutionerRole>())
                     || (player.HasModifier<ExecutionerTargetModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
                     playerName += "<color=#8C4005FF> X</color>";
+                    
+                if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole))
+                    playerName += "<color=#D94291FF> $</color>";
 
                 if (player.HasModifier<MercenaryBribedModifier>(x => x.Mercenary == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MercenaryRole>())
                 {

@@ -66,10 +66,15 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         var roleWhenAlive = target.GetRoleWhenAlive();
 
         player.ChangeRole((ushort)roleWhenAlive!.Role);
-        if (player.Data.Role is MayorRole mayor)
+        if (player.Data.Role is InquisitorRole inquis)
         {
-            mayor.Revealed = true;
+            inquis.Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().ToList();
+            inquis.TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select(x => x.TargetRole).OrderBy(x => x.NiceName).ToList();
         }
+        if (player.Data.Role is MayorRole mayor)
+            {
+                mayor.Revealed = true;
+            }
 
         if (target.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnImpAssassin)
         {
