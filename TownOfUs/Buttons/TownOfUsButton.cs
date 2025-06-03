@@ -183,7 +183,7 @@ public abstract class TownOfUsRoleButton<TRole, TTarget> : TownOfUsTargetButton<
     }
     public override bool IsTargetValid(TTarget? target)
     {
-        if (target is PlayerControl playerTarget) return base.IsTargetValid(target) && !(playerTarget.TryGetModifier<DisabledModifier>(out var mod) && !mod.CanBeInteractedWith);
+        if (target is PlayerControl playerTarget) return base.IsTargetValid(target) && !playerTarget.inVent && !(playerTarget.TryGetModifier<DisabledModifier>(out var mod) && !mod.CanBeInteractedWith);
 
         return base.IsTargetValid(target);
     }
