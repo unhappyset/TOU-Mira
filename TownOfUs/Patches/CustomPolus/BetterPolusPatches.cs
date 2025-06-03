@@ -1,5 +1,6 @@
 using HarmonyLib;
 using MiraAPI.GameOptions;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Options;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -299,6 +300,11 @@ public static class TaskTextUpdates
 {
     public static void Prefix(HudManager __instance)
     {
+        if (GameOptionsManager.Instance.currentNormalGameOptions.MapId != 2 || AmongUsClient.Instance.TutorialMapId != 2 && TutorialManager.InstanceExists)
+        {
+            return;
+        }
+
         if (BetterPolusPatches.IsObjectsFetched && BetterPolusPatches.IsAdjustmentsDone)
         {
             var opts = OptionGroupSingleton<BetterMapOptions>.Instance;
@@ -309,7 +315,7 @@ public static class TaskTextUpdates
             {
                 if (task.TaskType == TaskTypes.RecordTemperature && task.StartAt is not (SystemTypes.Outside or SystemTypes.Laboratory))
                 {
-                    task.StartAt = opts.BPTempInDeathValley ? SystemTypes.Outside : SystemTypes.Laboratory;
+                    task.StartAt = opts.BPTempInDeathValley ? TaskProvider.DeathValleySystemType : SystemTypes.Laboratory;
                 }
 
                 if (opts.BPSwapWifiAndChart)

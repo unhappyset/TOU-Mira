@@ -9,8 +9,10 @@ using MiraAPI;
 using MiraAPI.PluginLoading;
 using MiraAPI.Utilities.Assets;
 using Reactor;
+using Reactor.Localization;
 using Reactor.Networking;
 using Reactor.Networking.Attributes;
+using TownOfUs.Modules.Localization;
 
 namespace TownOfUs;
 
@@ -56,6 +58,7 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
     public override void Load()
     {
         Reactor.Utilities.ReactorCredits.Register<TownOfUsPlugin>(Reactor.Utilities.ReactorCredits.AlwaysShow);
+        LocalizationManager.Register(new TaskProvider());
 
         TouAssets.Initialize();
 
