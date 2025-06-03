@@ -62,27 +62,13 @@ public static class LogicGameFlowPatches
             }
         }
 
-        if (ShipStatus.Instance.Systems.ContainsKey(SystemTypes.Laboratory))
+        foreach (ISystemType systemType2 in ShipStatus.Instance.Systems.Values)
         {
-            var reactorSystemType = ShipStatus.Instance.Systems[SystemTypes.Laboratory].Cast<ReactorSystemType>();
-            if (reactorSystemType is { Countdown: < 0f })
+            ICriticalSabotage criticalSabotage = systemType2.TryCast<ICriticalSabotage>();
+            if (criticalSabotage != null && criticalSabotage.Countdown < 0f)
             {
                 __instance.EndGameForSabotage();
-                reactorSystemType.ClearSabotage();
-
-                return false;
-            }
-        }
-
-        if (ShipStatus.Instance.Systems.ContainsKey(SystemTypes.Reactor))
-        {
-            var reactorSystemType = ShipStatus.Instance.Systems[SystemTypes.Reactor].Cast<ICriticalSabotage>();
-            if (reactorSystemType is { Countdown: < 0f })
-            {
-                __instance.EndGameForSabotage();
-                reactorSystemType.ClearSabotage();
-
-                return false;
+                criticalSabotage.ClearSabotage();
             }
         }
 
