@@ -24,6 +24,12 @@ public static class JailorEvents
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         var source = @event.Source;
+        var victim = @event.Target;
+
+        if (victim.Data.Role is JailorRole && MeetingHud.Instance == null)
+        {
+            ModifierUtils.GetPlayersWithModifier<JailedModifier>().Do(x => x.RemoveModifier<JailedModifier>());
+        }
 
         if (source.Data.Role is not JailorRole jailor) return;
 
