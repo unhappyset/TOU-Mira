@@ -48,7 +48,15 @@ public sealed class TransporterTransportButton : TownOfUsRoleButton<TransporterR
                         player2Menu.Close();
                     }
                 );
+                foreach (var panel in player2Menu.potentialVictims)
+                {
+                    panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);
+                }
             }
         );
+        foreach (var panel in player1Menu.potentialVictims)
+        {
+            panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);
+        }
     }
 }

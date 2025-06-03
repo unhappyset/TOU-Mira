@@ -50,6 +50,10 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
                         Timer = 0.01f;
                     }
                 });
+            foreach (var panel in playerMenu.potentialVictims)
+            {
+                panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);
+            }
         }
         else
         {
