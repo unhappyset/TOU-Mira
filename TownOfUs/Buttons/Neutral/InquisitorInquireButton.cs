@@ -1,3 +1,4 @@
+using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
@@ -32,6 +33,7 @@ public sealed class InquisitorInquireButton : TownOfUsRoleButton<InquisitorRole,
         {
             return;
         }
+        ModifierUtils.GetPlayersWithModifier<InquisitorInquiredModifier>().Do(x => x.RemoveModifier<InquisitorInquiredModifier>());
 
         Target.AddModifier<InquisitorInquiredModifier>();
         

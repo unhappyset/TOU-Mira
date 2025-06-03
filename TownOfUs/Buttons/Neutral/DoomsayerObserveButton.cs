@@ -1,3 +1,4 @@
+using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
@@ -31,6 +32,7 @@ public sealed class DoomsayerObserveButton : TownOfUsRoleButton<DoomsayerRole, P
         {
             return;
         }
+        ModifierUtils.GetPlayersWithModifier<DoomsayerObservedModifier>().Do(x => x.RemoveModifier<DoomsayerObservedModifier>());
 
         Target.AddModifier<DoomsayerObservedModifier>();
         
