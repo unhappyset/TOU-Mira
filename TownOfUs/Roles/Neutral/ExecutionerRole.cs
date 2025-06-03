@@ -7,6 +7,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Modifiers;
@@ -58,7 +59,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
         {
             Target = ModifierUtils.GetPlayersWithModifier<ExecutionerTargetModifier>([HideFromIl2Cpp] (x) => x.OwnerId == Player.PlayerId).FirstOrDefault();
         }
-        if (TutorialManager.InstanceExists && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started && Player.AmOwner)
+        if (TutorialManager.InstanceExists && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started && Player.AmOwner && Player.IsHost())
         {
             Coroutines.Start(SetTutorialTargets(this));
         }

@@ -59,7 +59,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
             Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().ToList();
             TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select(x => x.TargetRole).OrderBy(x => x.NiceName).ToList();
         }
-        if (TutorialManager.InstanceExists && Player.AmOwner && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+        if (TutorialManager.InstanceExists && Player.AmOwner && Player.IsHost() && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
         {
             Coroutines.Start(SetTutorialTargets(this));
         }
@@ -171,47 +171,47 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         var inquis = PlayerControl.AllPlayerControls.ToArray()
             .FirstOrDefault(x => x.IsRole<InquisitorRole>() && !x.HasDied());
 
-            if (inquis == null)
-            {
-                Logger<TownOfUsPlugin>.Error("Inquisitor not found.");
-                return;
-            }
+        if (inquis == null)
+        {
+            Logger<TownOfUsPlugin>.Error("Inquisitor not found.");
+            return;
+        }
 
-            var required = (int)OptionGroupSingleton<InquisitorOptions>.Instance.AmountOfHeretics;
-            var players = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Data.Role is not InquisitorRole).ToList();
-            players.Shuffle();
-            players.Shuffle();
-            players.Shuffle();
+        var required = (int)OptionGroupSingleton<InquisitorOptions>.Instance.AmountOfHeretics;
+        var players = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Data.Role is not InquisitorRole).ToList();
+        Logger<TownOfUsPlugin>.Warning($"Players in heretic list possible: {players.Count}");
+        players.Shuffle();
+        players.Shuffle();
+        players.Shuffle();
 
-            var neut = players.Any(x => x.IsNeutral()) ? players.FirstOrDefault(x => x.IsNeutral()) : players.Random();
-            players.Remove(neut);
-            players.Shuffle();
+        var neut = players.Any(x => x.IsNeutral()) ? players.FirstOrDefault(x => x.IsNeutral()) : players.Random();
+        players.Remove(neut);
+        players.Shuffle();
 
-            var imp = players.Any(x => x.IsImpostor()) ? players.FirstOrDefault(x => x.IsImpostor()) : players.Random();
-            players.Remove(imp);
-            players.Shuffle();
+        var imp = players.Any(x => x.IsImpostor()) ? players.FirstOrDefault(x => x.IsImpostor()) : players.Random();
+        players.Remove(imp);
+        players.Shuffle();
 
-            var crew = players.Any(x => x.IsCrewmate()) ? players.FirstOrDefault(x => x.IsCrewmate()) : players.Random();
-            players.Remove(crew);
-            players.Shuffle();
+        var crew = players.Any(x => x.IsCrewmate()) ? players.FirstOrDefault(x => x.IsCrewmate()) : players.Random();
+        players.Remove(crew);
+        players.Shuffle();
 
-            List<PlayerControl> filtered = [neut, imp, crew];
-            var other = players.Random();
-            if (required is 4 or 5 && players.Count >= 1 && other != null)
-            {
-                filtered.Add(other);
-                players.Remove(other);
-            }
-            players.Shuffle();
-            other = players.Random();
-            if (required is 5 && players.Count >= 1 && other != null) filtered.Add(other);
+        List<PlayerControl> filtered = [neut, imp, crew];
+        var other = players.Random();
+        if (required is 4 or 5 && players.Count >= 1 && other != null)
+        {
+            filtered.Add(other);
+            players.Remove(other);
+        }
+        players.Shuffle();
+        other = players.Random();
+        if (required is 5 && players.Count >= 1 && other != null) filtered.Add(other);
 
         if (filtered.Count > 0)
         {
             filtered = filtered.OrderBy(x => x.Data.Role.NiceName).ToList();
             foreach (var player in filtered)
             {
-                players.Remove(player);
                 RpcAddInquisTarget(inquis, player);
             }
         }
@@ -220,25 +220,21 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     [MethodRpc((uint)TownOfUsRpc.AddInquisTarget, SendImmediately = true)]
     public static void RpcAddInquisTarget(PlayerControl player, PlayerControl target)
     {
-        Coroutines.Start(AddTarget(player, target));
-    }
-    private static IEnumerator AddTarget(PlayerControl player, PlayerControl target)
-    {
-        yield return new WaitForSeconds(0.01f);
         if (player.Data.Role is not InquisitorRole)
         {
             Logger<TownOfUsPlugin>.Error("RpcAddInquisTarget - Invalid Inquisitor");
-            yield break;
+            return;
         }
+
+        if (target == null) return;
 
         var role = player.GetRole<InquisitorRole>();
 
-        if (role == null) yield break;
-        if (target == null) yield break;
+        if (role == null) return;
 
         role.Targets.Add(target);
         role.TargetRoles.Add(target.Data.Role);
-        target.AddModifier<InquisitorHereticModifier>(player.PlayerId);
+        target.AddModifier<InquisitorHereticModifier>();
     }
 
     [MethodRpc((uint)TownOfUsRpc.InquisitorWin, SendImmediately = true)]
@@ -260,7 +256,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>The roles of your Heretics:</b>");
         foreach (var role in TargetRoles)
         {
-            var newText = $"{role.TeamColor.ToTextColor()}{role.NiceName}";
+            var newText = $"<b>{role.TeamColor.ToTextColor()}{role.NiceName}</b>";
             stringB.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
         }
 

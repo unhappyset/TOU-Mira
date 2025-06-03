@@ -17,6 +17,7 @@ using UnityEngine;
 using TownOfUs.Modifiers.Game.Impostor;
 using MiraAPI.PluginLoading;
 using Il2CppSystem.Linq;
+using TownOfUs.Roles.Neutral;
 
 namespace TownOfUs.Modifiers.Game;
 
@@ -175,6 +176,7 @@ public abstract class AssassinModifier : GameModifier
             Player.Data.IsDead ||
             voteArea!.AmDead ||
             Player.IsImpostor() && voteArea.GetPlayer()?.IsImpostor() == true ||
+            Player.Data.Role is VampireRole && voteArea.GetPlayer()?.Data.Role is VampireRole ||
             voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
     }
 
