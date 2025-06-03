@@ -1,6 +1,8 @@
 using HarmonyLib;
+using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 
@@ -22,16 +24,23 @@ public static class DummyBehaviourPatches
             .ToList();
 
         var roleType = RoleId.Get(roleList.Random()!.GetType());
-        __instance.myPlayer.RpcChangeRole(roleType, false);
+        var dum = __instance.myPlayer;
+        dum.RpcChangeRole(roleType, false);
 
-        __instance.myPlayer.RpcSetName(AccountManager.Instance.GetRandomName());
+        dum.RpcSetName(AccountManager.Instance.GetRandomName());
 
-        __instance.myPlayer.SetSkin(HatManager.Instance.allSkins[UnityEngine.Random.Range(0, HatManager.Instance.allSkins.Count)].ProdId, 0);
-        __instance.myPlayer.SetNamePlate(HatManager.Instance.allNamePlates[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allNamePlates.Count)].ProdId);
-        __instance.myPlayer.SetPet(HatManager.Instance.allPets[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allPets.Count)].ProdId);
+        dum.SetSkin(HatManager.Instance.allSkins[UnityEngine.Random.Range(0, HatManager.Instance.allSkins.Count)].ProdId, 0);
+        dum.SetNamePlate(HatManager.Instance.allNamePlates[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allNamePlates.Count)].ProdId);
+        dum.SetPet(HatManager.Instance.allPets[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allPets.Count)].ProdId);
         var colorId = UnityEngine.Random.Range(0, Palette.PlayerColors.Length);
-        __instance.myPlayer.SetColor(colorId);
-        __instance.myPlayer.SetHat(HatManager.Instance.allHats[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allHats.Count)].ProdId, colorId);
-        __instance.myPlayer.SetVisor(HatManager.Instance.allVisors[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allVisors.Count)].ProdId, colorId);
+        dum.SetColor(colorId);
+        dum.SetHat(HatManager.Instance.allHats[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allHats.Count)].ProdId, colorId);
+        dum.SetVisor(HatManager.Instance.allVisors[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allVisors.Count)].ProdId, colorId);
+
+        var randomUniMod = MiscUtils.AllModifiers.Where(x => x is UniversalGameModifier touGameMod && touGameMod.IsModifierValidOn(dum.Data.Role)).Random();
+        if (randomUniMod != null) dum.RpcAddModifier(randomUniMod.GetType());
+        
+        var randomTeamMod = MiscUtils.AllModifiers.Where(x => x is TouGameModifier touGameMod && touGameMod.IsModifierValidOn(dum.Data.Role)).Random();
+        if (randomTeamMod != null) dum.RpcAddModifier(randomTeamMod.GetType());
     }
 }
