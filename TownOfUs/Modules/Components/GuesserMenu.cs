@@ -165,16 +165,6 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
             }
         }
 
-        /*
-        // This didn't really work very well, so it's not used
-        potentialVictims.Sort();
-        for (var i = 0; i < potentialVictims.Count; i++)
-        {
-            var num = i % 3;
-            var num2 = (i / 3) % 5;
-                potentialVictims[i]!.transform.localPosition = new Vector3(xStart + num * xOffset, yStart + num2 * yOffset, -1f);
-        }*/
-
         var list2 = ShowPage();
 
         ControllerManager.Instance.OpenOverlayMenu(name, backButton, defaultButtonSelected, list2);

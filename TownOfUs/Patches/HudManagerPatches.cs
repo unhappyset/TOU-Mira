@@ -25,6 +25,7 @@ using Color = UnityEngine.Color;
 using TMPro;
 using System.Text;
 using TownOfUs.Patches.Options;
+using TownOfUs.Roles.Impostor;
 
 namespace TownOfUs.Patches;
 
@@ -369,6 +370,16 @@ public static class HudManagerPatches
                 || (player.HasModifier<ArsonistDousedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
                     playerName += "<color=#FF4D00FF> Δ</color>";
 
+                if ((player.HasModifier<BlackmailedModifier>(x => x.BlackMailerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<BlackmailerRole>())
+                || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.IsImpostor() && genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
+                || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
+                    playerName += "<color=#D53F42FF> M</color>";
+
+                if ((player.HasModifier<HypnotisedModifier>(x => x.Hypnotist == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<HypnotistRole>())
+                || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.IsImpostor() && genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
+                || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
+                    playerName += "<color=#D53F42FF> @</color>";
+
                 var role = player.Data.Role;
                 var color = role.TeamColor;
 
@@ -535,6 +546,16 @@ public static class HudManagerPatches
                 if ((player.HasModifier<ArsonistDousedModifier>(x => x.ArsonistId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ArsonistRole>())
                 || (player.HasModifier<ArsonistDousedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
                     playerName += "<color=#FF4D00FF> Δ</color>";
+
+                if ((player.HasModifier<BlackmailedModifier>(x => x.BlackMailerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<BlackmailerRole>())
+                || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.IsImpostor() && genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
+                || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
+                    playerName += "<color=#D53F42FF> M</color>";
+
+                if ((player.HasModifier<HypnotisedModifier>(x => x.Hypnotist == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<HypnotistRole>())
+                || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.IsImpostor() && genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
+                || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
+                    playerName += "<color=#D53F42FF> @</color>";
 
                 var role = player.Data.Role;
                 var color = role.TeamColor;
