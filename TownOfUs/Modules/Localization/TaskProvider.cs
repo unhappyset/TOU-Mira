@@ -1,4 +1,3 @@
-
 using Reactor.Localization;
 using Reactor.Localization.Utilities;
 
