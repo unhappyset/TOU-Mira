@@ -28,7 +28,6 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public string RoleLongDescription => "Vanquish your Heretics or get them killed.\nYou will win after every heretic dies.\nIf they're all dead after a meeting ends,\nyou'll leave & announce your victory.";
     public Color RoleColor => TownOfUsColors.Inquisitor;
     public bool CanVanquish { get; set; } = true;
-    public bool ContinueGame => OptionGroupSingleton<InquisitorOptions>.Instance.StallGame;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
     public DoomableType DoomHintType => DoomableType.Hunter;
@@ -44,9 +43,6 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public List<PlayerControl> Targets { get; set; } = [];
     public List<RoleBehaviour> TargetRoles { get; set; } = [];
     public bool TargetsDead { get; set; }
-
-    [HideFromIl2Cpp]
-    public List<byte> Voters { get; set; } = [];
 
     public override void Initialize(PlayerControl player)
     {
@@ -146,7 +142,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public bool WinConditionMet()
     {
         if (Player.HasDied()) return false;
-        if (!ContinueGame) return false;
+        if (!OptionGroupSingleton<InquisitorOptions>.Instance.StallGame) return false;
         if (!TargetsDead) return false;
 
         var result = Helpers.GetAlivePlayers().Count <= 2 && MiscUtils.KillersAliveCount == 1;
@@ -266,4 +262,13 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     {
         return $"The Inquisitor is a Neutral Evil role that wins by either vanquishing or passively letting their targets (Heretics) die. The only information provided is their roles, and it's up to the Inquisitor to identify those players and get them killed by any means neccesary." + MiscUtils.AppendOptionsText(GetType());
     }
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } = [
+        new("Inquire",
+            "Inquire a player, which will tell you if they are one of your targets within the meeting.",
+            TouNeutAssets.Observe),
+        new("Vanquish",
+            "Vanquish a player to kill them. If they are a heretic, you will be told and you can continue vanquishing. However, if the victim isn't a heretic, you will lose the ability to vanquish for the rest of the game.",
+            TouAssets.KillSprite)
+    ];
 }

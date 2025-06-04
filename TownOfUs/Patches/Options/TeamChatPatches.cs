@@ -100,11 +100,11 @@ public static class TeamChatPatches
                     //typeText.GetComponent<TextMeshPro>().color = Color.white;
                     if (MeetingHud.Instance)
                     {
-                        ChatScreenContainer.transform.localPosition = new Vector3(-4.33f, -2.236f, 0);
+                        ChatScreenContainer.transform.localPosition = HudManager.Instance.Chat.chatButton.transform.localPosition - new Vector3(3.5133f + 4.33f * (Camera.main.orthographicSize / 3f), 4.576f);
                     }
                     else
                     {
-                        ChatScreenContainer.transform.localPosition = new Vector3(-3.49f, -2.236f, 0);
+                        ChatScreenContainer.transform.localPosition = HudManager.Instance.Chat.chatButton.transform.localPosition - new Vector3(3.5133f + 3.49f * (Camera.main.orthographicSize / 3f), 4.576f);
                     }
 
                     if (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true } && !PlayerControl.LocalPlayer.Data.IsDead && _teamText != null)
@@ -153,7 +153,7 @@ public static class TeamChatPatches
                         txt.SetFaceColor(new Color(0.6706f, 0.8902f, 0.8667f, 1f));
                     }
                     typeText.GetComponent<TextMeshPro>().color = new Color(0.6706f, 0.8902f, 0.8667f, 1f); */
-                    ChatScreenContainer.transform.localPosition = new Vector3(-3.49f, -2.236f, 0);
+                    ChatScreenContainer.transform.localPosition = HudManager.Instance.Chat.chatButton.transform.localPosition - new Vector3(3.5133f + 3.49f * (Camera.main.orthographicSize / 3f), 4.576f);
                 }
             }
             else if (__instance.IsClosedOrClosing && TeamChatActive)

@@ -4,7 +4,6 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using MiraAPI;
 using MiraAPI.PluginLoading;
 using MiraAPI.Utilities.Assets;
