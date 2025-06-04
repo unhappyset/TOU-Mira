@@ -27,8 +27,8 @@ public static class DoomsayerEvents
         if (@event.TriggeredByIntro) return;
         if (OptionGroupSingleton<DoomsayerOptions>.Instance.WinEndsGame) return;
 
-        var doom = CustomRoleUtils.GetActiveRolesOfType<DoomsayerRole>().FirstOrDefault();
-        if (doom != null && doom.AllGuessesCorrect && !doom.Player.HasDied())
+        var doom = CustomRoleUtils.GetActiveRolesOfType<DoomsayerRole>().FirstOrDefault(x => x.AllGuessesCorrect && !x.Player.HasDied());
+        if (doom != null)
         {
             if (doom.Player.AmOwner)
             {

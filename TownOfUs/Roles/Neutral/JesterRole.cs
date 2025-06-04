@@ -35,6 +35,7 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     };
 
     public bool Voted { get; set; }
+    public bool SentWinMsg { get; set; }
 
     [HideFromIl2Cpp]
     public List<byte> Voters { get; } = [];

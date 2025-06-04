@@ -31,7 +31,7 @@ public static class ExecutionerEvents
             {
                 PlayerControl.LocalPlayer.RpcPlayerExile();
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>You have successfully won as the {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, as their target was exiled!</b>", Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
+                    $"<b>You have successfully won as the {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, as your target was exiled!</b>", Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -61,8 +61,8 @@ public static class ExecutionerEvents
         if (@event.TriggeredByIntro) return;
         if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.EndsGame) return;
 
-        var exe = CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>().FirstOrDefault();
-        if (exe != null && exe.TargetVoted && !exe.Player.HasDied())
+        var exe = CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>().FirstOrDefault(x => x.TargetVoted && !x.Player.HasDied());
+        if (exe != null)
         {
             if (exe.Player.AmOwner)
             {
@@ -84,10 +84,18 @@ public static class ExecutionerEvents
                             }
                         });
                 }
+                else
+                {
+                    var notif1 = Helpers.CreateAndShowNotification(
+                        $"<b>You have successfully won as the {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, as your target was exiled!</b>", Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
+
+                    notif1.Text.SetOutlineThickness(0.35f);
+                    notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                }
 
                 PlayerControl.LocalPlayer.RpcPlayerExile();
             }
-            else if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
+            else if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Nothing)
             {
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>The {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, {exe.Player.Data.PlayerName}, has successfully won, as their target was exiled!</b>", Color.white, spr: TouRoleIcons.Executioner.LoadAsset());

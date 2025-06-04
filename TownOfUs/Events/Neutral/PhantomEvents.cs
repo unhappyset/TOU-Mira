@@ -1,6 +1,10 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Player;
+using MiraAPI.GameOptions;
+using MiraAPI.Utilities;
+using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
+using UnityEngine;
 
 namespace TownOfUs.Events.Neutral;
 
