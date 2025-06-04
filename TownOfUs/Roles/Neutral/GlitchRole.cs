@@ -6,6 +6,7 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
+using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -28,6 +29,24 @@ public sealed class GlitchRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         Icon = TouRoleIcons.Glitch,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };
+    public override void Initialize(PlayerControl player)
+    {
+        RoleStubs.RoleBehaviourInitialize(this, player);
+        if (Player.AmOwner)
+        {
+            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouNeutAssets.GlitchVentSprite.LoadAsset();
+            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Glitch);
+        }
+    }
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        if (Player.AmOwner)
+        {
+            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
+            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
+        }
+    }
 
     public bool HasImpostorVision => true;
 

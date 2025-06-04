@@ -18,7 +18,7 @@ public sealed class HunterKillButton : TownOfUsRoleButton<HunterRole, PlayerCont
     public override string Keybind => "ActionSecondary";
     public override Color TextOutlineColor => TownOfUsColors.Hunter;
     public override float Cooldown => OptionGroupSingleton<HunterOptions>.Instance.HunterKillCooldown + MapCooldown;
-    public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
+    public override LoadableAsset<Sprite> Sprite => TouCrewAssets.HunterKillSprite;
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);

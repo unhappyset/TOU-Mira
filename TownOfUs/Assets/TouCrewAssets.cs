@@ -24,6 +24,8 @@ public static class TouCrewAssets
 
     public static LoadableAsset<Sprite> JailSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.JailButton.png");
     public static LoadableAsset<Sprite> AlertSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.AlertButton.png");
+    public static LoadableAsset<Sprite> HunterKillSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.HunterKillButton.png");
+    public static LoadableAsset<Sprite> SheriffShootSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.SheriffShootButton.png");
 
     public static LoadableAsset<Sprite> ReviveSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.ReviveButton.png");
     public static LoadableAsset<Sprite> CleanseSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.CleanseButton.png");
@@ -32,7 +34,7 @@ public static class TouCrewAssets
     public static LoadableAsset<Sprite> FortifySprite { get; } = new LoadableResourceAsset($"{ButtonPath}.FortifyButton.png");
 
     public static LoadableAsset<Sprite> FixButtonSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.FixButton.png");
-    public static LoadableAsset<Sprite> EngiVentSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.EngiVent.png");
+    public static LoadableAsset<Sprite> EngiVentSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.EngiVentButton.png");
     public static LoadableAsset<Sprite> MediateSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.MediateButton.png");
     public static LoadableAsset<Sprite> CampaignButtonSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.CampaignButton.png");
     public static LoadableAsset<Sprite> FlushSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.FlushButton.png");

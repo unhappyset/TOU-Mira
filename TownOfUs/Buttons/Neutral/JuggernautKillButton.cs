@@ -14,7 +14,7 @@ public sealed class JuggernautKillButton : TownOfUsRoleButton<JuggernautRole, Pl
     public override string Name => "Kill";
     public override string Keybind => "ActionSecondary";
     public override Color TextOutlineColor => TownOfUsColors.Juggernaut;
-    public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
+    public override LoadableAsset<Sprite> Sprite => TouNeutAssets.JuggKillSprite;
     public override float Cooldown => GetCooldown();
     public void SetDiseasedTimer(float multiplier)
     {

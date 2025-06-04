@@ -42,11 +42,23 @@ public sealed class PestilenceRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     {
         RoleStubs.RoleBehaviourInitialize(this, player);
         player.AddModifier<InvulnerabilityModifier>(true, true, false);
+
+        if (Player.AmOwner)
+        {
+            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouNeutAssets.PestVentSprite.LoadAsset();
+            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Pestilence);
+        }
     }
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
         targetPlayer.RemoveModifier<InvulnerabilityModifier>();
+
+        if (Player.AmOwner)
+        {
+            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
+            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
+        }
     }
 
 

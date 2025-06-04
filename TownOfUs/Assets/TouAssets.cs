@@ -52,6 +52,7 @@ public static class TouAssets
     public static LoadableAsset<Sprite> CameraSprite { get; } = new LoadableResourceAsset($"{ShortPath}.CamButton.png");
 
     public static LoadableAsset<Sprite> KillSprite { get; } = new LoadableResourceAsset($"{ShortPath}.KillButton.png");
+    public static LoadableAsset<Sprite> VentSprite { get; } = new LoadableResourceAsset($"{ShortPath}.VentButton.png");
     public static LoadableAsset<Sprite> RangeSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Range.png");
 
     public static LoadableAsset<Sprite> HysteriaSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Hysteria.png", 300);

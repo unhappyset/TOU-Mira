@@ -54,7 +54,7 @@ namespace TownOfUs.Patches
             if (PlayerControl.LocalPlayer?.Data == null) return;
             if (PlayerControl.LocalPlayer.Data.IsDead) return;
 
-            // for neutrals
+            // for neutrals/engi
 
             var button = __instance.KillButton;
             var vent = __instance.ImpostorVentButton;

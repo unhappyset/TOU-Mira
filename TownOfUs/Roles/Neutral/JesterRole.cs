@@ -51,9 +51,11 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             player.RemainingEmergencies = 0;
         }
 
-        if (Player.AmOwner && OptionGroupSingleton<JesterOptions>.Instance.ScatterOn)
+        if (Player.AmOwner)
         {
-            Player.AddModifier<ScatterModifier>(OptionGroupSingleton<JesterOptions>.Instance.ScatterTimer);
+            if (OptionGroupSingleton<JesterOptions>.Instance.ScatterOn) Player.AddModifier<ScatterModifier>(OptionGroupSingleton<JesterOptions>.Instance.ScatterTimer);
+            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouNeutAssets.JesterVentSprite.LoadAsset();
+            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Jester);
         }
     }
 
@@ -61,9 +63,11 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     {
         RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
 
-        if (Player.AmOwner && OptionGroupSingleton<JesterOptions>.Instance.ScatterOn)
+        if (Player.AmOwner)
         {
-            Player.RemoveModifier<ScatterModifier>();
+            if (OptionGroupSingleton<JesterOptions>.Instance.ScatterOn) Player.RemoveModifier<ScatterModifier>();
+            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
+            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
         }
     }
 

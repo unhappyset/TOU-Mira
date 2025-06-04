@@ -29,6 +29,11 @@ public sealed class HunterStalkButton : TownOfUsRoleButton<HunterRole, PlayerCon
         }
 
         Target.RpcAddModifier<HunterStalkedModifier>(PlayerControl.LocalPlayer);
+        OverrideName("Stalking");
+    }
+    public override void OnEffectEnd()
+    {
+        OverrideName("Stalk");
     }
 
     public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);

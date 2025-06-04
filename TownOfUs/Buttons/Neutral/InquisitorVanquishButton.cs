@@ -15,7 +15,7 @@ public sealed class InquisitorVanquishButton : TownOfUsRoleButton<InquisitorRole
     public override string Keybind => "ActionSecondary";
     public override Color TextOutlineColor => TownOfUsColors.Inquisitor;
     public override float Cooldown => OptionGroupSingleton<InquisitorOptions>.Instance.VanquishCooldown;
-    public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
+    public override LoadableAsset<Sprite> Sprite => TouNeutAssets.InquisKillSprite;
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);

@@ -15,7 +15,7 @@ public sealed class PestilenceKillButton : TownOfUsRoleButton<PestilenceRole, Pl
     public override string Keybind => "ActionSecondary";
     public override Color TextOutlineColor => TownOfUsColors.Pestilence;
     public override float Cooldown => OptionGroupSingleton<PlaguebearerOptions>.Instance.PestKillCooldown;
-    public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
+    public override LoadableAsset<Sprite> Sprite => TouNeutAssets.PestKillSprite;
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);

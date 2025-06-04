@@ -13,24 +13,37 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
     public override string Keybind => "ActionQuaternary";
     public override Color TextOutlineColor => TownOfUsColors.Engineer;
     public override float Cooldown => 0.001f + MapCooldown;
+    public override float EffectDuration => 0.5f;
     public override int MaxUses => (int)OptionGroupSingleton<EngineerOptions>.Instance.MaxFixes;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.FixButtonSprite;
 
+    protected override void FixedUpdate(PlayerControl playerControl)
+    {
+        Button?.cooldownTimerText.gameObject.SetActive(false);
+    }
     public override bool CanUse()
     {
         var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
 
         return base.CanUse() && system is { AnyActive: true };
     }
-
     protected override void OnClick()
+    {
+        var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
+
+        if (system is not { AnyActive: true })
+        {
+            ResetCooldownAndOrEffect();
+        }
+    }
+    public override void OnEffectEnd()
     {
         var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
 
         if (system is { AnyActive: true })
         {
             List<LoadableAsset<AudioClip>> audio = [TouAudio.EngiFix1, TouAudio.EngiFix2, TouAudio.EngiFix3];
-            TouAudio.PlaySound(audio.Random()!);
+            TouAudio.PlaySound(audio.Random()!, 4f);
             EngineerTouRole.EngineerFix(PlayerControl.LocalPlayer);
         }
     }

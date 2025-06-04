@@ -21,7 +21,7 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
     public override string Keybind => "ActionSecondary";
     public override Color TextOutlineColor => TownOfUsColors.Sheriff;
     public override float Cooldown => OptionGroupSingleton<SheriffOptions>.Instance.KillCooldown + MapCooldown;
-    public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
+    public override LoadableAsset<Sprite> Sprite => TouCrewAssets.SheriffShootSprite;
     public bool Usable = OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse;
 
     public override bool CanUse()

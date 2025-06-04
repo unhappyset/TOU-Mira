@@ -47,6 +47,7 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
     public override void Update()
     {
         if (IntroCutscene.Instance) return;
+        if (Player == null) return;
 
         // check movement by animation
         PlayerPhysics playerPhysics = Player.MyPhysics;

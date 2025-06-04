@@ -15,7 +15,7 @@ public sealed class WerewolfKillButton : TownOfUsRoleButton<WerewolfRole, Player
     public override string Keybind => "ActionSecondary";
     public override Color TextOutlineColor => TownOfUsColors.Werewolf;
     public override float Cooldown => OptionGroupSingleton<WerewolfOptions>.Instance.RampageKillCooldown + MapCooldown;
-    public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
+    public override LoadableAsset<Sprite> Sprite => TouNeutAssets.WerewolfKillSprite;
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
