@@ -39,7 +39,9 @@ public static class LobbyJoin
         LobbyText = GameObject.Instantiate(__instance.transform.FindChild("Header").gameObject, __instance.transform);
         LobbyText.name = "LobbyText";
         Text = LobbyText.transform.GetChild(1).GetComponent<TextMeshPro>();
-        Text.fontSize = 3f;
+        Text.fontSizeMin = 2.55f;
+        Text.fontSizeMax = 2.55f;
+        Text.fontSize = 2.55f;
         Text.text = string.Empty;
         Text.alignment = TextAlignmentOptions.Center;
         LobbyText.transform.localPosition = new(0.9f, 0f, 0f);
@@ -71,7 +73,7 @@ public static class LobbyJoin
         }
         if (LobbyText && Text)
         {
-            Text.text = $"Prev Lobby: {GameCode.IntToGameName(GameId)}\nClick Tab key to attempt\n joining";
+            Text.text = $"Prev Lobby: {GameCode.IntToGameName(GameId)}\nClick Tab key to \nattempt joining";
         }
     }
 }
