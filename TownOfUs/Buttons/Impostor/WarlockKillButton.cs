@@ -71,7 +71,7 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
             return;
         }
 
-        PlayerControl.LocalPlayer.RpcCustomMurder(Target);
+        if (!Target.Data.IsDead) PlayerControl.LocalPlayer.RpcCustomMurder(Target);
 
         if (Target.Data.IsDead)
         {
