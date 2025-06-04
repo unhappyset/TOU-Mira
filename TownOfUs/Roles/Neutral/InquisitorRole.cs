@@ -25,7 +25,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 {
     public string RoleName => "Inquisitor";
     public string RoleDescription => "Vanquish The Heretics!";
-    public string RoleLongDescription => "Vanquish your Heretics or get them killed.\nYou will win after every heretic dies.\nIf they're all dead after a meeting ends, you'll leave & win.";
+    public string RoleLongDescription => "Vanquish your Heretics or get them killed.\nYou will win after every heretic dies.\nIf they're all dead after a meeting ends,\nyou'll leave & announce your victory.";
     public Color RoleColor => TownOfUsColors.Inquisitor;
     public bool CanVanquish { get; set; } = true;
     public bool ContinueGame => OptionGroupSingleton<InquisitorOptions>.Instance.StallGame;
@@ -256,7 +256,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>The roles of your Heretics:</b>");
         foreach (var role in TargetRoles)
         {
-            var newText = $"<b>{role.TeamColor.ToTextColor()}{role.NiceName}</b>";
+            var newText = $"<b><size=80%>{role.TeamColor.ToTextColor()}{role.NiceName}</size></b>";
             stringB.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
         }
 
