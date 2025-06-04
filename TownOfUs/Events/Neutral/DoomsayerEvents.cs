@@ -1,9 +1,12 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameOptions;
+using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TownOfUs.Events.Neutral;
 
@@ -24,9 +27,26 @@ public static class DoomsayerEvents
         if (@event.TriggeredByIntro) return;
         if (OptionGroupSingleton<DoomsayerOptions>.Instance.WinEndsGame) return;
 
-        if (PlayerControl.LocalPlayer.Data.Role is DoomsayerRole doom && doom.AllGuessesCorrect)
+        var doom = CustomRoleUtils.GetActiveRolesOfType<DoomsayerRole>().FirstOrDefault();
+        if (doom != null && doom.AllGuessesCorrect && !doom.Player.HasDied())
         {
-            PlayerControl.LocalPlayer.RpcPlayerExile();
+            if (doom.Player.AmOwner)
+            {
+                PlayerControl.LocalPlayer.RpcPlayerExile();
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>You have successfully won as the {TownOfUsColors.Doomsayer.ToTextColor()}Doomsayer</color>, as you have guessed enough players successfully!</b>", Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
+
+                notif1.Text.SetOutlineThickness(0.35f);
+                    notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            }
+            else
+            {
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>The {TownOfUsColors.Doomsayer.ToTextColor()}Doomsayer</color>, {doom.Player.Data.PlayerName}, has successfully won, as they have guessed enough players!</b>", Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
+
+                notif1.Text.SetOutlineThickness(0.35f);
+                    notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            }
         }
     }
 }

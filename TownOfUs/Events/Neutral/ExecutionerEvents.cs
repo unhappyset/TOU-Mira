@@ -7,10 +7,13 @@ using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using TownOfUs.Modifiers;
+using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TownOfUs.Events.Neutral;
 
@@ -20,6 +23,28 @@ public static class ExecutionerEvents
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>().Do(x => x.CheckTargetDeath(@event.Target));
+        var role = @event.Source.Data.Role;
+        if (@event.Source.HasDied()) role = @event.Source.GetRoleWhenAlive();
+        if (@role is ExecutionerRole exe && OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
+        {
+            if (exe.Player.AmOwner)
+            {
+                PlayerControl.LocalPlayer.RpcPlayerExile();
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>You have successfully won as the {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, as their target was exiled!</b>", Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
+
+                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            }
+            else
+            {
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>The {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, {exe.Player.Data.PlayerName}, has successfully won, as their target was exiled!</b>", Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
+
+                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            }
+        }
     }
 
     [RegisterEvent]
@@ -34,31 +59,42 @@ public static class ExecutionerEvents
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (@event.TriggeredByIntro) return;
-        if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Nothing) return;
-        if (PlayerControl.LocalPlayer.Data.Role is not ExecutionerRole exe) return;
+        if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.EndsGame) return;
 
-        if (exe.TargetVoted && !PlayerControl.LocalPlayer.HasDied())
+        var exe = CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>().FirstOrDefault();
+        if (exe != null && exe.TargetVoted && !exe.Player.HasDied())
         {
-            if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
+            if (exe.Player.AmOwner)
             {
-                var voters = exe.Voters.ToArray();
-                Func<PlayerControl, bool> _playerMatch = plr => plr != exe.Target && plr != exe.Player && voters.Contains(plr.PlayerId) && !plr.HasDied() && !plr.HasModifier<InvulnerabilityModifier>();
+                if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
+                {
+                    var voters = exe.Voters.ToArray();
+                    Func<PlayerControl, bool> _playerMatch = plr => plr != exe.Target && plr != exe.Player && voters.Contains(plr.PlayerId) && !plr.HasDied() && !plr.HasModifier<InvulnerabilityModifier>();
 
-                var killMenu = CustomPlayerMenu.Create();
-                killMenu.Begin(
-                    _playerMatch,
-                    plr =>
-                    {
-                        killMenu.ForceClose();
-
-                        if (plr != null)
+                    var killMenu = CustomPlayerMenu.Create();
+                    killMenu.Begin(
+                        _playerMatch,
+                        plr =>
                         {
-                            PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
-                        }
-                    });
-            }
+                            killMenu.ForceClose();
 
-            PlayerControl.LocalPlayer.RpcPlayerExile();
+                            if (plr != null)
+                            {
+                                PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
+                            }
+                        });
+                }
+
+                PlayerControl.LocalPlayer.RpcPlayerExile();
+            }
+            else if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
+            {
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>The {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, {exe.Player.Data.PlayerName}, has successfully won, as their target was exiled!</b>", Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
+
+                notif1.Text.SetOutlineThickness(0.35f);
+                    notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            }
         }
     }
 }
