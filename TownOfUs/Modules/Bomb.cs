@@ -37,6 +37,8 @@ public sealed class Bomb : IDisposable
         foreach (var player in affected)
         {
             if (player.HasDied()) continue;
+            if (player.HasModifier<BaseShieldModifier>() && _bomber == player) continue;
+            if (player.HasModifier<FirstDeadShield>() && _bomber == player) continue;
 
             _bomber?.RpcCustomMurder(player, teleportMurderer: false);
         }
