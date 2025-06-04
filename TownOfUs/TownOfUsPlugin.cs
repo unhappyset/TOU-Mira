@@ -75,13 +75,6 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
         GameSummaryMode = Config.Bind("LocalSettings", "GameSummaryMode", 1, "How the Game Summary appears in the Win Screen. 0 is to the left, 1 is split, and 2 is hidden.");
         ColorPlayerName = Config.Bind("LocalSettings", "ColorPlayerName", true, "If your name is colored with your role color or if it's left as white.");
 
-        // do not touch this warning fixing it broke the function of the code
-#pragma warning disable IDE0300 // Simplify collection initialization
-#pragma warning disable CA1825 // Avoid zero-length array allocations
-        ServerManager.DefaultRegions = new Il2CppReferenceArray<IRegionInfo>(new IRegionInfo[0]);
-#pragma warning restore CA1825 // Avoid zero-length array allocations
-#pragma warning restore IDE0300 // Simplify collection initialization
-
         Harmony.PatchAll();
     }
 }
