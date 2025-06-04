@@ -74,17 +74,26 @@ public static class InquisitorEvents
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (@event.TriggeredByIntro) return;
-        if (PlayerControl.LocalPlayer.Data.Role is not InquisitorRole inquis) return;
-
-        if (inquis.TargetsDead && !PlayerControl.LocalPlayer.HasDied())
+        var inquis = CustomRoleUtils.GetActiveRolesOfType<InquisitorRole>().FirstOrDefault();
+        if (inquis != null && inquis.TargetsDead && !inquis.Player.HasDied())
         {
-            PlayerControl.LocalPlayer.RpcPlayerExile();
+            if (inquis.Player.AmOwner)
+            {
+                PlayerControl.LocalPlayer.RpcPlayerExile();
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>You have successfully won as the {TownOfUsColors.Inquisitor.ToTextColor()}Inquisitor</color>, as all Heretics have perished!</b>", Color.white, spr: TouRoleIcons.Inquisitor.LoadAsset());
 
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfUsColors.Inquisitor.ToTextColor()}You have successfully won, as all Heretics have perished!</color></b>", Color.white, spr: TouRoleIcons.Inquisitor.LoadAsset());
+                notif1.Text.SetOutlineThickness(0.35f);
+                    notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            }
+            else
+            {
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>The {TownOfUsColors.Inquisitor.ToTextColor()}Inquisitor</color>, {inquis.Player.Data.PlayerName}, has successfully won, as all Heretics have perished!</b>", Color.white, spr: TouRoleIcons.Inquisitor.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                notif1.Text.SetOutlineThickness(0.35f);
+                    notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            }
         }
     }
 }
