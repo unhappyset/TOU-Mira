@@ -1,5 +1,4 @@
 using HarmonyLib;
-using Il2CppSystem;
 using InnerNet;
 using Reactor.Utilities.Extensions;
 using TMPro;
@@ -44,7 +43,7 @@ public static class LobbyJoin
         Text.fontSize = 2.55f;
         Text.text = string.Empty;
         Text.alignment = TextAlignmentOptions.Center;
-        LobbyText.transform.localPosition = new(0.9f, 0f, 0f);
+        LobbyText.transform.localPosition = new(0.8f, 0.15f, 0f);
         LobbyText.transform.GetChild(0).gameObject.Destroy();
         LobbyText.SetActive(GameId != 0);
     }
@@ -73,7 +72,7 @@ public static class LobbyJoin
         }
         if (LobbyText && Text)
         {
-            Text.text = $"Prev Lobby: {GameCode.IntToGameName(GameId)}\nClick Tab key to \nattempt joining";
+            Text.text = $"Prev Lobby\n<size=2.8f>({GameCode.IntToGameName(GameId)})</size>\nPress Tab to\n<size=2.2f>attempt joining.</size>";
         }
     }
 }
