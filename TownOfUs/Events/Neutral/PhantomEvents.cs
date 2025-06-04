@@ -16,5 +16,25 @@ public static class PhantomEvents
         if (@event.Player.Data.Role is not PhantomTouRole phantom) return;
 
         phantom.CheckTaskRequirements();
+
+        if (phantom.CompletedAllTasks && OptionGroupSingleton<PhantomOptions>.Instance.PhantomWin is not PhantomWinOptions.EndsGame)
+        {
+            if (phantom.Player.AmOwner)
+            {
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>You have successfully won as the {TownOfUsColors.Phantom.ToTextColor()}Phantom</color>, as you finished your tasks in death!</b>", Color.white, spr: TouRoleIcons.Phantom.LoadAsset());
+
+                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            }
+            else
+            {
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>The {TownOfUsColors.Phantom.ToTextColor()}Phantom</color>, {phantom.Player.Data.PlayerName}, has successfully won, as they completed their tasks!</b>", Color.white, spr: TouRoleIcons.Phantom.LoadAsset());
+
+                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            }
+        }
     }
 }
