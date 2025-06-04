@@ -11,4 +11,7 @@ public sealed class EngineerOptions : AbstractOptionGroup<EngineerTouRole>
 
     [ModdedNumberOption("Maximum Number Of Fixes", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxFixes { get; set; } = 5f;
+
+    [ModdedNumberOption("Fix Delay", 0f, 5f, 0.5f, MiraNumberSuffixes.Seconds)]
+    public float FixDelay { get; set; } = 0.5f;
 }

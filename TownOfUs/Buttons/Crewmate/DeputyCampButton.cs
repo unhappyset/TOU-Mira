@@ -15,7 +15,12 @@ public sealed class CampButton : TownOfUsRoleButton<DeputyRole, PlayerControl>
     public override Color TextOutlineColor => TownOfUsColors.Deputy;
     public override float Cooldown => MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.CampButtonSprite;
+    public bool Usable = true;
 
+    public override bool CanUse()
+    {
+        return base.CanUse() && Usable;
+    }
     public override bool IsTargetValid(PlayerControl? target)
     {
         return base.IsTargetValid(target) && !target?.HasModifier<DeputyCampedModifier>() == true;
@@ -39,5 +44,6 @@ public sealed class CampButton : TownOfUsRoleButton<DeputyRole, PlayerControl>
         }
 
         Target?.RpcAddModifier<DeputyCampedModifier>(PlayerControl.LocalPlayer);
+        Usable = false;
     }
 }

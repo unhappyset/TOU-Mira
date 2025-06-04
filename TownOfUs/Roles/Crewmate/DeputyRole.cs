@@ -1,11 +1,13 @@
 ﻿using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
@@ -32,6 +34,10 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         Icon = TouRoleIcons.Deputy,
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Impostor),
     };
+    public static void OnRoundStart()
+    {
+        CustomButtonSingleton<CampButton>.Instance.Usable = true;
+    }
 
     public PlayerControl? Killer { get; set; }
 

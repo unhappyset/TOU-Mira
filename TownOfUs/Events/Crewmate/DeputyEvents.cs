@@ -11,6 +11,11 @@ namespace TownOfUs.Events.Crewmate;
 public static class DeputyEvents
 {
     [RegisterEvent]
+    public static void RoundStartHandler(RoundStartEvent @event)
+    {
+        if (PlayerControl.LocalPlayer.Data.Role is DeputyRole) DeputyRole.OnRoundStart();
+    }
+    [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         var source = @event.Source;
