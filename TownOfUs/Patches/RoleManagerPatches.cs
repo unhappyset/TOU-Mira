@@ -1,5 +1,6 @@
 ﻿using AmongUs.GameOptions;
 using HarmonyLib;
+using Hazel;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using TownOfUs.Modules;
@@ -530,6 +531,23 @@ public static class TouRoleManagerPatches
         }
 
         AssignTargets();
+
+        return false;
+    }
+
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
+    [HarmonyPrefix]
+    public static bool RpcSetRolePatch(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType, [HarmonyArgument(1)] bool canOverrideRole = false)
+    {
+        if (AmongUsClient.Instance.AmClient)
+        {
+            __instance.StartCoroutine(__instance.CoSetRole(roleType, canOverrideRole));
+        }
+
+        MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.SetRole, SendOption.Reliable);
+        messageWriter.Write((ushort)roleType);
+        messageWriter.Write(canOverrideRole);
+        AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
 
         return false;
     }
