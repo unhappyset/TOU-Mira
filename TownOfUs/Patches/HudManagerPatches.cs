@@ -408,6 +408,7 @@ public static class HudManagerPatches
                         else roleName = $"<size=80%>{cachedMod.CachedRole.TeamColor.ToTextColor()}{cachedMod.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
                     }
                     // Guardian Angel here is vanilla's GA, NOT Town of Us GA
+                    if (player.Data.IsDead && role is GuardianAngelRole gaRole) roleName = $"<size=80%>{gaRole.TeamColor.ToTextColor()}{gaRole?.NiceName}</color></size>";
                     if (SleuthModifier.SleuthVisibilityFlag(player) || (player.Data.IsDead && role is not PhantomTouRole or GuardianAngelRole or HaunterRole))
                     {
                         var roleWhenAlive = player.GetRoleWhenAlive();
@@ -581,7 +582,8 @@ public static class HudManagerPatches
                         else roleName = $"<size=80%>{cachedMod.CachedRole.TeamColor.ToTextColor()}{cachedMod.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
                     }
                     // Guardian Angel here is vanilla's GA, NOT Town of Us GA
-                    if (player.Data.IsDead && role is not PhantomTouRole or HaunterRole or GuardianAngelRole)
+                    if (player.Data.IsDead && role is GuardianAngelRole gaRole) roleName = $"<size=80%>{gaRole.TeamColor.ToTextColor()}{gaRole.NiceName}</color></size>";
+                    if (SleuthModifier.SleuthVisibilityFlag(player) || (player.Data.IsDead && role is not PhantomTouRole or GuardianAngelRole or HaunterRole))
                     {
                         var roleWhenAlive = player.GetRoleWhenAlive();
                         color = roleWhenAlive!.TeamColor;

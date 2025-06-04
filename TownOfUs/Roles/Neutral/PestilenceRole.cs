@@ -4,6 +4,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using System.Globalization;
 using System.Text;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Wiki;
@@ -17,7 +18,7 @@ namespace TownOfUs.Roles.Neutral;
 public sealed class PestilenceRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IUnguessable
 {
     public string RoleName => "Pestilence";
-    public string RoleDescription => "Kill everyone with your unstoppable abilities!";
+    public string RoleDescription => "Kill Everyone With Your Unstoppable Abilities!";
     public string RoleLongDescription => "Kill everyone in your path that interacts with you!";
     public Color RoleColor => TownOfUsColors.Pestilence;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
@@ -75,7 +76,17 @@ public sealed class PestilenceRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
-        return ITownOfUsRole.SetNewTabText(this);
+        var alignment = RoleAlignment.ToDisplayString();
+
+        alignment = alignment.Replace("Neutral", "<color=#8A8A8AFF>Neutral");
+
+        var stringB = new StringBuilder();
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"{RoleColor.ToTextColor()}You are<b> {RoleName},\n<size=80%>Horseman of the Apocalypse.</size></b></color>");
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>Alignment: <b>{alignment}</color></b></size>");
+        stringB.Append("<size=70%>");
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"{RoleLongDescription}");
+
+        return stringB;
     }
 
     public string GetAdvancedDescription()

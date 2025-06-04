@@ -147,8 +147,8 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     public string GetAdvancedDescription()
     {
         return "The Imitator is a Crewmate Support role that can select a dead crewmate to imitate their role." +
-        "They will become their role and abilities for 1 round." +
-        "In the next meeting the Imitator may reselect them or choose a different person." +
+        "They will become their role and abilities for 1 round. " +
+        "In the next meeting the Imitator may reselect them or choose a different person. " +
         "If there are multiple living imitators and the Mayor is dead, none of the Imitators will be able to select the Mayor.";
     }
 }

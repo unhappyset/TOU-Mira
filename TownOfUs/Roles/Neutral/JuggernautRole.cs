@@ -69,6 +69,6 @@ public sealed class JuggernautRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
     public string GetAdvancedDescription()
     {
-        return "The Juggernaut is a Neutral Killing role that wins by being the last killer alive. For each kill they make, their kill cooldown gets reduced." + MiscUtils.AppendOptionsText(GetType());
+        return "The Juggernaut is a Neutral Killing role that wins by being the last killer alive. For each kill they get, their kill cooldown gets reduced." + MiscUtils.AppendOptionsText(GetType());
     }
 }

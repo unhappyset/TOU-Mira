@@ -55,7 +55,7 @@ public static class MiscUtils
         if (options == null) return string.Empty;
 
         var builder = new StringBuilder();
-        builder.AppendLine("\n\n<b>Options</b>");
+        builder.AppendLine(CultureInfo.InvariantCulture, $"\n<size=50%> \n</size><b>{TownOfUsColors.Vigilante.ToTextColor()}Options</color></b>");
 
         foreach (var option in options)
         {
@@ -68,8 +68,13 @@ public static class MiscUtils
                     builder.AppendLine(enumOption.Title + ": " + enumOption.Values[enumOption.Value]);
                     break;
                 case ModdedNumberOption numberOption:
+                    var optionStr = numberOption.Data.GetValueString(numberOption.Value);
+                    if (optionStr.Contains(".000")) optionStr = optionStr.Replace(".000", "");
+                    else if (optionStr.Contains(".00")) optionStr = optionStr.Replace(".00", "");
+                    else if (optionStr.Contains(".0")) optionStr = optionStr.Replace(".0", "");
+
                     if (numberOption.ZeroInfinity) builder.AppendLine(numberOption.Title + ": ∞");
-                    else builder.AppendLine(numberOption.Title + ": " + numberOption.Value + Helpers.GetSuffix(numberOption.SuffixType));
+                    else builder.AppendLine(numberOption.Title + ": " + optionStr);
                     break;
             }
         }
