@@ -32,6 +32,17 @@ public abstract class TownOfUsButton : CustomActionButton
     {
         Button?.ToggleVisible(visible && Enabled(role) && !role.Player.HasDied());
     }
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        if (Button == null)
+        {
+            Logger<TownOfUsPlugin>.Error($"Button is null for {GetType().FullName}");
+            return;
+        }
+        Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterBasicSprite.LoadAsset();
+        Button.usesRemainingSprite.color = TextOutlineColor;
+    }
 
     public override bool CanUse()
     {
@@ -97,10 +108,14 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
             case Type t when t == typeof(DeadBody):
                 Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterBodySprite.LoadAsset();
                 break;
-            default:
+            case Type t when t == typeof(PlayerControl):
                 Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterPlayerSprite.LoadAsset();
                 break;
+            default:
+                Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterBasicSprite.LoadAsset();
+                break;
         }
+        Button.usesRemainingSprite.color = TextOutlineColor;
     }
 
     public override void ClickHandler()

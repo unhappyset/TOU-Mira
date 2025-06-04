@@ -7,6 +7,7 @@ namespace TownOfUs.Assets;
 public static class TouAssets
 {
     private const string ShortPath = "TownOfUs.Resources";
+    private const string CounterPath = "TownOfUs.Resources.AbilityCounters";
 
     public static readonly AssetBundle MainBundle = AssetBundleManager.Load("tou-assets");
 
@@ -83,9 +84,10 @@ public static class TouAssets
     public static LoadableAsset<Sprite> BasicArrowSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Arrow-OLD.png");
     public static LoadableAsset<Sprite> CrimeSceneSprite { get; } = new LoadableResourceAsset($"{ShortPath}.CrimeScene.png");
     public static LoadableAsset<Sprite> ScreenFlash { get; } = new LoadableResourceAsset($"{ShortPath}.ScreenFlash.png");
-    public static LoadableAsset<Sprite> AbilityCounterPlayerSprite { get; } = new LoadableResourceAsset($"{ShortPath}.AbilityCounterPlayer.png");
-    public static LoadableAsset<Sprite> AbilityCounterVentSprite { get; } = new LoadableResourceAsset($"{ShortPath}.AbilityCounterVent.png");
-    public static LoadableAsset<Sprite> AbilityCounterBodySprite { get; } = new LoadableResourceAsset($"{ShortPath}.AbilityCounterBody.png");
+    public static LoadableAsset<Sprite> AbilityCounterPlayerSprite { get; } = new LoadableResourceAsset($"{CounterPath}.Player.png");
+    public static LoadableAsset<Sprite> AbilityCounterVentSprite { get; } = new LoadableResourceAsset($"{CounterPath}.Vent.png");
+    public static LoadableAsset<Sprite> AbilityCounterBodySprite { get; } = new LoadableResourceAsset($"{CounterPath}.Body.png");
+    public static LoadableAsset<Sprite> AbilityCounterBasicSprite { get; } = new LoadableResourceAsset($"{CounterPath}.Basic.png");
     public static LoadableAsset<Sprite> GameSummarySprite { get; } = new LoadableResourceAsset($"{ShortPath}.GameSummaryButton.png");
 
     public static void Initialize()
