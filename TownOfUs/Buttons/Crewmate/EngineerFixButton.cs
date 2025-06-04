@@ -12,7 +12,7 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
     public override string Name => "Fix";
     public override string Keybind => "ActionQuaternary";
     public override Color TextOutlineColor => TownOfUsColors.Engineer;
-    public override float Cooldown => MapCooldown;
+    public override float Cooldown => 0.001f + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<EngineerOptions>.Instance.MaxFixes;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.FixButtonSprite;
 
