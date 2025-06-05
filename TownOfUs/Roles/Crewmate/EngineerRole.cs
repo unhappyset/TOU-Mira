@@ -37,7 +37,9 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         if (Player.AmOwner)
         {
             HudManager.Instance.ImpostorVentButton.graphic.sprite = TouCrewAssets.EngiVentSprite.LoadAsset();
+            TownOfUsColors.UseBasic = false;
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Engineer);
+            TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
         }
     }
     public override void Deinitialize(PlayerControl targetPlayer)

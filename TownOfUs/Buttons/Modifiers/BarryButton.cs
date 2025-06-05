@@ -18,7 +18,7 @@ public sealed class BarryButton : TownOfUsButton
     public override int MaxUses => (int)OptionGroupSingleton<ButtonBarryOptions>.Instance.MaxNumButtons;
     public override ButtonLocation Location => ButtonLocation.BottomLeft;
     public override LoadableAsset<Sprite> Sprite => TouAssets.BarryButtonSprite;
-    public bool Usable = OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
+    public bool Usable { get; set; } = OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
 
     public override bool Enabled(RoleBehaviour? role)
     {

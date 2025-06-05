@@ -19,7 +19,7 @@ public sealed class SatelliteButton : TownOfUsButton
     public override int MaxUses => (int)OptionGroupSingleton<SatelliteOptions>.Instance.MaxNumCast;
     public override ButtonLocation Location => ButtonLocation.BottomLeft;
     public override LoadableAsset<Sprite> Sprite => TouAssets.BroadcastSprite;
-    public bool Usable = OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;
+    public bool Usable { get; set; } = OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;
 
     public override bool Enabled(RoleBehaviour? role)
     {

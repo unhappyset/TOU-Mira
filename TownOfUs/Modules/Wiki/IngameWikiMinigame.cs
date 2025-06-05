@@ -54,6 +54,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
     private void UpdatePage(WikiPage newPage)
     {
+        TownOfUsColors.UseBasic = false;
         _currentPage = newPage;
         Homepage.Value.gameObject.SetActive(false);
         SearchScreen.Value.gameObject.SetActive(false);
@@ -75,6 +76,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 LoadDetailScreen();
                 break;
         }
+        TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
     }
 
     private void LoadDetailScreen()
@@ -345,6 +347,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         MinigameStubs.Close(this);
 
         if (MeetingHud.Instance != null) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(true));
+        TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
     }
 }
 

@@ -41,7 +41,15 @@ public abstract class TownOfUsButton : CustomActionButton
             return;
         }
         Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterBasicSprite.LoadAsset();
+
+        TownOfUsColors.UseBasic = false;
+        if (TextOutlineColor != Color.clear)
+        {
+            SetTextOutline(TextOutlineColor);
+        }
+
         Button.usesRemainingSprite.color = TextOutlineColor;
+        TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
     }
 
     public override bool CanUse()
@@ -115,7 +123,13 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
                 Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterBasicSprite.LoadAsset();
                 break;
         }
+        TownOfUsColors.UseBasic = false;
+        if (TextOutlineColor != Color.clear)
+        {
+            SetTextOutline(TextOutlineColor);
+        }
         Button.usesRemainingSprite.color = TextOutlineColor;
+        TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
     }
 
     public override void ClickHandler()
