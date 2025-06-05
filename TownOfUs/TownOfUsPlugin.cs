@@ -49,6 +49,7 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
     public static ConfigEntry<bool> ShowSummaryMessage { get; set; }
     public static ConfigEntry<bool> ShowWelcomeMessage { get; set; }
     public static ConfigEntry<bool> ColorPlayerName { get; set; }
+    public static ConfigEntry<bool> UseCrewmateTeamColor { get; set; }
     public static ConfigEntry<int> GameSummaryMode { get; set; }
 
     /// <summary>
@@ -73,6 +74,7 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
         ShowWelcomeMessage = Config.Bind("LocalSettings", "ShowWelcomeMessage", true, "If you see the welcome message when you first join a game.");
         GameSummaryMode = Config.Bind("LocalSettings", "GameSummaryMode", 1, "How the Game Summary appears in the Win Screen. 0 is to the left, 1 is split, and 2 is hidden.");
         ColorPlayerName = Config.Bind("LocalSettings", "ColorPlayerName", true, "If your name is colored with your role color or if it's left as white.");
+        UseCrewmateTeamColor = Config.Bind("LocalSettings", "UseCrewmateTeamColor", false, "Changes if all crewmate roles use the vanilla crewmate color instead.");
 
         Harmony.PatchAll();
     }

@@ -45,6 +45,12 @@ public static class LocalSettings
                 OnClick = () => { return TownOfUsPlugin.ColorPlayerName.Value = !TownOfUsPlugin.ColorPlayerName.Value; },
                 DefaultValue = TownOfUsPlugin.ColorPlayerName.Value
             },
+            new()
+            {
+                Title = "Use Basic Crew Colors",
+                OnClick = () => { return TownOfUsPlugin.UseCrewmateTeamColor.Value = !TownOfUsPlugin.UseCrewmateTeamColor.Value; },
+                DefaultValue = TownOfUsPlugin.UseCrewmateTeamColor.Value
+            },
         ];
 
     private static GameObject popUp;
