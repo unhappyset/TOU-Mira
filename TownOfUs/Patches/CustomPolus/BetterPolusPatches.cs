@@ -2,6 +2,7 @@ using HarmonyLib;
 using MiraAPI.GameOptions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Options;
+using TownOfUs.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -300,7 +301,7 @@ public static class TaskTextUpdates
 {
     public static void Prefix(HudManager __instance)
     {
-        if (GameOptionsManager.Instance.currentNormalGameOptions.MapId != 2 || AmongUsClient.Instance.TutorialMapId != 2 && TutorialManager.InstanceExists)
+        if (!MiscUtils.IsMap(2))
         {
             return;
         }
