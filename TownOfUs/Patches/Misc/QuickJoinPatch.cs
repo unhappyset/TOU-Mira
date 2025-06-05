@@ -43,7 +43,7 @@ public static class LobbyJoin
         Text.fontSize = 2.55f;
         Text.text = string.Empty;
         Text.alignment = TextAlignmentOptions.Center;
-        LobbyText.transform.localPosition = new(0.8f, 0.15f, 0f);
+        LobbyText.transform.localPosition = new(0.8f, 0.45f, 0f);
         LobbyText.transform.GetChild(0).gameObject.Destroy();
         LobbyText.SetActive(GameId != 0);
     }
