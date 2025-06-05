@@ -72,9 +72,9 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
         ShowShieldHud = Config.Bind("LocalSettings", "ShowShieldHud", true, "If you see shield modifiers with a description, turn this off if it gets in your way.");
         ShowSummaryMessage = Config.Bind("LocalSettings", "ShowSummaryMessage", true, "If you see the game summary message when you join the lobby again.");
         ShowWelcomeMessage = Config.Bind("LocalSettings", "ShowWelcomeMessage", true, "If you see the welcome message when you first join a game.");
-        GameSummaryMode = Config.Bind("LocalSettings", "GameSummaryMode", 1, "How the Game Summary appears in the Win Screen. 0 is to the left, 1 is split, and 2 is hidden.");
-        ColorPlayerName = Config.Bind("LocalSettings", "ColorPlayerName", true, "If your name is colored with your role color or if it's left as white.");
+        ColorPlayerName = Config.Bind("LocalSettings", "ColorPlayerName", false, "If your name is colored with your role color or if it's left as white.");
         UseCrewmateTeamColor = Config.Bind("LocalSettings", "UseCrewmateTeamColor", false, "Changes if all crewmate roles use the vanilla crewmate color instead.");
+        GameSummaryMode = Config.Bind("LocalSettings", "GameSummaryMode", 1, "How the Game Summary appears in the Win Screen. 0 is to the left, 1 is split, and 2 is hidden.");
 
         Harmony.PatchAll();
     }

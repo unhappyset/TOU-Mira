@@ -192,7 +192,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     public string GetAdvancedDescription()
     {
         return
-            "The Plumber is a Crewmate Support role that can place Barricades on vents and Flush anyone out of vents.."
+            "The Plumber is a Crewmate Support role that can place Barricades on vents and Flush anyone out of vents."
                + MiscUtils.AppendOptionsText(GetType());
     }
 

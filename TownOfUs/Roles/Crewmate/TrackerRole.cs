@@ -65,7 +65,7 @@ public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
     public string GetAdvancedDescription()
     {
         return
-            "The Tracker is a Crewmate Investigative role that can track other players to see their general position across the map, getting colored arrows towards all tracked players.."
+            "The Tracker is a Crewmate Investigative role that can track other players to see their general position across the map, getting colored arrows towards all tracked players."
                + MiscUtils.AppendOptionsText(GetType());
     }
 
