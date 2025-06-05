@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
@@ -105,7 +106,16 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
-        return ITownOfUsRole.SetNewTabText(this);
+        var alignment = RoleAlignment.ToDisplayString().Replace("Neutral", "<color=#8A8A8AFF>Neutral");
+
+
+        var stringB = new StringBuilder();
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"{RoleColor.ToTextColor()}You are a<b> {RoleName}.</b></color>");
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>Alignment: <b>{alignment}</color></b></size>");
+        stringB.Append("<size=70%>");
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"{RoleLongDescription}");
+
+        return stringB;
     }
 
     public string GetAdvancedDescription()

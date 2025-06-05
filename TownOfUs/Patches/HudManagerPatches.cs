@@ -318,10 +318,10 @@ public static class HudManagerPatches
 
                 if ((player.HasModifier<ExecutionerTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ExecutionerRole>())
                 || (player.HasModifier<ExecutionerTargetModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
-                    playerName += "<color=#643B1FFF> X</color>";
+                    playerName += "<color=#643B1F> X</color>";
 
                 if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole))
-                    playerName += "<color=#D94291FF> $</color>";
+                    playerName += "<color=#D94291> $</color>";
 
                 if (player.HasModifier<MercenaryBribedModifier>(x => x.Mercenary == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MercenaryRole>())
                 {
@@ -335,50 +335,50 @@ public static class HudManagerPatches
                     || (player.HasModifier<GuardianAngelTargetModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)
                     || (player.AmOwner && OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows))))
                 {
-                    playerName += "<color=#B3FFFFFF> ★</color>";
+                    playerName += "<color=#B3FFFF> ★</color>";
                 }
 
                 if ((player.HasModifier<MedicShieldModifier>(x => x.Medic == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MedicRole>())
                     || (player.HasModifier<MedicShieldModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)
                     || (player.AmOwner && player.TryGetModifier<MedicShieldModifier>(out var med) && med.VisibleSymbol))))
                 {
-                    playerName += "<color=#006600FF> +</color>";
+                    playerName += "<color=#006600> +</color>";
                 }
 
                 if ((player.HasModifier<ClericBarrierModifier>(x => x.Cleric == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<ClericRole>())
                     || (player.HasModifier<ClericBarrierModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)
                     || (player.AmOwner && player.TryGetModifier<ClericBarrierModifier>(out var cleric) && cleric.VisibleSymbol))))
                 {
-                    playerName += "<color=#00FFB3FF> Ω</color>";
+                    playerName += "<color=#00FFB3> Ω</color>";
                 }
 
                 if ((player.HasModifier<WardenFortifiedModifier>(x => x.Warden == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<WardenRole>())
                     || (player.HasModifier<WardenFortifiedModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)
                     || (player.AmOwner && player.TryGetModifier<WardenFortifiedModifier>(out var warden) && warden.VisibleSymbol))))
                 {
-                    playerName += "<color=#9900FFFF> π</color>";
+                    playerName += "<color=#9900FF> π</color>";
                 }
 
                 if (player.HasModifier<LoverModifier>() && (PlayerControl.LocalPlayer.HasModifier<LoverModifier>() || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)))
-                    playerName += "<color=#FF66CCFF> ♥</color>";
+                    playerName += "<color=#FF66CC> ♥</color>";
 
                 if ((player.HasModifier<PlaguebearerInfectedModifier>(x => x.PlagueBearerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<PlaguebearerRole>())
                 || (player.HasModifier<PlaguebearerInfectedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
-                    playerName += "<color=#E6FFB3FF> ¥</color>";
+                    playerName += "<color=#E6FFB3> ¥</color>";
 
                 if ((player.HasModifier<ArsonistDousedModifier>(x => x.ArsonistId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ArsonistRole>())
                 || (player.HasModifier<ArsonistDousedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
-                    playerName += "<color=#FF4D00FF> Δ</color>";
+                    playerName += "<color=#FF4D00> Δ</color>";
 
                 if ((player.HasModifier<BlackmailedModifier>(x => x.BlackMailerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<BlackmailerRole>())
                 || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.IsImpostor() && genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
                 || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
-                    playerName += "<color=#2A1119FF> M</color>";
+                    playerName += "<color=#2A1119> M</color>";
 
                 if ((player.HasModifier<HypnotisedModifier>(x => x.Hypnotist == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<HypnotistRole>())
                 || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.IsImpostor() && genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
                 || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
-                    playerName += "<color=#D53F42FF> @</color>";
+                    playerName += "<color=#D53F42> @</color>";
 
                 var role = player.Data.Role;
                 var color = role.TeamColor;
@@ -391,15 +391,16 @@ public static class HudManagerPatches
                 var roleName = "";
 
                 if (player.AmOwner ||
-                    !TutorialManager.InstanceExists && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                     (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
                     (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
                     SnitchRole.SnitchVisibilityFlag(player, true) ||
+                    !TutorialManager.InstanceExists && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
                     SleuthModifier.SleuthVisibilityFlag(player) ||
                     MayorRole.MayorVisibilityFlag(player)))
                 {
                     roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color></size>";
+                    if (!player.HasModifier<VampireBittenModifier>() && player.Data.Role is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
 
                     var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole) as ICachedRole;
                     if (cachedMod != null && player.Data.Role != cachedMod.CachedRole)
@@ -415,6 +416,7 @@ public static class HudManagerPatches
                         color = roleWhenAlive!.TeamColor;
 
                         roleName = $"<size=80%>{color.ToTextColor()}{roleWhenAlive?.NiceName}</color></size>";
+                        if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
                     }
                 }
 
@@ -496,10 +498,10 @@ public static class HudManagerPatches
 
                 if ((player.HasModifier<ExecutionerTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ExecutionerRole>())
                     || (player.HasModifier<ExecutionerTargetModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
-                    playerName += "<color=#643B1FFF> X</color>";
+                    playerName += "<color=#643B1F> X</color>";
                     
                 if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole))
-                    playerName += "<color=#D94291FF> $</color>";
+                    playerName += "<color=#D94291> $</color>";
 
                 if (player.HasModifier<MercenaryBribedModifier>(x => x.Mercenary == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MercenaryRole>())
                 {
@@ -513,50 +515,50 @@ public static class HudManagerPatches
                     || (player.HasModifier<GuardianAngelTargetModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body)
                     || (player.AmOwner && OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows))))
                 {
-                    playerName += player.HasModifier<GuardianAngelProtectModifier>() ? "<color=#FFD900FF> ★</color>" : "<color=#B3FFFFFF> ★</color>";
+                    playerName += player.HasModifier<GuardianAngelProtectModifier>() ? "<color=#FFD900> ★</color>" : "<color=#B3FFFF> ★</color>";
                 }
 
                 if ((player.HasModifier<MedicShieldModifier>(x => x.Medic == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MedicRole>())
                     || (player.HasModifier<MedicShieldModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body)
                     || (player.AmOwner && player.TryGetModifier<MedicShieldModifier>(out var med) && med.VisibleSymbol))))
                 {
-                    playerName += "<color=#006600FF> +</color>";
+                    playerName += "<color=#006600> +</color>";
                 }
 
                 if ((player.HasModifier<ClericBarrierModifier>(x => x.Cleric == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<ClericRole>())
                     || (player.HasModifier<ClericBarrierModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body)
                     || (player.AmOwner && player.TryGetModifier<ClericBarrierModifier>(out var cleric) && cleric.VisibleSymbol))))
                 {
-                    playerName += "<color=#00FFB3FF> Ω</color>";
+                    playerName += "<color=#00FFB3> Ω</color>";
                 }
 
                 if ((player.HasModifier<WardenFortifiedModifier>(x => x.Warden == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<WardenRole>())
                     || (player.HasModifier<WardenFortifiedModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body)
                     || (player.AmOwner && player.TryGetModifier<WardenFortifiedModifier>(out var warden) && warden.VisibleSymbol))))
                 {
-                    playerName += "<color=#9900FFFF> π</color>";
+                    playerName += "<color=#9900FF> π</color>";
                 }
 
                 if (player.HasModifier<LoverModifier>() && (PlayerControl.LocalPlayer.HasModifier<LoverModifier>() || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body)))
-                    playerName += "<color=#FF66CCFF> ♥</color>";
+                    playerName += "<color=#FF66CC> ♥</color>";
 
                 if ((player.HasModifier<PlaguebearerInfectedModifier>(x => x.PlagueBearerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<PlaguebearerRole>())
                 || (player.HasModifier<PlaguebearerInfectedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
-                    playerName += "<color=#E6FFB3FF> ¥</color>";
+                    playerName += "<color=#E6FFB3> ¥</color>";
 
                 if ((player.HasModifier<ArsonistDousedModifier>(x => x.ArsonistId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ArsonistRole>())
                 || (player.HasModifier<ArsonistDousedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
-                    playerName += "<color=#FF4D00FF> Δ</color>";
+                    playerName += "<color=#FF4D00> Δ</color>";
 
                 if ((player.HasModifier<BlackmailedModifier>(x => x.BlackMailerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<BlackmailerRole>())
                 || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.IsImpostor() && genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
                 || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
-                    playerName += "<color=#2A1119FF> M</color>";
+                    playerName += "<color=#2A1119> M</color>";
 
                 if ((player.HasModifier<HypnotisedModifier>(x => x.Hypnotist == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<HypnotistRole>())
                 || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.IsImpostor() && genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
                 || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
-                    playerName += "<color=#D53F42FF> @</color>";
+                    playerName += "<color=#D53F42> @</color>";
 
                 var role = player.Data.Role;
                 var color = role.TeamColor;
@@ -566,14 +568,16 @@ public static class HudManagerPatches
                 var roleName = "";
 
                 if (player.AmOwner ||
-                    !TutorialManager.InstanceExists && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body) ||
                     (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
                     (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
+                    SnitchRole.SnitchVisibilityFlag(player, true) ||
+                    !TutorialManager.InstanceExists && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                     SnitchRole.SnitchVisibilityFlag(player, true) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
                     MayorRole.MayorVisibilityFlag(player)))
                 {
                     roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color></size>";
+                    if (!player.HasModifier<VampireBittenModifier>() && player.Data.Role is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
 
                     var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole) as ICachedRole;
                     if (cachedMod != null && player.Data.Role != cachedMod.CachedRole)
@@ -589,6 +593,7 @@ public static class HudManagerPatches
                         color = roleWhenAlive!.TeamColor;
 
                         roleName = $"<size=80%>{color.ToTextColor()}{roleWhenAlive?.NiceName}</color></size>";
+                        if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
                     }
                 }
 
@@ -701,9 +706,9 @@ public static class HudManagerPatches
             }
             else
             {
-                rolelistBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"<color=#999999FF>Neutral</color> Benigns: {list.MinNeutralBenign.Value} Min, {list.MaxNeutralBenign.Value} Max");
-                rolelistBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"<color=#999999FF>Neutral</color> Evils: {list.MinNeutralEvil.Value} Min, {list.MaxNeutralEvil.Value} Max");
-                rolelistBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"<color=#999999FF>Neutral</color> Killers: {list.MinNeutralKiller.Value} Min, {list.MaxNeutralKiller.Value} Max");
+                rolelistBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"<color=#999999>Neutral</color> Benigns: {list.MinNeutralBenign.Value} Min, {list.MaxNeutralBenign.Value} Max");
+                rolelistBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"<color=#999999>Neutral</color> Evils: {list.MinNeutralEvil.Value} Min, {list.MaxNeutralEvil.Value} Max");
+                rolelistBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"<color=#999999>Neutral</color> Killers: {list.MinNeutralKiller.Value} Min, {list.MaxNeutralKiller.Value} Max");
                 objText.text = $"<color=#FFD700>Neutral Faction List:</color>\n{rolelistBuilder}";
             }
 

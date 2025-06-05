@@ -40,8 +40,8 @@ public static class ShowVentsPatch
             {
                 Icon = GameObject.Instantiate(__instance.HerePoint.gameObject, __instance.HerePoint.transform.parent);
                 var renderer = Icon.GetComponent<SpriteRenderer>();
-                renderer.sprite = TouAssets.Vent.LoadAsset();
-                Icon.name = $"vent {vent.Id} icon";
+                renderer.sprite = TouAssets.MapVentSprite.LoadAsset();
+                Icon.name = $"Vent {vent.Id} Map Icon";
                 Icon.transform.localPosition = location;
                 VentIcons[vent.Id] = Icon;
             }
