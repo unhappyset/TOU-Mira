@@ -14,7 +14,7 @@ namespace TownOfUs.Buttons.Crewmate;
 public sealed class ClericCleanseButton : TownOfUsRoleButton<ClericRole, PlayerControl>
 {
     public override string Name => "Cleanse";
-    public override string Keybind => "ActionSecondary";
+    public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Cleric;
     public override float Cooldown => OptionGroupSingleton<ClericOptions>.Instance.CleanseCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.CleanseSprite;

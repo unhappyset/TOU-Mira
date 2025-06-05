@@ -12,7 +12,7 @@ namespace TownOfUs.Buttons.Impostor;
 public sealed class BlackmailerBlackmailButton : TownOfUsRoleButton<BlackmailerRole, PlayerControl>, IAftermathablePlayerButton
 {
     public override string Name => "Blackmail";
-    public override string Keybind => "ActionQuaternary";
+    public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<BlackmailerOptions>.Instance.BlackmailCooldown;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.BlackmailSprite;

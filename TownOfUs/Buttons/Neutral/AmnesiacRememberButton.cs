@@ -9,7 +9,7 @@ namespace TownOfUs.Buttons.Neutral;
 public sealed class AmnesiacRememberButton : TownOfUsRoleButton<AmnesiacRole, DeadBody>
 {
     public override string Name => "Remember";
-    public override string Keybind => "ActionQuaternary";
+    public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Amnesiac;
     public override float Cooldown => MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.RememberButtonSprite;

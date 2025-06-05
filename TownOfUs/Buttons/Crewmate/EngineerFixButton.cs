@@ -10,7 +10,7 @@ namespace TownOfUs.Buttons.Crewmate;
 public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
 {
     public override string Name => "Fix";
-    public override string Keybind => "ActionQuaternary";
+    public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Engineer;
     public override float Cooldown => 0.001f + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<EngineerOptions>.Instance.FixDelay + 0.01f;

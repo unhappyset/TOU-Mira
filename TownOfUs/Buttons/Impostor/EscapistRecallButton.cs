@@ -11,7 +11,7 @@ namespace TownOfUs.Buttons.Impostor;
 public sealed class EscapistRecallButton : TownOfUsRoleButton<EscapistRole>, IAftermathableButton
 {
     public override string Name => "Recall";
-    public override string Keybind => "ActionQuaternary";
+    public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<EscapistOptions>.Instance.RecallCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.RecallSprite;

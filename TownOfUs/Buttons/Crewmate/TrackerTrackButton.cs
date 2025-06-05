@@ -14,7 +14,7 @@ namespace TownOfUs.Buttons.Crewmate;
 public sealed class TrackerTrackButton : TownOfUsRoleButton<TrackerTouRole, PlayerControl>
 {
     public override string Name => "Track";
-    public override string Keybind => "ActionQuaternary";
+    public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Tracker;
     public override float Cooldown => OptionGroupSingleton<TrackerOptions>.Instance.TrackCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<TrackerOptions>.Instance.MaxTracks;

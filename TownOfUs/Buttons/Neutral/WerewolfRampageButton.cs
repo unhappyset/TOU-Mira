@@ -10,7 +10,7 @@ namespace TownOfUs.Buttons.Neutral;
 public sealed class WerewolfRampageButton : TownOfUsRoleButton<WerewolfRole>, IAftermathableButton
 {
     public override string Name => "Rampage";
-    public override string Keybind => "ActionQuaternary";
+    public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Werewolf;
     public override float Cooldown => OptionGroupSingleton<WerewolfOptions>.Instance.RampageCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<WerewolfOptions>.Instance.RampageDuration;

@@ -13,7 +13,7 @@ namespace TownOfUs.Buttons.Crewmate;
 public sealed class HunterStalkButton : TownOfUsRoleButton<HunterRole, PlayerControl>
 {
     public override string Name => "Stalk";
-    public override string Keybind => "ActionQuaternary";
+    public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Hunter;
     public override float Cooldown => OptionGroupSingleton<HunterOptions>.Instance.HunterStalkCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<HunterOptions>.Instance.HunterStalkDuration;

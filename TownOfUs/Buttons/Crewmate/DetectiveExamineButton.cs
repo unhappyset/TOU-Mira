@@ -10,7 +10,7 @@ namespace TownOfUs.Buttons.Crewmate;
 public sealed class DetectiveExamineButton : TownOfUsRoleButton<DetectiveRole, PlayerControl>
 {
     public override string Name => "Examine";
-    public override string Keybind => "ActionSecondary";
+    public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Detective;
     public override float Cooldown => OptionGroupSingleton<DetectiveOptions>.Instance.ExamineCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.ExamineSprite;

@@ -12,7 +12,7 @@ namespace TownOfUs.Buttons.Impostor;
 public sealed class VenererAbilityButton : TownOfUsRoleButton<VenererRole>, IAftermathableButton
 {
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
-    public override string Keybind => "ActionQuaternary";
+    public override string Keybind => Keybinds.SecondaryAction;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.NoAbilitySprite;
     public override float Cooldown => OptionGroupSingleton<VenererOptions>.Instance.AbilityCooldown;
     public override float EffectDuration => OptionGroupSingleton<VenererOptions>.Instance.AbilityDuration;

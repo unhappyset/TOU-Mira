@@ -12,7 +12,7 @@ namespace TownOfUs.Buttons.Impostor;
 public sealed class MorphlingSampleButton : TownOfUsRoleButton<MorphlingRole, PlayerControl>, IAftermathablePlayerButton
 {
     public override string Name => "Sample";
-    public override string Keybind => "ActionQuaternary";
+    public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<MorphlingOptions>.Instance.MorphlingCooldown;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.SampleSprite;
