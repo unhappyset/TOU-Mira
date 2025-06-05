@@ -55,6 +55,12 @@ public static class LocalSettings
                 },
                 DefaultValue = TownOfUsPlugin.UseCrewmateTeamColor.Value
             },
+            new()
+            {
+                Title = "Show Vents On Task Map",
+                OnClick = () => { return TownOfUsPlugin.ShowVents.Value = !TownOfUsPlugin.ShowVents.Value; },
+                DefaultValue = TownOfUsPlugin.ShowVents.Value
+            },
         ];
 
     private static GameObject popUp;

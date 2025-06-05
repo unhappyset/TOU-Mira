@@ -45,6 +45,7 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         var vent = Instantiate(ventPrefab, ventPrefab.transform.parent);
 
         vent.Id = ventId;
+        vent.name = "MinerVent " + vent.name;
         vent.transform.position = new Vector3(position.x, position.y, zAxis);
 
         var miner = player.GetRole<MinerRole>();

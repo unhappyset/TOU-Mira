@@ -29,7 +29,7 @@ public static class MiscUtils
 
     public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish));
 
-    public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>  x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
+    public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
     public static int ImpAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor());
@@ -195,85 +195,85 @@ public static class MiscUtils
     public static void AddFakeChat(NetworkedPlayerInfo BasePlayer, string NameText, string Message, bool ShowHeadsup = false, bool AltColors = false, bool OnLeft = true)
     {
         var Chat = HudManager.Instance.Chat;
-        
+
         var pooledBubble = Chat.GetPooledBubble();
 
-            pooledBubble.transform.SetParent(Chat.scroller.Inner);
-            pooledBubble.transform.localScale = Vector3.one;
-            if (OnLeft) pooledBubble.SetLeft();
-            else pooledBubble.SetRight();
-            pooledBubble.SetCosmetics(BasePlayer);
-            pooledBubble.NameText.text = NameText;
-            pooledBubble.NameText.color = Color.white;
-            pooledBubble.NameText.ForceMeshUpdate(true, true);
-            pooledBubble.votedMark.enabled = false;
-            pooledBubble.Xmark.enabled = false;
-            pooledBubble.TextArea.text = Message;
-            pooledBubble.TextArea.ForceMeshUpdate(true, true);
-            pooledBubble.Background.size = new(5.52f, 0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
-            pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
-            if (AltColors)
-            {
-                pooledBubble.Background.color = Color.black;
-                pooledBubble.TextArea.color = Color.white;
-            }
+        pooledBubble.transform.SetParent(Chat.scroller.Inner);
+        pooledBubble.transform.localScale = Vector3.one;
+        if (OnLeft) pooledBubble.SetLeft();
+        else pooledBubble.SetRight();
+        pooledBubble.SetCosmetics(BasePlayer);
+        pooledBubble.NameText.text = NameText;
+        pooledBubble.NameText.color = Color.white;
+        pooledBubble.NameText.ForceMeshUpdate(true, true);
+        pooledBubble.votedMark.enabled = false;
+        pooledBubble.Xmark.enabled = false;
+        pooledBubble.TextArea.text = Message;
+        pooledBubble.TextArea.ForceMeshUpdate(true, true);
+        pooledBubble.Background.size = new(5.52f, 0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
+        pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
+        if (AltColors)
+        {
+            pooledBubble.Background.color = Color.black;
+            pooledBubble.TextArea.color = Color.white;
+        }
 
-            pooledBubble.AlignChildren();
-            var pos = pooledBubble.NameText.transform.localPosition;
-            pooledBubble.NameText.transform.localPosition = pos;
-            Chat.AlignAllBubbles();
-			if (!Chat.IsOpenOrOpening && Chat.notificationRoutine == null)
-			{
-				Chat.notificationRoutine = Chat.StartCoroutine(Chat.BounceDot());
-			}
-			if (ShowHeadsup && !Chat.IsOpenOrOpening)
-			{
-				SoundManager.Instance.PlaySound(Chat.messageSound, false, 1f, null).pitch = 0.5f + (float)PlayerControl.LocalPlayer.PlayerId / 15f;
-				Chat.chatNotification.SetUp(PlayerControl.LocalPlayer, Message);
-			}
+        pooledBubble.AlignChildren();
+        var pos = pooledBubble.NameText.transform.localPosition;
+        pooledBubble.NameText.transform.localPosition = pos;
+        Chat.AlignAllBubbles();
+        if (!Chat.IsOpenOrOpening && Chat.notificationRoutine == null)
+        {
+            Chat.notificationRoutine = Chat.StartCoroutine(Chat.BounceDot());
+        }
+        if (ShowHeadsup && !Chat.IsOpenOrOpening)
+        {
+            SoundManager.Instance.PlaySound(Chat.messageSound, false, 1f, null).pitch = 0.5f + (float)PlayerControl.LocalPlayer.PlayerId / 15f;
+            Chat.chatNotification.SetUp(PlayerControl.LocalPlayer, Message);
+        }
     }
     public static void AddTeamChat(NetworkedPlayerInfo BasePlayer, string NameText, string Message, bool ShowHeadsup = false, bool OnLeft = true)
     {
         var Chat = HudManager.Instance.Chat;
-        
+
         var pooledBubble = Chat.GetPooledBubble();
 
-            pooledBubble.transform.SetParent(Chat.scroller.Inner);
-            pooledBubble.transform.localScale = Vector3.one;
-            if (OnLeft) pooledBubble.SetLeft();
-            else pooledBubble.SetRight();
-            pooledBubble.SetCosmetics(BasePlayer);
-            pooledBubble.NameText.text = NameText;
-            pooledBubble.NameText.color = Color.white;
-            pooledBubble.NameText.ForceMeshUpdate(true, true);
-            pooledBubble.votedMark.enabled = false;
-            pooledBubble.Xmark.enabled = false;
-            pooledBubble.TextArea.text = Message;
-            pooledBubble.TextArea.ForceMeshUpdate(true, true);
-            pooledBubble.Background.size = new(5.52f, 0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
-            pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
+        pooledBubble.transform.SetParent(Chat.scroller.Inner);
+        pooledBubble.transform.localScale = Vector3.one;
+        if (OnLeft) pooledBubble.SetLeft();
+        else pooledBubble.SetRight();
+        pooledBubble.SetCosmetics(BasePlayer);
+        pooledBubble.NameText.text = NameText;
+        pooledBubble.NameText.color = Color.white;
+        pooledBubble.NameText.ForceMeshUpdate(true, true);
+        pooledBubble.votedMark.enabled = false;
+        pooledBubble.Xmark.enabled = false;
+        pooledBubble.TextArea.text = Message;
+        pooledBubble.TextArea.ForceMeshUpdate(true, true);
+        pooledBubble.Background.size = new(5.52f, 0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
+        pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
 
-            pooledBubble.Background.color = new Color(0.2f, 0.2f, 0.27f, 1f);
-            pooledBubble.TextArea.color = Color.white;
+        pooledBubble.Background.color = new Color(0.2f, 0.2f, 0.27f, 1f);
+        pooledBubble.TextArea.color = Color.white;
 
-            pooledBubble.AlignChildren();
-            var pos = pooledBubble.NameText.transform.localPosition;
-            pooledBubble.NameText.transform.localPosition = pos;
-            Chat.AlignAllBubbles();
-			if (!Chat.IsOpenOrOpening && Chat.notificationRoutine == null)
-			{
-				Chat.notificationRoutine = Chat.StartCoroutine(Chat.BounceDot());
-			}
-			if (ShowHeadsup && !Chat.IsOpenOrOpening)
-			{
-				SoundManager.Instance.PlaySound(Chat.messageSound, false, 1f, null).pitch = 0.1f;
-				Chat.chatNotification.SetUp(PlayerControl.LocalPlayer, Message);
-			}
+        pooledBubble.AlignChildren();
+        var pos = pooledBubble.NameText.transform.localPosition;
+        pooledBubble.NameText.transform.localPosition = pos;
+        Chat.AlignAllBubbles();
+        if (!Chat.IsOpenOrOpening && Chat.notificationRoutine == null)
+        {
+            Chat.notificationRoutine = Chat.StartCoroutine(Chat.BounceDot());
+        }
+        if (ShowHeadsup && !Chat.IsOpenOrOpening)
+        {
+            SoundManager.Instance.PlaySound(Chat.messageSound, false, 1f, null).pitch = 0.1f;
+            Chat.chatNotification.SetUp(PlayerControl.LocalPlayer, Message);
+        }
     }
 
     public static bool StartsWithVowel(this string word)
     {
-        var vowels = new [] {'a', 'e', 'i', 'o', 'u'};
+        var vowels = new[] { 'a', 'e', 'i', 'o', 'u' };
         return vowels.Any(vowel => word.StartsWith(vowel.ToString(), StringComparison.OrdinalIgnoreCase));
     }
 
@@ -698,5 +698,11 @@ public static class MiscUtils
     public static FakePlayer? GetFakePlayer(PlayerControl player)
     {
         return FakePlayer.FakePlayers.FirstOrDefault(x => x?.body?.name == $"Fake {player.gameObject.name}");
+    }
+
+    public static bool IsMap(byte mapid)
+    {
+        return GameOptionsManager.Instance.currentNormalGameOptions.MapId == mapid
+              || TutorialManager.InstanceExists && AmongUsClient.Instance.TutorialMapId == mapid;
     }
 }
