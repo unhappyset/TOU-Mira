@@ -37,4 +37,14 @@ public static class CelebrityEvents
             }
         }
     }
+    [RegisterEvent]
+    public static void WrapUpEvent(EjectionEvent @event)
+    {
+        var player = @event.ExileController.initData.networkedPlayer?.Object;
+        if (player == null) return;
+        if (player.TryGetModifier<CelebrityModifier>(out var celeb))
+        {
+            celeb.Announced = true;
+        }
+    }
 }

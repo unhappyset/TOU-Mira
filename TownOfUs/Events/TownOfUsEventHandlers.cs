@@ -28,7 +28,6 @@ using TownOfUs.Options.Modifiers.Universal;
 using TownOfUs.Buttons.Modifiers;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Buttons.Impostor;
-using TownOfUs.Buttons.Neutral;
 
 namespace TownOfUs.Events;
 
