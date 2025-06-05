@@ -68,7 +68,7 @@ public static class LobbyJoin
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            AmongUsClient.Instance.StartCoroutine(AmongUsClient.Instance.CoJoinOnlineGameFromCode(GameId, true));
+            AmongUsClient.Instance.StartCoroutine(AmongUsClient.Instance.CoFindGameInfoFromCodeAndJoin(GameId));
         }
         if (LobbyText && Text)
         {
