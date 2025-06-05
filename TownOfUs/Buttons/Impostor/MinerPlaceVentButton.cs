@@ -10,7 +10,7 @@ namespace TownOfUs.Buttons.Impostor;
 public sealed class MinerPlaceVentButton : TownOfUsRoleButton<MinerRole>, IAftermathableButton
 {
     public override string Name => "Mine";
-    public override string Keybind => "ActionQuaternary";
+    public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<MinerOptions>.Instance.MineCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<MinerOptions>.Instance.MineDelay + 0.001f;

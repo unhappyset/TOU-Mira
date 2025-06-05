@@ -12,7 +12,7 @@ namespace TownOfUs.Buttons.Neutral;
 public sealed class JuggernautKillButton : TownOfUsRoleButton<JuggernautRole, PlayerControl>, IDiseaseableButton
 {
     public override string Name => "Kill";
-    public override string Keybind => "ActionSecondary";
+    public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Juggernaut;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.JuggKillSprite;
     public override float Cooldown => GetCooldown();

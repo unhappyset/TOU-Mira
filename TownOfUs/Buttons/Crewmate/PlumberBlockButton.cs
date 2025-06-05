@@ -11,7 +11,7 @@ namespace TownOfUs.Buttons.Crewmate;
 public sealed class PlumberBlockButton : TownOfUsRoleButton<PlumberRole, Vent>
 {
     public override string Name => "Block";
-    public override string Keybind => "ActionSecondary";
+    public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Plumber;
     public override float Cooldown => OptionGroupSingleton<PlumberOptions>.Instance.BlockCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<PlumberOptions>.Instance.MaxBarricades;

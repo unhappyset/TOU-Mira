@@ -11,7 +11,7 @@ namespace TownOfUs.Buttons.Impostor;
 public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerControl>, IDiseaseableButton
 {
     public override string Name => "Kill";
-    public override string Keybind => "ActionSecondary";
+    public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => PlayerControl.LocalPlayer.GetKillCooldown() + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;

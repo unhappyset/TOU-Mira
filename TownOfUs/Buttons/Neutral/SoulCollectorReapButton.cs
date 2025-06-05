@@ -13,7 +13,7 @@ namespace TownOfUs.Buttons.Neutral;
 public sealed class SoulCollectorReapButton : TownOfUsRoleButton<SoulCollectorRole, PlayerControl>, IDiseaseableButton
 {
     public override string Name => "Reap";
-    public override string Keybind => "ActionSecondary";
+    public override string Keybind => Keybinds.PrimaryAction;
     public override float Cooldown => OptionGroupSingleton<SoulCollectorOptions>.Instance.KillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.ReapSprite;
     public void SetDiseasedTimer(float multiplier)

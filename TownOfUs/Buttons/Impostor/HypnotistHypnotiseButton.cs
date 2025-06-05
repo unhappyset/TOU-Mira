@@ -12,7 +12,7 @@ namespace TownOfUs.Buttons.Impostor;
 public sealed class HypnotistHypnotiseButton : TownOfUsRoleButton<HypnotistRole, PlayerControl>, IAftermathablePlayerButton
 {
     public override string Name => "Hypnotise";
-    public override string Keybind => "ActionQuaternary";
+    public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<HypnotistOptions>.Instance.HypnotiseCooldown;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.HypnotiseButtonSprite;

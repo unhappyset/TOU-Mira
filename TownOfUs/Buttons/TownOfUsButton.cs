@@ -28,6 +28,17 @@ public abstract class TownOfUsButton : CustomActionButton
     /// </summary>
     public virtual string Keybind => string.Empty;
 
+    public virtual int ConsoleBind()
+    {
+        return Keybind switch
+        {
+            Keybinds.PrimaryAction => Keybinds.PrimaryConsole,
+            Keybinds.SecondaryAction => Keybinds.SecondaryConsole,
+            Keybinds.ModifierAction => Keybinds.ModifierConsole,
+            _ => -1,
+        };
+    }
+
     public override void SetActive(bool visible, RoleBehaviour role)
     {
         Button?.ToggleVisible(visible && Enabled(role) && !role.Player.HasDied());
@@ -67,7 +78,7 @@ public abstract class TownOfUsButton : CustomActionButton
 
         Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled);
 
-        if (Keybind != string.Empty && ReInput.players.GetPlayer(0).GetButtonDown(Keybind))
+        if (Keybind != string.Empty && ReInput.players.GetPlayer(0).GetButtonDown(Keybind) || ConsoleJoystick.player.GetButtonDown(ConsoleBind()))
         {
             ClickHandler();
         }
