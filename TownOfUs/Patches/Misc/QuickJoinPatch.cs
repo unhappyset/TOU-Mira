@@ -72,7 +72,9 @@ public static class LobbyJoin
         }
         if (LobbyText && Text)
         {
-            Text.text = $"Prev Lobby\n<size=2.8f>({GameCode.IntToGameName(GameId)})</size>\nPress Tab to\n<size=2.2f>attempt joining.</size>";
+            Text.text = $"<size=110%>Prev Lobby:</size>"
+            + $"\n<size=4.6f>({GameCode.IntToGameName(GameId)})</size>"
+            + $"\nPress Tab to\n<size=2.6f>attempt joining</size>";
         }
     }
 }
