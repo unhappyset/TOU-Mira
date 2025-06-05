@@ -23,11 +23,32 @@ using MiraAPI.Modifiers.Types;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Buttons.Crewmate;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.GameOptions;
+using TownOfUs.Options.Modifiers.Universal;
+using TownOfUs.Buttons.Modifiers;
+using TownOfUs.Options.Roles.Crewmate;
+using TownOfUs.Buttons.Impostor;
+using TownOfUs.Buttons.Neutral;
 
 namespace TownOfUs.Events;
 
 public static class TownOfUsEventHandlers
 {
+    [RegisterEvent]
+    public static void RoundStartHandler(RoundStartEvent @event)
+    {
+        if (!@event.TriggeredByIntro) return; // Only run when round starts.
+        CustomButtonSingleton<SheriffShootButton>.Instance.Usable = OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse;
+        CustomButtonSingleton<JailorJailButton>.Instance.ExecutedACrew = false;
+
+        CustomButtonSingleton<EscapistRecallButton>.Instance.SetActive(false, PlayerControl.LocalPlayer.Data.Role);
+        CustomButtonSingleton<MorphlingMorphButton>.Instance.SetActive(false, PlayerControl.LocalPlayer.Data.Role);
+        CustomButtonSingleton<WarlockKillButton>.Instance.Charge = 0f;
+
+        CustomButtonSingleton<BarryButton>.Instance.Usable = OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
+        CustomButtonSingleton<SatelliteButton>.Instance.Usable = OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;
+        
+    }
     [RegisterEvent]
     public static void ClearBodiesAndResetPlayersEventHandler(RoundStartEvent @event)
     {
