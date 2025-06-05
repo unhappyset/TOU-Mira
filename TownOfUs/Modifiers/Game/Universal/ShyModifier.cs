@@ -48,6 +48,7 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
     {
         if (IntroCutscene.Instance) return;
         if (Player == null) return;
+        if (PlayerControl.LocalPlayer == null) return;
 
         // check movement by animation
         PlayerPhysics playerPhysics = Player.MyPhysics;
@@ -117,15 +118,17 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
 
         player.SetHatAndVisorAlpha(transparency);
         cosmetics.skin.layer.color = cosmetics.skin.layer.color.SetAlpha(transparency);
-
+        if (player.cosmetics.currentPet != null)
+        {
         foreach (var rend in player.cosmetics.currentPet.renderers)
-        {
-            rend.color = rend.color.SetAlpha(transparency);
-        }
+            {
+                rend.color = rend.color.SetAlpha(transparency);
+            }
 
-        foreach (var shadow in player.cosmetics.currentPet.shadows)
-        {
-            shadow.color = shadow.color.SetAlpha(transparency);
+            foreach (var shadow in player.cosmetics.currentPet.shadows)
+            {
+                shadow.color = shadow.color.SetAlpha(transparency);
+            }
         }
         foreach (var animation in player.transform.GetChild(2).GetComponentsInParent<SpriteRenderer>())
         {
