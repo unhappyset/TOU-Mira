@@ -67,7 +67,17 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             return;
         }
 
-        PlayerControl.LocalPlayer.RpcCustomMurder(target, resetKillTimer: false, createDeadBody: false, teleportMurderer: false, showKillAnim: false, playKillSound: false);
+        if (hunter.AmOwner) hunter.RpcCustomMurder(target, resetKillTimer: false, createDeadBody: false, teleportMurderer: false, showKillAnim: false, playKillSound: false);
+        // this sound normally plays on the source only
+        if (!hunter.AmOwner)
+        {
+            SoundManager.Instance.PlaySound(hunter.KillSfx, false, 0.8f);
+        }
+        // this kill animations normally plays on the target only
+        if (!target.AmOwner)
+        {
+            HudManager.Instance.KillOverlay.ShowKillAnimation(hunter.Data, target.Data);
+        }
     }
 
     [HideFromIl2Cpp]

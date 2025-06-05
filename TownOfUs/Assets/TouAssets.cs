@@ -84,6 +84,8 @@ public static class TouAssets
     public static LoadableAsset<Sprite> BasicArrowSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Arrow-OLD.png");
     public static LoadableAsset<Sprite> CrimeSceneSprite { get; } = new LoadableResourceAsset($"{ShortPath}.CrimeScene.png");
     public static LoadableAsset<Sprite> ScreenFlash { get; } = new LoadableResourceAsset($"{ShortPath}.ScreenFlash.png");
+    public static LoadableAsset<Sprite> KillBG { get; } = new LoadableResourceAsset($"{ShortPath}.KillBackground.png");
+    public static LoadableAsset<Sprite> RetributionBG { get; } = new LoadableResourceAsset($"{ShortPath}.RetributionBackground.png");
     public static LoadableAsset<Sprite> AbilityCounterPlayerSprite { get; } = new LoadableResourceAsset($"{CounterPath}.Player.png");
     public static LoadableAsset<Sprite> AbilityCounterVentSprite { get; } = new LoadableResourceAsset($"{CounterPath}.Vent.png");
     public static LoadableAsset<Sprite> AbilityCounterBodySprite { get; } = new LoadableResourceAsset($"{CounterPath}.Body.png");

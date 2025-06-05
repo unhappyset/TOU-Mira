@@ -67,6 +67,7 @@ public static class HunterEvents
         var suspectPlayer = @event.TargetPlayerInfo;
 
         if (suspectPlayer?.Role is not HunterRole hunter) return;
+        if (votingPlayer.Data.Role is HunterRole) return;
 
         hunter.LastVoted = votingPlayer;
     }
