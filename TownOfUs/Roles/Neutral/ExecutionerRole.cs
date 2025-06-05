@@ -248,6 +248,6 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
 
     public string GetAdvancedDescription()
     {
-        return $"The Executioner is a Neutral Evil role that wins by getting their target (signified by <color=#8C4005FF>X</color>) ejected in a meeting." + MiscUtils.AppendOptionsText(GetType());
+        return $"The Executioner is a Neutral Evil role that wins by getting their target (signified by <color=#643B1FFF>X</color>) ejected in a meeting." + MiscUtils.AppendOptionsText(GetType());
     }
 }

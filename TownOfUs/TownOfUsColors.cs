@@ -41,7 +41,7 @@ public static class TownOfUsColors
     // Neutral Colors
     public static Color Neutral => Color.gray;
     public static Color Jester => new(1f, 0.75f, 0.8f, 1f);
-    public static Color Executioner => new(0.55f, 0.25f, 0.02f, 1f);
+    public static Color Executioner => new(0.39f, 0.23f, 0.12f, 1f);
     public static Color Glitch => Color.green;
     public static Color Arsonist => new(1f, 0.3f, 0f);
     public static Color Amnesiac => new(0.5f, 0.7f, 1f, 1f);

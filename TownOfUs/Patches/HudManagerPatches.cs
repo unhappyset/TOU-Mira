@@ -318,7 +318,7 @@ public static class HudManagerPatches
 
                 if ((player.HasModifier<ExecutionerTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ExecutionerRole>())
                 || (player.HasModifier<ExecutionerTargetModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
-                    playerName += "<color=#8C4005FF> X</color>";
+                    playerName += "<color=#643B1FFF> X</color>";
 
                 if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole))
                     playerName += "<color=#D94291FF> $</color>";
@@ -496,7 +496,7 @@ public static class HudManagerPatches
 
                 if ((player.HasModifier<ExecutionerTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ExecutionerRole>())
                     || (player.HasModifier<ExecutionerTargetModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
-                    playerName += "<color=#8C4005FF> X</color>";
+                    playerName += "<color=#643B1FFF> X</color>";
                     
                 if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole))
                     playerName += "<color=#D94291FF> $</color>";

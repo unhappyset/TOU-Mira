@@ -168,25 +168,20 @@ public static class EndGamePatches
     public static void BuildEndGameSummary(EndGameManager instance)
     {
         var winText = instance.WinText;
-        GameObject bonusText = Object.Instantiate(instance.WinText.gameObject);
-        bonusText.transform.position = new Vector3(instance.WinText.transform.position.x, instance.WinText.transform.position.y - 0.8f, instance.WinText.transform.position.z);
-        bonusText.transform.localScale = new Vector3(0.8f, 0.8f, 1f);
-
-        var textRenderer = bonusText.GetComponent<TMP_Text>();
-        textRenderer.text = string.Empty;
+        var exitBtn = instance.Navigation.ExitButton;
 
         var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
-        GameObject roleSummaryLeft = Object.Instantiate(instance.WinText.gameObject);
-        roleSummaryLeft.transform.position = new Vector3(instance.Navigation.ExitButton.transform.position.x + 0.1f, position.y - 0.1f, -14f);
+        GameObject roleSummaryLeft = Object.Instantiate(winText.gameObject);
+        roleSummaryLeft.transform.position = new Vector3(exitBtn.transform.position.x + 0.1f, position.y - 0.1f, -14f);
         roleSummaryLeft.transform.localScale = new Vector3(1f, 1f, 1f);
         roleSummaryLeft.gameObject.SetActive(false);
 
-        GameObject roleSummary = Object.Instantiate(instance.WinText.gameObject);
-        roleSummary.transform.position = new Vector3(instance.Navigation.ExitButton.transform.position.x + 0.1f, position.y - 0.1f, -14f);
+        GameObject roleSummary = Object.Instantiate(winText.gameObject);
+        roleSummary.transform.position = new Vector3(exitBtn.transform.position.x + 0.1f, position.y - 0.1f, -14f);
         roleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
 
-        GameObject roleSummary2 = Object.Instantiate(instance.WinText.gameObject);
-        roleSummary2.transform.position = new Vector3(instance.Navigation.ExitButton.transform.position.x + 0.1f, position.y - 0.1f, -14f);
+        GameObject roleSummary2 = Object.Instantiate(winText.gameObject);
+        roleSummary2.transform.position = new Vector3(exitBtn.transform.position.x + 0.1f, position.y - 0.1f, -14f);
         roleSummary2.transform.localScale = new Vector3(1f, 1f, 1f);
         
         winText.transform.position += Vector3.down * 0.8f;
@@ -253,7 +248,7 @@ public static class EndGamePatches
 
         GameHistory.EndGameSummary = roleSummaryBackup.ToString();
 
-        SpriteRenderer GameSummaryButton = Object.Instantiate(instance.Navigation.ExitButton);
+        SpriteRenderer GameSummaryButton = Object.Instantiate(exitBtn);
         GameSummaryButton.gameObject.SetActive(true);
         GameSummaryButton.sprite = TouAssets.GameSummarySprite.LoadAsset();
         GameSummaryButton.transform.position += Vector3.up * 1.5f;
