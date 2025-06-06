@@ -1,5 +1,9 @@
 ﻿using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
+using Reactor.Utilities.Extensions;
+using TownOfUs.Modules.Anims;
+using TownOfUs.Options;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -12,6 +16,7 @@ public sealed class EclipsalBlindModifier : DisabledModifier
     public override bool HideOnUi => true;
     public override float Duration => OptionGroupSingleton<EclipsalOptions>.Instance.BlindDuration;
     public override bool AutoStart => true;
+    public GameObject? EclipseBack { get; set; }
 
     public float VisionPerc { get; set; } = 1f;
 
@@ -21,10 +26,12 @@ public sealed class EclipsalBlindModifier : DisabledModifier
 
         VisionPerc = 1f;
 
-        if (PlayerControl.LocalPlayer.IsImpostor())
+        if (PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
         {
             Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
         }
+        EclipseBack = AnimStore.SpawnAnimBody(Player, TouAssets.EclipsedPrefab.LoadAsset(), false, -1.1f, -0.575f)!;
+        EclipseBack.SetActive(false);
         if (Player.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
@@ -65,6 +72,18 @@ public sealed class EclipsalBlindModifier : DisabledModifier
         {
             VisionPerc = 0f;
         }
+        EclipseBack?.SetActive(false);
+        if ((PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow)) && EclipseBack?.gameObject != null)
+        {
+            var visible = true;
+            
+            if (Player.HasModifier<ConcealedModifier>() || !Player.Visible || (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive) || Player.inVent)
+            {
+                visible = false;
+            }
+            Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Color.black);
+            EclipseBack?.SetActive(visible);
+        }
     }
 
     public override void OnDeactivate()
@@ -73,9 +92,13 @@ public sealed class EclipsalBlindModifier : DisabledModifier
 
         VisionPerc = 1f;
 
-        if (PlayerControl.LocalPlayer.IsImpostor())
+        if (PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
         {
             Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
+        }
+        if (EclipseBack?.gameObject != null)
+        {
+            EclipseBack.gameObject.Destroy();
         }
     }
 }

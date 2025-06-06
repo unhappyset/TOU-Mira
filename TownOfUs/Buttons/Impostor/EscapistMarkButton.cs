@@ -22,7 +22,7 @@ public sealed class EscapistMarkButton : TownOfUsRoleButton<EscapistRole>, IAfte
 
     protected override void OnClick()
     {
-        Role.MarkedLocation = PlayerControl.LocalPlayer.transform.position;
+        EscapistRole.RpcMarkLocation(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.transform.position);
 
         // TouAudio.PlaySound(TouAudio.EscapistMarkSound);
         CustomButtonSingleton<EscapistRecallButton>.Instance.SetActive(true, Role);

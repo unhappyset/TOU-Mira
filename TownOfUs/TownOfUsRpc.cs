@@ -31,6 +31,7 @@ public enum TownOfUsRpc : uint
     PlantBomb,
     Blackmail,
     Recall,
+    MarkLocation,
     Disperse,
     Mediate,
     VampireBite,

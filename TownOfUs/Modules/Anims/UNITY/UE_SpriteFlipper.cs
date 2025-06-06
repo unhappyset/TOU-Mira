@@ -29,12 +29,13 @@ public sealed class UE_SpriteFlipper : MonoBehaviour
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3358:Ternary operators should not be nested", Justification = "Too much work")]
     public void Update()
     {
-        foreach (var rend in RenderersArray)
-        {
-            rend.flipX = reference.FlipX;
+        if (RenderersArray.Count != 0)
+            foreach (var rend in RenderersArray)
+            {
+                rend.flipX = reference.FlipX;
 
-            if (DoOffset)
-                transform.parent.localPosition = new Vector3(reference.FlipX ? (UseNegative ? -Offset : Offset) : 0, transform.parent.localPosition.y, transform.parent.localPosition.z);
-        }
+                if (DoOffset)
+                    transform.parent.localPosition = new Vector3(reference.FlipX ? (UseNegative ? -Offset : Offset) : 0, transform.parent.localPosition.y, transform.parent.localPosition.z);
+            }
     }
 }

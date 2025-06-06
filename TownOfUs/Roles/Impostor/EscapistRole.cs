@@ -4,8 +4,12 @@ using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
+using Reactor.Utilities.Extensions;
+using TownOfUs.Modules.Anims;
 using TownOfUs.Modules.Wiki;
+using TownOfUs.Options;
 using TownOfUs.Options.Roles.Impostor;
+using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -28,6 +32,12 @@ public sealed class EscapistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
     };
 
     public Vector2? MarkedLocation { get; set; }
+    public GameObject? EscapeMark { get; set; }
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        EscapeMark?.gameObject.Destroy();
+    }
 
     [MethodRpc((uint)TownOfUsRpc.Recall, SendImmediately = true)]
     public static void RpcRecall(PlayerControl player)
@@ -36,6 +46,33 @@ public sealed class EscapistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         {
             Logger<TownOfUsPlugin>.Error("RpcRecall - Invalid escapist");
             return;
+        }
+    }
+
+    [MethodRpc((uint)TownOfUsRpc.MarkLocation, SendImmediately = true)]
+    public static void RpcMarkLocation(PlayerControl player, Vector2 pos)
+    {
+        if (player.Data.Role is not EscapistRole henry)
+        {
+            Logger<TownOfUsPlugin>.Error("RpcRecall - Invalid escapist");
+            return;
+        }
+        henry.MarkedLocation = pos;
+        henry.EscapeMark = AnimStore.SpawnAnimAtPlayer(player, TouAssets.EscapistMarkPrefab.LoadAsset());
+        henry.EscapeMark.transform.localPosition = new Vector3(pos.x, pos.y + 0.3f, 0.1f);
+        henry.EscapeMark.SetActive(false);
+    }
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not EscapistRole || Player.HasDied()) return;
+        if (EscapeMark != null)
+        {
+            EscapeMark.SetActive(PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow));
+            if (MarkedLocation == null)
+            {
+                EscapeMark.gameObject.Destroy();
+                EscapeMark = null;
+            }
         }
     }
 
