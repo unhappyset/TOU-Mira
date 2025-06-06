@@ -9,9 +9,6 @@ public sealed class GlitchOptions : AbstractOptionGroup<GlitchRole>
 {
     public override string GroupName => "Glitch";
 
-    [ModdedToggleOption("Glitch Can Hide In Vents")]
-    public bool CanVent { get; set; } = false;
-
     [ModdedNumberOption("Kill Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float KillCooldown { get; set; } = 25f;
 
@@ -25,4 +22,8 @@ public sealed class GlitchOptions : AbstractOptionGroup<GlitchRole>
 
     [ModdedNumberOption("Hack Duration", 5f, 15f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float HackDuration { get; set; } = 10f;
+
+    [ModdedToggleOption("Glitch Can Vent")]
+    public bool CanVent { get; set; } = false;
+
 }

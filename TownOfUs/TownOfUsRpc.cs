@@ -27,6 +27,7 @@ public enum TownOfUsRpc : uint
     LightningSound,
     IgniteSound,
     PlaceVent,
+    ShowVent,
     Remember,
     PlantBomb,
     Blackmail,

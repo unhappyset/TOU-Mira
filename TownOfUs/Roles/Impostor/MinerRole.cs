@@ -30,30 +30,57 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         IntroSound = TouAudio.MineSound,
     };
 
-    private readonly List<Vent> _vents = new();
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } = [
+        new("Mine",
+            "Place a vent where you are standing. These vents won't connect to already existing vents on the map but with each other.",
+            TouImpAssets.MineSprite)
+    ];
 
-    [MethodRpc((uint)TownOfUsRpc.PlaceVent, SendImmediately = true)]
-    public static void RpcPlaceVent(PlayerControl player, int ventId, Vector2 position, float zAxis)
+    public List<Vent> Vents { get; set; } = [];
+
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
     {
-        if (player.Data.Role is not MinerRole)
+        return ITownOfUsRole.SetNewTabText(this);
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return "The Miner is an Impostor Support role that can create vents." + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [MethodRpc((uint)TownOfUsRpc.PlaceVent)]
+    public static void RpcPlaceVent(PlayerControl player, int ventId, Vector2 position, float zAxis, bool immediate)
+    {
+        if (player.Data.Role is not MinerRole miner)
         {
             Logger<TownOfUsPlugin>.Error("RpcPlaceVent - Invalid miner");
             return;
         }
 
+        //Logger<TownOfUsPlugin>.Error("RpcPlaceVent");
+
         var ventPrefab = FindObjectOfType<Vent>();
         var vent = Instantiate(ventPrefab, ventPrefab.transform.parent);
+        vent.name = $"MinerVent-{player.PlayerId}-{ventId}";
+
+        Logger<TownOfUsPlugin>.Error($"RpcPlaceVent - vent: {vent.name} - {immediate}");
+
+        if (!player.AmOwner && !immediate)
+        {
+            Logger<TownOfUsPlugin>.Error("RpcPlaceVent - Hide Vent");
+            vent.myRend.enabled = false;
+        }
 
         vent.Id = ventId;
-        vent.name = "MinerVent " + vent.name;
         vent.transform.position = new Vector3(position.x, position.y, zAxis);
 
-        var miner = player.GetRole<MinerRole>();
         if (miner == null) return;
 
-        if (miner._vents.Count > 0)
+        if (miner.Vents.Count > 0)
         {
-            var leftVent = miner._vents[^1];
+            var leftVent = miner.Vents[^1];
             vent.Left = leftVent;
             leftVent.Right = vent;
         }
@@ -69,7 +96,7 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         allVents.Add(vent);
         ShipStatus.Instance.AllVents = allVents.ToArray();
 
-        miner._vents.Add(vent);
+        miner.Vents.Add(vent);
 
         if (ModCompatibility.SubLoaded)
         {
@@ -87,21 +114,20 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         }
     }
 
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
+    [MethodRpc((uint)TownOfUsRpc.ShowVent)]
+    public static void RpcShowVent(PlayerControl player, int ventId)
     {
-        return ITownOfUsRole.SetNewTabText(this);
-    }
+        if (player.Data.Role is not MinerRole miner)
+        {
+            Logger<TownOfUsPlugin>.Error("RpcShowVent - Invalid miner");
+            return;
+        }
 
-    public string GetAdvancedDescription()
-    {
-        return "The Miner is an Impostor Support role that can create vents." + MiscUtils.AppendOptionsText(GetType());
-    }
+        var vent = miner.Vents.FirstOrDefault(x => x.Id == ventId);
 
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Mine",
-            "Place a vent where you are standing. These vents won't connect to already existing vents on the map but with each other.",
-            TouImpAssets.MineSprite)    
-    ];
+        if (vent != null)
+        {
+            vent.myRend.enabled = true;
+        }
+    }
 }

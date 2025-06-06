@@ -15,6 +15,6 @@ public sealed class JuggernautOptions : AbstractOptionGroup<JuggernautRole>
     [ModdedNumberOption("Kill Cooldown Reduction", 2.5f, 15f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float KillCooldownReduction { get; set; } = 5f;
 
-    [ModdedToggleOption("Juggernaut Can Hide In Vents")]
+    [ModdedToggleOption("Juggernaut Can Vent")]
     public bool CanVent { get; set; } = false;
 }

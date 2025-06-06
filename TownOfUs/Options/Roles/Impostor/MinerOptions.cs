@@ -14,6 +14,16 @@ public sealed class MinerOptions : AbstractOptionGroup<MinerRole>
 
     [ModdedNumberOption("Mine Delay", 0f, 10f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float MineDelay { get; set; } = 3f;
+
+    [ModdedEnumOption("Mine Visiblity", typeof(MineVisiblityOptions), ["Immediate", "After Use"])]
+    public MineVisiblityOptions MineVisibility { get; set; } = MineVisiblityOptions.Immediate;
+
     [ModdedToggleOption("Miner Can Kill")]
     public bool MinerKill { get; set; } = true;
+}
+
+public enum MineVisiblityOptions
+{
+    Immediate,
+    AfterUse,
 }
