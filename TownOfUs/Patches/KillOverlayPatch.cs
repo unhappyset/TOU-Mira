@@ -27,7 +27,7 @@ public static class KillOverlayPatch
                 if (flame.transform.FindChild("BackgroundFlame").TryGetComponent<SpriteRenderer>(out var flameSprite)) flameSprite.sprite = TouAssets.RetributionBG.LoadAsset();
             }
             __instance.GetComponentsInChildren<SpriteRenderer>(true).ToList().ForEach(x => x.maskInteraction = SpriteMaskInteraction.None);
-            __instance.transform.localPosition -= new Vector3(2.1f, 1.5f);
+            __instance.transform.localPosition -= new Vector3(2.4f, 1.5f);
         }
     }
 }
