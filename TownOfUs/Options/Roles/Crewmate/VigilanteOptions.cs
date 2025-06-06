@@ -29,6 +29,6 @@ public sealed class VigilanteOptions : AbstractOptionGroup<VigilanteRole>
 
     [ModdedToggleOption("Vigilante Can Guess Lovers")]
     public bool VigilanteGuessLovers { get; set; } = false;
-    [ModdedNumberOption("Available Missed Shots Before Death", 1f, 3f, 1f, MiraNumberSuffixes.None, "0")]
+    [ModdedNumberOption("Safe Shots Available", 0f, 3f, 1f, MiraNumberSuffixes.None, "0")]
     public float MultiShots { get; set; } = 3;
 }

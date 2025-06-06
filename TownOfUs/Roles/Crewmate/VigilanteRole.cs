@@ -141,13 +141,13 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
                 meetingMenu?.HideButtons();
             }
 
-            if (victim == Player && SafeShotsLeft != 1)
+            if (victim == Player && SafeShotsLeft != 0)
             {
                 SafeShotsLeft--;
                 Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Impostor));
 
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfUsColors.Vigilante.ToTextColor()}Your Multi Shot has prevented you from dying this meeting! You have {SafeShotsLeft} shot(s) left before you die!</color></b>", Color.white, spr: TouRoleIcons.Vigilante.LoadAsset());
+                    $"<b>{TownOfUsColors.Vigilante.ToTextColor()}Your Multi Shot has prevented you from dying this meeting! You have {SafeShotsLeft} safe shot(s) left!</color></b>", Color.white, spr: TouRoleIcons.Vigilante.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -243,9 +243,9 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
-        if ((int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots > 1)
+        if ((int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots > 0)
         {
-            var newText = SafeShotsLeft == 1 ? $"\nYou have no more safe shots left." : $"\n{SafeShotsLeft - 1} safe shot(s) left.";
+            var newText = SafeShotsLeft == 0 ? $"\nYou have no more safe shots left." : $"\n{SafeShotsLeft} safe shot(s) left.";
             stringB.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
         }
 
