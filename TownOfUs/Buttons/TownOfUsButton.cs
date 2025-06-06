@@ -79,9 +79,9 @@ public abstract class TownOfUsButton : CustomActionButton
 
         Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled);
 
-        if (Keybind != string.Empty && ReInput.players.GetPlayer(0).GetButtonDown(Keybind) || ConsoleJoystick.player.GetButtonDown(ConsoleBind()))
+        if (Button?.gameObject.active == true && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) || ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
         {
-            ClickHandler();
+            Button?.GetComponent<PassiveButton>().OnClick.Invoke();
         }
     }
 }
@@ -99,6 +99,18 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
     /// Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons, tou.ActionCustom for tertiary abilities, and tou.ActionCustom2 for modifier buttons.
     /// </summary>
     public virtual string Keybind => string.Empty;
+
+    public virtual int ConsoleBind()
+    {
+        return Keybind switch
+        {
+            Keybinds.PrimaryAction => Keybinds.PrimaryConsole,
+            Keybinds.SecondaryAction => Keybinds.SecondaryConsole,
+            Keybinds.ModifierAction => Keybinds.ModifierConsole,
+            Keybinds.VentAction => Keybinds.VentConsole,
+            _ => -1,
+        };
+    }
 
     public override void SetActive(bool visible, RoleBehaviour role)
     {
@@ -176,9 +188,9 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
 
         Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled);
 
-        if (Keybind != string.Empty && ReInput.players.GetPlayer(0).GetButtonDown(Keybind))
+        if (Button?.gameObject.active == true && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) || ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
         {
-            ClickHandler();
+            Button?.GetComponent<PassiveButton>().OnClick.Invoke();
         }
     }
 }
