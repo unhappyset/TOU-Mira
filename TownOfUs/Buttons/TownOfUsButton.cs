@@ -35,6 +35,7 @@ public abstract class TownOfUsButton : CustomActionButton
             Keybinds.PrimaryAction => Keybinds.PrimaryConsole,
             Keybinds.SecondaryAction => Keybinds.SecondaryConsole,
             Keybinds.ModifierAction => Keybinds.ModifierConsole,
+            Keybinds.VentAction => Keybinds.VentConsole,
             _ => -1,
         };
     }

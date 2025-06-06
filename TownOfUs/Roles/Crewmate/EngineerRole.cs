@@ -10,7 +10,6 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
-using TownOfUs.Patches.Stubs;
 
 namespace TownOfUs.Roles.Crewmate;
 
@@ -25,32 +24,12 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     public DoomableType DoomHintType => DoomableType.Protective;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = true,
+        // CanUseVent = true,
         Icon = TouRoleIcons.Engineer,
         OptionsScreenshot = TouCrewAssets.EngineerRoleBanner,
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Engineer),
     };
     public override bool IsAffectedByComms => false;
-    public override void Initialize(PlayerControl player)
-    {
-        RoleStubs.RoleBehaviourInitialize(this, player);
-        if (Player.AmOwner)
-        {
-            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouCrewAssets.EngiVentSprite.LoadAsset();
-            TownOfUsColors.UseBasic = false;
-            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Engineer);
-            TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
-        }
-    }
-    public override void Deinitialize(PlayerControl targetPlayer)
-    {
-        if (Player.AmOwner)
-        {
-            RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
-            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
-            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
-        }
-    }
 
     public static void EngineerFix(PlayerControl engineer)
     {
