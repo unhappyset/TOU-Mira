@@ -136,7 +136,7 @@ public static class MiscUtils
 
     public static IEnumerable<RoleBehaviour> GetRegisteredGhostRoles()
     {
-        var baseGhostRoles = RoleManager.Instance.AllRoles.Where(x => x.IsDead && !AllRoles.Any(y => y.Role == x.Role));
+        var baseGhostRoles = RoleManager.Instance.AllRoles.Where(x => x.IsDead && AllRoles.All(y => y.Role != x.Role));
         var ghostRoles = AllRoles.Where(x => x.IsDead).Union(baseGhostRoles);
 
         return ghostRoles;
@@ -178,7 +178,7 @@ public static class MiscUtils
         var roleOptions = currentGameOptions.RoleOptions;
         var assignmentData = RoleManager.Instance.AllRoles.Select(role => new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role), roleOptions.GetChancePerGame(role.Role))).ToList();
 
-        var roleList = assignmentData.Where(x => x.Chance > 0 && x.Role is ICustomRole).Select(x => x.Role);
+        var roleList = assignmentData.Where(x => x is { Chance: > 0, Role: ICustomRole }).Select(x => x.Role);
 
         var crewmateRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Crewmate);
         roleList = roleList.AddItem(crewmateRole!);
@@ -192,27 +192,27 @@ public static class MiscUtils
 
         return roleList;
     }
-    public static void AddFakeChat(NetworkedPlayerInfo BasePlayer, string NameText, string Message, bool ShowHeadsup = false, bool AltColors = false, bool OnLeft = true)
+    public static void AddFakeChat(NetworkedPlayerInfo basePlayer, string nameText, string message, bool showHeadsup = false, bool altColors = false, bool onLeft = true)
     {
-        var Chat = HudManager.Instance.Chat;
+        var chat = HudManager.Instance.Chat;
 
-        var pooledBubble = Chat.GetPooledBubble();
+        var pooledBubble = chat.GetPooledBubble();
 
-        pooledBubble.transform.SetParent(Chat.scroller.Inner);
+        pooledBubble.transform.SetParent(chat.scroller.Inner);
         pooledBubble.transform.localScale = Vector3.one;
-        if (OnLeft) pooledBubble.SetLeft();
+        if (onLeft) pooledBubble.SetLeft();
         else pooledBubble.SetRight();
-        pooledBubble.SetCosmetics(BasePlayer);
-        pooledBubble.NameText.text = NameText;
+        pooledBubble.SetCosmetics(basePlayer);
+        pooledBubble.NameText.text = nameText;
         pooledBubble.NameText.color = Color.white;
         pooledBubble.NameText.ForceMeshUpdate(true, true);
         pooledBubble.votedMark.enabled = false;
         pooledBubble.Xmark.enabled = false;
-        pooledBubble.TextArea.text = Message;
+        pooledBubble.TextArea.text = message;
         pooledBubble.TextArea.ForceMeshUpdate(true, true);
         pooledBubble.Background.size = new(5.52f, 0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
         pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
-        if (AltColors)
+        if (altColors)
         {
             pooledBubble.Background.color = Color.black;
             pooledBubble.TextArea.color = Color.white;
@@ -221,34 +221,34 @@ public static class MiscUtils
         pooledBubble.AlignChildren();
         var pos = pooledBubble.NameText.transform.localPosition;
         pooledBubble.NameText.transform.localPosition = pos;
-        Chat.AlignAllBubbles();
-        if (!Chat.IsOpenOrOpening && Chat.notificationRoutine == null)
+        chat.AlignAllBubbles();
+        if (chat is { IsOpenOrOpening: false, notificationRoutine: null })
         {
-            Chat.notificationRoutine = Chat.StartCoroutine(Chat.BounceDot());
+            chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());
         }
-        if (ShowHeadsup && !Chat.IsOpenOrOpening)
+        if (showHeadsup && !chat.IsOpenOrOpening)
         {
-            SoundManager.Instance.PlaySound(Chat.messageSound, false, 1f, null).pitch = 0.5f + (float)PlayerControl.LocalPlayer.PlayerId / 15f;
-            Chat.chatNotification.SetUp(PlayerControl.LocalPlayer, Message);
+            SoundManager.Instance.PlaySound(chat.messageSound, false).pitch = 0.5f + PlayerControl.LocalPlayer.PlayerId / 15f;
+            chat.chatNotification.SetUp(PlayerControl.LocalPlayer, message);
         }
     }
-    public static void AddTeamChat(NetworkedPlayerInfo BasePlayer, string NameText, string Message, bool ShowHeadsup = false, bool OnLeft = true)
+    public static void AddTeamChat(NetworkedPlayerInfo basePlayer, string nameText, string message, bool showHeadsup = false, bool onLeft = true)
     {
-        var Chat = HudManager.Instance.Chat;
+        var chat = HudManager.Instance.Chat;
 
-        var pooledBubble = Chat.GetPooledBubble();
+        var pooledBubble = chat.GetPooledBubble();
 
-        pooledBubble.transform.SetParent(Chat.scroller.Inner);
+        pooledBubble.transform.SetParent(chat.scroller.Inner);
         pooledBubble.transform.localScale = Vector3.one;
-        if (OnLeft) pooledBubble.SetLeft();
+        if (onLeft) pooledBubble.SetLeft();
         else pooledBubble.SetRight();
-        pooledBubble.SetCosmetics(BasePlayer);
-        pooledBubble.NameText.text = NameText;
+        pooledBubble.SetCosmetics(basePlayer);
+        pooledBubble.NameText.text = nameText;
         pooledBubble.NameText.color = Color.white;
         pooledBubble.NameText.ForceMeshUpdate(true, true);
         pooledBubble.votedMark.enabled = false;
         pooledBubble.Xmark.enabled = false;
-        pooledBubble.TextArea.text = Message;
+        pooledBubble.TextArea.text = message;
         pooledBubble.TextArea.ForceMeshUpdate(true, true);
         pooledBubble.Background.size = new(5.52f, 0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
         pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
@@ -259,15 +259,15 @@ public static class MiscUtils
         pooledBubble.AlignChildren();
         var pos = pooledBubble.NameText.transform.localPosition;
         pooledBubble.NameText.transform.localPosition = pos;
-        Chat.AlignAllBubbles();
-        if (!Chat.IsOpenOrOpening && Chat.notificationRoutine == null)
+        chat.AlignAllBubbles();
+        if (chat is { IsOpenOrOpening: false, notificationRoutine: null })
         {
-            Chat.notificationRoutine = Chat.StartCoroutine(Chat.BounceDot());
+            chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());
         }
-        if (ShowHeadsup && !Chat.IsOpenOrOpening)
+        if (showHeadsup && !chat.IsOpenOrOpening)
         {
-            SoundManager.Instance.PlaySound(Chat.messageSound, false, 1f, null).pitch = 0.1f;
-            Chat.chatNotification.SetUp(PlayerControl.LocalPlayer, Message);
+            SoundManager.Instance.PlaySound(chat.messageSound, false).pitch = 0.1f;
+            chat.chatNotification.SetUp(PlayerControl.LocalPlayer, message);
         }
     }
 
@@ -279,8 +279,7 @@ public static class MiscUtils
 
     public static List<PlayerControl> GetCrewmates(List<PlayerControl> impostors)
     {
-        return PlayerControl.AllPlayerControls.ToArray().Where(
-            player => impostors.All(imp => imp.PlayerId != player.PlayerId)).ToList();
+        return PlayerControl.AllPlayerControls.ToArray().Where(player => impostors.All(imp => imp.PlayerId != player.PlayerId)).ToList();
     }
 
     public static List<PlayerControl> GetImpostors(List<NetworkedPlayerInfo> infected)
@@ -341,13 +340,12 @@ public static class MiscUtils
 
         var assignmentData = roles.Where(x => !x.IsDead && (filter == null || filter(x))).Select(role => new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role), roleOptions.GetChancePerGame(role.Role))).ToList();
 
-        List<(ushort RoleType, int Chance)> chosenRoles;
-
-        chosenRoles = GetPossibleRoles(assignmentData, x => x.Chance == 100);
+        var chosenRoles = GetPossibleRoles(assignmentData, x => x.Chance == 100);
 
         // Shuffle to ensure that the same 100% roles do not appear in
         // every game if there are more than the maximum.
         chosenRoles.Shuffle();
+
         // Truncate the list if there are more 100% roles than the max.
         chosenRoles = chosenRoles.GetRange(0, Math.Min(max, chosenRoles.Count));
 
@@ -522,9 +520,12 @@ public static class MiscUtils
     {
         var gameObject = new GameObject("Arrow")
         {
-            layer = 5
+            layer = 5,
+            transform =
+            {
+                parent = parent
+            }
         };
-        gameObject.transform.parent = parent;
 
         var renderer = gameObject.AddComponent<SpriteRenderer>();
         renderer.sprite = TouAssets.ArrowSprite.LoadAsset();
@@ -568,7 +569,7 @@ public static class MiscUtils
 
                 normalPlayerTask.taskStep = 0;
                 normalPlayerTask.Initialize();
-                if (normalPlayerTask.TaskType == TaskTypes.PickUpTowels)
+                if (normalPlayerTask.TaskType is TaskTypes.PickUpTowels)
                 {
                     foreach (var console in Object.FindObjectsOfType<TowelTaskConsole>())
                     {
@@ -581,7 +582,7 @@ public static class MiscUtils
                 {
                     normalPlayerTask.taskStep = 1;
                 }
-                if ((normalPlayerTask.TaskType == TaskTypes.EmptyGarbage || normalPlayerTask.TaskType == TaskTypes.EmptyChute)
+                if (normalPlayerTask.TaskType is TaskTypes.EmptyGarbage or TaskTypes.EmptyChute
                     && (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 0 ||
                     GameOptionsManager.Instance.currentNormalGameOptions.MapId == 3 ||
                     GameOptionsManager.Instance.currentNormalGameOptions.MapId == 4))
@@ -663,7 +664,7 @@ public static class MiscUtils
 
     public static (ushort RoleType, int Chance) SelectRole(List<(ushort RoleType, int Chance)> roles)
     {
-        var chosenRoles = roles.Where(x => x.Item2 == 100).ToList();
+        var chosenRoles = roles.Where(x => x.Chance == 100).ToList();
         if (chosenRoles.Count > 0)
         {
             chosenRoles.Shuffle();
@@ -671,10 +672,10 @@ public static class MiscUtils
         }
 
         chosenRoles = roles.Where(x => x.Chance < 100).ToList();
-        int total = chosenRoles.Sum(x => x.Chance);
-        int random = Random.RandomRangeInt(1, total + 1);
+        var total = chosenRoles.Sum(x => x.Chance);
+        var random = Random.RandomRangeInt(1, total + 1);
 
-        int cumulative = 0;
+        var cumulative = 0;
         (ushort RoleType, int SpawnChance) selectedRole = default;
 
         foreach (var role in chosenRoles)
@@ -697,7 +698,7 @@ public static class MiscUtils
     /// <returns>A fake player or null if its not found.</returns>
     public static FakePlayer? GetFakePlayer(PlayerControl player)
     {
-        return FakePlayer.FakePlayers.FirstOrDefault(x => x?.body?.name == $"Fake {player.gameObject.name}");
+        return FakePlayer.FakePlayers.FirstOrDefault(x => x.body?.name == $"Fake {player.gameObject.name}");
     }
 
     public static bool IsMap(byte mapid)

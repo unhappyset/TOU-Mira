@@ -647,7 +647,7 @@ public static class HudManagerPatches
     }
     private static string GetRoleForSlot(int slotValue)
     {
-        var roleListText = RoleOptions.roleOptions.ToList();
+        var roleListText = RoleOptions.OptionStrings.ToList();
         if (slotValue >= 0 && slotValue < roleListText.Count)
         {
             return roleListText[slotValue];
