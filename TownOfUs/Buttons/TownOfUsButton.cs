@@ -40,6 +40,8 @@ public abstract class TownOfUsButton : CustomActionButton
         };
     }
 
+    private PassiveButton PassiveComp { get; set; }
+
     public override void SetActive(bool visible, RoleBehaviour role)
     {
         Button?.ToggleVisible(visible && Enabled(role) && !role.Player.HasDied());
@@ -62,6 +64,8 @@ public abstract class TownOfUsButton : CustomActionButton
 
         Button.usesRemainingSprite.color = TextOutlineColor;
         TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
+
+        PassiveComp = Button.GetComponent<PassiveButton>();
     }
 
     public override bool CanUse()
@@ -81,7 +85,7 @@ public abstract class TownOfUsButton : CustomActionButton
 
         if (Button?.gameObject.active == true && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) || ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
         {
-            Button?.GetComponent<PassiveButton>().OnClick.Invoke();
+            PassiveComp.OnClick.Invoke();
         }
     }
 }
@@ -112,6 +116,8 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
         };
     }
 
+    private PassiveButton PassiveComp { get; set; }
+
     public override void SetActive(bool visible, RoleBehaviour role)
     {
         Button?.ToggleVisible(visible && Enabled(role) && !role.Player.HasDied());
@@ -132,7 +138,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
             return;
         }
 
-        switch(typeof(T))
+        switch (typeof(T))
         {
             case Type t when t == typeof(Vent):
                 Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterVentSprite.LoadAsset();
@@ -154,6 +160,8 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
         }
         Button.usesRemainingSprite.color = TextOutlineColor;
         TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
+        
+        PassiveComp = Button.GetComponent<PassiveButton>();
     }
 
     public override void ClickHandler()
@@ -190,7 +198,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
 
         if (Button?.gameObject.active == true && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) || ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
         {
-            Button?.GetComponent<PassiveButton>().OnClick.Invoke();
+            PassiveComp.OnClick.Invoke();
         }
     }
 }
