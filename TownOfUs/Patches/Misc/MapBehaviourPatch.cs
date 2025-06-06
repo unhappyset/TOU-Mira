@@ -34,6 +34,7 @@ public static class ShowVentsPatch
 
         foreach (var vent in ShipStatus.Instance.AllVents)
         {
+            if (vent.name.StartsWith("MinerVent-", StringComparison.Ordinal)) continue;
             var location = vent.transform.position / ShipStatus.Instance.MapScale;
             location.z = -0.99f;
 
