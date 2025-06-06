@@ -2,6 +2,7 @@
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
+using Reactor.Utilities;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Crewmate;
@@ -29,7 +30,7 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
         var newTarget = GetTarget();
         if (newTarget != Target)
         {
-            SetOutline(false);
+            Target?.SetOutline(false, false);
         }
 
         Target = IsTargetValid(newTarget) ? newTarget : null;
@@ -37,7 +38,8 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
 
         return ((Timer <= 0 && !PlayerControl.LocalPlayer.inVent && Target != null) || PlayerControl.LocalPlayer.inVent)
             && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>()
-            && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
+            && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>()
+            && (MaxUses == 0 || UsesLeft > 0);
     }
     public override void ClickHandler()
     {
@@ -52,37 +54,53 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
         {
             Timer = Cooldown;
             EffectActive = false;
+            Logger<TownOfUsPlugin>.Error($"Effect is No Longer Active");
+            Logger<TownOfUsPlugin>.Error($"Cooldown is active");
         }
         else if (HasEffect)
         {
             EffectActive = true;
             Timer = EffectDuration;
+            Logger<TownOfUsPlugin>.Error($"Effect is Now Active");
         }
         else
         {
-            Timer = Cooldown;
+            Timer = !PlayerControl.LocalPlayer.inVent ? 0.001f : Cooldown;
+            Logger<TownOfUsPlugin>.Error($"Cooldown is active");
         }
     }
     protected override void OnClick()
     {
         if (!PlayerControl.LocalPlayer.inVent)
         {
-            Target!.Use();
-            if (MaxUses != 0) --UsesLeft;
+            Logger<TownOfUsPlugin>.Error($"Entering Vent");
+            if (Target != null)
+            {
+                PlayerControl.LocalPlayer.MyPhysics.RpcEnterVent(Target.Id);
+                Target.SetButtons(true);
+            }
+            else Logger<TownOfUsPlugin>.Error($"Vent is null...");
         }
-        else
+        else if (Timer != 0)
         {
+            Logger<TownOfUsPlugin>.Error($"Leaving Vent");
             OnEffectEnd();
-            EffectActive = false;
-            Timer = Cooldown;
+            if (!HasEffect)
+            {
+                EffectActive = false;
+                Timer = Cooldown;
+            }
         }
     }
     public override void OnEffectEnd()
     {
         if (PlayerControl.LocalPlayer.inVent)
         {
+            Logger<TownOfUsPlugin>.Error($"Left Vent");
+            Vent.currentVent.SetButtons(false);
             PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
-            PlayerControl.LocalPlayer.MyPhysics.ExitAllVents();
+            UsesLeft--;
+            if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
         }
     }
 }

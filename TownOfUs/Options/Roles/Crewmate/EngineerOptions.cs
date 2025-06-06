@@ -16,7 +16,7 @@ public sealed class EngineerOptions : AbstractOptionGroup<EngineerTouRole>
     public float VentCooldown { get; set; } = 15f;
 
     [ModdedNumberOption("Vent Duration", 0f, 25f, 5f, MiraNumberSuffixes.Seconds, zeroInfinity: true)]
-    public float VentDuration { get; set; } = 0f;
+    public float VentDuration { get; set; } = 10f;
 
     [ModdedNumberOption("Maximum Number Of Fixes", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxFixes { get; set; } = 5f;
