@@ -14,4 +14,6 @@ public sealed class JailorOptions : AbstractOptionGroup<JailorRole>
 
     [ModdedNumberOption("Maximum Number Of Executes", 1f, 5f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxExecutes { get; set; } = 3f;
+    [ModdedToggleOption("Jail Same Person Twice In A Row")]
+    public bool JailInARow { get; set; } = false;
 }

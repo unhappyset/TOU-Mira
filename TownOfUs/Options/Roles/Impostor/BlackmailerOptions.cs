@@ -12,8 +12,10 @@ public sealed class BlackmailerOptions : AbstractOptionGroup<BlackmailerRole>
     [ModdedNumberOption("Blackmail Cooldown", 1f, 30f, suffixType: MiraNumberSuffixes.Seconds)]
     public float BlackmailCooldown { get; set; } = 20f;
 
-    [ModdedNumberOption("Maximum Number Of People Left Alive Until Voting", 1f, 15f)]
+    [ModdedNumberOption("Max Players Alive Until Voting", 1f, 15f)]
     public float MaxAliveForVoting { get; set; } = 10f;
+    [ModdedToggleOption("Blackmail Same Person Twice In A Row")]
+    public bool BlackmailInARow { get; set; } = false;
 
     [ModdedToggleOption("Only Target Sees Blackmail")]
     public bool OnlyTargetSeesBlackmail { get; set; } = false;

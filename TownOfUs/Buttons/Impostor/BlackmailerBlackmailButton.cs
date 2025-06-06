@@ -29,6 +29,6 @@ public sealed class BlackmailerBlackmailButton : TownOfUsRoleButton<BlackmailerR
 
     public override PlayerControl? GetTarget()
     {
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, player => !player.HasModifier<BlackmailedModifier>());
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, player => (!player.HasModifier<BlackmailedModifier>()) && !player.HasModifier<BlackmailSparedModifier>());
     }
 }
