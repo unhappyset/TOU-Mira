@@ -9,17 +9,9 @@ namespace TownOfUs.Events.Misc;
 public static class ScatterEvents
 {
     [RegisterEvent]
-    public static void GameStartHandler(RoundStartEvent @event)
-    {
-        if (!@event.TriggeredByIntro) return;
-
-        ModifierUtils.GetActiveModifiers<ScatterModifier>().Do(x => x.OnGameStart());
-    }
-
-    [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return;
+        //Logger<TownOfUsPlugin>.Error($"ScatterEvents - RoundStartHandler");
 
         ModifierUtils.GetActiveModifiers<ScatterModifier>().Do(x => x.OnRoundStart());
     }

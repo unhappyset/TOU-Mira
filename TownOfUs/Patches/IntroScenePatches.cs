@@ -25,6 +25,7 @@ public static class IntroScenePatches
 
         var player = __instance.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, true);
         __instance.ourCrewmate = player;
+
         return false;
     }
 
@@ -74,6 +75,7 @@ public static class IntroScenePatches
             panel.SetTaskText(role.SetTabText().ToString());
         }
     }
+
     [HarmonyPatch(typeof(SpawnInMinigame), nameof(SpawnInMinigame.Close))]
     [HarmonyPrefix]
     public static void SpawnInMinigameClosePatch() => IntroCutsceneOnDestroyPatch();
