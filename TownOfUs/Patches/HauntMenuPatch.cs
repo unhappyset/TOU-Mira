@@ -11,6 +11,7 @@ using TownOfUs.Modules;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TownOfUs.Patches
 {
@@ -20,20 +21,23 @@ namespace TownOfUs.Patches
         public static void Postfix(HauntMenuMinigame __instance)
         {
             if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return;
-            var target = __instance.HauntTarget;
-            var role = target.Data.Role;
-            if (target.Data.IsDead && !TutorialManager.InstanceExists && role is not PhantomTouRole or GuardianAngelRole or HaunterRole)
+
+            var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
+            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId);
+
+            if (!TutorialManager.InstanceExists && (body || fakePlayer?.body))
             {
-                role = target.GetRoleWhenAlive();
+                __instance.Close();
+                __instance.NameText.text = string.Empty;
+                __instance.FilterText.text = string.Empty;
+                return;
             }
-            if (role == null) return;
 
-            var rColor = role is ICustomRole custom ? custom.RoleColor : role.TeamColor;
-
-            __instance.NameText.text = $"<size=90%>{__instance.NameText.text} - {rColor.ToTextColor()}{role.NiceName}</color></size>";
+            var target = __instance.HauntTarget;
             __instance.FilterText.text = string.Empty;
 
             var modifiers = target.GetModifiers<GameModifier>().Where(x => x is not ExcludedGameModifier).OrderBy(x => x.ModifierName).ToList();
+            __instance.FilterText.text = $"<color=#FFFFFF><size=100%>(No Modifiers)</size></color>";
             if (modifiers.Count != 0)
             {
                 var modifierTextBuilder = new StringBuilder($"<color=#FFFFFF><size=100%>(");
@@ -49,6 +53,17 @@ namespace TownOfUs.Patches
                 modifierTextBuilder.Append($")</size></color>");
                 __instance.FilterText.text = modifierTextBuilder.ToString();
             }
+            
+            var role = target.Data.Role;
+            if (target.Data.IsDead && !TutorialManager.InstanceExists && role is not PhantomTouRole or GuardianAngelRole or HaunterRole)
+            {
+                role = target.GetRoleWhenAlive();
+            }
+            if (role == null) return;
+
+            var rColor = role is ICustomRole custom ? custom.RoleColor : role.TeamColor;
+
+            __instance.NameText.text = $"<size=90%>{__instance.NameText.text} - {rColor.ToTextColor()}{role.NiceName}</color></size>";
         }
     }
 }
