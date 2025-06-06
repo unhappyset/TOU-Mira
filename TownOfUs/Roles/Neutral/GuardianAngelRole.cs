@@ -39,6 +39,24 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
     public int Priority { get; set; } = 1;
     public PlayerControl? Target { get; set; }
 
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } = [
+        new("Protect",
+            "Protect your target from getting killed.",
+            TouNeutAssets.ProtectSprite)
+    ];
+
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        return ITownOfUsRole.SetNewTabText(this);
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return $"The Guardian Angel is a Neutral Benign that needs to protect their target (signified by <color=#B3FFFFFF>★</color>) from getting killed/ejected." + MiscUtils.AppendOptionsText(GetType());
+    }
+
     public override void Initialize(PlayerControl player)
     {
         RoleStubs.RoleBehaviourInitialize(this, player);
@@ -47,11 +65,13 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
             Coroutines.Start(SetTutorialTargets(this));
         }
     }
+
     private static IEnumerator SetTutorialTargets(GuardianAngelTouRole ga)
     {
         yield return new WaitForSeconds(0.01f);
         ga.AssignTargets();
     }
+
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
@@ -61,6 +81,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
             players.Do(x => x.RpcRemoveModifier<ExecutionerTargetModifier>());
         }
     }
+
     public bool SetupIntroTeam(IntroCutscene instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
     {
         if (Player != PlayerControl.LocalPlayer)
@@ -124,7 +145,10 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
             if ((roleType == RoleId.Get<JesterRole>() && OptionGroupSingleton<JesterOptions>.Instance.ScatterOn) ||
                 (roleType == RoleId.Get<SurvivorRole>() && OptionGroupSingleton<SurvivorOptions>.Instance.ScatterOn))
             {
-                Player.GetModifier<ScatterModifier>()?.OnGameStart();
+                StartCoroutine(Effects.Lerp(0.2f, new Action<float>((p) =>
+                {
+                    Player.GetModifier<ScatterModifier>()?.OnRoundStart();
+                })));
             }
         }
     }
@@ -197,21 +221,4 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
 
         target.AddModifier<GuardianAngelTargetModifier>(player.PlayerId);
     }
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        return ITownOfUsRole.SetNewTabText(this);
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return $"The Guardian Angel is a Neutral Benign that needs to protect their target (signified by <color=#B3FFFFFF>★</color>) from getting killed/ejected." + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Protect",
-            "Protect your target from getting killed.",
-            TouNeutAssets.ProtectSprite)    
-    ];
 }

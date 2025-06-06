@@ -29,6 +29,24 @@ public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };
 
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } = [
+        new("Vest",
+            "Put on a Vest protecting you from attacks.",
+            TouNeutAssets.VestSprite)
+    ];
+
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        return ITownOfUsRole.SetNewTabText(this);
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return "The Survivor is a Neutral Benign role that just needs to survive till the end of the game." + MiscUtils.AppendOptionsText(GetType());
+    }
+
     public override void Initialize(PlayerControl player)
     {
         RoleStubs.RoleBehaviourInitialize(this, player);
@@ -53,21 +71,4 @@ public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     {
         return !Player.HasDied();
     }
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        return ITownOfUsRole.SetNewTabText(this);
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return "The Survivor is a Neutral Benign role that just needs to survive till the end of the game." + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Vest",
-            "Put on a Vest protecting you from attacks.",
-            TouNeutAssets.VestSprite)    
-    ];
 }

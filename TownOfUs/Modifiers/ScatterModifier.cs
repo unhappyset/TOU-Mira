@@ -40,13 +40,17 @@ public class ScatterModifier(float time) : TimedModifier
     {
         base.OnActivate();
 
+        //Logger<TownOfUsPlugin>.Error($"ScatterModifier.OnActivate");
+
         if (!Player.AmOwner) return;
 
         scatterUI = Object.Instantiate(TouAssets.ScatterUI.LoadAsset(), HudManager.Instance.transform);
         scatterUI.transform.localPosition = new Vector3(-3.22f, 2.26f, -10f);
+        scatterUI!.SetActive(false);
 
         scatterText = scatterUI.transform.FindChild("ScatterCanvas").FindChild("ScatterText").gameObject.GetComponent<TextMeshProUGUI>();
         scatterText.text = $"Scatter: {Duration}s";
+        scatterText!.gameObject.SetActive(false);
 
         scatterBar = scatterUI.transform.FindChild("ScatterCanvas").FindChild("ScatterBar").gameObject.GetComponent<Image>();
         scatterBar.fillAmount = 1f;
@@ -64,6 +68,19 @@ public class ScatterModifier(float time) : TimedModifier
     {
         base.FixedUpdate();
 
+        //Logger<TownOfUsPlugin>.Error($"Scatter - !Player.AmOwner: {!Player.AmOwner} !TimerActive: {!TimerActive} Player.HasDied(): {Player.HasDied()} MeetingHud.Instance != null: {MeetingHud.Instance != null} ScatterEvents.Intro: {ScatterEvents.Intro}");
+
+        if (!Player.AmOwner || !TimerActive || Player.HasDied() || MeetingHud.Instance != null)
+        {
+            soundTimer = 1f;
+            TimeRemaining = Duration;
+
+            scatterUI!.SetActive(false);
+            scatterText!.gameObject.SetActive(false);
+
+            return;
+        }
+
         var roundedTime = (int)Math.Round(Math.Max(TimeRemaining, 0f), 0f);
 
         var textColor = roundedTime switch
@@ -73,16 +90,16 @@ public class ScatterModifier(float time) : TimedModifier
             _ => Color.red,
         };
 
-        if (Player.AmOwner && scatterText != null)
+        if (scatterText != null)
             scatterText.text = $"Scatter: {textColor.ToTextColor()}{roundedTime}s</color>";
 
-        if (Player.AmOwner && scatterBar != null)
+        if (scatterBar != null)
         {
             scatterBar.fillAmount = Math.Clamp(TimeRemaining / Duration, 0f, 1f);
             scatterBar.color = textColor;
         }
 
-        if (Player.AmOwner && roundedTime <= 11f)
+        if (roundedTime <= 11f)
         {
             soundTimer -= Time.fixedDeltaTime;
 
@@ -95,19 +112,8 @@ public class ScatterModifier(float time) : TimedModifier
             }
         }
 
-        if (Player.AmOwner) 
-            scatterUI!.SetActive(true);
-
-        if (!TimerActive || Player.HasDied() || MeetingHud.Instance != null)
-        {
-            soundTimer = 1f;
-            TimeRemaining = Duration;
-
-            if (Player.AmOwner) 
-                scatterUI!.SetActive(false);
-
-            return;
-        }
+        scatterUI!.SetActive(true);
+        scatterText!.gameObject.SetActive(true);
 
         foreach (var location in _locations)
         {
@@ -132,13 +138,10 @@ public class ScatterModifier(float time) : TimedModifier
         }
     }
 
-    public void OnGameStart()
-    {
-        StartTimer();
-    }
-
     public void OnRoundStart()
     {
+        //Logger<TownOfUsPlugin>.Error($"Scatter - OnRoundStart");
+
         ResetTimer();
         ResumeTimer();
     }

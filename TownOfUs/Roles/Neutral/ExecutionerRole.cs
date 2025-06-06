@@ -45,6 +45,17 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
     [HideFromIl2Cpp]
     public List<byte> Voters { get; set; } = [];
 
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        return ITownOfUsRole.SetNewTabText(this);
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return $"The Executioner is a Neutral Evil role that wins by getting their target (signified by <color=#643B1FFF>X</color>) ejected in a meeting." + MiscUtils.AppendOptionsText(GetType());
+    }
+
     public override void Initialize(PlayerControl player)
     {
         RoleStubs.RoleBehaviourInitialize(this, player);
@@ -64,11 +75,13 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
             Coroutines.Start(SetTutorialTargets(this));
         }
     }
+
     private static IEnumerator SetTutorialTargets(ExecutionerRole exe)
     {
         yield return new WaitForSeconds(0.01f);
         exe.AssignTargets();
     }
+
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
@@ -168,7 +181,10 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
             if ((roleType == RoleId.Get<JesterRole>() && OptionGroupSingleton<JesterOptions>.Instance.ScatterOn) ||
                 (roleType == RoleId.Get<SurvivorRole>() && OptionGroupSingleton<SurvivorOptions>.Instance.ScatterOn))
             {
-                Player.GetModifier<ScatterModifier>()?.OnGameStart();
+                StartCoroutine(Effects.Lerp(0.2f, new Action<float>((p) =>
+                {
+                    Player.GetModifier<ScatterModifier>()?.OnRoundStart();
+                })));
             }
         }
     }
@@ -239,15 +255,5 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
 
         var exe = player.GetRole<ExecutionerRole>();
         exe!.TargetVoted = true;
-    }
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        return ITownOfUsRole.SetNewTabText(this);
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return $"The Executioner is a Neutral Evil role that wins by getting their target (signified by <color=#643B1FFF>X</color>) ejected in a meeting." + MiscUtils.AppendOptionsText(GetType());
     }
 }
