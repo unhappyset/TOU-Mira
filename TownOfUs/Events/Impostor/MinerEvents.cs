@@ -33,7 +33,7 @@ public static class MinerEvents
         var vent = @event.Vent;
 
         if (player.Data.Role is not MinerRole) return;
-        if (!vent.name.Contains($"MinerVent-{player.PlayerId}")) return;
+        if (vent == null || !vent.name.Contains($"MinerVent-{player.PlayerId}")) return;
 
         MinerRole.RpcShowVent(player, vent.Id);
     }
@@ -47,7 +47,7 @@ public static class MinerEvents
         var vent = @event.Vent;
 
         if (player.Data.Role is not MinerRole) return;
-        if (!vent.name.Contains($"MinerVent-{player.PlayerId}")) return;
+        if (vent == null || !vent.name.Contains($"MinerVent-{player.PlayerId}")) return;
 
         MinerRole.RpcShowVent(player, vent.Id);
     }

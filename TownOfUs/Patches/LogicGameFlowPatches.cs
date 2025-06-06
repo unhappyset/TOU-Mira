@@ -64,7 +64,9 @@ public static class LogicGameFlowPatches
 
         foreach (ISystemType systemType2 in ShipStatus.Instance.Systems.Values)
         {
-            ICriticalSabotage criticalSabotage = systemType2.TryCast<ICriticalSabotage>();
+            var sabo = systemType2.TryCast<ICriticalSabotage>();
+            if (sabo == null) continue;
+            ICriticalSabotage criticalSabotage = sabo;
             if (criticalSabotage != null && criticalSabotage.Countdown < 0f)
             {
                 __instance.EndGameForSabotage();
