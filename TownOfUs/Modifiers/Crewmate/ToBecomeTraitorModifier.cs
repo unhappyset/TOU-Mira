@@ -1,6 +1,5 @@
 using AmongUs.GameOptions;
 using MiraAPI.Modifiers;
-using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using TownOfUs.Modifiers.Neutral;
@@ -10,7 +9,7 @@ using TownOfUs.Utilities;
 
 namespace TownOfUs.Modifiers.Crewmate;
 
-public sealed class ToBecomeTraitorModifier : GameModifier, IAssignableTargets
+public sealed class ToBecomeTraitorModifier : ExcludedGameModifier, IAssignableTargets
 {
     public override string ModifierName => "Possible Traitor";
     public override bool HideOnUi => true;

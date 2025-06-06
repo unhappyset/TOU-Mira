@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using MiraAPI.Modifiers.Types;
 using MiraAPI.Networking;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
@@ -22,7 +21,7 @@ using TownOfUs.Roles.Neutral;
 namespace TownOfUs.Modifiers.Game;
 
 [MiraIgnore]
-public abstract class AssassinModifier : GameModifier
+public abstract class AssassinModifier : ExcludedGameModifier
 {
     public override string ModifierName => "Assassin";
     public string LastGuessedItem { get; set; }

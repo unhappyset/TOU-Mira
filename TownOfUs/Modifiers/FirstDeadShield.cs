@@ -1,6 +1,5 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using MiraAPI.Modifiers.Types;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modules.Anims;
@@ -10,7 +9,7 @@ using UnityEngine;
 
 namespace TownOfUs.Modifiers;
 
-public sealed class FirstDeadShield : GameModifier
+public sealed class FirstDeadShield : ExcludedGameModifier
 {
     public override string ModifierName => "First Death Shield";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.FirstRoundShield;

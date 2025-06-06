@@ -6,6 +6,7 @@ using HarmonyLib;
 using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
+using TownOfUs.Modifiers;
 using TownOfUs.Modules;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
@@ -25,13 +26,14 @@ namespace TownOfUs.Patches
             {
                 role = target.GetRoleWhenAlive();
             }
+            if (role == null) return;
 
             var rColor = role is ICustomRole custom ? custom.RoleColor : role.TeamColor;
 
             __instance.NameText.text = $"<size=90%>{__instance.NameText.text} - {rColor.ToTextColor()}{role.NiceName}</color></size>";
             __instance.FilterText.text = string.Empty;
 
-            var modifiers = target.GetModifiers<GameModifier>().OrderBy(x => x.ModifierName).ToList();
+            var modifiers = target.GetModifiers<GameModifier>().Where(x => x is not ExcludedGameModifier).OrderBy(x => x.ModifierName).ToList();
             if (modifiers.Count != 0)
             {
                 var modifierTextBuilder = new StringBuilder($"<color=#FFFFFF><size=100%>(");
