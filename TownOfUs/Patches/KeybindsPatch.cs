@@ -1,6 +1,7 @@
 using HarmonyLib;
 using Rewired;
 using Rewired.Data;
+using TownOfUs.Utilities;
 
 namespace TownOfUs.Patches
 {
@@ -51,23 +52,31 @@ namespace TownOfUs.Patches
     {
         public static void Postfix(HudManager __instance)
         {
-            if (PlayerControl.LocalPlayer?.Data == null) return;
+            if (PlayerControl.LocalPlayer == null) return;
+            if (PlayerControl.LocalPlayer.Data == null) return;
             if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            if (PlayerControl.LocalPlayer.IsImpostor()) return;
 
-            // for neutrals/engi
+            // for neutrals
 
             var button = __instance.KillButton;
             var vent = __instance.ImpostorVentButton;
 
-            bool killKey = ReInput.players.GetPlayer(0).GetButtonDown("ActionSecondary");
-            var controllerKill = ConsoleJoystick.player.GetButtonDown(8);
-            if ((killKey || controllerKill) && button != null)
-                button.DoClick();
+            if (button.isActiveAndEnabled)
+            {
+                bool killKey = ReInput.players.GetPlayer(0).GetButtonDown("ActionSecondary");
+                var controllerKill = ConsoleJoystick.player.GetButtonDown(8);
+                if (killKey || controllerKill)
+                    button.DoClick();
+            }
 
-            bool ventKey = ReInput.players.GetPlayer(0).GetButtonDown("UseVent");
-            var controllerVent = ConsoleJoystick.player.GetButtonDown(50);
-            if ((ventKey || controllerVent) && vent != null)
-                vent.DoClick();
+            if (vent.isActiveAndEnabled)
+            {
+                bool ventKey = ReInput.players.GetPlayer(0).GetButtonDown("UseVent");
+                var controllerVent = ConsoleJoystick.player.GetButtonDown(50);
+                if (ventKey || controllerVent)
+                    vent.DoClick();
+            }
         }
     }
 }
