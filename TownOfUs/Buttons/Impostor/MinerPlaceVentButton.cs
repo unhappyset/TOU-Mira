@@ -1,5 +1,6 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
+using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles.Impostor;
 using UnityEngine;
@@ -44,7 +45,7 @@ public sealed class MinerPlaceVentButton : TownOfUsRoleButton<MinerRole>, IAfter
             PlayerControl.LocalPlayer.Collider.bounds.center, PlayerControl.LocalPlayer.transform.position, Constants.ShipAndAllObjectsMask,
             false);
 
-        return hits.Count == 0 && noConflict;
+        return hits.Count == 0 && noConflict && !ModCompatibility.GetPlayerElevator(PlayerControl.LocalPlayer).Item1;
     }
 
     protected override void OnClick()
