@@ -14,6 +14,7 @@ using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modifiers.Neutral;
+using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Roles.Neutral;
@@ -301,46 +302,52 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             return (TP1Position, TP2Position);
         }
     }
-        public static void Transport(MonoBehaviour mono, Vector3 position)
+    public static void Transport(MonoBehaviour mono, Vector3 position)
+    {
+        if (mono.TryCast<PlayerControl>() is PlayerControl player && player.HasModifier<ImmovableModifier>())
         {
-            if (mono.TryCast<PlayerControl>() is PlayerControl player && player.HasModifier<ImmovableModifier>())
-            {
-                return;
-            }
+            return;
+        }
 
-            if (mono.TryCast<DeadBody>() is DeadBody deadBody && MiscUtils.PlayerById(deadBody.ParentId)?.HasModifier<ImmovableModifier>() == true)
-            {
-                return;
-            }
+        if (mono.TryCast<DeadBody>() is DeadBody deadBody && MiscUtils.PlayerById(deadBody.ParentId)?.HasModifier<ImmovableModifier>() == true)
+        {
+            return;
+        }
 
-            var cnt = mono.TryCast<CustomNetworkTransform>();
-            if (cnt != null)
-            {
-                cnt.SnapTo(position, (ushort)(cnt.lastSequenceId + 1));
+        var cnt = mono.TryCast<CustomNetworkTransform>();
+        if (cnt != null)
+        {
+            cnt.SnapTo(position, (ushort)(cnt.lastSequenceId + 1));
 
-                if (cnt.AmOwner)
+            if (cnt.AmOwner)
+            {
+                try
                 {
-                    try
-                    {
-                        Minigame.Instance.Close();
-                        Minigame.Instance.Close();
-                    }
-                    catch
-                    {
-                        //ignore
-                    }
+                    Minigame.Instance.Close();
+                    Minigame.Instance.Close();
+                }
+                catch
+                {
+                    //ignore
+                }
+
+                if (ModCompatibility.IsSubmerged())
+                {
+                    ModCompatibility.ChangeFloor(cnt.myPlayer.GetTruePosition().y > -7);
+                    ModCompatibility.CheckOutOfBoundsElevator(cnt.myPlayer);
                 }
             }
-            else
-            {
-                mono.transform.position = position;
-            }
-            
-            if (mono.TryCast<PlayerControl>() is PlayerControl player2 && player2.AmOwner)
+        }
+        else
+        {
+            mono.transform.position = position;
+        }
+
+        if (mono.TryCast<PlayerControl>() is PlayerControl player2 && player2.AmOwner)
         {
             MiscUtils.SnapPlayerCamera(PlayerControl.LocalPlayer);
         }
-        }
+    }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
@@ -353,7 +360,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             "The Transporter is a Crewmate Support role that can transport two players, dead or alive, to swap their locations."
                + MiscUtils.AppendOptionsText(GetType());
     }
-    
+
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities { get; } = [
         new("Transport",
