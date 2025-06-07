@@ -52,6 +52,8 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
         Button?.usesRemainingText.gameObject.SetActive(Timer <= 0);
         Button?.usesRemainingSprite.gameObject.SetActive(Timer <= 0);
         Button!.usesRemainingText.text = (int)Charge + "%";
+
+        base.FixedUpdate(playerControl);
     }
 
     public override bool CanUse()

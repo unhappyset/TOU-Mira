@@ -32,6 +32,8 @@ public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerCo
     {
         var numOfVampiresAlive = CustomRoleUtils.GetActiveRolesOfType<VampireRole>().Count(plr => !plr.Player.HasDied());
         Button?.OverrideText(numOfVampiresAlive < 2 ? "Bite" : "Kill");
+
+        base.FixedUpdate(playerControl);
     }
 
     public override bool IsTargetValid(PlayerControl? target)
