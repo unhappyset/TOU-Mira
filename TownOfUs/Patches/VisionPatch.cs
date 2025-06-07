@@ -3,6 +3,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using TownOfUs.Modifiers.Game.Crewmate;
 using TownOfUs.Modifiers.Impostor;
+using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
@@ -39,28 +40,42 @@ public static class VisionPatch
         }
         else
         {
-            SwitchSystem? switchSystem = null;
-
-            if (__instance.Systems != null &&
-                __instance.Systems.TryGetValue(SystemTypes.Electrical, out var system))
+            if (ModCompatibility.IsSubmerged())
             {
-                switchSystem = system.TryCast<SwitchSystem>();
+                if (player._object.HasModifier<TorchModifier>())
+                {
+                    __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, 1) * GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod * visionFactor;
+                }
+                else
+                {
+                    __result *= visionFactor;
+                }
             }
-
-            var t = switchSystem?.Level ?? 1;
-
-
-            if (player._object.HasModifier<TorchModifier>()) t = 1;
-            
-            __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, t) * GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod * visionFactor;
-            var mapId = (MapNames)GameOptionsManager.Instance.currentNormalGameOptions.MapId;
-            if (TutorialManager.InstanceExists) mapId = (MapNames)AmongUsClient.Instance.TutorialMapId;
-            if (!player.Role.IsImpostor && OptionGroupSingleton<TownOfUsMapOptions>.Instance.SmallMapHalfVision &&
-            mapId is MapNames.MiraHQ or MapNames.Skeld or MapNames.Dleks)
+            else
             {
-                __result /= 2;
+                SwitchSystem? switchSystem = null;
+
+                if (__instance.Systems != null &&
+                    __instance.Systems.TryGetValue(SystemTypes.Electrical, out var system))
+                {
+                    switchSystem = system.TryCast<SwitchSystem>();
+                }
+
+                var t = switchSystem?.Level ?? 1;
+
+
+                if (player._object.HasModifier<TorchModifier>()) t = 1;
+                
+                __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, t) * GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod * visionFactor;
+                var mapId = (MapNames)GameOptionsManager.Instance.currentNormalGameOptions.MapId;
+                if (TutorialManager.InstanceExists) mapId = (MapNames)AmongUsClient.Instance.TutorialMapId;
+                if (!player.Role.IsImpostor && OptionGroupSingleton<TownOfUsMapOptions>.Instance.SmallMapHalfVision &&
+                mapId is MapNames.MiraHQ or MapNames.Skeld or MapNames.Dleks)
+                {
+                    __result /= 2;
+                }
+                if (player._object.HasModifier<ScoutModifier>()) __result = t == 1 ? __result * 1.5f : __result / 2;
             }
-            if (player._object.HasModifier<ScoutModifier>()) __result = t == 1 ? __result * 1.5f : __result / 2;
         }
 
         if (NerfMe && !PlayerControl.LocalPlayer.HasDied())
