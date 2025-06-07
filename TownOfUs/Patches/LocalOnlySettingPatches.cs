@@ -73,6 +73,7 @@ public static class LocalSettings
                     TownOfUsPlugin.ButtonUIFactor.Value = newVal;
                     if (HudManager.InstanceExists) HudManagerPatches.ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
                     var optionsMenu = GameObject.Find("OptionsMenu(Clone)");
+                    if (optionsMenu == null) optionsMenu = GameObject.Find("Menu(Clone)");
                     if (optionsMenu != null)
                     {
                         var title = optionsMenu.transform.GetChild(10);
