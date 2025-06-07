@@ -52,6 +52,7 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
     public static ConfigEntry<bool> UseCrewmateTeamColor { get; set; }
     public static ConfigEntry<bool> ShowVents { get; set; }
     public static ConfigEntry<int> GameSummaryMode { get; set; }
+    public static ConfigEntry<float> ButtonUIFactor { get; set; }
 
     /// <summary>
     /// The Load method for the plugin.
@@ -76,6 +77,7 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
         ColorPlayerName = Config.Bind("LocalSettings", "ColorPlayerName", false, "If your name is colored with your role color or if it's left as white.");
         UseCrewmateTeamColor = Config.Bind("LocalSettings", "UseCrewmateTeamColor", false, "Changes if all crewmate roles use the vanilla crewmate color instead.");
         ShowVents = Config.Bind("LocalSettings", "ShowVents", true, "If you see the vents on the minimap.");
+        ButtonUIFactor = Config.Bind("LocalSettings", "ButtonUIFactor", 0.8f, "Scale factor for buttons in-game. Preferably, keep the value between 0.5f and 1.5f.");
         GameSummaryMode = Config.Bind("LocalSettings", "GameSummaryMode", 1, "How the Game Summary appears in the Win Screen. 0 is to the left, 1 is split, and 2 is hidden.");
 
         Harmony.PatchAll();
