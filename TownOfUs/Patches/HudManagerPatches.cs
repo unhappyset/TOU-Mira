@@ -37,6 +37,33 @@ public static class HudManagerPatches
     public static GameObject RoleList;
     public static GameObject TeamChatButton;
     public static bool Zooming;
+    public static void ResizeUI(float scaleFactor)
+    {
+        foreach (AspectPosition aspect in HudManager.Instance.transform.FindChild("Buttons").GetComponentsInChildren<AspectPosition>(true))
+        {
+            if (aspect.gameObject.transform.parent.name == "TopRight") continue;
+            if (aspect.gameObject.transform.parent.transform.parent.name == "TopRight") continue;
+            var wasActive = aspect.isActiveAndEnabled;
+            aspect.gameObject.SetActive(false);
+            aspect.DistanceFromEdge *= new Vector2(scaleFactor, scaleFactor);
+            aspect.gameObject.SetActive(wasActive);
+        }
+        
+        foreach (ActionButton button in HudManager.Instance.GetComponentsInChildren<ActionButton>(true))
+        {
+            var wasActive = button.isActiveAndEnabled;
+            button.gameObject.SetActive(false);
+            button.gameObject.transform.localScale *= scaleFactor;
+            button.gameObject.SetActive(wasActive);
+        }
+        foreach (GridArrange arrange in HudManager.Instance.transform.FindChild("Buttons").GetComponentsInChildren<GridArrange>(true))
+        {
+            var wasActive = arrange.isActiveAndEnabled;
+            arrange.gameObject.SetActive(false);
+            arrange.CellSize *= new Vector2(scaleFactor, scaleFactor);
+            arrange.gameObject.SetActive(wasActive);
+        }
+    }
     public static void Zoom()
     {
         Zooming = !Zooming;
@@ -102,6 +129,12 @@ public static class HudManagerPatches
         }
     }
 
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
+    [HarmonyPostfix]
+    public static void HudManagerStartPatch(HudManager __instance)
+    {
+        ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
+    }
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     [HarmonyPostfix]
     public static void HudManagerUpdatePatch(HudManager __instance)

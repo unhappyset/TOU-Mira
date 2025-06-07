@@ -14,7 +14,7 @@ namespace TownOfUs.Patches;
 
 public static class LocalSettings
 {
-    private static readonly SelectionBehaviour[] AllOptions = [
+    private static SelectionBehaviour[] AllOptions = [
             new()
             {
                 Title = "Other Ghosts Visible When Dead",
@@ -60,6 +60,28 @@ public static class LocalSettings
                 Title = "Show Vents On Task Map",
                 OnClick = () => { return TownOfUsPlugin.ShowVents.Value = !TownOfUsPlugin.ShowVents.Value; },
                 DefaultValue = TownOfUsPlugin.ShowVents.Value
+            },
+            new()
+            {
+                Title = $"Ui Scale Factor: {Math.Round(TownOfUsPlugin.ButtonUIFactor.Value, 2)}x",
+                OnClick = () =>
+                {
+                    if (HudManager.InstanceExists) HudManagerPatches.ResizeUI(1f / TownOfUsPlugin.ButtonUIFactor.Value);
+                    var newVal = TownOfUsPlugin.ButtonUIFactor.Value + 0.1f;
+                    if (newVal >= 1.6f) newVal = 0.5f;
+                    else if (newVal <= 0.5f) newVal = 0.5f;
+                    TownOfUsPlugin.ButtonUIFactor.Value = newVal;
+                    if (HudManager.InstanceExists) HudManagerPatches.ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
+                    var optionsMenu = GameObject.Find("OptionsMenu(Clone)");
+                    if (optionsMenu == null) optionsMenu = GameObject.Find("Menu(Clone)");
+                    if (optionsMenu != null)
+                    {
+                        var title = optionsMenu.transform.GetChild(10);
+                        if (title != null && title.transform.GetChild(2).TryGetComponent<TextMeshPro>(out var txt)) txt.text = $"Ui Scale Factor: {Math.Round(newVal, 2)}x";
+                    }
+                    return TownOfUsPlugin.ButtonUIFactor.Value == 0.9f;
+                },
+                DefaultValue = TownOfUsPlugin.ButtonUIFactor.Value == 0.9f
             },
         ];
 

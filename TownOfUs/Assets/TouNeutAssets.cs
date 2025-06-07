@@ -19,6 +19,7 @@ public static class TouNeutAssets
     public static LoadableAsset<Sprite> Observe { get; } = new LoadableResourceAsset($"{ButtonPath}.ObserveButton.png");
     public static LoadableAsset<Sprite> JesterVentSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.JesterVentButton.png");
     public static LoadableAsset<Sprite> InquisKillSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.InquisKillButton.png");
+    public static LoadableAsset<Sprite> InquireSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.InquireButton.png");
 
     public static LoadableAsset<Sprite> DouseButtonSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.DouseButton.png");
     public static LoadableAsset<Sprite> IgniteButtonSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.IgniteButton.png");
