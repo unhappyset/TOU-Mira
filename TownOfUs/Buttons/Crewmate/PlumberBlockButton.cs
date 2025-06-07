@@ -1,7 +1,9 @@
 ﻿using MiraAPI.GameOptions;
+using MiraAPI.Hud;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
+using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
 using UnityEngine;
@@ -24,7 +26,17 @@ public sealed class PlumberBlockButton : TownOfUsRoleButton<PlumberRole, Vent>
 
     private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.NotShipMask);
 
-    public override Vent? GetTarget() => PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
+    public override Vent? GetTarget()
+    {
+        var vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
+
+        if (ModCompatibility.IsSubmerged() && vent != null && (vent.Id == 0 || vent.Id == 14))
+        {
+            vent = null;
+        }
+
+        return vent;
+    }
 
     protected override void OnClick()
     {
@@ -38,5 +50,9 @@ public sealed class PlumberBlockButton : TownOfUsRoleButton<PlumberRole, Vent>
         notif1.Text.SetOutlineThickness(0.35f);
 
         PlumberRole.RpcPlumberBlockVent(PlayerControl.LocalPlayer, Target.Id);
+
+        var flush = CustomButtonSingleton<PlumberFlushButton>.Instance;
+
+        flush?.SetTimer(flush.Cooldown);
     }
 }
