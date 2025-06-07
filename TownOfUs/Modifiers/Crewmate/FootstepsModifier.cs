@@ -3,6 +3,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -62,6 +63,11 @@ public sealed class FootstepsModifier : BaseModifier
                 rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward),
             },
         };
+
+        if (ModCompatibility.IsSubmerged())
+        {
+            footstep.AddSubmergedComponent("ElevatorMover");
+        }
 
         var sprite = footstep.AddComponent<SpriteRenderer>();
         sprite.sprite = TouAssets.FootprintSprite.LoadAsset();
