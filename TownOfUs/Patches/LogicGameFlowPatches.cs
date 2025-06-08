@@ -17,6 +17,35 @@ namespace TownOfUs.Patches;
 [HarmonyPatch]
 public static class LogicGameFlowPatches
 {
+    [HarmonyPatch(typeof(GameData), nameof(GameData.RecomputeTaskCounts))]
+    [HarmonyPrefix]
+    private static bool RecomputeTasksPatch(GameData __instance)
+    {
+        __instance.TotalTasks = 0;
+        __instance.CompletedTasks = 0;
+        for (var i = 0; i < __instance.AllPlayers.Count; i++)
+        {
+            var playerInfo = __instance.AllPlayers.ToArray()[i];
+            if (!playerInfo.Disconnected && playerInfo.Tasks != null && playerInfo.Object &&
+                (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !playerInfo.IsDead) && !playerInfo._object.IsImpostor() &&
+                !(
+                    (playerInfo._object.TryGetModifier<LoverModifier>(out var lover) && !lover.OtherLover!.IsCrewmate())
+                    || playerInfo._object.HasModifier<EgotistModifier>()
+                    || !playerInfo._object.Data.Role.TasksCountTowardProgress
+                ))
+            {
+                for (var j = 0; j < playerInfo.Tasks.Count; j++)
+                {
+                    __instance.TotalTasks++;
+                    if (playerInfo.Tasks.ToArray()[j].Complete) __instance.CompletedTasks++;
+                }
+            }
+        }
+
+        if (__instance.TotalTasks == 0) __instance.TotalTasks = 1; // This results in avoiding unfair task wins by essentially defaulting to 0/1 which can never lead to a win
+
+        return false;
+    }
     public static bool CheckEndGameViaTasks(LogicGameFlowNormal instance)
     {
         GameData.Instance.RecomputeTaskCounts();
