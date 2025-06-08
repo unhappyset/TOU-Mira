@@ -60,9 +60,9 @@ public abstract class TownOfUsButton : CustomActionButton
         if (TextOutlineColor != Color.clear)
         {
             SetTextOutline(TextOutlineColor);
+            Button.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        Button.usesRemainingSprite.color = TextOutlineColor;
         TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
 
         PassiveComp = Button.GetComponent<PassiveButton>();
@@ -157,8 +157,9 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
         if (TextOutlineColor != Color.clear)
         {
             SetTextOutline(TextOutlineColor);
+            Button.usesRemainingSprite.color = TextOutlineColor;
         }
-        Button.usesRemainingSprite.color = TextOutlineColor;
+
         TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
         
         PassiveComp = Button.GetComponent<PassiveButton>();
