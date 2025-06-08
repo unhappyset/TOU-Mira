@@ -211,7 +211,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
     public bool WinConditionMet()
     {
         if (Player.HasDied()) return false;
-        if (!OptionGroupSingleton<DoomsayerOptions>.Instance.WinEndsGame) return false;
+        if (OptionGroupSingleton<DoomsayerOptions>.Instance.DoomWin is not DoomWinOptions.EndsGame) return false;
 
         return AllGuessesCorrect;
     }
@@ -292,7 +292,8 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
             }
             else if (opts.DoomsayerGuessAllAtOnce)
             {
-                AllVictims.Do(victim => Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false));
+                if (opts.DoomsayerKillOnlyLast) Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false);
+                else AllVictims.Do(victim => Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false));
             }
             else
             {

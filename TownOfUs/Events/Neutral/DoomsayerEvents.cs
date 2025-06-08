@@ -25,7 +25,7 @@ public static class DoomsayerEvents
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (@event.TriggeredByIntro) return;
-        if (OptionGroupSingleton<DoomsayerOptions>.Instance.WinEndsGame) return;
+        if (OptionGroupSingleton<DoomsayerOptions>.Instance.DoomWin is not DoomWinOptions.Leaves) return;
 
         var doom = CustomRoleUtils.GetActiveRolesOfType<DoomsayerRole>().FirstOrDefault(x => x.AllGuessesCorrect && !x.Player.HasDied());
         if (doom != null)

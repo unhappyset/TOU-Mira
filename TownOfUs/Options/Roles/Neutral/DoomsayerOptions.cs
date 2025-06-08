@@ -1,5 +1,6 @@
 using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
 using TownOfUs.Roles.Neutral;
 
@@ -17,10 +18,21 @@ public sealed class DoomsayerOptions : AbstractOptionGroup<DoomsayerRole>
 
     [ModdedToggleOption("Doomsayer Guesses All Roles At Once")]
     public bool DoomsayerGuessAllAtOnce { get; set; } = false;
+    public ModdedToggleOption DoomsayerKillOnlyLast { get; set; } = new("Kill Only The Last Victim", false)
+    {
+        Visible = () => OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessAllAtOnce
+    };
 
     [ModdedToggleOption("Doomsayer Can't Observe")]
     public bool CantObserve { get; set; } = false;
 
-    [ModdedToggleOption("Winning Ends The Game")]
-    public bool WinEndsGame { get; set; } = true;
+    [ModdedEnumOption("Doomsayer Win", typeof(DoomWinOptions), ["Ends Game", "Leaves In Victory", "Nothing"])]
+    public DoomWinOptions DoomWin { get; set; } = DoomWinOptions.EndsGame;
+
+}
+public enum DoomWinOptions
+{
+    EndsGame,
+    Leaves,
+    Nothing
 }
