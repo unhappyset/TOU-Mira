@@ -11,7 +11,7 @@ public sealed class AmnesiacRememberButton : TownOfUsRoleButton<AmnesiacRole, De
     public override string Name => "Remember";
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Amnesiac;
-    public override float Cooldown => MapCooldown;
+    public override float Cooldown => 0.001f + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.RememberButtonSprite;
 
     public override DeadBody? GetTarget() => PlayerControl.LocalPlayer.GetNearestDeadBody(Distance);

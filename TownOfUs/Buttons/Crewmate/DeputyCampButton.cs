@@ -13,7 +13,7 @@ public sealed class CampButton : TownOfUsRoleButton<DeputyRole, PlayerControl>
     public override string Name => "Camp";
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Deputy;
-    public override float Cooldown => MapCooldown;
+    public override float Cooldown => 0.001f + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.CampButtonSprite;
     public bool Usable = true;
 

@@ -13,7 +13,7 @@ public sealed class MercenaryBribeButton : TownOfUsRoleButton<MercenaryRole, Pla
     public override string Name => "Bribe";
     public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Mercenary;
-    public override float Cooldown => MapCooldown;
+    public override float Cooldown => 0.001f + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.BribeSprite;
 
     public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && Role.CanBribe;

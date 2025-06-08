@@ -13,7 +13,7 @@ public sealed class MedicShieldButton : TownOfUsRoleButton<MedicRole, PlayerCont
     public override string Name => "Shield";
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Medic;
-    public override float Cooldown => MapCooldown;
+    public override float Cooldown => 0.001f + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.MedicSprite;
     public bool CanChangeTarget = OptionGroupSingleton<MedicOptions>.Instance.ChangeTarget;
 

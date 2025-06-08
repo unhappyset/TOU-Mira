@@ -16,7 +16,7 @@ public sealed class AltruistReviveButton : TownOfUsRoleButton<AltruistRole>
     public override string Name => "Revive";
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Altruist;
-    public override float Cooldown => MapCooldown;
+    public override float Cooldown => 0.001f + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<AltruistOptions>.Instance.ReviveDuration;
     public override int MaxUses => (int)OptionGroupSingleton<AltruistOptions>.Instance.MaxRevives;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.ReviveSprite;

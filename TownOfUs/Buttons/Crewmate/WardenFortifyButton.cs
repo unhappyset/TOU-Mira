@@ -11,7 +11,7 @@ public sealed class WardenFortifyButton : TownOfUsRoleButton<WardenRole, PlayerC
     public override string Name => "Fortify";
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Warden;
-    public override float Cooldown => MapCooldown;
+    public override float Cooldown => 0.001f + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.FortifySprite;
 
     public override bool CanUse()
