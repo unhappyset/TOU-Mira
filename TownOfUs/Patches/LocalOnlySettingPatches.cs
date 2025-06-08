@@ -17,28 +17,28 @@ public static class LocalSettings
     private static SelectionBehaviour[] AllOptions = [
             new()
             {
-                Title = "Other Ghosts Visible When Dead",
+                Title = "Show Other Ghosts When Dead",
                 ObjName = "VisibleGhostsToggle",
                 OnClick = () => { return TownOfUsPlugin.DeadSeeGhosts.Value = !TownOfUsPlugin.DeadSeeGhosts.Value; },
                 DefaultValue = TownOfUsPlugin.DeadSeeGhosts.Value
             },
             new()
             {
-                Title = "Show Vents On Task Map",
+                Title = "Show Vents On Map",
                 ObjName = "ShowVentsToggle",
                 OnClick = () => { return TownOfUsPlugin.ShowVents.Value = !TownOfUsPlugin.ShowVents.Value; },
                 DefaultValue = TownOfUsPlugin.ShowVents.Value
             },
             new()
             {
-                Title = "Show Welcome Message",
+                Title = "Show Welcome Msg",
                 ObjName = "WelcomeMsgToggle",
                 OnClick = () => { return TownOfUsPlugin.ShowWelcomeMessage.Value = !TownOfUsPlugin.ShowWelcomeMessage.Value; },
                 DefaultValue = TownOfUsPlugin.ShowWelcomeMessage.Value
             },
             new()
             {
-                Title = "Show Summary Message",
+                Title = "Show Summary Msg",
                 ObjName = "SummaryMsgToggle",
                 OnClick = () => { return TownOfUsPlugin.ShowSummaryMessage.Value = !TownOfUsPlugin.ShowSummaryMessage.Value; },
                 DefaultValue = TownOfUsPlugin.ShowSummaryMessage.Value
@@ -48,6 +48,7 @@ public static class LocalSettings
                 Title = "Colored Player Name",
                 ObjName = "ColoredPlayerNameToggle",
                 Enabled = Palette.CrewmateBlue,
+                Disabled = new(0.4f, 0f, 0.6f, 1f),
                 Hover = Palette.CrewmateRoleBlue,
                 OnClick = () => { return TownOfUsPlugin.ColorPlayerName.Value = !TownOfUsPlugin.ColorPlayerName.Value; },
                 DefaultValue = TownOfUsPlugin.ColorPlayerName.Value
@@ -57,6 +58,7 @@ public static class LocalSettings
                 Title = "Use Basic Crew Colors",
                 ObjName = "BasicCrewColorsToggle",
                 Enabled = Palette.CrewmateBlue,
+                Disabled = new(0.4f, 0f, 0.6f, 1f),
                 Hover = Palette.CrewmateRoleBlue,
                 OnClick = () =>
                 {
@@ -67,7 +69,7 @@ public static class LocalSettings
             },
             new()
             {
-                Title = "Show Shields on Modifier Hud",
+                Title = "Show Shields On Hud",
                 Enabled = new(0f, 1f, 0.7f, 1f),
                 Hover = new(0f, 0.4f, 0f, 1f),
                 ObjName = "ShieldsHudToggle",
@@ -76,10 +78,10 @@ public static class LocalSettings
             },
             new()
             {
-                Title = $"Button UI Scale Factor: {Math.Round(TownOfUsPlugin.ButtonUIFactor.Value, 2)}x",
+                Title = $"Button Scale Factor: {Math.Round(TownOfUsPlugin.ButtonUIFactor.Value, 2)}x",
                 ObjName = "ButtonScaleFloat",
                 Enabled = TownOfUsColors.Inquisitor,
-                Disabled = TownOfUsColors.Inquisitor,
+                Disabled = TownOfUsColors.Juggernaut,
                 Hover = TownOfUsColors.Vampire,
                 OnClick = () =>
                 {
@@ -96,9 +98,9 @@ public static class LocalSettings
                         var title = optionsMenu.transform.FindChild("ButtonScaleFloat");
                         if (title != null && title.transform.GetChild(2).TryGetComponent<TextMeshPro>(out var txt)) txt.text = $"Button UI Scale Factor: {Math.Round(newVal, 2)}x";
                     }
-                    return TownOfUsPlugin.ButtonUIFactor.Value == 0.9f;
+                    return TownOfUsPlugin.ButtonUIFactor.Value < 1f;
                 },
-                DefaultValue = TownOfUsPlugin.ButtonUIFactor.Value == 0.9f
+                DefaultValue = TownOfUsPlugin.ButtonUIFactor.Value < 1f
             },
         ];
 
@@ -242,7 +244,7 @@ public static class LocalSettings
             transform.localPosition = pos;
 
             button.onState = info.DefaultValue;
-            button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
+            button.Background.color = button.onState ? info.Enabled : info.Disabled;
 
             button.Text.text = info.Title;
             button.Text.fontSizeMin = button.Text.fontSizeMax = 1.8f;

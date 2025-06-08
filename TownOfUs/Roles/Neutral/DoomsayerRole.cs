@@ -1,5 +1,6 @@
 using System.Text;
 using AmongUs.GameOptions;
+using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
@@ -40,6 +41,8 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
     public int NumberOfGuesses { get; set; }
     public int IncorrectGuesses { get; set; }
     public bool AllGuessesCorrect { get; set; }
+    [HideFromIl2Cpp]
+    public List<PlayerControl> AllVictims { get; } = [];
 
     private MeetingMenu meetingMenu;
 
@@ -73,8 +76,9 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
         {
             meetingMenu.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
 
-            NumberOfGuesses = 0;
+            if (OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessAllAtOnce) NumberOfGuesses = 0;
             IncorrectGuesses = 0;
+            AllVictims.Clear();
             AllGuessesCorrect = false;
         }
 
@@ -244,7 +248,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
         {
             var opts = OptionGroupSingleton<DoomsayerOptions>.Instance;
 
-            NumberOfGuesses++;
+            if (opts.DoomsayerGuessAllAtOnce) NumberOfGuesses++;
             meetingMenu?.HideSingle(targetId);
 
             var playersAlive = PlayerControl.AllPlayerControls.ToArray().Count(x => !x.HasDied() && !x.IsJailed() && x != Player);
@@ -263,9 +267,13 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
             else if (!opts.DoomsayerGuessAllAtOnce)
             {
                 Coroutines.Start(MiscUtils.CoFlash(Color.green));
+                NumberOfGuesses++;
             }
-
-            if ((NumberOfGuesses < 2 && playersAlive < 3) || (NumberOfGuesses < (int)opts.DoomsayerGuessesToWin && playersAlive > 2))
+            else
+            {
+                AllVictims.Add(victim);
+            }
+            if (((NumberOfGuesses < 2 && playersAlive < 3) || (NumberOfGuesses < (int)opts.DoomsayerGuessesToWin && playersAlive > 2)) && opts.DoomsayerGuessAllAtOnce)
             {
                 shapeMenu.Close();
                 return;
@@ -273,7 +281,18 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
 
             if (IncorrectGuesses > 0 && opts.DoomsayerGuessAllAtOnce)
             {
+                var text = (NumberOfGuesses - AllVictims.Count) == 1 ? $"<b>Only one guess was incorrect!</b>" : $"<b>{NumberOfGuesses - AllVictims.Count} guesses were incorrect.</b>";
+                var notif1 = Helpers.CreateAndShowNotification(
+                    text, Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
+
+                notif1.Text.SetOutlineThickness(0.35f);
+                    notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+
                 Coroutines.Start(MiscUtils.CoFlash(Color.red));
+            }
+            else if (opts.DoomsayerGuessAllAtOnce)
+            {
+                AllVictims.Do(victim => Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false));
             }
             else
             {
@@ -281,7 +300,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
                 Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false);
             }
 
-            meetingMenu?.HideButtons();
+            if (opts.DoomsayerGuessAllAtOnce || NumberOfGuesses == (int)opts.DoomsayerGuessesToWin) meetingMenu?.HideButtons();
 
             shapeMenu.Close();
         }

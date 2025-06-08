@@ -15,7 +15,7 @@ public static class DoomsayerEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (@event.Source.Data.Role is DoomsayerRole && @event.Source.AmOwner)
+        if (@event.Source.Data.Role is DoomsayerRole doom && @event.Source.AmOwner && (int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin == doom.NumberOfGuesses)
         {
             DoomsayerRole.RpcDoomsayerWin(@event.Source);
         }
