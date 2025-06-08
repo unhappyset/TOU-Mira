@@ -179,19 +179,19 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         players.Shuffle();
         players.Shuffle();
 
-        var neut = players.Any(x => x.IsNeutral()) ? players.FirstOrDefault(x => x.IsNeutral()) : players.Random();
-        players.Remove(neut);
-        players.Shuffle();
-
-        var imp = players.Any(x => x.IsImpostor()) ? players.FirstOrDefault(x => x.IsImpostor()) : players.Random();
-        players.Remove(imp);
+        var killer = players.Any(x => x.IsNeutral() || x.IsImpostor()) ? players.FirstOrDefault(x => x.IsNeutral() || x.IsImpostor()) : players.Random();
+        players.Remove(killer);
         players.Shuffle();
 
         var crew = players.Any(x => x.IsCrewmate()) ? players.FirstOrDefault(x => x.IsCrewmate()) : players.Random();
         players.Remove(crew);
         players.Shuffle();
 
-        List<PlayerControl> filtered = [neut, imp, crew];
+        var random = players.Random();
+        players.Remove(random);
+        players.Shuffle();
+
+        List<PlayerControl> filtered = [killer, crew, random];
         var other = players.Random();
         if (required is 4 or 5 && players.Count >= 1 && other != null)
         {
