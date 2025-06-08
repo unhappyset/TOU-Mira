@@ -25,13 +25,13 @@ public sealed class ScientistModifier : TouGameModifier, IWikiDiscoverable
         if (!Player.AmOwner) return;
         CustomButtonSingleton<ScientistButton>.Instance.AvailableCharge = OptionGroupSingleton<ScientistOptions>.Instance.StartingCharge;
     }
-    public static void OnRoundStart(PlayerControl playerControl)
+    public static void OnRoundStart()
     {
-        if (playerControl.HasModifier<ScientistModifier>()) CustomButtonSingleton<ScientistButton>.Instance.AvailableCharge += OptionGroupSingleton<ScientistOptions>.Instance.RoundCharge;
+        CustomButtonSingleton<ScientistButton>.Instance.AvailableCharge += OptionGroupSingleton<ScientistOptions>.Instance.RoundCharge;
     }
-    public static void OnTaskComplete(PlayerControl playerControl)
+    public static void OnTaskComplete()
     {
-        if (playerControl.HasModifier<ScientistModifier>()) CustomButtonSingleton<ScientistButton>.Instance.AvailableCharge += OptionGroupSingleton<ScientistOptions>.Instance.TaskCharge;
+        CustomButtonSingleton<ScientistButton>.Instance.AvailableCharge += OptionGroupSingleton<ScientistOptions>.Instance.TaskCharge;
     }
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.ScientistChance;

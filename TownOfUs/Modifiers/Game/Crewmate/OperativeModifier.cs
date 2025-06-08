@@ -26,13 +26,13 @@ public sealed class OperativeModifier : TouGameModifier, IWikiDiscoverable
         if (!Player.AmOwner) return;
         CustomButtonSingleton<SecurityButton>.Instance.AvailableCharge = OptionGroupSingleton<OperativeOptions>.Instance.StartingCharge;
     }
-    public static void OnRoundStart(PlayerControl playerControl)
+    public static void OnRoundStart()
     {
-        if (playerControl.HasModifier<ScientistModifier>()) CustomButtonSingleton<SecurityButton>.Instance.AvailableCharge += OptionGroupSingleton<OperativeOptions>.Instance.RoundCharge;
+        CustomButtonSingleton<SecurityButton>.Instance.AvailableCharge += OptionGroupSingleton<OperativeOptions>.Instance.RoundCharge;
     }
-    public static void OnTaskComplete(PlayerControl playerControl)
+    public static void OnTaskComplete()
     {
-        if (playerControl.HasModifier<ScientistModifier>()) CustomButtonSingleton<SecurityButton>.Instance.AvailableCharge += OptionGroupSingleton<OperativeOptions>.Instance.TaskCharge;
+        CustomButtonSingleton<SecurityButton>.Instance.AvailableCharge += OptionGroupSingleton<OperativeOptions>.Instance.TaskCharge;
     }
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.OperativeChance;

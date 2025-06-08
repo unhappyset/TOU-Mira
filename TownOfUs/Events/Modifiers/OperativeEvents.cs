@@ -14,13 +14,13 @@ public static class OperativeEvents
     {
         if (@event.Player.HasModifier<OperativeModifier>() && @event.Player.AmOwner)
         {
-            OperativeModifier.OnTaskComplete(@event.Player);
+            OperativeModifier.OnTaskComplete();
         }
     }
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
         if (@event.TriggeredByIntro) return; // Never run when round starts.
-        if (PlayerControl.LocalPlayer.HasModifier<OperativeModifier>()) OperativeModifier.OnRoundStart(PlayerControl.LocalPlayer);
+        if (PlayerControl.LocalPlayer.HasModifier<OperativeModifier>()) OperativeModifier.OnRoundStart();
     }
 }
