@@ -18,36 +18,46 @@ public static class LocalSettings
             new()
             {
                 Title = "Other Ghosts Visible When Dead",
+                ObjName = "VisibleGhostsToggle",
                 OnClick = () => { return TownOfUsPlugin.DeadSeeGhosts.Value = !TownOfUsPlugin.DeadSeeGhosts.Value; },
                 DefaultValue = TownOfUsPlugin.DeadSeeGhosts.Value
             },
             new()
             {
-                Title = "Show Shields on Modifier Hud",
-                OnClick = () => { return TownOfUsPlugin.ShowShieldHud.Value = !TownOfUsPlugin.ShowShieldHud.Value; },
-                DefaultValue = TownOfUsPlugin.ShowShieldHud.Value
+                Title = "Show Vents On Task Map",
+                ObjName = "ShowVentsToggle",
+                OnClick = () => { return TownOfUsPlugin.ShowVents.Value = !TownOfUsPlugin.ShowVents.Value; },
+                DefaultValue = TownOfUsPlugin.ShowVents.Value
             },
             new()
             {
                 Title = "Show Welcome Message",
+                ObjName = "WelcomeMsgToggle",
                 OnClick = () => { return TownOfUsPlugin.ShowWelcomeMessage.Value = !TownOfUsPlugin.ShowWelcomeMessage.Value; },
                 DefaultValue = TownOfUsPlugin.ShowWelcomeMessage.Value
             },
             new()
             {
                 Title = "Show Summary Message",
+                ObjName = "SummaryMsgToggle",
                 OnClick = () => { return TownOfUsPlugin.ShowSummaryMessage.Value = !TownOfUsPlugin.ShowSummaryMessage.Value; },
                 DefaultValue = TownOfUsPlugin.ShowSummaryMessage.Value
             },
             new()
             {
                 Title = "Colored Player Name",
+                ObjName = "ColoredPlayerNameToggle",
+                Enabled = Palette.CrewmateBlue,
+                Hover = Palette.CrewmateRoleBlue,
                 OnClick = () => { return TownOfUsPlugin.ColorPlayerName.Value = !TownOfUsPlugin.ColorPlayerName.Value; },
                 DefaultValue = TownOfUsPlugin.ColorPlayerName.Value
             },
             new()
             {
                 Title = "Use Basic Crew Colors",
+                ObjName = "BasicCrewColorsToggle",
+                Enabled = Palette.CrewmateBlue,
+                Hover = Palette.CrewmateRoleBlue,
                 OnClick = () =>
                 {
                     TownOfUsColors.UseBasic = !TownOfUsPlugin.UseCrewmateTeamColor.Value;
@@ -57,13 +67,20 @@ public static class LocalSettings
             },
             new()
             {
-                Title = "Show Vents On Task Map",
-                OnClick = () => { return TownOfUsPlugin.ShowVents.Value = !TownOfUsPlugin.ShowVents.Value; },
-                DefaultValue = TownOfUsPlugin.ShowVents.Value
+                Title = "Show Shields on Modifier Hud",
+                Enabled = new(0f, 1f, 0.7f, 1f),
+                Hover = new(0f, 0.4f, 0f, 1f),
+                ObjName = "ShieldsHudToggle",
+                OnClick = () => { return TownOfUsPlugin.ShowShieldHud.Value = !TownOfUsPlugin.ShowShieldHud.Value; },
+                DefaultValue = TownOfUsPlugin.ShowShieldHud.Value
             },
             new()
             {
-                Title = $"Ui Scale Factor: {Math.Round(TownOfUsPlugin.ButtonUIFactor.Value, 2)}x",
+                Title = $"Button UI Scale Factor: {Math.Round(TownOfUsPlugin.ButtonUIFactor.Value, 2)}x",
+                ObjName = "ButtonScaleFloat",
+                Enabled = TownOfUsColors.Inquisitor,
+                Disabled = TownOfUsColors.Inquisitor,
+                Hover = TownOfUsColors.Vampire,
                 OnClick = () =>
                 {
                     if (HudManager.InstanceExists) HudManagerPatches.ResizeUI(1f / TownOfUsPlugin.ButtonUIFactor.Value);
@@ -72,12 +89,12 @@ public static class LocalSettings
                     else if (newVal <= 0.5f) newVal = 0.5f;
                     TownOfUsPlugin.ButtonUIFactor.Value = newVal;
                     if (HudManager.InstanceExists) HudManagerPatches.ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
-                    var optionsMenu = GameObject.Find("OptionsMenu(Clone)");
-                    if (optionsMenu == null) optionsMenu = GameObject.Find("Menu(Clone)");
+                    var optionsMenu = GameObject.Find("Menu(Clone)");
+                    if (optionsMenu == null) optionsMenu = GameObject.Find("OptionsMenu(Clone)");
                     if (optionsMenu != null)
                     {
-                        var title = optionsMenu.transform.GetChild(10);
-                        if (title != null && title.transform.GetChild(2).TryGetComponent<TextMeshPro>(out var txt)) txt.text = $"Ui Scale Factor: {Math.Round(newVal, 2)}x";
+                        var title = optionsMenu.transform.FindChild("ButtonScaleFloat");
+                        if (title != null && title.transform.GetChild(2).TryGetComponent<TextMeshPro>(out var txt)) txt.text = $"Button UI Scale Factor: {Math.Round(newVal, 2)}x";
                     }
                     return TownOfUsPlugin.ButtonUIFactor.Value == 0.9f;
                 },
@@ -232,7 +249,7 @@ public static class LocalSettings
             button.Text.font = Object.Instantiate(titleText.font);
             button.Text.GetComponent<RectTransform>().sizeDelta = new Vector2(2, 2);
 
-            button.name = info.Title.Replace(" ", "") + "Toggle";
+            button.name = info.ObjName;
             button.gameObject.SetActive(true);
 
             var passiveButton = button.GetComponent<PassiveButton>();
@@ -247,11 +264,11 @@ public static class LocalSettings
             passiveButton.OnClick.AddListener((Action)(() =>
             {
                 button.onState = info.OnClick();
-                button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
+                button.Background.color = button.onState ? info.Enabled : info.Disabled;
             }));
 
-            passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = new Color32(34, 139, 34, 255)));
-            passiveButton.OnMouseOut.AddListener((Action)(() => button.Background.color = button.onState ? Color.green : Palette.ImpostorRed));
+            passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = info.Hover));
+            passiveButton.OnMouseOut.AddListener((Action)(() => button.Background.color = button.onState ? info.Enabled : info.Disabled));
 
             foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
                 spr.size = new Vector2(2.2f, .7f);
@@ -265,6 +282,10 @@ public static class LocalSettings
         public Func<bool> OnClick;
 
         public bool DefaultValue;
+        public string ObjName;
+        public Color Enabled { get; set; } = Color.green;
+        public Color Disabled { get; set; } = Palette.ImpostorRed;
+        public Color Hover { get; set; } = new Color32(34, 139, 34, 255);
     }
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
