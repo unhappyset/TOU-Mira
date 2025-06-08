@@ -14,7 +14,7 @@ public static class FrostyEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (!@event.Target.HasModifier<FrostyModifier>() || @event.Source.HasModifier<FrozenModifier>()) return;
+        if (!@event.Target.HasModifier<FrostyModifier>() || @event.Source.HasModifier<FrozenModifier>() || MeetingHud.Instance != null) return;
         if (@event.Source.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(

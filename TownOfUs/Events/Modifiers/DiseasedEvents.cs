@@ -20,7 +20,7 @@ public static class DiseasedEvents
         var source = @event.Source;
         var target = @event.Target;
 
-        if (!target.HasModifier<DiseasedModifier>()) return;
+        if (!target.HasModifier<DiseasedModifier>() || MeetingHud.Instance != null) return;
 
         var cdMultiplier = OptionGroupSingleton<DiseasedOptions>.Instance.CooldownMultiplier;
         if (source.AmOwner)
