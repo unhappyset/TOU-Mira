@@ -606,8 +606,7 @@ public static class HudManagerPatches
                     (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
                     (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
                     SnitchRole.SnitchVisibilityFlag(player, true) ||
-                    !TutorialManager.InstanceExists && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
-                    SnitchRole.SnitchVisibilityFlag(player, true) ||
+                    !TutorialManager.InstanceExists && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
                     MayorRole.MayorVisibilityFlag(player)))
                 {
