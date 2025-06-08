@@ -13,7 +13,7 @@ public sealed class EgotistModifier : AllianceGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Egotist";
     public override string IntroInfo => $"Your Ego is Thriving...";
-    public override string Symbol => "#";
+    public override string Symbol => $"<size=100%>#</size>";
     public override float IntroSize => 4.4f;
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Egotist;
     public override string GetDescription() => "Defy the crew,\nwin with killers.";
