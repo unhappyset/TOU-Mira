@@ -10,6 +10,7 @@ using System.Collections;
 using System.Text;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Anims;
 using TownOfUs.Modules.Wiki;
@@ -125,6 +126,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
                 ModCompatibility.ChangeFloor(dead.transform.position.y > -7);
             }
 
+            if (dead.AmOwner && !dead.HasModifier<LoverModifier>()) HudManager.Instance.Chat.gameObject.SetActive(false);
             // return player from ghost role back to what they were when alive
             dead.ChangeRole((ushort)roleWhenAlive!.Role, false);
 
