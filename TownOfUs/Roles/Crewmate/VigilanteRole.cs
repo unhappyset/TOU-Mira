@@ -7,7 +7,6 @@ using MiraAPI.Networking;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TownOfUs.Modifiers.Crewmate;
-using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Components;
@@ -191,15 +190,19 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             return false;
         }
 
-        if (role.IsCrewmate())
+        if (role.IsCrewmate() && !PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>())
         {
             return false;
         }
-
-        if (role.IsImpostor())
+        else if (role.IsCrewmate())
         {
             return true;
         }
+
+        if (role.IsImpostor())
+            {
+                return true;
+            }
 
         if (touRole is PhantomTouRole)
         {
@@ -226,7 +229,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
     private static bool IsModifierValid(BaseModifier modifier)
     {
-        if (OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteGuessLovers && modifier is LoverModifier)
+        if (OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteGuessAlliances && modifier is AllianceGameModifier)
         {
             return true;
         }
@@ -243,9 +246,13 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
+        if (PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>())
+        {
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"You can shoot Crewmates with your alliance.");
+        }
         if ((int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots > 0)
         {
-            var newText = SafeShotsLeft == 0 ? $"\nYou have no more safe shots left." : $"\n{SafeShotsLeft} safe shot(s) left.";
+            var newText = SafeShotsLeft == 0 ? $"You have no more safe shots left." : $"{SafeShotsLeft} safe shot(s) left.";
             stringB.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
         }
 

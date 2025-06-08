@@ -7,6 +7,7 @@ using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TownOfUs.Modifiers;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
@@ -78,48 +79,54 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
             alignment = touRole.RoleAlignment;
         else if (Target.IsImpostor())
             alignment = RoleAlignment.ImpostorSupport;
-
-        switch (alignment)
+        if (!PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>() && !Target.HasModifier<AllianceGameModifier>())
         {
-            case RoleAlignment.ImpostorConcealing:
-            case RoleAlignment.ImpostorKilling:
-            case RoleAlignment.ImpostorSupport:
-                PlayerControl.LocalPlayer.RpcCustomMurder(Target);
-                break;
-
-            case RoleAlignment.NeutralBenign:
-            case RoleAlignment.CrewmateInvestigative:
-            case RoleAlignment.CrewmateKilling:
-            case RoleAlignment.CrewmateProtective:
-            case RoleAlignment.CrewmatePower:
-            case RoleAlignment.CrewmateSupport:
-                Misfire();
-                break;
-
-            case RoleAlignment.NeutralKilling:
-                if (!options.ShootNeutralKiller)
-                {
-                    Misfire();
-                }
-                else
-                {
+            switch (alignment)
+            {
+                case RoleAlignment.ImpostorConcealing:
+                case RoleAlignment.ImpostorKilling:
+                case RoleAlignment.ImpostorSupport:
                     PlayerControl.LocalPlayer.RpcCustomMurder(Target);
-                }
-                break;
+                    break;
 
-            case RoleAlignment.NeutralEvil:
-                if (!options.ShootNeutralEvil)
-                {
+                case RoleAlignment.NeutralBenign:
+                case RoleAlignment.CrewmateInvestigative:
+                case RoleAlignment.CrewmateKilling:
+                case RoleAlignment.CrewmateProtective:
+                case RoleAlignment.CrewmatePower:
+                case RoleAlignment.CrewmateSupport:
                     Misfire();
-                }
-                else
-                {
-                    PlayerControl.LocalPlayer.RpcCustomMurder(Target);
-                }
-                break;
-            default:
-                Misfire();
-                break;
+                    break;
+
+                case RoleAlignment.NeutralKilling:
+                    if (!options.ShootNeutralKiller)
+                    {
+                        Misfire();
+                    }
+                    else
+                    {
+                        PlayerControl.LocalPlayer.RpcCustomMurder(Target);
+                    }
+                    break;
+
+                case RoleAlignment.NeutralEvil:
+                    if (!options.ShootNeutralEvil)
+                    {
+                        Misfire();
+                    }
+                    else
+                    {
+                        PlayerControl.LocalPlayer.RpcCustomMurder(Target);
+                    }
+                    break;
+                default:
+                    Misfire();
+                    break;
+            }
+        }
+        else
+        {
+            PlayerControl.LocalPlayer.RpcCustomMurder(Target);
         }
 
         if (!OptionGroupSingleton<SheriffOptions>.Instance.SheriffBodyReport)

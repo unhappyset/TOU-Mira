@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
@@ -13,6 +14,7 @@ using TMPro;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Patches.Stubs;
@@ -170,7 +172,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             }
             else
             {
-                if (Jailed.Is(ModdedRoleTeams.Crewmate))
+                if (Jailed.Is(ModdedRoleTeams.Crewmate) && !Player.HasModifier<AllianceGameModifier>() && !Jailed.HasModifier<AllianceGameModifier>())
                 {
                     Executes = 0;
 
@@ -193,7 +195,13 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
-        return ITownOfUsRole.SetNewTabText(this);
+        var stringB = ITownOfUsRole.SetNewTabText(this);
+        if (PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>())
+        {
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"You can execute crewmates due to your alliance.");
+        }
+
+        return stringB;
     }
 
     public string GetAdvancedDescription()

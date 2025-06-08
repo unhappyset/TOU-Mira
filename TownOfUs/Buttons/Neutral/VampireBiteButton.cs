@@ -63,6 +63,7 @@ public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerCo
         if (target.Data.Role is VampireRole) return false;
         if (target.IsImpostor()) return false;
         if (target.Is(RoleAlignment.NeutralKilling)) return false;
+        if (target.HasModifier<EgotistModifier>()) return false;
 
         var options = OptionGroupSingleton<VampireOptions>.Instance;
         //var vampireCount = CustomRoleUtils.GetActiveRolesOfType<VampireRole>().Count(x => !x.Player.HasDied());

@@ -11,7 +11,7 @@ using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Modifiers;
-using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
@@ -201,7 +201,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
                 .Where(x => !x.IsRole<ExecutionerRole>() && !x.HasDied() &&
                     x.Is(ModdedRoleTeams.Crewmate) &&
                     !x.HasModifier<GuardianAngelTargetModifier>() &&
-                    !x.HasModifier<LoverModifier>() &&
+                    !x.HasModifier<AllianceGameModifier>() &&
                     x.Data.Role is not SwapperRole &&
                     x.Data.Role is not ProsecutorRole &&
                     x.Data.Role is not PoliticianRole &&

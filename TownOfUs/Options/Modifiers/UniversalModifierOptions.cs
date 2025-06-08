@@ -13,6 +13,9 @@ public sealed class UniversalModifierOptions : AbstractOptionGroup
 
     [ModdedNumberOption("Button Barry Chance", 0, 100, 10f, MiraNumberSuffixes.Percent)]
     public float ButtonBarryChance { get; set; } = 0;
+    
+    [ModdedNumberOption("Tiebreaker Chance", 0, 100, 10f, MiraNumberSuffixes.Percent)]
+    public float TiebreakerChance { get; set; } = 0;
 
     [ModdedNumberOption("Flash Amount", 0, 5, 1)]
     public float FlashAmount { get; set; } = 0;
@@ -69,9 +72,6 @@ public sealed class UniversalModifierOptions : AbstractOptionGroup
     {
         Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.SleuthAmount > 0,
     };
-
-    [ModdedNumberOption("Tiebreaker Chance", 0, 100, 10f, MiraNumberSuffixes.Percent)]
-    public float TiebreakerChance { get; set; } = 0;
 
     [ModdedNumberOption("Satellite Amount", 0, 5, 1)]
     public float SatelliteAmount { get; set; } = 0;

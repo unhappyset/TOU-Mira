@@ -2,6 +2,7 @@
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -27,7 +28,7 @@ public static class DeputyEvents
 
         if (GameHistory.PlayerStats.TryGetValue(source.PlayerId, out var stats))
         {
-            if (!target.IsCrewmate())
+            if (!target.IsCrewmate() || target.HasModifier<AllianceGameModifier>() || source.HasModifier<AllianceGameModifier>())
             {
                 stats.CorrectKills += 1;
             }

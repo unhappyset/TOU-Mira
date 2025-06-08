@@ -1,10 +1,13 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
+using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using TownOfUs.Buttons.Crewmate;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -37,7 +40,13 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
-        return ITownOfUsRole.SetNewTabText(this);
+        var stringB = ITownOfUsRole.SetNewTabText(this);
+        if (PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>())
+        {
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>You may shoot without repercussions due to your alliance.</b>");
+        }
+
+        return stringB;
     }
     public string GetAdvancedDescription()
     {

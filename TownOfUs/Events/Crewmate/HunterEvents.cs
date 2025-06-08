@@ -6,6 +6,7 @@ using MiraAPI.Events.Vanilla.Meeting.Voting;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
@@ -47,7 +48,7 @@ public static class HunterEvents
 
         if (GameHistory.PlayerStats.TryGetValue(source.PlayerId, out var stats))
         {
-            if (!target.IsCrewmate())
+            if (!target.IsCrewmate() || target.HasModifier<AllianceGameModifier>() || source.HasModifier<AllianceGameModifier>())
             {
                 stats.CorrectKills += 1;
             }

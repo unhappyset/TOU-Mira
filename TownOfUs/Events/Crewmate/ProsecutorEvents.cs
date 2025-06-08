@@ -5,7 +5,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
-using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -45,7 +45,7 @@ public static class ProsecutorEvents
 
         foreach (var pros in CustomRoleUtils.GetActiveRolesOfType<ProsecutorRole>())
         {
-            if (pros.HasProsecuted && OptionGroupSingleton<ProsecutorOptions>.Instance.ExileOnCrewmate && player.IsCrewmate() && !player.HasModifier<LoverModifier>())
+            if (pros.HasProsecuted && OptionGroupSingleton<ProsecutorOptions>.Instance.ExileOnCrewmate && player.IsCrewmate() && !pros.Player.HasModifier<AllianceGameModifier>() && !player.HasModifier<AllianceGameModifier>())
             {
                 pros.Player.Exiled();
             }

@@ -70,7 +70,7 @@ public sealed class AssassinOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessCrewModifiers,
     };
 
-    [ModdedToggleOption("Assassin Can Guess Lovers")]
-    public bool AssassinGuessLovers { get; set; } = true;
+    [ModdedToggleOption("Assassin Can Guess Alliances")]
+    public bool AssassinGuessAlliances { get; set; } = true;
 
 }

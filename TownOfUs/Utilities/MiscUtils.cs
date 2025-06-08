@@ -27,6 +27,8 @@ public static class MiscUtils
     public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
+    public static int RealKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish));
+
     public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish));
 
     public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&

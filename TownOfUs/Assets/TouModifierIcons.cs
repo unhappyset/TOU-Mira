@@ -12,6 +12,7 @@ public static class TouModifierIcons
     public static LoadableAsset<Sprite> ButtonBarry { get; } = new LoadableResourceAsset($"{iconPath}.ButtonBarry.png");
     public static LoadableAsset<Sprite> Celebrity { get; } = new LoadableResourceAsset($"{iconPath}.Celebrity.png");
     public static LoadableAsset<Sprite> Diseased { get; } = new LoadableResourceAsset($"{iconPath}.Diseased.png");
+    public static LoadableAsset<Sprite> Egotist { get; } = new LoadableResourceAsset($"{iconPath}.Egotist.png");
     public static LoadableAsset<Sprite> Frosty { get; } = new LoadableResourceAsset($"{iconPath}.Frosty.png");
     public static LoadableAsset<Sprite> Multitasker { get; } = new LoadableResourceAsset($"{iconPath}.Multitasker.png");
     public static LoadableAsset<Sprite> Noisemaker { get; } = new LoadableResourceAsset($"{iconPath}.Noisemaker.png");

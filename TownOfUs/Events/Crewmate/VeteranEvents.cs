@@ -7,6 +7,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
@@ -48,7 +49,7 @@ public static class VeteranEvents
 
         if (GameHistory.PlayerStats.TryGetValue(source.PlayerId, out var stats))
         {
-            if (!target.IsCrewmate())
+            if (!target.IsCrewmate() || target.HasModifier<AllianceGameModifier>())
             {
                 stats.CorrectKills += 1;
             }

@@ -13,6 +13,9 @@ public sealed class CrewmateModifierOptions : AbstractOptionGroup
     public override bool ShowInModifiersMenu => true;
     public override uint GroupPriority => 2;
 
+    [ModdedNumberOption("Celebrity Chance", 0, 100f, 10f, MiraNumberSuffixes.Percent)]
+    public float CelebrityChance { get; set; } = 0;
+
     [ModdedNumberOption("Aftermath Amount", 0, 5, 1)]
     public float AftermathAmount { get; set; } = 0;
     public ModdedNumberOption AftermathChance { get; } = new ModdedNumberOption("Aftermath Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
@@ -26,9 +29,6 @@ public sealed class CrewmateModifierOptions : AbstractOptionGroup
     {
         Visible = () => OptionGroupSingleton<CrewmateModifierOptions>.Instance.BaitAmount > 0,
     };
-
-    [ModdedNumberOption("Celebrity Chance", 0, 100f, 10f, MiraNumberSuffixes.Percent)]
-    public float CelebrityChance { get; set; } = 0;
 
     [ModdedNumberOption("Diseased Amount", 0, 5, 1)]
     public float DiseasedAmount { get; set; } = 0;

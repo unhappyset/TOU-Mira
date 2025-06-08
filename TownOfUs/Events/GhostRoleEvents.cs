@@ -4,7 +4,7 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Usables;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
-using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
@@ -43,7 +43,7 @@ public static class GhostRoleEvents
             {
                 if (haunterData.Chance < 100 && HashRandom.Next(101) > haunterData.Chance) return;
 
-                var deadCrew = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Data.IsDead && x.IsCrewmate() && !x.HasModifier<LoverModifier>() && x.Data.Role.Role is not RoleTypes.GuardianAngel).ToList();
+                var deadCrew = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Data.IsDead && x.IsCrewmate() && !x.HasModifier<AllianceGameModifier>() && x.Data.Role.Role is not RoleTypes.GuardianAngel).ToList();
 
                 if (deadCrew.Count > 0)
                 {
@@ -64,7 +64,7 @@ public static class GhostRoleEvents
             {
                 if (phantomData.Chance < 100 && HashRandom.Next(101) > phantomData.Chance) return;
 
-                var deadNeutral = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Data.IsDead && x.IsNeutral() && !x.Data.Role.DidWin(GameOverReason.CrewmatesByVote) && !x.HasModifier<LoverModifier>()).ToList();
+                var deadNeutral = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Data.IsDead && x.IsNeutral() && !x.Data.Role.DidWin(GameOverReason.CrewmatesByVote) && !x.HasModifier<AllianceGameModifier>()).ToList();
 
                 if (deadNeutral.Count > 0)
                 {

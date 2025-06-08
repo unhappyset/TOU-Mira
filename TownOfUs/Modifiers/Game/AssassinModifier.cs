@@ -6,7 +6,6 @@ using MiraAPI.Utilities;
 using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Crewmate;
-using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Components;
 using TownOfUs.Options;
@@ -241,7 +240,7 @@ public abstract class AssassinModifier : ExcludedGameModifier
 
     private static bool IsModifierValid(BaseModifier modifier)
     {
-        if (OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessLovers && modifier is LoverModifier)
+        if (OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessAlliances && modifier is AllianceGameModifier)
         {
             return true;
         }

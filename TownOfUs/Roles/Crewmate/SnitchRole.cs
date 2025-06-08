@@ -1,11 +1,14 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Patches.Stubs;
@@ -44,8 +47,10 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         {
             CreateRevealingArrow();
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Snitch, alpha: 0.5f));
+            var text = "The Snitch is getting closer to reveal you!";
+            if (Player.HasModifier<EgotistModifier>()) text = "The Snitch is an Egotist, who will help you overthrow the crewmates!";
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfUsColors.Snitch.ToTextColor()}The Snitch is getting closer to reveal you!</color></b>", Color.white, spr: TouRoleIcons.Snitch.LoadAsset());
+                $"<b>{TownOfUsColors.Snitch.ToTextColor()}{text}</color></b>", Color.white, spr: TouRoleIcons.Snitch.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -56,8 +61,10 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         if (OnLastTask && Player.AmOwner && !CompletedAllTasks)
         {
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Snitch, alpha: 0.5f));
+            var text = "The impostors know of your whereabouts!";
+            if (Player.HasModifier<EgotistModifier>()) text = "The impostors know of your whereabouts, and know you're the Egotist!";
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfUsColors.Snitch.ToTextColor()}The impostors know of your whereabouts!</color></b>", Color.white, spr: TouRoleIcons.Snitch.LoadAsset());
+                $"<b>{TownOfUsColors.Snitch.ToTextColor()}{text}</color></b>", Color.white, spr: TouRoleIcons.Snitch.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -66,8 +73,10 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         if (CompletedAllTasks && IsTargetOfSnitch(PlayerControl.LocalPlayer))
         {
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Snitch, alpha: 0.5f));
+            var text = "The Snitch knows what you are now!";
+            if (Player.HasModifier<EgotistModifier>()) text = "The Snitch can now help you as the Egotist!";
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfUsColors.Snitch.ToTextColor()}The Snitch knows what you are now!</color></b>", Color.white, spr: TouRoleIcons.Snitch.LoadAsset());
+                $"<b>{TownOfUsColors.Snitch.ToTextColor()}{text}</color></b>", Color.white, spr: TouRoleIcons.Snitch.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -76,8 +85,10 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         if (CompletedAllTasks && Player.AmOwner)
         {
             CreateSnitchArrows();
+            var text = "You have revealed the impostors!";
+            if (Player.HasModifier<EgotistModifier>()) text = "You have revealed the impostors, who can help your win condition!";
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfUsColors.Snitch.ToTextColor()}You have revealed the impostors!</color></b>", Color.white, spr: TouRoleIcons.Snitch.LoadAsset());
+                $"<b>{TownOfUsColors.Snitch.ToTextColor()}{text}</color></b>", Color.white, spr: TouRoleIcons.Snitch.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -158,7 +169,6 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
         Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Snitch, alpha: 0.5f));
         _snitchArrows = new();
-
         var imps = Helpers.GetAlivePlayers().Where(plr => plr.Data.Role.IsImpostor && !plr.IsTraitor());
         var traitor = Helpers.GetAlivePlayers().FirstOrDefault(plr => plr.IsTraitor());
         imps.ToList().ForEach(imp =>
@@ -229,7 +239,17 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
-        return ITownOfUsRole.SetNewTabText(this);
+        var alignment = RoleAlignment.ToDisplayString().Replace("Crewmate", "<color=#68ACF4FF>Crewmate");
+
+        var stringB = new StringBuilder();
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"{RoleColor.ToTextColor()}You are a<b> {RoleName}.</b></color>");
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>Alignment: <b>{alignment}</color></b></size>");
+        stringB.Append("<size=70%>");
+        var desc = RoleLongDescription;
+        if (PlayerControl.LocalPlayer.HasModifier<EgotistModifier>()) desc = CompletedAllTasks ? "Help the Impostors!" : "Complete all your tasks to discover & help the Impostors.";
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"{desc}");
+    
+        return stringB;
     }
     
     public string GetAdvancedDescription()

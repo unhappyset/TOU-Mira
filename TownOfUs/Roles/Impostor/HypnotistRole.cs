@@ -122,7 +122,7 @@ public sealed class HypnotistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
     public string GetAdvancedDescription()
     {
-        return "The Hypnotist is an Impostor Support role that can hypnotize players. During a meeting they can release Mass Hysteria, which makes all hypnotised players have different visuals applied to players the following round." 
+        return $"The Hypnotist is an Impostor Support role that can hypnotize players. During a meeting they can release Mass Hysteria, which makes all hypnotised players (marked with <color=#D53F42>@</color>) have different visuals applied to players the following round." 
             + MiscUtils.AppendOptionsText(GetType());
     }
 

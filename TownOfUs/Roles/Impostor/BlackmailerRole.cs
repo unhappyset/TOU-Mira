@@ -48,7 +48,7 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
 
     public string GetAdvancedDescription()
     {
-        return "The Blackmailer is an Impostor Support role that can stop a player from speaking in the next meeting" + MiscUtils.AppendOptionsText(GetType());
+        return $"The Blackmailer is an Impostor Support role that can stop a player from speaking (marked with <color=#2A1119>M</color>) in the next meeting" + MiscUtils.AppendOptionsText(GetType());
     }
 
     [HideFromIl2Cpp]

@@ -4,10 +4,12 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities.Extensions;
 using TMPro;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Patches.Stubs;
@@ -54,8 +56,12 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
     public StringBuilder SetTabText()
     {
         var text = ITownOfUsRole.SetNewTabText(this);
+        if (PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>())
+        {
+            text.AppendLine(CultureInfo.InvariantCulture, $"<b>You may prosecute crew due to your alliance.</b>");
+        }
         var prosecutes = OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions - ProsecutionsCompleted;
-        var newText = prosecutes == 1 ? $"\n1 Prosecution Remaining." : $"\n{prosecutes} Prosecutions Remaining.";
+        var newText = prosecutes == 1 ? $"1 Prosecution Remaining." : $"\n{prosecutes} Prosecutions Remaining.";
         text.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
         return text;
     }

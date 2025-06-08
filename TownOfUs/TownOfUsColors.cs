@@ -83,7 +83,7 @@ public static class TownOfUsColors
     public static Color Mini => new(0.8f, 1f, 0.9f, 1f);
     public static Color Camouflaged => Color.gray;
     public static Color Satellite => new(0f, 0.6f, 0.8f, 1f);
-    // public static Color Taskmaster => new(0.4f, 0.6f, 0.4f, 1f);
+    public static Color Egotist => new(0.4f, 0.6f, 0.4f, 1f);
     public static Color Taskmaster => new(0.58f, 0.84f, 0.93f, 1f);
     public static Color Celebrity => new(1f, 0.6f, 0.6f, 1f);
     public static Color Immovable => new(0.9f, 0.9f, 0.8f, 1f);

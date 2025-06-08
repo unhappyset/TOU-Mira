@@ -1,11 +1,14 @@
 using System.Collections;
+using System.Globalization;
 using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using PowerTools;
 using Reactor.Utilities;
+using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Patches.Stubs;
@@ -57,7 +60,13 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
-        return ITownOfUsRole.SetNewTabText(this);
+        var stringB = ITownOfUsRole.SetNewTabText(this);
+        if (PlayerControl.LocalPlayer.HasModifier<EgotistModifier>())
+        {
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>The Impostors know your true motives.</b>");
+        }
+
+        return stringB;
     }
     public static bool MayorVisibilityFlag(PlayerControl player)
     {

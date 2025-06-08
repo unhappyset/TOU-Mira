@@ -11,7 +11,7 @@ using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Modifiers;
-using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
@@ -175,7 +175,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         {
             var filtered = PlayerControl.AllPlayerControls.ToArray()
                 .Where(x => !x.IsRole<GuardianAngelTouRole>() && !x.HasDied() &&
-                    !x.HasModifier<ExecutionerTargetModifier>() && !x.HasModifier<LoverModifier>()).ToList();
+                    !x.HasModifier<ExecutionerTargetModifier>() && !x.HasModifier<AllianceGameModifier>()).ToList();
 
             if (evilTargetPercent > 0f)
             {
