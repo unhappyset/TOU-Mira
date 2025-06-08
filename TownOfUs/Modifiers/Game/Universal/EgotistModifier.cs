@@ -1,9 +1,9 @@
 ﻿using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
+using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -33,6 +33,6 @@ public sealed class EgotistModifier : AllianceGameModifier, IWikiDiscoverable
     }
     public override bool? DidWin(GameOverReason reason)
     {
-        return MiscUtils.RealKillersAliveCount != 0 && Helpers.GetAlivePlayers().Where(x => x.IsCrewmate() && !x.HasModifier<AllianceGameModifier>()).ToList().Count == 0;
+        return Helpers.GetAlivePlayers().Any(x => (x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling)) && x.Data.Role.DidWin(reason));
     }
 }
