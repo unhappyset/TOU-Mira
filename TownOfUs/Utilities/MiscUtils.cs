@@ -73,7 +73,7 @@ public static class MiscUtils
                     else if (optionStr.Contains(".00")) optionStr = optionStr.Replace(".00", "");
                     else if (optionStr.Contains(".0")) optionStr = optionStr.Replace(".0", "");
 
-                    if (numberOption.ZeroInfinity) builder.AppendLine(numberOption.Title + ": ∞");
+                    if (numberOption.ZeroInfinity && numberOption.Value == 0) builder.AppendLine(numberOption.Title + ": ∞");
                     else builder.AppendLine(numberOption.Title + ": " + optionStr);
                     break;
             }
