@@ -41,7 +41,12 @@ public class NeutralGhostRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownOfUsR
 
     public override bool CanUse(IUsable console)
     {
-        return console.TryCast<Console>();
+        if (!GameManager.Instance.LogicUsables.CanUse(console, Player))
+        {
+            return false;
+        }
+        Console console2 = console.TryCast<Console>()!;
+        return (console2 == null) || console2.AllowImpostor;
     }
 
     // reimplement haunt minigame
