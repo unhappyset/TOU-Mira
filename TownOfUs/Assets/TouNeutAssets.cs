@@ -34,6 +34,7 @@ public static class TouNeutAssets
     public static LoadableAsset<Sprite> PestKillSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.PestKillButton.png");
     public static LoadableAsset<Sprite> PestVentSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.PestVentButton.png");
     public static LoadableAsset<Sprite> ReapSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.ReapButton.png");
+    public static LoadableAsset<Sprite> ReaperVentSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.ReaperVentButton.png");
     public static LoadableAsset<Sprite> BiteSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.BiteButton.png");
     public static LoadableAsset<Sprite> VampVentSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.VampVentButton.png");
     public static LoadableAsset<Sprite> RampageSprite { get; } = new LoadableResourceAsset($"{ButtonPath}.RampageButton.png");

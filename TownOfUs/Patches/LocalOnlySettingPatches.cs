@@ -48,7 +48,7 @@ public static class LocalSettings
                 Title = "Colored Player Name",
                 ObjName = "ColoredPlayerNameToggle",
                 Enabled = Palette.CrewmateBlue,
-                Disabled = new(0.4f, 0f, 0.6f, 1f),
+                //Disabled = new(0.4f, 0f, 0.6f, 1f),
                 Hover = Palette.CrewmateRoleBlue,
                 OnClick = () => { return TownOfUsPlugin.ColorPlayerName.Value = !TownOfUsPlugin.ColorPlayerName.Value; },
                 DefaultValue = TownOfUsPlugin.ColorPlayerName.Value
@@ -58,7 +58,7 @@ public static class LocalSettings
                 Title = "Use Basic Crew Colors",
                 ObjName = "BasicCrewColorsToggle",
                 Enabled = Palette.CrewmateBlue,
-                Disabled = new(0.4f, 0f, 0.6f, 1f),
+                //Disabled = new(0.4f, 0f, 0.6f, 1f),
                 Hover = Palette.CrewmateRoleBlue,
                 OnClick = () =>
                 {
@@ -70,8 +70,8 @@ public static class LocalSettings
             new()
             {
                 Title = "Show Shields On Hud",
-                Enabled = new(0f, 1f, 0.7f, 1f),
-                Hover = new(0f, 0.4f, 0f, 1f),
+                //Enabled = new(0f, 1f, 0.7f, 1f),
+                //Hover = new(0f, 0.4f, 0f, 1f),
                 ObjName = "ShieldsHudToggle",
                 OnClick = () => { return TownOfUsPlugin.ShowShieldHud.Value = !TownOfUsPlugin.ShowShieldHud.Value; },
                 DefaultValue = TownOfUsPlugin.ShowShieldHud.Value

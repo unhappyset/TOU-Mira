@@ -30,6 +30,24 @@ public sealed class SoulCollectorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITow
         MaxRoleCount = 1,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };
+    public override void Initialize(PlayerControl player)
+    {
+        RoleStubs.RoleBehaviourInitialize(this, player);
+        if (Player.AmOwner)
+        {
+            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouNeutAssets.ReaperVentSprite.LoadAsset();
+            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.SoulCollector);
+        }
+    }
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        if (Player.AmOwner)
+        {
+            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
+            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
+        }
+    }
 
     public bool HasImpostorVision => true;
 
