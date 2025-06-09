@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using MiraAPI.Modifiers;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 
 namespace TownOfUs.Patches.Roles;
@@ -20,6 +21,10 @@ public static class GlitchPatches
             PlayerControl.LocalPlayer.GetModifier<GlitchHackedModifier>()!.ShowHacked();
             return false;
         }
+        if (PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+        {
+            return false;
+        }
 
         return true;
     }
@@ -30,6 +35,10 @@ public static class GlitchPatches
     {
         if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() &&
             !PlayerControl.LocalPlayer.GetModifier<GlitchHackedModifier>()!.ShouldHideHacked)
+        {
+            return false;
+        }
+        if (PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
         {
             return false;
         }

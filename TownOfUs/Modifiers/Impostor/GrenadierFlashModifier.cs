@@ -1,5 +1,4 @@
 ﻿using MiraAPI.GameOptions;
-using MiraAPI.Modifiers.Types;
 using MiraAPI.Utilities;
 using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Impostor;
@@ -9,7 +8,7 @@ using Color = UnityEngine.Color;
 
 namespace TownOfUs.Modifiers.Impostor;
 
-public sealed class GrenadierFlashModifier : TimedModifier, IDisposable
+public sealed class GrenadierFlashModifier : DisabledModifier, IDisposable
 {
     public override string ModifierName => "Flashed";
     public override bool HideOnUi => true;
