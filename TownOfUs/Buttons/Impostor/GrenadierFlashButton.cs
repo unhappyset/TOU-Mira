@@ -37,7 +37,5 @@ public sealed class GrenadierFlashButton : TownOfUsRoleButton<GrenadierRole>, IA
             Effects.Shake(HudManager.Instance.PlayerCam.transform, 0.2f, 0.1f, true, true).WrapToManaged());
 
         SoundManager.Instance.PlaySound(TouAudio.GrenadeSound.LoadAsset(), false);
-        UsesLeft--;
-        if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
     }
 }

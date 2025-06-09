@@ -32,8 +32,6 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
             return;
         }
         CleaningBody = Target;
-        UsesLeft--;
-        if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
     }
     public override void OnEffectEnd()
     {

@@ -29,8 +29,6 @@ public sealed class BomberPlantButton : TownOfUsRoleButton<BomberRole>, IAfterma
         PlayerControl.LocalPlayer.killTimer = EffectDuration + 1f;
 
         BomberRole.RpcPlantBomb(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.transform.position);
-        UsesLeft--;
-        if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
     }
 
     public override void OnEffectEnd()

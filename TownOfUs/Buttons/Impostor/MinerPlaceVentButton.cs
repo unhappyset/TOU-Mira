@@ -52,8 +52,6 @@ public sealed class MinerPlaceVentButton : TownOfUsRoleButton<MinerRole>, IAfter
     protected override void OnClick()
     {
         SavedPos = PlayerControl.LocalPlayer.transform.position;
-        UsesLeft--;
-        if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
     }
 
     public override void OnEffectEnd()
