@@ -22,7 +22,7 @@ public static class JesterEvents
         if (@event.TriggeredByIntro) return;
         if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.EndsGame) return;
         var jest = PlayerControl.AllPlayerControls.ToArray()
-            .FirstOrDefault(plr => plr.Data.IsDead && !plr.Data.Disconnected && plr.GetRoleWhenAlive() != null && plr.GetRoleWhenAlive() is JesterRole jestRole && jestRole.Voted && !jestRole.SentWinMsg);
+            .FirstOrDefault(plr => plr.Data.IsDead && !plr.Data.Disconnected && plr.GetRoleWhenAlive() is JesterRole jestRole && jestRole.Voted && !jestRole.SentWinMsg);
         if (jest != null)
         {
             var jestRole = jest.GetRoleWhenAlive() as JesterRole;

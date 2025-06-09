@@ -13,7 +13,7 @@ namespace TownOfUs.Events.Crewmate;
 
 public static class WardenEvents
 {
-    [RegisterEvent]
+    [RegisterEvent(priority: -1)]
     public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
     {
         // Logger<TownOfUsPlugin>.Error("WardenEvents KillButtonClickHandler");
@@ -26,7 +26,7 @@ public static class WardenEvents
         CheckForWardenFortify(@event, source, target);
     }
 
-    [RegisterEvent]
+    [RegisterEvent(priority: -1)]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
         var source = @event.Source;

@@ -29,6 +29,8 @@ using TownOfUs.Buttons.Modifiers;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Buttons.Impostor;
 using TownOfUs.Events.TouEvents;
+using MiraAPI.Events.Vanilla.Meeting.Voting;
+using TownOfUs.Modules.Components;
 
 namespace TownOfUs.Events;
 
@@ -345,6 +347,14 @@ public static class TownOfUsEventHandlers
         if (AmongUsClient.Instance.AmHost)
         { 
             instance.CheckForEndVoting();
+        }
+    }
+    [RegisterEvent]
+    public static void VotingCompleteHandler(VotingCompleteEvent @event)
+    {
+        if (Minigame.Instance is GuesserMenu guessMenu)
+        {
+            guessMenu.Close();
         }
     }
 }

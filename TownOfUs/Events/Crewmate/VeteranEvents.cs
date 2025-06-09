@@ -17,7 +17,7 @@ namespace TownOfUs.Events.Crewmate;
 
 public static class VeteranEvents
 {
-    [RegisterEvent]
+    [RegisterEvent(priority: 1)]
     public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
     {
         var button = @event.Button as CustomActionButton<PlayerControl>;
@@ -29,7 +29,7 @@ public static class VeteranEvents
         CheckForVeteranAlert(@event, source, target);
     }
 
-    [RegisterEvent]
+    [RegisterEvent(priority: 1)]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
         var source = @event.Source;
