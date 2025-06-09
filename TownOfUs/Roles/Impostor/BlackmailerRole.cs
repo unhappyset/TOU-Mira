@@ -24,9 +24,14 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
     public DoomableType DoomHintType => DoomableType.Insight;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        UseVanillaKillButton = OptionGroupSingleton<BlackmailerOptions>.Instance.BlackmailerKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)),
+        UseVanillaKillButton = true,
         Icon = TouRoleIcons.Blackmailer,
     };
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner || MeetingHud.Instance != null || (!HudManager.Instance.UseButton.isActiveAndEnabled && !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
+        HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<BlackmailerOptions>.Instance.BlackmailerKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)) || (Player != null && MiscUtils.ImpAliveCount == 1));
+    }
 
     [MethodRpc((uint)TownOfUsRpc.Blackmail, LocalHandling = RpcLocalHandling.Before, SendImmediately = true)]
     public static void RpcBlackmail(PlayerControl source, PlayerControl target)

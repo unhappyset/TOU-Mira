@@ -26,9 +26,14 @@ public sealed class HypnotistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        UseVanillaKillButton = OptionGroupSingleton<HypnotistOptions>.Instance.HypnoKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)),
+        UseVanillaKillButton = true,
         Icon = TouRoleIcons.Hypnotist,
     };
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner || MeetingHud.Instance != null || (!HudManager.Instance.UseButton.isActiveAndEnabled && !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
+        HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<HypnotistOptions>.Instance.HypnoKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)) || (Player != null && MiscUtils.ImpAliveCount == 1));
+    }
 
     public bool HysteriaActive { get; set; }
 

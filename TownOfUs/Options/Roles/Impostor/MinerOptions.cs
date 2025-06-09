@@ -21,7 +21,7 @@ public sealed class MinerOptions : AbstractOptionGroup<MinerRole>
     [ModdedEnumOption("Mine Visiblity", typeof(MineVisiblityOptions), ["Immediate", "After Use"])]
     public MineVisiblityOptions MineVisibility { get; set; } = MineVisiblityOptions.Immediate;
 
-    [ModdedToggleOption("Miner Can Kill")]
+    [ModdedToggleOption("Miner Can Kill With Teammate")]
     public bool MinerKill { get; set; } = true;
 }
 

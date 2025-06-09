@@ -19,17 +19,22 @@ public sealed class JanitorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
 {
     public string RoleName => "Janitor";
     public string RoleDescription => "Sanitize The Ship";
-    public string RoleLongDescription => "Clean bodies to hide kills";
+    public string RoleLongDescription => "Clean bodies to hide kills" + (OptionGroupSingleton<JanitorOptions>.Instance.CleanDelay == 0 ? string.Empty : "\n<b>You must stay next to the body while cleaning.</b>");
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
     public DoomableType DoomHintType => DoomableType.Death;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        UseVanillaKillButton = OptionGroupSingleton<JanitorOptions>.Instance.JanitorKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)),
+        UseVanillaKillButton = true,
         Icon = TouRoleIcons.Janitor,
         IntroSound = TouAudio.JanitorCleanSound,
     };
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner || MeetingHud.Instance != null || (!HudManager.Instance.UseButton.isActiveAndEnabled && !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
+        HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<JanitorOptions>.Instance.JanitorKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)) || (Player != null && MiscUtils.ImpAliveCount == 1));
+    }
 
     [MethodRpc((uint)TownOfUsRpc.CleanBody, LocalHandling = RpcLocalHandling.Before, SendImmediately = true)]
     public static void RpcCleanBody(PlayerControl player, byte bodyId)

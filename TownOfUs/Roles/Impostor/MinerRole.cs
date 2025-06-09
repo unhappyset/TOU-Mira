@@ -25,11 +25,16 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        UseVanillaKillButton = OptionGroupSingleton<MinerOptions>.Instance.MinerKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)),
+        UseVanillaKillButton = true,
         Icon = TouRoleIcons.Miner,
         OptionsScreenshot = TouImpAssets.MinerRoleBanner,
         IntroSound = TouAudio.MineSound,
     };
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner || MeetingHud.Instance != null || (!HudManager.Instance.UseButton.isActiveAndEnabled && !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
+        HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<MinerOptions>.Instance.MinerKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)) || (Player != null && MiscUtils.ImpAliveCount == 1));
+    }
 
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities { get; } = [

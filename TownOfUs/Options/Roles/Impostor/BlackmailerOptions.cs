@@ -22,6 +22,6 @@ public sealed class BlackmailerOptions : AbstractOptionGroup<BlackmailerRole>
 
     [ModdedToggleOption("Only Target Sees Blackmail")]
     public bool OnlyTargetSeesBlackmail { get; set; } = false;
-    [ModdedToggleOption("Blackmailer Can Kill")]
+    [ModdedToggleOption("Blackmailer Can Kill With Teammate")]
     public bool BlackmailerKill { get; set; } = true;
 }

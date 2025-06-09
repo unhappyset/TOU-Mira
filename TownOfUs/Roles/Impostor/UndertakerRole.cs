@@ -26,10 +26,15 @@ public sealed class UndertakerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
     public DoomableType DoomHintType => DoomableType.Death;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        UseVanillaKillButton = OptionGroupSingleton<UndertakerOptions>.Instance.UndertakerKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)),
+        UseVanillaKillButton = true,
         CanUseVent = OptionGroupSingleton<UndertakerOptions>.Instance.CanVent,
         Icon = TouRoleIcons.Undertaker,
     };
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner || MeetingHud.Instance != null || (!HudManager.Instance.UseButton.isActiveAndEnabled && !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
+        HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<UndertakerOptions>.Instance.UndertakerKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)) || (Player != null && MiscUtils.ImpAliveCount == 1));
+    }
 
     [MethodRpc((uint)TownOfUsRpc.DragBody, LocalHandling = RpcLocalHandling.Before, SendImmediately = true)]
     public static void RpcStartDragging(PlayerControl playerControl, byte bodyId)

@@ -35,14 +35,14 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
     }
     public override void OnEffectEnd()
     {
-        if (CleaningBody != null)
+        if (CleaningBody == Target && CleaningBody != null)
         {
             JanitorRole.RpcCleanBody(PlayerControl.LocalPlayer, CleaningBody.ParentId);
             TouAudio.PlaySound(TouAudio.JanitorCleanSound);
 
             PlayerControl.LocalPlayer.SetKillTimer(PlayerControl.LocalPlayer.GetKillCooldown());
-            CleaningBody = null;
         }
+        CleaningBody = null;
     }
 
     /* public override void FixedUpdateHandler(PlayerControl playerControl)
