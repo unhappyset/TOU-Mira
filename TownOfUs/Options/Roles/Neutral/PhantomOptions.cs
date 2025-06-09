@@ -12,7 +12,7 @@ public sealed class PhantomOptions : AbstractOptionGroup<PhantomTouRole>
     public float NumTasksLeftBeforeClickable { get; set; } = 3f;
 
     [ModdedEnumOption("Phantom Win", typeof(PhantomWinOptions), ["Ends Game", "Spooks", "Nothing"])]
-    public PhantomWinOptions PhantomWin { get; set; } = PhantomWinOptions.EndsGame;
+    public PhantomWinOptions PhantomWin { get; set; } = PhantomWinOptions.Spooks;
 
 }
 public enum PhantomWinOptions
