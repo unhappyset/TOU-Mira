@@ -22,6 +22,7 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
 
     public float Charge { get; set; }
     public bool BurstActive { get; set; }
+    public int Kills { get; set; }
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
@@ -40,7 +41,7 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
         {
             if (Timer <= 0 && Charge < 100)
             {
-                var duration = OptionGroupSingleton<WarlockOptions>.Instance.ChargeTimeDuration;
+                var duration = OptionGroupSingleton<WarlockOptions>.Instance.ChargeTimeDuration * (1f + Kills * OptionGroupSingleton<WarlockOptions>.Instance.AddedTimeDuration);
                 var delta = Time.fixedDeltaTime;
                 Charge += 100 * delta / duration;
 
@@ -78,6 +79,7 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
         if (Target.Data.IsDead && Charge >= 100 && !BurstActive)
         {
             BurstActive = true;
+            Kills = 0;
         }
         else if (Target.Data.IsDead && Charge <= 100 && !BurstActive)
         {
