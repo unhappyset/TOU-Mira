@@ -18,5 +18,7 @@ public static class MorphlingEvents
         CustomRoleUtils.GetActiveRolesOfType<MorphlingRole>().Do(x => x.Clear());
         var button = CustomButtonSingleton<MorphlingMorphButton>.Instance;
         button.SetUses((int)OptionGroupSingleton<MorphlingOptions>.Instance.MaxMorphs);
+        button.SetTextOutline(button.TextOutlineColor);
+        if (button.Button != null) button.Button.usesRemainingSprite.color = button.TextOutlineColor;
     }
 }

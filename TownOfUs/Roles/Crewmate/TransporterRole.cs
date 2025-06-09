@@ -165,6 +165,14 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             var button = CustomButtonSingleton<TransporterTransportButton>.Instance;
             button.DecreaseUses();
             button.ResetCooldownAndOrEffect();
+
+            TownOfUsColors.UseBasic = false;
+            if (button.TextOutlineColor != Color.clear)
+            {
+                button.SetTextOutline(button.TextOutlineColor);
+                if (button.Button != null) button.Button.usesRemainingSprite.color = button.TextOutlineColor;
+            }
+            TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
         }
 
         if (play1.AmOwner || play2.AmOwner)

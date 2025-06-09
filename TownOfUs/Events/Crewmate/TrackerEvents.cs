@@ -23,5 +23,9 @@ public static class TrackerEvents
 
         var button = CustomButtonSingleton<TrackerTrackButton>.Instance;
         button.SetUses((int)OptionGroupSingleton<TrackerOptions>.Instance.MaxTracks);
+        TownOfUsColors.UseBasic = false;
+        button.SetTextOutline(button.TextOutlineColor);
+        if (button.Button != null) button.Button.usesRemainingSprite.color = button.TextOutlineColor;
+        TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
     }
 }

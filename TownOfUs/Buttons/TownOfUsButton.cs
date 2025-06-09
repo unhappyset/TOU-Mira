@@ -88,6 +88,39 @@ public abstract class TownOfUsButton : CustomActionButton
             PassiveComp.OnClick.Invoke();
         }
     }
+    public override void ClickHandler()
+    {
+        if (!CanClick() || PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+        {
+            return;
+        }
+
+        if (LimitedUses)
+        {
+            UsesLeft--;
+            Button?.SetUsesRemaining(UsesLeft);
+            TownOfUsColors.UseBasic = false;
+            if (TextOutlineColor != Color.clear)
+            {
+                SetTextOutline(TextOutlineColor);
+                if (Button != null) Button.usesRemainingSprite.color = TextOutlineColor;
+            }
+
+            TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
+        }
+
+        OnClick();
+
+        if (HasEffect)
+        {
+            EffectActive = true;
+            Timer = EffectDuration;
+        }
+        else
+        {
+            Timer = Cooldown;
+        }
+    }
 }
 
 [MiraIgnore]
@@ -173,6 +206,14 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
             {
                 UsesLeft--;
                 Button?.SetUsesRemaining(UsesLeft);
+                TownOfUsColors.UseBasic = false;
+                if (TextOutlineColor != Color.clear)
+                {
+                    SetTextOutline(TextOutlineColor);
+                    if (Button != null) Button.usesRemainingSprite.color = TextOutlineColor;
+                }
+
+                TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
             }
 
             OnClick();
