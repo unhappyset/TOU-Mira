@@ -9,6 +9,9 @@ public sealed class BlackmailerOptions : AbstractOptionGroup<BlackmailerRole>
 {
     public override string GroupName => "Blackmailer";
 
+    [ModdedNumberOption("Number Of Blackmail Uses Per Game", 0f, 15f, 5f, MiraNumberSuffixes.None, "0", zeroInfinity: true)]
+    public float MaxBlackmails { get; set; } = 0f;
+
     [ModdedNumberOption("Blackmail Cooldown", 1f, 30f, suffixType: MiraNumberSuffixes.Seconds)]
     public float BlackmailCooldown { get; set; } = 20f;
 

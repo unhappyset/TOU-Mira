@@ -15,6 +15,7 @@ public sealed class BlackmailerBlackmailButton : TownOfUsRoleButton<BlackmailerR
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<BlackmailerOptions>.Instance.BlackmailCooldown;
+    public override int MaxUses => (int)OptionGroupSingleton<BlackmailerOptions>.Instance.MaxBlackmails;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.BlackmailSprite;
 
     protected override void OnClick()

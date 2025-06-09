@@ -15,6 +15,7 @@ public sealed class MorphlingSampleButton : TownOfUsRoleButton<MorphlingRole, Pl
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<MorphlingOptions>.Instance.MorphlingCooldown;
+    public override int MaxUses => (int)OptionGroupSingleton<MorphlingOptions>.Instance.MaxSamples;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.SampleSprite;
 
     public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && Role is { Sampled: null };

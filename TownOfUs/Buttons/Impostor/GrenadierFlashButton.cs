@@ -19,6 +19,7 @@ public sealed class GrenadierFlashButton : TownOfUsRoleButton<GrenadierRole>, IA
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<GrenadierOptions>.Instance.GrenadeCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<GrenadierOptions>.Instance.GrenadeDuration;
+    public override int MaxUses => (int)OptionGroupSingleton<GrenadierOptions>.Instance.MaxFlashes;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.FlashSprite;
 
     protected override void OnClick()
@@ -36,5 +37,7 @@ public sealed class GrenadierFlashButton : TownOfUsRoleButton<GrenadierRole>, IA
             Effects.Shake(HudManager.Instance.PlayerCam.transform, 0.2f, 0.1f, true, true).WrapToManaged());
 
         SoundManager.Instance.PlaySound(TouAudio.GrenadeSound.LoadAsset(), false);
+        UsesLeft--;
+        if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
     }
 }

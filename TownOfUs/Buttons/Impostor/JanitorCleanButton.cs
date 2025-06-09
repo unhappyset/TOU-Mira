@@ -14,9 +14,12 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<JanitorOptions>.Instance.CleanCooldown + MapCooldown;
+    public override float EffectDuration => OptionGroupSingleton<JanitorOptions>.Instance.CleanDelay + 0.001f;
+    public override int MaxUses => (int)OptionGroupSingleton<JanitorOptions>.Instance.MaxClean;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.CleanButtonSprite;
 
     public override DeadBody? GetTarget() => PlayerControl.LocalPlayer.GetNearestDeadBody(Distance);
+    public DeadBody? CleaningBody { get; set; }
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
@@ -28,11 +31,20 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
         {
             return;
         }
+        CleaningBody = Target;
+        UsesLeft--;
+        if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
+    }
+    public override void OnEffectEnd()
+    {
+        if (CleaningBody != null)
+        {
+            JanitorRole.RpcCleanBody(PlayerControl.LocalPlayer, CleaningBody.ParentId);
+            TouAudio.PlaySound(TouAudio.JanitorCleanSound);
 
-        JanitorRole.RpcCleanBody(PlayerControl.LocalPlayer, Target.ParentId);
-        TouAudio.PlaySound(TouAudio.JanitorCleanSound);
-
-        PlayerControl.LocalPlayer.SetKillTimer(PlayerControl.LocalPlayer.GetKillCooldown());
+            PlayerControl.LocalPlayer.SetKillTimer(PlayerControl.LocalPlayer.GetKillCooldown());
+            CleaningBody = null;
+        }
     }
 
     /* public override void FixedUpdateHandler(PlayerControl playerControl)

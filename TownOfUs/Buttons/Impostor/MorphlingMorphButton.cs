@@ -17,6 +17,7 @@ public sealed class MorphlingMorphButton : TownOfUsRoleButton<MorphlingRole>, IA
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<MorphlingOptions>.Instance.MorphlingCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<MorphlingOptions>.Instance.MorphlingDuration;
+    public override int MaxUses => (int)OptionGroupSingleton<MorphlingOptions>.Instance.MaxMorphs;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.MorphSprite;
 
     public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && Role is not { Sampled: null };
@@ -57,6 +58,8 @@ public sealed class MorphlingMorphButton : TownOfUsRoleButton<MorphlingRole>, IA
         {
             PlayerControl.LocalPlayer.RpcAddModifier<MorphlingMorphModifier>(Role.Sampled!);
             OverrideName("Unmorph");
+            UsesLeft--;
+            if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
         }
         else
         {

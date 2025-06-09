@@ -15,6 +15,7 @@ public sealed class EscapistRecallButton : TownOfUsRoleButton<EscapistRole>, IAf
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<EscapistOptions>.Instance.RecallCooldown + MapCooldown;
+    public override int MaxUses => (int)OptionGroupSingleton<EscapistOptions>.Instance.MaxEscapes;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.RecallSprite;
 
     public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && Role is not { MarkedLocation: null };

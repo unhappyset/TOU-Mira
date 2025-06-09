@@ -9,6 +9,9 @@ public sealed class BomberOptions : AbstractOptionGroup<BomberRole>
 {
     public override string GroupName => "Bomber";
 
+    [ModdedNumberOption("Bomb Uses Per Game", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", zeroInfinity: true)]
+    public float MaxBombs { get; set; } = 0f;
+
     [ModdedNumberOption("Detonate Delay", 1f, 15f, 1f, MiraNumberSuffixes.Seconds)]
     public float DetonateDelay { get; set; } = 5f;
 

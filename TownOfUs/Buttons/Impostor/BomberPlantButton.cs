@@ -14,6 +14,7 @@ public sealed class BomberPlantButton : TownOfUsRoleButton<BomberRole>, IAfterma
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => PlayerControl.LocalPlayer.GetKillCooldown() + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay;
+    public override int MaxUses => (int)OptionGroupSingleton<BomberOptions>.Instance.MaxBombs;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.PlaceSprite;
     public void SetDiseasedTimer(float multiplier)
     {
@@ -28,6 +29,8 @@ public sealed class BomberPlantButton : TownOfUsRoleButton<BomberRole>, IAfterma
         PlayerControl.LocalPlayer.killTimer = EffectDuration + 1f;
 
         BomberRole.RpcPlantBomb(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.transform.position);
+        UsesLeft--;
+        if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
     }
 
     public override void OnEffectEnd()
