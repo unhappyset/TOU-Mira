@@ -7,7 +7,6 @@ using Reactor.Utilities;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles.Impostor;
-using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Buttons.Impostor;
@@ -29,8 +28,11 @@ public sealed class GrenadierFlashButton : TownOfUsRoleButton<GrenadierRole>, IA
 
         foreach (var player in flashedPlayers)
         {
-            if (!player.HasDied())
-                player.RpcAddModifier<GrenadierFlashModifier>();
+            player.RpcAddModifier<GrenadierFlashModifier>();
+        }
+        if (flashedPlayers.Count != 0)
+        {
+            PlayerControl.LocalPlayer.RpcAddModifier<GrenadierFlashModifier>();
         }
 
         Coroutines.Start(

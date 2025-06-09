@@ -41,15 +41,13 @@ public sealed class GrenadierFlashModifier : DisabledModifier, IDisposable
     {
         base.FixedUpdate();
 
-        if (Player.HasDied()) return;
-
         if (!Player.IsImpostor() && PlayerControl.LocalPlayer.IsImpostor())
-        {
-            if (TimeRemaining <= Duration - 0.5f && TimeRemaining >= 0.5f)
-                Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Color.black);
-            else
-                Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
-        }
+            {
+                if (TimeRemaining <= Duration - 0.5f && TimeRemaining >= 0.5f)
+                    Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Color.black);
+                else
+                    Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
+            }
 
         if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId)
         {
@@ -103,6 +101,13 @@ public sealed class GrenadierFlashModifier : DisabledModifier, IDisposable
                 }
             }
             else
+            {
+                SetFlash(normalVision);
+
+                TimeRemaining = 0.0f;
+            }
+
+            if (MeetingHud.Instance != null)
             {
                 SetFlash(normalVision);
 
