@@ -40,8 +40,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
         return base.IsModifierValidOn(role) && role.IsCrewmate();
     }
 
-    [MethodRpc((uint)TownOfUsRpc.CelebrityKilled, SendImmediately = true)]
-    public static void RpcCelebrityKilled(PlayerControl source, PlayerControl player, string room)
+    public static void CelebrityKilled(PlayerControl source, PlayerControl player, string room)
     {
         if (!player.HasModifier<CelebrityModifier>())
         {

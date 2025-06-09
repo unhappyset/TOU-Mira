@@ -20,6 +20,8 @@ using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 using TownOfUs.Modifiers;
 using TownOfUs.Patches;
+using TownOfUs.Events.TouEvents;
+using MiraAPI.Events;
 
 namespace TownOfUs.Utilities;
 
@@ -358,6 +360,7 @@ public static class Extensions
 
         var newRole = RoleManager.Instance.GetRole((RoleTypes)newRoleType);
         var roleBehaviour = Object.Instantiate(newRole, data.gameObject.transform);
+        var oldRole = player.Data.Role;
 
         roleBehaviour.Initialize(player);
 
@@ -394,6 +397,8 @@ public static class Extensions
         {
             HudManagerPatches.ZoomButton.SetActive(true);
         }
+        var changeRoleEvent = new ChangeRoleEvent(player, oldRole, newRole);
+        MiraEventManager.InvokeEvent(changeRoleEvent);
     }
 
     [MethodRpc((uint)TownOfUsRpc.PlayerExile, SendImmediately = true)]

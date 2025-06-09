@@ -13,7 +13,6 @@ public enum TownOfUsRpc : uint
     SendLoveChat,
     SendImpTeamChat,
     SendVampTeamChat,
-    CelebrityKilled,
     UpdateCelebrityKilled,
     ClericBarrierAttacked,
     Transport,

@@ -63,6 +63,8 @@ public static class HudManagerPatches
             arrange.CellSize *= new Vector2(scaleFactor, scaleFactor);
             arrange.gameObject.SetActive(wasActive);
         }
+        HudManager.Instance.SetHudActive(false);
+        HudManager.Instance.SetHudActive(true);
     }
     public static void Zoom()
     {

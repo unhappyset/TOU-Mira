@@ -28,6 +28,7 @@ using TownOfUs.Options.Modifiers.Universal;
 using TownOfUs.Buttons.Modifiers;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Buttons.Impostor;
+using TownOfUs.Events.TouEvents;
 
 namespace TownOfUs.Events;
 
@@ -37,16 +38,25 @@ public static class TownOfUsEventHandlers
     public static void RoundStartHandler(RoundStartEvent @event)
     {
         if (!@event.TriggeredByIntro) return; // Only run when round starts.
+        HudManager.Instance.SetHudActive(false);
+        HudManager.Instance.SetHudActive(true);
         CustomButtonSingleton<SheriffShootButton>.Instance.Usable = OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse;
         CustomButtonSingleton<JailorJailButton>.Instance.ExecutedACrew = false;
 
-        CustomButtonSingleton<EscapistRecallButton>.Instance.SetActive(false, PlayerControl.LocalPlayer.Data.Role);
-        CustomButtonSingleton<MorphlingMorphButton>.Instance.SetActive(false, PlayerControl.LocalPlayer.Data.Role);
         CustomButtonSingleton<WarlockKillButton>.Instance.Charge = 0f;
 
         CustomButtonSingleton<BarryButton>.Instance.Usable = OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
         CustomButtonSingleton<SatelliteButton>.Instance.Usable = OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;
         
+    }
+    [RegisterEvent]
+    public static void ChangeRoleHandler(ChangeRoleEvent @event)
+    {
+        if (!MeetingHud.Instance && @event.Player.AmOwner)
+        {
+            HudManager.Instance.SetHudActive(false);
+            HudManager.Instance.SetHudActive(true);
+        }
     }
     [RegisterEvent]
     public static void ClearBodiesAndResetPlayersEventHandler(RoundStartEvent @event)
