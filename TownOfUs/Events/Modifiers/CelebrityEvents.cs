@@ -17,36 +17,7 @@ public static class CelebrityEvents
 
         if (target.HasModifier<CelebrityModifier>())
         {
-            PlainShipRoom[] allRooms = LobbyBehaviour.Instance.AllRooms;
-            PlainShipRoom[] array = allRooms;
-            if (ShipStatus.Instance)
-            {
-                array = ShipStatus.Instance.AllRooms;
-            }
-
-            PlainShipRoom? plainShipRoom = null;
-            if (array != null)
-                foreach (PlainShipRoom plainShipRoom2 in array)
-                {
-                    if (plainShipRoom2.roomArea && plainShipRoom2.roomArea.OverlapPoint(target.GetTruePosition()))
-                    {
-                        plainShipRoom = plainShipRoom2;
-                    }
-                }
-            else
-            {
-                var allRooms2 = ShipStatus.Instance.FastRooms;
-                foreach (PlainShipRoom plainShipRoom2 in allRooms2.Values)
-                {
-                    if (plainShipRoom2.roomArea && plainShipRoom2.roomArea.OverlapPoint(target.GetTruePosition()))
-                    {
-                        plainShipRoom = plainShipRoom2;
-                    }
-                }
-            }
-            var roomStr = plainShipRoom != null ? TranslationController.Instance.GetString(plainShipRoom.RoomId) : "Outside/Hallway";
-
-            CelebrityModifier.CelebrityKilled(source, target, roomStr);
+            CelebrityModifier.CelebrityKilled(source, target);
         }
     }
 

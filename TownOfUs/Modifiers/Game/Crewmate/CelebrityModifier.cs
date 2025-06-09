@@ -40,13 +40,42 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
         return base.IsModifierValidOn(role) && role.IsCrewmate();
     }
 
-    public static void CelebrityKilled(PlayerControl source, PlayerControl player, string room)
+    public static void CelebrityKilled(PlayerControl source, PlayerControl player)
     {
         if (!player.HasModifier<CelebrityModifier>())
         {
             Logger<TownOfUsPlugin>.Error("RpcCelebrityKilled - Invalid Celebrity");
             return;
         }
+
+        PlainShipRoom[] allRooms = LobbyBehaviour.Instance.AllRooms;
+        PlainShipRoom[] array = allRooms;
+        if (ShipStatus.Instance)
+        {
+            array = ShipStatus.Instance.AllRooms;
+        }
+
+        PlainShipRoom? plainShipRoom = null;
+        if (array != null)
+            foreach (PlainShipRoom plainShipRoom2 in array)
+            {
+                if (plainShipRoom2.roomArea && plainShipRoom2.roomArea.OverlapPoint(player.GetTruePosition()))
+                {
+                    plainShipRoom = plainShipRoom2;
+                }
+            }
+        else
+        {
+            var allRooms2 = ShipStatus.Instance.FastRooms;
+            foreach (PlainShipRoom plainShipRoom2 in allRooms2.Values)
+            {
+                if (plainShipRoom2.roomArea && plainShipRoom2.roomArea.OverlapPoint(player.GetTruePosition()))
+                {
+                    plainShipRoom = plainShipRoom2;
+                }
+            }
+        }
+        var room = plainShipRoom != null ? TranslationController.Instance.GetString(plainShipRoom.RoomId) : "Outside/Hallway";
 
         var celeb = player.GetModifier<CelebrityModifier>()!;
         celeb.StoredRoom = room;
