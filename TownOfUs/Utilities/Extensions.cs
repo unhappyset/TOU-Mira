@@ -364,7 +364,7 @@ public static class Extensions
 
         roleBehaviour.Initialize(player);
 
-        if (player.AmOwner)
+        if (player.AmOwner && HudManager.Instance)
         {
             HudManager.Instance.SetHudActive(player, roleBehaviour, true);
 
@@ -393,7 +393,7 @@ public static class Extensions
 
         player.Data.Role.SpawnTaskHeader(player);
 
-        if (TutorialManager.InstanceExists)
+        if (TutorialManager.InstanceExists && HudManager.Instance)
         {
             HudManagerPatches.ZoomButton.SetActive(true);
         }

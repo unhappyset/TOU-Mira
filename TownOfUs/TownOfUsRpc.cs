@@ -2,7 +2,7 @@
 
 public enum TownOfUsRpc : uint
 {
-    
+
     ChangeHost,
     ChangeName,
 
@@ -23,7 +23,6 @@ public enum TownOfUsRpc : uint
     ClearMedicShield,
     MedicShieldAttacked,
     EngineerFix,
-    LightningSound,
     IgniteSound,
     PlaceVent,
     ShowVent,
@@ -56,14 +55,12 @@ public enum TownOfUsRpc : uint
     PlumberBlockVent,
     OracleConfess,
     OracleBless,
-    SandwormDig,
-    SpawnMissile,
     ExecutionerWin,
     InquisitorWin,
     JesterWin,
     TriggerSixthSense,
-    DetonateRpc,
     AurialSense,
     ButtonBarry,
     LookoutSeePlayer,
+    AnimateNewReveal,
 }

@@ -9,7 +9,7 @@ public static class MayorEvents
     [RegisterEvent]
     public static void HandleVoteEvent(HandleVoteEvent @event)
     {
-        if (@event.VoteData.Owner.Data.Role is not MayorRole) return;
+        if (@event.VoteData.Owner.Data.Role is not MayorRole mayor || !mayor.Revealed) return;
 
         @event.VoteData.SetRemainingVotes(0);
 

@@ -1,10 +1,13 @@
+using System.Collections;
 using HarmonyLib;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TownOfUs.Patches;
 
@@ -15,32 +18,46 @@ public static class DummyBehaviourPatches
     [HarmonyPatch(nameof(DummyBehaviour.Start))]
     public static void DummyStartPatch(DummyBehaviour __instance)
     {
+        var dum = __instance.myPlayer;
+        Coroutines.Start(TouDummyMode(dum));
+    }
+    private static IEnumerator TouDummyMode(PlayerControl dummy)
+    {
+        while (PlayerControl.LocalPlayer == null) yield return null;
+        yield return new WaitForSeconds(0.01f + 0.01f * dummy.PlayerId);
         var roleList = MiscUtils.AllRoles
             .Where(role => role is ICustomRole)
             .Where(role => !role.IsImpostor())
             .Where(role => role is not NeutralGhostRole)
+            .Where(role => role is not CrewmateGhostRole)
+            .Where(role => role is not ImpostorGhostRole)
             .Where(role => !role.TryCast<CrewmateGhostRole>())
             .Where(role => !role.TryCast<ImpostorGhostRole>())
             .ToList();
 
+        PlayerControl.AllPlayerControls
+            .ToArray()
+            .Where(player => roleList.Contains(player.Data.Role))
+            .ToList()
+            .ForEach(player => roleList.Remove(player.Data.Role));
+
         var roleType = RoleId.Get(roleList.Random()!.GetType());
-        var dum = __instance.myPlayer;
-        dum.RpcChangeRole(roleType, false);
+        dummy.RpcChangeRole(roleType, true);
 
-        dum.RpcSetName(AccountManager.Instance.GetRandomName());
+        dummy.RpcSetName(AccountManager.Instance.GetRandomName());
 
-        dum.SetSkin(HatManager.Instance.allSkins[UnityEngine.Random.Range(0, HatManager.Instance.allSkins.Count)].ProdId, 0);
-        dum.SetNamePlate(HatManager.Instance.allNamePlates[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allNamePlates.Count)].ProdId);
-        dum.SetPet(HatManager.Instance.allPets[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allPets.Count)].ProdId);
+        dummy.SetSkin(HatManager.Instance.allSkins[UnityEngine.Random.Range(0, HatManager.Instance.allSkins.Count)].ProdId, 0);
+        dummy.SetNamePlate(HatManager.Instance.allNamePlates[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allNamePlates.Count)].ProdId);
+        dummy.SetPet(HatManager.Instance.allPets[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allPets.Count)].ProdId);
         var colorId = UnityEngine.Random.Range(0, Palette.PlayerColors.Length);
-        dum.SetColor(colorId);
-        dum.SetHat(HatManager.Instance.allHats[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allHats.Count)].ProdId, colorId);
-        dum.SetVisor(HatManager.Instance.allVisors[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allVisors.Count)].ProdId, colorId);
+        dummy.SetColor(colorId);
+        dummy.SetHat(HatManager.Instance.allHats[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allHats.Count)].ProdId, colorId);
+        dummy.SetVisor(HatManager.Instance.allVisors[UnityEngine.Random.RandomRangeInt(0, HatManager.Instance.allVisors.Count)].ProdId, colorId);
 
-        var randomUniMod = MiscUtils.AllModifiers.Where(x => x is UniversalGameModifier touGameMod && touGameMod.IsModifierValidOn(dum.Data.Role)).Random();
-        if (randomUniMod != null) dum.RpcAddModifier(randomUniMod.GetType());
+        var randomUniMod = MiscUtils.AllModifiers.Where(x => x is UniversalGameModifier touGameMod && touGameMod.IsModifierValidOn(dummy.Data.Role)).Random();
+        if (randomUniMod != null) dummy.RpcAddModifier(randomUniMod.GetType());
         
-        var randomTeamMod = MiscUtils.AllModifiers.Where(x => x is TouGameModifier touGameMod && touGameMod.IsModifierValidOn(dum.Data.Role)).Random();
-        if (randomTeamMod != null) dum.RpcAddModifier(randomTeamMod.GetType());
+        var randomTeamMod = MiscUtils.AllModifiers.Where(x => x is TouGameModifier touGameMod && touGameMod.IsModifierValidOn(dummy.Data.Role)).Random();
+        if (randomTeamMod != null) dummy.RpcAddModifier(randomTeamMod.GetType());
     }
 }

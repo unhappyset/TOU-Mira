@@ -7,7 +7,9 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using PowerTools;
+using Reactor.Networking.Attributes;
 using Reactor.Utilities;
+using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
@@ -21,7 +23,7 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
 {
     public string RoleName => "Mayor";
     public string RoleDescription => "Reveal Yourself To Save The Crew";
-    public string RoleLongDescription => "Lead the crew to victory";
+    public string RoleLongDescription => "Lead the crew to victory!";
     public Color RoleColor => TownOfUsColors.Mayor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public bool Revealed { get; set; }
@@ -44,23 +46,93 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
     public override void Initialize(PlayerControl player)
     {
         RoleStubs.RoleBehaviourInitialize(this, player);
-        if (!MeetingHud.Instance) return;
-        OnMeetingStart();
+        if (MeetingHud.Instance)
+        {
+            var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == player.PlayerId);
+            Coroutines.Start(CoAnimateReveal(targetVoteArea));
+        }
+
+        if (Player.AmOwner)
+        {
+            meetingMenu = new MeetingMenu(
+                this,
+                Click,
+                MeetingAbilityType.Click,
+                TouAssets.RevealButtonSprite,
+                null!,
+                IsExempt)
+            {
+                Position = new Vector3(-0.35f, 0f, -3f),
+            };
+        }
     }
+
+    private MeetingMenu meetingMenu;
 
     public override void OnMeetingStart()
     {
         RoleStubs.RoleBehaviourOnMeetingStart(this);
 
         var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == Player.PlayerId);
-        if (!Revealed) Coroutines.Start(CoAnimateReveal(targetVoteArea));
-        else Coroutines.Start(CoAnimatePostReveal(targetVoteArea));
+        if (Revealed) Coroutines.Start(CoAnimatePostReveal(targetVoteArea));
+
+        if (Player.AmOwner && !Revealed)
+        {
+            // Logger<TownOfUsPlugin>.Message($"PoliticianRole.OnMeetingStart '{Player.Data.PlayerName}' {Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>()}");
+            meetingMenu.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
+        }
+    }
+
+    public override void OnVotingComplete()
+    {
+        RoleStubs.RoleBehaviourOnVotingComplete(this);
+
+        if (Player.AmOwner)
+        {
+            meetingMenu.HideButtons();
+        }
+    }
+
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+
+        if (Player.AmOwner)
+        {
+            meetingMenu?.Dispose();
+            meetingMenu = null!;
+        }
+    }
+
+    public void Click(PlayerVoteArea voteArea, MeetingHud __)
+    {
+        if (!Player.AmOwner) return;
+
+        meetingMenu.HideButtons();
+        RpcAnimateNewReveal(Player);
+    }
+
+    [MethodRpc((uint)TownOfUsRpc.AnimateNewReveal, SendImmediately = true)]
+    public static void RpcAnimateNewReveal(PlayerControl plr)
+    {
+        var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == plr.PlayerId);
+        Coroutines.Start(CoAnimateReveal(targetVoteArea));
+    }
+
+
+    public bool IsExempt(PlayerVoteArea voteArea)
+    {
+        return voteArea?.TargetPlayerId != Player.PlayerId;
     }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
+        if (!Revealed)
+        {
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Reveal yourself whenever you wish.</b>");
+        }
         if (PlayerControl.LocalPlayer.HasModifier<EgotistModifier>())
         {
             stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>The Impostors know your true motives.</b>");
@@ -74,6 +146,11 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
     }
     private static IEnumerator CoAnimateReveal(PlayerVoteArea voteArea)
     {
+        if (Minigame.Instance != null)
+        {
+            Minigame.Instance.Close();
+            Minigame.Instance.Close();
+        }
         // hide meeting menu buttons (such as for guessers) for everyone but the mayor
         if (voteArea.TargetPlayerId != PlayerControl.LocalPlayer.PlayerId)
         {
