@@ -3,7 +3,6 @@ using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
-using Reactor.Utilities;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
@@ -92,7 +91,7 @@ public static class GameHistory
 
     public static void RegisterRole(PlayerControl player, RoleBehaviour role, bool clean = false)
     {
-        Logger<TownOfUsPlugin>.Message($"RegisterRole - player: '{player.Data.PlayerName}', role: '{role.NiceName}'");
+        //Logger<TownOfUsPlugin>.Message($"RegisterRole - player: '{player.Data.PlayerName}', role: '{role.NiceName}'");
 
         if (clean)
         {

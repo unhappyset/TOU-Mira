@@ -174,7 +174,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
         var required = (int)OptionGroupSingleton<InquisitorOptions>.Instance.AmountOfHeretics;
         var players = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Data.Role is not InquisitorRole).ToList();
-        Logger<TownOfUsPlugin>.Warning($"Players in heretic list possible: {players.Count}");
+        // Logger<TownOfUsPlugin>.Warning($"Players in heretic list possible: {players.Count}");
         players.Shuffle();
         players.Shuffle();
         players.Shuffle();

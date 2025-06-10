@@ -123,28 +123,28 @@ public sealed class SecurityButton : TownOfUsButton
 
     protected override void OnClick()
     {
-        Logger<TownOfUsPlugin>.Warning($"Checking Base Conditions");
+        // Logger<TownOfUsPlugin>.Warning($"Checking Base Conditions");
         var mapId = (MapNames)GameOptionsManager.Instance.currentNormalGameOptions.MapId;
         if (TutorialManager.InstanceExists) mapId = (MapNames)AmongUsClient.Instance.TutorialMapId;
         canMoveWithMinigame = true;
         var basicCams = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("Surv_Panel") || x.name.Contains("Cam") || x.name.Contains("BinocularsSecurityConsole"));
         if (mapId is MapNames.Airship)
         {
-            Logger<TownOfUsPlugin>.Warning($"Checking Airship Conditions");
+            // Logger<TownOfUsPlugin>.Warning($"Checking Airship Conditions");
             basicCams = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("task_cams"));
             PlayerControl.LocalPlayer.NetTransform.Halt();
             canMoveWithMinigame = false;
         }
         else if (mapId is MapNames.Skeld or MapNames.Dleks)
         {
-            Logger<TownOfUsPlugin>.Warning($"Checking Skeld Conditions");
+            // Logger<TownOfUsPlugin>.Warning($"Checking Skeld Conditions");
             basicCams = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("SurvConsole"));
             PlayerControl.LocalPlayer.NetTransform.Halt();
             canMoveWithMinigame = false;
         }
         else if (mapId is MapNames.MiraHQ)
         {
-            Logger<TownOfUsPlugin>.Warning($"Checking Mira HQ Conditions");
+            // Logger<TownOfUsPlugin>.Warning($"Checking Mira HQ Conditions");
             basicCams = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("SurvLogConsole"));
             if (!OptionGroupSingleton<OperativeOptions>.Instance.MoveOnMira)
             {
@@ -154,7 +154,7 @@ public sealed class SecurityButton : TownOfUsButton
         }
         else if (mapId is MapNames.Fungle)
         {
-            Logger<TownOfUsPlugin>.Warning($"Checking Fungle Conditions");
+            // Logger<TownOfUsPlugin>.Warning($"Checking Fungle Conditions");
             PlayerControl.LocalPlayer.NetTransform.Halt();
             canMoveWithMinigame = false;
         }

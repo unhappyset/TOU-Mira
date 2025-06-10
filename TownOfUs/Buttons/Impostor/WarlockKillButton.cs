@@ -1,9 +1,12 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Networking;
 using MiraAPI.Utilities.Assets;
+using TownOfUs.Options;
+using TownOfUs.Options.Modifiers.Alliance;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities;
+using TownOfUs.Utilities.Appearances;
 using UnityEngine;
 
 namespace TownOfUs.Buttons.Impostor;
@@ -104,6 +107,12 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
 
     public override PlayerControl? GetTarget()
     {
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(false, Distance);
+        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
+        var closePlayer = PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+
+        var includePostors = genOpt.FFAImpostorMode ||
+            (PlayerControl.LocalPlayer.IsLover() && OptionGroupSingleton<LoversOptions>.Instance.LoverKillTeammates) ||
+            (genOpt.KillDuringCamoComms && closePlayer?.GetAppearanceType() == TownOfUsAppearances.Camouflage);
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(includePostors, Distance);
     }
 }

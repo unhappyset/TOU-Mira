@@ -2,7 +2,6 @@
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
-using Reactor.Utilities;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Crewmate;
@@ -54,36 +53,36 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
         {
             Timer = Cooldown;
             EffectActive = false;
-            Logger<TownOfUsPlugin>.Error($"Effect is No Longer Active");
-            Logger<TownOfUsPlugin>.Error($"Cooldown is active");
+            // Logger<TownOfUsPlugin>.Error($"Effect is No Longer Active");
+            // Logger<TownOfUsPlugin>.Error($"Cooldown is active");
         }
         else if (HasEffect)
         {
             EffectActive = true;
             Timer = EffectDuration;
-            Logger<TownOfUsPlugin>.Error($"Effect is Now Active");
+            // Logger<TownOfUsPlugin>.Error($"Effect is Now Active");
         }
         else
         {
             Timer = !PlayerControl.LocalPlayer.inVent ? 0.001f : Cooldown;
-            Logger<TownOfUsPlugin>.Error($"Cooldown is active");
+            // Logger<TownOfUsPlugin>.Error($"Cooldown is active");
         }
     }
     protected override void OnClick()
     {
         if (!PlayerControl.LocalPlayer.inVent)
         {
-            Logger<TownOfUsPlugin>.Error($"Entering Vent");
+            // Logger<TownOfUsPlugin>.Error($"Entering Vent");
             if (Target != null)
             {
                 PlayerControl.LocalPlayer.MyPhysics.RpcEnterVent(Target.Id);
                 Target.SetButtons(true);
             }
-            else Logger<TownOfUsPlugin>.Error($"Vent is null...");
+            // else Logger<TownOfUsPlugin>.Error($"Vent is null...");
         }
         else if (Timer != 0)
         {
-            Logger<TownOfUsPlugin>.Error($"Leaving Vent");
+            // Logger<TownOfUsPlugin>.Error($"Leaving Vent");
             OnEffectEnd();
             if (!HasEffect)
             {
@@ -96,7 +95,7 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
     {
         if (PlayerControl.LocalPlayer.inVent)
         {
-            Logger<TownOfUsPlugin>.Error($"Left Vent");
+            // Logger<TownOfUsPlugin>.Error($"Left Vent");
             Vent.currentVent.SetButtons(false);
             PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
             UsesLeft--;

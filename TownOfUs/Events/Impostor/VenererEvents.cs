@@ -12,7 +12,7 @@ public static class VenererEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (!@event.Source.AmOwner || !@event.Source.IsRole<VenererRole>())
+        if (!@event.Source.AmOwner || !@event.Source.IsRole<VenererRole>() || MeetingHud.Instance != null)
         {
             return;
         }
