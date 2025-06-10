@@ -14,7 +14,5 @@ public static class SwooperEvents
     {
         var button = CustomButtonSingleton<SwooperSwoopButton>.Instance;
         button.SetUses((int)OptionGroupSingleton<SwooperOptions>.Instance.MaxSwoops);
-        button.SetTextOutline(button.TextOutlineColor);
-        if (button.Button != null) button.Button.usesRemainingSprite.color = button.TextOutlineColor;
     }
 }

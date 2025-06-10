@@ -58,10 +58,6 @@ public static class LookoutEvents
 
         var button = CustomButtonSingleton<WatchButton>.Instance;
         button.SetUses((int)OptionGroupSingleton<LookoutOptions>.Instance.MaxWatches + button.ExtraUses);
-        TownOfUsColors.UseBasic = false;
-        button.SetTextOutline(button.TextOutlineColor);
-        if (button.Button != null) button.Button.usesRemainingSprite.color = button.TextOutlineColor;
-        TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
     }
 
     public static void CheckForLookoutWatched(PlayerControl source, PlayerControl target)

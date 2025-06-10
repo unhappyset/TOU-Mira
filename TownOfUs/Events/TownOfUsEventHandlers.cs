@@ -45,17 +45,26 @@ public static class TownOfUsEventHandlers
         HudManager.Instance.SetHudActive(true);
 
         CustomButtonSingleton<WatchButton>.Instance.ExtraUses = 0;
+        CustomButtonSingleton<WatchButton>.Instance.SetUses((int)OptionGroupSingleton<LookoutOptions>.Instance.MaxWatches);
         CustomButtonSingleton<TrackerTrackButton>.Instance.ExtraUses = 0;
+        CustomButtonSingleton<TrackerTrackButton>.Instance.SetUses((int)OptionGroupSingleton<TrackerOptions>.Instance.MaxTracks);
         CustomButtonSingleton<TrapperTrapButton>.Instance.ExtraUses = 0;
+        CustomButtonSingleton<TrapperTrapButton>.Instance.SetUses((int)OptionGroupSingleton<TrapperOptions>.Instance.MaxTraps);
 
+        CustomButtonSingleton<HunterStalkButton>.Instance.ExtraUses = 0;
+        CustomButtonSingleton<HunterStalkButton>.Instance.SetUses((int)OptionGroupSingleton<HunterOptions>.Instance.StalkUses);
         CustomButtonSingleton<SheriffShootButton>.Instance.Usable = OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse;
         CustomButtonSingleton<VeteranAlertButton>.Instance.ExtraUses = 0;
+        CustomButtonSingleton<VeteranAlertButton>.Instance.SetUses((int)OptionGroupSingleton<VeteranOptions>.Instance.MaxNumAlerts);
 
         CustomButtonSingleton<JailorJailButton>.Instance.ExecutedACrew = false;
 
         CustomButtonSingleton<EngineerVentButton>.Instance.ExtraUses = 0;
+        CustomButtonSingleton<EngineerVentButton>.Instance.SetUses((int)OptionGroupSingleton<EngineerOptions>.Instance.MaxVents);
         CustomButtonSingleton<PlumberBlockButton>.Instance.ExtraUses = 0;
+        CustomButtonSingleton<PlumberBlockButton>.Instance.SetUses((int)OptionGroupSingleton<PlumberOptions>.Instance.MaxBarricades);
         CustomButtonSingleton<TransporterTransportButton>.Instance.ExtraUses = 0;
+        CustomButtonSingleton<TransporterTransportButton>.Instance.SetUses((int)OptionGroupSingleton<TransporterOptions>.Instance.MaxNumTransports);
 
         CustomButtonSingleton<WarlockKillButton>.Instance.Charge = 0f;
 

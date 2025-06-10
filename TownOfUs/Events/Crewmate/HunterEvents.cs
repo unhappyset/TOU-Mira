@@ -3,8 +3,11 @@ using MiraAPI.Events.Mira;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
+using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.GameOptions;
+using MiraAPI.Hud;
 using MiraAPI.Modifiers;
+using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
@@ -16,6 +19,17 @@ namespace TownOfUs.Events.Crewmate;
 
 public static class HunterEvents
 {
+    [RegisterEvent]
+    public static void CompleteTaskEvent(CompleteTaskEvent @event)
+    {
+        if (@event.Player.AmOwner && @event.Player.Data.Role is HunterRole && OptionGroupSingleton<HunterOptions>.Instance.TaskUses)
+        {
+            var button = CustomButtonSingleton<HunterStalkButton>.Instance;
+            ++button.UsesLeft;
+            ++button.ExtraUses;
+            button.SetUses(button.UsesLeft);
+        }
+    }
     [RegisterEvent]
     public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
     {

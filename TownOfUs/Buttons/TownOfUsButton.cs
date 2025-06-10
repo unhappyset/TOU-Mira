@@ -67,6 +67,18 @@ public abstract class TownOfUsButton : CustomActionButton
 
         PassiveComp = Button.GetComponent<PassiveButton>();
     }
+    public override void SetUses(int amount)
+    {
+        base.SetUses(amount);
+        TownOfUsColors.UseBasic = false;
+        if (TextOutlineColor != Color.clear)
+        {
+            SetTextOutline(TextOutlineColor);
+            Button!.usesRemainingSprite.color = TextOutlineColor;
+        }
+
+        TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
+    }
 
     public override bool CanUse()
     {
@@ -196,6 +208,18 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
         TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
         
         PassiveComp = Button.GetComponent<PassiveButton>();
+    }
+    public override void SetUses(int amount)
+    {
+        base.SetUses(amount);
+        TownOfUsColors.UseBasic = false;
+        if (TextOutlineColor != Color.clear)
+        {
+            SetTextOutline(TextOutlineColor);
+            Button!.usesRemainingSprite.color = TextOutlineColor;
+        }
+
+        TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
     }
 
     public override void ClickHandler()
