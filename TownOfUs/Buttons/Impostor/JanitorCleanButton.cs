@@ -44,21 +44,4 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
         }
         CleaningBody = null;
     }
-
-    /* public override void FixedUpdateHandler(PlayerControl playerControl)
-    {
-        Timer = PlayerControl.LocalPlayer.killTimer;
-
-        if (CanUse())
-        {
-            Button?.SetEnabled();
-        }
-        else
-        {
-            Button?.SetDisabled();
-        }
-
-        Button?.SetCoolDown(Timer, Cooldown);
-        FixedUpdate(playerControl);
-    } */
 }

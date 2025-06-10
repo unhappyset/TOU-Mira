@@ -204,7 +204,7 @@ public static class HudManagerPatches
             var aspectPosition = WikiButton.GetComponentInChildren<AspectPosition>();
             var distanceFromEdge = aspectPosition.DistanceFromEdge;
             distanceFromEdge.x = isChatButtonVisible ? 2.73f : 2.15f;
-            if (((ModCompatibility.IsWikiButtonOffset && !ZoomButton.active) || ZoomButton.active) && (MeetingHud.Instance == null) && Minigame.Instance == null && (PlayerJoinPatch.SentOnce || TutorialManager.InstanceExists)) distanceFromEdge.x += 0.84f;
+            if (((ModCompatibility.IsWikiButtonOffset && !ZoomButton.active) || ZoomButton.active) && (!MeetingHud.Instance) && Minigame.Instance == null && (PlayerJoinPatch.SentOnce || TutorialManager.InstanceExists)) distanceFromEdge.x += 0.84f;
             if (TeamChatButton.active) distanceFromEdge.x += 0.84f;
             distanceFromEdge.y = 0.485f;
             WikiButton.SetActive(true);
@@ -228,7 +228,7 @@ public static class HudManagerPatches
             var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId);
 
         if (((PlayerControl.LocalPlayer.Data.IsDead && !body && !fakePlayer?.body && (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } || PlayerControl.LocalPlayer.Data.Role is not IGhostRole)) || TutorialManager.InstanceExists)
-            && Input.GetAxis("Mouse ScrollWheel") != 0 && MeetingHud.Instance == null && Minigame.Instance == null && !HudManager.Instance.Chat.IsOpenOrOpening)
+            && Input.GetAxis("Mouse ScrollWheel") != 0 && !MeetingHud.Instance && Minigame.Instance == null && !HudManager.Instance.Chat.IsOpenOrOpening)
         {
             CheckForScrollZoom();
         }
@@ -310,7 +310,7 @@ public static class HudManagerPatches
 
     public static void UpdateColorNameText(HudManager instance)
     {
-        if (MeetingHud.Instance != null)
+        if (MeetingHud.Instance)
         {
             foreach (var colorBlindName in MeetingHud.Instance.playerStates.Select(playerVA => playerVA.ColorBlindName))
             {
@@ -330,7 +330,7 @@ public static class HudManagerPatches
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
         var taskopt = OptionGroupSingleton<TaskTrackingOptions>.Instance;
 
-        if (MeetingHud.Instance != null)
+        if (MeetingHud.Instance)
         {
             foreach (var playerVA in MeetingHud.Instance.playerStates)
             {

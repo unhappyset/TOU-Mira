@@ -68,9 +68,9 @@ public class ScatterModifier(float time) : TimedModifier
     {
         base.FixedUpdate();
 
-        //Logger<TownOfUsPlugin>.Error($"Scatter - !Player.AmOwner: {!Player.AmOwner} !TimerActive: {!TimerActive} Player.HasDied(): {Player.HasDied()} MeetingHud.Instance != null: {MeetingHud.Instance != null} ScatterEvents.Intro: {ScatterEvents.Intro}");
+        //Logger<TownOfUsPlugin>.Error($"Scatter - !Player.AmOwner: {!Player.AmOwner} !TimerActive: {!TimerActive} Player.HasDied(): {Player.HasDied()} MeetingHud.Instance: {MeetingHud.Instance} ScatterEvents.Intro: {ScatterEvents.Intro}");
 
-        if (!Player.AmOwner || !TimerActive || Player.HasDied() || MeetingHud.Instance != null)
+        if (!Player.AmOwner || !TimerActive || Player.HasDied() || MeetingHud.Instance)
         {
             soundTimer = 1f;
             TimeRemaining = Duration;

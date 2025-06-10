@@ -31,6 +31,7 @@ using TownOfUs.Buttons.Impostor;
 using TownOfUs.Events.TouEvents;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
 using TownOfUs.Modules.Components;
+using TownOfUs.Roles.Impostor;
 
 namespace TownOfUs.Events;
 
@@ -141,10 +142,21 @@ public static class TownOfUsEventHandlers
                 animatedMod.SetVisible();
             }
         }
+        if (source.IsImpostor() && source.AmOwner && !MeetingHud.Instance)
+        {
+            switch (source.Data.Role)
+            {
+                case BomberRole:
+                    var bombButton = CustomButtonSingleton<BomberPlantButton>.Instance;
+                    bombButton.Timer = PlayerControl.LocalPlayer.killTimer;
+                    bombButton.Button?.SetCoolDown(bombButton.Timer, bombButton.Cooldown);
+                    break;
+            }
+        }
         if (@target.TryGetModifier<MedicShieldModifier>(out var medMod)
-        && PlayerControl.LocalPlayer.Data.Role is MedicRole
-        && medMod.Medic == PlayerControl.LocalPlayer)
-            CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
+            && PlayerControl.LocalPlayer.Data.Role is MedicRole
+            && medMod.Medic == PlayerControl.LocalPlayer)
+                CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
 
         // here we're adding support for kills during a meeting
         if (MeetingHud.Instance)
@@ -220,7 +232,7 @@ public static class TownOfUsEventHandlers
         && medMod.Medic == PlayerControl.LocalPlayer)
             CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
 
-        if (MeetingHud.Instance == null) return;
+        if (!MeetingHud.Instance) return;
 
         var player = @event.ClientData.Character;
 

@@ -32,7 +32,7 @@ public static class JailorEvents
         var source = @event.Source;
         var victim = @event.Target;
 
-        if ((victim.Data.Role is JailorRole || victim.GetRoleWhenAlive() is JailorRole) && MeetingHud.Instance == null)
+        if ((victim.Data.Role is JailorRole || victim.GetRoleWhenAlive() is JailorRole) && !MeetingHud.Instance)
         {
             ModifierUtils.GetPlayersWithModifier<JailedModifier>().Do(x => x.RemoveModifier<JailedModifier>());
         }

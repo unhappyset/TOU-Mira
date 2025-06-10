@@ -110,7 +110,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         var snitchRevealed = PlayerControl.LocalPlayer.Data.Role is SnitchRole snitch && snitch.CompletedAllTasks;
         var showSnitch = IsTargetOfSnitch(PlayerControl.LocalPlayer) && player.Data.Role is SnitchRole snitch2 && snitch2.OnLastTask;
 
-        if (MeetingHud.Instance != null && !OptionGroupSingleton<SnitchOptions>.Instance.SnitchSeesImpostorsMeetings)
+        if (MeetingHud.Instance && !OptionGroupSingleton<SnitchOptions>.Instance.SnitchSeesImpostorsMeetings)
         {
             snitchRevealed = false;
         }

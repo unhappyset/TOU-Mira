@@ -60,7 +60,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         SearchScreen.Value.gameObject.SetActive(false);
         DetailScreen.Value.gameObject.SetActive(false);
         if (SearchIcon) SearchIcon.SetActive(false);
-        if (MeetingHud.Instance != null) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(false));
+        if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(false));
 
         switch (newPage)
         {
@@ -246,13 +246,13 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
     private void Awake()
     {
-        if (MeetingHud.Instance != null) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(false));
+        if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(false));
         _pluginInfo = MiraPluginManager.GetPluginByGuid(TownOfUsPlugin.Id)!;
 
         UpdatePage(WikiPage.Homepage);
 
         var closeAction = new Action(() => {
-            if (MeetingHud.Instance != null) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(true));
+            if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(true));
             this.BaseClose();
             });
 
@@ -346,7 +346,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
     {
         MinigameStubs.Close(this);
 
-        if (MeetingHud.Instance != null) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(true));
+        if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(true));
         TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
     }
 }

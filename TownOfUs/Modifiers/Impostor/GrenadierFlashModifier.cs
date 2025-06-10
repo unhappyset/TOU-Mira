@@ -107,7 +107,7 @@ public sealed class GrenadierFlashModifier : DisabledModifier, IDisposable
                 TimeRemaining = 0.0f;
             }
 
-            if (MeetingHud.Instance != null)
+            if (MeetingHud.Instance)
             {
                 SetFlash(normalVision);
 

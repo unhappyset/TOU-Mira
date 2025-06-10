@@ -11,7 +11,7 @@ public static class MysticEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (MeetingHud.Instance != null) return;
+        if (MeetingHud.Instance) return;
 
         var victim = @event.Target;
 

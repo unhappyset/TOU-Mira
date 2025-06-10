@@ -16,7 +16,7 @@ public static class AftermathEvents
     {
         var source = @event.Source;
 
-        if (!@event.Target.HasModifier<AftermathModifier>() || !source.AmOwner || MeetingHud.Instance != null) return;
+        if (!@event.Target.HasModifier<AftermathModifier>() || !source.AmOwner || MeetingHud.Instance) return;
         var button = CustomButtonManager.Buttons.Where(x => x.Enabled(source.Data.Role) && x.Timer <= 0).OfType<IAftermathableButton>().FirstOrDefault();
         if(button == null) return;
 

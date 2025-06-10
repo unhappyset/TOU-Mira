@@ -98,7 +98,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
                 cod = "rampaged";
                 break;
         }
-        if (MeetingHud.Instance != null)
+        if (MeetingHud.Instance)
         {
             celeb.Announced = true;
         }

@@ -19,7 +19,7 @@ public static class AssassinEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (MeetingHud.Instance == null) return;
+        if (!MeetingHud.Instance) return;
 
         var source = @event.Source;
 
