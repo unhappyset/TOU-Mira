@@ -3,6 +3,7 @@ using MiraAPI.Events;
 using MiraAPI.Events.Mira;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
@@ -15,6 +16,17 @@ namespace TownOfUs.Events.Crewmate;
 
 public static class LookoutEvents
 {
+    [RegisterEvent]
+    public static void CompleteTaskEvent(CompleteTaskEvent @event)
+    {
+        if (@event.Player.AmOwner && @event.Player.Data.Role is LookoutRole && OptionGroupSingleton<LookoutOptions>.Instance.TaskUses)
+        {
+            var button = CustomButtonSingleton<WatchButton>.Instance;
+            ++button.UsesLeft;
+            ++button.ExtraUses;
+            button.SetUses(button.UsesLeft);
+        }
+    }
     [RegisterEvent]
     public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
     {
@@ -45,7 +57,7 @@ public static class LookoutEvents
         ModifierUtils.GetPlayersWithModifier<LookoutWatchedModifier>().Do(x => x.RemoveModifier<LookoutWatchedModifier>());
 
         var button = CustomButtonSingleton<WatchButton>.Instance;
-        button.SetUses((int)OptionGroupSingleton<LookoutOptions>.Instance.MaxWatches);
+        button.SetUses((int)OptionGroupSingleton<LookoutOptions>.Instance.MaxWatches + button.ExtraUses);
         TownOfUsColors.UseBasic = false;
         button.SetTextOutline(button.TextOutlineColor);
         if (button.Button != null) button.Button.usesRemainingSprite.color = button.TextOutlineColor;

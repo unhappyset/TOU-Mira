@@ -16,6 +16,7 @@ public sealed class TrapperTrapButton : TownOfUsRoleButton<TrapperRole>
     public override float Cooldown => OptionGroupSingleton<TrapperOptions>.Instance.TrapCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<TrapperOptions>.Instance.MaxTraps;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.TrapSprite;
+    public int ExtraUses { get; set; }
 
     protected override void OnClick()
     {

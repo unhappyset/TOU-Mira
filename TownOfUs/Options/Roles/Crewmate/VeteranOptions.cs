@@ -23,4 +23,6 @@ public sealed class VeteranOptions : AbstractOptionGroup<VeteranRole>
 
     [ModdedToggleOption("Can Be Killed On Alert")]
     public bool KilledOnAlert { get; set; } = false;
+    [ModdedToggleOption("Get More Uses From Completing Tasks")]
+    public bool TaskUses { get; set; } = true;
 }

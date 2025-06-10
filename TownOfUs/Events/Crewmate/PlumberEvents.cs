@@ -1,13 +1,29 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Events.Vanilla.Usables;
+using MiraAPI.GameOptions;
 using MiraAPI.Roles;
+using TownOfUs.Options.Roles.Crewmate;
+using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Roles.Crewmate;
+using MiraAPI.Hud;
 
 namespace TownOfUs.Events.Crewmate;
 
 public static class PlumberEvents
 {
+    [RegisterEvent]
+    public static void CompleteTaskEvent(CompleteTaskEvent @event)
+    {
+        if (@event.Player.AmOwner && @event.Player.Data.Role is PlumberRole && OptionGroupSingleton<PlumberOptions>.Instance.TaskUses)
+        {
+            var button = CustomButtonSingleton<PlumberBlockButton>.Instance;
+            ++button.UsesLeft;
+            ++button.ExtraUses;
+            button.SetUses(button.UsesLeft);
+        }
+    }
     [RegisterEvent]
     public static void PlayerCanUseEventHandler(PlayerCanUseEvent @event)
     {

@@ -43,14 +43,24 @@ public static class TownOfUsEventHandlers
         if (!@event.TriggeredByIntro) return; // Only run when round starts.
         HudManager.Instance.SetHudActive(false);
         HudManager.Instance.SetHudActive(true);
+
+        CustomButtonSingleton<WatchButton>.Instance.ExtraUses = 0;
+        CustomButtonSingleton<TrackerTrackButton>.Instance.ExtraUses = 0;
+        CustomButtonSingleton<TrapperTrapButton>.Instance.ExtraUses = 0;
+
         CustomButtonSingleton<SheriffShootButton>.Instance.Usable = OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse;
+        CustomButtonSingleton<VeteranAlertButton>.Instance.ExtraUses = 0;
+
         CustomButtonSingleton<JailorJailButton>.Instance.ExecutedACrew = false;
+
+        CustomButtonSingleton<EngineerVentButton>.Instance.ExtraUses = 0;
+        CustomButtonSingleton<PlumberBlockButton>.Instance.ExtraUses = 0;
+        CustomButtonSingleton<TransporterTransportButton>.Instance.ExtraUses = 0;
 
         CustomButtonSingleton<WarlockKillButton>.Instance.Charge = 0f;
 
         CustomButtonSingleton<BarryButton>.Instance.Usable = OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
         CustomButtonSingleton<SatelliteButton>.Instance.Usable = OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;
-        
     }
     [RegisterEvent]
     public static void ChangeRoleHandler(ChangeRoleEvent @event)

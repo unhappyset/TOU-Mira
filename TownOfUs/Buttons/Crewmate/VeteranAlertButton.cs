@@ -17,6 +17,7 @@ public sealed class VeteranAlertButton : TownOfUsRoleButton<VeteranRole>
     public override float EffectDuration => OptionGroupSingleton<VeteranOptions>.Instance.AlertDuration;
     public override int MaxUses => (int)OptionGroupSingleton<VeteranOptions>.Instance.MaxNumAlerts;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.AlertSprite;
+    public int ExtraUses { get; set; }
 
     protected override void OnClick()
     {

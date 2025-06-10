@@ -17,6 +17,7 @@ public sealed class TransporterTransportButton : TownOfUsRoleButton<TransporterR
     public override float Cooldown => OptionGroupSingleton<TransporterOptions>.Instance.TransporterCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<TransporterOptions>.Instance.MaxNumTransports;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.Transport;
+    public int ExtraUses { get; set; }
 
     public override void ClickHandler()
     {

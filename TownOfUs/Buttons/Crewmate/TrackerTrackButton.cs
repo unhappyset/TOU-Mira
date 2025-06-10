@@ -19,6 +19,7 @@ public sealed class TrackerTrackButton : TownOfUsRoleButton<TrackerTouRole, Play
     public override float Cooldown => OptionGroupSingleton<TrackerOptions>.Instance.TrackCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<TrackerOptions>.Instance.MaxTracks;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.TrackSprite;
+    public int ExtraUses { get; set; }
 
     public override bool IsTargetValid(PlayerControl? target)
     {

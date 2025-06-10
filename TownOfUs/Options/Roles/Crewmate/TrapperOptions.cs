@@ -26,4 +26,6 @@ public sealed class TrapperOptions : AbstractOptionGroup<TrapperRole>
 
     [ModdedNumberOption("Minimum Number Of Roles Required To Trigger Trap", 1f, 15f, 1f, MiraNumberSuffixes.None)]
     public float MinAmountOfPlayersInTrap { get; set; } = 3f;
+    [ModdedToggleOption("Get More Uses From Completing Tasks")]
+    public bool TaskUses { get; set; } = false;
 }

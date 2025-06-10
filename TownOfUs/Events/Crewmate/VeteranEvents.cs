@@ -1,10 +1,12 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Mira;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
+using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game;
@@ -17,6 +19,17 @@ namespace TownOfUs.Events.Crewmate;
 
 public static class VeteranEvents
 {
+    [RegisterEvent]
+    public static void CompleteTaskEvent(CompleteTaskEvent @event)
+    {
+        if (@event.Player.AmOwner && @event.Player.Data.Role is VeteranRole && OptionGroupSingleton<VeteranOptions>.Instance.TaskUses)
+        {
+            var button = CustomButtonSingleton<VeteranAlertButton>.Instance;
+            ++button.UsesLeft;
+            ++button.ExtraUses;
+            button.SetUses(button.UsesLeft);
+        }
+    }
     [RegisterEvent(priority: 1)]
     public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
     {

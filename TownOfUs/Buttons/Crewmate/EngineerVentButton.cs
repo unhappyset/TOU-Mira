@@ -19,6 +19,7 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
     public override float EffectDuration => OptionGroupSingleton<EngineerOptions>.Instance.VentDuration;
     public override int MaxUses => (int)OptionGroupSingleton<EngineerOptions>.Instance.MaxVents;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.EngiVentSprite;
+    public int ExtraUses { get; set; }
 
     private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.NotShipMask);
 

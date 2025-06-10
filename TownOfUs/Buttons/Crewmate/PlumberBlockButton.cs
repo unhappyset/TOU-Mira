@@ -18,6 +18,7 @@ public sealed class PlumberBlockButton : TownOfUsRoleButton<PlumberRole, Vent>
     public override float Cooldown => OptionGroupSingleton<PlumberOptions>.Instance.BlockCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<PlumberOptions>.Instance.MaxBarricades;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.BarricadeSprite;
+    public int ExtraUses { get; set; }
 
     public override bool IsTargetValid(Vent? target)
     {

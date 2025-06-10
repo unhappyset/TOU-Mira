@@ -18,6 +18,7 @@ public sealed class WatchButton : TownOfUsRoleButton<LookoutRole, PlayerControl>
     public override float Cooldown => OptionGroupSingleton<LookoutOptions>.Instance.WatchCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<LookoutOptions>.Instance.MaxWatches;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.WatchSprite;
+    public int ExtraUses { get; set; }
 
     public override bool IsTargetValid(PlayerControl? target)
     {
