@@ -100,6 +100,7 @@ public static class ShowVentsPatch
         foreach (var vent in ShipStatus.Instance.AllVents)
         {
             if (!vent.isActiveAndEnabled) continue;
+            if (vent.name.StartsWith("MinerVent-", StringComparison.Ordinal)) continue;
             var network = GetNetworkFor(vent);
             if (network == null || !network.Any(x => x == vent)) return false;
         }
