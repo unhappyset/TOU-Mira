@@ -58,7 +58,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
                 plainShipRoom = plainShipRoom2;
             }
         }
-        
+
         var room = plainShipRoom != null ? TranslationController.Instance.GetString(plainShipRoom.RoomId) : "Outside/Hallway";
 
         var celeb = player.GetModifier<CelebrityModifier>()!;
@@ -70,20 +70,32 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
         var cod = "killed";
         switch (source.Data.Role)
         {
+            case SheriffRole or HunterRole or VeteranRole:
+                cod = "shot";
+                break;
+            case InquisitorRole:
+                cod = "vanquished";
+                break;
             case ArsonistRole:
                 cod = "ignited";
                 break;
-            case SoulCollectorRole:
-                cod = "reaped";
+            case GlitchRole:
+                cod = "bugged";
                 break;
             case JuggernautRole:
                 cod = "destroyed";
                 break;
+            case PestilenceRole:
+                cod = "diseased";
+                break;
+            case SoulCollectorRole:
+                cod = "reaped";
+                break;
+            case VampireRole:
+                cod = "bit";
+                break;
             case WerewolfRole:
                 cod = "rampaged";
-                break;
-            case SheriffRole:
-                cod = "shot";
                 break;
         }
         if (MeetingHud.Instance != null)
