@@ -40,4 +40,20 @@ public sealed class BomberPlantButton : TownOfUsRoleButton<BomberRole>, IAfterma
 
         Role.Bomb?.Detonate();
     }
+    public override void FixedUpdateHandler(PlayerControl playerControl)
+    {
+        if (!EffectActive) Timer = PlayerControl.LocalPlayer.killTimer;
+
+        if (CanUse())
+        {
+            Button?.SetEnabled();
+        }
+        else
+        {
+            Button?.SetDisabled();
+        }
+
+        if (!EffectActive) Button?.SetCoolDown(Timer, Cooldown);
+        FixedUpdate(playerControl);
+    }
 }

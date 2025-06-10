@@ -4,6 +4,7 @@ using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Buttons.Crewmate;
@@ -41,7 +42,7 @@ public sealed class TransporterTransportButton : TownOfUsRoleButton<TransporterR
                 var player2Menu = CustomPlayerMenu.Create();
 
                 player2Menu.Begin(
-                    plr2 => plr2.PlayerId != plr.PlayerId && ((!plr2.Data.Disconnected && !plr2.Data.IsDead) || Helpers.GetBodyById(plr2.PlayerId) || Utilities.MiscUtils.GetFakePlayer(plr2)?.body) && (plr2.moveable || plr2.inVent),
+                    plr2 => plr2.PlayerId != plr.PlayerId && ((!plr2.HasDied()) || Helpers.GetBodyById(plr2.PlayerId)/*  || MiscUtils.GetFakePlayer(plr2)?.body */) && (plr2.moveable || plr2.inVent),
                     plr2 =>
                     {
                         TransporterRole.RpcTransport(PlayerControl.LocalPlayer, plr.PlayerId, plr2!.PlayerId);

@@ -700,7 +700,8 @@ public static class MiscUtils
     /// <returns>A fake player or null if its not found.</returns>
     public static FakePlayer? GetFakePlayer(PlayerControl player)
     {
-        return FakePlayer.FakePlayers.FirstOrDefault(x => x.body?.name == $"Fake {player.gameObject.name}");
+        var faker = FakePlayer.FakePlayers.FirstOrDefault(x => x.body?.name == $"Fake {player.gameObject.name}");
+        return faker != null ? faker : null;
     }
 
     public static bool IsMap(byte mapid)
