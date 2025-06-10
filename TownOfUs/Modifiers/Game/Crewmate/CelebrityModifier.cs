@@ -40,7 +40,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
         return base.IsModifierValidOn(role) && role.IsCrewmate();
     }
 
-    public static void CelebrityKilled(PlayerControl source, PlayerControl player)
+    public static void CelebrityKilled(PlayerControl source, PlayerControl player, string customDeath = "")
     {
         if (!player.HasModifier<CelebrityModifier>())
         {
@@ -98,6 +98,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
                 cod = "rampaged";
                 break;
         }
+        if (customDeath != string.Empty && customDeath != "") cod = customDeath;
         if (MeetingHud.Instance)
         {
             celeb.Announced = true;

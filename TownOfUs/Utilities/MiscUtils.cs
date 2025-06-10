@@ -11,6 +11,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.PluginLoading;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using TownOfUs.Modifiers;
 using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Neutral;
@@ -708,5 +709,47 @@ public static class MiscUtils
     {
         return GameOptionsManager.Instance.currentNormalGameOptions.MapId == mapid
               || TutorialManager.InstanceExists && AmongUsClient.Instance.TutorialMapId == mapid;
+    }
+    public static bool IsConcealed(this PlayerControl Player)
+    {
+        if (Player.HasModifier<ConcealedModifier>() || !Player.Visible || (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive))
+        {
+            return true;
+        }
+
+        if (Player.inVent)
+        {
+            return true;
+        }
+
+        var mushroom = UnityEngine.Object.FindObjectOfType<MushroomMixupSabotageSystem>();
+        if (mushroom && mushroom.IsActive)
+        {
+            return true;
+        }
+
+        if (OptionGroupSingleton<GeneralOptions>.Instance.CamouflageComms)
+        {
+            if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Comms, out var commsSystem) || commsSystem == null)
+            {
+                return false;
+            }
+
+            var isActive = false;
+            if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq || ShipStatus.Instance.Type == ShipStatus.MapType.Fungle)
+            {
+                var hqSystem = commsSystem.Cast<HqHudSystemType>();
+                if (hqSystem != null) isActive = hqSystem.IsActive;
+            }
+            else
+            {
+                var hudSystem = commsSystem.Cast<HudOverrideSystemType>();
+                if (hudSystem != null) isActive = hudSystem.IsActive;
+            }
+
+            return isActive;
+        }
+
+        return false;
     }
 }

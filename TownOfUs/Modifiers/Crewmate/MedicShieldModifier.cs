@@ -65,7 +65,7 @@ public sealed class MedicShieldModifier(PlayerControl medic) : BaseShieldModifie
     {
         if (!MeetingHud.Instance && MedicShield?.gameObject != null)
         {
-            MedicShield?.SetActive(!IsConcealed());
+            MedicShield?.SetActive(!Player.IsConcealed() && IsVisible);
         }
     }
 }

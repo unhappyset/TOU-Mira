@@ -15,7 +15,7 @@ public static class CelebrityEvents
         var source = @event.Source;
         var target = @event.Target;
 
-        if (target.HasModifier<CelebrityModifier>())
+        if (target.HasModifier<CelebrityModifier>() && !MeetingHud.Instance)
         {
             CelebrityModifier.CelebrityKilled(source, target);
         }
