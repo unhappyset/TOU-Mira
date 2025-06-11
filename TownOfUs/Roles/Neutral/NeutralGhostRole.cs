@@ -73,8 +73,9 @@ public class NeutralGhostRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownOfUsR
     public override bool DidWin(GameOverReason gameOverReason)
     {
         var role = Player.GetRoleWhenAlive();
+        if (role == null) return false;
 
-        var win = role!.DidWin(gameOverReason);
+        var win = role.DidWin(gameOverReason);
 
         Logger<TownOfUsPlugin>.Message($"NeutralGhostRole.DidWin - role: {role.NiceName} DidWin: {win}");
         
