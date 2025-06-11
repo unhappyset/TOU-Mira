@@ -182,7 +182,9 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 var wikiBg = newItem.transform.FindChild("WikiBg").gameObject.GetComponent<SpriteRenderer>();
                 wikiBg.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
                 if (modifier is IColoredModifier colorMod) wikiBg.color = colorMod.ModifierColor;
+                if (alignment.Contains("Non ")) alignment = alignment.Replace("Non ", "Non-");
                 var team = newItem.transform.GetChild(2).gameObject.GetComponent<TextMeshPro>();
+                team.fontSizeMax = 2.65f;
                 team.text =
                     $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Masked\">{alignment}</font>";
                 team.gameObject.SetActive(true);
@@ -209,6 +211,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 var wikiBg = newItem.transform.FindChild("WikiBg").gameObject.GetComponent<SpriteRenderer>();
                 wikiBg.color = role.RoleColor;
                 var team = newItem.transform.GetChild(2).gameObject.GetComponent<TextMeshPro>();
+                team.fontSizeMax = 2.65f;
                 team.text =
                     $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Masked\">{role.RoleAlignment.ToDisplayString()}</font>";
                 team.gameObject.SetActive(true);
