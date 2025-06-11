@@ -320,7 +320,7 @@ public static class Extensions
         var material = panel.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
 
         var teamName = modifier is TouGameModifier touModifier ? touModifier.FactionType.ToDisplayString() : "Universal";
-        if (modifier is AllianceGameModifier) teamName = "Alliance";
+        if (modifier is AllianceGameModifier allyModifier) teamName = allyModifier.FactionType.ToDisplayString();
 
         if (teamName.Contains("Crewmate")) teamName = teamName.Replace("Crewmate", $"<color=#68ACF4FF>Crewmate</color>");
         else if (teamName.Contains("Impostor")) teamName = teamName.Replace("Impostor", $"<color=#D63F42FF>Impostor</color>");

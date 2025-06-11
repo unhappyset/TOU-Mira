@@ -75,6 +75,14 @@ public static class HudManagerPatches
 
         Camera.main.orthographicSize = size;
         HudManager.Instance.UICamera.orthographicSize = size;
+        // apparently, zooming does NOT work when the window size is 16:9
+        // TODO: Improve shadow quad scaling for abnormal resolutions (and do it on the other functions)
+        /* var fakeWidth = (int)(Math.Round(Screen.width / 10.0));
+        var fakeHeight = (int)(Math.Round(Screen.height / 10.0));
+        int gcd = (int)System.Numerics.BigInteger.GreatestCommonDivisor(fakeWidth, fakeHeight);
+        var ratioWidth = fakeWidth / gcd;
+        var ratioHeight = fakeHeight / gcd;
+        HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(ratioWidth / 1.5f, ratioHeight / 1.5f) * (size / 3f); */
         HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f) * (size / 3f);
         if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);

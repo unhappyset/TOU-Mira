@@ -177,7 +177,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 newItem.transform.GetChild(2).gameObject.SetActive(false);
                 var alignment = "Universal";
                 if (modifier is TouGameModifier touMod) alignment = touMod.FactionType.ToDisplayString();
-                else if (modifier is AllianceGameModifier) alignment = "Alliance";
+                if (modifier is AllianceGameModifier allyModifier) alignment = allyModifier.FactionType.ToDisplayString();
                 var team = newItem.transform.GetChild(2).gameObject.GetComponent<TextMeshPro>();
                 team.text =
                     $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Masked\">{alignment}</font>";

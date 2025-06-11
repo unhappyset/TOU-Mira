@@ -15,6 +15,7 @@ public sealed class EgotistModifier : AllianceGameModifier, IWikiDiscoverable
     public override string IntroInfo => $"Your Ego is Thriving...";
     public override string Symbol => $"<size=100%>#</size>";
     public override float IntroSize => 4f;
+    public override ModifierFaction FactionType => ModifierFaction.CrewmateAlliance;
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Egotist;
     public override string GetDescription() => "<size=130%>Defy the crew,</size>\n<size=125%>win with killers.</size>";
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<AllianceModifierOptions>.Instance.EgotistChance;

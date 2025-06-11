@@ -22,4 +22,12 @@ public enum ModifierFaction
     Crewmate,
     Neutral,
     Impostor,
+    CrewmateAlliance,
+    NeutralAlliance,
+    ImpostorAlliance,
+    NonCrewmate,
+    NonNeutral,
+    NonImpostor,
+    External,
+    Other,
 }
