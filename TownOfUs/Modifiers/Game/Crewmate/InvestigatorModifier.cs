@@ -16,7 +16,7 @@ public sealed class InvestigatorModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Investigator";
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Investigator;
     public override string GetDescription() => "You can see everyone's footprints.";
-    public override ModifierFaction FactionType => ModifierFaction.Crewmate;
+    public override ModifierFaction FactionType => ModifierFaction.CrewmateUtility;
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.InvestigatorChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.InvestigatorAmount;

@@ -176,13 +176,15 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 var newItem = CreateNewItem(modifier.ModifierName, modifier.ModifierIcon!.LoadAsset());
                 newItem.transform.GetChild(2).gameObject.SetActive(false);
                 var alignment = "Universal";
+                if (modifier is UniversalGameModifier uniMod) alignment = uniMod.FactionType.ToDisplayString();
                 if (modifier is TouGameModifier touMod) alignment = touMod.FactionType.ToDisplayString();
                 if (modifier is AllianceGameModifier allyModifier) alignment = allyModifier.FactionType.ToDisplayString();
+                var wikiBg = newItem.transform.FindChild("WikiBg").gameObject.GetComponent<SpriteRenderer>();
+                wikiBg.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
+                if (modifier is IColoredModifier colorMod) wikiBg.color = colorMod.ModifierColor;
                 var team = newItem.transform.GetChild(2).gameObject.GetComponent<TextMeshPro>();
                 team.text =
                     $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Masked\">{alignment}</font>";
-                team.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-                if (modifier is IColoredModifier colorMod) team.color = colorMod.ModifierColor;
                 team.gameObject.SetActive(true);
                 team.SetOutlineColor(Color.black);
                 team.SetOutlineThickness(0.35f);
@@ -204,10 +206,11 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 if (role is not IWikiDiscoverable wikiDiscoverable) continue;
 
                 var newItem = CreateNewItem(role.RoleName, role.Configuration.Icon?.LoadAsset());
+                var wikiBg = newItem.transform.FindChild("WikiBg").gameObject.GetComponent<SpriteRenderer>();
+                wikiBg.color = role.RoleColor;
                 var team = newItem.transform.GetChild(2).gameObject.GetComponent<TextMeshPro>();
                 team.text =
                     $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Masked\">{role.RoleAlignment.ToDisplayString()}</font>";
-                team.color = role.RoleColor;
                 team.gameObject.SetActive(true);
                 team.SetOutlineColor(Color.black);
                 team.SetOutlineThickness(0.35f);
@@ -236,6 +239,14 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         var newItem = Instantiate(SearchItemTemplate.Value, SearchScroller.Value.Inner);
         var icon = newItem.GetChild(0).GetComponent<SpriteRenderer>();
         var itemText = newItem.GetChild(1).GetComponent<TextMeshPro>();
+
+        var bgColorObj = Instantiate(newItem.GetChild(0).gameObject, newItem.GetChild(0).gameObject.transform.parent);
+        bgColorObj.name = "WikiBg";
+        bgColorObj.transform.localPosition += new Vector3(2.74f, 0f);
+        bgColorObj.transform.localScale = new Vector3(5f, 1.1f, 1f);
+        var bgSprite = bgColorObj.GetComponent<SpriteRenderer>();
+        bgSprite.sprite = TouAssets.WikiBgSprite.LoadAsset();
+
         newItem.name = itemName.ToLowerInvariant();
         icon.sprite = sprite != null ? sprite : TouRoleIcons.RandomAny.LoadAsset();
         itemText.text  = $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{itemName}</font>";

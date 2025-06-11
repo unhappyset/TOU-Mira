@@ -30,15 +30,15 @@ public interface ITownOfUsRole : ICustomRole
 
         if (alignment.Contains("Crewmate"))
         {
-            alignment = alignment.Replace("Crewmate", "<color=#68ACF4FF>Crewmate");
+            alignment = alignment.Replace("Crewmate", "<color=#68ACF4>Crewmate");
         }
         else if (alignment.Contains("Impostor"))
         {
-            alignment = alignment.Replace("Impostor", "<color=#D63F42FF>Impostor");
+            alignment = alignment.Replace("Impostor", "<color=#D63F42>Impostor");
         }
         else if (alignment.Contains("Neutral"))
         {
-            alignment = alignment.Replace("Neutral", "<color=#8A8A8AFF>Neutral");
+            alignment = alignment.Replace("Neutral", "<color=#8A8A8A>Neutral");
         }
 
         var prefix = " a";

@@ -12,6 +12,7 @@ public sealed class SleuthModifier : UniversalGameModifier, IWikiDiscoverable
     public override string ModifierName => "Sleuth";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Sleuth;
     public override string GetDescription() => "Know the roles of bodies you report.";
+    public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
     public List<byte> Reported { get; set; } = [];
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SleuthChance;

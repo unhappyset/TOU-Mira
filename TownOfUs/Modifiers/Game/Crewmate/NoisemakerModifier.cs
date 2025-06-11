@@ -16,7 +16,7 @@ public sealed class NoisemakerModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Noisemaker";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Noisemaker;
     public override string GetDescription() => $"When you die, you will send an alert to all players on the map for {OptionGroupSingleton<NoisemakerOptions>.Instance.AlertDuration} second(s)";
-    public override ModifierFaction FactionType => ModifierFaction.Crewmate;
+    public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.NoisemakerChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.NoisemakerAmount;

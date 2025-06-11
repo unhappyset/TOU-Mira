@@ -24,8 +24,8 @@ public sealed class VigilanteOptions : AbstractOptionGroup<VigilanteRole>
     [ModdedToggleOption("Vigilante Can Guess Neutral Killing Roles")]
     public bool VigilanteGuessNeutralKilling { get; set; } = true;
 
-    [ModdedToggleOption("Vigilante Can Guess Impostor Modifiers")]
-    public bool VigilanteGuessImpMods { get; set; } = true;
+    [ModdedToggleOption("Vigilante Can Guess Killer Modifiers")]
+    public bool VigilanteGuessKillerMods { get; set; } = true;
 
     [ModdedToggleOption("Vigilante Can Guess Alliances")]
     public bool VigilanteGuessAlliances { get; set; } = true;

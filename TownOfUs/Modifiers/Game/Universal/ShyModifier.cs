@@ -20,6 +20,7 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
     public override string GetDescription() => "You become transparent when \nstanding still for a short duration.";
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ShyChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ShyAmount;
+    public override ModifierFaction FactionType => ModifierFaction.UniversalVisibility;
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {

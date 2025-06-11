@@ -16,7 +16,7 @@ public sealed class BaitModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Bait";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Bait;
     public override string GetDescription() => "Force your killer to self-report.";
-    public override ModifierFaction FactionType => ModifierFaction.Crewmate;
+    public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
 
     private static float MinDelay => OptionGroupSingleton<BaitOptions>.Instance.MinDelay;
     private static float MaxDelay => OptionGroupSingleton<BaitOptions>.Instance.MaxDelay;

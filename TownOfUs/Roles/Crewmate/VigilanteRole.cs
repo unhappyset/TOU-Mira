@@ -234,9 +234,9 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             return true;
         }
         var impMod = modifier as TouGameModifier;
-        if (impMod != null && impMod.FactionType == ModifierFaction.Impostor)
+        if (impMod != null && (impMod.FactionType.ToDisplayString().Contains("Imp") || impMod.FactionType.ToDisplayString().Contains("Killer")) && !impMod.FactionType.ToDisplayString().Contains("Non"))
         {
-            return OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteGuessImpMods;
+            return OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteGuessKillerMods;
         }
 
         return false;

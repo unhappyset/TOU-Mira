@@ -21,6 +21,7 @@ public sealed class SatelliteModifier : UniversalGameModifier, IWikiDiscoverable
     public override string GetDescription() => "You can broadcast a signal to detect all dead bodies on the map.";
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SatelliteChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SatelliteAmount;
+    public override ModifierFaction FactionType => ModifierFaction.UniversalUtility;
     private readonly List<PlayerControl> CastedPlayers = [];
     private readonly List<SpriteRenderer> CastedIcons = [];
     public int Priority { get; set; } = 5;

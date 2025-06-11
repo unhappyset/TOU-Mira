@@ -15,6 +15,7 @@ public sealed class RadarModifier : UniversalGameModifier, IWikiDiscoverable
     public override string ModifierName => "Radar";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Radar;
     public override string GetDescription() => "You have an arrow pointing\n to the closest player.";
+    public override ModifierFaction FactionType => ModifierFaction.UniversalUtility;
     private ArrowBehaviour _arrow;
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.RadarChance;

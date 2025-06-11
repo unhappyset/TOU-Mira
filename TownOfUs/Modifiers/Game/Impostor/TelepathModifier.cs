@@ -16,7 +16,7 @@ public sealed class TelepathModifier : TouGameModifier, IWikiDiscoverable
             + (OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath && !OptionGroupSingleton<TelepathOptions>.Instance.KnowDeathLocation ? ", know when they die" : string.Empty)
             + (OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath && OptionGroupSingleton<TelepathOptions>.Instance.KnowDeathLocation ? ", know when & where they die." : string.Empty);
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Telepath;
-    public override ModifierFaction FactionType => ModifierFaction.Impostor;
+    public override ModifierFaction FactionType => ModifierFaction.ImpostorPostmortem;
 
     public float Timer { get; set; }
 

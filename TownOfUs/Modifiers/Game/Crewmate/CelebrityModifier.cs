@@ -18,7 +18,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Celebrity";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Celebrity;
     public override string GetDescription() => "Announce how you died on your passing.";
-    public override ModifierFaction FactionType => ModifierFaction.Crewmate;
+    public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.CelebrityChance;
     public override int GetAmountPerGame() => 1;
     public List<CustomButtonWikiDescription> Abilities { get; } = [];

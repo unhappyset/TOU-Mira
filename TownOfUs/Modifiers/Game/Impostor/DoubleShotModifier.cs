@@ -13,7 +13,7 @@ public sealed class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Double Shot";
     public override string GetDescription() => "You have an extra chance when assassinating";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.DoubleShot;
-    public override ModifierFaction FactionType => ModifierFaction.Impostor;
+    public override ModifierFaction FactionType => ModifierFaction.KillerUtility;
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.DoubleShotChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.DoubleShotAmount;

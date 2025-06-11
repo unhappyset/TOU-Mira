@@ -15,7 +15,7 @@ public sealed class TaskmasterModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Taskmaster";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Taskmaster;
     public override string GetDescription() => "A random task is auto completed for you after each meeting";
-    public override ModifierFaction FactionType => ModifierFaction.Crewmate;
+    public override ModifierFaction FactionType => ModifierFaction.CrewmatePassive;
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.TaskmasterChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.TaskmasterAmount;
 

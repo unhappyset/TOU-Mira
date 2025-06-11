@@ -17,7 +17,7 @@ public sealed class OperativeModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Operative";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Operative;
     public override string GetDescription() => $"Utilize the Cameras from anywhere";
-    public override ModifierFaction FactionType => ModifierFaction.Crewmate;
+    public override ModifierFaction FactionType => ModifierFaction.CrewmateUtility;
 
     public override void OnActivate()
     {

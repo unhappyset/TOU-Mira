@@ -16,7 +16,7 @@ public sealed class RottingModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Rotting";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Rotting;
     public override string GetDescription() => $"Your body will rot away after {OptionGroupSingleton<RottingOptions>.Instance.RotDelay} second(s).";
-    public override ModifierFaction FactionType => ModifierFaction.Crewmate;
+    public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.RottingChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.RottingAmount;

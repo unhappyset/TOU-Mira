@@ -19,7 +19,7 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Disperser";
     public override string GetDescription() => "Separate the Crew.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Disperser;
-    public override ModifierFaction FactionType => ModifierFaction.Impostor;
+    public override ModifierFaction FactionType => ModifierFaction.ImpostorUtility;
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.DisperserChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.DisperserAmount;

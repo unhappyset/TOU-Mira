@@ -12,7 +12,8 @@ public sealed class GiantModifier : UniversalGameModifier, IWikiDiscoverable, IV
 {
     public override string ModifierName => "Giant";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Giant;
-    public override string GetDescription() => $"You are bigger than the average player, moving {Math.Round(OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed, 2)}x slower";
+    public override string GetDescription() => $"You are bigger than the average player, moving {Math.Round(1f / OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed, 2)}x slower";
+    public override ModifierFaction FactionType => ModifierFaction.UniversalVisibility;
 
     public override int GetAssignmentChance() =>
         (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.GiantChance;

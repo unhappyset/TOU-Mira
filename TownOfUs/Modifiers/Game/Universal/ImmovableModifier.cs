@@ -15,6 +15,7 @@ public sealed class ImmovableModifier : UniversalGameModifier, IWikiDiscoverable
     public override string GetDescription() => "You are unable to be moved via abilities and meetings.";
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ImmovableChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ImmovableAmount;
+    public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {

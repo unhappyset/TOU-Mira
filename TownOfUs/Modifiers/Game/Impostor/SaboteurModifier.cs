@@ -12,7 +12,7 @@ public sealed class SaboteurModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Saboteur";
     public override string GetDescription() => "You have reduced sabotage cooldowns";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Saboteur;
-    public override ModifierFaction FactionType => ModifierFaction.Impostor;
+    public override ModifierFaction FactionType => ModifierFaction.ImpostorPassive;
 
     public float Timer { get; set; }
 

@@ -15,7 +15,7 @@ public sealed class UnderdogModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Underdog";
     public override string GetDescription() => "When you're alone your kill cooldown is shortened";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Underdog;
-    public override ModifierFaction FactionType => ModifierFaction.Impostor;
+    public override ModifierFaction FactionType => ModifierFaction.ImpostorPassive;
 
     private static float KillCooldownIncrease => OptionGroupSingleton<UnderdogOptions>.Instance.KillCooldownIncrease;
     private static bool ExtraImpsKillCooldown => OptionGroupSingleton<UnderdogOptions>.Instance.ExtraImpsKillCooldown;

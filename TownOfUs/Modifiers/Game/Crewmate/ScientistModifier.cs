@@ -17,7 +17,7 @@ public sealed class ScientistModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Scientist";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Scientist;
     public override string GetDescription() => $"Access vitals anytime, anywhere, as long as you have charge";
-    public override ModifierFaction FactionType => ModifierFaction.Crewmate;
+    public override ModifierFaction FactionType => ModifierFaction.CrewmateUtility;
     public override void OnActivate()
     {
         base.OnActivate();

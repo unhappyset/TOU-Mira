@@ -13,7 +13,7 @@ public sealed class DiseasedModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Diseased";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Diseased;
     public override string GetDescription() => "Increase your killer's kill cooldown.";
-    public override ModifierFaction FactionType => ModifierFaction.Crewmate;
+    public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.DiseasedChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.DiseasedAmount;

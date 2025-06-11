@@ -13,6 +13,7 @@ public sealed class FlashModifier : UniversalGameModifier, IWikiDiscoverable, IV
     public override string ModifierName => "Flash";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Flash;
     public override string GetDescription() => $"You move {Math.Round(OptionGroupSingleton<FlashOptions>.Instance.FlashSpeed, 2)}x faster.";
+    public override ModifierFaction FactionType => ModifierFaction.UniversalVisibility;
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.FlashChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.FlashAmount;

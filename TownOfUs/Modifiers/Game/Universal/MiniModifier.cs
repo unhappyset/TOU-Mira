@@ -13,6 +13,7 @@ public sealed class MiniModifier : UniversalGameModifier, IWikiDiscoverable, IVi
     public override string ModifierName => "Mini";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Mini;
     public override string GetDescription() => $"You are smaller than the average player, moving {Math.Round(OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed, 2)}x faster.";
+    public override ModifierFaction FactionType => ModifierFaction.UniversalVisibility;
 
     public override int GetAssignmentChance() =>
         (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.MiniChance;

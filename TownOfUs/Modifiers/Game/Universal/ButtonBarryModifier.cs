@@ -21,6 +21,7 @@ public sealed class ButtonBarryModifier : UniversalGameModifier, IWikiDiscoverab
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.ButtonBarry;
     public override string GetDescription() => "You can call a meeting\n from anywhere on the map.";
     public int Priority { get; set; } = 5;
+    public override ModifierFaction FactionType => ModifierFaction.UniversalUtility;
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ButtonBarryChance;
     public override bool IsModifierValidOn(RoleBehaviour role)

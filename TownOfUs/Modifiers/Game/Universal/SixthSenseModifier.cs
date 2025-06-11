@@ -12,6 +12,7 @@ public sealed class SixthSenseModifier : UniversalGameModifier, IWikiDiscoverabl
     public override string ModifierName => "Sixth Sense";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.SixthSense;
     public override string GetDescription() => "Know when someone interacts with you.";
+    public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SixthSenseChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SixthSenseAmount;

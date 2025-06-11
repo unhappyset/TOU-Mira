@@ -11,6 +11,7 @@ public sealed class TiebreakerModifier : UniversalGameModifier, IWikiDiscoverabl
     public override string ModifierName => "Tiebreaker";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Tiebreaker;
     public override string GetDescription() => "Your vote breaks ties";
+    public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.TiebreakerChance;
     public string GetAdvancedDescription()

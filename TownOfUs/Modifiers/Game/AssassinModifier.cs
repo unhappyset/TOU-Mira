@@ -261,7 +261,7 @@ public abstract class AssassinModifier : ExcludedGameModifier
         }
 
         var crewMod = modifier as TouGameModifier;
-        if (crewMod != null && crewMod.FactionType == ModifierFaction.Crewmate)
+        if (crewMod != null && crewMod.FactionType.ToDisplayString().Contains("Crew") && !crewMod.FactionType.ToDisplayString().Contains("Non"))
         {
             return true;
         }

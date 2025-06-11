@@ -12,7 +12,7 @@ public sealed class FrostyModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Frosty";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Frosty;
     public override string GetDescription() => "Slow your killer for a short duration.";
-    public override ModifierFaction FactionType => ModifierFaction.Crewmate;
+    public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.FrostyChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.FrostyAmount;
