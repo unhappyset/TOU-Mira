@@ -175,7 +175,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
             {
                 var newItem = CreateNewItem(modifier.ModifierName, modifier.ModifierIcon!.LoadAsset());
                 newItem.transform.GetChild(2).gameObject.SetActive(false);
-                var alignment = "Universal";
+                var alignment = "External";
                 if (modifier is UniversalGameModifier uniMod) alignment = uniMod.FactionType.ToDisplayString();
                 if (modifier is TouGameModifier touMod) alignment = touMod.FactionType.ToDisplayString();
                 if (modifier is AllianceGameModifier allyModifier) alignment = allyModifier.FactionType.ToDisplayString();
