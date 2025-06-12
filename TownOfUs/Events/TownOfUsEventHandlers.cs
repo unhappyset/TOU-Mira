@@ -177,15 +177,13 @@ public static class TownOfUsEventHandlers
             {
                 case BomberRole:
                     var bombButton = CustomButtonSingleton<BomberPlantButton>.Instance;
-                    bombButton.Timer = PlayerControl.LocalPlayer.killTimer;
-                    bombButton.Button?.SetCoolDown(bombButton.Timer, bombButton.Cooldown);
+                    bombButton.ResetCooldownAndOrEffect();
                     break;
                 case JanitorRole:
                     if (OptionGroupSingleton<JanitorOptions>.Instance.ResetCooldowns)
                     { 
                         var cleanButton = CustomButtonSingleton<JanitorCleanButton>.Instance;
-                        cleanButton.Timer = cleanButton.Cooldown;
-                        cleanButton.Button?.SetCoolDown(cleanButton.Timer, cleanButton.Cooldown);
+                        cleanButton.ResetCooldownAndOrEffect();
                     }
                     break;
             }
