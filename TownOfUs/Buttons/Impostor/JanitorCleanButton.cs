@@ -39,9 +39,11 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
         {
             JanitorRole.RpcCleanBody(PlayerControl.LocalPlayer, CleaningBody.ParentId);
             TouAudio.PlaySound(TouAudio.JanitorCleanSound);
-
-            PlayerControl.LocalPlayer.SetKillTimer(PlayerControl.LocalPlayer.GetKillCooldown());
         }
         CleaningBody = null;
+        if (OptionGroupSingleton<JanitorOptions>.Instance.ResetCooldowns)
+        {
+            PlayerControl.LocalPlayer.SetKillTimer(PlayerControl.LocalPlayer.GetKillCooldown());
+        }
     }
 }

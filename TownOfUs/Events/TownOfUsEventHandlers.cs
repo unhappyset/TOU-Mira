@@ -32,6 +32,7 @@ using TownOfUs.Events.TouEvents;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
 using TownOfUs.Modules.Components;
 using TownOfUs.Roles.Impostor;
+using TownOfUs.Options.Roles.Impostor;
 
 namespace TownOfUs.Events;
 
@@ -170,7 +171,7 @@ public static class TownOfUsEventHandlers
                 animatedMod.SetVisible();
             }
         }
-        if (source.IsImpostor() && source.AmOwner && !MeetingHud.Instance)
+        if (source.IsImpostor() && source.AmOwner && source != target && !MeetingHud.Instance)
         {
             switch (source.Data.Role)
             {
@@ -178,6 +179,14 @@ public static class TownOfUsEventHandlers
                     var bombButton = CustomButtonSingleton<BomberPlantButton>.Instance;
                     bombButton.Timer = PlayerControl.LocalPlayer.killTimer;
                     bombButton.Button?.SetCoolDown(bombButton.Timer, bombButton.Cooldown);
+                    break;
+                case JanitorRole:
+                    if (OptionGroupSingleton<JanitorOptions>.Instance.ResetCooldowns)
+                    { 
+                        var cleanButton = CustomButtonSingleton<JanitorCleanButton>.Instance;
+                        cleanButton.Timer = cleanButton.Cooldown;
+                        cleanButton.Button?.SetCoolDown(cleanButton.Timer, cleanButton.Cooldown);
+                    }
                     break;
             }
         }

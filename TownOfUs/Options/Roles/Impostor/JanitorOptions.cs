@@ -15,6 +15,8 @@ public sealed class JanitorOptions : AbstractOptionGroup<JanitorRole>
     public float CleanCooldown { get; set; } = 40f;
     [ModdedNumberOption("Clean Delay", 0f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float CleanDelay { get; set; } = 2.5f;
+    [ModdedToggleOption("Reset Kill & Clean Cooldowns Together")]
+    public bool ResetCooldowns { get; set; } = false;
     [ModdedToggleOption("Janitor Can Kill With Teammate")]
     public bool JanitorKill { get; set; } = true;
 }
