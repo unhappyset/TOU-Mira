@@ -82,7 +82,7 @@ public static class TouAssets
     public static LoadableAsset<Sprite> LighterSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Lighter.png");
     public static LoadableAsset<Sprite> DarkerSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Darker.png");
 
-    public static LoadableAsset<Sprite> ArrowSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Arrow.png", 135);
+    public static LoadableAsset<Sprite> ArrowSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Arrow.png", 110);
     public static LoadableAsset<Sprite> BasicArrowSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Arrow-OLD.png");
     public static LoadableAsset<Sprite> CrimeSceneSprite { get; } = new LoadableResourceAsset($"{ShortPath}.CrimeScene.png");
     public static LoadableAsset<Sprite> ScreenFlash { get; } = new LoadableResourceAsset($"{ShortPath}.ScreenFlash.png");
