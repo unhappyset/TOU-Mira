@@ -95,7 +95,7 @@ public abstract class TownOfUsButton : CustomActionButton
 
         Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled);
 
-        if (Button?.gameObject.active == true && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) || ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
+        if (CanUse() && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) || ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
         {
             PassiveComp.OnClick.Invoke();
         }
@@ -262,7 +262,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
 
         Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled);
 
-        if (Button?.gameObject.active == true && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) || ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
+        if (CanUse() && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) || ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
         {
             PassiveComp.OnClick.Invoke();
         }

@@ -129,11 +129,11 @@ public static class HudManagerPatches
 
     public static void CheckForScrollZoom()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        if (Input.GetAxis("Mouse ScrollWheel") > 0 || ConsoleJoystick.player.GetAxisRaw(55) > 0)
         {
             ScrollZoom();
         }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0 || ConsoleJoystick.player.GetAxisRaw(55) < 0)
         {
             ScrollZoom(true);
         }
