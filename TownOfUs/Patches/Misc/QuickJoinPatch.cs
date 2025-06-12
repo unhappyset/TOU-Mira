@@ -1,3 +1,4 @@
+using AmongUs.Data;
 using HarmonyLib;
 using InnerNet;
 using Reactor.Utilities.Extensions;
@@ -72,8 +73,10 @@ public static class LobbyJoin
         }
         if (LobbyText && Text)
         {
+            var code = GameCode.IntToGameName(GameId);
+            if (DataManager.Settings.Gameplay.StreamerMode) code = "******";
             Text.text = $"<size=110%>Prev Lobby:</size>"
-            + $"\n<size=4.6f>({GameCode.IntToGameName(GameId)})</size>"
+            + $"\n<size=4.6f>({code})</size>"
             + $"\nPress Tab to\n<size=2.6f>attempt joining</size>";
         }
     }
