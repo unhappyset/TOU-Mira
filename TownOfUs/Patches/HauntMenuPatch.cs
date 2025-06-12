@@ -3,11 +3,13 @@ using System.Globalization;
 using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules;
+using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -60,10 +62,30 @@ namespace TownOfUs.Patches
                 role = target.GetRoleWhenAlive();
             }
             if (role == null) return;
+            var name = role.NiceName;
 
             var rColor = role is ICustomRole custom ? custom.RoleColor : role.TeamColor;
 
-            __instance.NameText.text = $"<size=90%>{__instance.NameText.text} - {rColor.ToTextColor()}{role.NiceName}</color></size>";
+            if (!OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow && !TutorialManager.InstanceExists)
+            {
+                if (role.IsNeutral())
+                {
+                    name = "Neutral";
+                    rColor = Color.gray;
+                }
+                else if (role.IsCrewmate())
+                {
+                    name = "Crewmate";
+                    rColor = Palette.CrewmateBlue;
+                }
+                else
+                {
+                    name = "Impostor";
+                    rColor = Palette.ImpostorRed;
+                }
+            }
+
+            __instance.NameText.text = $"<size=90%>{__instance.NameText.text} - {rColor.ToTextColor()}{name}</color></size>";
         }
     }
 }

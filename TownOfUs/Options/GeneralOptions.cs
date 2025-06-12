@@ -33,7 +33,7 @@ public sealed class GeneralOptions : AbstractOptionGroup
     [ModdedToggleOption("Vampires Get A Private Meeting Chat")]
     public bool VampireChat { get; set; } = true;
 
-    [ModdedToggleOption("The Dead Know Roles")]
+    [ModdedToggleOption("The Dead Know Everything")]
     public bool TheDeadKnow { get; set; } = true;
 
     [ModdedNumberOption("Game Start Cooldowns", 10f, 30f, 2.5f, MiraNumberSuffixes.Seconds, "0.#")]
