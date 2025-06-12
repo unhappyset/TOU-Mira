@@ -152,6 +152,7 @@ public static class GameHistory
     public static RoleBehaviour? GetRoleWhenAlive(this PlayerControl player)
     {
         var role = RoleHistory.LastOrDefault(x => x.Key == player.PlayerId && !x.Value.IsDead);
+        if (role.Value == null) role = RoleHistory.FirstOrDefault(x => x.Key == player.PlayerId && !x.Value.IsDead);
         return role.Value != null ? role.Value : null;
     }
 }

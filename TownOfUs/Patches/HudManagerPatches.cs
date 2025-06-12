@@ -428,12 +428,15 @@ public static class HudManagerPatches
                     playerName += "<color=#D53F42> @</color>";
 
                 var role = player.Data.Role;
+
+                if (role == null) continue;
+
                 var color = role.TeamColor;
 
                 if (HaunterRole.HaunterVisibilityFlag(player))
                     playerColor = color;
-
-                if (role == null) continue;
+                
+                color = Color.white;
 
                 var roleName = "";
 
@@ -446,6 +449,7 @@ public static class HudManagerPatches
                     SleuthModifier.SleuthVisibilityFlag(player) ||
                     MayorRole.MayorVisibilityFlag(player)))
                 {
+                    color = role.TeamColor;
                     roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color></size>";
                     if (!player.HasModifier<VampireBittenModifier>() && player.Data.Role is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
 
@@ -613,7 +617,7 @@ public static class HudManagerPatches
                     playerName += "<color=#D53F42> @</color>";
 
                 var role = player.Data.Role;
-                var color = role.TeamColor;
+                var color = Color.white;
 
                 if (role == null) continue;
 
@@ -627,6 +631,7 @@ public static class HudManagerPatches
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
                     MayorRole.MayorVisibilityFlag(player)))
                 {
+                    color = role.TeamColor;
                     roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color></size>";
                     if (!player.HasModifier<VampireBittenModifier>() && player.Data.Role is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
 

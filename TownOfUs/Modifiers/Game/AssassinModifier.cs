@@ -200,17 +200,17 @@ public abstract class AssassinModifier : ExcludedGameModifier
             return false;
         }
 
-        if (role is CrewmateRole && OptionGroupSingleton<AssassinOptions>.Instance.AssassinCrewmateGuess)
-        {
-            return true;
-        }
-
         if (touRole?.RoleAlignment == RoleAlignment.CrewmateInvestigative)
         {
             return options.AssassinGuessInvest;
         }
 
         if (role.IsCrewmate() && role is not CrewmateRole)
+        {
+            return true;
+        }
+
+        if (role is CrewmateRole && OptionGroupSingleton<AssassinOptions>.Instance.AssassinCrewmateGuess)
         {
             return true;
         }

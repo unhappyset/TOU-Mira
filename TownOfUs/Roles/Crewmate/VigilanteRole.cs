@@ -200,13 +200,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         }
 
         if (role.IsImpostor())
-            {
-                return true;
-            }
-
-        if (touRole is PhantomTouRole)
         {
-            return false;
+            return true;
         }
 
         if (touRole?.RoleAlignment == RoleAlignment.NeutralBenign)
