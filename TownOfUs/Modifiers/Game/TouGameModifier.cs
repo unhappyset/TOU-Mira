@@ -9,6 +9,9 @@ public abstract class TouGameModifier : GameModifier
 {
     public virtual ModifierFaction FactionType => ModifierFaction.Universal;
 
+    public virtual int CustomAmount => GetAmountPerGame();
+    public virtual int CustomChance => GetAssignmentChance();
+
     public override bool HideOnUi => false;
 
     public override int GetAmountPerGame() => 1;

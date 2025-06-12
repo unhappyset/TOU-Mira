@@ -5,6 +5,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.PluginLoading;
+using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities.Attributes;
 using Reactor.Utilities.Extensions;
@@ -178,11 +179,39 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 var alignment = "External";
                 if (modifier is UniversalGameModifier uniMod) alignment = uniMod.FactionType.ToDisplayString();
                 if (modifier is TouGameModifier touMod) alignment = touMod.FactionType.ToDisplayString();
-                if (modifier is AllianceGameModifier allyModifier) alignment = allyModifier.FactionType.ToDisplayString();
+                if (modifier is AllianceGameModifier allyMod) alignment = allyMod.FactionType.ToDisplayString();
                 var wikiBg = newItem.transform.FindChild("WikiBg").gameObject.GetComponent<SpriteRenderer>();
                 wikiBg.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
                 if (modifier is IColoredModifier colorMod) wikiBg.color = colorMod.ModifierColor;
                 if (alignment.Contains("Non ")) alignment = alignment.Replace("Non ", "Non-");
+
+                var amount = modifier is GameModifier gameMod ? gameMod.GetAmountPerGame() : 0;
+                var chance = modifier is GameModifier gameMod2 ? gameMod2.GetAssignmentChance() : 0;
+                var amountTxt = newItem.transform.FindChild("AmountTxt").gameObject.GetComponent<TextMeshPro>();
+                if (modifier is UniversalGameModifier uniMod2)
+                {
+                    amount = uniMod2.CustomAmount;
+                    chance = uniMod2.CustomChance;
+                }
+                else if (modifier is TouGameModifier touMod2)
+                {
+                    amount = touMod2.CustomAmount;
+                    chance = touMod2.CustomChance;
+                }
+                else if (modifier is AllianceGameModifier allyMod2)
+                {
+                    amount = allyMod2.CustomAmount;
+                    chance = allyMod2.CustomChance;
+                }
+
+                var txt = amount != 0 ? $"Amount: {amount} - Chance: {chance}%" : "Amount: 0";
+
+                amountTxt.text = $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{txt}</font>";
+                amountTxt.fontSizeMin = 1.85f;
+                amountTxt.fontSizeMax = 1.85f;
+                amountTxt.fontSize = 1.85f;
+                newItem.GetChild(1).GetComponent<TextMeshPro>().transform.localPosition += new Vector3(0f, 0.12f);
+
                 var team = newItem.transform.GetChild(2).gameObject.GetComponent<TextMeshPro>();
                 team.fontSizeMax = 2.65f;
                 team.text =
@@ -218,6 +247,20 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 team.SetOutlineColor(Color.black);
                 team.SetOutlineThickness(0.35f);
 
+                if (role is ICustomRole customRole && customRole.Configuration.MaxRoleCount != 0 && !customRole.Configuration.HideSettings)
+                {
+                    var amount = role.GetCount();
+                    var chance = role.GetChance();
+                    var amountTxt = newItem.transform.FindChild("AmountTxt").gameObject.GetComponent<TextMeshPro>();
+                    
+                    var txt = amount != 0 ? $"Amount: {amount} - Chance: {chance}%" : "Amount: 0";
+                    amountTxt.text = $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{txt}</font>";
+                    amountTxt.fontSizeMin = 1.85f;
+                    amountTxt.fontSizeMax = 1.85f;
+                    amountTxt.fontSize = 1.85f;
+                    newItem.GetChild(1).GetComponent<TextMeshPro>().transform.localPosition += new Vector3(0f, 0.12f);
+                }
+
                 SetupForItem(newItem.gameObject.GetComponent<PassiveButton>(), wikiDiscoverable);
             }
         }
@@ -250,8 +293,13 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         var bgSprite = bgColorObj.GetComponent<SpriteRenderer>();
         bgSprite.sprite = TouAssets.WikiBgSprite.LoadAsset();
 
+        var amountTextObj = Instantiate(newItem.GetChild(1).gameObject, newItem.GetChild(1).gameObject.transform.parent);
+        amountTextObj.name = "AmountTxt";
+        amountTextObj.transform.localPosition -= new Vector3(0f, 0.22f);
+
         newItem.name = itemName.ToLowerInvariant();
         icon.sprite = sprite != null ? sprite : TouRoleIcons.RandomAny.LoadAsset();
+        amountTextObj.GetComponent<TextMeshPro>().text = string.Empty;
         itemText.text  = $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{itemName}</font>";
         newItem.gameObject.SetActive(true);
         _activeItems.Add(newItem);
