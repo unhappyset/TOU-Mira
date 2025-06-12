@@ -71,6 +71,7 @@ public static class TownOfUsEventHandlers
         CustomButtonSingleton<BarryButton>.Instance.Usable = OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
         CustomButtonSingleton<SatelliteButton>.Instance.Usable = OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;
     }
+
     [RegisterEvent]
     public static void ChangeRoleHandler(ChangeRoleEvent @event)
     {
@@ -80,6 +81,13 @@ public static class TownOfUsEventHandlers
             HudManager.Instance.SetHudActive(true);
         }
     }
+
+    [RegisterEvent]
+    public static void SetRoleHandler(SetRoleEvent @event)
+    {
+        GameHistory.RegisterRole(@event.Player, @event.Player.Data.Role);
+    }
+
     [RegisterEvent]
     public static void ClearBodiesAndResetPlayersEventHandler(RoundStartEvent @event)
     {
@@ -128,6 +136,7 @@ public static class TownOfUsEventHandlers
         && medMod.Medic == PlayerControl.LocalPlayer)
             CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
     }
+
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent murderEvent)
     {
@@ -385,6 +394,7 @@ public static class TownOfUsEventHandlers
             instance.CheckForEndVoting();
         }
     }
+
     [RegisterEvent]
     public static void VotingCompleteHandler(VotingCompleteEvent @event)
     {

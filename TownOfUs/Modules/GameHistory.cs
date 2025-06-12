@@ -12,6 +12,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace TownOfUs.Modules;
+
 public record PlayerEvent(byte PlayerId, float Unix, Vector3 Position);
 public record DeadPlayer(byte KillerId, byte VictimId, DateTime KillTime);
 
@@ -80,6 +81,8 @@ public static class GameHistory
 {
     public static readonly Dictionary<byte, RoleBehaviour> RoleDictionary = [];
     public static readonly List<KeyValuePair<byte, RoleBehaviour>> RoleHistory = [];
+    public static readonly Dictionary<byte, RoleBehaviour> RoleWhenAlive = [];
+
     // Unused for now
     public static readonly List<PlayerEvent> PlayerEvents = []; //local player events
     public static readonly List<DeadPlayer> KilledPlayers = [];
@@ -106,6 +109,12 @@ public static class GameHistory
         if (!PlayerStats.TryGetValue(player.PlayerId, out _))
         {
             PlayerStats.Add(player.PlayerId, new PlayerStats(player.PlayerId));
+        }
+
+        if (!role.IsDead)
+        {
+            RoleWhenAlive.Remove(player.PlayerId);
+            RoleWhenAlive.Add(player.PlayerId, role);
         }
     }
 
@@ -143,6 +152,14 @@ public static class GameHistory
 
         RoleHistory.Clear();
 
+        RoleWhenAlive.Do(x =>
+        {
+            if (x.Value != null && x.Value.gameObject != null)
+                Object.Destroy(x.Value.gameObject);
+        });
+
+        RoleWhenAlive.Clear();
+
         KilledPlayers.Clear();
         DeathHistory.Clear();
         PlayerStats.Clear();
@@ -151,8 +168,14 @@ public static class GameHistory
 
     public static RoleBehaviour? GetRoleWhenAlive(this PlayerControl player)
     {
-        var role = RoleHistory.LastOrDefault(x => x.Key == player.PlayerId && !x.Value.IsDead);
-        if (role.Value == null) role = RoleHistory.FirstOrDefault(x => x.Key == player.PlayerId && !x.Value.IsDead);
-        return role.Value != null ? role.Value : null;
+        //var role = RoleHistory.LastOrDefault(x => x.Key == player.PlayerId && !x.Value.IsDead);
+        //return role.Value != null ? role.Value : null;
+
+        if (RoleWhenAlive.TryGetValue(player.PlayerId, out var role))
+        {
+            return role;
+        }
+
+        return null;
     }
 }

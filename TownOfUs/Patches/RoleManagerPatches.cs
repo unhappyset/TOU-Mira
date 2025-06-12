@@ -706,10 +706,10 @@ public static class TouRoleManagerPatches
         return false;
     }
 
-    [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SetRole))]
-    [HarmonyPostfix]
-    public static void SetRolePatch(RoleManager __instance, [HarmonyArgument(0)] PlayerControl targetPlayer, [HarmonyArgument(1)] RoleTypes roleType)
-    {
-        GameHistory.RegisterRole(targetPlayer, targetPlayer.Data.Role);
-    }
+    //[HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SetRole))]
+    //[HarmonyPostfix]
+    //public static void SetRolePatch(RoleManager __instance, [HarmonyArgument(0)] PlayerControl targetPlayer, [HarmonyArgument(1)] RoleTypes roleType)
+    //{
+    //    GameHistory.RegisterRole(targetPlayer, targetPlayer.Data.Role);
+    //}
 }
