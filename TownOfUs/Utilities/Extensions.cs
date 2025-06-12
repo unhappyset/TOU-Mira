@@ -398,6 +398,7 @@ public static class Extensions
         {
             HudManagerPatches.ZoomButton.SetActive(true);
         }
+
         var changeRoleEvent = new ChangeRoleEvent(player, oldRole, newRole);
         MiraEventManager.InvokeEvent(changeRoleEvent);
     }
