@@ -67,10 +67,10 @@ public sealed class BodyReport
         if (br.KillAge < OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveRoleDuration * 1000)
             return $"Body Report: The killer appears to be {prefix} {role.NiceName}! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
 
-        if (br.Killer.Is(ModdedRoleTeams.Crewmate))
-            return $"Body Report: The killer appears to be a Crewmate! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
-        else if (br.Killer.Is(ModdedRoleTeams.Custom))
+        if (br.Killer.IsNeutral())
             return $"Body Report: The killer appears to be a Neutral Role! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        else if (br.Killer.IsCrewmate())
+            return $"Body Report: The killer appears to be a Crewmate! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
         else
             return $"Body Report: The killer appears to be an Impostor! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
     }

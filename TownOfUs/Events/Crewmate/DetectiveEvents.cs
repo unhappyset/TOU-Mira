@@ -16,9 +16,9 @@ public static class DetectiveEvents
     {
         if (@event.Target == null) return;
 
-        if (@event.Reporter.Data.Role is DetectiveRole detective)
+        if (@event.Reporter.Data.Role is DetectiveRole detective && @event.Reporter.AmOwner)
         {
-            detective?.Report(@event.Target.PlayerId);
+            detective.Report(@event.Target.PlayerId);
         }
     }
 

@@ -47,9 +47,9 @@ public static class MedicEvents
     {
         if (@event.Target == null) return;
 
-        if (@event.Reporter.Data.Role is MedicRole medic)
+        if (@event.Reporter.Data.Role is MedicRole medic && @event.Reporter.AmOwner)
         {
-            medic?.Report(@event.Target.PlayerId);
+            medic.Report(@event.Target.PlayerId);
         }
     }
 
