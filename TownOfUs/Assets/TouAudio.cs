@@ -13,6 +13,10 @@ public static class TouAudio
     public static LoadableAsset<AudioClip> TrackerDeactivateSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.TrackerDeactivate.wav");
     public static LoadableAsset<AudioClip> TrapperPlaceSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.TrapperPlace.wav");
     public static LoadableAsset<AudioClip> QuestionSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.Question.wav");
+    public static LoadableAsset<AudioClip> ToppatIntroSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.ToppatIntro.wav");
+    public static LoadableAsset<AudioClip> ProsIntroSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.ProsIntro.wav");
+    public static LoadableAsset<AudioClip> SpyIntroSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.SpyIntro.wav");
+    public static LoadableAsset<AudioClip> OtherIntroSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.OtherIntro.wav");
 
     public static LoadableAsset<AudioClip> SheriffIntroSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.SheriffIntro.wav");
     public static LoadableAsset<AudioClip> VigiIntroSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.VigilanteIntro.wav");

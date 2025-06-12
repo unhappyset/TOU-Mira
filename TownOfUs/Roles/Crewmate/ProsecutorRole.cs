@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Text;
-using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
@@ -32,7 +31,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
     {
         MaxRoleCount = 1,
         Icon = TouRoleIcons.Prosecutor,
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Noisemaker),
+        IntroSound = TouAudio.ProsIntroSound,
     };
 
     public PlayerVoteArea? ProsecuteButton { get; private set; }

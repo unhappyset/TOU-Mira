@@ -23,7 +23,7 @@ public sealed class InvestigatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Investigator,
-        IntroSound = TouAudio.QuestionSound,
+        IntroSound = TouAudio.SpyIntroSound,
     };
 
     public override void Initialize(PlayerControl player)

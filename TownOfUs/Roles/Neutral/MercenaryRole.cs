@@ -28,7 +28,7 @@ public sealed class MercenaryRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
     public DoomableType DoomHintType => DoomableType.Insight;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Crewmate),
+        IntroSound = TouAudio.ToppatIntroSound,
         Icon = TouRoleIcons.Mercenary,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };

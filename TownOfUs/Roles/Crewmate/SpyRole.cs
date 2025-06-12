@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Roles;
 using TownOfUs.Modules.Wiki;
@@ -20,7 +19,7 @@ public sealed class SpyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Spy,
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Tracker),
+        IntroSound = TouAudio.SpyIntroSound,
     };
 
     [HideFromIl2Cpp]

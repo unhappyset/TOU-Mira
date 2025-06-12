@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Text;
-using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
@@ -26,7 +25,7 @@ public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public override bool IsAffectedByComms => false;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Scientist),
+        IntroSound = TouAudio.SpyIntroSound,
         Icon = TouRoleIcons.Warden,
     };
 

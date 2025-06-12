@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Text;
-using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
@@ -29,7 +28,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Snitch,
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Noisemaker),
+        IntroSound = TouAudio.ToppatIntroSound,
     };
 
     private Dictionary<byte, ArrowBehaviour>? _snitchArrows;

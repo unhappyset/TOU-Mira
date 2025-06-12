@@ -24,7 +24,7 @@ public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     public DoomableType DoomHintType => DoomableType.Protective;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Crewmate),
+        IntroSound = TouAudio.ToppatIntroSound,
         Icon = TouRoleIcons.Survivor,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };

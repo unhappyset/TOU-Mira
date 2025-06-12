@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
@@ -25,7 +24,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Imitator,
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Noisemaker),
+        IntroSound = TouAudio.SpyIntroSound,
     };
 
     private NetworkedPlayerInfo? _selectedPlr;

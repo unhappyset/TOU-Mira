@@ -33,7 +33,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public DoomableType DoomHintType => DoomableType.Hunter;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Shapeshifter),
+        IntroSound = TouAudio.ToppatIntroSound,
         Icon = TouRoleIcons.Inquisitor,
         MaxRoleCount = 1,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),

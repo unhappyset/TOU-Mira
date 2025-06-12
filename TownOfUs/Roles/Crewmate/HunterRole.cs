@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
@@ -29,7 +28,7 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Hunter,
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Impostor),
+        IntroSound = TouAudio.OtherIntroSound,
     };
 
     public PlayerControl? LastVoted { get; set; }
