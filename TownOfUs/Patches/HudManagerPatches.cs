@@ -464,13 +464,10 @@ public static class HudManagerPatches
                     if (SleuthModifier.SleuthVisibilityFlag(player) || (player.Data.IsDead && role is not PhantomTouRole or GuardianAngelRole or HaunterRole))
                     {
                         var roleWhenAlive = player.GetRoleWhenAlive();
-                        if (roleWhenAlive != null)
-                        {
-                            color = roleWhenAlive.TeamColor;
+                        color = roleWhenAlive!.TeamColor;
 
-                            roleName = $"<size=80%>{color.ToTextColor()}{roleWhenAlive.NiceName}</color></size>";
-                            if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
-                        }
+                        roleName = $"<size=80%>{color.ToTextColor()}{roleWhenAlive!.NiceName}</color></size>";
+                        if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
                     }
                 }
 
@@ -646,13 +643,10 @@ public static class HudManagerPatches
                     if (SleuthModifier.SleuthVisibilityFlag(player) || (player.Data.IsDead && role is not PhantomTouRole or GuardianAngelRole or HaunterRole))
                     {
                         var roleWhenAlive = player.GetRoleWhenAlive();
-                        if (roleWhenAlive != null)
-                        {
-                            color = roleWhenAlive.TeamColor;
+                        color = roleWhenAlive!.TeamColor;
 
-                            roleName = $"<size=80%>{color.ToTextColor()}{roleWhenAlive.NiceName}</color></size>";
-                            if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
-                        }
+                        roleName = $"<size=80%>{color.ToTextColor()}{roleWhenAlive!.NiceName}</color></size>";
+                        if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
                     }
                 }
 

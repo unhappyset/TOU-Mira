@@ -3,7 +3,6 @@ using HarmonyLib;
 using Hazel;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
-using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;

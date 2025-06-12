@@ -14,7 +14,6 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Patches.Stubs;
 using TownOfUs.Roles.Impostor;
-using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 using TownOfUs.Modifiers.Game;
