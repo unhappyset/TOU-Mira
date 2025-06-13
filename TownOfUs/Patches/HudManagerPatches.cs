@@ -406,8 +406,8 @@ public static class HudManagerPatches
 
                 if (player.HasModifier<LoverModifier>() && (PlayerControl.LocalPlayer.HasModifier<LoverModifier>() || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)))
                     playerName += "<color=#FF66CC> ♥</color>";
-                if (player.HasModifier<EgotistModifier>() && (player.AmOwner || SnitchRole.SnitchVisibilityFlag(player, true) || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)))
-                    playerName += "<color=#669966> #</color>";
+                if (player.HasModifier<EgotistModifier>() && (player.AmOwner || EgotistModifier.EgoVisibilityFlag(player) && (SnitchRole.SnitchVisibilityFlag(player, true) || MayorRole.MayorVisibilityFlag(player)) || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)))
+                    playerName += "<color=#FFFFFF> (<color=#669966>Egotist</color>)</color>";
 
                 if ((player.HasModifier<PlaguebearerInfectedModifier>(x => x.PlagueBearerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<PlaguebearerRole>())
                 || (player.HasModifier<PlaguebearerInfectedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
@@ -551,7 +551,7 @@ public static class HudManagerPatches
                     || (player.HasModifier<ExecutionerTargetModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
                     playerName += "<color=#643B1F> X</color>";
                     
-                if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole))
+                if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole) && !body && !fakePlayer?.body)
                     playerName += "<color=#D94291> $</color>";
 
                 if (player.HasModifier<MercenaryBribedModifier>(x => x.Mercenary == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MercenaryRole>())
@@ -592,8 +592,9 @@ public static class HudManagerPatches
 
                 if (player.HasModifier<LoverModifier>() && (PlayerControl.LocalPlayer.HasModifier<LoverModifier>() || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body)))
                     playerName += "<color=#FF66CC> ♥</color>";
-                if (player.HasModifier<EgotistModifier>() && (player.AmOwner || SnitchRole.SnitchVisibilityFlag(player, true) || MayorRole.MayorVisibilityFlag(player) || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)))
-                    playerName += "<color=#669966> #</color>";
+
+                if (player.HasModifier<EgotistModifier>() && (player.AmOwner || EgotistModifier.EgoVisibilityFlag(player) && (SnitchRole.SnitchVisibilityFlag(player, true) || MayorRole.MayorVisibilityFlag(player)) || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body)))
+                    playerName += "<color=#FFFFFF> (<color=#669966>Egotist</color>)</color>";
 
                 if ((player.HasModifier<PlaguebearerInfectedModifier>(x => x.PlagueBearerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<PlaguebearerRole>())
                 || (player.HasModifier<PlaguebearerInfectedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))

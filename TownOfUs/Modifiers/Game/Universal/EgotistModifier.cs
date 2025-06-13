@@ -1,4 +1,5 @@
 ﻿using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Modules.Wiki;
@@ -13,7 +14,7 @@ public sealed class EgotistModifier : AllianceGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Egotist";
     public override string IntroInfo => $"Your Ego is Thriving...";
-    public override string Symbol => $"<size=100%>#</size>";
+    public override string Symbol => "#";
     public override float IntroSize => 4f;
     public override ModifierFaction FactionType => ModifierFaction.CrewmateAlliance;
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Egotist;
@@ -22,6 +23,11 @@ public sealed class EgotistModifier : AllianceGameModifier, IWikiDiscoverable
     public override int GetAmountPerGame() => 1;
     public int Priority { get; set; } = 5;
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public static bool EgoVisibilityFlag(PlayerControl player)
+    {
+        return player.HasModifier<EgotistModifier>() && (PlayerControl.LocalPlayer.IsImpostor() || player.Is(RoleAlignment.NeutralKilling));
+    }
 
     public string GetAdvancedDescription()
     {
