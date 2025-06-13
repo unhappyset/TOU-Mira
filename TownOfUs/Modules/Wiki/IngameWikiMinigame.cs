@@ -93,7 +93,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         ToggleAbilitiesBtn.Value.gameObject.SetActive(_selectedItem.Abilities.Count != 0);
         DetailDescription.Value.gameObject.SetActive(true);
         AbilityScroller.Value.transform.parent.gameObject.SetActive(false);
-        ToggleAbilitiesBtn.Value.buttonText.text = "Abilities";
+        ToggleAbilitiesBtn.Value.buttonText.text = _selectedItem.SecondTabName;
 
         DetailDescription.Value.text = _selectedItem.GetAdvancedDescription();
 
@@ -377,7 +377,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
             }
             else
             {
-                ToggleAbilitiesBtn.Value.buttonText.text = "Abilities";
+                ToggleAbilitiesBtn.Value.buttonText.text = _selectedItem != null ? _selectedItem.SecondTabName : "Abilities";
                 DetailDescription.Value.gameObject.SetActive(true);
                 AbilityScroller.Value.transform.parent.gameObject.SetActive(false);
             }

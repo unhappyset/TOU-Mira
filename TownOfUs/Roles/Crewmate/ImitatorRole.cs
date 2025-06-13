@@ -38,9 +38,40 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
 
     public string GetAdvancedDescription()
     {
-        return "The Imitator is a Crewmate Support role that can select a dead crewmate to imitate their role." +
+        return "The Imitator is a Crewmate Support role that can select a dead crewmate to imitate their role. " +
             "They will become their role and abilities until they change targets. " +
-            "If there are multiple living imitators and the Mayor is dead, none of the Imitators will be able to select the Mayor."
+            "Certain roles are innacessible if there are multiple living imitators."
             + MiscUtils.AppendOptionsText(GetType());
     }
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } = [
+        new("Crewmate Imitation",
+            $"All crewmate roles are available besides Imitator, and Crewmate. Politician, Mayor, Prosecutor and Jailor are limited,"
+            + " as they can only be selected if no other Imitators exist. Imitator Jailor cannot execute either.",
+            TouCrewAssets.InspectSprite),
+        new("Neutral Counterparts",
+            "Amne ⇨ Mystic | "
+            + "Doom ⇨ Vigi | "
+            + "Exe ⇨ Snitch\n"
+            + "Glitch ⇨ Sheriff | "
+            + "GA ⇨ Cleric | "
+            + "Inquis ⇨ Oracle\n"
+            + "Jester ⇨ Swapper | "
+            + "Merc ⇨ Warden\n"
+            + "Pb/Pest ⇨ Aurial | "
+            + "SC ⇨ Medium | "
+            + "WW ⇨ Hunter",
+            TouNeutAssets.GuardSprite),
+        new("Impostor Counterparts",
+            "Bomber ⇨ Trapper | "
+            + "Escapist ⇨ Transporter\n"
+            + "Hypnotist ⇨ Lookout | "
+            + "Janitor ⇨ Detective\n"
+            + "Miner ⇨ Engineer | "
+            + "Scavenger ⇨ Tracker\n"
+            + "Undertaker ⇨ Altruist | "
+            + "Warlock ⇨ Veteran",
+            TouImpAssets.DragSprite),
+    ];
+    public string SecondTabName => "Role Guide";
 }

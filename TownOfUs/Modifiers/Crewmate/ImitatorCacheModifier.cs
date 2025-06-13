@@ -104,7 +104,9 @@ public sealed class ImitatorCacheModifier() : BaseModifier, ICachedRole
         
 
         if (player != null && !player.Object.IsCrewmate()) return true;
-        if (player != null && player.Object.GetRoleWhenAlive() is MayorRole && PlayerControl.AllPlayerControls.ToArray().Any(x => x.Data.Role is ImitatorRole && !x.Data.IsDead && !x != Player)) return true;
+        if (player != null && player.Object.GetRoleWhenAlive() is MayorRole && PlayerControl.AllPlayerControls.ToArray().Any(x => x.HasModifier<ImitatorCacheModifier>() && !x.Data.IsDead && !x != Player)) return true;
+        if (player != null && player.Object.GetRoleWhenAlive() is JailorRole && PlayerControl.AllPlayerControls.ToArray().Any(x => x.HasModifier<ImitatorCacheModifier>() && !x.Data.IsDead && !x != Player)) return true;
+        if (player != null && player.Object.GetRoleWhenAlive() is ProsecutorRole && PlayerControl.AllPlayerControls.ToArray().Any(x => x.HasModifier<ImitatorCacheModifier>() && !x.Data.IsDead && !x != Player)) return true;
         if (player != null && player.Object.GetRoleWhenAlive() is ImitatorRole) return true;
 
         return voteArea.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || !voteArea!.AmDead;

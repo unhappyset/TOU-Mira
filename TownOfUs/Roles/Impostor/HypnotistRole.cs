@@ -1,4 +1,5 @@
 using System.Text;
+using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
@@ -10,16 +11,18 @@ using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Patches.Stubs;
+using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Roles.Impostor;
 
-public sealed class HypnotistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class HypnotistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public string RoleName => "Hypnotist";
     public string RoleDescription => "Hypnotize Crewmates";
     public string RoleLongDescription => "Hypnotize crewmates and drive them insane";
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<LookoutRole>());
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
