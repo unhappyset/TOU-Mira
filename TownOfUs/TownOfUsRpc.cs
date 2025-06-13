@@ -54,6 +54,7 @@ public enum TownOfUsRpc : uint
     PlumberFlush,
     PlumberBlockVent,
     OracleConfess,
+    UpdateImitation,
     OracleBless,
     ExecutionerWin,
     InquisitorWin,

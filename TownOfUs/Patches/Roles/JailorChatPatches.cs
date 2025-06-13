@@ -1,7 +1,5 @@
 using System.Globalization;
 using HarmonyLib;
-using MiraAPI.Modifiers;
-using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 
@@ -18,9 +16,9 @@ public static class JailorChatPatches
     {
         var chatTextLower = chatText.ToLower(CultureInfo.InvariantCulture);
 
-        if (chatTextLower.Replace(" ", string.Empty).StartsWith("/jail", StringComparison.InvariantCulture) && (sourcePlayer.IsRole<JailorRole>() || sourcePlayer.Data.Role is ImitatorRole imi && imi.OldRole is JailorRole) && MeetingHud.Instance)
+        if (chatTextLower.Replace(" ", string.Empty).StartsWith("/jail", StringComparison.InvariantCulture) && sourcePlayer.IsRole<JailorRole>() && MeetingHud.Instance)
         {
-            if (PlayerControl.LocalPlayer.IsRole<JailorRole>() || PlayerControl.LocalPlayer.IsJailed() || PlayerControl.LocalPlayer.Data.Role is ImitatorRole imi2 && imi2.OldRole is JailorRole)
+            if (PlayerControl.LocalPlayer.IsRole<JailorRole>() || PlayerControl.LocalPlayer.IsJailed())
             {
                 if (chatTextLower.StartsWith("/jail ", StringComparison.InvariantCulture))
                     chatText = chatText[6..];
@@ -57,7 +55,7 @@ public static class JailorChatPatches
 
         if (sourcePlayer.IsJailed() && MeetingHud.Instance)
         {
-            if (sourcePlayer.AmOwner || PlayerControl.LocalPlayer.GetRole<JailorRole>() || PlayerControl.LocalPlayer.Data.Role is ImitatorRole imi2 && imi2.OldRole is JailorRole)
+            if (sourcePlayer.AmOwner || PlayerControl.LocalPlayer.GetRole<JailorRole>())
             {
                 return true;
             }
@@ -79,11 +77,10 @@ public static class JailorChatPatches
     [HarmonyPostfix]
     public static void SetNamePatch(ChatBubble __instance, [HarmonyArgument(0)] string playerName)
     {
-        if ((PlayerControl.LocalPlayer.IsRole<JailorRole>() || PlayerControl.LocalPlayer.Data.Role is ImitatorRole imi && imi.OldRole is JailorRole) && MeetingHud.Instance)
+        if (PlayerControl.LocalPlayer.IsRole<JailorRole>() && MeetingHud.Instance)
         {
             var jailor = PlayerControl.LocalPlayer.GetRole<JailorRole>()!;
             var jailed = jailor != null ? jailor.Jailed : null;
-            if (PlayerControl.LocalPlayer.Data.Role is ImitatorRole imi2 && imi2.OldRole is JailorRole) jailed = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.GetModifier<JailedModifier>()?.JailorId == PlayerControl.LocalPlayer.PlayerId)!;
 
             if (jailed != null && jailed.Data.PlayerName == playerName)
             {

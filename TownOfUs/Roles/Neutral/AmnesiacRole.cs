@@ -21,11 +21,12 @@ using TownOfUs.Modifiers.Game.Neutral;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public string RoleName => "Amnesiac";
     public string RoleDescription => "Remember A Role Of A Deceased Player";
     public string RoleLongDescription => "Find a dead body to remember and become their role";
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MysticRole>());
     public Color RoleColor => TownOfUsColors.Amnesiac;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;

@@ -14,14 +14,16 @@ using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 using TownOfUs.Modules.Wiki;
+using TownOfUs.Roles.Crewmate;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class MercenaryRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class MercenaryRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public string RoleName => "Mercenary";
     public string RoleDescription => "Bribe The Crewmates";
     public string RoleLongDescription => "Guard crewmates, and then bribe the winners!";
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<WardenRole>());
     public Color RoleColor => TownOfUsColors.Mercenary;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;

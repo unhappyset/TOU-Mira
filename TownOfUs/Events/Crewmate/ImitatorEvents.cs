@@ -1,8 +1,8 @@
 ﻿using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
-using TownOfUs.Roles.Crewmate;
 
 namespace TownOfUs.Events.Crewmate;
 
@@ -14,16 +14,19 @@ public static class ImitatorEvents
         var imitators = ModifierUtils.GetActiveModifiers<ImitatorCacheModifier>();
         foreach (var mod in imitators)
         {
-            mod.ModifierComponent?.RemoveModifier(mod);
+            // This makes converted imitators not be imitators anymore
+            if (mod.Player.Data.Role.GetType() != mod.OldRole.GetType()) mod.ModifierComponent?.RemoveModifier(mod);
         }
     }
 
     [RegisterEvent]
-    public static void EjectionEventHandler(EjectionEvent @event)
+    public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (PlayerControl.LocalPlayer?.Data?.Role is ImitatorRole imitatorRole)
+        if (@event.TriggeredByIntro) return;
+        var imitators = ModifierUtils.GetActiveModifiers<ImitatorCacheModifier>();
+        foreach (var mod in imitators)
         {
-            imitatorRole.UpdateRole();
+            if (mod.Player.AmOwner) mod.UpdateRole();
         }
     }
 }

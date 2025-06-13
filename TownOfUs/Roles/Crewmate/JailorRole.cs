@@ -109,6 +109,8 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
         if (Executes <= 0 || Jailed?.HasDied() == true) return;
 
+        if (Player.HasModifier<ImitatorCacheModifier>()) return;
+
         foreach (var voteArea in __instance.playerStates)
         {
             if (Jailed?.PlayerId == voteArea.TargetPlayerId)
