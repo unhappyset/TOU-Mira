@@ -29,7 +29,7 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<JesterOptions>.Instance.CanVent,
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Shapeshifter),
+        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Noisemaker),
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
         Icon = TouRoleIcons.Jester,
     };

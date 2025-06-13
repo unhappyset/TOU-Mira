@@ -34,6 +34,8 @@ public static class TouAudio
 
     public static LoadableAsset<AudioClip> GuardianAngelSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.GuardianAngelProtect.wav");
 
+    public static LoadableAsset<AudioClip> DiscoveredSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.Discovered.wav");
+
     public static LoadableAsset<AudioClip> GlitchSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.Glitch.wav");
     public static LoadableAsset<AudioClip> HackedSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.Hacked.wav");
     public static LoadableAsset<AudioClip> UnhackedSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.Unhacked.wav");

@@ -1,5 +1,6 @@
 ﻿using MiraAPI.Modifiers.Types;
 using MiraAPI.Networking;
+using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -128,6 +129,22 @@ public class ScatterModifier(float time) : TimedModifier
         {
             _locations.RemoveAt(3);
         }
+    }
+    public override void OnDeactivate()
+    {
+        base.OnDeactivate();
+
+        soundTimer = 1f;
+        TimeRemaining = Duration;
+
+        scatterUI!.SetActive(false);
+        scatterText!.gameObject.SetActive(false);
+
+        if (scatterUI?.gameObject != null)
+        {
+            scatterUI.gameObject.Destroy();
+        }
+
     }
 
     public override void OnTimerComplete()

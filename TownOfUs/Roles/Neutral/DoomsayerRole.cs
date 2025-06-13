@@ -33,7 +33,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
     public DoomableType DoomHintType => DoomableType.Insight;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Shapeshifter),
+        IntroSound = TouAudio.QuestionSound,
         Icon = TouRoleIcons.Doomsayer,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };

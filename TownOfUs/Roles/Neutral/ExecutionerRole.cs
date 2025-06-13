@@ -33,7 +33,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
     public DoomableType DoomHintType => DoomableType.Trickster;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Shapeshifter),
+        IntroSound = TouAudio.DiscoveredSound,
         Icon = TouRoleIcons.Executioner,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };

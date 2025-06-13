@@ -13,6 +13,9 @@ public sealed class ArsonistOptions : AbstractOptionGroup<ArsonistRole>
     [ModdedNumberOption("Douse Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float DouseCooldown { get; set; } = 25f;
 
+    [ModdedToggleOption("Douse From Interactions")]
+    public bool DouseInteractions { get; set; }
+
     [ModdedToggleOption("Legacy Arsonist (No Radius)")]
     public bool LegacyArsonist { get; set; }
     public ModdedNumberOption IgniteRadius { get; set; } = new("Ignite Radius", 0.25f, 0.05f, 1f, 0.05f, MiraNumberSuffixes.Multiplier, "0.00")
