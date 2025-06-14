@@ -49,6 +49,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
         MaxKills = (int)OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteKills;
         SafeShotsLeft = (int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots;
+        if (Player.HasModifier<ImitatorCacheModifier>()) SafeShotsLeft = 0;
 
         if (Player.AmOwner)
         {
