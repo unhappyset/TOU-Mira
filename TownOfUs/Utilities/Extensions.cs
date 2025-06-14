@@ -22,6 +22,7 @@ using TownOfUs.Modifiers;
 using TownOfUs.Patches;
 using TownOfUs.Events.TouEvents;
 using MiraAPI.Events;
+using TMPro;
 
 namespace TownOfUs.Utilities;
 
@@ -197,6 +198,7 @@ public static class Extensions
         panel.shapeshift = onClick;
         panel.PlayerIcon.SetFlipX(false);
         panel.PlayerIcon.ToggleName(false);
+        panel.PlayerIcon.gameObject.SetActive(false);
 
         SpriteRenderer[] componentsInChildren = panel.GetComponentsInChildren<SpriteRenderer>();
 
@@ -211,41 +213,40 @@ public static class Extensions
         foreach (var hand in panel.PlayerIcon.Hands)
         {
             hand.sharedMaterial = CosmeticsLayer.GetBodyMaterial(PlayerMaterial.MaskType.ComplexUI);
+            hand.gameObject.active = false;
         }
 
         foreach (var sprite in panel.PlayerIcon.OtherBodySprites)
         {
             sprite.sharedMaterial = CosmeticsLayer.GetBodyMaterial(PlayerMaterial.MaskType.ComplexUI);
+            sprite.gameObject.active = false;
         }
 
-        /* var roleIcon = Object.Instantiate(panel.Background, panel.transform).gameObject;
+        var roleIcon = Object.Instantiate(panel.Background, panel.transform).gameObject;
         roleIcon.name = "RoleIcon";
-        roleIcon.transform.localScale = new Vector3(1, 1, 1);
-        roleIcon.transform.localPosition = new Vector3(-0.804f, 0, -2);
+        roleIcon.GetComponent<PassiveButton>().Destroy();
+        roleIcon.gameObject.transform.localScale = new Vector3(0.21f, 0.9f, 1);
+        roleIcon.gameObject.transform.localPosition += new Vector3(-0.964f, 0, -2);
 
-            Sprite? roleImg = TouRoleIcons.RandomAny.LoadAsset();
-            if (roleBehaviour is ICustomRole customRole3)
-            {
-                if (customRole3.Configuration.Icon != null)
-                    roleImg = customRole3.Configuration.Icon.LoadAsset();
-                else if (customRole3.Team == ModdedRoleTeams.Crewmate)
-                    roleImg = TouRoleIcons.RandomCrew.LoadAsset();
-                else if (customRole3.Team == ModdedRoleTeams.Impostor)
-                    roleImg = TouRoleIcons.RandomImp.LoadAsset();
-                else
-                    roleImg = TouRoleIcons.RandomNeut.LoadAsset();
-            }
-            else
-            {
-                if (roleBehaviour.RoleIconSolid != null)
-                {
-                    roleImg = roleBehaviour.RoleIconSolid;
-                }
-            }
-        roleIcon.GetComponent<SpriteRenderer>().sprite = roleImg;
-        roleIcon.gameObject.SetActive(true); */
+        Sprite? roleImg = TouRoleIcons.RandomImp.LoadAsset();
+    
+        if (roleBehaviour.IsCrewmate())
+            roleImg = TouRoleIcons.RandomCrew.LoadAsset();
+        else if (roleBehaviour.IsNeutral())
+            roleImg = TouRoleIcons.RandomNeut.LoadAsset();
+                
+        if (roleBehaviour is ICustomRole customRole3 && customRole3.Configuration.Icon != null)
+        {
+            roleImg = customRole3.Configuration.Icon.LoadAsset();
+        }
+        else if (roleBehaviour.RoleIconSolid != null)
+        {
+            roleImg = roleBehaviour.RoleIconSolid;
+        }
+        roleIcon.gameObject.GetComponent<SpriteRenderer>().sprite = roleImg;
+        roleIcon.gameObject.SetActive(true);
 
-        var material = panel.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
+        //var material = panel.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
         var color = roleBehaviour is ICustomRole customRole ? customRole.RoleColor : roleBehaviour.TeamColor;
 
         //var teamName = roleBehaviour is ITownOfUsRole touRole
@@ -280,15 +281,17 @@ public static class Extensions
             alignment = alignment.Replace("Neutral", $"<color=#8A8A8AFF>Neutral</color>");
         }
 
-        var finalString = $"{roleBehaviour.NiceName}\n<size=70%><color=white>{alignment}</color></size>";
+        var finalString = $"<size=88%>{roleBehaviour.NiceName}</size>\n<size=70%><color=white>{alignment}</color></size>";
 
-        material.SetColor(PlayerMaterial.BackColor, color.DarkenColor(0.35f));
-        material.SetColor(PlayerMaterial.BodyColor, color);
-        material.SetColor(PlayerMaterial.VisorColor, Palette.VisorColor);
+        // material.SetColor(PlayerMaterial.BackColor, color.DarkenColor(0.35f));
+        // material.SetColor(PlayerMaterial.BodyColor, color);
+        // material.SetColor(PlayerMaterial.VisorColor, Palette.VisorColor);
 
         panel.LevelNumberText.transform.parent.gameObject.SetActive(false);
         panel.NameText.color = color;
         panel.NameText.text = finalString;
+        panel.NameText.alignment = TextAlignmentOptions.Right;
+        panel.NameText.transform.localPosition += Vector3.left * 0.05f;
     }
 
     public static void SetModifier(this ShapeshifterPanel panel, int index, BaseModifier modifier, Action onClick)
@@ -296,6 +299,7 @@ public static class Extensions
         panel.shapeshift = onClick;
         panel.PlayerIcon.SetFlipX(false);
         panel.PlayerIcon.ToggleName(false);
+        panel.PlayerIcon.gameObject.SetActive(false);
 
         SpriteRenderer[] componentsInChildren = panel.GetComponentsInChildren<SpriteRenderer>();
 
@@ -310,35 +314,72 @@ public static class Extensions
         foreach (var hand in panel.PlayerIcon.Hands)
         {
             hand.sharedMaterial = CosmeticsLayer.GetBodyMaterial(PlayerMaterial.MaskType.ComplexUI);
+            hand.gameObject.active = false;
         }
 
         foreach (var sprite in panel.PlayerIcon.OtherBodySprites)
         {
             sprite.sharedMaterial = CosmeticsLayer.GetBodyMaterial(PlayerMaterial.MaskType.ComplexUI);
+            sprite.gameObject.active = false;
         }
 
-        var material = panel.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
+        var roleIcon = Object.Instantiate(panel.Background, panel.transform).gameObject;
+        roleIcon.name = "RoleIcon";
+        roleIcon.GetComponent<PassiveButton>().Destroy();
+        roleIcon.gameObject.transform.localScale = new Vector3(0.21f, 0.9f, 1);
+        roleIcon.gameObject.transform.localPosition += new Vector3(-0.964f, 0, -2);
 
-        var teamName = modifier is TouGameModifier touModifier ? touModifier.FactionType.ToDisplayString() : "Universal";
-        if (modifier is UniversalGameModifier uniMod) teamName = uniMod.FactionType.ToDisplayString();
-        if (modifier is AllianceGameModifier allyModifier) teamName = allyModifier.FactionType.ToDisplayString();
+        Sprite? modImg = TouRoleIcons.RandomAny.LoadAsset();
+
+        var teamName = "Universal";
+        if (modifier is TouGameModifier touModifier)
+        {
+            if (touModifier.FactionType.ToDisplayString().Contains("Crewmate")) modImg = TouRoleIcons.RandomCrew.LoadAsset();
+            else if (touModifier.FactionType.ToDisplayString().Contains("Neutral")) modImg = TouRoleIcons.RandomNeut.LoadAsset();
+            else if (touModifier.FactionType.ToDisplayString().Contains("Impostor")) modImg = TouRoleIcons.RandomImp.LoadAsset();
+            teamName = touModifier.FactionType.ToDisplayString();
+        }
+        else if (modifier is UniversalGameModifier uniMod)
+        {
+            if (uniMod.FactionType.ToDisplayString().Contains("Crewmate")) modImg = TouRoleIcons.RandomCrew.LoadAsset();
+            else if (uniMod.FactionType.ToDisplayString().Contains("Neutral")) modImg = TouRoleIcons.RandomNeut.LoadAsset();
+            else if (uniMod.FactionType.ToDisplayString().Contains("Impostor")) modImg = TouRoleIcons.RandomImp.LoadAsset();
+            teamName = uniMod.FactionType.ToDisplayString();
+        }
+        else if (modifier is AllianceGameModifier allyModifier)
+        {
+            if (allyModifier.FactionType.ToDisplayString().Contains("Crewmate")) modImg = TouRoleIcons.RandomCrew.LoadAsset();
+            else if (allyModifier.FactionType.ToDisplayString().Contains("Neutral")) modImg = TouRoleIcons.RandomNeut.LoadAsset();
+            else if (allyModifier.FactionType.ToDisplayString().Contains("Impostor")) modImg = TouRoleIcons.RandomImp.LoadAsset();
+            teamName = allyModifier.FactionType.ToDisplayString();
+        }
+
+        if (modifier.ModifierIcon != null) modImg = modifier.ModifierIcon.LoadAsset();
+
+        roleIcon.gameObject.GetComponent<SpriteRenderer>().sprite = modImg;
+        roleIcon.gameObject.SetActive(true);
+
+        // var material = panel.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
+
 
         if (teamName.Contains("Crewmate")) teamName = teamName.Replace("Crewmate", $"<color=#68ACF4FF>Crewmate</color>");
         else if (teamName.Contains("Impostor")) teamName = teamName.Replace("Impostor", $"<color=#D63F42FF>Impostor</color>");
         else teamName = teamName.Replace("Neutral", $"<color=#8A8A8AFF>Neutral</color>");
-        teamName += " Modifier";
+        //teamName += " Modifier";
 
-        var finalString = $"{modifier.ModifierName}\n<size=70%><color=white>{teamName}</color></size>";
+        var finalString = $"<size=88%>{modifier.ModifierName}<color=white> (Modifier)</size>\n<size=70%>{teamName}</color></size>";
         var color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
         if (modifier is IColoredModifier colorMod) color = colorMod.ModifierColor;
 
-        material.SetColor(PlayerMaterial.BackColor, color.DarkenColor(0.35f));
-        material.SetColor(PlayerMaterial.BodyColor, color);
-        material.SetColor(PlayerMaterial.VisorColor, Palette.VisorColor);
+        // material.SetColor(PlayerMaterial.BackColor, color.DarkenColor(0.35f));
+        // material.SetColor(PlayerMaterial.BodyColor, color);
+        // material.SetColor(PlayerMaterial.VisorColor, Palette.VisorColor);
 
         panel.LevelNumberText.transform.parent.gameObject.SetActive(false);
         panel.NameText.color = color;
         panel.NameText.text = finalString;
+        panel.NameText.alignment = TextAlignmentOptions.Right;
+        panel.NameText.transform.localPosition += Vector3.left * 0.05f;
     }
 
     [MethodRpc((uint)TownOfUsRpc.ChangeRole, SendImmediately = true)]
