@@ -194,6 +194,8 @@ public sealed class PhantomTouRole(IntPtr cppPtr) : NeutralGhostRole(cppPtr), IT
 
         Func<PlayerControl, bool> _playerMatch = plr => !plr.HasDied() && !plr.HasModifier<InvulnerabilityModifier>() && plr != PlayerControl.LocalPlayer;
         var killMenu = CustomPlayerMenu.Create();
+        killMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+        killMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
         killMenu.Begin(
             _playerMatch,
             plr =>

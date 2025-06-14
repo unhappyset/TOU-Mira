@@ -92,6 +92,8 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
 
             customMenu.ShowPage();
         }));
+        customMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+        customMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
 
         return customMenu;
     }

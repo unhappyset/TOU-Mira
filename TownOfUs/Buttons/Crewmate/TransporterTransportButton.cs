@@ -31,6 +31,8 @@ public sealed class TransporterTransportButton : TownOfUsRoleButton<TransporterR
     protected override void OnClick()
     {
         var player1Menu = CustomPlayerMenu.Create();
+        player1Menu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+        player1Menu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
 
         player1Menu.Begin(
             plr => ((!plr.Data.Disconnected && !plr.Data.IsDead) || Helpers.GetBodyById(plr.PlayerId)) && (plr.moveable || plr.inVent),
@@ -41,6 +43,8 @@ public sealed class TransporterTransportButton : TownOfUsRoleButton<TransporterR
                 if (plr == null) return;
 
                 var player2Menu = CustomPlayerMenu.Create();
+                player2Menu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+                player2Menu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
 
                 player2Menu.Begin(
                     plr2 => plr2.PlayerId != plr.PlayerId && ((!plr2.HasDied()) || Helpers.GetBodyById(plr2.PlayerId)/*  || MiscUtils.GetFakePlayer(plr2)?.body */) && (plr2.moveable || plr2.inVent),
