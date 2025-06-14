@@ -99,8 +99,8 @@ public sealed class ImitatorCacheModifier() : BaseModifier, ICachedRole
     {
         var player = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId);
         var opts = OptionGroupSingleton<ImitatorOptions>.Instance;
-        if (player != null && player.Object.GetRoleWhenAlive() is ICrewVariant && player.Object.IsNeutral() && opts.ImitateNeutrals) return voteArea.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || !voteArea!.AmDead;
-        if (player != null && player.Object.GetRoleWhenAlive() is ICrewVariant && player.Object.IsImpostor() && opts.ImitateImpostors) return voteArea.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || !voteArea!.AmDead;
+        if (player != null && player.Object.GetRoleWhenAlive() is ICrewVariant neutVariant && player.Object.IsNeutral() && opts.ImitateNeutrals && MiscUtils.GetPotentialRoles().Contains(neutVariant.CrewVariant)) return voteArea.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || !voteArea!.AmDead;
+        if (player != null && player.Object.GetRoleWhenAlive() is ICrewVariant impVariant && player.Object.IsImpostor() && opts.ImitateImpostors && MiscUtils.GetPotentialRoles().Contains(impVariant.CrewVariant)) return voteArea.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || !voteArea!.AmDead;
         
 
         if (player != null && !player.Object.IsCrewmate()) return true;
