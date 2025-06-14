@@ -12,7 +12,7 @@ public sealed class LookoutOptions : AbstractOptionGroup<LookoutRole>
     [ModdedNumberOption("Watch Cooldown", 1f, 30f, 1f, MiraNumberSuffixes.Seconds)]
     public float WatchCooldown { get; set; } = 20f;
 
-    [ModdedNumberOption("Maximum Number Of Players That Can Be Watched", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
+    [ModdedNumberOption("Max Players That Can Be Watched", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxWatches { get; set; } = 5;
 
     [ModdedToggleOption("Lookout Watches Reset After Each Round")]

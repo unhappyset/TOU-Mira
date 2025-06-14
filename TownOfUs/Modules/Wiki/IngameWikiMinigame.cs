@@ -96,6 +96,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         ToggleAbilitiesBtn.Value.buttonText.text = _selectedItem.SecondTabName;
 
         DetailDescription.Value.text = _selectedItem.GetAdvancedDescription();
+        DetailDescription.Value.fontSizeMax = 2.4f;
 
         if (_selectedItem is ITownOfUsRole customRole)
         {

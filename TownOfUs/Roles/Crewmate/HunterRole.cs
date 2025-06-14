@@ -88,11 +88,8 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     public string GetAdvancedDescription()
     {
         return
-            "The Hunter is a Crewmate Killing role that can stalk players during the round. If a stalked player uses any ability while being stalked, they're added to the Hunter's hitlist and can be killed. " +
-            "The hitlist is permanent and doesn’t reset. Killing Crewmates has no penalty." +
-            (OptionGroupSingleton<HunterOptions>.Instance.RetributionOnVote
-                ? " If ejected, they will attempt to kill the last player who voted them."
-                : string.Empty)
+            "The Hunter is a Crewmate Killing role that can stalk players during the round. "
+                + "If a stalked player uses an ability, they can be killed by the Hunter at any point in the game, even Crew."
                + MiscUtils.AppendOptionsText(GetType());
     }
 

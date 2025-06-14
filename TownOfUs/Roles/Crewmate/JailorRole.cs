@@ -207,7 +207,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
     public string GetAdvancedDescription()
     {
-        return "The Jailor is a Crewmate Power role that can jail other players. During a meeting, the Jailor can choose to execute their jailed player."
+        return "The Jailor is a Crewmate Power role that can jail other players. During a meeting, the Jailor can choose to execute their jailed player. (Unless the Jailor is an Imitator)"
             + MiscUtils.AppendOptionsText(GetType());
     }
 

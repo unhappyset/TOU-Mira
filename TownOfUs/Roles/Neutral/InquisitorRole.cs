@@ -263,7 +263,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
     public string GetAdvancedDescription()
     {
-        return $"The Inquisitor is a Neutral Evil role that wins by either vanquishing or passively letting their targets (Heretics) die. The only information provided is their roles, and it's up to the Inquisitor to identify those players (marked with <color=#D94291>$</color> to the dead) and get them killed by any means neccesary." + MiscUtils.AppendOptionsText(GetType());
+        return $"The Inquisitor is a Neutral Evil role that wins if their targets (Heretics) die. The only information provided is their roles, and it's up to the Inquisitor to identify those players (marked with <color=#D94291>$</color> to the dead) and get them killed by any means neccesary." + MiscUtils.AppendOptionsText(GetType());
     }
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities { get; } = [

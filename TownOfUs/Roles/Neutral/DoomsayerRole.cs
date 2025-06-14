@@ -346,7 +346,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
 
     public string GetAdvancedDescription()
     {
-        return $"The Doomsayer is a Neutral Evil role that wins by guessing {(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin} players' roles in the meeting. They can also observe players to get a hint of what their roles are the following meeting." + MiscUtils.AppendOptionsText(GetType());
+        return $"The Doomsayer is a Neutral Evil role that wins by guessing {(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin} players' roles." + (OptionGroupSingleton<DoomsayerOptions>.Instance.CantObserve ? string.Empty : " They may observe players to get a hint of what their roles are the following meeting.") + MiscUtils.AppendOptionsText(GetType());
     }
 
     [HideFromIl2Cpp]

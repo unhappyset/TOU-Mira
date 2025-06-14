@@ -255,8 +255,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     {
         return
             "The Snitch is a Crewmate Investigative role that can reveal the Impostors to themselves by finishing all their tasks. " +
-            "Upon completing all tasks, the Impostors will be revealed to the Snitch with an arrow and their red name. " +
-            $"The Snitch will be revealed to the Impostors when they have {OptionGroupSingleton<SnitchOptions>.Instance.TaskRemainingWhenRevealed} task(s) remaining."
+            "Upon completing all tasks, the Impostors will be revealed to the Snitch with an arrow and their red name."
             + MiscUtils.AppendOptionsText(GetType());
     }
 }

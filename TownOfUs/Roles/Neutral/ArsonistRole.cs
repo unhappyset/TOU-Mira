@@ -111,7 +111,7 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
 
     public string GetAdvancedDescription()
     {
-        return "The Arsonist is a Neutral Killing role that wins by being the last killer alive." + (OptionGroupSingleton<ArsonistOptions>.Instance.LegacyArsonist ? "They can douse players and ignite one of them to set off a chain reaction, igniting all players on the map." : "They can douse players and ignite them when close.") + MiscUtils.AppendOptionsText(GetType());
+        return "The Arsonist is a Neutral Killing role that wins by being the last killer alive. " + (OptionGroupSingleton<ArsonistOptions>.Instance.LegacyArsonist ? "They can douse players and ignite one of them to ignite all doused players on the map." : "They can douse players and ignite them when close.") + MiscUtils.AppendOptionsText(GetType());
     }
 
     [HideFromIl2Cpp]

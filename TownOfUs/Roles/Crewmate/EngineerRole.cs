@@ -173,7 +173,7 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     
     public string GetAdvancedDescription()
     {
-        return "The Engineer is a Crewmate Support role that can vent and instantly fix sabotages."
+        return "The Engineer is a Crewmate Support role that can vent and fix sabotages remotely."
                + MiscUtils.AppendOptionsText(GetType());
     }
 
