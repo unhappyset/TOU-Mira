@@ -15,7 +15,7 @@ public sealed class TrapperOptions : AbstractOptionGroup<TrapperRole>
     [ModdedNumberOption("Min Amount Of Time In Trap To Register", 0f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float MinAmountOfTimeInTrap { get; set; } = 5f;
     
-    [ModdedNumberOption("Maximum Number Of Traps", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
+    [ModdedNumberOption("Max Number Of Traps", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxTraps { get; set; } = 5f;
 
     [ModdedNumberOption("Trap Size", 0.05f, 1f, 0.05f, MiraNumberSuffixes.Multiplier, "0.00")]

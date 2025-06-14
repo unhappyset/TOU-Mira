@@ -2,6 +2,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TownOfUs.Modifiers.Game.Alliance;
@@ -71,20 +72,22 @@ public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerCo
         var totalVamps = GameHistory.AllRoles.Count(x => x is VampireRole);
 
         var canConvertRole = true;
+        var canConvertAlliance = true;
 
         if (target.HasModifier<LoverModifier>())
         {
-            canConvertRole = options.CanConvertLovers;
+            canConvertAlliance = options.ConvertOptions.ToDisplayString().Contains("Lovers");
         }
-        else if (target.Is(RoleAlignment.NeutralBenign))
+
+        if (target.Is(RoleAlignment.NeutralBenign))
         {
-            canConvertRole = options.CanConvertNeutralBenign;
+            canConvertRole = options.ConvertOptions.ToDisplayString().Contains("Neutral Benign");
         }
         else if (target.Is(RoleAlignment.NeutralEvil))
         {
-            canConvertRole = options.CanConvertNeutralEvil;
+            canConvertRole = options.ConvertOptions.ToDisplayString().Contains("Neutral Evil");
         }
 
-        return canConvertRole && vampireCount < 2 && totalVamps < options.MaxVampires && (!PlayerControl.LocalPlayer.HasModifier<VampireBittenModifier>() || options.CanConvertAsNewVamp);
+        return canConvertRole && canConvertAlliance && vampireCount < 2 && totalVamps < options.MaxVampires && (!PlayerControl.LocalPlayer.HasModifier<VampireBittenModifier>() || options.CanConvertAsNewVamp);
     }
 }

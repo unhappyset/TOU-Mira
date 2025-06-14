@@ -15,7 +15,7 @@ public sealed class SurvivorOptions : AbstractOptionGroup<SurvivorRole>
     [ModdedNumberOption("Vest Duration", 5f, 15f, 1f, MiraNumberSuffixes.Seconds)]
     public float VestDuration { get; set; } = 10f;
 
-    [ModdedNumberOption("Maximum Number Of Vests", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
+    [ModdedNumberOption("Max Number Of Vests", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxVests { get; set; } = 10f;
 
     [ModdedToggleOption("Survivor Scatter Mechanic Enabled")]

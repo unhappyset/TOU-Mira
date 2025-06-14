@@ -15,7 +15,7 @@ public sealed class GuardianAngelOptions : AbstractOptionGroup<GuardianAngelTouR
     [ModdedNumberOption("Protect Duration", 5f, 15f, 1f, MiraNumberSuffixes.Seconds)]
     public float ProtectDuration { get; set; } = 10f;
 
-    [ModdedNumberOption("Maximum Number Of Protects", 1, 15, 1, MiraNumberSuffixes.None, "0")]
+    [ModdedNumberOption("Max Number Of Protects", 1, 15, 1, MiraNumberSuffixes.None, "0")]
     public float MaxProtects { get; set; } = 5;
 
     [ModdedEnumOption("Show Protected Player", typeof(ProtectOptions), ["Self", "Guardian Angel", "Self + GA", "Everyone"])]

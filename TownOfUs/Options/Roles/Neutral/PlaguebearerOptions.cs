@@ -9,7 +9,7 @@ public sealed class PlaguebearerOptions : AbstractOptionGroup<PlaguebearerRole>
 {
     public override string GroupName => "Plaguebearer";
 
-    [ModdedNumberOption("Chance For Pestilence To Spawn Round One", 0, 100f, 10f, MiraNumberSuffixes.Percent)]
+    [ModdedNumberOption("Instant Pestilence Chance", 0, 100f, 10f, MiraNumberSuffixes.Percent)]
     public float PestChance { get; set; } = 0f;
 
     [ModdedNumberOption("Infect Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]

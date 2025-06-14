@@ -15,7 +15,7 @@ public sealed class VeteranOptions : AbstractOptionGroup<VeteranRole>
     [ModdedNumberOption("Alert Duration", 5f, 15f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float AlertDuration { get; set; } = 10f;
 
-    [ModdedNumberOption("Maximum Number of Alerts", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
+    [ModdedNumberOption("Max Number of Alerts", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxNumAlerts { get; set; } = 5f;
 
     [ModdedToggleOption("Indirect Impostor Attacks Kill Veteran")]

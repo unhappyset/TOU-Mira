@@ -21,7 +21,7 @@ public sealed class InquisitorOptions : AbstractOptionGroup<InquisitorRole>
     [ModdedToggleOption("Inquisitor Can't Inquire")]
     public bool CantInquire { get; set; } = false;
 
-    [ModdedNumberOption("Maximum Number Of Inquires", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
+    [ModdedNumberOption("Max Number Of Inquires", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxUses { get; set; } = 5f;
 
     [ModdedNumberOption("Amount of Heretics Needed", 3f, 5f, 1f, MiraNumberSuffixes.None, "0")]

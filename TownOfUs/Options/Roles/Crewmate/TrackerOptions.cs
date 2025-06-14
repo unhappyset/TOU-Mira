@@ -12,7 +12,7 @@ public sealed class TrackerOptions : AbstractOptionGroup<TrackerTouRole>
     [ModdedNumberOption("Track Cooldown", 1f, 30f, 1f, MiraNumberSuffixes.Seconds)]
     public float TrackCooldown { get; set; } = 20f;
 
-    [ModdedNumberOption("Maximum Number Of Tracks", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
+    [ModdedNumberOption("Max Number Of Tracks", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxTracks { get; set; } = 5f;
 
     [ModdedNumberOption("Arrow Update Interval", 0.5f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
