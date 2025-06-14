@@ -68,6 +68,11 @@ public static class HudManagerPatches
     }
     public static void Zoom()
     {
+        if (MeetingHud.Instance)
+        {
+            ZoomButton.SetActive(false);
+            return;
+        }
         Zooming = !Zooming;
         var size = Zooming ? 12f : 3f;
         ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlus.LoadAsset() : TouAssets.ZoomMinus.LoadAsset();
@@ -83,12 +88,17 @@ public static class HudManagerPatches
         var ratioWidth = fakeWidth / gcd;
         var ratioHeight = fakeHeight / gcd;
         HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(ratioWidth / 1.5f, ratioHeight / 1.5f) * (size / 3f); */
-        HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f) * (size / 3f);
+        // HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f) * (size / 3f);
         if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
     public static void ScrollZoom(bool zoomOut = false)
     {
+        if (MeetingHud.Instance)
+        {
+            ZoomButton.SetActive(false);
+            return;
+        }
         var size = Camera.main.orthographicSize;
         if (zoomOut) size *= 1.25f;
         else size /= 1.25f;
@@ -108,7 +118,7 @@ public static class HudManagerPatches
 
         Camera.main.orthographicSize = size;
         HudManager.Instance.UICamera.orthographicSize = size;
-        HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f) * (size / 3f);
+        // HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f) * (size / 3f);
         if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
@@ -122,7 +132,7 @@ public static class HudManagerPatches
 
         Camera.main.orthographicSize = size;
         HudManager.Instance.UICamera.orthographicSize = size;
-        HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f);
+        // HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f);
         if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
@@ -252,6 +262,7 @@ public static class HudManagerPatches
 
         var isValid = MeetingHud.Instance &&
             ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && (genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true } || genOpt.VampireChat)) ||
+            PlayerControl.LocalPlayer.IsJailed() || PlayerControl.LocalPlayer.Data.Role is JailorRole ||
             (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true }) ||
             (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat));
 

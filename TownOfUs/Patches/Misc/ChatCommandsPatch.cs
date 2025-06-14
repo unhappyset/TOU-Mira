@@ -8,6 +8,7 @@ using Reactor.Utilities.Extensions;
 using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Patches.Options;
+using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -154,11 +155,35 @@ public static class ChatPatches
             __instance.UpdateChatMode();
             return false;
         }
-        else if (TeamChatPatches.TeamChatActive && !PlayerControl.LocalPlayer.HasDied() && (PlayerControl.LocalPlayer.Data.Role is VampireRole || PlayerControl.LocalPlayer.IsImpostor()))
+        else if (TeamChatPatches.TeamChatActive && !PlayerControl.LocalPlayer.HasDied() && (PlayerControl.LocalPlayer.Data.Role is JailorRole || PlayerControl.LocalPlayer.IsJailed() ||PlayerControl.LocalPlayer.Data.Role is VampireRole || PlayerControl.LocalPlayer.IsImpostor()))
         {
             var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 
-            if (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat)
+            if (PlayerControl.LocalPlayer.Data.Role is JailorRole)
+            {
+                TeamChatPatches.RpcSendJailorChat(PlayerControl.LocalPlayer, textRegular);
+                MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailor</color>", textRegular, onLeft: false);
+
+                __instance.freeChatField.Clear();
+                __instance.quickChatMenu.Clear();
+                __instance.quickChatField.Clear();
+                __instance.UpdateChatMode();
+
+                return false;
+            }
+            else if (PlayerControl.LocalPlayer.IsJailed())
+            {
+                TeamChatPatches.RpcSendJaileeChat(PlayerControl.LocalPlayer, textRegular);
+                MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>{PlayerControl.LocalPlayer.Data.PlayerName} (Jailed)</color>", textRegular, onLeft: false);
+
+                __instance.freeChatField.Clear();
+                __instance.quickChatMenu.Clear();
+                __instance.quickChatField.Clear();
+                __instance.UpdateChatMode();
+
+                return false;
+            }
+            else if (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat)
             {
                 TeamChatPatches.RpcSendVampTeamChat(PlayerControl.LocalPlayer, textRegular);
                 MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.Vampire.ToHtmlStringRGBA()}>{PlayerControl.LocalPlayer.Data.PlayerName} (Vampire Chat)</color>", textRegular, onLeft: false);

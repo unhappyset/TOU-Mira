@@ -22,8 +22,8 @@ public sealed class JailedModifier(byte jailorId) : BaseModifier
         if (Player.AmOwner)
         {
             var title = $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailee Feedback</color>";
-            var text = "You are jailed, convince the Jailor that you are Crew to avoid being executed";
-            if (PlayerControl.LocalPlayer.Is(ModdedRoleTeams.Crewmate)) text = "You are jailed, provide relevant information to the Jailor to prove you are Crew";
+            var text = "You are jailed, convince the Jailor that you are Crew to avoid being executed in the private chatbox.";
+            if (PlayerControl.LocalPlayer.Is(ModdedRoleTeams.Crewmate)) text = "You are jailed, provide relevant information to the Jailor to prove you are Crew in the private chatbox.";
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, text, false, true);
 
             var notif1 = Helpers.CreateAndShowNotification(

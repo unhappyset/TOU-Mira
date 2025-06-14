@@ -75,7 +75,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             if (Jailed!.HasDied())
                 return;
             var title = $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailor Feedback</color>";
-            MiscUtils.AddFakeChat(Jailed.Data, title, "Use /jail to communicate with your jailee", false, true);
+            MiscUtils.AddFakeChat(Jailed.Data, title, "Communicate with your jailee in the other chatbot.", false, true);
         }
 
         if (MeetingHud.Instance)
@@ -214,7 +214,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities { get; } = [
         new("Jail",
-            "Jail a player. During the meeting everyone will see who is jailed. You can privately talk with your detained player using the instructions that are in the chatbox",
+            "Jail a player. During the meeting everyone will see who is jailed. You can privately talk with your detained player using the instructions that are in the private chatbox",
             TouCrewAssets.JailSprite),
         new("Execute (Meeting)",
             "Execute the detained player. If the player is a crewmate the Jailor will lose the ability to Jail.",

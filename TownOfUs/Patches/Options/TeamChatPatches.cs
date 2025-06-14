@@ -4,6 +4,7 @@ using Reactor.Networking.Attributes;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Options;
+using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -28,6 +29,25 @@ public static class TeamChatPatches
             HudManager.Instance.Chat.Toggle();
         }
     }
+
+    [MethodRpc((uint)TownOfUsRpc.SendJailorChat, SendImmediately = true)]
+    public static void RpcSendJailorChat(PlayerControl player, string text)
+    {
+        if (PlayerControl.LocalPlayer.IsJailed() || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        {
+            MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailor</color>", text);
+        }
+    }
+
+    [MethodRpc((uint)TownOfUsRpc.SendJaileeChat, SendImmediately = true)]
+    public static void RpcSendJaileeChat(PlayerControl player, string text)
+    {
+        if (PlayerControl.LocalPlayer.Data.Role is JailorRole || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        {
+            MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Jailed)</color>", text);
+        }
+    }
+
     [MethodRpc((uint)TownOfUsRpc.SendVampTeamChat, SendImmediately = true)]
     public static void RpcSendVampTeamChat(PlayerControl player, string text)
     {
@@ -36,6 +56,7 @@ public static class TeamChatPatches
             MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfUsColors.Vampire.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Vampire Chat)</color>", text);
         }
     }
+
     [MethodRpc((uint)TownOfUsRpc.SendImpTeamChat, SendImmediately = true)]
     public static void RpcSendImpTeamChat(PlayerControl player, string text)
     {
@@ -44,6 +65,7 @@ public static class TeamChatPatches
             MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfUsColors.ImpSoft.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Impostor Chat)</color>", text);
         }
     }
+
     /* [HarmonyPatch(typeof(ChatController), nameof(ChatController.LateUpdate))]
     public static class LateUpdatePatch
     {
@@ -83,7 +105,7 @@ public static class TeamChatPatches
                 var ChatScreenContainer = GameObject.Find("ChatScreenContainer");
                 // var FreeChat = GameObject.Find("FreeChatInputField");
                 var Background = ChatScreenContainer.transform.FindChild("Background");
-                var bubbleItems = GameObject.Find("Items");
+                // var bubbleItems = GameObject.Find("Items");
                 // var typeBg = FreeChat.transform.FindChild("Background");
                 // var typeText = FreeChat.transform.FindChild("Text");
 
@@ -107,7 +129,12 @@ public static class TeamChatPatches
                         ChatScreenContainer.transform.localPosition = HudManager.Instance.Chat.chatButton.transform.localPosition - new Vector3(3.5133f + 3.49f * (Camera.main.orthographicSize / 3f), 4.576f);
                     }
 
-                    if (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true } && !PlayerControl.LocalPlayer.Data.IsDead && _teamText != null)
+                    if ((PlayerControl.LocalPlayer.IsJailed() || PlayerControl.LocalPlayer.Data.Role is JailorRole) && _teamText != null)
+                    {
+                        _teamText.text = "Jailor Chat is Open. Only the Jailor and Jailee can see this.";
+                        _teamText.color = TownOfUsColors.Jailor;
+                    }
+                    else if (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true } && !PlayerControl.LocalPlayer.Data.IsDead && _teamText != null)
                     {
                         _teamText.text = "Impostor Chat is Open. Only Impostors can see this.";
                         _teamText.color = TownOfUsColors.ImpSoft;
@@ -117,22 +144,27 @@ public static class TeamChatPatches
                         _teamText.text = "Vampire Chat is Open. Only Vampires can see this.";
                         _teamText.color = TownOfUsColors.Vampire;
                     }
-                    foreach (var bubble in bubbleItems.GetAllChilds())
+                    else if (_teamText != null)
                     {
-                        bubble.gameObject.SetActive(true);
-                        var bg = bubble.transform.Find("Background").gameObject;
-                        if (bg != null)
-                        {
-                            var sprite = bg.GetComponent<SpriteRenderer>();
-                            var color = sprite.color.SetAlpha(1f);
-                            if (color == Color.white || color == Color.black) bubble.gameObject.SetActive(false);
-                        }
+                        _teamText.text = "Jailor, Impostor, and Vampire Chat can be seen here.";
+                        _teamText.color = Color.white;
                     }
-                    __instance.AlignAllBubbles();
+                    /* foreach (var bubble in bubbleItems.GetAllChilds())
+                        {
+                            bubble.gameObject.SetActive(true);
+                            var bg = bubble.transform.Find("Background").gameObject;
+                            if (bg != null)
+                            {
+                                var sprite = bg.GetComponent<SpriteRenderer>();
+                                var color = sprite.color.SetAlpha(1f);
+                                if (color == Color.white || color == Color.black) bubble.gameObject.SetActive(false);
+                            }
+                        }
+                    __instance.AlignAllBubbles(); */
                 }
                 else
                 {
-                    foreach (var bubble in bubbleItems.GetAllChilds())
+                    /* foreach (var bubble in bubbleItems.GetAllChilds())
                     {
                         bubble.gameObject.SetActive(true);
                         var bg = bubble.transform.Find("Background").gameObject;
@@ -142,7 +174,7 @@ public static class TeamChatPatches
                             var color = sprite.color.SetAlpha(1f);
                             if (color != Color.white && color != Color.black) bubble.gameObject.SetActive(false);
                         }
-                    }
+                    } */
                     Background.GetComponent<SpriteRenderer>().color = Color.white;
                     /* typeBg.GetComponent<SpriteRenderer>().color = Color.white;
                     typeBg.GetComponent<ButtonRolloverHandler>().ChangeOutColor(Color.white);
@@ -162,7 +194,7 @@ public static class TeamChatPatches
             }
         }
     }
-    [HarmonyPatch(typeof(ChatController), nameof(ChatController.AlignAllBubbles))]
+    /* [HarmonyPatch(typeof(ChatController), nameof(ChatController.AlignAllBubbles))]
     public static class AlignBubblesPatch
     {
         public static void Postfix(ChatController __instance)
@@ -201,11 +233,6 @@ public static class TeamChatPatches
                             continue;
                         }
                     }
-                    /* num += chatBubble.Background.size.y;
-                    Vector3 localPosition = topPos;
-                    localPosition.y = -1.85f + num;
-                    chatBubble.transform.localPosition = localPosition;
-                    num += 0.15f; */
                 }
             }
             else
@@ -238,19 +265,14 @@ public static class TeamChatPatches
                             continue;
                         }
                     }
-                    /* num += chatBubble.Background.size.y;
-                    Vector3 localPosition = topPos;
-                    localPosition.y = -1.85f + num;
-                    chatBubble.transform.localPosition = localPosition;
-                    num += 0.15f; */
                 }
             }
             //float num2 = -0.3f;
             //__instance.scroller.SetYBoundsMin(Mathf.Min(0f, -num + __instance.scroller.Hitbox.bounds.size.y + num2));
         }
-    }
-    [HarmonyPatch(typeof(ChatController), nameof(ChatController.ForceClosed))]
-    public static class ForceClosePatch
+    } */
+    [HarmonyPatch(typeof(ChatController), nameof(ChatController.Close))]
+    public static class ClosePatch
     {
         public static void Postfix(ChatController __instance)
         {
