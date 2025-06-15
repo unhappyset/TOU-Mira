@@ -3,6 +3,7 @@ using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers.Types;
+using TownOfUs.Buttons;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -41,6 +42,7 @@ public sealed class GlitchHackedModifier(byte glitchId) : TimedModifier
 
             foreach (var button in CustomButtonManager.Buttons)
             {
+                if (button is FakeVentButton) continue;
                 CustomButtonHackedSprites.Add(button!.Button!.CreateHackedIcon());
             }
         }

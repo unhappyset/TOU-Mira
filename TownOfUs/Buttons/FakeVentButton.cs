@@ -1,6 +1,7 @@
 ﻿using MiraAPI.Roles;
 using MiraAPI.Utilities.Assets;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace TownOfUs.Buttons;
 
@@ -12,7 +13,16 @@ public sealed class FakeVentButton : TownOfUsButton
     public override LoadableAsset<Sprite> Sprite => TouAssets.BlankSprite;
 
     public bool Show { get; set; } = true;
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
 
+        var pb = Button?.GetComponent<PassiveButton>();
+        if (pb != null)
+        {
+            pb.OnClick = new Button.ButtonClickedEvent();
+        }
+    }
     public override bool Enabled(RoleBehaviour? role)
     {
         return TownOfUsPlugin.OffsetButtons.Value && Show && HudManager.InstanceExists && !MeetingHud.Instance && role != null && !role.IsImpostor
