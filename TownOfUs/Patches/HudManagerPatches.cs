@@ -518,8 +518,7 @@ public static class HudManagerPatches
                     }
 
                     roleName = $"{roleName}<size=80%>{dash}Disconnected</size>";
-                    playerColor = Color.white;
-                    color = Color.white;
+                    color = playerColor;
                 }
 
                 if (!string.IsNullOrEmpty(roleName))
