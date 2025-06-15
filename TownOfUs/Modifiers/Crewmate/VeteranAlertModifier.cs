@@ -1,5 +1,7 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers.Types;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
 
@@ -14,6 +16,9 @@ public sealed class VeteranAlertModifier : TimedModifier
     public override void OnActivate()
     {
         base.OnActivate();
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.VeteranAlert, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
 
         if (Player.Data.Role is VeteranRole vet)
         {

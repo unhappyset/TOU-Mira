@@ -1,19 +1,22 @@
 ﻿using HarmonyLib;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers.Types;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Modifiers.Neutral;
 
-public sealed class GlitchHackedModifier : TimedModifier
+public sealed class GlitchHackedModifier(byte glitchId) : TimedModifier
 {
     public override string ModifierName => "Hacked";
     public override float Duration => OptionGroupSingleton<GlitchOptions>.Instance.HackDuration;
     public override bool AutoStart => false;
     public override bool HideOnUi => ShouldHideHacked;
+    public byte GlitchId { get; } = glitchId;
 
     public bool ShouldHideHacked { get; set; } = true;
     private GameObject? ReportButtonHackedSprite { get; set; }
@@ -25,6 +28,9 @@ public sealed class GlitchHackedModifier : TimedModifier
 
     public override void OnActivate()
     {
+        var glitch = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == GlitchId);
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.GlitchInitialHack, glitch!, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
         if (Player.AmOwner)
         {
             ReportButtonHackedSprite = HudManager.Instance.ReportButton.CreateHackedIcon();
@@ -45,6 +51,9 @@ public sealed class GlitchHackedModifier : TimedModifier
         if (!ShouldHideHacked) return;
 
         ShouldHideHacked = false;
+        var glitch = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == GlitchId);
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.GlitchHackTrigger, glitch!, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
 
         if (Player.AmOwner)
         {

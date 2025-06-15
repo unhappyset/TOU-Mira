@@ -25,6 +25,7 @@ public enum TownOfUsRpc : uint
     ClearMedicShield,
     MedicShieldAttacked,
     EngineerFix,
+    EngineerEventFix,
     IgniteSound,
     PlaceVent,
     ShowVent,

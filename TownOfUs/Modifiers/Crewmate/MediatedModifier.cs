@@ -1,9 +1,11 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Buttons.Crewmate;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -23,6 +25,7 @@ public sealed class MediatedModifier(byte mediumId) : BaseModifier
 
     public override void OnActivate()
     {
+
         _medium = GameData.Instance.GetPlayerById(MediumId).Role as MediumRole;
         _mediumPlayer = _medium?.Player;
 
@@ -31,6 +34,9 @@ public sealed class MediatedModifier(byte mediumId) : BaseModifier
             ModifierComponent?.RemoveModifier(this);
             return;
         }
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.MediumMediate, _mediumPlayer, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
 
         _medium.MediatedPlayers.Add(this);
 

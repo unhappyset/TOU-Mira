@@ -1,5 +1,7 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Options.Roles.Crewmate;
 using UnityEngine;
 
@@ -33,6 +35,13 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
         }
     }
     public PlayerControl Warden { get; } = warden;
+
+    public override void OnActivate()
+    {
+        base.OnActivate();
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.WardenFortify, Warden, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+    }
 
     public override void OnDeactivate()
     {

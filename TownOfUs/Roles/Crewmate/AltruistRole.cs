@@ -1,4 +1,5 @@
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
@@ -9,6 +10,7 @@ using Reactor.Utilities;
 using System.Collections;
 using System.Text;
 using TownOfUs.Buttons.Crewmate;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules;
@@ -175,15 +177,15 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     }
 
     [MethodRpc((uint)TownOfUsRpc.AltruistRevive, SendImmediately = true)]
-    public static void RpcRevive(PlayerControl dead, PlayerControl target)
+    public static void RpcRevive(PlayerControl alt, PlayerControl target)
     {
-        if (dead.Data.Role is not AltruistRole)
+        if (alt.Data.Role is not AltruistRole)
         {
             Logger<TownOfUsPlugin>.Error("RpcRevive - Invalid altruist");
             return;
         }
 
-        var role = dead.GetRole<AltruistRole>();
+        var role = alt.GetRole<AltruistRole>();
 
         if (role == null) return;
 
@@ -191,11 +193,13 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         {
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Altruist));
 
-            if (!dead.HasModifier<AltruistArrowModifier>())
+            if (!alt.HasModifier<AltruistArrowModifier>())
             {
-                dead.AddModifier<AltruistArrowModifier>(PlayerControl.LocalPlayer, TownOfUsColors.Impostor);
+                alt.AddModifier<AltruistArrowModifier>(PlayerControl.LocalPlayer, TownOfUsColors.Impostor);
             }
         }
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.AltruistRevive, alt, target);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
 
         Coroutines.Start(role.CoRevivePlayer(target, OptionGroupSingleton<AltruistOptions>.Instance.ReviveDuration));
     }

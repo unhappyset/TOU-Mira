@@ -1,6 +1,8 @@
-﻿using MiraAPI.Modifiers;
+﻿using MiraAPI.Events;
+using MiraAPI.Modifiers;
 using Reactor.Utilities.Extensions;
 using System.Text;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Utilities;
@@ -19,6 +21,8 @@ public sealed class ClericCleanseModifier(PlayerControl cleric) : BaseModifier
     public override void OnActivate()
     {
         base.OnActivate();
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.ClericCleanse, Cleric, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
 
         Effects = FindNegativeEffects(Player);
 

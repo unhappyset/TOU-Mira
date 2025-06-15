@@ -1,5 +1,7 @@
+using MiraAPI.Events;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using TownOfUs.Events.TouEvents;
 
 namespace TownOfUs.Modifiers.Crewmate;
 
@@ -14,6 +16,9 @@ public sealed class OracleConfessModifier(PlayerControl oracle, int faction) : B
     public override void OnActivate()
     {
         base.OnActivate();
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.OracleConfess, Oracle, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
 
         if (faction == 0)
             RevealedFaction = ModdedRoleTeams.Crewmate;

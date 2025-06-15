@@ -1,7 +1,9 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
 using PowerTools;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Modules.Anims;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Crewmate;
@@ -43,6 +45,9 @@ public sealed class ClericBarrierModifier(PlayerControl cleric) : BaseShieldModi
 
     public override void OnActivate()
     {
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.ClericBarrier, Cleric, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+
         var showBarrier = OptionGroupSingleton<ClericOptions>.Instance.ShowBarriered;
 
         var showBarrierSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&

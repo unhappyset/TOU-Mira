@@ -1,6 +1,8 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using TownOfUs.Buttons.Neutral;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Utilities.Appearances;
 
@@ -22,11 +24,15 @@ public sealed class GlitchMimicModifier(PlayerControl target) : ConcealedModifie
     public override void OnActivate()
     {
         Player.RawSetAppearance(this);
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.GlitchMimic, Player, target);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 
     public override void OnDeactivate()
     {
         CustomButtonSingleton<GlitchMimicButton>.Instance.SetTimer(OptionGroupSingleton<GlitchOptions>.Instance.MimicCooldown);
         Player.ResetAppearance();
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.GlitchUnmimic, Player, target);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 }

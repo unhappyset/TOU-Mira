@@ -1,5 +1,7 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers.Types;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
 using UnityEngine;
@@ -12,7 +14,12 @@ public sealed class HunterStalkedModifier(PlayerControl hunter) : TimedModifier
     public override bool HideOnUi => true;
     public override float Duration => OptionGroupSingleton<HunterOptions>.Instance.HunterStalkDuration;
     public PlayerControl Hunter { get; set; } = hunter;
-
+    public override void OnActivate()
+    {
+        base.OnActivate();
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.HunterStalk, Hunter, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+    }
     public override void FixedUpdate()
     {
         base.FixedUpdate();

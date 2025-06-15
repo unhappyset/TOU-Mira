@@ -6,6 +6,8 @@ using TownOfUs.Options.Roles.Crewmate;
 using UnityEngine;
 using TownOfUs.Utilities;
 using TownOfUs.Options;
+using TownOfUs.Events.TouEvents;
+using MiraAPI.Events;
 
 namespace TownOfUs.Modifiers.Crewmate;
 
@@ -41,6 +43,9 @@ public sealed class MedicShieldModifier(PlayerControl medic) : BaseShieldModifie
 
     public override void OnActivate()
     {
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.MedicShield, Medic, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+
         var showShielded = OptionGroupSingleton<MedicOptions>.Instance.ShowShielded;
 
         var showShieldedEveryone = showShielded == MedicOption.Everyone;

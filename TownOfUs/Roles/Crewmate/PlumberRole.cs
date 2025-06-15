@@ -2,11 +2,13 @@
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Events;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
@@ -154,6 +156,8 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
             Logger<TownOfUsPlugin>.Error("RpcPlumberFlush - Invalid Plumber");
             return;
         }
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.PlumberFlush, player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
 
         if (PlayerControl.LocalPlayer.inVent)
         {
@@ -182,6 +186,9 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 
         if (!plumber.FutureBlocks.Contains(ventId))
             plumber.FutureBlocks.Add(ventId);
+        
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.PlumberBlock, player, Helpers.GetVentById(ventId));
+        MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 
     [HideFromIl2Cpp]

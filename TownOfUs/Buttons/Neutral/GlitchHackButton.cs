@@ -31,6 +31,6 @@ public sealed class GlitchHackButton : TownOfUsRoleButton<GlitchRole, PlayerCont
         }
 
         TouAudio.PlaySound(TouAudio.HackedSound);
-        Target.RpcAddModifier<GlitchHackedModifier>();
+        Target.RpcAddModifier<GlitchHackedModifier>(PlayerControl.LocalPlayer.PlayerId);
     }
 }

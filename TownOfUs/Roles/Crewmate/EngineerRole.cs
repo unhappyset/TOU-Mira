@@ -10,6 +10,8 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
+using TownOfUs.Events.TouEvents;
+using MiraAPI.Events;
 
 namespace TownOfUs.Roles.Crewmate;
 
@@ -116,28 +118,33 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     private static void FixComms()
     {
         ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Comms, 0);
+        RpcEngineerEventFix(PlayerControl.LocalPlayer);
     }
 
     private static void FixMiraComms()
     {
         ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Comms, 16 | 0);
         ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Comms, 16 | 1);
+        RpcEngineerEventFix(PlayerControl.LocalPlayer);
     }
 
     private static void FixAirshipReactor()
     {
         ShipStatus.Instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 16 | 0);
         ShipStatus.Instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 16 | 1);
+        RpcEngineerEventFix(PlayerControl.LocalPlayer);
     }
 
     private static void FixReactor(SystemTypes system)
     {
         ShipStatus.Instance.RpcUpdateSystem(system, 16);
+        RpcEngineerEventFix(PlayerControl.LocalPlayer);
     }
 
     private static void FixOxygen()
     {
         ShipStatus.Instance.RpcUpdateSystem(SystemTypes.LifeSupp, 16);
+        RpcEngineerEventFix(PlayerControl.LocalPlayer);
     }
 
     [MethodRpc((uint)TownOfUsRpc.EngineerFix, SendImmediately = true)]
@@ -163,6 +170,20 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         {
             ModCompatibility.RepairOxygen();
         }
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.EngineerFix, engineer);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+    }
+    [MethodRpc((uint)TownOfUsRpc.EngineerEventFix, SendImmediately = true)]
+    public static void RpcEngineerEventFix(PlayerControl engi)
+    {
+        if (engi.Data.Role is not EngineerTouRole)
+        {
+            Logger<TownOfUsPlugin>.Error("Invalid engineer");
+            return;
+        }
+        
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.EngineerFix, engi);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 
     [HideFromIl2Cpp]

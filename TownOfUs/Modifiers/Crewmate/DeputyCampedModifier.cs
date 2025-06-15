@@ -1,6 +1,8 @@
-﻿using MiraAPI.Modifiers;
+﻿using MiraAPI.Events;
+using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -13,6 +15,13 @@ public sealed class DeputyCampedModifier(PlayerControl deputy) : BaseModifier
 
     public PlayerControl Deputy { get; } = deputy;
 
+    public override void OnActivate()
+    {
+        base.OnActivate();
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.DeputyCamp, Deputy, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+    }
     public override void FixedUpdate()
     {
         base.FixedUpdate();

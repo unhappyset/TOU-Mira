@@ -1,6 +1,8 @@
-﻿using MiraAPI.Modifiers;
+﻿using MiraAPI.Events;
+using MiraAPI.Modifiers;
 using Reactor.Utilities.Extensions;
 using System.Text;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -14,6 +16,13 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
     public PlayerControl Lookout { get; set; } = lookout;
     public List<RoleBehaviour> SeenPlayers { get; set; } = [];
 
+    public override void OnActivate()
+    {
+        base.OnActivate();
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.LookoutWatch, Lookout, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+    }
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent!.RemoveModifier(this);
