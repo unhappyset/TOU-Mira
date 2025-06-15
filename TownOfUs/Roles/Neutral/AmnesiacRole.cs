@@ -18,6 +18,8 @@ using TownOfUs.Roles.Crewmate;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modifiers.Game.Neutral;
+using TownOfUs.Events.TouEvents;
+using MiraAPI.Events;
 
 namespace TownOfUs.Roles.Neutral;
 
@@ -63,6 +65,9 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
             Logger<TownOfUsPlugin>.Error("RpcRemember - Invalid amnesiac");
             return;
         }
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.AmnesiacPreRemember, player, target);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
 
         var roleWhenAlive = target.GetRoleWhenAlive();
 
@@ -117,6 +122,8 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                 target.ChangeRole(RoleId.Get<SurvivorRole>());
             }
         }
+        var touAbilityEvent2 = new TouAbilityEvent(AbilityType.AmnesiacPostRemember, player, target);
+        MiraEventManager.InvokeEvent(touAbilityEvent2);
     }
 
     [HideFromIl2Cpp]

@@ -1,5 +1,7 @@
+using MiraAPI.Events;
 using MiraAPI.Modifiers;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Utilities;
 
 namespace TownOfUs.Modifiers.Neutral;
@@ -11,6 +13,15 @@ public sealed class MercenaryBribedModifier(PlayerControl mercenary) : BaseModif
     public PlayerControl Mercenary { get; } = mercenary;
 
     public bool alerted;
+
+    public override void OnActivate()
+    {
+        base.OnActivate();
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.MercenaryBribe, Mercenary, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+    }
+
 
     public override void OnDeath(DeathReason reason)
     {

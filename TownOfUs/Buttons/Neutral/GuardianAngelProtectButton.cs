@@ -18,5 +18,5 @@ public sealed class GuardianAngelProtectButton : TownOfUsRoleButton<GuardianAnge
     public override int MaxUses => (int)OptionGroupSingleton<GuardianAngelOptions>.Instance.MaxProtects;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.ProtectSprite;
 
-    protected override void OnClick() => Role.Target?.RpcAddModifier<GuardianAngelProtectModifier>();
+    protected override void OnClick() => Role.Target?.RpcAddModifier<GuardianAngelProtectModifier>(PlayerControl.LocalPlayer);
 }

@@ -1,6 +1,8 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using MiraAPI.Utilities.Assets;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
@@ -9,27 +11,31 @@ using UnityEngine;
 
 namespace TownOfUs.Modifiers.Neutral;
 
-public sealed class GuardianAngelProtectModifier : BaseShieldModifier
+public sealed class GuardianAngelProtectModifier(PlayerControl ga) : BaseShieldModifier
 {
     public override float Duration => OptionGroupSingleton<GuardianAngelOptions>.Instance.ProtectDuration;
     public override string ModifierName => "Protected";
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.GuardianAngel;
     public override string ShieldDescription => "You are protected by your Guardian Angel!\nYou cannot be killed.";
     public override bool AutoStart => true;
+    public PlayerControl Guardian => ga;
     public override bool HideOnUi
+  {
+    get
     {
-        get
-        {
-          var showProtect = OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect;
-          var showProtectEveryone = showProtect == ProtectOptions.Everyone;
-          var showProtectSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-              showProtect is ProtectOptions.Self or ProtectOptions.SelfAndGA;
-            return !TownOfUsPlugin.ShowShieldHud.Value && (!showProtectEveryone || !showProtectSelf);
-        }
+      var showProtect = OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect;
+      var showProtectEveryone = showProtect == ProtectOptions.Everyone;
+      var showProtectSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
+          showProtect is ProtectOptions.Self or ProtectOptions.SelfAndGA;
+      return !TownOfUsPlugin.ShowShieldHud.Value && (!showProtectEveryone || !showProtectSelf);
     }
+  }
 
     public override void OnActivate()
     {
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.GuardianAngelProtect, Guardian, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+
         var showProtect = OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect;
         var ga = CustomRoleUtils.GetActiveRolesOfType<GuardianAngelTouRole>().FirstOrDefault(x => x.Target == Player);
 

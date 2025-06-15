@@ -1,4 +1,6 @@
+using MiraAPI.Events;
 using MiraAPI.Modifiers;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -11,6 +13,12 @@ public sealed class ArsonistDousedModifier(byte arsonistId) : BaseModifier
     public override bool HideOnUi => true;
     public byte ArsonistId { get; } = arsonistId;
 
+    public override void OnActivate()
+    {
+        var arso = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == ArsonistId);
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.ArsonistDouse, arso!, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+    }
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent!.RemoveModifier(this);

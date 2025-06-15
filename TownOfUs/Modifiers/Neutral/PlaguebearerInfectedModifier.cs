@@ -1,4 +1,6 @@
+using MiraAPI.Events;
 using MiraAPI.Modifiers;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -13,6 +15,15 @@ public sealed class PlaguebearerInfectedModifier(byte plaguebearerId) : BaseModi
     public byte PlagueBearerId { get; } = plaguebearerId;
 
     private Color color = new(0.9f, 1f, 0.7f, 1f);
+
+    public override void OnActivate()
+    {
+        base.OnActivate();
+
+        var pb = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == PlagueBearerId);
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.PlaguebearerInfect, pb!, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+    }
 
     public override void FixedUpdate()
     {
