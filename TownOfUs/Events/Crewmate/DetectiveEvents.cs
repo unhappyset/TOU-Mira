@@ -1,7 +1,6 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
-using MiraAPI.Roles;
 using TownOfUs.Modules.Components;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
@@ -21,6 +20,19 @@ public static class DetectiveEvents
             detective.Report(@event.Target.PlayerId);
         }
     }
+    [RegisterEvent]
+    public static void RoundStartEventHandler(RoundStartEvent @event)
+    {
+        if (@event.TriggeredByIntro) return;
+
+        if (PlayerControl.LocalPlayer.Data.Role is DetectiveRole)
+        {
+            foreach (var scene in CrimeSceneComponent._crimeScenes)
+            {
+                scene.gameObject.SetActive(true);
+            }
+        }
+    }
 
     [RegisterEvent]
     public static void EjectionEventEventHandler(EjectionEvent @event)
@@ -32,9 +44,6 @@ public static class DetectiveEvents
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         if (@event.Source.IsRole<SoulCollectorRole>()) return;
-
-        var detectives = CustomRoleUtils.GetActiveRolesOfType<DetectiveRole>();
-        if (!detectives.Any()) return;
 
         var victim = @event.Target;
         var bodyPos = victim.transform.position;

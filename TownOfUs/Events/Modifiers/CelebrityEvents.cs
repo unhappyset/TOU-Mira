@@ -15,9 +15,14 @@ public static class CelebrityEvents
         var source = @event.Source;
         var target = @event.Target;
 
-        if (target.HasModifier<CelebrityModifier>() && !MeetingHud.Instance)
+        if (target.HasModifier<CelebrityModifier>())
         {
-            CelebrityModifier.CelebrityKilled(source, target);
+            if (!MeetingHud.Instance) CelebrityModifier.CelebrityKilled(source, target);
+            else
+            {
+                var celeb = target.GetModifier<CelebrityModifier>()!;
+                celeb.Announced = true;
+            }
         }
     }
 

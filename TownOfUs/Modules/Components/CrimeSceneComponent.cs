@@ -12,7 +12,7 @@ namespace TownOfUs.Modules.Components;
 [RegisterInIl2Cpp]
 public sealed class CrimeSceneComponent(nint cppPtr) : MonoBehaviour(cppPtr)
 {
-    private static readonly List<CrimeSceneComponent> _crimeScenes = [];
+    public static readonly List<CrimeSceneComponent> _crimeScenes = [];
 
     private readonly List<byte> _scenePlayers = [];
     public PlayerControl? DeadPlayer { get; set; }
@@ -68,10 +68,8 @@ public sealed class CrimeSceneComponent(nint cppPtr) : MonoBehaviour(cppPtr)
 
         _crimeScenes.Add(scene);
 
-        if (PlayerControl.LocalPlayer.Data.Role is not DetectiveRole)
-        {
-            scene.gameObject.SetActive(false);
-        }
+        scene.gameObject.SetActive(false);
+        if (PlayerControl.LocalPlayer.Data.Role is DetectiveRole) scene.gameObject.SetActive(true);
     }
 
     public static IEnumerator CoClean(DeadBody body)
