@@ -25,6 +25,10 @@ public static class DetectiveEvents
     {
         if (@event.TriggeredByIntro) return;
 
+        foreach (var scene in CrimeSceneComponent._crimeScenes)
+        {
+            scene.gameObject.SetActive(false);
+        }
         if (PlayerControl.LocalPlayer.Data.Role is DetectiveRole)
         {
             foreach (var scene in CrimeSceneComponent._crimeScenes)
@@ -34,11 +38,11 @@ public static class DetectiveEvents
         }
     }
 
-    [RegisterEvent]
+    /* [RegisterEvent]
     public static void EjectionEventEventHandler(EjectionEvent @event)
     {
         CrimeSceneComponent.Clear();
-    }
+    } */
 
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
