@@ -11,14 +11,14 @@ using UnityEngine;
 
 namespace TownOfUs.Modifiers.Neutral;
 
-public sealed class GuardianAngelProtectModifier(PlayerControl ga) : BaseShieldModifier
+public sealed class GuardianAngelProtectModifier(PlayerControl guardianAngel) : BaseShieldModifier
 {
     public override float Duration => OptionGroupSingleton<GuardianAngelOptions>.Instance.ProtectDuration;
     public override string ModifierName => "Protected";
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.GuardianAngel;
     public override string ShieldDescription => "You are protected by your Guardian Angel!\nYou cannot be killed.";
     public override bool AutoStart => true;
-    public PlayerControl Guardian => ga;
+    public PlayerControl Guardian => guardianAngel;
     public override bool HideOnUi
   {
     get
