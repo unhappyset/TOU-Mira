@@ -37,6 +37,7 @@ public static class TouAssets
     public static LoadableAsset<GameObject> ScatterUI { get; } = new LoadableBundleAsset<GameObject>("ScatterUI", MainBundle);
 
     public static LoadableAsset<Sprite> Banner { get; } = new LoadableResourceAsset($"{ShortPath}.Banner.png");
+    public static LoadableAsset<Sprite> BlankSprite { get; } = new LoadableResourceAsset($"{ShortPath}.BlankSprite.png");
 
     public static LoadableAsset<Sprite> WikiButton { get; } = new LoadableResourceAsset($"{ShortPath}.WikiButton.png");
     public static LoadableAsset<Sprite> WikiButtonActive { get; } = new LoadableResourceAsset($"{ShortPath}.WikiButtonActive.png");

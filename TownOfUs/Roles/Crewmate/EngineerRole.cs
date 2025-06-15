@@ -12,6 +12,9 @@ using TownOfUs.Utilities;
 using UnityEngine;
 using TownOfUs.Events.TouEvents;
 using MiraAPI.Events;
+using TownOfUs.Patches.Stubs;
+using MiraAPI.Hud;
+using TownOfUs.Buttons;
 
 namespace TownOfUs.Roles.Crewmate;
 
@@ -32,6 +35,22 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Engineer),
     };
     public override bool IsAffectedByComms => false;
+    public override void Initialize(PlayerControl player)
+    {
+        RoleStubs.RoleBehaviourInitialize(this, player);
+        if (Player.AmOwner)
+        {
+            CustomButtonSingleton<FakeVentButton>.Instance.Show = false;
+        }
+    }
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        if (Player.AmOwner)
+        {
+            CustomButtonSingleton<FakeVentButton>.Instance.Show = true;
+        }
+    }
 
     public static void EngineerFix(PlayerControl engineer)
     {

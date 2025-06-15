@@ -102,6 +102,13 @@ public static class LocalSettings
                 },
                 DefaultValue = TownOfUsPlugin.ButtonUIFactor.Value < 1f
             },
+            new()
+            {
+                Title = "Offset Buttons If You Can't Vent",
+                ObjName = "OffsetButtons",
+                OnClick = () => { return TownOfUsPlugin.OffsetButtons.Value = !TownOfUsPlugin.OffsetButtons.Value; },
+                DefaultValue = TownOfUsPlugin.OffsetButtons.Value
+            },
         ];
 
     private static GameObject popUp;
