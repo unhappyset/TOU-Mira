@@ -506,9 +506,17 @@ public static class HudManagerPatches
 
                 if (player?.Data?.Disconnected == true)
                 {
-                    if (!PlayerControl.LocalPlayer.HasDied() || !genOpt.TheDeadKnow)
+                    if (!((PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
+                    (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
+                    SnitchRole.SnitchVisibilityFlag(player, true) ||
+                    !TutorialManager.InstanceExists && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
+                    GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
+                    SleuthModifier.SleuthVisibilityFlag(player) ||
+                    MayorRole.MayorVisibilityFlag(player))))
                     {
                         roleName = "";
+                        color = Color.white;
+                        playerColor = Color.white;
                     }
 
                     var dash = "";
@@ -518,7 +526,6 @@ public static class HudManagerPatches
                     }
 
                     roleName = $"{roleName}<size=80%>{dash}Disconnected</size>";
-                    color = playerColor;
                 }
 
                 if (!string.IsNullOrEmpty(roleName))
