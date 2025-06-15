@@ -19,7 +19,7 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 {
     public string RoleName => "Sheriff";
     public string RoleDescription => "Shoot The <color=#FF0000FF>Impostor</color>";
-    public string RoleLongDescription => "Kill off the impostors but don't kill crewmates, or pay the price";
+    public string RoleLongDescription => "Kill off the impostors but don't kill crewmates";
     public Color RoleColor => TownOfUsColors.Sheriff;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
@@ -41,16 +41,37 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
+        var missType = OptionGroupSingleton<SheriffOptions>.Instance.MisfireType;
+        
+        if (CustomButtonSingleton<SheriffShootButton>.Instance.FailedShot)
+        {
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>You can no longer shoot.</b>");
+        }
+        else switch (missType)
+            {
+                case MisfireOptions.Both:
+                    stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Misfiring kills you and your target.</b>");
+                    break;
+                case MisfireOptions.Sheriff:
+                    stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Misfiring will lead to suicide.</b>");
+                    break;
+                case MisfireOptions.Target:
+                    stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Misfiring will lead to your target's death,\nat the cost of your ability.</b>");
+                    break;
+                default:
+                    stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Misfiring will prevent you from shooting again.</b>");
+                    break;
+            }
         if (PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>())
         {
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>You may shoot without repercussions due to your alliance.</b>");
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>You may shoot without repercussions.</b>");
         }
 
         return stringB;
     }
     public string GetAdvancedDescription()
     {
-        return $"The Sheriff is a Crewmate Killing that can shoot a player to attempt to kill them.{(OptionGroupSingleton<SheriffOptions>.Instance.MisfireKillsBoth ? "If they shoot incorrectly, they will take down their target and suicide." : "If they shoot incorrectly, the Sheriff will suicide.")}" + MiscUtils.AppendOptionsText(GetType());
+        return $"The Sheriff is a Crewmate Killing that can shoot a player to attempt to kill them. If Sheriff doesn't die to misfire, they will lose the ability to shoot." + MiscUtils.AppendOptionsText(GetType());
     }
 
     [HideFromIl2Cpp]

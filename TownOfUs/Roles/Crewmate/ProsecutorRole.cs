@@ -64,7 +64,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
         var text = ITownOfUsRole.SetNewTabText(this);
         if (PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>())
         {
-            text.AppendLine(CultureInfo.InvariantCulture, $"<b>You may prosecute crew due to your alliance.</b>");
+            text.AppendLine(CultureInfo.InvariantCulture, $"<b>You may prosecute crew.</b>");
         }
         var prosecutes = OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions - ProsecutionsCompleted;
         var newText = prosecutes == 1 ? $"1 Prosecution Remaining." : $"\n{prosecutes} Prosecutions Remaining.";

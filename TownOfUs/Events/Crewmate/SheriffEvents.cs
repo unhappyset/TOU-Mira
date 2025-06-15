@@ -1,6 +1,8 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameOptions;
+using MiraAPI.Hud;
+using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles;
@@ -14,8 +16,11 @@ public static class SheriffEvents
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return; // Never run when round starts.
-        if (PlayerControl.LocalPlayer.Data.Role is SheriffRole) SheriffRole.OnRoundStart();
+        if (@event.TriggeredByIntro)
+        {
+            CustomButtonSingleton<SheriffShootButton>.Instance.FailedShot = false;
+        }
+        else if (PlayerControl.LocalPlayer.Data.Role is SheriffRole) SheriffRole.OnRoundStart();
     }
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)

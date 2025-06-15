@@ -24,10 +24,11 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
     public override float Cooldown => OptionGroupSingleton<SheriffOptions>.Instance.KillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.SheriffShootSprite;
     public bool Usable { get; set; } = OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse;
+    public bool FailedShot { get; set; }
 
     public override bool CanUse()
     {
-        return base.CanUse() && Usable;
+        return base.CanUse() && Usable && !FailedShot;
     }
 
     private void Misfire()
@@ -37,13 +38,26 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
             Logger<TownOfUsPlugin>.Error("Misfire: Target is null");
             return;
         }
+        var missType = OptionGroupSingleton<SheriffOptions>.Instance.MisfireType;
 
-        if (OptionGroupSingleton<SheriffOptions>.Instance.MisfireKillsBoth)
+        if (missType is MisfireOptions.Target or MisfireOptions.Both)
         {
             PlayerControl.LocalPlayer.RpcCustomMurder(Target);
         }
 
-        PlayerControl.LocalPlayer.RpcCustomMurder(PlayerControl.LocalPlayer);
+        if (missType is MisfireOptions.Sheriff or MisfireOptions.Both)
+        {
+            PlayerControl.LocalPlayer.RpcCustomMurder(PlayerControl.LocalPlayer);
+        }
+
+        FailedShot = true;
+
+        var notif1 = Helpers.CreateAndShowNotification("<b>You have lost the ability to shoot!</b>", Color.white, spr: TouRoleIcons.Sheriff.LoadAsset());
+
+        notif1.Text.SetOutlineThickness(0.35f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+
+        Coroutines.Start(MiscUtils.CoFlash(Color.red));
     }
 
     private static IEnumerator CoSetBodyReportable(byte bodyId)

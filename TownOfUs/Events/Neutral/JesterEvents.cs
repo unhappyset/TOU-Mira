@@ -22,7 +22,7 @@ public static class JesterEvents
         if (@event.TriggeredByIntro) return;
         if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.EndsGame) return;
         var jest = PlayerControl.AllPlayerControls.ToArray()
-            .FirstOrDefault(plr => plr.Data.IsDead && !plr.Data.Disconnected && plr.GetRoleWhenAlive() != null && plr.GetRoleWhenAlive() is JesterRole jestRole && jestRole.Voted && !jestRole.SentWinMsg);
+            .FirstOrDefault(plr => plr.Data.IsDead && !plr.Data.Disconnected && plr.GetRoleWhenAlive() is JesterRole jestRole && jestRole.Voted && !jestRole.SentWinMsg);
         if (jest != null)
         {
             var jestRole = jest.GetRoleWhenAlive() as JesterRole;
@@ -53,8 +53,6 @@ public static class JesterEvents
             Func<PlayerControl, bool> _playerMatch = plr => voters.Contains(plr.PlayerId) && !plr.HasDied() && !plr.HasModifier<InvulnerabilityModifier>() && plr != PlayerControl.LocalPlayer;
 
             var killMenu = CustomPlayerMenu.Create();
-        killMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
-        killMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
             killMenu.Begin(
                 _playerMatch,
                 plr =>

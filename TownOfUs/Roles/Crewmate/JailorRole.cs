@@ -199,7 +199,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         var stringB = ITownOfUsRole.SetNewTabText(this);
         if (PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>())
         {
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"You can execute crewmates due to your alliance.");
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"You can execute crewmates.");
         }
 
         return stringB;

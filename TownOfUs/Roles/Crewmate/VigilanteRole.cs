@@ -243,7 +243,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         var stringB = ITownOfUsRole.SetNewTabText(this);
         if (PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>())
         {
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"You can shoot Crewmates with your alliance.");
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"You can also guess Crewmates.");
         }
         if ((int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots > 0)
         {
