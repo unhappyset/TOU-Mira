@@ -1,4 +1,6 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
@@ -31,6 +33,9 @@ public sealed class VenererCamouflageModifier : ConcealedModifier, IVenererModif
     public override void OnActivate()
     {
         Player.RawSetAppearance(this);
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.VenererCamoAbility, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 
     public override void OnDeactivate()

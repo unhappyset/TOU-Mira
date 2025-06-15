@@ -28,8 +28,9 @@ public sealed class EclipsalBlindButton : TownOfUsRoleButton<EclipsalRole>, IAft
         foreach (var player in blindedPlayers)
         {
             if (!player.HasDied() && !player.IsImpostor())
-                player.RpcAddModifier<EclipsalBlindModifier>();
+                player.RpcAddModifier<EclipsalBlindModifier>(PlayerControl.LocalPlayer);
         }
+        PlayerControl.LocalPlayer.RpcAddModifier<EclipsalBlindModifier>(PlayerControl.LocalPlayer);
     }
 
     public override void OnEffectEnd()

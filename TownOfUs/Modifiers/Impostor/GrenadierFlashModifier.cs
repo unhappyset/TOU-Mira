@@ -1,5 +1,7 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
@@ -8,12 +10,13 @@ using Color = UnityEngine.Color;
 
 namespace TownOfUs.Modifiers.Impostor;
 
-public sealed class GrenadierFlashModifier : DisabledModifier, IDisposable
+public sealed class GrenadierFlashModifier(PlayerControl grenadier) : DisabledModifier, IDisposable
 {
     public override string ModifierName => "Flashed";
     public override bool HideOnUi => true;
     public override float Duration => OptionGroupSingleton<GrenadierOptions>.Instance.GrenadeDuration + 0.5f;
     public override bool AutoStart => true;
+    public PlayerControl Grenadier => grenadier;
 
     private readonly Color normalVision = new Color(0.83f, 0.83f, 0.83f, 0f);
     private readonly Color dimVision = new Color(0.83f, 0.83f, 0.83f, 0.2f);
@@ -24,10 +27,12 @@ public sealed class GrenadierFlashModifier : DisabledModifier, IDisposable
     public override void OnActivate()
     {
         base.OnActivate();
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.GrenadierFlash, Grenadier, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
 
         flash = new();
 
-        if (Player.AmOwner)
+        if (Player.AmOwner && !Grenadier.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You were flashed by a Grenadier!</color></b>", Color.white, spr: TouRoleIcons.Grenadier.LoadAsset());

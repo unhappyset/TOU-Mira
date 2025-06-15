@@ -1,4 +1,6 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities.Appearances;
 
@@ -20,10 +22,16 @@ public sealed class MorphlingMorphModifier(PlayerControl target) : ConcealedModi
     public override void OnActivate()
     {
         Player.RawSetAppearance(this);
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.MorphlingMorph, Player, target);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 
     public override void OnDeactivate()
     {
         Player.ResetAppearance();
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.MorphlingUnmorph, Player, target);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 }

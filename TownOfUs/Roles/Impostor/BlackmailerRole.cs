@@ -1,10 +1,12 @@
 ﻿using System.Text;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Networking.Rpc;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
@@ -43,6 +45,8 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
 
         var modifier = new BlackmailedModifier(source.PlayerId);
         target.AddModifier(modifier);
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.BlackmailerBlackmail, source, target);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 
     [HideFromIl2Cpp]

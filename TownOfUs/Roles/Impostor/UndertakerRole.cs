@@ -1,13 +1,16 @@
 ﻿using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Networking.Rpc;
 using TownOfUs.Buttons.Impostor;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
@@ -44,6 +47,9 @@ public sealed class UndertakerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
     {
         playerControl.GetModifierComponent()?.AddModifier(new DragModifier(bodyId));
 
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.UndertakerDrag, playerControl, Helpers.GetBodyById(bodyId));
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+
         if (playerControl.AmOwner)
         {
             CustomButtonSingleton<UndertakerDragDropButton>.Instance.SetDrop();
@@ -57,6 +63,9 @@ public sealed class UndertakerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
         var dropPos = (Vector3)dropLocation;
         dropPos.z = dropPos.y / 1000f;
         dragMod.DeadBody!.transform.position = dropPos;
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.UndertakerDrop, playerControl, dragMod.DeadBody);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
 
         playerControl.GetModifierComponent()?.RemoveModifier(dragMod);
 

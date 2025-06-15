@@ -1,7 +1,9 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using TownOfUs.Buttons.Impostor;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
@@ -58,6 +60,8 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
         button.OverrideSprite(TouImpAssets.UnswoopSprite.LoadAsset());
         button.OverrideName("Unswoop");
 
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.SwooperSwoop, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 
     public override void FixedUpdate()
@@ -89,6 +93,9 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
         {
             MushroomMixUp(mushroom, Player);
         }
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.SwooperUnswoop, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 
     public static void MushroomMixUp(MushroomMixupSabotageSystem instance, PlayerControl player)

@@ -2,11 +2,13 @@
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
@@ -123,6 +125,13 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
                 vent.gameObject.transform.localPosition = new Vector3(vent.gameObject.transform.localPosition.x, vent.gameObject.transform.localPosition.y, -0.003f);
             }
         }
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.MinerPlaceVent, player, vent);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+        if (immediate)
+        {
+            var touAbilityEvent2 = new TouAbilityEvent(AbilityType.MinerRevealVent, player, vent);
+            MiraEventManager.InvokeEvent(touAbilityEvent2);
+        }
     }
 
     [MethodRpc((uint)TownOfUsRpc.ShowVent)]
@@ -139,6 +148,9 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         if (vent != null)
         {
             vent.myRend.enabled = true;
+
+            var touAbilityEvent = new TouAbilityEvent(AbilityType.MinerRevealVent, player, vent);
+            MiraEventManager.InvokeEvent(touAbilityEvent);
         }
     }
 }

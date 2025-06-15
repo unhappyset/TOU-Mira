@@ -1,6 +1,7 @@
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
@@ -8,6 +9,7 @@ using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Networking.Rpc;
 using Reactor.Utilities;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Modules.Components;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
@@ -52,6 +54,9 @@ public sealed class JanitorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
 
         if (body != null)
         {
+            var touAbilityEvent = new TouAbilityEvent(AbilityType.JanitorClean, player, body);
+            MiraEventManager.InvokeEvent(touAbilityEvent);
+
             Coroutines.Start(body.CoClean());
             Coroutines.Start(CrimeSceneComponent.CoClean(body));
         }

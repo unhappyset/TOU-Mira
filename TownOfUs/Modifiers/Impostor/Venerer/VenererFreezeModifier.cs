@@ -1,5 +1,7 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers.Types;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -14,6 +16,12 @@ public sealed class VenererFreezeModifier(PlayerControl venerer) : TimedModifier
 
     public PlayerControl Venerer { get; set; } = venerer;
     public float SpeedFactor { get; set; }
+
+    public override void OnActivate()
+    {
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.VenererFreezeAbility, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+    }
 
     public override void FixedUpdate()
     {

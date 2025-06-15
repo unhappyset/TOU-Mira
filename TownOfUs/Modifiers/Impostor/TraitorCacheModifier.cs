@@ -1,7 +1,9 @@
 using AmongUs.GameOptions;
+using MiraAPI.Events;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -29,6 +31,8 @@ public sealed class TraitorCacheModifier : BaseModifier, ICachedRole
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
         }
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.TraitorChangeRole, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 
     public override void OnDeactivate()

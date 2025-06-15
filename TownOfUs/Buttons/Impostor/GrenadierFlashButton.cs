@@ -28,12 +28,9 @@ public sealed class GrenadierFlashButton : TownOfUsRoleButton<GrenadierRole>, IA
 
         foreach (var player in flashedPlayers)
         {
-            player.RpcAddModifier<GrenadierFlashModifier>();
+            player.RpcAddModifier<GrenadierFlashModifier>(PlayerControl.LocalPlayer);
         }
-        if (flashedPlayers.Count != 0)
-        {
-            PlayerControl.LocalPlayer.RpcAddModifier<GrenadierFlashModifier>();
-        }
+        PlayerControl.LocalPlayer.RpcAddModifier<GrenadierFlashModifier>(PlayerControl.LocalPlayer);
 
         Coroutines.Start(
             Effects.Shake(HudManager.Instance.PlayerCam.transform, 0.2f, 0.1f, true, true).WrapToManaged());

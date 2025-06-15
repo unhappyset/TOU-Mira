@@ -1,11 +1,13 @@
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Modules.Anims;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options;
@@ -50,6 +52,8 @@ public sealed class EscapistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
             Logger<TownOfUsPlugin>.Error("RpcRecall - Invalid escapist");
             return;
         }
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.EscapistRecall, player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 
     [MethodRpc((uint)TownOfUsRpc.MarkLocation, SendImmediately = true)]
@@ -60,6 +64,10 @@ public sealed class EscapistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
             Logger<TownOfUsPlugin>.Error("RpcRecall - Invalid escapist");
             return;
         }
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.EscapistMark, player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+
         henry.MarkedLocation = pos;
         henry.EscapeMark = AnimStore.SpawnAnimAtPlayer(player, TouAssets.EscapistMarkPrefab.LoadAsset());
         henry.EscapeMark.transform.localPosition = new Vector3(pos.x, pos.y + 0.3f, 0.1f);

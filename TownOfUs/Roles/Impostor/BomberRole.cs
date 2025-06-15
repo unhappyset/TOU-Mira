@@ -1,10 +1,12 @@
 ﻿using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
@@ -42,6 +44,9 @@ public sealed class BomberRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
             Logger<TownOfUsPlugin>.Error("RpcPlantBomb - Invalid bomber");
             return;
         }
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.BomberPlant, player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
 
         if (player.AmOwner)
         {

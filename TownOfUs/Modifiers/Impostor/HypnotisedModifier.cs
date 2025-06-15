@@ -1,5 +1,7 @@
-﻿using MiraAPI.Modifiers;
+﻿using MiraAPI.Events;
+using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
@@ -20,7 +22,12 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
     {
         ModifierComponent!.RemoveModifier(this);
     }
-
+    public override void OnActivate()
+    {
+        base.OnActivate();
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.HypnotistHypno, Hypnotist, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+    }
     public override void OnDeactivate()
     {
         UnHysteria();
@@ -31,6 +38,8 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
     public void Hysteria()
     {
         if (Player.HasDied()) return;
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.HypnotistHysteria, Hypnotist, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
         if (!Player.AmOwner) return;
         if (HysteriaActive) return;
 

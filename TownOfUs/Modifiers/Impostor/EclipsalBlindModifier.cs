@@ -1,7 +1,9 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Modules.Anims;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Impostor;
@@ -10,12 +12,13 @@ using UnityEngine;
 
 namespace TownOfUs.Modifiers.Impostor;
 
-public sealed class EclipsalBlindModifier : DisabledModifier
+public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifier
 {
     public override string ModifierName => "Blinded";
     public override bool HideOnUi => true;
     public override float Duration => OptionGroupSingleton<EclipsalOptions>.Instance.BlindDuration;
     public override bool AutoStart => true;
+    public PlayerControl Eclipsal => player;
     public GameObject? EclipseBack { get; set; }
 
     public float VisionPerc { get; set; } = 1f;
@@ -23,6 +26,8 @@ public sealed class EclipsalBlindModifier : DisabledModifier
     public override void OnActivate()
     {
         base.OnActivate();
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.EclipsalBlind, Eclipsal, Player);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
 
         VisionPerc = 1f;
 
@@ -32,7 +37,7 @@ public sealed class EclipsalBlindModifier : DisabledModifier
         }
         EclipseBack = AnimStore.SpawnAnimBody(Player, TouAssets.EclipsedPrefab.LoadAsset(), false, -1.1f, -0.575f)!;
         EclipseBack.SetActive(false);
-        if (Player.AmOwner)
+        if (Player.AmOwner && !Eclipsal.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You were blinded by an Eclipsal!</color></b>", Color.white, spr: TouRoleIcons.Eclipsal.LoadAsset());
