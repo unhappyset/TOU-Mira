@@ -33,9 +33,13 @@ public static class TeamChatPatches
     [MethodRpc((uint)TownOfUsRpc.SendJailorChat, SendImmediately = true)]
     public static void RpcSendJailorChat(PlayerControl player, string text)
     {
-        if (PlayerControl.LocalPlayer.IsJailed() || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        if (PlayerControl.LocalPlayer.IsJailed())
         {
-            MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailor</color>", text);
+            MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailor</color>", text);
+        }
+        else if (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow)
+        {
+            MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Jailor)</color>", text);
         }
     }
 
