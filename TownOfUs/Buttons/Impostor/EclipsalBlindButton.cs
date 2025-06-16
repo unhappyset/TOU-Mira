@@ -30,7 +30,7 @@ public sealed class EclipsalBlindButton : TownOfUsRoleButton<EclipsalRole>, IAft
             if (!player.HasDied() && !player.IsImpostor())
                 player.RpcAddModifier<EclipsalBlindModifier>(PlayerControl.LocalPlayer);
         }
-        PlayerControl.LocalPlayer.RpcAddModifier<EclipsalBlindModifier>(PlayerControl.LocalPlayer);
+        // PlayerControl.LocalPlayer.RpcAddModifier<EclipsalBlindModifier>(PlayerControl.LocalPlayer);
     }
 
     public override void OnEffectEnd()

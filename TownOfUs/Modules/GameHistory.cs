@@ -166,7 +166,7 @@ public static class GameHistory
         PlayerEvents.Clear();
     }
 
-    public static RoleBehaviour? GetRoleWhenAlive(this PlayerControl player)
+    public static RoleBehaviour GetRoleWhenAlive(this PlayerControl player)
     {
         //var role = RoleHistory.LastOrDefault(x => x.Key == player.PlayerId && !x.Value.IsDead);
         //return role.Value != null ? role.Value : null;
@@ -176,6 +176,6 @@ public static class GameHistory
             return role;
         }
 
-        return null;
+        return player.Data.Role;
     }
 }

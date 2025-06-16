@@ -35,7 +35,7 @@ public static class TelepathEvents
             else if (source.IsImpostor() && source != victim && options.KnowCorrectGuess && MeetingHud.Instance)
             {
                 Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.ImpSoft, alpha: 0.05f));
-                var notif1 = Helpers.CreateAndShowNotification($"<b>{TownOfUsColors.ImpSoft.ToTextColor()}Your teammate, {source.Data.PlayerName}, shot {victim.Data.PlayerName} as {victim.GetRoleWhenAlive()!.TeamColor.ToTextColor()}{victim.GetRoleWhenAlive()!.NiceName}</color>!</b></color>", Color.white, spr: TouModifierIcons.Telepath.LoadAsset());
+                var notif1 = Helpers.CreateAndShowNotification($"<b>{TownOfUsColors.ImpSoft.ToTextColor()}Your teammate, {source.Data.PlayerName}, shot {victim.Data.PlayerName} as {victim.GetRoleWhenAlive().TeamColor.ToTextColor()}{victim.GetRoleWhenAlive().NiceName}</color>!</b></color>", Color.white, spr: TouModifierIcons.Telepath.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
             }

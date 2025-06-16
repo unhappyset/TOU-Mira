@@ -71,7 +71,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
 
         var roleWhenAlive = target.GetRoleWhenAlive();
 
-        player.ChangeRole((ushort)roleWhenAlive!.Role);
+        player.ChangeRole((ushort)roleWhenAlive.Role);
         if (player.Data.Role is InquisitorRole inquis)
         {
             inquis.Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().ToList();
