@@ -30,7 +30,6 @@ using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Buttons.Impostor;
 using TownOfUs.Events.TouEvents;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
-using TownOfUs.Modules.Components;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Options.Roles.Impostor;
 
@@ -406,9 +405,10 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void VotingCompleteHandler(VotingCompleteEvent @event)
     {
-        if (Minigame.Instance is GuesserMenu guessMenu)
+        if (Minigame.Instance)
         {
-            guessMenu.Close();
+            Minigame.Instance.Close();
+            Minigame.Instance.Close();
         }
     }
 }
