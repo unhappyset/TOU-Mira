@@ -295,11 +295,6 @@ public static class TownOfUsEventHandlers
             {TouAssets.MeetingDeathBloodAnim3.LoadAsset(), TouAssets.MeetingDeathAnim3.LoadAsset()}
         };
         var trueAnim = animDic.Random();
-        if (Minigame.Instance != null)
-        {
-            Minigame.Instance.Close();
-            Minigame.Instance.Close();
-        }
         var animation = Object.Instantiate(TouAssets.MeetingDeathPrefab.LoadAsset(), voteArea.transform);
         animation.transform.localPosition = new Vector3(-0.8f, 0, 0);
         animation.transform.localScale = new Vector3(0.375f, 0.375f, 1f);
@@ -360,9 +355,15 @@ public static class TownOfUsEventHandlers
         targetVoteArea.XMark.gameObject.SetActive(false);
         targetVoteArea.XMark.transform.localScale = Vector3.one;
 
-            targetVoteArea.Overlay.gameObject.SetActive(false);
-            if (target.Data.Role is MayorRole) MayorRole.DestroyReveal(targetVoteArea);
-            Coroutines.Start(CoAnimateDeath(targetVoteArea));
+        if (Minigame.Instance != null)
+        {
+            Minigame.Instance.Close();
+            Minigame.Instance.Close();
+        }
+        
+        targetVoteArea.Overlay.gameObject.SetActive(false);
+        if (target.Data.Role is MayorRole) MayorRole.DestroyReveal(targetVoteArea);
+        Coroutines.Start(CoAnimateDeath(targetVoteArea));
 
         // hide meeting menu button for victim
         if (!source.AmOwner && !target.AmOwner)
