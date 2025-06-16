@@ -1,7 +1,11 @@
 ﻿using MiraAPI.GameOptions;
+using MiraAPI.Hud;
+using MiraAPI.Roles;
 using MiraAPI.Utilities.Assets;
+using TownOfUs.Buttons.Modifiers;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
+using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -15,6 +19,21 @@ public sealed class SpyModifier : TouGameModifier, IWikiDiscoverable
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Spy;
     public override string GetDescription() => "Gain extra information on the Admin Table.";
     public override ModifierFaction FactionType => ModifierFaction.CrewmateUtility;
+    public override void OnActivate()
+    {
+        base.OnActivate();
+
+        if (!Player.AmOwner) return;
+        CustomButtonSingleton<SpyAdminTableModifierButton>.Instance.AvailableCharge = OptionGroupSingleton<SpyOptions>.Instance.StartingCharge.Value;
+    }
+    public static void OnRoundStart()
+    {
+        CustomButtonSingleton<SpyAdminTableModifierButton>.Instance.AvailableCharge += OptionGroupSingleton<SpyOptions>.Instance.RoundCharge.Value;
+    }
+    public static void OnTaskComplete()
+    {
+        CustomButtonSingleton<SpyAdminTableModifierButton>.Instance.AvailableCharge += OptionGroupSingleton<SpyOptions>.Instance.TaskCharge.Value;
+    }
 
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.SpyChance;
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.SpyAmount;
@@ -26,7 +45,8 @@ public sealed class SpyModifier : TouGameModifier, IWikiDiscoverable
     public string GetAdvancedDescription()
     {
         return
-            "The Spy gains extra information on the admin table. They now not only see how many people are in a room, but will also see who is in every room.";
+            "The Spy gains extra information on the admin table. They now not only see how many people are in a room, but will also see who is in every room."
+            + MiscUtils.AppendOptionsText(CustomRoleSingleton<SpyRole>.Instance.GetType());
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];

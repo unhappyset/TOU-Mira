@@ -14,7 +14,7 @@ namespace TownOfUs.Buttons.Modifiers;
 public sealed class ScientistButton : TownOfUsButton
 {
     public override string Name => "Vitals";
-    public override string Keybind => "tou.ActionCustom2";
+    public override string Keybind => Keybinds.ModifierAction;
     public override Color TextOutlineColor => TownOfUsColors.Scientist;
     public override float Cooldown => OptionGroupSingleton<ScientistOptions>.Instance.DisplayCooldown + MapCooldown;
     public float AvailableCharge { get; set; } = OptionGroupSingleton<ScientistOptions>.Instance.StartingCharge;

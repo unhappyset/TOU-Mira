@@ -731,7 +731,7 @@ public static class HudManagerPatches
     }
     public static void UpdateRoleList(HudManager instance)
     {
-        if (RoleList != null) RoleList.SetActive(false);
+        RoleList?.SetActive(false);
         if (!LobbyBehaviour.Instance) return;
 
         if (RoleList == null)
