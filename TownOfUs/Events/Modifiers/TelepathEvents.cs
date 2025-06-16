@@ -4,7 +4,6 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
-using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modules;
 using TownOfUs.Options.Modifiers.Impostor;
@@ -25,7 +24,7 @@ public static class TelepathEvents
         if (PlayerControl.LocalPlayer.HasModifier<TelepathModifier>() && !source.AmOwner && !victim.AmOwner)
         {
             var options = OptionGroupSingleton<TelepathOptions>.Instance;
-            if (victim.IsImpostor() && source == victim && options.KnowFailedGuess && MeetingHud.Instance && victim.TryGetModifier<AssassinModifier>(out var assassin) && assassin.LastAttemptedVictim)
+            if (victim.IsImpostor() && source == victim && options.KnowFailedGuess && MeetingHud.Instance && victim.TryGetModifier<ImpostorAssassinModifier>(out var assassin) && assassin.LastAttemptedVictim)
             {
                 Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.ImpSoft, alpha: 0.4f));
                 var notif1 = Helpers.CreateAndShowNotification($"<b>{TownOfUsColors.ImpSoft.ToTextColor()}Your teammate, {victim.Data.PlayerName}, attempted to shoot {assassin.LastAttemptedVictim!.Data.PlayerName} as {assassin.LastGuessedItem}, but failed!</b></color>", Color.white, spr: TouModifierIcons.Telepath.LoadAsset());
