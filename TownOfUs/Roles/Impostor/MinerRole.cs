@@ -81,11 +81,6 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
 
         Logger<TownOfUsPlugin>.Error($"RpcPlaceVent - vent: {vent.name} - {immediate}");
 
-        if (!player.AmOwner && !immediate)
-        {
-            Logger<TownOfUsPlugin>.Error("RpcPlaceVent - Hide Vent");
-            vent.myRend.enabled = false;
-        }
 
         vent.Id = ventId;
         vent.transform.position = new Vector3(position.x, position.y, zAxis);
@@ -109,6 +104,13 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         var allVents = ShipStatus.Instance.AllVents.ToList();
         allVents.Add(vent);
         ShipStatus.Instance.AllVents = allVents.ToArray();
+
+        if (!immediate)
+        {
+            Logger<TownOfUsPlugin>.Error("RpcPlaceVent - Hide Vent");
+            if (!PlayerControl.LocalPlayer.Data.Role.IsImpostor()) vent.myRend.enabled = false;
+            vent.myRend.color.SetAlpha(0.5f);
+        }
 
         miner.Vents.Add(vent);
 
@@ -149,6 +151,7 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         if (vent != null)
         {
             vent.myRend.enabled = true;
+            vent.myRend.color.SetAlpha(1f);
 
             var touAbilityEvent = new TouAbilityEvent(AbilityType.MinerRevealVent, player, vent);
             MiraEventManager.InvokeEvent(touAbilityEvent);

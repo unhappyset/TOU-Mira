@@ -7,6 +7,7 @@ using MiraAPI.Roles;
 using TMPro;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Options;
+using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -109,6 +110,20 @@ public static class ModifierIntroPatch
         public static void Postfix(IntroCutscene._ShowRole_d__41 __instance)
         {
             HudManagerPatches.ResetZoom();
+            if (PlayerControl.LocalPlayer.Data.Role is ITownOfUsRole custom)
+            {
+                __instance.__4__this.RoleText.text = custom.RoleName;
+                if (__instance.__4__this.YouAreText.transform.TryGetComponent<TextTranslatorTMP>(out var tmp))
+                {
+                    tmp.defaultStr = custom.YouAreText;
+                    tmp.TargetText = StringNames.None;
+                    tmp.ResetText();
+                }
+                __instance.__4__this.RoleBlurbText.text = custom.RoleDescription;
+            }
+            
+            if (PlayerControl.LocalPlayer.Data.Role.IsCrewmate()) RunImpChecks(__instance);
+
             if (ModifierText == null) return;
 
             RunModChecks();
@@ -125,6 +140,20 @@ public static class ModifierIntroPatch
     {
         public static void Postfix(IntroCutscene._ShowRole_d__41 __instance)
         {
+            if (PlayerControl.LocalPlayer.Data.Role is ITownOfUsRole custom)
+            {
+                __instance.__4__this.RoleText.text = custom.RoleName;
+                if (__instance.__4__this.YouAreText.transform.TryGetComponent<TextTranslatorTMP>(out var tmp))
+                {
+                    tmp.defaultStr = custom.YouAreText;
+                    tmp.TargetText = StringNames.None;
+                    tmp.ResetText();
+                }
+                __instance.__4__this.RoleBlurbText.text = custom.RoleDescription;
+            }
+
+            if (PlayerControl.LocalPlayer.Data.Role.IsCrewmate()) RunImpChecks(__instance);
+
             if (ModifierText == null) return;
 
             RunModChecks();
@@ -136,10 +165,20 @@ public static class ModifierIntroPatch
         }
     }
     [HarmonyPatch(typeof(IntroCutscene._ShowRole_d__41), nameof(IntroCutscene._ShowRole_d__41.MoveNext))]
+    [HarmonyPriority(Priority.Last)]
     public static class ShowModifierPatch_Role
     {
         public static void Postfix(IntroCutscene._ShowRole_d__41 __instance)
         {
+            if (PlayerControl.LocalPlayer.Data.Role is ITownOfUsRole custom)
+            {
+                __instance.__4__this.RoleText.text = custom.RoleName;
+                __instance.__4__this.YouAreText.text = custom.YouAreText;
+                __instance.__4__this.RoleBlurbText.text = custom.RoleDescription;
+            }
+
+            if (PlayerControl.LocalPlayer.Data.Role.IsCrewmate()) RunImpChecks(__instance);
+
             if (ModifierText == null) return;
 
             RunModChecks();
@@ -150,7 +189,50 @@ public static class ModifierIntroPatch
             ModifierText.color.SetAlpha(0.8f);
         }
     }
+    public static void RunImpChecks(IntroCutscene._ShowRole_d__41 __instance)
+    {
+        var list = OptionGroupSingleton<RoleOptions>.Instance;
+        var players = GameData.Instance.PlayerCount;
+        if (players > 6 && list.RoleListEnabled)
+        {
+            bool isAny = false;
 
+            int maxSlots = players < 15 ? players : 15;
+
+            List<RoleListOption> buckets = [];
+            if (list.RoleListEnabled)
+            {
+                for (int i = 0; i < maxSlots; i++)
+                {
+                    int slotValue = i switch
+                    {
+                        0 => list.Slot1,
+                        1 => list.Slot2,
+                        2 => list.Slot3,
+                        3 => list.Slot4,
+                        4 => list.Slot5,
+                        5 => list.Slot6,
+                        6 => list.Slot7,
+                        7 => list.Slot8,
+                        8 => list.Slot9,
+                        9 => list.Slot10,
+                        10 => list.Slot11,
+                        11 => list.Slot12,
+                        12 => list.Slot13,
+                        13 => list.Slot14,
+                        14 => list.Slot15,
+                        _ => -1
+                    };
+
+                    buckets.Add((RoleListOption)slotValue);
+                }
+            }
+            if (buckets.Any(x => x is RoleListOption.Any)) isAny = true;
+
+            if (isAny) __instance.__4__this.ImpostorText.text = "There are an <color=#FF0000FF>Unknown Number of Impostors</color> among us";
+        }
+    }
+    
     public static void RunModChecks()
     {
         var option = OptionGroupSingleton<GeneralOptions>.Instance.ModifierReveal;

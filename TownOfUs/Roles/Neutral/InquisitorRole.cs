@@ -59,7 +59,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
             Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().ToList();
             TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select([HideFromIl2Cpp] (x) => x.TargetRole).OrderBy([HideFromIl2Cpp] (x) => x.NiceName).ToList();
         }
-        if (TutorialManager.InstanceExists && Player.AmOwner && Player.IsHost() && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+        if (TutorialManager.InstanceExists && Targets.Count == 0 && Player.AmOwner && Player.IsHost() && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
         {
             Coroutines.Start(SetTutorialTargets(this));
         }

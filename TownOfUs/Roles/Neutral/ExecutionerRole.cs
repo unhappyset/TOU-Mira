@@ -71,7 +71,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
         {
             Target = ModifierUtils.GetPlayersWithModifier<ExecutionerTargetModifier>([HideFromIl2Cpp] (x) => x.OwnerId == Player.PlayerId).FirstOrDefault();
         }
-        if (TutorialManager.InstanceExists && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started && Player.AmOwner && Player.IsHost())
+        if (TutorialManager.InstanceExists && Target == null && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started && Player.AmOwner && Player.IsHost())
         {
             Coroutines.Start(SetTutorialTargets(this));
         }

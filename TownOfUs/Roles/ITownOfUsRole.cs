@@ -12,6 +12,17 @@ public interface ITownOfUsRole : ICustomRole
     RoleAlignment RoleAlignment { get; }
 
     bool HasImpostorVision => false;
+    public virtual string YouAreText
+    {
+        get
+        {
+            var prefix = " a";
+            if (RoleName.StartsWithVowel()) prefix = " an";
+            if (Configuration.MaxRoleCount is 0 or 1) prefix = " the";
+            if (RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase)) prefix = "";
+            return $"You are{prefix}";
+        }
+    }
 
     bool WinConditionMet() => false;
 

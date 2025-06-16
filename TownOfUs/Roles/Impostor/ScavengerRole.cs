@@ -48,7 +48,7 @@ public sealed class ScavengerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     public override void Initialize(PlayerControl player)
     {
         RoleStubs.RoleBehaviourInitialize(this, player);
-        if (TutorialManager.InstanceExists && Player.AmOwner)
+        if (TutorialManager.InstanceExists && Target == null && Player.AmOwner)
         {
             Coroutines.Start(SetTutorialTarget(this, Player));
         }

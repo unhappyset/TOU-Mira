@@ -50,7 +50,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
     {
         if (!Player.AmOwner) return;
         HudManager.Instance.Chat.gameObject.SetActive(true);
-        if (TutorialManager.InstanceExists && Player.AmOwner && Player.IsHost() && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+        if (TutorialManager.InstanceExists && OtherLover == null && Player.AmOwner && Player.IsHost() && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
         {
             Coroutines.Start(SetTutorialTarget(this, Player));
         }
