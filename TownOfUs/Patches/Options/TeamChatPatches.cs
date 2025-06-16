@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using MiraAPI.GameOptions;
+using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities.Extensions;
 using TMPro;
@@ -107,7 +108,13 @@ public static class TeamChatPatches
                         _teamText.text = string.Empty;
                         _teamText.color = TownOfUsColors.ImpSoft;
                     }
+                    var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
                     _teamText.text = string.Empty;
+                    if (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && (genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true } || genOpt.VampireChat || Helpers.GetAlivePlayers().Any(x => x.Data.Role is JailorRole)))
+                    {
+                        _teamText.text = "Jailor, Impostor, and Vampire Chat can be seen here.";
+                        _teamText.color = Color.white;
+                    }
                     var ChatScreenContainer = GameObject.Find("ChatScreenContainer");
                     // var FreeChat = GameObject.Find("FreeChatInputField");
                     var Background = ChatScreenContainer.transform.FindChild("Background");
@@ -122,7 +129,6 @@ public static class TeamChatPatches
                         ogChat.transform.Find("Active").gameObject.SetActive(false);
                         ogChat.transform.Find("Selected").gameObject.SetActive(false);
 
-                        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
                         Background.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.1f, 0.1f, 0.8f);
                         //typeBg.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.1f, 0.1f, 0.6f);
                         //typeText.GetComponent<TextMeshPro>().color = Color.white;
