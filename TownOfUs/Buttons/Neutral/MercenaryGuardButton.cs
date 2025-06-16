@@ -7,6 +7,7 @@ using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
 using UnityEngine;
+using MiraAPI.Utilities;
 
 namespace TownOfUs.Buttons.Neutral;
 
@@ -30,6 +31,8 @@ public sealed class MercenaryGuardButton : TownOfUsRoleButton<MercenaryRole, Pla
         }
 
         Target.RpcAddModifier<MercenaryGuardModifier>(PlayerControl.LocalPlayer);
+        var notif1 = Helpers.CreateAndShowNotification($"<b>Once {Target.Data.PlayerName} is interacted with, you will get one gold.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mercenary.LoadAsset());
+        notif1.Text.SetOutlineThickness(0.35f);
     }
 
     public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: x => !x.HasModifier<MercenaryGuardModifier>());

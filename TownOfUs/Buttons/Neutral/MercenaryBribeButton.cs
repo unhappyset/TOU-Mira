@@ -5,6 +5,7 @@ using Reactor.Utilities;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Roles.Neutral;
 using UnityEngine;
+using MiraAPI.Utilities;
 
 namespace TownOfUs.Buttons.Neutral;
 
@@ -27,6 +28,8 @@ public sealed class MercenaryBribeButton : TownOfUsRoleButton<MercenaryRole, Pla
         }
 
         Target.RpcAddModifier<MercenaryBribedModifier>(PlayerControl.LocalPlayer);
+        var notif1 = Helpers.CreateAndShowNotification($"<b>If {Target.Data.PlayerName} wins, you will win as well.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mercenary.LoadAsset());
+        notif1.Text.SetOutlineThickness(0.35f);
 
         Role.Gold -= MercenaryRole.BrideCost;
 
