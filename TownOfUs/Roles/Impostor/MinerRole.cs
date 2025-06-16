@@ -48,6 +48,7 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
             TouImpAssets.MineSprite)
     ];
 
+    [HideFromIl2Cpp]
     public List<Vent> Vents { get; set; } = [];
 
     [HideFromIl2Cpp]

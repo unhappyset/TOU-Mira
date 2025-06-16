@@ -12,6 +12,7 @@ public static class ImitatorEvents
     public static void MeetingHandler(StartMeetingEvent @event)
     {
         var imitators = ModifierUtils.GetActiveModifiers<ImitatorCacheModifier>();
+        if (!imitators.Any()) return;
         foreach (var mod in imitators)
         {
             // This makes converted imitators not be imitators anymore
@@ -24,6 +25,7 @@ public static class ImitatorEvents
     {
         if (@event.TriggeredByIntro) return;
         var imitators = ModifierUtils.GetActiveModifiers<ImitatorCacheModifier>();
+        if (!imitators.Any()) return;
         foreach (var mod in imitators)
         {
             if (mod.Player.AmOwner) mod.UpdateRole();

@@ -42,7 +42,9 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     };
     public int Priority { get; set; } = 5;
 
+    [HideFromIl2Cpp]
     public List<PlayerControl> Targets { get; set; } = [];
+    [HideFromIl2Cpp]
     public List<RoleBehaviour> TargetRoles { get; set; } = [];
     public bool TargetsDead { get; set; }
 
@@ -55,7 +57,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         if (Targets.Count == 0)
         {
             Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().ToList();
-            TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select(x => x.TargetRole).OrderBy(x => x.NiceName).ToList();
+            TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select([HideFromIl2Cpp] (x) => x.TargetRole).OrderBy([HideFromIl2Cpp] (x) => x.NiceName).ToList();
         }
         if (TutorialManager.InstanceExists && Player.AmOwner && Player.IsHost() && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
         {

@@ -82,6 +82,7 @@ public abstract class TownOfUsButton : CustomActionButton
 
     public override bool CanUse()
     {
+        if (PlayerControl.LocalPlayer == null) return false;
         if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>()) return false;
         return base.CanUse();
     }

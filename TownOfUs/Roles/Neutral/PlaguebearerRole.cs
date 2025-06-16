@@ -86,13 +86,13 @@ public sealed class PlaguebearerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
     {
         if (Player == null || Player.Data.Role is not PlaguebearerRole || Player.HasDied()) return;
 
-        var allInfected = ModifierUtils.GetPlayersWithModifier<PlaguebearerInfectedModifier>(x => x.PlagueBearerId == Player.PlayerId && !x.Player.HasDied());
+        var allInfected = ModifierUtils.GetPlayersWithModifier<PlaguebearerInfectedModifier>([HideFromIl2Cpp] (x) => x.PlagueBearerId == Player.PlayerId && !x.Player.HasDied());
 
         if (allInfected.Count() >= Helpers.GetAlivePlayers().Count - 1 && (!MeetingHud.Instance || Helpers.GetAlivePlayers().Count > 2))
         {
-            var players = ModifierUtils.GetPlayersWithModifier<PlaguebearerInfectedModifier>(x => x.PlagueBearerId == Player.PlayerId);
+            var players = ModifierUtils.GetPlayersWithModifier<PlaguebearerInfectedModifier>([HideFromIl2Cpp] (x) => x.PlagueBearerId == Player.PlayerId);
 
-            players.Do(x => x.RemoveModifier<PlaguebearerInfectedModifier>(x => x.PlagueBearerId == Player.PlayerId));
+            players.Do(x => x.RemoveModifier<PlaguebearerInfectedModifier>([HideFromIl2Cpp] (x) => x.PlagueBearerId == Player.PlayerId));
 
             Player.ChangeRole(RoleId.Get<PestilenceRole>());
 

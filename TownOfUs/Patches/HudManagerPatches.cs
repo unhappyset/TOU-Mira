@@ -63,8 +63,11 @@ public static class HudManagerPatches
             arrange.CellSize *= new Vector2(scaleFactor, scaleFactor);
             arrange.gameObject.SetActive(wasActive);
         }
-        HudManager.Instance.SetHudActive(false);
-        HudManager.Instance.SetHudActive(true);
+        if (HudManager.Instance && PlayerControl.LocalPlayer && PlayerControl.LocalPlayer.Data.Role)
+        {
+            HudManager.Instance.SetHudActive(false);
+            HudManager.Instance.SetHudActive(true);
+        }
     }
     public static void Zoom()
     {
@@ -147,13 +150,6 @@ public static class HudManagerPatches
         {
             ScrollZoom(true);
         }
-    }
-
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
-    [HarmonyPostfix]
-    public static void HudManagerStartPatch(HudManager __instance)
-    {
-        ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
     }
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     [HarmonyPostfix]
@@ -254,6 +250,12 @@ public static class HudManagerPatches
         UpdateCamouflageComms(__instance);
         UpdateRoleNameText(__instance);
         UpdateGhostRoles(__instance);
+    }
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
+    [HarmonyPostfix]
+    public static void HudManagerStartPatch(HudManager __instance)
+    {
+        ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
     }
 
     public static void UpdateTeamChat(HudManager instance)

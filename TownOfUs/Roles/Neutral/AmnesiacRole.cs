@@ -48,7 +48,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         {
             var mods = Player.GetModifiers<AmnesiacArrowModifier>();
 
-            mods.Do(x => Player.RemoveModifier(x.UniqueId));
+            mods.Do([HideFromIl2Cpp] (x) => Player.RemoveModifier(x.UniqueId));
         }
     }
 

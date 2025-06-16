@@ -21,6 +21,7 @@ public static class LogicGameFlowPatches
     [HarmonyPrefix]
     private static bool RecomputeTasksPatch(GameData __instance)
     {
+        if (__instance == null) return false;
         __instance.TotalTasks = 0;
         __instance.CompletedTasks = 0;
         for (var i = 0; i < __instance.AllPlayers.Count; i++)
