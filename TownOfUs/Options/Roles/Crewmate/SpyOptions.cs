@@ -14,7 +14,7 @@ public sealed class SpyOptions : AbstractOptionGroup<SpyRole>
     public AdminDeadPlayers WhoSeesDead { get; set; } = AdminDeadPlayers.Nobody;
 
     [ModdedEnumOption("Allow Portable Admin Table For", typeof(PortableAdmin), ["Role", "Modifier", "Role & Modifier", "Disabled"])]
-    public PortableAdmin HasPortableAdmin { get; set; } = PortableAdmin.Role;
+    public PortableAdmin HasPortableAdmin { get; set; } = PortableAdmin.Both;
 
     public ModdedToggleOption MoveWithMenu { get; } = new ModdedToggleOption("Move While Using Portable Admin", true)
     {
