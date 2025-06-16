@@ -48,6 +48,7 @@ public static class DetectiveEvents
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         if (@event.Source.IsRole<SoulCollectorRole>()) return;
+        if (MeetingHud.Instance) return;
 
         var victim = @event.Target;
         var bodyPos = victim.transform.position;
