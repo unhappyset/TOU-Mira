@@ -52,38 +52,16 @@ public static class HudManagerPatches
         
         foreach (ActionButton button in HudManager.Instance.GetComponentsInChildren<ActionButton>(true))
         {
-            // button.gameObject.SetActive(!button.isActiveAndEnabled);
+            button.gameObject.SetActive(!button.isActiveAndEnabled);
             button.gameObject.transform.localScale *= scaleFactor;
-            // button.gameObject.SetActive(!button.isActiveAndEnabled);
+            button.gameObject.SetActive(!button.isActiveAndEnabled);
         }
         foreach (GridArrange arrange in HudManager.Instance.transform.FindChild("Buttons").GetComponentsInChildren<GridArrange>(true))
         {
             arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
-            arrange.CellSize *= new Vector2(scaleFactor, scaleFactor);
+            arrange.CellSize = new Vector2(scaleFactor, scaleFactor);
             arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
             arrange.ArrangeChilds();
-        }
-        if (HudManager.Instance && PlayerControl.LocalPlayer && PlayerControl.LocalPlayer.Data.Role)
-        {
-            HudManager.Instance.PetButton.gameObject.SetActive(false);
-            HudManager.Instance.UseButton.gameObject.SetActive(false);
-            HudManager.Instance.ReportButton.gameObject.SetActive(!HudManager.Instance.ReportButton.isActiveAndEnabled);
-            HudManager.Instance.ReportButton.gameObject.SetActive(!HudManager.Instance.ReportButton.isActiveAndEnabled);
-            HudManager.Instance.SabotageButton.gameObject.SetActive(!HudManager.Instance.SabotageButton.isActiveAndEnabled);
-            HudManager.Instance.SabotageButton.gameObject.SetActive(!HudManager.Instance.SabotageButton.isActiveAndEnabled);
-            HudManager.Instance.KillButton.gameObject.SetActive(!HudManager.Instance.KillButton.isActiveAndEnabled);
-            HudManager.Instance.KillButton.gameObject.SetActive(!HudManager.Instance.KillButton.isActiveAndEnabled);
-            HudManager.Instance.AbilityButton.gameObject.SetActive(!HudManager.Instance.AbilityButton.isActiveAndEnabled);
-            HudManager.Instance.AbilityButton.gameObject.SetActive(!HudManager.Instance.AbilityButton.isActiveAndEnabled);
-            HudManager.Instance.ImpostorVentButton.gameObject.SetActive(!HudManager.Instance.ImpostorVentButton.isActiveAndEnabled);
-            HudManager.Instance.ImpostorVentButton.gameObject.SetActive(!HudManager.Instance.ImpostorVentButton.isActiveAndEnabled);
-            // HudManager.Instance.SetHudActive(!HudManager.Instance.isActiveAndEnabled);
-            // HudManager.Instance.SetHudActive(!HudManager.Instance.isActiveAndEnabled);
-            foreach (var button in CustomButtonManager.Buttons)
-            {
-                button.Button!.gameObject.SetActive(button.Button!.isActiveAndEnabled);
-                button.Button!.gameObject.SetActive(button.Button!.isActiveAndEnabled);
-            }
         }
     }
     public static void Zoom()
