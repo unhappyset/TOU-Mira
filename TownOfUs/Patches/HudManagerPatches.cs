@@ -542,8 +542,8 @@ public static class HudManagerPatches
         }
         else
         {
-            var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
-            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId);
+            var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
 
             foreach (var player in PlayerControl.AllPlayerControls)
             {
@@ -570,7 +570,7 @@ public static class HudManagerPatches
                 if ((player.HasModifier<ExecutionerTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ExecutionerRole>())
                     || (player.HasModifier<ExecutionerTargetModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
                     playerName += "<color=#643B1F> X</color>";
-                    
+
                 if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole) && !body && !fakePlayer?.body)
                     playerName += "<color=#D94291> $</color>";
 
@@ -693,7 +693,7 @@ public static class HudManagerPatches
                 if (!string.IsNullOrEmpty(roleName))
                 {
                     if (TownOfUsPlugin.ColorPlayerName.Value) playerName = $"{roleName}\n{color.ToTextColor()}{playerName}</color>";
-                    else  playerName = $"{roleName}\n{playerName}";
+                    else playerName = $"{roleName}\n{playerName}";
                 }
 
                 player.cosmetics.nameText.text = playerName;
