@@ -4,6 +4,7 @@ using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using TMPro;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Options;
@@ -91,6 +92,18 @@ public static class ModifierIntroPatch
     {
         public static void Postfix(IntroCutscene __instance)
         {
+			int adjustedNumImpostors = Helpers.GetAlivePlayers().Count(x => x.IsImpostor());
+			if (adjustedNumImpostors == 1)
+			{
+				__instance.ImpostorText.text = TranslationController.Instance.GetString(StringNames.NumImpostorsS, Array.Empty<Il2CppSystem.Object>());
+			}
+			else
+			{
+                __instance.ImpostorText.text = TranslationController.Instance.GetString(StringNames.NumImpostorsP, adjustedNumImpostors);
+			}
+            //__instance.ImpostorText.text = __instance.ImpostorText.text.GetAdjustedString(adjustedNumImpostors);
+			__instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
+			__instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
             ModifierText = UnityEngine.Object.Instantiate(__instance.RoleText, __instance.RoleText.transform.parent, false);
         }
     }
@@ -121,8 +134,6 @@ public static class ModifierIntroPatch
                 }
                 __instance.__4__this.RoleBlurbText.text = custom.RoleDescription;
             }
-            
-            if (PlayerControl.LocalPlayer.Data.Role.IsCrewmate()) RunImpChecks(__instance);
 
             if (ModifierText == null) return;
 
@@ -152,8 +163,6 @@ public static class ModifierIntroPatch
                 __instance.__4__this.RoleBlurbText.text = custom.RoleDescription;
             }
 
-            if (PlayerControl.LocalPlayer.Data.Role.IsCrewmate()) RunImpChecks(__instance);
-
             if (ModifierText == null) return;
 
             RunModChecks();
@@ -177,8 +186,6 @@ public static class ModifierIntroPatch
                 __instance.__4__this.RoleBlurbText.text = custom.RoleDescription;
             }
 
-            if (PlayerControl.LocalPlayer.Data.Role.IsCrewmate()) RunImpChecks(__instance);
-
             if (ModifierText == null) return;
 
             RunModChecks();
@@ -189,7 +196,7 @@ public static class ModifierIntroPatch
             ModifierText.color.SetAlpha(0.8f);
         }
     }
-    public static void RunImpChecks(IntroCutscene._ShowRole_d__41 __instance)
+    /* public static string GetAdjustedString(this string text, int impCount)
     {
         var list = OptionGroupSingleton<RoleOptions>.Instance;
         var players = GameData.Instance.PlayerCount;
@@ -229,9 +236,10 @@ public static class ModifierIntroPatch
             }
             if (buckets.Any(x => x is RoleListOption.Any)) isAny = true;
 
-            if (isAny) __instance.__4__this.ImpostorText.text = "There are an <color=#FF0000FF>Unknown Number of Impostors</color> among us";
+            if (isAny) text = text.Replace($"] {impCount}", "] ???");
         }
-    }
+        return text;
+    } */
     
     public static void RunModChecks()
     {
