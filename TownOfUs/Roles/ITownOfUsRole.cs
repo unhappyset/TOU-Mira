@@ -65,6 +65,38 @@ public interface ITownOfUsRole : ICustomRole
 
         return stringB;
     }
+    public static StringBuilder SetDeadTabText(ICustomRole role)
+    {
+        var alignment = role is ITownOfUsRole touRole
+            ? touRole.RoleAlignment.ToDisplayString()
+            : "Custom";
+
+        if (alignment.Contains("Crewmate"))
+        {
+            alignment = alignment.Replace("Crewmate", "<color=#68ACF4>Crewmate");
+        }
+        else if (alignment.Contains("Impostor"))
+        {
+            alignment = alignment.Replace("Impostor", "<color=#D63F42>Impostor");
+        }
+        else if (alignment.Contains("Neutral"))
+        {
+            alignment = alignment.Replace("Neutral", "<color=#8A8A8A>Neutral");
+        }
+
+        var prefix = " a";
+        if (role.RoleName.StartsWithVowel()) prefix = " an";
+        if (role.Configuration.MaxRoleCount is 0 or 1) prefix = " the";
+        if (role.RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase)) prefix = "";
+
+        var stringB = new StringBuilder();
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"{role.RoleColor.ToTextColor()}You were{prefix}<b> {role.RoleName}.</b></color>");
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>Alignment: <b>{alignment}</color></b></size>");
+        stringB.Append("<size=70%>");
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"{role.RoleLongDescription}");
+
+        return stringB;
+    }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()

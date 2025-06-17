@@ -4,23 +4,36 @@ using MiraAPI.Roles;
 using Reactor.Utilities;
 using TownOfUs.Modules;
 using UnityEngine;
+using Il2CppInterop.Runtime.Attributes;
 
 namespace TownOfUs.Roles.Neutral;
 
 public class NeutralGhostRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownOfUsRole
 {
-    public virtual string RoleName => "Neutral Ghost";
-    public virtual string RoleDescription => string.Empty;
-    public virtual string RoleLongDescription => string.Empty;
-    public virtual Color RoleColor => TownOfUsColors.Neutral;
+    public virtual string RoleName => (Player != null) ? Player.GetRoleWhenAlive().NiceName : "Neutral Ghost";
+    public virtual string RoleDescription => (Player != null) ? Player.GetRoleWhenAlive().Blurb : string.Empty;
+    public virtual string RoleLongDescription => (Player != null) ? Player.GetRoleWhenAlive().BlurbLong : string.Empty;
+    public virtual Color RoleColor => (Player != null) ? Player.GetRoleWhenAlive().TeamColor : TownOfUsColors.Neutral;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public virtual RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
     public virtual CustomRoleConfiguration Configuration => new(this)
     {
         TasksCountForProgress = false,
         HideSettings = true,
-        RoleHintType = RoleHintType.None,
+        RoleHintType = (Player != null && Player.GetRoleWhenAlive() is ICustomRole custom) ? custom.Configuration.RoleHintType : RoleHintType.None,
     };
+
+    [HideFromIl2Cpp]
+    public System.Text.StringBuilder SetTabText()
+    {
+        var stringB = new System.Text.StringBuilder();
+        if (Player.GetRoleWhenAlive() is ITownOfUsRole touRole)
+        {
+            stringB = ITownOfUsRole.SetDeadTabText(touRole);
+        }
+        stringB.Append($"<b>You are dead.</b>");
+        return stringB;
+    }
 
     public override bool IsDead => true;
     public override bool IsAffectedByComms => false;
