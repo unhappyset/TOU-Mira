@@ -57,11 +57,10 @@ namespace TownOfUs.Patches
             }
             
             var role = target.Data.Role;
-            if (target.Data.IsDead && !TutorialManager.InstanceExists && role is not PhantomTouRole or GuardianAngelRole or HaunterRole)
+            if (target.Data.IsDead && role is not PhantomTouRole or GuardianAngelRole or HaunterRole)
             {
                 role = target.GetRoleWhenAlive();
             }
-            if (role == null) return;
             var name = role.NiceName;
 
             var rColor = role is ICustomRole custom ? custom.RoleColor : role.TeamColor;

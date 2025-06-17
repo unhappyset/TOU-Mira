@@ -27,7 +27,6 @@ using System.Text;
 using TownOfUs.Patches.Options;
 using TownOfUs.Roles.Impostor;
 using Reactor.Utilities.Extensions;
-using MiraAPI.Hud;
 
 namespace TownOfUs.Patches;
 

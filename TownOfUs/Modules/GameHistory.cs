@@ -175,6 +175,11 @@ public static class GameHistory
         {
             return role;
         }
+        var role2 = player.Data.RoleWhenAlive;
+        if (role2.HasValue)
+        {
+            return RoleManager.Instance.GetRole(role2.Value);
+        }
 
         return player.Data.Role;
     }
