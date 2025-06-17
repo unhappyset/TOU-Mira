@@ -5,6 +5,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
@@ -183,7 +184,7 @@ public static class EndGamePatches
         GameObject roleSummary2 = Object.Instantiate(winText.gameObject);
         roleSummary2.transform.position = new Vector3(exitBtn.transform.position.x + 0.1f, position.y - 0.1f, -14f);
         roleSummary2.transform.localScale = new Vector3(1f, 1f, 1f);
-        
+
         winText.transform.position += Vector3.down * 0.8f;
         winText.text = $"\n{winText.text}";
         winText.transform.localScale = new Vector3(1.1f, 1.1f, 1f);
@@ -258,29 +259,30 @@ public static class EndGamePatches
             tmp2.TargetText = StringNames.None;
             tmp2.ResetText();
         }
-            switch (TownOfUsPlugin.GameSummaryMode.Value)
-            {
-                default:
-                    // No summary
-                    roleSummary.gameObject.SetActive(false);
-                    roleSummary2.gameObject.SetActive(false);
-                    roleSummaryLeft.gameObject.SetActive(false);
-                    TownOfUsPlugin.GameSummaryMode.Value = 0;
-                    break;
-                case 1:
-                    // Split summary
-                    roleSummary.gameObject.SetActive(true);
-                    roleSummary2.gameObject.SetActive(true);
-                    roleSummaryLeft.gameObject.SetActive(false);
-                    break;
-                case 2:
-                    // Left side summary
-                    roleSummary.gameObject.SetActive(false);
-                    roleSummary2.gameObject.SetActive(false);
-                    roleSummaryLeft.gameObject.SetActive(true);
-                    break;
-            }
-        var toggleAction = new Action(() => {
+        switch (TownOfUsPlugin.GameSummaryMode.Value)
+        {
+            default:
+                // No summary
+                roleSummary.gameObject.SetActive(false);
+                roleSummary2.gameObject.SetActive(false);
+                roleSummaryLeft.gameObject.SetActive(false);
+                TownOfUsPlugin.GameSummaryMode.Value = 0;
+                break;
+            case 1:
+                // Split summary
+                roleSummary.gameObject.SetActive(true);
+                roleSummary2.gameObject.SetActive(true);
+                roleSummaryLeft.gameObject.SetActive(false);
+                break;
+            case 2:
+                // Left side summary
+                roleSummary.gameObject.SetActive(false);
+                roleSummary2.gameObject.SetActive(false);
+                roleSummaryLeft.gameObject.SetActive(true);
+                break;
+        }
+        var toggleAction = new Action(() =>
+        {
             switch (TownOfUsPlugin.GameSummaryMode.Value)
             {
                 case 0:
@@ -305,13 +307,46 @@ public static class EndGamePatches
                     TownOfUsPlugin.GameSummaryMode.Value = 0;
                     break;
             }
-            });
-        
+        });
+
         var passiveButton = GameSummaryButton.GetComponent<PassiveButton>();
         passiveButton.OnClick = new();
         passiveButton.OnClick.AddListener((UnityAction)toggleAction);
 
         AfterEndGameSetup(instance);
+        HandlePlayerNames();
+    }
+    public static void HandlePlayerNames()
+    {
+        PoolablePlayer[] array = Object.FindObjectsOfType<PoolablePlayer>();
+        var winnerArray = EndGameResult.CachedWinners.ToArray();
+        if (array.Length > 0)
+        {
+            foreach (var player in array)
+            {
+                var realPlayer = winnerArray.FirstOrDefault(x => x.PlayerName == player.cosmetics.nameText.text);
+                if (realPlayer == null) realPlayer = winnerArray.FirstOrDefault(x => x.Outfit.HatId == player.cosmetics.hat.Hat.ProdId
+                    && x.Outfit.ColorId == player.cosmetics.ColorId /*&& HatManager.Instance.GetPetById(x.Outfit.PetId) == player.cosmetics.currentPet */);
+                if (realPlayer == null) continue;
+                var roleType = realPlayer.RoleWhenAlive;
+                var role = RoleManager.Instance.GetRole(roleType);
+                var nameTxt = player.cosmetics.nameText;
+                nameTxt.gameObject.SetActive(true);
+                player.SetName($"\n<size=85%>{realPlayer.PlayerName}</size>\n<size=65%><color=#{role.TeamColor.ToHtmlStringRGBA()}>{role.NiceName}</size>", new Vector3(1.1619f, 1.1619f, 1f), Color.white, -15f);
+                player.SetNamePosition(new Vector3(0f, -1.31f, -0.5f));
+                nameTxt.fontSize = 1.9f;
+                nameTxt.fontSizeMax = 2f;
+                nameTxt.fontSizeMin = 0.5f;
+                winnerArray.ToList().Remove(realPlayer);
+            }
+        }
+        //{
+        //    array[0].SetFlipX(true);
+
+            //    array[0].gameObject.transform.position -= new Vector3(1.5f, 0f, 0f);
+            //    array[0].cosmetics.skin.transform.localScale = new Vector3(-1, 1, 1);
+            //    array[0].cosmetics.nameText.color = new Color(1f, 0.4f, 0.8f, 1f);
+            //}
     }
 
     public static void AfterEndGameSetup(EndGameManager instance)

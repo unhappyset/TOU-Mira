@@ -178,4 +178,9 @@ public static class GameHistory
 
         return player.Data.Role;
     }
+    public static RoleBehaviour GetViewableRole(this PlayerControl player)
+    {
+        var role = RoleHistory.LastOrDefault(x => x.Key == player.PlayerId);
+        return role.Value != null ? role.Value : RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Crewmate)!;
+    }
 }
