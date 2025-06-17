@@ -7,6 +7,7 @@ using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
 using UnityEngine;
+using MiraAPI.Utilities;
 
 namespace TownOfUs.Buttons.Crewmate;
 
@@ -27,7 +28,9 @@ public sealed class HunterStalkButton : TownOfUsRoleButton<HunterRole, PlayerCon
         {
             Logger<TownOfUsPlugin>.Error("Stalk: Target is null");
             return;
-        }
+        }  
+        var notif1 = Helpers.CreateAndShowNotification($"<b>If {Target.Data.PlayerName} uses an ability, you will be able to kill them at any time in the round.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Hunter.LoadAsset());
+        notif1.Text.SetOutlineThickness(0.35f);
 
         Target.RpcAddModifier<HunterStalkedModifier>(PlayerControl.LocalPlayer);
         OverrideName("Stalking");

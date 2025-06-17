@@ -5,6 +5,7 @@ using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Roles.Crewmate;
 using UnityEngine;
+using MiraAPI.Utilities;
 
 namespace TownOfUs.Buttons.Crewmate;
 
@@ -43,7 +44,9 @@ public sealed class CampButton : TownOfUsRoleButton<DeputyRole, PlayerControl>
             player.RpcRemoveModifier<DeputyCampedModifier>();
         }
 
-        Target?.RpcAddModifier<DeputyCampedModifier>(PlayerControl.LocalPlayer);
-        Usable = false;
+        Target.RpcAddModifier<DeputyCampedModifier>(PlayerControl.LocalPlayer);
+        Usable = false;  
+        var notif1 = Helpers.CreateAndShowNotification($"<b>Wait for {Target.Data.PlayerName}'s death so you can avenge them in the meeting.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Deputy.LoadAsset());
+        notif1.Text.SetOutlineThickness(0.35f);
     }
 }
