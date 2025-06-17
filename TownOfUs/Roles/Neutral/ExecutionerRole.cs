@@ -51,6 +51,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
     {
         return ITownOfUsRole.SetNewTabText(this);
     }
+    public bool MetWinCon => TargetVoted;
 
     public string GetAdvancedDescription()
     {

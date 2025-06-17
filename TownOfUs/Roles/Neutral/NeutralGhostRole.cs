@@ -30,8 +30,13 @@ public class NeutralGhostRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownOfUsR
         if (Player.GetRoleWhenAlive() is ITownOfUsRole touRole)
         {
             stringB = ITownOfUsRole.SetDeadTabText(touRole);
+            if (touRole.MetWinCon) stringB.Append($"<b>You have already won.</b>");
+            else stringB.Append($"<b>You are dead.</b>");
         }
-        stringB.Append($"<b>You are dead.</b>");
+        else
+        {
+            stringB.Append($"<b>You are dead.</b>");
+        }
         return stringB;
     }
 

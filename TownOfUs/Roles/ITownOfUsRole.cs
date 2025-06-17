@@ -12,6 +12,7 @@ public interface ITownOfUsRole : ICustomRole
     RoleAlignment RoleAlignment { get; }
 
     bool HasImpostorVision => false;
+    public virtual bool MetWinCon => false;
     public virtual string YouAreText
     {
         get

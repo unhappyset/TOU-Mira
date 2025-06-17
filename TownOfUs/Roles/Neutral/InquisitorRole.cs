@@ -47,6 +47,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     [HideFromIl2Cpp]
     public List<RoleBehaviour> TargetRoles { get; set; } = [];
     public bool TargetsDead { get; set; }
+    public bool MetWinCon => TargetsDead;
 
     public override void Initialize(PlayerControl player)
     {
