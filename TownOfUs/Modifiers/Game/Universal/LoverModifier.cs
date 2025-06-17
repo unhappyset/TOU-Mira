@@ -147,7 +147,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
             Logger<TownOfUsPlugin>.Error("Invalid Lover");
             return;
         }
-        if (MeetingHud.Instance) isHidden = true;
+        if (MeetingHud.Instance || ExileController.Instance) isHidden = true;
 
         if (!OtherLover.HasModifier<InvulnerabilityModifier>())
         {

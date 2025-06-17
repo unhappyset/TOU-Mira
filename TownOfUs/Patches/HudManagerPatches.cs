@@ -27,6 +27,7 @@ using System.Text;
 using TownOfUs.Patches.Options;
 using TownOfUs.Roles.Impostor;
 using Reactor.Utilities.Extensions;
+using MiraAPI.Hud;
 
 namespace TownOfUs.Patches;
 
@@ -44,30 +45,45 @@ public static class HudManagerPatches
         {
             if (aspect.gameObject.transform.parent.name == "TopRight") continue;
             if (aspect.gameObject.transform.parent.transform.parent.name == "TopRight") continue;
-            var wasActive = aspect.isActiveAndEnabled;
-            aspect.gameObject.SetActive(false);
+            aspect.gameObject.SetActive(!aspect.isActiveAndEnabled);
             aspect.DistanceFromEdge *= new Vector2(scaleFactor, scaleFactor);
-            aspect.gameObject.SetActive(wasActive);
+            aspect.gameObject.SetActive(!aspect.isActiveAndEnabled);
         }
         
         foreach (ActionButton button in HudManager.Instance.GetComponentsInChildren<ActionButton>(true))
         {
-            var wasActive = button.isActiveAndEnabled;
-            button.gameObject.SetActive(false);
+            // button.gameObject.SetActive(!button.isActiveAndEnabled);
             button.gameObject.transform.localScale *= scaleFactor;
-            button.gameObject.SetActive(wasActive);
+            // button.gameObject.SetActive(!button.isActiveAndEnabled);
         }
         foreach (GridArrange arrange in HudManager.Instance.transform.FindChild("Buttons").GetComponentsInChildren<GridArrange>(true))
         {
-            var wasActive = arrange.isActiveAndEnabled;
-            arrange.gameObject.SetActive(false);
+            arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
             arrange.CellSize *= new Vector2(scaleFactor, scaleFactor);
-            arrange.gameObject.SetActive(wasActive);
+            arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
+            arrange.ArrangeChilds();
         }
         if (HudManager.Instance && PlayerControl.LocalPlayer && PlayerControl.LocalPlayer.Data.Role)
         {
-            HudManager.Instance.SetHudActive(false);
-            HudManager.Instance.SetHudActive(true);
+            HudManager.Instance.PetButton.gameObject.SetActive(false);
+            HudManager.Instance.UseButton.gameObject.SetActive(false);
+            HudManager.Instance.ReportButton.gameObject.SetActive(!HudManager.Instance.ReportButton.isActiveAndEnabled);
+            HudManager.Instance.ReportButton.gameObject.SetActive(!HudManager.Instance.ReportButton.isActiveAndEnabled);
+            HudManager.Instance.SabotageButton.gameObject.SetActive(!HudManager.Instance.SabotageButton.isActiveAndEnabled);
+            HudManager.Instance.SabotageButton.gameObject.SetActive(!HudManager.Instance.SabotageButton.isActiveAndEnabled);
+            HudManager.Instance.KillButton.gameObject.SetActive(!HudManager.Instance.KillButton.isActiveAndEnabled);
+            HudManager.Instance.KillButton.gameObject.SetActive(!HudManager.Instance.KillButton.isActiveAndEnabled);
+            HudManager.Instance.AbilityButton.gameObject.SetActive(!HudManager.Instance.AbilityButton.isActiveAndEnabled);
+            HudManager.Instance.AbilityButton.gameObject.SetActive(!HudManager.Instance.AbilityButton.isActiveAndEnabled);
+            HudManager.Instance.ImpostorVentButton.gameObject.SetActive(!HudManager.Instance.ImpostorVentButton.isActiveAndEnabled);
+            HudManager.Instance.ImpostorVentButton.gameObject.SetActive(!HudManager.Instance.ImpostorVentButton.isActiveAndEnabled);
+            // HudManager.Instance.SetHudActive(!HudManager.Instance.isActiveAndEnabled);
+            // HudManager.Instance.SetHudActive(!HudManager.Instance.isActiveAndEnabled);
+            foreach (var button in CustomButtonManager.Buttons)
+            {
+                button.Button!.gameObject.SetActive(button.Button!.isActiveAndEnabled);
+                button.Button!.gameObject.SetActive(button.Button!.isActiveAndEnabled);
+            }
         }
     }
     public static void Zoom()

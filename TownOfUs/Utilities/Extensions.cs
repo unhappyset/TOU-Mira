@@ -410,7 +410,7 @@ public static class Extensions
         {
             HudManager.Instance.SetHudActive(player, roleBehaviour, true);
 
-            if (MeetingHud.Instance)
+            if (MeetingHud.Instance || ExileController.Instance)
             {
                 HudManager.Instance.SetHudActive(player, roleBehaviour, false);
             }
