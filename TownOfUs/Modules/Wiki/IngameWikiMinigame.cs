@@ -12,8 +12,6 @@ using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Roles;
-using TownOfUs.Roles.Crewmate;
-using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
@@ -226,11 +224,12 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         }
         else
         {
-            var comparer = new RoleComparer((ushort)PlayerControl.LocalPlayer.Data.Role.Role);
-            if (PlayerControl.LocalPlayer.Data.IsDead && PlayerControl.LocalPlayer.Data.Role is not PhantomTouRole or HaunterRole)
+            List<ushort> roleList = [(ushort)PlayerControl.LocalPlayer.Data.Role.Role];
+            if (PlayerControl.LocalPlayer.Data.IsDead && !roleList.Contains((ushort)PlayerControl.LocalPlayer.GetRoleWhenAlive().Role))
             {
-                comparer = new RoleComparer((ushort)PlayerControl.LocalPlayer.GetRoleWhenAlive().Role);
+                roleList.Add((ushort)PlayerControl.LocalPlayer.GetRoleWhenAlive().Role);
             }
+            var comparer = new RoleComparer(roleList);
             var roles = _pluginInfo.Roles.Values.OrderBy(x => x, comparer).OfType<ITownOfUsRole>();
 
             foreach (var role in roles)
