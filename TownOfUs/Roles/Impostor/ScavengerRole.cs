@@ -168,7 +168,7 @@ public sealed class ScavengerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     public string GetAdvancedDescription()
     {
         return $"The Scavenger is an Impostor Killing role that gets new targets after every kill and when the round starts. "
-            + "If they kill their target, they get a reduced kill cooldown, but if they don't, their cooldown is increased significantly. "
+            + "If they kill their target, they get a reduced kill cooldown, but if they don't, their cooldown is increased significantly."
             + MiscUtils.AppendOptionsText(GetType());
     }
 
