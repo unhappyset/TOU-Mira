@@ -85,6 +85,11 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
         {
             return;
         }
+        
+        if (Target.HasModifier<BaseShieldModifier>())
+        {
+            return;
+        }
 
         var alignment = RoleAlignment.CrewmateSupport;
         var options = OptionGroupSingleton<SheriffOptions>.Instance;

@@ -24,6 +24,7 @@ public static class DetectiveEvents
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (@event.TriggeredByIntro) return;
+        if (CrimeSceneComponent._crimeScenes.Count <= 0) return;
 
         foreach (var scene in CrimeSceneComponent._crimeScenes)
         {

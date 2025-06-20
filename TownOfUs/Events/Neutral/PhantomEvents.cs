@@ -19,6 +19,7 @@ public static class PhantomEvents
 
         if (phantom.CompletedAllTasks && OptionGroupSingleton<PhantomOptions>.Instance.PhantomWin is not PhantomWinOptions.EndsGame)
         {
+            phantom.Clicked();
             if (phantom.Player.AmOwner)
             {
                 var notif1 = Helpers.CreateAndShowNotification(
@@ -26,6 +27,7 @@ public static class PhantomEvents
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                Patches.HudManagerPatches.ZoomButton.SetActive(true);
             }
             else
             {

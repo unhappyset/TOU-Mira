@@ -476,9 +476,9 @@ public static class Extensions
         color.a = 0.07f + velocity / player.MyPhysics.GhostSpeed * 0.13f;
         color.a = Mathf.Lerp(color.a, 0, distPercent);
 
-        if (player.GetAppearanceType() != TownOfUsAppearances.PlayerNameOnly)
+        if (player.GetAppearanceType() != TownOfUsAppearances.PlayerOnly)
         {
-            var fade = new VisualAppearance(player.GetDefaultModifiedAppearance(), TownOfUsAppearances.PlayerNameOnly)
+            var fade = new VisualAppearance(player.GetDefaultModifiedAppearance(), TownOfUsAppearances.PlayerOnly)
             {
                 HatId = string.Empty,
                 SkinId = string.Empty,
@@ -488,6 +488,7 @@ public static class Extensions
                 RendererColor = color,
                 NameColor = Color.clear,
                 ColorBlindTextColor = Color.clear,
+                NameVisible = false,
             };
 
             player?.RawSetAppearance(fade);
