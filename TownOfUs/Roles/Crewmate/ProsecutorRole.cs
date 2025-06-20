@@ -62,7 +62,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
     public StringBuilder SetTabText()
     {
         var text = ITownOfUsRole.SetNewTabText(this);
-        if (PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>())
+        if (PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
         {
             text.AppendLine(CultureInfo.InvariantCulture, $"<b>You may prosecute crew.</b>");
         }

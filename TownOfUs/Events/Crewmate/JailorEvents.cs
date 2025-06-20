@@ -45,7 +45,7 @@ public static class JailorEvents
 
         if (GameHistory.PlayerStats.TryGetValue(source.PlayerId, out var stats))
         {
-            if (!target.IsCrewmate() || target.HasModifier<AllianceGameModifier>() || source.HasModifier<AllianceGameModifier>())
+            if (!target.IsCrewmate() || (target.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
             {
                 stats.CorrectKills += 1;
             }
