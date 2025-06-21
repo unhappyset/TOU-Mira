@@ -80,7 +80,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         {
             Logger<TownOfUsPlugin>.Error($"AltruistRole.ClearArrows BadGuys Only");
 
-            foreach (var playerWithArrow in ModifierUtils.GetPlayersWithModifier<AltruistArrowModifier>(x => x.Owner == PlayerControl.LocalPlayer))
+            foreach (var playerWithArrow in ModifierUtils.GetPlayersWithModifier<AltruistArrowModifier>())
             {
                 playerWithArrow.RemoveModifier<AltruistArrowModifier>();
             }
