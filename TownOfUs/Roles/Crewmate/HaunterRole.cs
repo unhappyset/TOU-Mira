@@ -67,6 +67,11 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             }
         }
         MiscUtils.AdjustGhostTasks(player);
+        
+        var completedTasks = Player.myTasks.ToArray().Count(t => t.IsComplete);
+        var tasksRemaining = Player.myTasks.Count - completedTasks;
+
+        CanBeClicked = tasksRemaining <= (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeClickable;
     }
     private static IEnumerator SetTutorialCollider(PlayerControl player)
     {
