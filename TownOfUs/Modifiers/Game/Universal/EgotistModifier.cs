@@ -34,7 +34,7 @@ public sealed class EgotistModifier : AllianceGameModifier, IWikiDiscoverable
 
     public string GetAdvancedDescription()
     {
-        return $"The Egotist is a Crewmate Alliance modifier (signified by <color=#669966>#</color>). As the Egotist, you can only win if Crewmates lose. If no crewmates remain after a meeting ends, you will leave in victory.";
+        return $"The Egotist is a Crewmate Alliance modifier (signified by <color=#669966>#</color>). As the Egotist, you can only win if Crewmates lose, even when dead. If no crewmates remain after a meeting ends, you will leave in victory, but the game will continue.";
     }
 
     public override bool IsModifierValidOn(RoleBehaviour role)
