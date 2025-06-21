@@ -16,5 +16,5 @@ public sealed class JuggernautOptions : AbstractOptionGroup<JuggernautRole>
     public float KillCooldownReduction { get; set; } = 5f;
 
     [ModdedToggleOption("Juggernaut Can Vent")]
-    public bool CanVent { get; set; } = false;
+    public bool CanVent { get; set; } = true;
 }

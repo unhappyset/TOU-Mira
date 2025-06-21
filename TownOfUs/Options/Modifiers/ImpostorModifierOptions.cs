@@ -15,35 +15,35 @@ public sealed class ImpostorModifierOptions : AbstractOptionGroup
 
     [ModdedNumberOption("Disperser Amount", 0, 5, 1)]
     public float DisperserAmount { get; set; } = 0;
-    public ModdedNumberOption DisperserChance { get; } = new ModdedNumberOption("Disperser Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    public ModdedNumberOption DisperserChance { get; } = new ModdedNumberOption("Disperser Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
     {
         Visible = () => OptionGroupSingleton<ImpostorModifierOptions>.Instance.DisperserAmount > 0,
     };
 
     [ModdedNumberOption("Double Shot Amount", 0, 5, 1)]
     public float DoubleShotAmount { get; set; } = 0;
-    public ModdedNumberOption DoubleShotChance { get; } = new ModdedNumberOption("Double Shot Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    public ModdedNumberOption DoubleShotChance { get; } = new ModdedNumberOption("Double Shot Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
     {
         Visible = () => OptionGroupSingleton<ImpostorModifierOptions>.Instance.DoubleShotAmount > 0,
     };
 
     [ModdedNumberOption("Saboteur Amount", 0, 5, 1)]
     public float SaboteurAmount { get; set; } = 0;
-    public ModdedNumberOption SaboteurChance { get; } = new ModdedNumberOption("Saboteur Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    public ModdedNumberOption SaboteurChance { get; } = new ModdedNumberOption("Saboteur Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
     {
         Visible = () => OptionGroupSingleton<ImpostorModifierOptions>.Instance.SaboteurAmount > 0,
     };
 
     [ModdedNumberOption("Telepath Amount", 0, 5, 1)]
     public float TelepathAmount { get; set; } = 0;
-    public ModdedNumberOption TelepathChance { get; } = new ModdedNumberOption("Telepath Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    public ModdedNumberOption TelepathChance { get; } = new ModdedNumberOption("Telepath Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
     {
         Visible = () => OptionGroupSingleton<ImpostorModifierOptions>.Instance.TelepathAmount > 0,
     };
 
     [ModdedNumberOption("Underdog Amount", 0, 5, 1)]
     public float UnderdogAmount { get; set; } = 0;
-    public ModdedNumberOption UnderdogChance { get; } = new ModdedNumberOption("Underdog Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    public ModdedNumberOption UnderdogChance { get; } = new ModdedNumberOption("Underdog Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
     {
         Visible = () => OptionGroupSingleton<ImpostorModifierOptions>.Instance.UnderdogAmount > 0,
     };

@@ -25,5 +25,5 @@ public sealed class BomberOptions : AbstractOptionGroup<BomberRole>
     public bool AllImpsSeeBomb { get; set; } = true;
 
     [ModdedToggleOption("Bomber Can Vent")]
-    public bool BomberVent { get; set; }
+    public bool BomberVent { get; set; } = true;
 }
