@@ -21,6 +21,7 @@ public abstract class TownOfUsButton : CustomActionButton
     public static float MapCooldown => OptionGroupSingleton<TownOfUsMapOptions>.Instance.GetMapBasedCooldownDifference();
     public override float InitialCooldown => 10;
     public override ButtonLocation Location => ButtonLocation.BottomRight;
+    public override string CooldownTimerFormatString => Timer <= 10f && TownOfUsPlugin.PreciseCooldowns.Value ? "0.0" : "0";
 
     /// <summary>
     /// Gets the keybind used for the button.<br/>
@@ -143,6 +144,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
     public static float MapCooldown => OptionGroupSingleton<TownOfUsMapOptions>.Instance.GetMapBasedCooldownDifference();
     public override float InitialCooldown => 10;
     public override ButtonLocation Location => ButtonLocation.BottomRight;
+    public override string CooldownTimerFormatString => Timer <= 10f && TownOfUsPlugin.PreciseCooldowns.Value ? "0.0" : "0";
 
     /// <summary>
     /// Gets the keybind used for the button.

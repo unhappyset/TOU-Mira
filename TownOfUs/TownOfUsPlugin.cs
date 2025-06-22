@@ -55,6 +55,7 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
     public static ConfigEntry<float> ButtonUIFactor { get; set; }
     public static ConfigEntry<bool> OffsetButtons { get; set; }
     public static ConfigEntry<bool> SortGuessingByAlignment { get; set; }
+    public static ConfigEntry<bool> PreciseCooldowns { get; set; }
 
     /// <summary>
     /// The Load method for the plugin.
@@ -83,6 +84,7 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
         GameSummaryMode = Config.Bind("LocalSettings", "GameSummaryMode", 1, "How the Game Summary appears in the Win Screen. 0 is to the left, 1 is split, and 2 is hidden.");
         OffsetButtons = Config.Bind("LocalSettings", "OffsetButtons", false, "If venting is disabled (and you're not an impostor), should there be a blank spot where the vent button usually is?");
         SortGuessingByAlignment = Config.Bind("LocalSettings", "SortGuessingByAlignment", false, "Sorts the guessing menu by alignment alphabetically or purely alphabetical order.");
+        PreciseCooldowns = Config.Bind("LocalSettings", "PreciseCooldowns", false, "Whether Button Cooldowns Show To 1 Decimal Place When It is Less Than 10 Seconds Remaining.");
 
         Harmony.PatchAll();
     }
