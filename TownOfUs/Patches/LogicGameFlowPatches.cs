@@ -35,7 +35,7 @@ public static class LogicGameFlowPatches
 
     public static bool CheckEndGameViaTimeLimit(LogicGameFlowNormal instance)
     {
-        if (OptionGroupSingleton<WinOptions>.Instance.GameTimerEnabled && GameTimerPatch.TriggerEndGame)
+        if (OptionGroupSingleton<GameTimerOptions>.Instance.GameTimerEnabled && GameTimerPatch.TriggerEndGame)
         {
             instance.Manager.RpcEndGame(GameOverReason.ImpostorsBySabotage, false);
 

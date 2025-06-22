@@ -20,7 +20,7 @@ public static class GameTimerPatch
         var pingTracker = UnityEngine.Object.FindObjectOfType<PingTracker>(true);
         GameTimerObj = UnityEngine.Object.Instantiate(pingTracker.gameObject, instance.transform);
         GameTimerObj.name = "GameTimerText";
-        GameTimerObj.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(-0.5f, 5.6f);
+        GameTimerObj.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(-0.6f, 5.5f);
 
         TimeSpan ts = TimeSpan.FromSeconds(GameTimer);
 
@@ -28,6 +28,58 @@ public static class GameTimerPatch
         timerText.text = $"<size=200%>Time:{ts.ToString(format: @"mm\:ss", TownOfUsPlugin.Culture)}</size>";
         timerText.alignment = TextAlignmentOptions.TopLeft;
         timerText.verticalAlignment = VerticalAlignmentOptions.Top;
+
+        GameTimerObj.SetActive(false);
+    }
+
+    public static void UpdateGameTimer(HudManager instance)
+    {
+        if (GameTimerObj != null)
+        {
+            GameTimerObj.SetActive(false);
+        }
+
+        if (!OptionGroupSingleton<GameTimerOptions>.Instance.GameTimerEnabled)
+        {
+            return;
+        }
+
+        if (GameTimerObj == null)
+        {
+            CreateGameTimer(instance);
+        }
+
+        if (GameTimerObj == null)
+        {
+            return;
+        }
+
+        var inMeeting = MeetingHud.Instance || ExileController.Instance;
+        if (Enabled && GameTimer > 0 && (!inMeeting || GameTimer > 240f))
+        {
+            GameTimer -= Time.deltaTime;
+            GameTimer = Math.Max(GameTimer, 0);
+
+            if (AmongUsClient.Instance.AmHost && GameTimer <= 0)
+            {
+                EndGame();
+            }
+        }
+
+        TimeSpan ts = TimeSpan.FromSeconds(GameTimer);
+
+        var timerText = GameTimerObj.GetComponent<TextMeshPro>();
+
+        var colour = GameTimer switch
+        {
+            < 30f => Color.red,
+            < 60f => Color.yellow,
+            _ => Color.green
+        };
+
+        timerText.text = $"<size=200%>Time:{colour.ToTextColor()}{ts.ToString(format: @"mm\:ss", TownOfUsPlugin.Culture)}</color></size>";
+
+        GameTimerObj.SetActive(true);
     }
 
     private static void EndGame()
@@ -40,52 +92,24 @@ public static class GameTimerPatch
     public static void BeginTimer()
     {
         Enabled = true;
-        GameTimer = OptionGroupSingleton<WinOptions>.Instance.GameTimeLimit.GetFloatData();
-    }
-
-    public static void UpdateGameTimer(HudManager instance)
-    {
-        if (GameTimerObj != null)
-        {
-            GameTimerObj.SetActive(false);
-        }
-
-        if (!OptionGroupSingleton<WinOptions>.Instance.GameTimerEnabled)
-        {
-            return;
-        }
-
-        if (GameTimerObj == null)
-        {
-            CreateGameTimer(instance);
-        }
-
-        if (GameTimerObj != null)
-        {
-            if (Enabled && GameTimer > 0 && (!MeetingHud.Instance || !ExileController.Instance || GameTimer > 240f))
-            {
-                GameTimer -= Time.deltaTime;
-                GameTimer = Math.Max(GameTimer, 0);
-
-                if (AmongUsClient.Instance.AmHost && GameTimer <= 0)
-                {
-                    EndGame();
-                }
-            }
-
-            TimeSpan ts = TimeSpan.FromSeconds(GameTimer);
-
-            var timerText = GameTimerObj.GetComponent<TextMeshPro>();
-            timerText.text = $"<size=200%>Time:{ts.ToString(format: @"mm\:ss", TownOfUsPlugin.Culture)}</size>";
-
-            GameTimerObj.SetActive(true);
-        }
+        TriggerEndGame = false;
+        GameTimer = OptionGroupSingleton<GameTimerOptions>.Instance.GameTimeLimit.GetFloatData() * 60f;
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     [HarmonyPostfix]
     public static void HudManagerUpdatePatch(HudManager __instance)
     {
+        if (PlayerControl.LocalPlayer == null ||
+            PlayerControl.LocalPlayer.Data == null ||
+            PlayerControl.LocalPlayer.Data.Role == null ||
+            !ShipStatus.Instance ||
+            (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started &&
+             !TutorialManager.InstanceExists))
+        {
+            return;
+        }
+
         UpdateGameTimer(__instance);
     }
 }
