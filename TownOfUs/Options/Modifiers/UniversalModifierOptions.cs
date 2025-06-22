@@ -11,12 +11,13 @@ public sealed class UniversalModifierOptions : AbstractOptionGroup
     public override bool ShowInModifiersMenu => true;
     public override uint GroupPriority => 1;
 
-    [ModdedNumberOption("Button Barry Chance", 0, 100, 10f, MiraNumberSuffixes.Percent)]
-    public float ButtonBarryChance { get; set; } = 0;
+    [ModdedNumberOption("Button Barry Amount", 0, 1, 1)]
+    public float ButtonBarryAmount { get; set; } = 0;
+    public ModdedNumberOption ButtonBarryChance { get; } = new ModdedNumberOption("Button Barry Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    {
+        Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.ButtonBarryAmount > 0,
+    };
     
-    [ModdedNumberOption("Tiebreaker Chance", 0, 100, 10f, MiraNumberSuffixes.Percent)]
-    public float TiebreakerChance { get; set; } = 0;
-
     [ModdedNumberOption("Flash Amount", 0, 5, 1)]
     public float FlashAmount { get; set; } = 0;
     public ModdedNumberOption FlashChance { get; } = new ModdedNumberOption("Flash Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
@@ -52,6 +53,13 @@ public sealed class UniversalModifierOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.RadarAmount > 0,
     };
 
+    [ModdedNumberOption("Satellite Amount", 0, 5, 1)]
+    public float SatelliteAmount { get; set; } = 0;
+    public ModdedNumberOption SatelliteChance { get; } = new ModdedNumberOption("Satellite Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    {
+        Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.SatelliteAmount > 0,
+    };
+
     [ModdedNumberOption("Shy Amount", 0, 5, 1)]
     public float ShyAmount { get; set; } = 0;
     public ModdedNumberOption ShyChance { get; } = new ModdedNumberOption("Shy Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
@@ -73,10 +81,10 @@ public sealed class UniversalModifierOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.SleuthAmount > 0,
     };
 
-    [ModdedNumberOption("Satellite Amount", 0, 5, 1)]
-    public float SatelliteAmount { get; set; } = 0;
-    public ModdedNumberOption SatelliteChance { get; } = new ModdedNumberOption("Satellite Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    [ModdedNumberOption("Tiebreaker Amount", 0, 1, 1)]
+    public float TiebreakerAmount { get; set; } = 0;
+    public ModdedNumberOption TiebreakerChance { get; } = new ModdedNumberOption("Tiebreaker Chance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
     {
-        Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.SatelliteAmount > 0,
+        Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.TiebreakerAmount > 0,
     };
 }

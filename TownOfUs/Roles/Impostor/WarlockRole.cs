@@ -24,7 +24,6 @@ public sealed class WarlockRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
         UseVanillaKillButton = false,
         IntroSound = TouAudio.WarlockIntroSound,
         Icon = TouRoleIcons.Warlock,
-        MaxRoleCount = 1,
     };
 
     [HideFromIl2Cpp]

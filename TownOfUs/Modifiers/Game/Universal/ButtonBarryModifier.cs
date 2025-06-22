@@ -23,6 +23,7 @@ public sealed class ButtonBarryModifier : UniversalGameModifier, IWikiDiscoverab
     public int Priority { get; set; } = 5;
     public override ModifierFaction FactionType => ModifierFaction.UniversalUtility;
 
+    public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ButtonBarryAmount != 0 ? 1 : 0;
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ButtonBarryChance;
     public override bool IsModifierValidOn(RoleBehaviour role)
     {

@@ -20,7 +20,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
     public override string GetDescription() => "Announce how you died on your passing.";
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.CelebrityChance;
-    public override int GetAmountPerGame() => 1;
+    public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.CelebrityAmount != 0 ? 1 : 0;
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
     
     public DateTime DeathTime { get; set; }
