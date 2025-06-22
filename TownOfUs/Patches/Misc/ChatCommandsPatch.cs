@@ -83,7 +83,7 @@ public static class ChatPatches
                 else
                 {
                     // This is done to prevent the player from being kicked for changing their name as they're not the host
-                    RpcChangeName(PlayerControl.LocalPlayer, textRegular);
+                    PlayerControl.LocalPlayer.CmdCheckName(textRegular);
                     msg = $"Changed player name for the next match to: {textRegular}";
                 }
             }
@@ -211,14 +211,7 @@ public static class ChatPatches
         }
         return true;
     }
-    [MethodRpc((uint)TownOfUsRpc.ChangeName, SendImmediately = true)]
-    private static void RpcChangeName(PlayerControl player, string name)
-    {
-        if (PlayerControl.LocalPlayer.IsHost())
-        {
-            player.RpcSetName(name);
-        }
-    }
+
     [MethodRpc((uint)TownOfUsRpc.ChangeHost, SendImmediately = true)]
     private static void RpcChangeHost(PlayerControl host, int id, PlayerControl playerCon)
     {
