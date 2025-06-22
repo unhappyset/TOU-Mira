@@ -8,6 +8,7 @@ using Reactor.Utilities;
 using TownOfUs.GameOver;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Options;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
@@ -17,6 +18,34 @@ namespace TownOfUs.Patches;
 [HarmonyPatch]
 public static class LogicGameFlowPatches
 {
+    public static bool CheckEndGameViaTasks(LogicGameFlowNormal instance)
+    {
+        GameData.Instance.RecomputeTaskCounts();
+
+        if (GameData.Instance.TotalTasks > 0 && GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
+        {
+            instance.Manager.RpcEndGame(GameOverReason.CrewmatesByTask, false);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static bool CheckEndGameViaTimeLimit(LogicGameFlowNormal instance)
+    {
+        if (OptionGroupSingleton<WinOptions>.Instance.GameTimerEnabled && GameTimerPatch.TriggerEndGame)
+        {
+            instance.Manager.RpcEndGame(GameOverReason.ImpostorsBySabotage, false);
+
+            GameTimerPatch.TriggerEndGame = false;
+
+            return true;
+        }
+
+        return false;
+    }
+
     [HarmonyPatch(typeof(GameData), nameof(GameData.RecomputeTaskCounts))]
     [HarmonyPrefix]
     private static bool RecomputeTasksPatch(GameData __instance)
@@ -47,20 +76,7 @@ public static class LogicGameFlowPatches
 
         return false;
     }
-    public static bool CheckEndGameViaTasks(LogicGameFlowNormal instance)
-    {
-        GameData.Instance.RecomputeTaskCounts();
-
-        if (GameData.Instance.TotalTasks > 0 && GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
-        {
-            instance.Manager.RpcEndGame(GameOverReason.CrewmatesByTask, false);
-
-            return true;
-        }
-
-        return false;
-    }
-
+    
     [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))]
     [HarmonyPrefix]
     public static bool CheckEndCriteriaPatch(LogicGameFlowNormal __instance)
@@ -109,6 +125,11 @@ public static class LogicGameFlowPatches
             return false;
         }
 
+        if (CheckEndGameViaTimeLimit(__instance))
+        {
+            return false;
+        }
+
         // End game if there are 3 players alive and 2 are lovers.
         var activeLovers = ModifierUtils.GetActiveModifiers<LoverModifier>().ToArray();
         if (!ExileController.Instance && LoverModifier.WinConditionMet(activeLovers))
@@ -134,6 +155,7 @@ public static class LogicGameFlowPatches
         {
             return false;
         }
+
         // Prevents game end when all impostors are dead but there is a possibility for a traitor to spawn given the conditions
         var possibleTraitor = ModifierUtils.GetActiveModifiers<ToBecomeTraitorModifier>().FirstOrDefault();
         if (Helpers.GetAlivePlayers().Count > (int)OptionGroupSingleton<TraitorOptions>.Instance.LatestSpawn - 1 && possibleTraitor != null)
@@ -146,7 +168,7 @@ public static class LogicGameFlowPatches
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.IsGameOverDueToDeath))]
-    public static void Postfix(LogicGameFlowNormal __instance, ref bool __result)
+    public static void IsGameOverDueToDeathPatch(LogicGameFlowNormal __instance, ref bool __result)
     {
         __result = false;
     }
