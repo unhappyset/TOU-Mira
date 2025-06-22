@@ -4,7 +4,6 @@ public enum TownOfUsRpc : uint
 {
 
     ChangeHost,
-    ChangeName,
 
     SetMap,
     ChangeRole,

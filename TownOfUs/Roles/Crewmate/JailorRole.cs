@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
@@ -39,7 +40,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     {
         MaxRoleCount = 1,
         Icon = TouRoleIcons.Jailor,
-        IntroSound = TouAudio.JailSound,
+        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Impostor),
     };
 
     public int Executes { get; set; } = (int)OptionGroupSingleton<JailorOptions>.Instance.MaxExecutes;
@@ -173,7 +174,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             }
             else
             {
-                if (Jailed.Is(ModdedRoleTeams.Crewmate) && !Player.HasModifier<AllianceGameModifier>() && !Jailed.HasModifier<AllianceGameModifier>())
+                if (Jailed.Is(ModdedRoleTeams.Crewmate) && !(PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished) && !(Jailed.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
                 {
                     Executes = 0;
 
@@ -197,7 +198,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
-        if (PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>())
+        if (PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
         {
             stringB.AppendLine(CultureInfo.InvariantCulture, $"You can execute crewmates.");
         }

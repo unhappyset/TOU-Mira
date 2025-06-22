@@ -83,7 +83,7 @@ public static class ChatPatches
                 else
                 {
                     // This is done to prevent the player from being kicked for changing their name as they're not the host
-                    RpcChangeName(PlayerControl.LocalPlayer, textRegular);
+                    PlayerControl.LocalPlayer.CmdCheckName(textRegular);
                     msg = $"Changed player name for the next match to: {textRegular}";
                 }
             }
@@ -162,7 +162,7 @@ public static class ChatPatches
             if (PlayerControl.LocalPlayer.Data.Role is JailorRole)
             {
                 TeamChatPatches.RpcSendJailorChat(PlayerControl.LocalPlayer, textRegular);
-                MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailor</color>", textRegular, onLeft: false);
+                MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>{PlayerControl.LocalPlayer.Data.PlayerName} (Jailor)</color>", textRegular, onLeft: false);
 
                 __instance.freeChatField.Clear();
                 __instance.quickChatMenu.Clear();
@@ -211,14 +211,7 @@ public static class ChatPatches
         }
         return true;
     }
-    [MethodRpc((uint)TownOfUsRpc.ChangeName, SendImmediately = true)]
-    private static void RpcChangeName(PlayerControl player, string name)
-    {
-        if (PlayerControl.LocalPlayer.IsHost())
-        {
-            player.RpcSetName(name);
-        }
-    }
+
     [MethodRpc((uint)TownOfUsRpc.ChangeHost, SendImmediately = true)]
     private static void RpcChangeHost(PlayerControl host, int id, PlayerControl playerCon)
     {

@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using MiraAPI.GameOptions;
+using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities.Extensions;
 using TMPro;
@@ -33,9 +34,13 @@ public static class TeamChatPatches
     [MethodRpc((uint)TownOfUsRpc.SendJailorChat, SendImmediately = true)]
     public static void RpcSendJailorChat(PlayerControl player, string text)
     {
-        if (PlayerControl.LocalPlayer.IsJailed() || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        if (PlayerControl.LocalPlayer.IsJailed())
         {
-            MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailor</color>", text);
+            MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data, $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailor</color>", text);
+        }
+        else if (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow)
+        {
+            MiscUtils.AddTeamChat(player.Data, $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Jailor)</color>", text);
         }
     }
 
@@ -103,7 +108,13 @@ public static class TeamChatPatches
                         _teamText.text = string.Empty;
                         _teamText.color = TownOfUsColors.ImpSoft;
                     }
+                    var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
                     _teamText.text = string.Empty;
+                    if (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && (genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true } || genOpt.VampireChat || Helpers.GetAlivePlayers().Any(x => x.Data.Role is JailorRole)))
+                    {
+                        _teamText.text = "Jailor, Impostor, and Vampire Chat can be seen here.";
+                        _teamText.color = Color.white;
+                    }
                     var ChatScreenContainer = GameObject.Find("ChatScreenContainer");
                     // var FreeChat = GameObject.Find("FreeChatInputField");
                     var Background = ChatScreenContainer.transform.FindChild("Background");
@@ -118,7 +129,6 @@ public static class TeamChatPatches
                         ogChat.transform.Find("Active").gameObject.SetActive(false);
                         ogChat.transform.Find("Selected").gameObject.SetActive(false);
 
-                        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
                         Background.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.1f, 0.1f, 0.8f);
                         //typeBg.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.1f, 0.1f, 0.6f);
                         //typeText.GetComponent<TextMeshPro>().color = Color.white;

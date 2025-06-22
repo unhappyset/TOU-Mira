@@ -19,7 +19,7 @@ public sealed class UndertakerOptions : AbstractOptionGroup<UndertakerRole>
     public bool AffectedSpeed { get; set; } = true;
 
     [ModdedToggleOption("Undertaker Can Vent")]
-    public bool CanVent { get; set; } = false;
+    public bool CanVent { get; set; } = true;
 
     public ModdedToggleOption CanVentWithBody { get; } = new ModdedToggleOption("Can Vent With Body", false)
     {

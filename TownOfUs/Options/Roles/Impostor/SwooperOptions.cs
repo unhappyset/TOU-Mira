@@ -9,7 +9,7 @@ public sealed class SwooperOptions : AbstractOptionGroup<SwooperRole>
     public override string GroupName => "Swooper";
 
     [ModdedNumberOption("Swoop Uses Per Round", 0f, 10f, 1f, MiraNumberSuffixes.None, "0", zeroInfinity: true)]
-    public float MaxSwoops { get; set; } = 5f;
+    public float MaxSwoops { get; set; } = 0f;
 
     [ModdedNumberOption("Swoop Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float SwoopCooldown { get; set; } = 25f;
@@ -18,5 +18,5 @@ public sealed class SwooperOptions : AbstractOptionGroup<SwooperRole>
     public float SwoopDuration { get; set; } = 10f;
 
     [ModdedToggleOption("Swooper Can Vent")]
-    public bool CanVent { get; set; } = false;
+    public bool CanVent { get; set; } = true;
 }

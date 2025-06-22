@@ -34,7 +34,7 @@ public static class MapPatches
     }
 
     [HarmonyPostfix]
-    [HarmonyPatch(typeof(NormalGameOptionsV08), nameof(NormalGameOptionsV08.GetInt))]
+    [HarmonyPatch(typeof(NormalGameOptionsV09), nameof(NormalGameOptionsV09.GetInt))]
     public static void AdjustTasksPostfix(Int32OptionNames optionName, ref int __result)
     {
         switch (optionName)

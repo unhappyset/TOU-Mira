@@ -24,6 +24,7 @@ public static class DetectiveEvents
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (@event.TriggeredByIntro) return;
+        if (CrimeSceneComponent._crimeScenes.Count <= 0) return;
 
         foreach (var scene in CrimeSceneComponent._crimeScenes)
         {
@@ -48,6 +49,7 @@ public static class DetectiveEvents
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         if (@event.Source.IsRole<SoulCollectorRole>()) return;
+        if (MeetingHud.Instance) return;
 
         var victim = @event.Target;
         var bodyPos = victim.transform.position;

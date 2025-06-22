@@ -45,7 +45,7 @@ public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public string GetAdvancedDescription()
     {
         return
-            "The Veteran is a Crewmate Killing role that can go on alert and kill anyone who interacts with them. "
+            "The Veteran is a Crewmate Killing role that can go on alert and kill anyone who interacts with them."
             + MiscUtils.AppendOptionsText(GetType());
     }
     

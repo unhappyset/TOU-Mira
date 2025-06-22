@@ -30,7 +30,7 @@ public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifi
         MiraEventManager.InvokeEvent(touAbilityEvent);
 
         VisionPerc = 1f;
-
+        
         if (PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
         {
             Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);

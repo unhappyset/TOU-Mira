@@ -13,6 +13,7 @@ public sealed class TiebreakerModifier : UniversalGameModifier, IWikiDiscoverabl
     public override string GetDescription() => "Your vote breaks ties";
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
 
+    public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.TiebreakerAmount != 0 ? 1 : 0;
     public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.TiebreakerChance;
     public string GetAdvancedDescription()
     {

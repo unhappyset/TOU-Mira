@@ -41,7 +41,7 @@ public sealed class PlaguebearerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
     public override void Initialize(PlayerControl player)
     {
         RoleStubs.RoleBehaviourInitialize(this, player);
-        if (Player.AmOwner)
+        if (Player.AmOwner && (int)OptionGroupSingleton<PlaguebearerOptions>.Instance.PestChance != 0)
         {
             Coroutines.Start(CheckForPestChance(Player));
         }

@@ -14,4 +14,5 @@ public enum TownOfUsAppearances : uint
     Camouflage,
     Morph,
     PlayerNameOnly,
+    PlayerOnly,
 }

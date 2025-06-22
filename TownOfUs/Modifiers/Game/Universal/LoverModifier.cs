@@ -28,6 +28,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
     public override string Symbol => "♥";
     public override string IntroInfo => LoverString();
     public override float IntroSize => 3f;
+    public override bool DoesTasks => OtherLover == null || OtherLover.IsCrewmate(); // Lovers do tasks if they are not lovers with an Evil
     public override bool HideOnUi => false;
     public override LoadableAsset<UnityEngine.Sprite>? ModifierIcon => TouModifierIcons.Lover;
     public override string GetDescription() => LoverString();
@@ -50,7 +51,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
     {
         if (!Player.AmOwner) return;
         HudManager.Instance.Chat.gameObject.SetActive(true);
-        if (TutorialManager.InstanceExists && Player.AmOwner && Player.IsHost() && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+        if (TutorialManager.InstanceExists && OtherLover == null && Player.AmOwner && Player.IsHost() && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
         {
             Coroutines.Start(SetTutorialTarget(this, Player));
         }
@@ -147,7 +148,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
             Logger<TownOfUsPlugin>.Error("Invalid Lover");
             return;
         }
-        if (MeetingHud.Instance) isHidden = true;
+        if (MeetingHud.Instance || ExileController.Instance) isHidden = true;
 
         if (!OtherLover.HasModifier<InvulnerabilityModifier>())
         {

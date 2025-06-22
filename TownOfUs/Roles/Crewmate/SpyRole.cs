@@ -1,7 +1,12 @@
 ﻿using System.Text;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.GameOptions;
+using MiraAPI.Hud;
 using MiraAPI.Roles;
+using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modules.Wiki;
+using TownOfUs.Options.Roles.Crewmate;
+using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -21,6 +26,22 @@ public sealed class SpyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole
         Icon = TouRoleIcons.Spy,
         IntroSound = TouAudio.SpyIntroSound,
     };
+    public override void Initialize(PlayerControl player)
+    {
+        RoleStubs.RoleBehaviourInitialize(this, player);
+        if (Player.AmOwner)
+        {
+            CustomButtonSingleton<SpyAdminTableRoleButton>.Instance.AvailableCharge = OptionGroupSingleton<SpyOptions>.Instance.StartingCharge.Value;
+        }
+    }
+    public static void OnRoundStart()
+    {
+        CustomButtonSingleton<SpyAdminTableRoleButton>.Instance.AvailableCharge += OptionGroupSingleton<SpyOptions>.Instance.RoundCharge.Value;
+    }
+    public static void OnTaskComplete()
+    {
+        CustomButtonSingleton<SpyAdminTableRoleButton>.Instance.AvailableCharge += OptionGroupSingleton<SpyOptions>.Instance.TaskCharge.Value;
+    }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()

@@ -15,7 +15,7 @@ namespace TownOfUs.Patches;
 [HarmonyPatch]
 public static class TouRoleManagerPatches
 {
-    private static List<int> LastImps { get; set; }
+    private static List<int> LastImps { get; set; } = [];
     private static readonly List<RoleTypes> CrewmateGhostRolePool = [];
     private static readonly List<RoleTypes> ImpostorGhostRolePool = [];
     private static readonly List<RoleTypes> CustomGhostRolePool = [];
@@ -594,7 +594,7 @@ public static class TouRoleManagerPatches
 
         var useBias = OptionGroupSingleton<RoleOptions>.Instance.LastImpostorBias;
 
-        if (useBias)
+        if (useBias && LastImps.Count > 0)
         {
             var biasPercent = OptionGroupSingleton<RoleOptions>.Instance.ImpostorBiasPercent.Value / 100f;
             while (infected.Count < impCount)

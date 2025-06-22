@@ -43,7 +43,7 @@ public sealed class SwooperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
         new("Swoop",
             "Turn invisible to all players except Impostors.",
             TouImpAssets.SwoopSprite),
-        new("Unwoop",
+        new("Unswoop",
             "Cancel your swoop early, or let it finish fully to make yourself visible once again.",
             TouImpAssets.UnswoopSprite)
     ];

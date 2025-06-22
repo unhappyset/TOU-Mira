@@ -47,6 +47,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
     public List<PlayerControl> AllVictims { get; } = [];
 
     private MeetingMenu meetingMenu;
+    public bool MetWinCon => AllGuessesCorrect;
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
@@ -289,7 +290,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
                     text, Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
-                    notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
 
                 Coroutines.Start(MiscUtils.CoFlash(Color.red));
             }

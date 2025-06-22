@@ -17,7 +17,7 @@ public sealed class DetectiveExamineButton : TownOfUsRoleButton<DetectiveRole, P
 
     public override bool CanUse()
     {
-        return base.CanUse() && Role is { InvestigatedPlayers.Count: > 0 };
+        return base.CanUse() && Role.InvestigatingScene;
     }
 
     public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);

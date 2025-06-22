@@ -59,8 +59,8 @@ public sealed class BodyReport
 
         if (br.Killer!.PlayerId == br.Body!.PlayerId)
             return $"Body Report: The kill appears to have been a suicide! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
-
-        var role = br.Killer.Data.Role;
+        // if the killer died, they would still appear correctly here
+        var role = br.Killer.GetRoleWhenAlive();
         if (br.Killer.HasModifier<TraitorCacheModifier>()) role = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TraitorRole>());
 
         var prefix = "a";
@@ -166,7 +166,7 @@ public static class GameHistory
         PlayerEvents.Clear();
     }
 
-    public static RoleBehaviour? GetRoleWhenAlive(this PlayerControl player)
+    public static RoleBehaviour GetRoleWhenAlive(this PlayerControl player)
     {
         //var role = RoleHistory.LastOrDefault(x => x.Key == player.PlayerId && !x.Value.IsDead);
         //return role.Value != null ? role.Value : null;
@@ -175,7 +175,12 @@ public static class GameHistory
         {
             return role;
         }
+        var role2 = player.Data.RoleWhenAlive;
+        if (role2.HasValue)
+        {
+            return RoleManager.Instance.GetRole(role2.Value);
+        }
 
-        return null;
+        return player.Data.Role;
     }
 }

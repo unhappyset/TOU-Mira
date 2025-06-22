@@ -28,7 +28,7 @@ public sealed class VampireOptions : AbstractOptionGroup<VampireRole>
     public bool CanConvertAsNewVamp { get; set; } = true;
 
     [ModdedToggleOption("Vampires Can Vent")]
-    public bool CanVent { get; set; } = false;
+    public bool CanVent { get; set; } = true;
 }
 public enum BiteOptions
 {

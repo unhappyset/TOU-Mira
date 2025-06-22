@@ -14,7 +14,7 @@ namespace TownOfUs.Buttons.Modifiers;
 public sealed class SecurityButton : TownOfUsButton
 {
     public override string Name => "Security";
-    public override string Keybind => "tou.ActionCustom2";
+    public override string Keybind => Keybinds.ModifierAction;
     public override Color TextOutlineColor => TownOfUsColors.Operative;
     public override float Cooldown => OptionGroupSingleton<OperativeOptions>.Instance.DisplayCooldown + MapCooldown;
     public float AvailableCharge { get; set; } = OptionGroupSingleton<OperativeOptions>.Instance.StartingCharge;

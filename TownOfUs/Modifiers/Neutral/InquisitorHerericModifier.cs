@@ -1,4 +1,5 @@
 using MiraAPI.Modifiers;
+using TownOfUs.Modules;
 
 namespace TownOfUs.Modifiers.Neutral;
 
@@ -11,6 +12,6 @@ public sealed class InquisitorHereticModifier : BaseModifier
 
     public override void OnActivate()
     {
-        TargetRole = Player.Data.Role;
+        TargetRole = Player.GetRoleWhenAlive();
     }
 }

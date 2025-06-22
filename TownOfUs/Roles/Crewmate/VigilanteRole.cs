@@ -190,7 +190,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             return false;
         }
 
-        if (role.IsCrewmate() && !PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>())
+        if (role.IsCrewmate() && !(PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished))
         {
             return false;
         }
@@ -224,6 +224,20 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
     private static bool IsModifierValid(BaseModifier modifier)
     {
+        var isValid = true;
+        // This will remove modifiers that alter their chance/amount
+        if ((modifier is TouGameModifier touMod && (touMod.CustomAmount <= 0 || touMod.CustomChance <= 0)) ||
+            (modifier is AllianceGameModifier allyMod && (allyMod.CustomAmount <= 0 || allyMod.CustomChance <= 0)) ||
+            (modifier is UniversalGameModifier uniMod && (uniMod.CustomAmount <= 0 || uniMod.CustomChance <= 0)))
+        {
+            isValid = false;
+        }
+        
+        if (!isValid)
+        {
+            return false;
+        }
+
         if (OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteGuessAlliances && modifier is AllianceGameModifier)
         {
             return true;
@@ -241,7 +255,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
-        if (PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>())
+        if (PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
         {
             stringB.AppendLine(CultureInfo.InvariantCulture, $"You can also guess Crewmates.");
         }

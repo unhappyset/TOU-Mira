@@ -1,5 +1,6 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Modifiers.Crewmate;
@@ -44,7 +45,8 @@ public sealed class InvestigatorModifier : TouGameModifier, IWikiDiscoverable
     public string GetAdvancedDescription()
     {
         return
-            "The Investigator can see player's footprints throughout the game. Swooped players' footprints will not be visible to the Investigator.";
+            "The Investigator can see player's footprints throughout the game. Swooped players' footprints will not be visible to the Investigator."
+            + MiscUtils.AppendOptionsText(CustomRoleSingleton<InvestigatorRole>.Instance.GetType());
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];

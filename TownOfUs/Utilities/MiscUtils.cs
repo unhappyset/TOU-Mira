@@ -12,7 +12,7 @@ using MiraAPI.PluginLoading;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TownOfUs.Modifiers;
-using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Neutral;
@@ -26,19 +26,19 @@ namespace TownOfUs.Utilities;
 
 public static class MiscUtils
 {
-    public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } && !x.HasModifier<EgotistModifier>() &&
+    public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } && !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
     public static int RealKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish));
 
     public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish));
 
-    public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } && !x.HasModifier<EgotistModifier>() &&
+    public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } && !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
     public static int ImpAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor());
 
-    public static int CrewKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Data.Role is ITouCrewRole { IsPowerCrew: true } && !x.HasModifier<EgotistModifier>() &&
+    public static int CrewKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Data.Role is ITouCrewRole { IsPowerCrew: true } && !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue);
 
     public static IEnumerable<BaseModifier> AllModifiers => MiraPluginManager.GetPluginByGuid(TownOfUsPlugin.Id)!.Modifiers;

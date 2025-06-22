@@ -105,7 +105,7 @@ public sealed class EscapistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
             "Mark a location for later use.",
             TouImpAssets.MarkSprite),
         new("Recall",
-            "Recall to the marked location, resetting it in the process.",
+            "Recall to the marked location.",
             TouImpAssets.RecallSprite)
     ];
 }

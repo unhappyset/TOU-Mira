@@ -45,7 +45,7 @@ public static class ProsecutorEvents
 
         foreach (var pros in CustomRoleUtils.GetActiveRolesOfType<ProsecutorRole>())
         {
-            if (pros.HasProsecuted && OptionGroupSingleton<ProsecutorOptions>.Instance.ExileOnCrewmate && player.IsCrewmate() && !pros.Player.HasModifier<AllianceGameModifier>() && !player.HasModifier<AllianceGameModifier>())
+            if (pros.HasProsecuted && OptionGroupSingleton<ProsecutorOptions>.Instance.ExileOnCrewmate && player.IsCrewmate() && !(pros.Player.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished) && !(player.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
             {
                 pros.Player.Exiled();
             }

@@ -62,7 +62,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
     public override void Initialize(PlayerControl player)
     {
         RoleStubs.RoleBehaviourInitialize(this, player);
-        if (TutorialManager.InstanceExists && Player.AmOwner && Player.IsHost() && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+        if (TutorialManager.InstanceExists && Target == null && Player.AmOwner && Player.IsHost() && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
         {
             Coroutines.Start(SetTutorialTargets(this));
         }

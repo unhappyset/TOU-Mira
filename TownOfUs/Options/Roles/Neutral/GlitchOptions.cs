@@ -26,6 +26,6 @@ public sealed class GlitchOptions : AbstractOptionGroup<GlitchRole>
     public float HackDuration { get; set; } = 10f;
 
     [ModdedToggleOption("Glitch Can Vent")]
-    public bool CanVent { get; set; } = false;
+    public bool CanVent { get; set; } = true;
 
 }

@@ -109,6 +109,13 @@ public static class LocalSettings
                 OnClick = () => { return TownOfUsPlugin.OffsetButtons.Value = !TownOfUsPlugin.OffsetButtons.Value; },
                 DefaultValue = TownOfUsPlugin.OffsetButtons.Value
             },
+            new()
+            {
+                Title = "Sort Guessing By Alignment",
+                ObjName = "SortGuessingByAlignment",
+                OnClick = () => { return TownOfUsPlugin.SortGuessingByAlignment.Value = !TownOfUsPlugin.SortGuessingByAlignment.Value; },
+                DefaultValue = TownOfUsPlugin.SortGuessingByAlignment.Value
+            },
         ];
 
     private static GameObject popUp;

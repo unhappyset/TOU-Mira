@@ -7,6 +7,7 @@ using MiraAPI.Utilities;
 using Reactor.Utilities;
 using TownOfUs.GameOver;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Impostor;
@@ -59,8 +60,7 @@ public static class LogicGameFlowPatches
             if (!playerInfo.Disconnected && playerInfo.Tasks != null && playerInfo.Object &&
                 (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !playerInfo.IsDead) && !playerInfo._object.IsImpostor() &&
                 !(
-                    (playerInfo._object.TryGetModifier<LoverModifier>(out var lover) && !lover.OtherLover!.IsCrewmate())
-                    || playerInfo._object.HasModifier<EgotistModifier>()
+                    (playerInfo._object.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.DoesTasks)
                     || !playerInfo._object.Data.Role.TasksCountTowardProgress
                 ))
             {

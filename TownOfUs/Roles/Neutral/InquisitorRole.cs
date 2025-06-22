@@ -47,6 +47,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     [HideFromIl2Cpp]
     public List<RoleBehaviour> TargetRoles { get; set; } = [];
     public bool TargetsDead { get; set; }
+    public bool MetWinCon => TargetsDead;
 
     public override void Initialize(PlayerControl player)
     {
@@ -59,7 +60,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
             Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().ToList();
             TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select([HideFromIl2Cpp] (x) => x.TargetRole).OrderBy([HideFromIl2Cpp] (x) => x.NiceName).ToList();
         }
-        if (TutorialManager.InstanceExists && Player.AmOwner && Player.IsHost() && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+        if (TutorialManager.InstanceExists && Targets.Count == 0 && Player.AmOwner && Player.IsHost() && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
         {
             Coroutines.Start(SetTutorialTargets(this));
         }
@@ -184,8 +185,8 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         players.Shuffle();
         players.Shuffle();
 
-        var killer = players.Any(x => x.IsNeutral() || x.IsImpostor()) ? players.FirstOrDefault(x => x.IsNeutral() || x.IsImpostor()) : players.Random();
-        players.Remove(killer);
+        var evil = players.Any(x => x.IsNeutral() || x.IsImpostor()) ? players.FirstOrDefault(x => x.IsNeutral() || x.IsImpostor()) : players.Random();
+        players.Remove(evil);
         players.Shuffle();
 
         var crew = players.Any(x => x.IsCrewmate()) ? players.FirstOrDefault(x => x.IsCrewmate()) : players.Random();
@@ -196,7 +197,12 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         players.Remove(random);
         players.Shuffle();
 
-        List<PlayerControl> filtered = [killer, crew, random];
+        List<PlayerControl> filtered = [];
+
+        if (evil != null) filtered.Add(evil);
+        if (crew != null) filtered.Add(crew);
+        if (random != null) filtered.Add(random);
+
         var other = players.Random();
         if (required is 4 or 5 && players.Count >= 1 && other != null)
         {

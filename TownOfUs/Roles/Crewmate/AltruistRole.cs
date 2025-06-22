@@ -80,7 +80,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         {
             Logger<TownOfUsPlugin>.Error($"AltruistRole.ClearArrows BadGuys Only");
 
-            foreach (var playerWithArrow in ModifierUtils.GetPlayersWithModifier<AltruistArrowModifier>(x => x.Owner == PlayerControl.LocalPlayer))
+            foreach (var playerWithArrow in ModifierUtils.GetPlayersWithModifier<AltruistArrowModifier>())
             {
                 playerWithArrow.RemoveModifier<AltruistArrowModifier>();
             }
@@ -88,7 +88,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     }
 
     [HideFromIl2Cpp]
-    public IEnumerator CoRevivePlayer(PlayerControl dead, float waitfor = 1f)
+    public IEnumerator CoRevivePlayer(PlayerControl dead)
     {
         var roleWhenAlive = dead.GetRoleWhenAlive();
 
@@ -112,7 +112,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
                 Destroy(body.gameObject);
         }
 
-        yield return new WaitForSeconds(waitfor);
+        yield return new WaitForSeconds(OptionGroupSingleton<AltruistOptions>.Instance.ReviveDuration);
         
         if (!MeetingHud.Instance)
         {
@@ -179,15 +179,11 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     [MethodRpc((uint)TownOfUsRpc.AltruistRevive, SendImmediately = true)]
     public static void RpcRevive(PlayerControl alt, PlayerControl target)
     {
-        if (alt.Data.Role is not AltruistRole)
+        if (alt.Data.Role is not AltruistRole role)
         {
             Logger<TownOfUsPlugin>.Error("RpcRevive - Invalid altruist");
             return;
         }
-
-        var role = alt.GetRole<AltruistRole>();
-
-        if (role == null) return;
 
         if (PlayerControl.LocalPlayer.IsImpostor() || PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling))
         {
@@ -201,7 +197,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         var touAbilityEvent = new TouAbilityEvent(AbilityType.AltruistRevive, alt, target);
         MiraEventManager.InvokeEvent(touAbilityEvent);
 
-        Coroutines.Start(role.CoRevivePlayer(target, OptionGroupSingleton<AltruistOptions>.Instance.ReviveDuration));
+        Coroutines.Start(role.CoRevivePlayer(target));
     }
 
     [HideFromIl2Cpp]

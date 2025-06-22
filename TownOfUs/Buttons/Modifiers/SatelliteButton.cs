@@ -2,6 +2,7 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
+using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Options.Modifiers.Universal;
@@ -13,7 +14,7 @@ namespace TownOfUs.Buttons.Modifiers;
 public sealed class SatelliteButton : TownOfUsButton
 {
     public override string Name => "Broadcast";
-    public override string Keybind => "tou.ActionCustom2";
+    public override string Keybind => Keybinds.ModifierAction;
     public override Color TextOutlineColor => TownOfUsColors.Satellite;
     public override float Cooldown => OptionGroupSingleton<SatelliteOptions>.Instance.Cooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<SatelliteOptions>.Instance.MaxNumCast;
@@ -43,6 +44,11 @@ public sealed class SatelliteButton : TownOfUsButton
         var deadBodies = Object.FindObjectsOfType<DeadBody>().ToList();
 
         deadBodies.Do(x => PlayerControl.LocalPlayer.AddModifier<SatelliteArrowModifier>(x, Color.white));
+        if (deadBodies.Count == 0)
+        {
+            var notif1 = Helpers.CreateAndShowNotification($"<b>No bodies were found on the map.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouModifierIcons.Satellite.LoadAsset());
+            notif1.Text.SetOutlineThickness(0.35f);
+        }
         if (OptionGroupSingleton<SatelliteOptions>.Instance.OneUsePerRound) Usable = false;
         // will return to this once i get more freetime
         //deadBodies.Do(x => PlayerControl.LocalPlayer.GetModifier<SatelliteModifier>().NewMapIcon(MiscUtils.PlayerById(x.ParentId)));

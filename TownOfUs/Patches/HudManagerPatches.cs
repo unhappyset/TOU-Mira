@@ -26,6 +26,7 @@ using TMPro;
 using System.Text;
 using TownOfUs.Patches.Options;
 using TownOfUs.Roles.Impostor;
+using Reactor.Utilities.Extensions;
 
 namespace TownOfUs.Patches;
 
@@ -43,30 +44,23 @@ public static class HudManagerPatches
         {
             if (aspect.gameObject.transform.parent.name == "TopRight") continue;
             if (aspect.gameObject.transform.parent.transform.parent.name == "TopRight") continue;
-            var wasActive = aspect.isActiveAndEnabled;
-            aspect.gameObject.SetActive(false);
+            aspect.gameObject.SetActive(!aspect.isActiveAndEnabled);
             aspect.DistanceFromEdge *= new Vector2(scaleFactor, scaleFactor);
-            aspect.gameObject.SetActive(wasActive);
+            aspect.gameObject.SetActive(!aspect.isActiveAndEnabled);
         }
         
         foreach (ActionButton button in HudManager.Instance.GetComponentsInChildren<ActionButton>(true))
         {
-            var wasActive = button.isActiveAndEnabled;
-            button.gameObject.SetActive(false);
+            button.gameObject.SetActive(!button.isActiveAndEnabled);
             button.gameObject.transform.localScale *= scaleFactor;
-            button.gameObject.SetActive(wasActive);
+            button.gameObject.SetActive(!button.isActiveAndEnabled);
         }
         foreach (GridArrange arrange in HudManager.Instance.transform.FindChild("Buttons").GetComponentsInChildren<GridArrange>(true))
         {
-            var wasActive = arrange.isActiveAndEnabled;
-            arrange.gameObject.SetActive(false);
-            arrange.CellSize *= new Vector2(scaleFactor, scaleFactor);
-            arrange.gameObject.SetActive(wasActive);
-        }
-        if (HudManager.Instance && PlayerControl.LocalPlayer && PlayerControl.LocalPlayer.Data.Role)
-        {
-            HudManager.Instance.SetHudActive(false);
-            HudManager.Instance.SetHudActive(true);
+            arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
+            arrange.CellSize = new Vector2(scaleFactor, scaleFactor);
+            arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
+            arrange.ArrangeChilds();
         }
     }
     public static void Zoom()
@@ -263,8 +257,7 @@ public static class HudManagerPatches
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 
         var isValid = MeetingHud.Instance &&
-            ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && (genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true } || genOpt.VampireChat)) ||
-            PlayerControl.LocalPlayer.IsJailed() || PlayerControl.LocalPlayer.Data.Role is JailorRole ||
+            (PlayerControl.LocalPlayer.IsJailed() || PlayerControl.LocalPlayer.Data.Role is JailorRole ||
             (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true }) ||
             (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat));
 
@@ -457,10 +450,10 @@ public static class HudManagerPatches
                     (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
                     (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
                     SnitchRole.SnitchVisibilityFlag(player, true) ||
-                    !TutorialManager.InstanceExists && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
+                    (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
                     SleuthModifier.SleuthVisibilityFlag(player) ||
-                    MayorRole.MayorVisibilityFlag(player)))
+                    MayorRole.MayorVisibilityFlag(player))
                 {
                     color = role.TeamColor;
                     roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color></size>";
@@ -477,9 +470,9 @@ public static class HudManagerPatches
                     if (SleuthModifier.SleuthVisibilityFlag(player) || (player.Data.IsDead && role is not PhantomTouRole or GuardianAngelRole or HaunterRole))
                     {
                         var roleWhenAlive = player.GetRoleWhenAlive();
-                        color = roleWhenAlive!.TeamColor;
+                        color = roleWhenAlive.TeamColor;
 
-                        roleName = $"<size=80%>{color.ToTextColor()}{roleWhenAlive!.NiceName}</color></size>";
+                        roleName = $"<size=80%>{color.ToTextColor()}{roleWhenAlive.NiceName}</color></size>";
                         if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
                     }
                 }
@@ -542,8 +535,8 @@ public static class HudManagerPatches
         }
         else
         {
-            var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
-            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId);
+            var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
 
             foreach (var player in PlayerControl.AllPlayerControls)
             {
@@ -570,7 +563,7 @@ public static class HudManagerPatches
                 if ((player.HasModifier<ExecutionerTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ExecutionerRole>())
                     || (player.HasModifier<ExecutionerTargetModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
                     playerName += "<color=#643B1F> X</color>";
-                    
+
                 if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole) && !body && !fakePlayer?.body)
                     playerName += "<color=#D94291> $</color>";
 
@@ -645,9 +638,9 @@ public static class HudManagerPatches
                     (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
                     (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
                     SnitchRole.SnitchVisibilityFlag(player, true) ||
-                    !TutorialManager.InstanceExists && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body) ||
+                    (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
-                    MayorRole.MayorVisibilityFlag(player)))
+                    MayorRole.MayorVisibilityFlag(player))
                 {
                     color = role.TeamColor;
                     roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color></size>";
@@ -664,9 +657,9 @@ public static class HudManagerPatches
                     if (SleuthModifier.SleuthVisibilityFlag(player) || (player.Data.IsDead && role is not PhantomTouRole or GuardianAngelRole or HaunterRole))
                     {
                         var roleWhenAlive = player.GetRoleWhenAlive();
-                        color = roleWhenAlive!.TeamColor;
+                        color = roleWhenAlive.TeamColor;
 
-                        roleName = $"<size=80%>{color.ToTextColor()}{roleWhenAlive!.NiceName}</color></size>";
+                        roleName = $"<size=80%>{color.ToTextColor()}{roleWhenAlive.NiceName}</color></size>";
                         if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
                     }
                 }
@@ -693,7 +686,7 @@ public static class HudManagerPatches
                 if (!string.IsNullOrEmpty(roleName))
                 {
                     if (TownOfUsPlugin.ColorPlayerName.Value) playerName = $"{roleName}\n{color.ToTextColor()}{playerName}</color>";
-                    else  playerName = $"{roleName}\n{playerName}";
+                    else playerName = $"{roleName}\n{playerName}";
                 }
 
                 player.cosmetics.nameText.text = playerName;
@@ -731,8 +724,11 @@ public static class HudManagerPatches
     }
     public static void UpdateRoleList(HudManager instance)
     {
-        if (RoleList != null) RoleList.SetActive(false);
-        if (!LobbyBehaviour.Instance) return;
+        if (!LobbyBehaviour.Instance)
+        {
+            if (RoleList != null) RoleList.Destroy();
+            return;
+        }
 
         if (RoleList == null)
         {
@@ -740,9 +736,11 @@ public static class HudManagerPatches
             RoleList = UnityEngine.Object.Instantiate(pingTracker.gameObject, instance.transform);
             RoleList.name = "RoleListText";
             RoleList.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(-4.9f, 5.9f);
+            RoleList.SetActive(false);
         }
         else
         {
+            RoleList.SetActive(false);
             var objText = RoleList.GetComponent<TextMeshPro>();
             var rolelistBuilder = new StringBuilder();
 

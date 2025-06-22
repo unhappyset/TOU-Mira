@@ -29,8 +29,9 @@ public static class ZoomEvents
     }
 
     [RegisterEvent]
-    public static void ReportBodyEventHandler(ReportBodyEvent @event)
+    public static void StartMeetingEventHandler(StartMeetingEvent @event)
     {
         HudManagerPatches.ResetZoom();
+        HudManagerPatches.ZoomButton.SetActive(false);
     }
 }

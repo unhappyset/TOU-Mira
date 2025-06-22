@@ -39,6 +39,8 @@ public sealed class PhantomTouRole(IntPtr cppPtr) : NeutralGhostRole(cppPtr), IT
     public bool CompletedAllTasks { get; private set; }
     public bool GhostActive => Setup && !Caught;
 
+    public bool MetWinCon => CompletedAllTasks;
+
     public override void UseAbility()
     {
         if (GhostActive) return;

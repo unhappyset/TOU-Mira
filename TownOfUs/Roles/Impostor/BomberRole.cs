@@ -30,7 +30,6 @@ public sealed class BomberRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     {
         Icon = TouRoleIcons.Bomber,
         CanUseVent = OptionGroupSingleton<BomberOptions>.Instance.BomberVent,
-        MaxRoleCount = 1,
     };
 
     [HideFromIl2Cpp]

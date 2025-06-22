@@ -16,6 +16,7 @@ using TownOfUs.Modifiers.Game.Impostor;
 using MiraAPI.PluginLoading;
 using Il2CppSystem.Linq;
 using TownOfUs.Roles.Neutral;
+using MiraAPI.Roles;
 
 namespace TownOfUs.Modifiers.Game;
 
@@ -205,12 +206,12 @@ public abstract class AssassinModifier : ExcludedGameModifier
             return options.AssassinGuessInvest;
         }
 
-        if (role.IsCrewmate() && role is not CrewmateRole)
+        if (role.IsCrewmate() && role is ICustomRole)
         {
             return true;
         }
 
-        if (role is CrewmateRole && OptionGroupSingleton<AssassinOptions>.Instance.AssassinCrewmateGuess)
+        if (role.IsCrewmate() && OptionGroupSingleton<AssassinOptions>.Instance.AssassinCrewmateGuess)
         {
             return true;
         }
@@ -240,6 +241,20 @@ public abstract class AssassinModifier : ExcludedGameModifier
 
     private static bool IsModifierValid(BaseModifier modifier)
     {
+        var isValid = true;
+        // This will remove modifiers that alter their chance/amount
+        if ((modifier is TouGameModifier touMod && (touMod.CustomAmount <= 0 || touMod.CustomChance <= 0)) ||
+            (modifier is AllianceGameModifier allyMod && (allyMod.CustomAmount <= 0 || allyMod.CustomChance <= 0)) ||
+            (modifier is UniversalGameModifier uniMod && (uniMod.CustomAmount <= 0 || uniMod.CustomChance <= 0)))
+        {
+            isValid = false;
+        }
+
+        if (!isValid)
+        {
+            return false;
+        }
+
         if (OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessAlliances && modifier is AllianceGameModifier)
         {
             return true;

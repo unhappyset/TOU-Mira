@@ -22,5 +22,5 @@ public sealed class GrenadierOptions : AbstractOptionGroup<GrenadierRole>
     public float FlashRadius { get; set; } = 1f;
 
     [ModdedToggleOption("Grenadier Can Vent")]
-    public bool CanVent { get; set; } = false;
+    public bool CanVent { get; set; } = true;
 }

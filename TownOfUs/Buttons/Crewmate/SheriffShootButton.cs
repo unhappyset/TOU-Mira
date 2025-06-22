@@ -85,6 +85,11 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
         {
             return;
         }
+        
+        if (Target.HasModifier<BaseShieldModifier>())
+        {
+            return;
+        }
 
         var alignment = RoleAlignment.CrewmateSupport;
         var options = OptionGroupSingleton<SheriffOptions>.Instance;
@@ -93,7 +98,7 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
             alignment = touRole.RoleAlignment;
         else if (Target.IsImpostor())
             alignment = RoleAlignment.ImpostorSupport;
-        if (!PlayerControl.LocalPlayer.HasModifier<AllianceGameModifier>() && !Target.HasModifier<AllianceGameModifier>())
+        if (!(PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished) && !(Target.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
         {
             switch (alignment)
             {
