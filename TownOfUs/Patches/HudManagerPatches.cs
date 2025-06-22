@@ -37,7 +37,9 @@ public static class HudManagerPatches
     public static GameObject WikiButton;
     public static GameObject RoleList;
     public static GameObject TeamChatButton;
+
     public static bool Zooming;
+
     public static void ResizeUI(float scaleFactor)
     {
         foreach (AspectPosition aspect in HudManager.Instance.transform.FindChild("Buttons").GetComponentsInChildren<AspectPosition>(true))
@@ -63,6 +65,7 @@ public static class HudManagerPatches
             arrange.ArrangeChilds();
         }
     }
+
     public static void Zoom()
     {
         if (MeetingHud.Instance)
@@ -89,6 +92,7 @@ public static class HudManagerPatches
         if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
+
     public static void ScrollZoom(bool zoomOut = false)
     {
         if (MeetingHud.Instance)
@@ -119,6 +123,7 @@ public static class HudManagerPatches
         if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
+
     public static void ResetZoom()
     {
         Zooming = false;
@@ -134,7 +139,7 @@ public static class HudManagerPatches
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
 
-    public static void CheckForScrollZoom()
+    private static void CheckForScrollZoom()
     {
         if (Input.GetAxis("Mouse ScrollWheel") > 0 || ConsoleJoystick.player.GetAxisRaw(55) > 0)
         {
@@ -145,114 +150,8 @@ public static class HudManagerPatches
             ScrollZoom(true);
         }
     }
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    [HarmonyPostfix]
-    public static void HudManagerUpdatePatch(HudManager __instance)
-    {
-        var isChatButtonVisible = HudManager.Instance.Chat.isActiveAndEnabled;
 
-        if (!ZoomButton)
-        {
-            ZoomButton =
-                UnityEngine.Object.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
-            ZoomButton.GetComponent<PassiveButton>().OnClick = new();
-            ZoomButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(Zoom));
-            ZoomButton.name = "Zoom";
-            ZoomButton.transform.Find("Background").localPosition = Vector3.zero;
-            ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite =
-                TouAssets.ZoomMinus.LoadAsset();
-            ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite =
-                TouAssets.ZoomMinusActive.LoadAsset();
-        }
-        if (ZoomButton)
-        {
-            var aspectPosition = ZoomButton.GetComponentInChildren<AspectPosition>();
-            var distanceFromEdge = aspectPosition.DistanceFromEdge;
-            distanceFromEdge.x = isChatButtonVisible ? 2.73f : 2.15f;
-            distanceFromEdge.y = 0.485f;
-            aspectPosition.DistanceFromEdge = distanceFromEdge;
-            aspectPosition.AdjustPosition();
-        }
-
-        if (!TeamChatButton)
-        {
-            TeamChatButton =
-                UnityEngine.Object.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
-            TeamChatButton.GetComponent<PassiveButton>().OnClick = new();
-            TeamChatButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(TeamChatPatches.ToggleTeamChat));
-            TeamChatButton.name = "FactionChat";
-            TeamChatButton.transform.Find("Background").localPosition = Vector3.zero;
-            TeamChatButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatInactive.LoadAsset();
-            TeamChatButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatActive.LoadAsset();
-            TeamChatButton.transform.Find("Selected").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatSelected.LoadAsset();
-        }
-
-        if (!WikiButton)
-        {
-            WikiButton =
-                UnityEngine.Object.Instantiate(__instance.MapButton.gameObject, __instance.MapButton.transform.parent);
-            WikiButton.GetComponent<PassiveButton>().OnClick = new();
-            WikiButton.GetComponent<PassiveButton>().OnClick.AddListener((UnityAction)(() =>
-            {
-                if (Minigame.Instance)
-                {
-                    return;
-                }
-
-                IngameWikiMinigame.Create().Begin(null);
-            }));
-            WikiButton.transform.Find("Background").localPosition = Vector3.zero;
-            WikiButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite =
-                TouAssets.WikiButton.LoadAsset();
-            WikiButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite =
-                TouAssets.WikiButtonActive.LoadAsset();
-        }
-        if (WikiButton)
-        {
-            var aspectPosition = WikiButton.GetComponentInChildren<AspectPosition>();
-            var distanceFromEdge = aspectPosition.DistanceFromEdge;
-            distanceFromEdge.x = isChatButtonVisible ? 2.73f : 2.15f;
-            if (((ModCompatibility.IsWikiButtonOffset && !ZoomButton.active) || ZoomButton.active) && (!MeetingHud.Instance) && Minigame.Instance == null && (PlayerJoinPatch.SentOnce || TutorialManager.InstanceExists)) distanceFromEdge.x += 0.84f;
-            if (TeamChatButton.active) distanceFromEdge.x += 0.84f;
-            distanceFromEdge.y = 0.485f;
-            WikiButton.SetActive(true);
-            aspectPosition.DistanceFromEdge = distanceFromEdge;
-            aspectPosition.AdjustPosition();
-        }
-
-        UpdateRoleList(__instance);
-        if (PlayerControl.LocalPlayer != null) UpdateColorNameText(__instance);
-
-        if (PlayerControl.LocalPlayer == null ||
-            PlayerControl.LocalPlayer.Data == null ||
-            PlayerControl.LocalPlayer.Data.Role == null ||
-            !ShipStatus.Instance ||
-            (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started &&
-             !TutorialManager.InstanceExists))
-        {
-            return;
-        }
-            var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
-            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId);
-
-        if (((PlayerControl.LocalPlayer.Data.IsDead && !body && !fakePlayer?.body && (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } || PlayerControl.LocalPlayer.Data.Role is not IGhostRole)) || TutorialManager.InstanceExists)
-            && Input.GetAxis("Mouse ScrollWheel") != 0 && !MeetingHud.Instance && Minigame.Instance == null && !HudManager.Instance.Chat.IsOpenOrOpening)
-        {
-            CheckForScrollZoom();
-        }
-        UpdateTeamChat(__instance);
-        UpdateCamouflageComms(__instance);
-        UpdateRoleNameText(__instance);
-        UpdateGhostRoles(__instance);
-    }
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
-    [HarmonyPostfix]
-    public static void HudManagerStartPatch(HudManager __instance)
-    {
-        ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
-    }
-
-    public static void UpdateTeamChat(HudManager instance)
+    private static void UpdateTeamChat(HudManager instance)
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 
@@ -272,14 +171,15 @@ public static class HudManagerPatches
             aspectPosition.AdjustPosition();
             TeamChatButton.transform.Find("Selected").gameObject.SetActive(false);
             if (TeamChatPatches.TeamChatActive)
-            { 
+            {
                 TeamChatButton.transform.Find("Inactive").gameObject.SetActive(false);
                 TeamChatButton.transform.Find("Active").gameObject.SetActive(false);
                 TeamChatButton.transform.Find("Selected").gameObject.SetActive(true);
             }
         }
     }
-    public static void UpdateCamouflageComms(HudManager instance)
+
+    private static void UpdateCamouflageComms(HudManager instance)
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 
@@ -322,7 +222,7 @@ public static class HudManagerPatches
         }
     }
 
-    public static void UpdateColorNameText(HudManager instance)
+    private static void UpdateColorNameText(HudManager instance)
     {
         if (MeetingHud.Instance)
         {
@@ -339,7 +239,8 @@ public static class HudManagerPatches
             }
         }
     }
-    public static void UpdateRoleNameText(HudManager instance)
+
+    private static void UpdateRoleNameText(HudManager instance)
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
         var taskopt = OptionGroupSingleton<TaskTrackingOptions>.Instance;
@@ -441,7 +342,7 @@ public static class HudManagerPatches
 
                 if (HaunterRole.HaunterVisibilityFlag(player))
                     playerColor = color;
-                
+
                 color = Color.white;
 
                 var roleName = "";
@@ -526,7 +427,7 @@ public static class HudManagerPatches
                 if (!string.IsNullOrEmpty(roleName))
                 {
                     if (TownOfUsPlugin.ColorPlayerName.Value) playerName = $"{roleName}\n{color.ToTextColor()}{playerName}</color>";
-                    else  playerName = $"{roleName}\n{playerName}";
+                    else playerName = $"{roleName}\n{playerName}";
                 }
 
                 playerVA.NameText.text = playerName;
@@ -696,7 +597,7 @@ public static class HudManagerPatches
         }
     }
 
-    public static void UpdateGhostRoles(HudManager instance)
+    private static void UpdateGhostRoles(HudManager instance)
     {
         foreach (var phantom in CustomRoleUtils.GetActiveRolesOfType<PhantomTouRole>())
         {
@@ -710,6 +611,7 @@ public static class HudManagerPatches
             haunter.FadeUpdate(instance);
         }
     }
+
     private static string GetRoleForSlot(int slotValue)
     {
         var roleListText = RoleOptions.OptionStrings.ToList();
@@ -722,7 +624,8 @@ public static class HudManagerPatches
             return "<color=#696969>Unknown</color>";
         }
     }
-    public static void UpdateRoleList(HudManager instance)
+
+    private static void UpdateRoleList(HudManager instance)
     {
         if (!LobbyBehaviour.Instance)
         {
@@ -790,5 +693,139 @@ public static class HudManagerPatches
 
             RoleList.SetActive(true);
         }
+    }
+
+    private static void CreateZoomButton(HudManager instance)
+    {
+        var isChatButtonVisible = HudManager.Instance.Chat.isActiveAndEnabled;
+
+        if (!ZoomButton)
+        {
+            ZoomButton =
+                UnityEngine.Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
+            ZoomButton.GetComponent<PassiveButton>().OnClick = new();
+            ZoomButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(Zoom));
+            ZoomButton.name = "Zoom";
+            ZoomButton.transform.Find("Background").localPosition = Vector3.zero;
+            ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite =
+                TouAssets.ZoomMinus.LoadAsset();
+            ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite =
+                TouAssets.ZoomMinusActive.LoadAsset();
+        }
+
+        if (ZoomButton)
+        {
+            var aspectPosition = ZoomButton.GetComponentInChildren<AspectPosition>();
+            var distanceFromEdge = aspectPosition.DistanceFromEdge;
+            distanceFromEdge.x = isChatButtonVisible ? 2.73f : 2.15f;
+            distanceFromEdge.y = 0.485f;
+            aspectPosition.DistanceFromEdge = distanceFromEdge;
+            aspectPosition.AdjustPosition();
+        }
+    }
+
+    private static void CreateTeamChatButton(HudManager instance)
+    {
+        if (!TeamChatButton)
+        {
+            TeamChatButton =
+                UnityEngine.Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
+            TeamChatButton.GetComponent<PassiveButton>().OnClick = new();
+            TeamChatButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(TeamChatPatches.ToggleTeamChat));
+            TeamChatButton.name = "FactionChat";
+            TeamChatButton.transform.Find("Background").localPosition = Vector3.zero;
+            TeamChatButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatInactive.LoadAsset();
+            TeamChatButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatActive.LoadAsset();
+            TeamChatButton.transform.Find("Selected").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatSelected.LoadAsset();
+        }
+    }
+
+    private static void CreateWikiButton(HudManager instance)
+    {
+        var isChatButtonVisible = HudManager.Instance.Chat.isActiveAndEnabled;
+
+        if (!WikiButton)
+        {
+            WikiButton = UnityEngine.Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
+            WikiButton.GetComponent<PassiveButton>().OnClick = new();
+            WikiButton.GetComponent<PassiveButton>().OnClick.AddListener((UnityAction)(() =>
+            {
+                if (Minigame.Instance)
+                {
+                    return;
+                }
+
+                IngameWikiMinigame.Create().Begin(null);
+            }));
+
+            WikiButton.transform.Find("Background").localPosition = Vector3.zero;
+            WikiButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite =
+                TouAssets.WikiButton.LoadAsset();
+            WikiButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite =
+                TouAssets.WikiButtonActive.LoadAsset();
+        }
+
+        if (WikiButton)
+        {
+            var aspectPosition = WikiButton.GetComponentInChildren<AspectPosition>();
+            var distanceFromEdge = aspectPosition.DistanceFromEdge;
+            distanceFromEdge.x = isChatButtonVisible ? 2.73f : 2.15f;
+            
+            if (((ModCompatibility.IsWikiButtonOffset && !ZoomButton.active) || ZoomButton.active) && (!MeetingHud.Instance) && Minigame.Instance == null && (PlayerJoinPatch.SentOnce || TutorialManager.InstanceExists)) distanceFromEdge.x += 0.84f;
+            
+            if (TeamChatButton.active) distanceFromEdge.x += 0.84f;
+
+            distanceFromEdge.y = 0.485f;
+            WikiButton.SetActive(true);
+            aspectPosition.DistanceFromEdge = distanceFromEdge;
+            aspectPosition.AdjustPosition();
+        }
+    }
+
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    [HarmonyPostfix]
+    public static void HudManagerUpdatePatch(HudManager __instance)
+    {
+        CreateZoomButton(__instance);
+        CreateTeamChatButton(__instance);
+        CreateWikiButton(__instance);
+
+        UpdateRoleList(__instance);
+
+        if (PlayerControl.LocalPlayer != null)
+        {
+            UpdateColorNameText(__instance);
+        }
+
+        if (PlayerControl.LocalPlayer == null ||
+            PlayerControl.LocalPlayer.Data == null ||
+            PlayerControl.LocalPlayer.Data.Role == null ||
+            !ShipStatus.Instance ||
+            (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started &&
+             !TutorialManager.InstanceExists))
+        {
+            return;
+        }
+            
+        var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
+        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId);
+
+        if (((PlayerControl.LocalPlayer.Data.IsDead && !body && !fakePlayer?.body && (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } || PlayerControl.LocalPlayer.Data.Role is not IGhostRole)) || TutorialManager.InstanceExists)
+            && Input.GetAxis("Mouse ScrollWheel") != 0 && !MeetingHud.Instance && Minigame.Instance == null && !HudManager.Instance.Chat.IsOpenOrOpening)
+        {
+            CheckForScrollZoom();
+        }
+
+        UpdateTeamChat(__instance);
+        UpdateCamouflageComms(__instance);
+        UpdateRoleNameText(__instance);
+        UpdateGhostRoles(__instance);
+    }
+
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
+    [HarmonyPostfix]
+    public static void HudManagerStartPatch(HudManager __instance)
+    {
+        ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
     }
 }
