@@ -8,7 +8,7 @@ namespace TownOfUs.Options;
 public sealed class GeneralOptions : AbstractOptionGroup
 {
     public override string GroupName => "General";
-    public override uint GroupPriority => 2;
+    public override uint GroupPriority => 1;
 
     [ModdedEnumOption("Modifier Type To Show In Role Intro", typeof(ModReveal))]
     public ModReveal ModifierReveal { get; set; } = ModReveal.Faction;
