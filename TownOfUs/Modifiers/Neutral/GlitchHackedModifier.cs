@@ -47,6 +47,11 @@ public sealed class GlitchHackedModifier(byte glitchId) : TimedModifier
             }
         }
     }
+    
+    public override void OnDeath(DeathReason reason)
+    {
+        ModifierComponent!.RemoveModifier(this);
+    }
 
     public void ShowHacked()
     {

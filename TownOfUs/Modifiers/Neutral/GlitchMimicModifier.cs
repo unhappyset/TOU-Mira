@@ -27,6 +27,11 @@ public sealed class GlitchMimicModifier(PlayerControl target) : ConcealedModifie
         var touAbilityEvent = new TouAbilityEvent(AbilityType.GlitchMimic, Player, target);
         MiraEventManager.InvokeEvent(touAbilityEvent);
     }
+    
+    public override void OnDeath(DeathReason reason)
+    {
+        ModifierComponent!.RemoveModifier(this);
+    }
 
     public override void OnDeactivate()
     {

@@ -27,6 +27,8 @@ using System.Text;
 using TownOfUs.Patches.Options;
 using TownOfUs.Roles.Impostor;
 using Reactor.Utilities.Extensions;
+using Reactor.Utilities;
+using System.Collections;
 
 namespace TownOfUs.Patches;
 
@@ -62,7 +64,7 @@ public static class HudManagerPatches
             arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
             arrange.CellSize = new Vector2(scaleFactor, scaleFactor);
             arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
-            arrange.ArrangeChilds();
+            if (arrange.gameObject.transform.childCount != 0) arrange.ArrangeChilds();
         }
     }
 
@@ -826,6 +828,11 @@ public static class HudManagerPatches
     [HarmonyPostfix]
     public static void HudManagerStartPatch(HudManager __instance)
     {
+        Coroutines.Start(CoResizeUI());
+    }
+    private static IEnumerator CoResizeUI()
+    {
+        while (!HudManager.Instance) yield return null;
         ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
     }
 }
