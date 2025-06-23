@@ -118,7 +118,7 @@ public static class LocalSettings
             },
             new()
             {
-                Title = "Precise Cooldowns",
+                Title = "Button Cooldowns are in Decimal Under 10s",
                 ObjName = "PreciseCooldowns",
                 OnClick = () => { return TownOfUsPlugin.PreciseCooldowns.Value = !TownOfUsPlugin.PreciseCooldowns.Value; },
                 DefaultValue = TownOfUsPlugin.PreciseCooldowns.Value
