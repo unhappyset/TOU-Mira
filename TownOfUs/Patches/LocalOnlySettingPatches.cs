@@ -116,6 +116,13 @@ public static class LocalSettings
                 OnClick = () => { return TownOfUsPlugin.SortGuessingByAlignment.Value = !TownOfUsPlugin.SortGuessingByAlignment.Value; },
                 DefaultValue = TownOfUsPlugin.SortGuessingByAlignment.Value
             },
+            new()
+            {
+                Title = "Precise Cooldowns",
+                ObjName = "PreciseCooldowns",
+                OnClick = () => { return TownOfUsPlugin.PreciseCooldowns.Value = !TownOfUsPlugin.PreciseCooldowns.Value; },
+                DefaultValue = TownOfUsPlugin.PreciseCooldowns.Value
+            },
         ];
 
     private static GameObject popUp;
@@ -173,8 +180,19 @@ public static class LocalSettings
         Object.Destroy(popUp.GetComponent<OptionsMenuBehaviour>());
         foreach (var gObj in popUp.gameObject.GetAllChilds())
         {
-            if (gObj.name != "Background" && gObj.name != "CloseButton")
+            if (gObj.name == "Background")
+            {
+                var scale = gObj.transform.localScale;
+                gObj.transform.localScale = new Vector3(scale.x * 1.35f, scale.y, scale.z);
+            }
+            else if (gObj.name == "CloseButton")
+            {
+                gObj.transform.localPosition += Vector3.left * 0.45f;
+            }
+            else
+            {
                 Object.Destroy(gObj);
+            }
         }
 
         popUp.SetActive(false);
@@ -252,7 +270,7 @@ public static class LocalSettings
             var info = AllOptions[i];
 
             var button = Object.Instantiate(buttonPrefab, popUp.transform);
-            var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
+            var pos = new Vector3(-2.34f + (i % 3) * 2.34f, 1.3f - i / 3 * 0.8f, -.5f);
 
             var transform = button.transform;
             transform.localPosition = pos;
