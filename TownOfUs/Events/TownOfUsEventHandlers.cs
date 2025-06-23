@@ -75,10 +75,18 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void ChangeRoleHandler(ChangeRoleEvent @event)
     {
-        if (!MeetingHud.Instance && @event.Player.AmOwner)
+        var player = @event.Player;
+        if (!MeetingHud.Instance && player.AmOwner)
         {
             HudManager.Instance.SetHudActive(false);
             HudManager.Instance.SetHudActive(true);
+        }
+
+        // Should make a converted imitator into whatever role they become after the next meeting starts
+        if (player.TryGetModifier<ImitatorCacheModifier>(out var imi))
+        {
+            if (!player.IsCrewmate()) player.RemoveModifier<ImitatorCacheModifier>();
+            else imi.OldRole = @event.NewRole;
         }
     }
 
@@ -98,6 +106,7 @@ public static class TownOfUsEventHandlers
             player.MyPhysics.ResetAnimState();
             player.MyPhysics.ResetMoveState();
         }
+        FakePlayer.ClearAll();
     }
 
     [RegisterEvent]

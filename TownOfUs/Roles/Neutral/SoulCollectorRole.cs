@@ -4,7 +4,6 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
-using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Patches.Stubs;
@@ -52,18 +51,6 @@ public sealed class SoulCollectorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITow
     }
 
     public bool HasImpostorVision => true;
-
-    public override void OnMeetingStart()
-    {
-        RoleStubs.RoleBehaviourOnMeetingStart(this);
-
-        FakePlayer.ClearAll();
-    }
-
-    public void LobbyStart()
-    {
-        FakePlayer.ClearAll();
-    }
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
