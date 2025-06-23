@@ -8,7 +8,7 @@ namespace TownOfUs.Options;
 public sealed class AssassinOptions : AbstractOptionGroup
 {
     public override string GroupName => "Assassin Options";
-    public override uint GroupPriority => 5;
+    public override uint GroupPriority => 7;
 
     [ModdedNumberOption("Number Of Impostor Assassins", 0, 4, 1, MiraNumberSuffixes.None, "0")]
     public float NumberOfImpostorAssassins { get; set; } = 1;

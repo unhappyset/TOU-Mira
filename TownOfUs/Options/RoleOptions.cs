@@ -8,7 +8,7 @@ namespace TownOfUs.Options;
 public sealed class RoleOptions : AbstractOptionGroup
 {
     public override string GroupName => "Role";
-    public override uint GroupPriority => 3;
+    public override uint GroupPriority => 2;
 
     public static readonly string[] OptionStrings =
     [
