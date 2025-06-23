@@ -7,10 +7,10 @@ namespace TownOfUs.Options;
 
 public sealed class GameTimerOptions : AbstractOptionGroup
 {
-    public override string GroupName => "Game Timer";
-    public override uint GroupPriority => 6;
+    public override string GroupName => "Impostor End Game Timer";
+    public override uint GroupPriority => 3;
 
-    [ModdedToggleOption("Game Timer")]
+    [ModdedToggleOption("Impostor Game Timer")]
     public bool GameTimerEnabled { get; set; } = false;
     
     public ModdedNumberOption GameTimeLimit { get; } = new ModdedNumberOption("Game Time Limit", 3f, 1f, 12f, 0.5f, MiraNumberSuffixes.None, "0.0m")

@@ -7,7 +7,7 @@ namespace TownOfUs.Options;
 public sealed class BetterMapOptions : AbstractOptionGroup
 {
     public override string GroupName => "Better Polus";
-    public override uint GroupPriority => 3;
+    public override uint GroupPriority => 5;
     public override Func<bool> GroupVisible => () =>
         (GameOptionsManager.Instance.currentGameOptions.MapId == (int)ShipStatus.MapType.Pb) || (OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps && OptionGroupSingleton<TownOfUsMapOptions>.Instance.PolusChance > 0);
 

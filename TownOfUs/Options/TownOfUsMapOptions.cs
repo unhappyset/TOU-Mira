@@ -8,7 +8,7 @@ namespace TownOfUs.Options;
 public sealed class TownOfUsMapOptions : AbstractOptionGroup
 {
     public override string GroupName => "Map Options";
-    public override uint GroupPriority => 3;
+    public override uint GroupPriority => 6;
 
     [ModdedToggleOption("Enable Random Maps")]
     public bool RandomMaps { get; set; } = false;
