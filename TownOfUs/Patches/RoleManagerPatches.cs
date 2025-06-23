@@ -1,8 +1,10 @@
 ﻿using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Options;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
@@ -642,6 +644,9 @@ public static class TouRoleManagerPatches
         messageWriter.Write((ushort)roleType);
         messageWriter.Write(canOverrideRole);
         AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+
+        var changeRoleEvent = new ChangeRoleEvent(__instance, null, RoleManager.Instance.GetRole(roleType));
+        MiraEventManager.InvokeEvent(changeRoleEvent);
 
         return false;
     }

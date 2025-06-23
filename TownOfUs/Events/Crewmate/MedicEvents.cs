@@ -1,11 +1,13 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 
@@ -78,12 +80,13 @@ public static class MedicEvents
 
     private static void ResetButtonTimer(PlayerControl source, CustomActionButton<PlayerControl>? button = null)
     {
-        button?.SetTimer(button.Cooldown);
+        var reset = OptionGroupSingleton<GeneralOptions>.Instance.TempSaveCdReset;
+
+        button?.SetTimer(reset);
 
         // Reset impostor kill cooldown if they attack a shielded player
         if (!source.AmOwner || !source.IsImpostor()) return;
 
-        var killCooldown = source.GetKillCooldown(); // GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
-        source.SetKillTimer(killCooldown);
+        source.SetKillTimer(reset);
     }
 }

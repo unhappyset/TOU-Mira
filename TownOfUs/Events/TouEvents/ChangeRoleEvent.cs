@@ -14,7 +14,7 @@ public class ChangeRoleEvent : MiraEvent
     /// <summary>
     /// Gets the Role of the player prior to the role being changed.
     /// </summary>
-    public RoleBehaviour OldRole { get; }
+    public RoleBehaviour? OldRole { get; }
     /// <summary>
     /// Gets the Role of the player after the role is changed.
     /// </summary>
@@ -26,7 +26,7 @@ public class ChangeRoleEvent : MiraEvent
     /// <param name="player">The player.</param>
     /// <param name="oldRole">The player's previous role.</param>
     /// <param name="newRole">The player's new role.</param>
-    public ChangeRoleEvent(PlayerControl player, RoleBehaviour oldRole, RoleBehaviour newRole)
+    public ChangeRoleEvent(PlayerControl player, RoleBehaviour? oldRole, RoleBehaviour newRole)
     {
         Player = player;
         OldRole = oldRole;

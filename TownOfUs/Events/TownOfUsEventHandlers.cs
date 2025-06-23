@@ -75,6 +75,8 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void ChangeRoleHandler(ChangeRoleEvent @event)
     {
+        if (!PlayerControl.LocalPlayer) return;
+
         var player = @event.Player;
         if (!MeetingHud.Instance && player.AmOwner)
         {
@@ -85,7 +87,7 @@ public static class TownOfUsEventHandlers
         // Should make a converted imitator into whatever role they become after the next meeting starts
         if (player.TryGetModifier<ImitatorCacheModifier>(out var imi))
         {
-            if (!player.IsCrewmate()) player.RemoveModifier<ImitatorCacheModifier>();
+            if (!@event.NewRole.IsCrewmate()) player.RemoveModifier<ImitatorCacheModifier>();
             else imi.OldRole = @event.NewRole;
         }
     }

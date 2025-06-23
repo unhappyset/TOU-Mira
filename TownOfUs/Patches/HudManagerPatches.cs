@@ -277,6 +277,12 @@ public static class HudManagerPatches
                 if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole))
                     playerName += "<color=#D94291> $</color>";
 
+                if (PlayerControl.LocalPlayer.Data.Role is HunterRole && player.HasModifier<HunterStalkedModifier>(x => x.Hunter == PlayerControl.LocalPlayer))
+                    playerName += "<color=#29AB87> &</color>";
+
+                if (PlayerControl.LocalPlayer.Data.Role is HunterRole hunter && hunter.CaughtPlayers.Contains(player))
+                    playerName += "<color=#21453B> &</color>";
+
                 if (player.HasModifier<MercenaryBribedModifier>(x => x.Mercenary == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MercenaryRole>())
                 {
                     playerColor = Color.green;
@@ -469,6 +475,12 @@ public static class HudManagerPatches
 
                 if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole) && !body && !fakePlayer?.body)
                     playerName += "<color=#D94291> $</color>";
+
+                if (PlayerControl.LocalPlayer.Data.Role is HunterRole && player.HasModifier<HunterStalkedModifier>(x => x.Hunter == PlayerControl.LocalPlayer))
+                    playerName += "<color=#29AB87> &</color>";
+
+                if (PlayerControl.LocalPlayer.Data.Role is HunterRole hunter && hunter.CaughtPlayers.Contains(player))
+                    playerName += "<color=#21453B> &</color>";
 
                 if (player.HasModifier<MercenaryBribedModifier>(x => x.Mercenary == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MercenaryRole>())
                 {
@@ -833,6 +845,7 @@ public static class HudManagerPatches
     private static IEnumerator CoResizeUI()
     {
         while (!HudManager.Instance) yield return null;
+        yield return new WaitForSeconds(0.01f);
         ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
     }
 }

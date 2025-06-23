@@ -1,12 +1,15 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
+using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Buttons.Crewmate;
+using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -82,7 +85,18 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
-        return ITownOfUsRole.SetNewTabText(this);
+        var stringB = ITownOfUsRole.SetNewTabText(this);
+        var stalkedPlayer = ModifierUtils.GetPlayersWithModifier<HunterStalkedModifier>(x => x.Hunter == PlayerControl.LocalPlayer).FirstOrDefault();
+        var stalked = (stalkedPlayer != null && !stalkedPlayer.HasDied()) ? stalkedPlayer.Data.PlayerName : "Nobody";
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"Stalking: <b>{stalked}</b>");
+        if (CaughtPlayers.Count != 0) stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Caught Players:</b>");
+        foreach (var player in CaughtPlayers)
+        {
+            var newText = $"<b><size=80%>{player.Data.PlayerName}</size></b>";
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
+        }
+
+        return stringB;
     }
     
     public string GetAdvancedDescription()
