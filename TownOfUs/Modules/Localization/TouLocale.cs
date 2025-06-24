@@ -1,6 +1,4 @@
-﻿using Reactor.Utilities;
-using UnityEngine;
-using UnityEngine.SocialPlatforms;
+﻿using UnityEngine;
 
 namespace TownOfUs.Modules.Localization;
 
@@ -24,6 +22,8 @@ public static class TouLocale
 
     public static void Initialize()
     {
+        var logger = BepInEx.Logging.Logger.CreateLogSource("TouLocale");
+
         Directory.CreateDirectory(LocaleDirectory);
         var translations = Directory.GetFiles(LocaleDirectory, "*.txt");
         foreach (var language in Enum.GetValues<SupportedLangs>())
@@ -36,7 +36,7 @@ public static class TouLocale
             var localeName = Path.GetFileNameWithoutExtension(file);
             if (!Enum.TryParse<SupportedLangs>(localeName, out var language))
             {
-                Logger<TownOfUsPlugin>.Warning($"Invalid locale name: {localeName}");
+                logger.LogWarning($"Invalid locale name: {localeName}");
                 continue;
             }
 
@@ -48,16 +48,16 @@ public static class TouLocale
                     var key = parts[0];
                     var value = parts[1];
 
-                    if (!int.TryParse(key, out var touName))
+                    if (!Enum.TryParse<TouNames>(key, out var touName))
                     {
-                        Logger<TownOfUsPlugin>.Warning("Invalid key value in translation: " + translation);
+                        logger.LogWarning("Invalid key value in translation: " + translation);
                     }
 
-                    TouLocalization[language].TryAdd((TouNames)touName, value);
+                    TouLocalization[language].TryAdd(touName, value);
                 }
                 else
                 {
-                    Logger<TownOfUsPlugin>.Warning("Invalid translation format: " + translation);
+                    logger.LogWarning("Invalid translation format: " + translation);
                 }
             }
         }

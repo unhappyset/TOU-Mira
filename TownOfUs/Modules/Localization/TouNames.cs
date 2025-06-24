@@ -4,13 +4,11 @@ public enum TouNames
 {
     Astral,
     Bomber,
-    BomberCanVent,
-    
     Swooper,
     PuppetMaster,
     Mage,
-    Sandword,
-    RCXD,
+    Sandworm,
+    Rcxd,
     Glitch,
     Morphling,
     Poisoner,

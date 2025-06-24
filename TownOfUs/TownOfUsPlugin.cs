@@ -57,6 +57,11 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
     public static ConfigEntry<bool> SortGuessingByAlignment { get; set; }
     public static ConfigEntry<bool> PreciseCooldowns { get; set; }
 
+    public TownOfUsPlugin()
+    {
+        TouLocale.Initialize();
+    }
+
     /// <summary>
     /// The Load method for the plugin.
     /// </summary>
