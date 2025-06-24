@@ -9,13 +9,13 @@ public static class TouLocale
 
     public static Dictionary<SupportedLangs, Dictionary<TouNames, string>> TouLocalization { get; } = [];
 
-    public static string Get(TouNames name)
+    public static string Get(TouNames name, string? defaultValue = null)
     {
         var currentLanguage = TranslationController.Instance.currentLanguage.languageID;
         if (!TouLocalization.TryGetValue(currentLanguage, out var translations) ||
             !translations.TryGetValue(name, out var translation))
         {
-            return Default.GetValueOrDefault(name, "STRMISS_" + name);
+            return defaultValue ?? "STRMISS_" + name;
         }
 
         return translation;
@@ -60,36 +60,4 @@ public static class TouLocale
             }
         }
     }
-
-    private static Dictionary<TouNames, string> Default { get;} = new()
-    {
-        { TouNames.Astral, "Astral" },
-        { TouNames.Bomber, "Bomber" },
-        { TouNames.BomberCanVent, "Bomber Can Vent" },
-        { TouNames.Swooper, "Swooper" },
-        { TouNames.PuppetMaster, "Puppet Master" },
-        { TouNames.Mage, "Mage" },
-        { TouNames.Sandword, "Sandword" },
-        { TouNames.RCXD, "RCXD" },
-        { TouNames.Glitch, "Glitch" },
-        { TouNames.Morphling, "Morphling" },
-        { TouNames.Poisoner, "Poisoner" },
-        { TouNames.Sniper, "Sniper" },
-        { TouNames.Veteran, "Veteran" },
-        { TouNames.Sheriff, "Sheriff" },
-        { TouNames.Transporter, "Transporter" },
-        { TouNames.Trapper, "Trapper" },
-        { TouNames.Medic, "Medic" },
-        { TouNames.Mystic, "Mystic" },
-        { TouNames.Cannibal, "Cannibal" },
-        { TouNames.Amnesiac, "Amnesiac" },
-        { TouNames.Arsonist, "Arsonist" },
-        { TouNames.Jester, "Jester" },
-        { TouNames.Vigilante, "Vigilante" },
-        { TouNames.Politician, "Politician" },
-        { TouNames.Mayor, "Mayor" },
-        { TouNames.Swapper, "Swapper" },
-        { TouNames.Engineer, "Engineer" },
-        { TouNames.Timelord, "Timelord" }
-    };
 }
