@@ -19,7 +19,7 @@ namespace TownOfUs.Roles.Impostor;
 
 public sealed class BomberRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
-    public string RoleName => TouLocale.Get(TouNames.Bomber);
+    public string RoleName => TouLocale.Get(TouNames.Bomber, "Bomber");
     public string RoleDescription => "Plant Bombs To Kill Multiple Crewmates At Once";
     public string RoleLongDescription => "Plant bombs to kill several crewmates at once";
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TrapperRole>());
@@ -65,7 +65,7 @@ public sealed class BomberRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     }
     public string GetAdvancedDescription()
     {
-        return $"The {TouLocale.Get(TouNames.Bomber)} is an Impostor Killing role that can drop a bomb on the map, which detonates after {OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay} second(s)" + MiscUtils.AppendOptionsText(GetType());
+        return $"The {TouLocale.Get(TouNames.Bomber, "Bomber")} is an Impostor Killing role that can drop a bomb on the map, which detonates after {OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay} second(s)" + MiscUtils.AppendOptionsText(GetType());
     }
 
     [HideFromIl2Cpp]
