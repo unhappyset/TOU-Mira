@@ -1,5 +1,6 @@
 ﻿using Reactor.Utilities;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 namespace TownOfUs.Modules.Localization;
 
@@ -23,6 +24,7 @@ public static class TouLocale
 
     public static void Initialize()
     {
+        Directory.CreateDirectory(LocaleDirectory);
         var translations = Directory.GetFiles(LocaleDirectory, "*.txt");
         foreach (var language in Enum.GetValues<SupportedLangs>())
         {
