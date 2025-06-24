@@ -23,6 +23,7 @@ public static class ExecutionerEvents
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>().Do(x => x.CheckTargetDeath(@event.Target));
+
         var role = @event.Source.Data.Role;
         if (@event.Source.HasDied()) role = @event.Source.GetRoleWhenAlive();
         if (role is ExecutionerRole exe && OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
