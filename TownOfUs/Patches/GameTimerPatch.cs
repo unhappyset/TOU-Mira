@@ -79,7 +79,7 @@ public static class GameTimerPatch
 
         timerText.text = $"<size=200%>Time:{colour.ToTextColor()}{ts.ToString(format: @"mm\:ss", TownOfUsPlugin.Culture)}</color></size>";
 
-        GameTimerObj.SetActive(true);
+        GameTimerObj.SetActive(!inMeeting);
     }
 
     private static void EndGame()
