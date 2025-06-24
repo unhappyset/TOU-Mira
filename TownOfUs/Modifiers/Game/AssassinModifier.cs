@@ -18,7 +18,6 @@ using Il2CppSystem.Linq;
 using TownOfUs.Roles.Neutral;
 using MiraAPI.Roles;
 using TownOfUs.Roles.Crewmate;
-using TownOfUs.Modifiers.Game.Alliance;
 
 namespace TownOfUs.Modifiers.Game;
 
@@ -176,10 +175,11 @@ public abstract class AssassinModifier : ExcludedGameModifier
         return voteArea?.TargetPlayerId == Player.PlayerId ||
             Player.Data.IsDead ||
             voteArea!.AmDead ||
-            Player.IsImpostor() && voteArea.GetPlayer()?.IsImpostor() == true ||
+            Player.IsImpostor() && voteArea.GetPlayer()?.IsImpostor() == true && !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode ||
             Player.Data.Role is VampireRole && voteArea.GetPlayer()?.Data.Role is VampireRole ||
+            voteArea.GetPlayer()?.Data.Role is MayorRole mayor && mayor.Revealed ||
             voteArea.GetPlayer() != null && voteArea.GetPlayer()?.Data.Role is SnitchRole snitch && snitch.CompletedAllTasks && SnitchRole.SnitchVisibilityFlag(voteArea.GetPlayer()!, true) ||
-            Player.HasModifier<LoverModifier>() && voteArea.GetPlayer()?.HasModifier<LoverModifier>() == true ||
+            Player.IsLover() && voteArea.GetPlayer()?.IsLover() == true ||
             voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
     }
 
