@@ -26,5 +26,6 @@ public sealed class BomberOptions : AbstractOptionGroup<BomberRole>
     [ModdedToggleOption("All Impostors See Bomb")]
     public bool AllImpsSeeBomb { get; set; } = true;
 
-    public ModdedToggleOption BomberVent { get; set; } = new(TouLocale.Get(TouNames.BomberCanVent), true);
+    [ModdedToggleOption("Can Vent")]
+    public bool BomberVent { get; set; } = true;
 }
