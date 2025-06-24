@@ -3,6 +3,7 @@ using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Options.Roles.Impostor;
 using UnityEngine;
 using TownOfUs.Modules.Wiki;
@@ -12,7 +13,7 @@ namespace TownOfUs.Roles.Impostor;
 
 public sealed class SwooperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
-    public string RoleName => "Swooper";
+    public string RoleName => TouLocale.Get(TouNames.Swooper, "Swooper");
     public string RoleDescription => "Turn Invisible Temporarily";
     public string RoleLongDescription => "Turn invisible and sneakily kill";
     public Color RoleColor => TownOfUsColors.Impostor;
@@ -34,7 +35,7 @@ public sealed class SwooperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
 
     public string GetAdvancedDescription()
     {
-        return "The Swooper is an Impostor Concealing role that can temporarily turn invisible."
+        return $"The {TouLocale.Get(TouNames.Swooper, "Swooper")} is an Impostor Concealing role that can temporarily turn invisible."
             + MiscUtils.AppendOptionsText(GetType());
     }
 
