@@ -4,6 +4,8 @@ public enum TouNames
 {
     Astral,
     Bomber,
+    BomberCanVent,
+    
     Swooper,
     PuppetMaster,
     Mage,

@@ -3,6 +3,7 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
@@ -63,7 +64,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             + "WW ⇨ Hunter",
             TouNeutAssets.GuardSprite),
         new("Impostor Counterparts",
-            "Bomber ⇨ Trapper | "
+            $"{TouLocale.Get(TouNames.Bomber)} ⇨ Trapper | "
             + "Escapist ⇨ Transporter\n"
             + "Hypnotist ⇨ Lookout | "
             + "Janitor ⇨ Detective\n"
