@@ -26,7 +26,6 @@ using TMPro;
 using System.Text;
 using TownOfUs.Patches.Options;
 using TownOfUs.Roles.Impostor;
-using Reactor.Utilities.Extensions;
 using Reactor.Utilities;
 using System.Collections;
 
@@ -643,17 +642,20 @@ public static class HudManagerPatches
     {
         if (!LobbyBehaviour.Instance)
         {
-            if (RoleList != null) RoleList.Destroy();
+            if (RoleList) RoleList.SetActive(false);
             return;
         }
 
-        if (RoleList == null)
+        if (!RoleList)
         {
             var pingTracker = UnityEngine.Object.FindObjectOfType<PingTracker>(true);
             RoleList = UnityEngine.Object.Instantiate(pingTracker.gameObject, instance.transform);
             RoleList.name = "RoleListText";
-            RoleList.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(-4.9f, 5.9f);
+            //RoleList.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(-4.9f, 5.9f);
             RoleList.SetActive(false);
+            var pos = RoleList.gameObject.GetComponent<AspectPosition>();
+            pos.Alignment = AspectPosition.EdgeAlignments.LeftTop;
+            pos.DistanceFromEdge = new Vector3(0.43f, 0.1f, 1f);
         }
         else
         {
