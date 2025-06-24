@@ -354,7 +354,7 @@ public static class HudManagerPatches
 
         return name;
     }
-    private static void UpdateRoleNameText(HudManager instance)
+    public static void UpdateRoleNameText(HudManager instance)
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
         var taskopt = OptionGroupSingleton<TaskTrackingOptions>.Instance;
@@ -596,7 +596,7 @@ public static class HudManagerPatches
         }
     }
 
-    private static void UpdateRoleList(HudManager instance)
+    public static void UpdateRoleList(HudManager instance)
     {
         if (!LobbyBehaviour.Instance)
         {
