@@ -1,5 +1,7 @@
 using HarmonyLib;
 using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
+using TownOfUs.Modifiers;
 using TownOfUs.Options;
 using TownOfUs.Options.Modifiers.Alliance;
 using TownOfUs.Utilities;
@@ -15,9 +17,10 @@ public static class ImpostorTargeting
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 
-        __result &= target?.Object?.IsImpostor() == false || 
+        __result &= !(target?.Object?.TryGetModifier<DisabledModifier>(out var mod) == true && !mod.CanBeInteractedWith) &&
+            (target?.Object?.IsImpostor() == false ||
             genOpt.FFAImpostorMode ||
             (PlayerControl.LocalPlayer.IsLover() && OptionGroupSingleton<LoversOptions>.Instance.LoverKillTeammates) ||
-            (genOpt.KillDuringCamoComms && target?.Object?.GetAppearanceType() == TownOfUsAppearances.Camouflage);
+            (genOpt.KillDuringCamoComms && target?.Object?.GetAppearanceType() == TownOfUsAppearances.Camouflage));
     }
 }
