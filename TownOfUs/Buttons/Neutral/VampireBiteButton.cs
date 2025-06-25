@@ -17,7 +17,7 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Neutral;
 
-public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerControl>, IDiseaseableButton
+public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     public override string Name => "Bite";
     public override string Keybind => Keybinds.PrimaryAction;

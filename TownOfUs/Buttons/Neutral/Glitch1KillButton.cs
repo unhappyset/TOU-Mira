@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Neutral;
 
-public sealed class GlitchKillButton : TownOfUsRoleButton<GlitchRole, PlayerControl>, IDiseaseableButton
+public sealed class GlitchKillButton : TownOfUsRoleButton<GlitchRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     public override string Name => "Kill";
     public override string Keybind => Keybinds.PrimaryAction;

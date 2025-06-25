@@ -5,6 +5,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using TownOfUs.Buttons;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options;
@@ -21,7 +22,7 @@ public static class GuardianAngelEvents
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var target = button?.Target;
 
-        if (target == null || button == null || !button.CanClick()) return;
+        if (target == null || button == null || !button.CanClick() || button is not IKillButton) return;
 
         CheckForGaProtection(@event, target);
     }
@@ -32,6 +33,7 @@ public static class GuardianAngelEvents
         var source = PlayerControl.LocalPlayer;
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var target = button?.Target;
+        if (target == null || button is not IKillButton) return;
 
         if (target && !target!.HasModifier<GuardianAngelProtectModifier>()) return;
 

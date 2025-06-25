@@ -338,3 +338,7 @@ public interface IDiseaseableButton
 {
     void SetDiseasedTimer(float multiplier);
 }
+public interface IKillButton
+{
+    
+}

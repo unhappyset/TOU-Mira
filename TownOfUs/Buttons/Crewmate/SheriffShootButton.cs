@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Crewmate;
 
-public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerControl>
+public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerControl>, IKillButton
 {
     public override string Name => "Shoot";
     public override string Keybind => Keybinds.PrimaryAction;

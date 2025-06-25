@@ -1,10 +1,12 @@
 ﻿using MiraAPI.Events;
+using MiraAPI.Events.Mira;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using TownOfUs.Buttons;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Options;
@@ -29,6 +31,20 @@ public static class MedicEvents
         if (CheckForMedicShield(@event, source, target))
         {
             ResetButtonTimer(source);
+        }
+    }
+
+    [RegisterEvent]
+    public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
+    {
+        var source = PlayerControl.LocalPlayer;
+        var button = @event.Button as CustomActionButton<PlayerControl>;
+        var target = button?.Target;
+        if (target == null || button is not IKillButton) return;
+
+        if (CheckForMedicShield(@event, source, target))
+        {
+            ResetButtonTimer(source, button);
         }
     }
 
