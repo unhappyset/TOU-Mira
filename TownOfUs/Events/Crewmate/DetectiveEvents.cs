@@ -1,6 +1,7 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Utilities;
 using TownOfUs.Modules.Components;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
@@ -24,7 +25,8 @@ public static class DetectiveEvents
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (@event.TriggeredByIntro) return;
-        if (CrimeSceneComponent._crimeScenes.Count <= 0) return;
+        if (CrimeSceneComponent._crimeScenes.Count == 0) return;
+        if (!Helpers.GetAlivePlayers().Any(x => x.Data.Role is DetectiveRole)) return;
 
         foreach (var scene in CrimeSceneComponent._crimeScenes)
         {

@@ -1,11 +1,12 @@
-﻿using MiraAPI.Roles;
+﻿using MiraAPI.Hud;
+using MiraAPI.Roles;
 using MiraAPI.Utilities.Assets;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace TownOfUs.Buttons;
 
-public sealed class FakeVentButton : TownOfUsButton
+public sealed class FakeVentButton : CustomActionButton
 {
     public override string Name => " ";
     public override Color TextOutlineColor => Color.clear;
