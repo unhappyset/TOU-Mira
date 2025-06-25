@@ -155,6 +155,30 @@ public static class ChatPatches
             __instance.UpdateChatMode();
             return false;
         }
+        else if (text.Replace(" ", string.Empty).StartsWith("/jail", StringComparison.OrdinalIgnoreCase))
+        {
+            var title = $"<color=#8BFDFD>System</color>";
+            
+            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, "The mod no longer supports /jail chat. Use the red in-game chat button instead.");
+
+            __instance.freeChatField.Clear();
+            __instance.quickChatMenu.Clear();
+            __instance.quickChatField.Clear();
+            __instance.UpdateChatMode();
+            return false;
+        }
+        else if (text.Replace(" ", string.Empty).StartsWith("/", StringComparison.OrdinalIgnoreCase))
+        {
+            var title = $"<color=#8BFDFD>System</color>";
+            
+            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, "Invalid command. If you need information on chat commands, type /help. If you are trying to know what a role or modifier does, check out the in-game wiki by pressing the globe icon on the top right of your screen.");
+
+            __instance.freeChatField.Clear();
+            __instance.quickChatMenu.Clear();
+            __instance.quickChatField.Clear();
+            __instance.UpdateChatMode();
+            return false;
+        }
         else if (TeamChatPatches.TeamChatActive && !PlayerControl.LocalPlayer.HasDied() && (PlayerControl.LocalPlayer.Data.Role is JailorRole || PlayerControl.LocalPlayer.IsJailed() ||PlayerControl.LocalPlayer.Data.Role is VampireRole || PlayerControl.LocalPlayer.IsImpostor()))
         {
             var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
