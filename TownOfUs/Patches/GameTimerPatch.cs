@@ -77,9 +77,18 @@ public static class GameTimerPatch
             _ => Color.green
         };
 
-        timerText.text = $"<size=200%>Time:{colour.ToTextColor()}{ts.ToString(format: @"mm\:ss", TownOfUsPlugin.Culture)}</color></size>";
+        if (!MeetingHud.Instance)
+        {
+            GameTimerObj.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(-0.6f, 5.5f);
+            timerText.text = $"<size=200%>Time:{colour.ToTextColor()}{ts.ToString(format: @"mm\:ss", TownOfUsPlugin.Culture)}</color></size>";
+        }
+        else
+        {
+            GameTimerObj.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(-0.25f, 0.9f);
+            timerText.text = $"<size=130%>Time:{colour.ToTextColor()}{ts.ToString(format: @"mm\:ss", TownOfUsPlugin.Culture)}</color></size>";
+        }
 
-        GameTimerObj.SetActive(!inMeeting);
+        GameTimerObj.SetActive(!ExileController.Instance);
     }
 
     private static void EndGame()
