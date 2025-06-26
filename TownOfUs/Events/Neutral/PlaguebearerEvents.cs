@@ -15,7 +15,7 @@ public static class PlaguebearerEvents
     {
         if (!@event.Target) return;
 
-        PlaguebearerRole.RpcCheckInfected(@event.Target!.Object, @event.Reporter);
+        PlaguebearerRole.CheckInfected(@event.Target!.Object, @event.Reporter);
     }
 
     [RegisterEvent]
