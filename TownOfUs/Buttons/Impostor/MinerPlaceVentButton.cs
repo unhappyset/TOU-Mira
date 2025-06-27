@@ -14,7 +14,7 @@ public sealed class MinerPlaceVentButton : TownOfUsRoleButton<MinerRole>, IAfter
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<MinerOptions>.Instance.MineCooldown + MapCooldown;
-    public override float EffectDuration => OptionGroupSingleton<MinerOptions>.Instance.MineDelay + 0.001f;
+    public override float EffectDuration => (OptionGroupSingleton<MinerOptions>.Instance.MineVisibility is MineVisiblityOptions.Immediate) ? OptionGroupSingleton<MinerOptions>.Instance.MineDelay.Value + 0.001f : 0.001f;
     public override int MaxUses => (int)OptionGroupSingleton<MinerOptions>.Instance.MaxMines;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.MineSprite;
 

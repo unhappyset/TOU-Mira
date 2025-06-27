@@ -17,7 +17,7 @@ public static class TrapperEvents
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
-        if (@event.Player.AmOwner && @event.Player.Data.Role is TrapperRole && OptionGroupSingleton<TrapperOptions>.Instance.TaskUses)
+        if (@event.Player.AmOwner && @event.Player.Data.Role is TrapperRole && OptionGroupSingleton<TrapperOptions>.Instance.TaskUses && !OptionGroupSingleton<TrapperOptions>.Instance.TrapsRemoveOnNewRound)
         {
             var button = CustomButtonSingleton<TrapperTrapButton>.Instance;
             ++button.UsesLeft;

@@ -75,12 +75,11 @@ public static class VeteranEvents
 
     private static void CheckForVeteranAlert(MiraCancelableEvent miraEvent, PlayerControl source, PlayerControl target)
     {
-        var preventAttack = source.HasModifier<IndirectAttackerModifier>();
+        var preventAttack = source.TryGetModifier<IndirectAttackerModifier>(out var indirectMod);
 
-        if (target.HasModifier<VeteranAlertModifier>() && source != target && (!preventAttack || 
-            (preventAttack && source.IsImpostor() && !OptionGroupSingleton<VeteranOptions>.Instance.IndirectKills)))
+        if (target.HasModifier<VeteranAlertModifier>() && source != target)
         {
-            if (!OptionGroupSingleton<VeteranOptions>.Instance.KilledOnAlert) miraEvent.Cancel();
+            if (!OptionGroupSingleton<VeteranOptions>.Instance.KilledOnAlert && (indirectMod == null || !indirectMod.IgnoreShield)) miraEvent.Cancel();
 
             if (source.AmOwner && !preventAttack)
             {

@@ -66,12 +66,15 @@ public static class MiscUtils
             switch (option)
             {
                 case ModdedToggleOption toggleOption:
+                    if (!toggleOption.Visible()) continue;
                     builder.AppendLine(option.Title + ": " + toggleOption.Value);
                     break;
                 case ModdedEnumOption enumOption:
+                    if (!enumOption.Visible()) continue;
                     builder.AppendLine(enumOption.Title + ": " + enumOption.Values[enumOption.Value]);
                     break;
                 case ModdedNumberOption numberOption:
+                    if (!numberOption.Visible()) continue;
                     var optionStr = numberOption.Data.GetValueString(numberOption.Value);
                     if (optionStr.Contains(".000")) optionStr = optionStr.Replace(".000", "");
                     else if (optionStr.Contains(".00")) optionStr = optionStr.Replace(".00", "");

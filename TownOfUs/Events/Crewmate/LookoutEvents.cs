@@ -19,7 +19,7 @@ public static class LookoutEvents
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
-        if (@event.Player.AmOwner && @event.Player.Data.Role is LookoutRole && OptionGroupSingleton<LookoutOptions>.Instance.TaskUses)
+        if (@event.Player.AmOwner && @event.Player.Data.Role is LookoutRole && OptionGroupSingleton<LookoutOptions>.Instance.TaskUses && !OptionGroupSingleton<LookoutOptions>.Instance.LoResetOnNewRound)
         {
             var button = CustomButtonSingleton<WatchButton>.Instance;
             ++button.UsesLeft;
@@ -57,7 +57,7 @@ public static class LookoutEvents
         ModifierUtils.GetPlayersWithModifier<LookoutWatchedModifier>().Do(x => x.RemoveModifier<LookoutWatchedModifier>());
 
         var button = CustomButtonSingleton<WatchButton>.Instance;
-        button.SetUses((int)OptionGroupSingleton<LookoutOptions>.Instance.MaxWatches + button.ExtraUses);
+        button.SetUses((int)OptionGroupSingleton<LookoutOptions>.Instance.MaxWatches);
     }
 
     public static void CheckForLookoutWatched(PlayerControl source, PlayerControl target)

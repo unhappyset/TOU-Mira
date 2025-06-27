@@ -1,5 +1,6 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
 using TownOfUs.Roles.Crewmate;
 
@@ -23,9 +24,12 @@ public sealed class TrapperOptions : AbstractOptionGroup<TrapperRole>
 
     [ModdedToggleOption("Traps Removed After Each Round")]
     public bool TrapsRemoveOnNewRound { get; set; } = true;
+    
+    public ModdedToggleOption TaskUses { get; } = new ModdedToggleOption("Get More Uses From Completing Tasks", false)
+    {
+        Visible = () => !OptionGroupSingleton<TrapperOptions>.Instance.TrapsRemoveOnNewRound,
+    };
 
     [ModdedNumberOption("Minimum Number Of Roles Required To Trigger Trap", 1f, 15f, 1f, MiraNumberSuffixes.None)]
     public float MinAmountOfPlayersInTrap { get; set; } = 3f;
-    [ModdedToggleOption("Get More Uses From Completing Tasks")]
-    public bool TaskUses { get; set; } = false;
 }
