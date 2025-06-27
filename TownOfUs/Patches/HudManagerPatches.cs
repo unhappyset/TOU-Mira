@@ -161,7 +161,7 @@ public static class HudManagerPatches
         }
     }
 
-    private static void UpdateTeamChat(HudManager instance)
+    private static void UpdateTeamChat()
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 
@@ -189,7 +189,7 @@ public static class HudManagerPatches
         }
     }
 
-    private static void UpdateCamouflageComms(HudManager instance)
+    private static void UpdateCamouflageComms()
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 
@@ -232,7 +232,7 @@ public static class HudManagerPatches
         }
     }
 
-    private static void UpdateColorNameText(HudManager instance)
+    private static void UpdateColorNameText()
     {
         if (MeetingHud.Instance)
         {
@@ -777,7 +777,7 @@ public static class HudManagerPatches
 
         if (PlayerControl.LocalPlayer != null)
         {
-            UpdateColorNameText(__instance);
+            UpdateColorNameText();
         }
 
         if (PlayerControl.LocalPlayer == null ||
@@ -799,8 +799,8 @@ public static class HudManagerPatches
             CheckForScrollZoom();
         }
 
-        UpdateTeamChat(__instance);
-        UpdateCamouflageComms(__instance);
+        UpdateTeamChat();
+        UpdateCamouflageComms();
         UpdateRoleNameText(__instance);
         UpdateGhostRoles(__instance);
     }
