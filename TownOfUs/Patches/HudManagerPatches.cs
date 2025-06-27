@@ -41,6 +41,13 @@ public static class HudManagerPatches
 
     public static bool Zooming;
 
+    private static IEnumerator CoResizeUI()
+    {
+        while (!HudManager.Instance) yield return null;
+        yield return new WaitForSeconds(0.01f);
+        ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
+    }
+
     public static void ResizeUI(float scaleFactor)
     {
         foreach (AspectPosition aspect in HudManager.Instance.transform.FindChild("Buttons").GetComponentsInChildren<AspectPosition>(true))
@@ -69,11 +76,12 @@ public static class HudManagerPatches
 
     public static void Zoom()
     {
-        if (MeetingHud.Instance)
+        if (MeetingHud.Instance || ExileController.Instance)
         {
             ZoomButton.SetActive(false);
             return;
         }
+
         Zooming = !Zooming;
         var size = Zooming ? 12f : 3f;
         ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlus.LoadAsset() : TouAssets.ZoomMinus.LoadAsset();
@@ -96,11 +104,12 @@ public static class HudManagerPatches
 
     public static void ScrollZoom(bool zoomOut = false)
     {
-        if (MeetingHud.Instance)
+        if (MeetingHud.Instance || ExileController.Instance)
         {
             ZoomButton.SetActive(false);
             return;
         }
+
         var size = Camera.main.orthographicSize;
         if (zoomOut) size *= 1.25f;
         else size /= 1.25f;
@@ -801,11 +810,5 @@ public static class HudManagerPatches
     public static void HudManagerStartPatch(HudManager __instance)
     {
         Coroutines.Start(CoResizeUI());
-    }
-    private static IEnumerator CoResizeUI()
-    {
-        while (!HudManager.Instance) yield return null;
-        yield return new WaitForSeconds(0.01f);
-        ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
     }
 }
