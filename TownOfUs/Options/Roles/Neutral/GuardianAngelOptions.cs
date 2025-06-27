@@ -19,13 +19,10 @@ public sealed class GuardianAngelOptions : AbstractOptionGroup<GuardianAngelTouR
     public float MaxProtects { get; set; } = 5;
 
     [ModdedEnumOption("Show Protected Player", typeof(ProtectOptions), ["Self", "Guardian Angel", "Self + GA", "Everyone"])]
-    public ProtectOptions ShowProtect { get; set; } = ProtectOptions.Self;
+    public ProtectOptions ShowProtect { get; set; } = ProtectOptions.SelfAndGA;
 
     [ModdedEnumOption("On Target Death, GA Becomes", typeof(BecomeOptions))]
     public BecomeOptions OnTargetDeath { get; set; } = BecomeOptions.Amnesiac;
-
-    [ModdedToggleOption("GA Can Target Neutral Evils")]
-    public bool TargetNeutEvils { get; set; } = false;
 
     [ModdedToggleOption("Target Knows GA Exists")]
     public bool GATargetKnows { get; set; } = true;

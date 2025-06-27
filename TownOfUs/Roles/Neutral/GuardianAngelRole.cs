@@ -186,14 +186,14 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
 
                 if (chance < evilTargetPercent)
                 {
-                    filtered = [.. filtered.Where(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Is(RoleAlignment.NeutralEvil) && OptionGroupSingleton<GuardianAngelOptions>.Instance.TargetNeutEvils))];
+                    filtered = [.. filtered.Where(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling))];
                 }
             }
             else
             {
                 filtered = [.. filtered.Where(x => x.Is(ModdedRoleTeams.Crewmate))];
             }  
-            if (!OptionGroupSingleton<GuardianAngelOptions>.Instance.TargetNeutEvils) filtered = [.. filtered.Where(x => !x.Is(RoleAlignment.NeutralEvil))];
+            filtered = [.. filtered.Where(x => !x.Is(RoleAlignment.NeutralEvil))];
 
             System.Random rndIndex = new();
             var randomTarget = filtered[rndIndex.Next(0, filtered.Count)];

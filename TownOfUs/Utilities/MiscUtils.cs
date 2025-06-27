@@ -44,6 +44,7 @@ public static class MiscUtils
     public static IEnumerable<BaseModifier> AllModifiers => MiraPluginManager.GetPluginByGuid(TownOfUsPlugin.Id)!.Modifiers;
 
     public static IEnumerable<RoleBehaviour> AllRoles => MiraPluginManager.GetPluginByGuid(TownOfUsPlugin.Id)!.Roles.Values;
+    // public static IEnumerable<RoleBehaviour> AllRoles => RoleManager.Instance.AllRoles;
 
     public static ReadOnlyCollection<IModdedOption>? GetModdedOptionsForRole(Type classType)
     {
