@@ -40,7 +40,11 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
-        if (!@event.TriggeredByIntro) return; // Only run when round starts.
+        if (!@event.TriggeredByIntro)
+        {
+            return; // Only run when round starts.
+        }
+
         HudManager.Instance.SetHudActive(false);
         HudManager.Instance.SetHudActive(true);
 
@@ -75,7 +79,10 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void ChangeRoleHandler(ChangeRoleEvent @event)
     {
-        if (!PlayerControl.LocalPlayer) return;
+        if (!PlayerControl.LocalPlayer)
+        {
+            return;
+        }
 
         var player = @event.Player;
         if (!MeetingHud.Instance && player.AmOwner)
@@ -87,8 +94,14 @@ public static class TownOfUsEventHandlers
         // Should make a converted imitator into whatever role they become after the next meeting starts
         if (player.TryGetModifier<ImitatorCacheModifier>(out var imi))
         {
-            if (!@event.NewRole.IsCrewmate()) player.RemoveModifier<ImitatorCacheModifier>();
-            else imi.OldRole = @event.NewRole;
+            if (!@event.NewRole.IsCrewmate())
+            {
+                player.RemoveModifier<ImitatorCacheModifier>();
+            }
+            else
+            {
+                imi.OldRole = @event.NewRole;
+            }
         }
     }
 
@@ -115,12 +128,18 @@ public static class TownOfUsEventHandlers
     public static void EjectionEventHandler(EjectionEvent @event)
     {
         var exiled = @event.ExileController?.initData?.networkedPlayer?.Object;
-        if (exiled == null) return;
+        if (exiled == null)
+        {
+            return;
+        }
 
         if (exiled.AmOwner)
         {
             HudManager.Instance.SetHudActive(false);
-            if (!MeetingHud.Instance) HudManager.Instance.SetHudActive(true);
+            if (!MeetingHud.Instance)
+            {
+                HudManager.Instance.SetHudActive(true);
+            }
         }
 
         if (exiled.Data.Role is IAnimated animated)
@@ -145,7 +164,9 @@ public static class TownOfUsEventHandlers
         if (@exiled.TryGetModifier<MedicShieldModifier>(out var medMod)
         && PlayerControl.LocalPlayer.Data.Role is MedicRole
         && medMod.Medic == PlayerControl.LocalPlayer)
+        {
             CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
+        }
     }
 
     [RegisterEvent]
@@ -159,7 +180,10 @@ public static class TownOfUsEventHandlers
         if (target.AmOwner)
         {
             HudManager.Instance.SetHudActive(false);
-            if (!MeetingHud.Instance) HudManager.Instance.SetHudActive(true);
+            if (!MeetingHud.Instance)
+            {
+                HudManager.Instance.SetHudActive(true);
+            }
         }
 
         if (target.Data.Role is IAnimated animated)
@@ -201,7 +225,9 @@ public static class TownOfUsEventHandlers
         if (@target.TryGetModifier<MedicShieldModifier>(out var medMod)
             && PlayerControl.LocalPlayer.Data.Role is MedicRole
             && medMod.Medic == PlayerControl.LocalPlayer)
-                CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
+        {
+            CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
+        }
 
         // here we're adding support for kills during a meeting
         if (MeetingHud.Instance)
@@ -259,7 +285,9 @@ public static class TownOfUsEventHandlers
             }
 
             if (aliveCount <= 2)
+            {
                 @event.Cancel();
+            }
         }
     }
 
@@ -272,20 +300,31 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void PlayerLeaveEventHandler(PlayerLeaveEvent @event)
     {
-        if (@event.ClientData.Character.TryGetModifier<MedicShieldModifier>(out var medMod)
+        if (@event.ClientData.Character && @event.ClientData.Character.TryGetModifier<MedicShieldModifier>(out var medMod)
         && PlayerControl.LocalPlayer.Data.Role is MedicRole
         && medMod.Medic == PlayerControl.LocalPlayer)
+        {
             CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
+        }
 
-        if (!MeetingHud.Instance) return;
+        if (!MeetingHud.Instance)
+        {
+            return;
+        }
 
         var player = @event.ClientData.Character;
 
-        if (!player) return;
+        if (!player)
+        {
+            return;
+        }
 
         var pva = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == player.PlayerId);
         
-        if (!pva) return;
+        if (!pva)
+        {
+            return;
+        }
 
         pva.AmDead = true;
         pva.Overlay.gameObject.SetActive(true);
@@ -372,7 +411,11 @@ public static class TownOfUsEventHandlers
         }
         
         targetVoteArea.Overlay.gameObject.SetActive(false);
-        if (target.Data.Role is MayorRole) MayorRole.DestroyReveal(targetVoteArea);
+        if (target.Data.Role is MayorRole)
+        {
+            MayorRole.DestroyReveal(targetVoteArea);
+        }
+
         Coroutines.Start(CoAnimateDeath(targetVoteArea));
 
         // hide meeting menu button for victim
@@ -388,19 +431,28 @@ public static class TownOfUsEventHandlers
 
         foreach (var pva in instance.playerStates)
         {
-            if (pva.VotedFor != target.PlayerId || pva.AmDead) continue;
+            if (pva.VotedFor != target.PlayerId || pva.AmDead)
+            {
+                continue;
+            }
 
             pva.UnsetVote();
 
             var voteAreaPlayer = MiscUtils.PlayerById(pva.TargetPlayerId);
 
-            if (voteAreaPlayer == null) continue;
+            if (voteAreaPlayer == null)
+            {
+                continue;
+            }
 
             var voteData = voteAreaPlayer.GetVoteData();
             var votes = voteData.Votes.RemoveAll(x => x.Suspect == target.PlayerId);
             voteData.VotesRemaining += votes;
 
-            if (!voteAreaPlayer.AmOwner) continue;
+            if (!voteAreaPlayer.AmOwner)
+            {
+                continue;
+            }
 
             instance.ClearVote();
         }
