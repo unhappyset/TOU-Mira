@@ -9,10 +9,6 @@
         <EmbeddedResource Include="Resources\**\*.*" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Resources\ModifierIcons\" />
-    </ItemGroup>
-
     <Import Project="../AmongUs.props" />
 
 </Project>
