@@ -5,15 +5,12 @@ using MiraAPI.Roles;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Universal;
-using TownOfUs.Modifiers.Game.Alliance;
-using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modifiers.Impostor.Venerer;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Crewmate;
-using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
@@ -25,9 +22,10 @@ using Color = UnityEngine.Color;
 using TMPro;
 using System.Text;
 using TownOfUs.Patches.Options;
-using TownOfUs.Roles.Impostor;
 using Reactor.Utilities;
 using System.Collections;
+using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace TownOfUs.Patches;
 
@@ -35,11 +33,11 @@ namespace TownOfUs.Patches;
 public static class HudManagerPatches
 {
     public static GameObject ZoomButton;
-    public static GameObject WikiButton;
-    public static GameObject RoleList;
+    private static GameObject WikiButton;
+    private static GameObject RoleList;
     public static GameObject TeamChatButton;
 
-    public static bool Zooming;
+    private static bool Zooming;
 
     private static IEnumerator CoResizeUI()
     {
@@ -50,8 +48,9 @@ public static class HudManagerPatches
 
     public static void ResizeUI(float scaleFactor)
     {
-        foreach (AspectPosition aspect in HudManager.Instance.transform.FindChild("Buttons").GetComponentsInChildren<AspectPosition>(true))
+        foreach (var aspect in HudManager.Instance.transform.FindChild("Buttons").GetComponentsInChildren<AspectPosition>(true))
         {
+            if (aspect.gameObject == null) continue;
             if (aspect.gameObject.transform.parent.name == "TopRight") continue;
             if (aspect.gameObject.transform.parent.transform.parent.name == "TopRight") continue;
             aspect.gameObject.SetActive(!aspect.isActiveAndEnabled);
@@ -59,14 +58,19 @@ public static class HudManagerPatches
             aspect.gameObject.SetActive(!aspect.isActiveAndEnabled);
         }
         
-        foreach (ActionButton button in HudManager.Instance.GetComponentsInChildren<ActionButton>(true))
+        foreach (var button in HudManager.Instance.GetComponentsInChildren<ActionButton>(true))
         {
+            if (button.gameObject == null) continue;
+            
             button.gameObject.SetActive(!button.isActiveAndEnabled);
             button.gameObject.transform.localScale *= scaleFactor;
             button.gameObject.SetActive(!button.isActiveAndEnabled);
         }
-        foreach (GridArrange arrange in HudManager.Instance.transform.FindChild("Buttons").GetComponentsInChildren<GridArrange>(true))
+
+        foreach (var arrange in HudManager.Instance.transform.FindChild("Buttons").GetComponentsInChildren<GridArrange>(true))
         {
+            if (arrange.gameObject == null || arrange.gameObject.transform == null) continue;
+
             arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
             arrange.CellSize = new Vector2(scaleFactor, scaleFactor);
             arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
@@ -74,88 +78,70 @@ public static class HudManagerPatches
         }
     }
 
-    public static void Zoom()
+    private static void AdjustCameraSize(float size)
     {
-        if (MeetingHud.Instance || ExileController.Instance)
-        {
-            ZoomButton.SetActive(false);
-            return;
-        }
-
-        Zooming = !Zooming;
-        var size = Zooming ? 12f : 3f;
-        ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlus.LoadAsset() : TouAssets.ZoomMinus.LoadAsset();
-        ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlusActive.LoadAsset() : TouAssets.ZoomMinusActive.LoadAsset();
-
-        Camera.main.orthographicSize = size;
-        HudManager.Instance.UICamera.orthographicSize = size;
-        // apparently, zooming does NOT work when the window size is 16:9
-        // TODO: Improve shadow quad scaling for abnormal resolutions (and do it on the other functions)
-        /* var fakeWidth = (int)(Math.Round(Screen.width / 10.0));
-        var fakeHeight = (int)(Math.Round(Screen.height / 10.0));
-        int gcd = (int)System.Numerics.BigInteger.GreatestCommonDivisor(fakeWidth, fakeHeight);
-        var ratioWidth = fakeWidth / gcd;
-        var ratioHeight = fakeHeight / gcd;
-        HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(ratioWidth / 1.5f, ratioHeight / 1.5f) * (size / 3f); */
-        // HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f) * (size / 3f);
-        if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
+        Camera.main!.orthographicSize = size;
+        foreach (var cam in Camera.allCameras) cam.orthographicSize = Camera.main!.orthographicSize;
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
-    }
-
-    public static void ScrollZoom(bool zoomOut = false)
-    {
-        if (MeetingHud.Instance || ExileController.Instance)
-        {
-            ZoomButton.SetActive(false);
-            return;
-        }
-
-        var size = Camera.main.orthographicSize;
-        if (zoomOut) size *= 1.25f;
-        else size /= 1.25f;
-        if (size != 3f) Zooming = true;
+        
         if (size <= 3f)
         {
             Zooming = false;
-            size = 3f;
+            HudManager.Instance.ShadowQuad.gameObject.SetActive(!PlayerControl.LocalPlayer.Data.IsDead);
         }
-        else if (size >= 12f)
+        else
         {
             Zooming = true;
+            HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
         }
-        if (size >= 15f) size = 15f;
+        
         ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlus.LoadAsset() : TouAssets.ZoomMinus.LoadAsset();
         ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlusActive.LoadAsset() : TouAssets.ZoomMinusActive.LoadAsset();
+    }
 
-        Camera.main.orthographicSize = size;
-        HudManager.Instance.UICamera.orthographicSize = size;
-        // HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f) * (size / 3f);
-        if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
-        ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
+    private static void ButtonClickZoom()
+    {
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            ZoomButton.SetActive(false);
+            return;
+        }
+        
+        AdjustCameraSize(!Zooming ? 12f : 3f);
+    }
+
+    private static void ScrollZoom(bool zoomOut = false)
+    {
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            ZoomButton.SetActive(false);
+            return;
+        }
+
+        var size = Camera.main!.orthographicSize;
+        size = zoomOut ? size * 1.25f : size / 1.25f;
+        size = Mathf.Clamp(size, 3, 15);
+        
+        AdjustCameraSize(size);
     }
 
     public static void ResetZoom()
     {
-        Zooming = false;
-        var size = 3f;
-        ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = TouAssets.ZoomMinus.LoadAsset();
-        ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = TouAssets.ZoomMinusActive.LoadAsset();
         ZoomButton.SetActive(false);
-
-        Camera.main.orthographicSize = size;
-        HudManager.Instance.UICamera.orthographicSize = size;
-        // HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f);
-        if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
-        ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
+        
+        AdjustCameraSize(3f);
     }
 
     private static void CheckForScrollZoom()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") > 0 || ConsoleJoystick.player.GetAxisRaw(55) > 0)
+        var scrollWheel = Input.GetAxis("Mouse ScrollWheel");
+        var axisRaw = ConsoleJoystick.player.GetAxisRaw(55);
+
+        if (scrollWheel > 0 || axisRaw > 0)
         {
             ScrollZoom();
         }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0 || ConsoleJoystick.player.GetAxisRaw(55) < 0)
+        else if (scrollWheel < 0 || axisRaw < 0)
         {
             ScrollZoom(true);
         }
@@ -170,23 +156,22 @@ public static class HudManagerPatches
             (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true }) ||
             (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat));
 
-        if (TeamChatButton)
-        {
-            TeamChatButton.SetActive(isValid);
-            var aspectPosition = TeamChatButton.GetComponentInChildren<AspectPosition>();
-            var distanceFromEdge = aspectPosition.DistanceFromEdge;
-            distanceFromEdge.x = HudManager.Instance.Chat.isActiveAndEnabled ? 2.73f : 2.15f;
-            distanceFromEdge.y = 0.485f;
-            aspectPosition.DistanceFromEdge = distanceFromEdge;
-            aspectPosition.AdjustPosition();
-            TeamChatButton.transform.Find("Selected").gameObject.SetActive(false);
-            if (TeamChatPatches.TeamChatActive)
-            {
-                TeamChatButton.transform.Find("Inactive").gameObject.SetActive(false);
-                TeamChatButton.transform.Find("Active").gameObject.SetActive(false);
-                TeamChatButton.transform.Find("Selected").gameObject.SetActive(true);
-            }
-        }
+        if (!TeamChatButton) return;
+        
+        TeamChatButton.SetActive(isValid);
+        var aspectPosition = TeamChatButton.GetComponentInChildren<AspectPosition>();
+        var distanceFromEdge = aspectPosition.DistanceFromEdge;
+        distanceFromEdge.x = HudManager.Instance.Chat.isActiveAndEnabled ? 2.73f : 2.15f;
+        distanceFromEdge.y = 0.485f;
+        aspectPosition.DistanceFromEdge = distanceFromEdge;
+        aspectPosition.AdjustPosition();
+        TeamChatButton.transform.Find("Selected").gameObject.SetActive(false);
+
+        if (!TeamChatPatches.TeamChatActive) return;
+
+        TeamChatButton.transform.Find("Inactive").gameObject.SetActive(false);
+        TeamChatButton.transform.Find("Active").gameObject.SetActive(false);
+        TeamChatButton.transform.Find("Selected").gameObject.SetActive(true);
     }
 
     private static void UpdateCamouflageComms()
@@ -194,39 +179,38 @@ public static class HudManagerPatches
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 
         // Camo comms
-        if (genOpt.CamouflageComms)
-        {
-            if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Comms, out var commsSystem) || commsSystem == null)
-                return;
+        if (!genOpt.CamouflageComms) return;
 
-            var isActive = false;
-            if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq || ShipStatus.Instance.Type == ShipStatus.MapType.Fungle)
+        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Comms, out var commsSystem) || commsSystem == null)
+            return;
+
+        var isActive = false;
+        if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq || ShipStatus.Instance.Type == ShipStatus.MapType.Fungle)
+        {
+            var hqSystem = commsSystem.Cast<HqHudSystemType>();
+            if (hqSystem != null) isActive = hqSystem.IsActive;
+        }
+        else
+        {
+            var hudSystem = commsSystem.Cast<HudOverrideSystemType>();
+            if (hudSystem != null) isActive = hudSystem.IsActive;
+        }
+
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            var appearanceType = player.GetAppearanceType();
+            if (isActive)
             {
-                var hqSystem = commsSystem.Cast<HqHudSystemType>();
-                if (hqSystem != null) isActive = hqSystem.IsActive;
+                if (appearanceType != TownOfUsAppearances.Swooper)
+                {
+                    player.SetCamouflage(true);
+                }
             }
             else
             {
-                var hudSystem = commsSystem.Cast<HudOverrideSystemType>();
-                if (hudSystem != null) isActive = hudSystem.IsActive;
-            }
-
-            foreach (var player in PlayerControl.AllPlayerControls)
-            {
-                var appearanceType = player.GetAppearanceType();
-                if (isActive)
+                if (appearanceType == TownOfUsAppearances.Camouflage && !player.HasModifier<VenererCamouflageModifier>() && !PlayerControl.LocalPlayer.IsHysteria())
                 {
-                    if (appearanceType != TownOfUsAppearances.Swooper)
-                    {
-                        player.SetCamouflage(true);
-                    }
-                }
-                else
-                {
-                    if (appearanceType == TownOfUsAppearances.Camouflage && !player.HasModifier<VenererCamouflageModifier>() && !PlayerControl.LocalPlayer.IsHysteria())
-                    {
-                        player.SetCamouflage(false);
-                    }
+                    player.SetCamouflage(false);
                 }
             }
         }
@@ -250,123 +234,10 @@ public static class HudManagerPatches
         }
     }
 
-    public static Color UpdateTargetColor(this Color color, PlayerControl player, bool hidden = false)
-    {
-        if (player.HasModifier<EclipsalBlindModifier>() && PlayerControl.LocalPlayer.IsImpostor())
-            color = Color.black;
-
-        if (player.HasModifier<GrenadierFlashModifier>() && !player.IsImpostor() && PlayerControl.LocalPlayer.IsImpostor())
-            color = Color.black;
-
-        if (player.HasModifier<SeerGoodRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
-            color = Color.green;
-        else if (player.HasModifier<SeerEvilRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
-            color = Color.red;
-
-        if (player.HasModifier<PoliticianCampaignedModifier>(x => x.Politician == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<PoliticianRole>())
-            color = Color.cyan;
-
-        if (player.HasModifier<MercenaryBribedModifier>(x => x.Mercenary == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MercenaryRole>())
-        {
-            color = Color.green;
-
-            if (player.Is(RoleAlignment.NeutralEvil) || player.IsRole<AmnesiacRole>() || player.IsRole<MercenaryRole>())
-                color = Color.red;
-        }
-
-        return color;
-    }
-    public static string UpdateTargetSymbols(this string name, PlayerControl player, bool hidden = false)
+    private static void UpdateRoleNameText()
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-        if ((player.HasModifier<ExecutionerTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ExecutionerRole>())
-            || (player.HasModifier<ExecutionerTargetModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden))
-            name += "<color=#643B1F> X</color>";
-
-        if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole) && !hidden)
-            name += "<color=#D94291> $</color>";
-
-        if (PlayerControl.LocalPlayer.Data.Role is HunterRole && player.HasModifier<HunterStalkedModifier>(x => x.Hunter == PlayerControl.LocalPlayer))
-            name += "<color=#29AB87> &</color>";
-
-        if (PlayerControl.LocalPlayer.Data.Role is HunterRole hunter && hunter.CaughtPlayers.Contains(player))
-            name += "<color=#21453B> &</color>";
-
-        return name;
-    }
-    public static string UpdateProtectionSymbols(this string name, PlayerControl player, bool hidden = false)
-    {
-        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-        if ((player.HasModifier<GuardianAngelTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<GuardianAngelTouRole>())
-            || (player.HasModifier<GuardianAngelTargetModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
-            || (player.AmOwner && OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect is ProtectOptions.SelfAndGA))))
-        {
-            name += player.HasModifier<GuardianAngelProtectModifier>() ? "<color=#FFD900> ★</color>" : "<color=#B3FFFF> ★</color>";
-        }
-
-        if ((player.HasModifier<MedicShieldModifier>(x => x.Medic == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MedicRole>())
-            || (player.HasModifier<MedicShieldModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
-            || (player.AmOwner && player.TryGetModifier<MedicShieldModifier>(out var med) && med.VisibleSymbol))))
-        {
-            name += "<color=#006600> +</color>";
-        }
-
-        if ((player.HasModifier<ClericBarrierModifier>(x => x.Cleric == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<ClericRole>())
-            || (player.HasModifier<ClericBarrierModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
-            || (player.AmOwner && player.TryGetModifier<ClericBarrierModifier>(out var cleric) && cleric.VisibleSymbol))))
-        {
-            name += "<color=#00FFB3> Ω</color>";
-        }
-
-        if ((player.HasModifier<WardenFortifiedModifier>(x => x.Warden == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<WardenRole>())
-            || (player.HasModifier<WardenFortifiedModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
-            || (player.AmOwner && player.TryGetModifier<WardenFortifiedModifier>(out var warden) && warden.VisibleSymbol))))
-        {
-            name += "<color=#9900FF> π</color>";
-        }
-
-        return name;
-    }
-    public static string UpdateAllianceSymbols(this string name, PlayerControl player, bool hidden = false)
-    {
-        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-
-        if (player.HasModifier<LoverModifier>() && (PlayerControl.LocalPlayer.HasModifier<LoverModifier>() || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)))
-            name += "<color=#FF66CC> ♥</color>";
-
-        if (player.HasModifier<EgotistModifier>() && (player.AmOwner || EgotistModifier.EgoVisibilityFlag(player) && (SnitchRole.SnitchVisibilityFlag(player, true) || MayorRole.MayorVisibilityFlag(player)) || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)))
-            name += "<color=#FFFFFF> (<color=#669966>Egotist</color>)</color>";
-
-        return name;
-    }
-    public static string UpdateStatusSymbols(this string name, PlayerControl player, bool hidden = false)
-    {
-        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-
-        if ((player.HasModifier<PlaguebearerInfectedModifier>(x => x.PlagueBearerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<PlaguebearerRole>())
-        || (player.HasModifier<PlaguebearerInfectedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden))
-            name += "<color=#E6FFB3> ¥</color>";
-
-        if ((player.HasModifier<ArsonistDousedModifier>(x => x.ArsonistId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ArsonistRole>())
-        || (player.HasModifier<ArsonistDousedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden))
-            name += "<color=#FF4D00> Δ</color>";
-
-        if ((player.HasModifier<BlackmailedModifier>(x => x.BlackMailerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<BlackmailerRole>())
-        || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.IsImpostor() && genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
-        || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden))
-            name += "<color=#2A1119> M</color>";
-
-        if ((player.HasModifier<HypnotisedModifier>(x => x.Hypnotist == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<HypnotistRole>())
-        || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.IsImpostor() && genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
-        || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden))
-            name += "<color=#D53F42> @</color>";
-
-        return name;
-    }
-    public static void UpdateRoleNameText(HudManager instance)
-    {
-        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-        var taskopt = OptionGroupSingleton<TaskTrackingOptions>.Instance;
+        var taskOpt = OptionGroupSingleton<TaskTrackingOptions>.Instance;
 
         if (MeetingHud.Instance)
         {
@@ -418,8 +289,8 @@ public static class HudManagerPatches
                     var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole);
                     if (cachedMod is ICachedRole cache && player.Data.Role.GetType() != cache.CachedRole.GetType())
                     {
-                        if (cache.ShowCurrentRoleFirst) roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color> ({cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color>)</size>";
-                        else roleName = $"<size=80%>{cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
+                        roleName = cache.ShowCurrentRoleFirst ? $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color> ({cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color>)</size>" :
+                            $"<size=80%>{cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
                     }
                     // Guardian Angel here is vanilla's GA, NOT Town of Us GA
                     if (player.Data.IsDead && role is GuardianAngelRole gaRole) roleName = $"<size=80%>{gaRole.TeamColor.ToTextColor()}{gaRole?.NiceName}</color></size>";
@@ -433,11 +304,11 @@ public static class HudManagerPatches
                     }
                 }
 
-                if (((taskopt.ShowTaskInMeetings && player.AmOwner) || (PlayerControl.LocalPlayer.HasDied() && taskopt.ShowTaskDead)) && (player.IsCrewmate() || player.Data.Role is PhantomTouRole))
+                if (((taskOpt.ShowTaskInMeetings && player.AmOwner) || (PlayerControl.LocalPlayer.HasDied() && taskOpt.ShowTaskDead)) && (player.IsCrewmate() || player.Data.Role is PhantomTouRole))
                 {
                     var completed = player.myTasks.ToArray().Count(x => x.IsComplete);
-                    var totaltasks = player.myTasks.ToArray().Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
-                    roleName += $" <size=80%>{Color.yellow.ToTextColor()}({completed}/{totaltasks})</color></size>";
+                    var totalTasks = player.myTasks.ToArray().Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
+                    roleName += $" <size=80%>{Color.yellow.ToTextColor()}({completed}/{totalTasks})</color></size>";
                 }
 
                 if (player.TryGetModifier<OracleConfessModifier>(out var confess, x => x.ConfessToAll))
@@ -491,7 +362,7 @@ public static class HudManagerPatches
         }
         else
         {
-            var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+            var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
             var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
 
             foreach (var player in PlayerControl.AllPlayerControls)
@@ -530,8 +401,8 @@ public static class HudManagerPatches
                     var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole);
                     if (cachedMod is ICachedRole cache && player.Data.Role.GetType() != cache.CachedRole.GetType())
                     {
-                        if (cache.ShowCurrentRoleFirst) roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color> ({cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color>)</size>";
-                        else roleName = $"<size=80%>{cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
+                        roleName = cache.ShowCurrentRoleFirst ? $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color> ({cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color>)</size>" 
+                            : $"<size=80%>{cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
                     }
                     // Guardian Angel here is vanilla's GA, NOT Town of Us GA
                     if (player.Data.IsDead && role is GuardianAngelRole gaRole) roleName = $"<size=80%>{gaRole.TeamColor.ToTextColor()}{gaRole.NiceName}</color></size>";
@@ -545,12 +416,12 @@ public static class HudManagerPatches
                     }
                 }
 
-                if (((taskopt.ShowTaskRound && player.AmOwner) || (PlayerControl.LocalPlayer.HasDied() && taskopt.ShowTaskDead && !body && !fakePlayer?.body)) && (player.IsCrewmate() || player.Data.Role is PhantomTouRole))
+                if (((taskOpt.ShowTaskRound && player.AmOwner) || (PlayerControl.LocalPlayer.HasDied() && taskOpt.ShowTaskDead && !body && !fakePlayer?.body)) && (player.IsCrewmate() || player.Data.Role is PhantomTouRole))
                 {
                     var completed = player.myTasks.ToArray().Count(x => x.IsComplete);
-                    var totaltasks = player.myTasks.ToArray().Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
+                    var totalTasks = player.myTasks.ToArray().Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
 
-                    roleName += $" <size=80%>{Color.yellow.ToTextColor()}({completed}/{totaltasks})</color></size>";
+                    roleName += $" <size=80%>{Color.yellow.ToTextColor()}({completed}/{totalTasks})</color></size>";
                 }
 
                 if (player.AmOwner && player.TryGetModifier<ScatterModifier>(out var scatter) && !player.HasDied())
@@ -566,8 +437,7 @@ public static class HudManagerPatches
 
                 if (!string.IsNullOrEmpty(roleName))
                 {
-                    if (TownOfUsPlugin.ColorPlayerName.Value) playerName = $"{roleName}\n{color.ToTextColor()}{playerName}</color>";
-                    else playerName = $"{roleName}\n{playerName}";
+                    playerName = TownOfUsPlugin.ColorPlayerName.Value ? $"{roleName}\n{color.ToTextColor()}{playerName}</color>" : $"{roleName}\n{playerName}";
                 }
 
                 player.cosmetics.nameText.text = playerName;
@@ -605,7 +475,7 @@ public static class HudManagerPatches
         }
     }
 
-    public static void UpdateRoleList(HudManager instance)
+    private static void UpdateRoleList(HudManager instance)
     {
         if (!LobbyBehaviour.Instance)
         {
@@ -684,10 +554,9 @@ public static class HudManagerPatches
 
         if (!ZoomButton)
         {
-            ZoomButton =
-                UnityEngine.Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
+            ZoomButton = Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
             ZoomButton.GetComponent<PassiveButton>().OnClick = new();
-            ZoomButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(Zoom));
+            ZoomButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(ButtonClickZoom));
             ZoomButton.name = "Zoom";
             ZoomButton.transform.Find("Background").localPosition = Vector3.zero;
             ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite =
@@ -709,18 +578,16 @@ public static class HudManagerPatches
 
     private static void CreateTeamChatButton(HudManager instance)
     {
-        if (!TeamChatButton)
-        {
-            TeamChatButton =
-                UnityEngine.Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
-            TeamChatButton.GetComponent<PassiveButton>().OnClick = new();
-            TeamChatButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(TeamChatPatches.ToggleTeamChat));
-            TeamChatButton.name = "FactionChat";
-            TeamChatButton.transform.Find("Background").localPosition = Vector3.zero;
-            TeamChatButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatInactive.LoadAsset();
-            TeamChatButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatActive.LoadAsset();
-            TeamChatButton.transform.Find("Selected").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatSelected.LoadAsset();
-        }
+        if (TeamChatButton) return;
+
+        TeamChatButton = Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
+        TeamChatButton.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
+        TeamChatButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(TeamChatPatches.ToggleTeamChat));
+        TeamChatButton.name = "FactionChat";
+        TeamChatButton.transform.Find("Background").localPosition = Vector3.zero;
+        TeamChatButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatInactive.LoadAsset();
+        TeamChatButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatActive.LoadAsset();
+        TeamChatButton.transform.Find("Selected").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatSelected.LoadAsset();
     }
 
     private static void CreateWikiButton(HudManager instance)
@@ -729,7 +596,7 @@ public static class HudManagerPatches
 
         if (!WikiButton)
         {
-            WikiButton = UnityEngine.Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
+            WikiButton = Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
             WikiButton.GetComponent<PassiveButton>().OnClick = new();
             WikiButton.GetComponent<PassiveButton>().OnClick.AddListener((UnityAction)(() =>
             {
@@ -790,7 +657,8 @@ public static class HudManagerPatches
             return;
         }
             
-        var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
+        // TERRIBLE FOR PERFORMANCE (FindObjectsOfType is very costly)
+        var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
         var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId);
 
         if (((PlayerControl.LocalPlayer.Data.IsDead && !body && !fakePlayer?.body && (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } || PlayerControl.LocalPlayer.Data.Role is not IGhostRole)) || TutorialManager.InstanceExists)
@@ -801,7 +669,7 @@ public static class HudManagerPatches
 
         UpdateTeamChat();
         UpdateCamouflageComms();
-        UpdateRoleNameText(__instance);
+        UpdateRoleNameText();
         UpdateGhostRoles(__instance);
     }
 
