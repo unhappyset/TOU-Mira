@@ -171,7 +171,11 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
     public bool IsExempt(PlayerVoteArea voteArea)
     {
-        return voteArea?.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || voteArea!.AmDead || voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
+        return voteArea?.TargetPlayerId == Player.PlayerId ||
+        Player.Data.IsDead || voteArea!.AmDead ||
+        voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true ||
+        voteArea.GetPlayer()?.Data.Role is MayorRole mayor && mayor.Revealed ||
+        Player.IsLover() && voteArea.GetPlayer()?.IsLover() == true;
     }
 
     private static bool IsRoleValid(RoleBehaviour role)

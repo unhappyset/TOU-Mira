@@ -114,7 +114,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             snitchRevealed = false;
         }
 
-        return (snitchRevealed && IsTargetOfSnitch(player) && ((showRole && OptionGroupSingleton<SnitchOptions>.Instance.SnitchSeesRoles) || !showRole)) || showSnitch;
+        return (snitchRevealed && IsTargetOfSnitch(player) && !showRole) || showSnitch;
     }
 
     public override void OnDeath(DeathReason reason)

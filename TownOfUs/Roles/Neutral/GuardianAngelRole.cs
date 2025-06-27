@@ -115,7 +115,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
     }
     public static bool GATargetSeesVisibilityFlag(PlayerControl player)
     {
-        var gaTargetKnows = OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows &&
+        var gaTargetKnows = OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect is ProtectOptions.SelfAndGA &&
             player.HasModifier<GuardianAngelTargetModifier>();
 
         var gaKnowsTargetRole = PlayerControl.LocalPlayer.IsRole<GuardianAngelTouRole>() &&

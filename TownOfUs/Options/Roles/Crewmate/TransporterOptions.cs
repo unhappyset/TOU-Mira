@@ -15,11 +15,11 @@ public sealed class TransporterOptions : AbstractOptionGroup<TransporterRole>
     [ModdedNumberOption("Max Uses", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxNumTransports { get; set; } = 5f;
 
-    [ModdedToggleOption("Move While Using Transport Menu")]
-    public bool MoveWithMenu { get; set; } = true;
+    /* [ModdedToggleOption("Move While Using Transport Menu")]
+    public bool MoveWithMenu { get; set; } = true; */
 
     [ModdedToggleOption("Transporter Can Use Vitals")]
-    public bool CanUseVitals { get; set; } = false;
+    public bool CanUseVitals { get; set; } = true;
     [ModdedToggleOption("Get More Uses From Completing Tasks")]
     public bool TaskUses { get; set; } = true;
 }
