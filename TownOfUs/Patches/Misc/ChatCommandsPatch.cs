@@ -76,13 +76,12 @@ public static class ChatPatches
             var msg = "You cannot change your name outside of the lobby!";
             if (LobbyBehaviour.Instance)
             {
-                if (textRegular.Length < 2)
+                if (textRegular.Length < 2 || textRegular.Length > 10)
                 {
-                    msg = $"The player name must be at least 2 characters long!";
+                    msg = $"The player name must be at least 2 characters long, and less than 10 characters long!";
                 }
                 else
                 {
-                    // This is done to prevent the player from being kicked for changing their name as they're not the host
                     PlayerControl.LocalPlayer.CmdCheckName(textRegular);
                     msg = $"Changed player name for the next match to: {textRegular}";
                 }
@@ -141,7 +140,6 @@ public static class ChatPatches
             List<string> randomNames = ["Atony", "Alchlc", "angxlwtf", "Digi", "donners", "K3ndo", "MyDragonBreath", "Pietro", "twix", "xerm", "XtraCube", "Zeo", "Slushie"];
             var msg = "<size=75%>Chat Commands:\n" +
                 "/help - Shows this message\n" +
-                $"/jail - If you are the <b><color=#{Color.gray.ToHtmlStringRGBA()}>Jailor</color></b>, you can send a message to your Jail target by typing something like <b>/jail Hello!</b>\n" +
                 "/nerfme - Cuts your vision in half\n" +
                 $"/sethost - Changes the host to be another player, will reset and break if someone connects afterwards. Run the command again to fix it.\n" +
                 $"/setname - Change your name to whatever text follows the command (like /setname {randomNames.Random()}) for the next match.\n" +

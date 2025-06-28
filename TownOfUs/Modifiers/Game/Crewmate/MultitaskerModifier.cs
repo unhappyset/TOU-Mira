@@ -1,4 +1,5 @@
 ﻿using MiraAPI.GameOptions;
+using MiraAPI.Hud;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
@@ -49,6 +50,8 @@ public sealed class MultitaskerModifier : TouGameModifier, IWikiDiscoverable
     {
         return Minigame.Instance.TryCast<VitalsMinigame>() ||
                Minigame.Instance.TryCast<CollectShellsMinigame>() ||
+               Minigame.Instance is IngameWikiMinigame ||
+               Minigame.Instance is CustomPlayerMenu ||
                Minigame.Instance.TryCast<MushroomDoorSabotageMinigame>();
     }
     public string GetAdvancedDescription()
