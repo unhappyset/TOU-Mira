@@ -57,7 +57,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             + $"{TouLocale.Get(TouNames.Glitch, "Glitch")} ⇨ {TouLocale.Get(TouNames.Sheriff, "Sheriff")} | "
             + "GA ⇨ Cleric | "
             + "Inquis ⇨ Oracle\n"
-            + $"{TouLocale.Get(TouNames.Jester, "Jester")} ⇨ Swapper | "
+            + $"{TouLocale.Get(TouNames.Jester, "Jester")} ⇨ {TouLocale.Get(TouNames.Swapper, "Swapper")} | "
             + "Merc ⇨ Warden\n"
             + "Pb/Pest ⇨ Aurial | "
             + "SC ⇨ Medium | "
@@ -68,7 +68,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             + $"Escapist ⇨ {TouLocale.Get(TouNames.Transporter, "Transporter")}\n"
             + "Hypnotist ⇨ Lookout | "
             + "Janitor ⇨ Detective\n"
-            + "Miner ⇨ Engineer | "
+            + $"Miner ⇨ {TouLocale.Get(TouNames.Engineer, "Engineer")} | "
             + "Scavenger ⇨ Tracker\n"
             + "Undertaker ⇨ Altruist | "
             + $"Warlock ⇨ {TouLocale.Get(TouNames.Veteran, "Veteran")}",

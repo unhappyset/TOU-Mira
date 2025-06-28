@@ -15,12 +15,13 @@ using MiraAPI.Events;
 using TownOfUs.Patches.Stubs;
 using MiraAPI.Hud;
 using TownOfUs.Buttons;
+using TownOfUs.Modules.Localization;
 
 namespace TownOfUs.Roles.Crewmate;
 
 public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
-    public string RoleName => "Engineer";
+    public string RoleName => TouLocale.Get(TouNames.Engineer, "Engineer");
     public string RoleDescription => "Maintain Important Systems On The Ship";
     public string RoleLongDescription => "Vent around and fix sabotages remotely";
     public Color RoleColor => TownOfUsColors.Engineer;
@@ -213,7 +214,7 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     
     public string GetAdvancedDescription()
     {
-        return "The Engineer is a Crewmate Support role that can vent and fix sabotages remotely."
+        return $"The {RoleName} is a Crewmate Support role that can vent and fix sabotages remotely."
                + MiscUtils.AppendOptionsText(GetType());
     }
 
