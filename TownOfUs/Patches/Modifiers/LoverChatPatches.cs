@@ -22,7 +22,12 @@ public static class LoverChatPatches
         if (MeetingHud.Instance || ExileController.Instance != null || PlayerControl.LocalPlayer.Data.IsDead || overrideMessages)
             return true;
 
-        var text = __instance.freeChatField.Text;
+        var text = __instance.freeChatField.Text.WithoutRichText();
+
+        if (text.Length < 1 || text.Length > 100)
+        {
+            return true;
+        }
 
         if (PlayerControl.LocalPlayer.HasModifier<LoverModifier>())
         {

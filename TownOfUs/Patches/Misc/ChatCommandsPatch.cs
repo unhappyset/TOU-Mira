@@ -21,7 +21,12 @@ public static class ChatPatches
     public static bool Prefix(ChatController __instance)
     {
         var text = __instance.freeChatField.Text.ToLower(CultureInfo.InvariantCulture);
-        var textRegular = __instance.freeChatField.Text;
+        var textRegular = __instance.freeChatField.Text.WithoutRichText();
+
+        if (textRegular.Length < 1 || textRegular.Length > 100)
+        {
+            return true;
+        }
 
         if (text.Replace(" ", string.Empty).StartsWith("/", StringComparison.OrdinalIgnoreCase)
             && text.Replace(" ", string.Empty).Contains("summary", StringComparison.OrdinalIgnoreCase))
@@ -75,9 +80,9 @@ public static class ChatPatches
             var msg = "You cannot change your name outside of the lobby!";
             if (LobbyBehaviour.Instance)
             {
-                if (textRegular.Length < 2 || textRegular.Length > 12)
+                if (textRegular.Length < 1 || textRegular.Length > 12)
                 {
-                    msg = $"The player name must be at least 2 characters long, and less than 13 characters long!";
+                    msg = $"The player name must be at least 1 character long, and cannot be more than 12 characters long!";
                 }
                 else
                 {
@@ -179,7 +184,6 @@ public static class ChatPatches
         else if (TeamChatPatches.TeamChatActive && !PlayerControl.LocalPlayer.HasDied() && (PlayerControl.LocalPlayer.Data.Role is JailorRole || PlayerControl.LocalPlayer.IsJailed() ||PlayerControl.LocalPlayer.Data.Role is VampireRole || PlayerControl.LocalPlayer.IsImpostor()))
         {
             var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-
             if (PlayerControl.LocalPlayer.Data.Role is JailorRole)
             {
                 TeamChatPatches.RpcSendJailorChat(PlayerControl.LocalPlayer, textRegular);

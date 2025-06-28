@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using MiraAPI.GameOptions;
@@ -697,6 +698,15 @@ public static class MiscUtils
         }
 
         return selectedRole;
+    }
+
+    public static string WithoutRichText(this string text)
+    {
+        // Regular expression to match any tag enclosed in < >
+        var richTagRegex = new Regex(@"<[^>]*>"); 
+
+        // Replace matched tags with an empty string
+        return richTagRegex.Replace(text, string.Empty); 
     }
 
     /// <summary>
