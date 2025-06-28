@@ -4,6 +4,7 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Patches.Stubs;
@@ -15,7 +16,7 @@ namespace TownOfUs.Roles.Neutral;
 
 public sealed class GlitchRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
-    public string RoleName => "Glitch";
+    public string RoleName => TouLocale.Get(TouNames.Glitch, "Glitch");
     public string RoleDescription => "Murder, Mimic, Hack... Data Lost";
     public string RoleLongDescription => "Murder everyone to win with your abilities!";
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SheriffRole>());
@@ -83,7 +84,7 @@ public sealed class GlitchRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public string GetAdvancedDescription()
     {
-        return "The Glitch is a Neutral Killing role that wins by being the last killer alive. They can Mimic into another player or they can hack a player." + MiscUtils.AppendOptionsText(GetType());
+        return $"The {RoleName} is a Neutral Killing role that wins by being the last killer alive. They can Mimic into another player or they can hack a player." + MiscUtils.AppendOptionsText(GetType());
     }
 
     [HideFromIl2Cpp]

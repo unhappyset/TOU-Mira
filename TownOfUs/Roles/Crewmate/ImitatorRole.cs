@@ -54,7 +54,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             "Amne ⇨ Mystic | "
             + "Doom ⇨ Vigi | "
             + "Exe ⇨ Snitch\n"
-            + "Glitch ⇨ Sheriff | "
+            + $"{TouLocale.Get(TouNames.Glitch, "Glitch")} ⇨ Sheriff | "
             + "GA ⇨ Cleric | "
             + "Inquis ⇨ Oracle\n"
             + "Jester ⇨ Swapper | "
