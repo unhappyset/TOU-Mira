@@ -5,6 +5,7 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Roles.Impostor;
+using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public sealed class TraitorCacheModifier : BaseModifier, ICachedRole
     public override string ModifierName => "Traitor";
     public override bool HideOnUi => true;
     public bool ShowCurrentRoleFirst => true;
+    public bool Visible => Player.AmOwner || PlayerControl.LocalPlayer.HasDied() || GuardianAngelTouRole.GASeesRoleVisibilityFlag(Player);
     public RoleBehaviour CachedRole => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TraitorRole>());
 
     public override void OnDeath(DeathReason reason)

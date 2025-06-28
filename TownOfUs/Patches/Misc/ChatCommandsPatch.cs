@@ -11,7 +11,6 @@ using TownOfUs.Patches.Options;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
-using UnityEngine;
 
 namespace TownOfUs.Patches.Misc;
 
@@ -76,9 +75,9 @@ public static class ChatPatches
             var msg = "You cannot change your name outside of the lobby!";
             if (LobbyBehaviour.Instance)
             {
-                if (textRegular.Length < 2 || textRegular.Length > 10)
+                if (textRegular.Length < 2 || textRegular.Length > 12)
                 {
-                    msg = $"The player name must be at least 2 characters long, and less than 10 characters long!";
+                    msg = $"The player name must be at least 2 characters long, and less than 13 characters long!";
                 }
                 else
                 {

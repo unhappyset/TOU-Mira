@@ -275,7 +275,7 @@ public static class HudManagerPatches
 
                 if (player.AmOwner ||
                     (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
-                    (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
+                    (PlayerControl.LocalPlayer.GetRoleWhenAlive() && role is VampireRole) ||
                     SnitchRole.SnitchVisibilityFlag(player, true) ||
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
@@ -287,7 +287,7 @@ public static class HudManagerPatches
                     if (!player.HasModifier<VampireBittenModifier>() && player.Data.Role is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
 
                     var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole);
-                    if (cachedMod is ICachedRole cache && player.Data.Role.GetType() != cache.CachedRole.GetType())
+                    if (cachedMod is ICachedRole cache && cache.Visible && player.Data.Role.GetType() != cache.CachedRole.GetType())
                     {
                         roleName = cache.ShowCurrentRoleFirst ? $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color> ({cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color>)</size>" :
                             $"<size=80%>{cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
@@ -329,7 +329,7 @@ public static class HudManagerPatches
                 if (player?.Data?.Disconnected == true)
                 {
                     if (!((PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
-                    (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
+                    (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
                     SnitchRole.SnitchVisibilityFlag(player, true) ||
                     !TutorialManager.InstanceExists && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
@@ -388,7 +388,7 @@ public static class HudManagerPatches
 
                 if (player.AmOwner ||
                     (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
-                    (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
+                    (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
                     SnitchRole.SnitchVisibilityFlag(player, true) ||
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
@@ -399,7 +399,7 @@ public static class HudManagerPatches
                     if (!player.HasModifier<VampireBittenModifier>() && player.Data.Role is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
 
                     var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole);
-                    if (cachedMod is ICachedRole cache && player.Data.Role.GetType() != cache.CachedRole.GetType())
+                    if (cachedMod is ICachedRole cache && cache.Visible && player.Data.Role.GetType() != cache.CachedRole.GetType())
                     {
                         roleName = cache.ShowCurrentRoleFirst ? $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color> ({cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color>)</size>" 
                             : $"<size=80%>{cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";

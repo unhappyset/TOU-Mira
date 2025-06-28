@@ -15,17 +15,6 @@ public static class LoverChatPatches
     private static bool LoverMessage;
     public static bool overrideMessages;
 
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    [HarmonyPostfix]
-    public static void UpdatePatch(HudManager __instance)
-    {
-        if (PlayerControl.LocalPlayer == null) return;
-        if (PlayerControl.LocalPlayer.Data == null) return;
-
-        if (PlayerControl.LocalPlayer.HasModifier<LoverModifier>() && !__instance.Chat.isActiveAndEnabled)
-            __instance.Chat.SetVisible(true);
-    }
-
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
     [HarmonyPrefix]
     public static bool SendChatPatch(ChatController __instance)

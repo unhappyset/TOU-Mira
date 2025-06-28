@@ -6,6 +6,7 @@ using Reactor.Networking.Attributes;
 using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ public sealed class ImitatorCacheModifier() : BaseModifier, ICachedRole
     public override string ModifierName => "Imitator";
     public override bool HideOnUi => true;
     public bool ShowCurrentRoleFirst => true;
+    public bool Visible => Player.AmOwner || PlayerControl.LocalPlayer.HasDied() || GuardianAngelTouRole.GASeesRoleVisibilityFlag(Player);
     public RoleBehaviour CachedRole => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<ImitatorRole>());
     public RoleBehaviour OldRole { get; set; }
     private NetworkedPlayerInfo? _selectedPlr;
