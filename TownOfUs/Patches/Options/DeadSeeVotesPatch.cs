@@ -2,6 +2,7 @@ using HarmonyLib;
 using MiraAPI.GameOptions;
 using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Patches.Options;
@@ -13,10 +14,14 @@ public static class DeadSeeVoteColorsPatch
         [HarmonyArgument(1)] int index, [HarmonyArgument(2)] Transform parent)
     {
         SpriteRenderer spriteRenderer = UnityEngine.Object.Instantiate(__instance.PlayerVotePrefab);
-
+        var player = MiscUtils.PlayerById(voterPlayer.PlayerId);
         if (PlayerControl.LocalPlayer.Data.Role is ProsecutorRole)
         {
             PlayerMaterial.SetColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer);
+        }
+        else if (player != null && player.Data.Role is ProsecutorRole pros && pros.HasProsecuted || (OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow && PlayerControl.LocalPlayer.Data.IsDead))
+        {
+            PlayerMaterial.SetColors(Palette.DisabledGrey, spriteRenderer);
         }
         else if (GameOptionsManager.Instance.currentNormalGameOptions.AnonymousVotes && (!OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow || !PlayerControl.LocalPlayer.Data.IsDead))
         {
