@@ -19,12 +19,13 @@ using UnityEngine;
 using TownOfUs.Modifiers.Game;
 using Reactor.Utilities;
 using System.Globalization;
+using TownOfUs.Modules.Localization;
 
 namespace TownOfUs.Roles.Crewmate;
 
 public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
-    public string RoleName => "Vigilante";
+    public string RoleName => TouLocale.Get(TouNames.Vigilante, "Vigilante");
     public string RoleDescription => "Kill Impostors If You Can Guess Their Roles";
     public string RoleLongDescription => "Guess the roles of impostors mid-meeting to kill them!";
     public Color RoleColor => TownOfUsColors.Vigilante;
@@ -32,6 +33,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
     public DoomableType DoomHintType => DoomableType.Relentless;
     public bool IsPowerCrew => MaxKills > 0; // Always disable end game checks with a vigi running around
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Vigilante,
@@ -69,7 +71,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
         if (Player.AmOwner)
         {
-            meetingMenu.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && MaxKills > 0 && !Player.HasModifier<JailedModifier>());
+            meetingMenu.GenButtons(MeetingHud.Instance,
+                Player.AmOwner && !Player.HasDied() && MaxKills > 0 && !Player.HasModifier<JailedModifier>());
         }
     }
 
@@ -135,7 +138,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
         void ClickHandler(PlayerControl victim)
         {
-            if (!OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteMultiKill || MaxKills == 0 || victim == Player)
+            if (!OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteMultiKill || MaxKills == 0 ||
+                victim == Player)
             {
                 meetingMenu?.HideButtons();
             }
@@ -146,7 +150,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
                 Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Impostor));
 
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfUsColors.Vigilante.ToTextColor()}Your Multi Shot has prevented you from dying this meeting! You have {SafeShotsLeft} safe shot(s) left!</color></b>", Color.white, spr: TouRoleIcons.Vigilante.LoadAsset());
+                    $"<b>{TownOfUsColors.Vigilante.ToTextColor()}Your Multi Shot has prevented you from dying this meeting! You have {SafeShotsLeft} safe shot(s) left!</color></b>",
+                    Color.white, spr: TouRoleIcons.Vigilante.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -157,7 +162,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             }
             else
             {
-                Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false, playKillSound: false);
+                Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false,
+                    playKillSound: false);
 
                 if (victim != Player)
                     meetingMenu?.HideSingle(victim.PlayerId);
@@ -171,7 +177,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
     public bool IsExempt(PlayerVoteArea voteArea)
     {
-        return voteArea?.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || voteArea!.AmDead || voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
+        return voteArea?.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || voteArea!.AmDead ||
+               voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
     }
 
     private static bool IsRoleValid(RoleBehaviour role)
@@ -190,7 +197,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             return false;
         }
 
-        if (role.IsCrewmate() && !(PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished))
+        if (role.IsCrewmate() && !(PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) &&
+                                   !allyMod.GetsPunished))
         {
             return false;
         }
@@ -224,15 +232,11 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
     private static bool IsModifierValid(BaseModifier modifier)
     {
-        var isValid = true;
         // This will remove modifiers that alter their chance/amount
-        if ((modifier is TouGameModifier touMod && (touMod.CustomAmount <= 0 || touMod.CustomChance <= 0)) ||
-            (modifier is AllianceGameModifier allyMod && (allyMod.CustomAmount <= 0 || allyMod.CustomChance <= 0)) ||
-            (modifier is UniversalGameModifier uniMod && (uniMod.CustomAmount <= 0 || uniMod.CustomChance <= 0)))
-        {
-            isValid = false;
-        }
-        
+        var isValid = !((modifier is TouGameModifier touMod && (touMod.CustomAmount <= 0 || touMod.CustomChance <= 0)) ||
+                        (modifier is AllianceGameModifier allyMod && (allyMod.CustomAmount <= 0 || allyMod.CustomChance <= 0)) ||
+                        (modifier is UniversalGameModifier uniMod && (uniMod.CustomAmount <= 0 || uniMod.CustomChance <= 0)));
+
         if (!isValid)
         {
             return false;
@@ -242,8 +246,11 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         {
             return true;
         }
-        var impMod = modifier as TouGameModifier;
-        if (impMod != null && (impMod.FactionType.ToDisplayString().Contains("Imp") || impMod.FactionType.ToDisplayString().Contains("Killer")) && !impMod.FactionType.ToDisplayString().Contains("Non"))
+
+        if (modifier is TouGameModifier impMod &&
+            (impMod.FactionType.ToDisplayString().Contains("Imp") ||
+             impMod.FactionType.ToDisplayString().Contains("Killer")) &&
+            !impMod.FactionType.ToDisplayString().Contains("Non"))
         {
             return OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteGuessKillerMods;
         }
@@ -259,9 +266,12 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         {
             stringB.AppendLine(CultureInfo.InvariantCulture, $"You can also guess Crewmates.");
         }
+
         if ((int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots > 0)
         {
-            var newText = SafeShotsLeft == 0 ? $"You have no more safe shots left." : $"{SafeShotsLeft} safe shot(s) left.";
+            var newText = SafeShotsLeft == 0
+                ? "You have no more safe shots left."
+                : $"{SafeShotsLeft} safe shot(s) left.";
             stringB.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
         }
 
@@ -271,7 +281,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     public string GetAdvancedDescription()
     {
         return
-            "The Vigilante is a Crewmate Killing role that can guess players roles in meetings. " +
+            $"The {RoleName} is a Crewmate Killing role that can guess players roles in meetings. " +
             "If they guess correctly, the other player will die. If not, they will die. "
             + MiscUtils.AppendOptionsText(GetType());
     }
