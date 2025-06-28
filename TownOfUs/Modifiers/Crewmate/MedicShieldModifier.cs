@@ -8,14 +8,15 @@ using TownOfUs.Utilities;
 using TownOfUs.Options;
 using TownOfUs.Events.TouEvents;
 using MiraAPI.Events;
+using TownOfUs.Modules.Localization;
 
 namespace TownOfUs.Modifiers.Crewmate;
 
 public sealed class MedicShieldModifier(PlayerControl medic) : BaseShieldModifier
 {
-    public override string ModifierName => "Medic Shield";
+    public override string ModifierName => $"{TouLocale.Get(TouNames.Medic, "Medic")} Shield";
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Medic;
-    public override string ShieldDescription => "You are shielded by a Medic!\nYou may not die to other players";
+    public override string ShieldDescription => $"You are shielded by a {TouLocale.Get(TouNames.Medic, "Medic")}!\nYou may not die to other players";
     public PlayerControl Medic { get; } = medic;
     public GameObject? MedicShield { get; set; }
     public override bool HideOnUi

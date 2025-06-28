@@ -12,6 +12,7 @@ using Reactor.Utilities.Extensions;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Patches.Stubs;
@@ -22,7 +23,7 @@ namespace TownOfUs.Roles.Crewmate;
 
 public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
-    public string RoleName => "Medic";
+    public string RoleName => TouLocale.Get(TouNames.Medic, "Medic");
     public string RoleDescription => "Create A Shield To Protect A Crewmate";
     public string RoleLongDescription => "Protect a crewmate with a shield";
     public Color RoleColor => TownOfUsColors.Medic;
@@ -187,7 +188,7 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
         if (string.IsNullOrWhiteSpace(reportMsg))
             return;
 
-        var title = $"<color=#{TownOfUsColors.Medic.ToHtmlStringRGBA()}>Medic Report</color>";
+        var title = $"<color=#{TownOfUsColors.Medic.ToHtmlStringRGBA()}>{RoleName} Report</color>";
         var reported = Player;
         if (br.Body != null) reported = br.Body;
         MiscUtils.AddFakeChat(reported.Data, title, reportMsg, false, true);
@@ -325,7 +326,7 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
 
     public string GetAdvancedDescription()
     {
-        return "The Medic is a Crewmate Protective role that can give a Shield to player."
+        return $"The {RoleName} is a Crewmate Protective role that can give a Shield to player."
             + MiscUtils.AppendOptionsText(GetType());
     }
 
