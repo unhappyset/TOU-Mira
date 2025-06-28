@@ -20,12 +20,14 @@ using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modifiers.Game.Neutral;
 using TownOfUs.Events.TouEvents;
 using MiraAPI.Events;
+using TownOfUs.Modules.Localization;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
+public sealed class AmnesiacRole(IntPtr cppPtr)
+    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
-    public string RoleName => "Amnesiac";
+    public string RoleName => TouLocale.Get(TouNames.Amnesiac, "Amnesiac");
     public string RoleDescription => "Remember A Role Of A Deceased Player";
     public string RoleLongDescription => "Find a dead body to remember and become their role";
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MysticRole>());
@@ -33,6 +35,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
     public DoomableType DoomHintType => DoomableType.Death;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         IntroSound = TouAudio.MediumIntroSound,
@@ -48,7 +51,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         {
             var mods = Player.GetModifiers<AmnesiacArrowModifier>();
 
-            mods.Do([HideFromIl2Cpp] (x) => Player.RemoveModifier(x.UniqueId));
+            mods.Do([HideFromIl2Cpp](x) => Player.RemoveModifier(x.UniqueId));
         }
     }
 
@@ -75,23 +78,27 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         if (player.Data.Role is InquisitorRole inquis)
         {
             inquis.Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().ToList();
-            inquis.TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select(x => x.TargetRole).OrderBy(x => x.NiceName).ToList();
+            inquis.TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select(x => x.TargetRole)
+                .OrderBy(x => x.NiceName).ToList();
         }
+
         if (player.Data.Role is MayorRole mayor)
-            {
-                mayor.Revealed = true;
-            }
+        {
+            mayor.Revealed = true;
+        }
 
         if (target.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnImpAssassin)
         {
             player.AddModifier<ImpostorAssassinModifier>();
         }
-        else if (target.IsNeutral() && target.Is(RoleAlignment.NeutralKilling) && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnNeutAssassin)
+        else if (target.IsNeutral() && target.Is(RoleAlignment.NeutralKilling) &&
+                 OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnNeutAssassin)
         {
             player.AddModifier<NeutralKillerAssassinModifier>();
         }
-        
-        if (target.Data.Role is not VampireRole && target.Data.Role.MaxCount <= PlayerControl.AllPlayerControls.ToArray().Count(x => x.Data.Role.Role == target.Data.Role.Role))
+
+        if (target.Data.Role is not VampireRole && target.Data.Role.MaxCount <= PlayerControl.AllPlayerControls
+                .ToArray().Count(x => x.Data.Role.Role == target.Data.Role.Role))
         {
             if (target.IsCrewmate())
             {
@@ -122,6 +129,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                 target.ChangeRole(RoleId.Get<SurvivorRole>());
             }
         }
+
         var touAbilityEvent2 = new TouAbilityEvent(AbilityType.AmnesiacPostRemember, player, target);
         MiraEventManager.InvokeEvent(touAbilityEvent2);
     }
@@ -134,13 +142,16 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
 
     public string GetAdvancedDescription()
     {
-        return "The Amnesiac is a Neutral Benign role that gains access to a new role from remembering a dead body’s role. Use the role you remember to win the game." + MiscUtils.AppendOptionsText(GetType());
+        return
+            $"The {RoleName} is a Neutral Benign role that gains access to a new role from remembering a dead body’s role. Use the role you remember to win the game." +
+            MiscUtils.AppendOptionsText(GetType());
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
         new("Remember",
             "Remember the role of a dead body. If the dead body's role is a unique role, you will remember the base faction's role instead.",
-            TouNeutAssets.RememberButtonSprite)    
+            TouNeutAssets.RememberButtonSprite)
     ];
 }
