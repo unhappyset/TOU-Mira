@@ -16,6 +16,7 @@ public static class LobbyJoin
     static GameObject LobbyText;
 
     static TextMeshPro Text;
+    static bool JoiningAttempted;
 
     [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.JoinGame))]
     [HarmonyPostfix]
@@ -57,6 +58,7 @@ public static class LobbyJoin
         if (LobbyText)
         {
             LobbyText.SetActive(false);
+            JoiningAttempted = false;
         }
     }
 
@@ -67,10 +69,12 @@ public static class LobbyJoin
     {
         if (GameId == 0 || !LobbyText || !LobbyText.active) return;
 
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab) && !JoiningAttempted)
         {
             AmongUsClient.Instance.StartCoroutine(AmongUsClient.Instance.CoFindGameInfoFromCodeAndJoin(GameId));
+            JoiningAttempted = true;
         }
+
         if (LobbyText && Text)
         {
             var code = GameCode.IntToGameName(GameId);
