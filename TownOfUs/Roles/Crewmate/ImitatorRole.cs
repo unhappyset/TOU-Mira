@@ -51,7 +51,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             + " as they can only be selected if no other Imitators exist. Jailor and Prosecutor cannot use their meeting abilities, and Vigi does not get safe shots.",
             TouCrewAssets.InspectSprite),
         new("Neutral Counterparts",
-            "Amne ⇨ Mystic | "
+            $"Amne ⇨ {TouLocale.Get(TouNames.Medic, "Medic")} | "
             + "Doom ⇨ Vigi | "
             + "Exe ⇨ Snitch\n"
             + $"{TouLocale.Get(TouNames.Glitch, "Glitch")} ⇨ {TouLocale.Get(TouNames.Sheriff, "Sheriff")} | "
