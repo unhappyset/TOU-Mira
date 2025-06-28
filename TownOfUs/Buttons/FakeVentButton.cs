@@ -11,7 +11,9 @@ public sealed class FakeVentButton : CustomActionButton
     public override string Name => " ";
     public override Color TextOutlineColor => Color.clear;
     public override float Cooldown => 0.001f;
+    public override float InitialCooldown => 0.001f;
     public override LoadableAsset<Sprite> Sprite => TouAssets.BlankSprite;
+    public override ButtonLocation Location => ButtonLocation.BottomLeft;
 
     public bool Show { get; set; } = true;
     public override void CreateButton(Transform parent)
@@ -23,6 +25,8 @@ public sealed class FakeVentButton : CustomActionButton
         {
             pb.OnClick = new Button.ButtonClickedEvent();
         }
+        SetButtonLocation(ButtonLocation.BottomLeft);
+        SetButtonLocation(ButtonLocation.BottomRight);
     }
     public override bool Enabled(RoleBehaviour? role)
     {

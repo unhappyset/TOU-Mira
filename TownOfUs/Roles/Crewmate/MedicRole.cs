@@ -197,41 +197,60 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
     {
         var colors = new Dictionary<int, string>
         {
-            { 0, "darker" }, // red
-            { 1, "darker" }, // blue
-            { 2, "darker" }, // green
-            { 3, "lighter" }, // pink
-            { 4, "lighter" }, // orange
-            { 5, "lighter" }, // yellow
-            { 6, "darker" }, // black
-            { 7, "lighter" }, // white
-            { 8, "darker" }, // purple
-            { 9, "darker" }, // brown
-            { 10, "lighter" }, // cyan
-            { 11, "lighter" }, // lime
-            { 12, "darker" }, // maroon
-            { 13, "lighter" }, // rose
-            { 14, "lighter" }, // banana
-            { 15, "darker" }, // gray
-            { 16, "darker" }, // tan
-            { 17, "lighter" }, // coral
-            { 18, "darker" }, // watermelon
-            { 19, "darker" }, // chocolate
-            { 20, "lighter" }, // sky blue
-            { 21, "lighter" }, // beige
-            { 22, "darker" }, // magenta
-            { 23, "lighter" }, // turquoise/Sea Green
-            { 24, "lighter" }, // lilac
-            { 25, "darker" }, // olive
-            { 26, "lighter" }, // azure
-            { 27, "darker" }, // plum
-            { 28, "darker" }, // jungle
-            { 29, "lighter" }, // mint
-            { 30, "lighter" }, // chartreuse
-            { 31, "darker" }, // macau
-            { 32, "lighter" }, // gold
-            { 33, "darker" }, // tawny
-            { 34, "lighter" }, // rainbow
+            { 0, "darker" }, // Red
+            { 1, "darker" }, // Blue
+            { 2, "darker" }, // Green
+            { 3, "lighter" }, // Pink
+            { 4, "lighter" }, // Orange
+            { 5, "lighter" }, // Yellow
+            { 6, "darker" }, // Black
+            { 7, "lighter" }, // White
+            { 8, "darker" }, // Purple
+            { 9, "darker" }, // Brown
+            { 10, "lighter" }, // Cyan
+            { 11, "lighter" }, // Lime
+            { 12, "darker" }, // Maroon
+            { 13, "lighter" }, // Rose
+            { 14, "lighter" }, // Banana
+            { 15, "darker" }, // Gray
+            { 16, "darker" }, // Tan
+            { 17, "lighter" }, // Coral
+            { 18, "darker" }, // Watermelon
+            { 19, "darker" }, // Chocolate
+            { 20, "lighter" }, // Sky Blue
+            { 21, "lighter" }, // Beige
+            { 22, "darker" }, // Magenta
+            { 23, "lighter" }, // Sea Green
+            { 24, "lighter" }, // Lilac
+            { 25, "darker" }, // Olive
+            { 26, "lighter" }, // Azure
+            { 27, "darker" }, // Plum
+            { 28, "darker" }, // Jungle
+            { 29, "lighter" }, // Mint
+            { 30, "lighter" }, // Chartreuse
+            { 31, "darker" }, // Macau
+            { 32, "lighter" }, // Tawny
+            { 33, "darker" }, // Gold
+
+            { 34, "lighter" }, // Snow
+            { 35, "lighter" }, // Turquoise
+            { 36, "lighter" }, // Nacho
+            { 37, "darker" }, // Blood
+            { 38, "darker" }, // Grass
+            { 39, "lighter" }, // Mandarin
+            { 40, "lighter" }, // Glass
+            { 41, "darker" }, // Ash
+            { 42, "darker" }, // Midnight
+            { 43, "darker" }, // Steel
+            { 44, "lighter" }, // Silver
+            { 45, "lighter" }, // Shimmer
+            { 46, "darker" }, // Crimson
+            { 47, "darker" }, // Charcoal
+            { 48, "darker" }, // Violet
+            { 49, "darker" }, // Denim
+            { 50, "lighter" }, // Cotton Candy
+
+            { 51, "lighter" }, // rainbow
         };
 
         var typeOfColor = colors[player.Data.DefaultOutfit.ColorId];
