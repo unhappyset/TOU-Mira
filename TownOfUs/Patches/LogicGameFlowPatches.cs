@@ -157,7 +157,7 @@ public static class LogicGameFlowPatches
         }
 
         // Prevents game end when all impostors are dead but there is a possibility for a traitor to spawn given the conditions
-        var possibleTraitor = ModifierUtils.GetActiveModifiers<ToBecomeTraitorModifier>().FirstOrDefault();
+        var possibleTraitor = ModifierUtils.GetActiveModifiers<ToBecomeTraitorModifier>().FirstOrDefault(x => !x.Player.HasDied());
         if (Helpers.GetAlivePlayers().Count > (int)OptionGroupSingleton<TraitorOptions>.Instance.LatestSpawn - 1 && possibleTraitor != null)
         {
             return false;
