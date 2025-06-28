@@ -47,7 +47,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities { get; } = [
         new("Crewmate Imitation",
-            $"All crewmate roles are available besides Imitator, and Crewmate. Politician, Mayor, Prosecutor and Jailor are limited,"
+            $"All crewmate roles are available besides Imitator, and Crewmate. {TouLocale.Get(TouNames.Politician, "Politician")}, {TouLocale.Get(TouNames.Mayor, "Mayor")}, Prosecutor and Jailor are limited,"
             + " as they can only be selected if no other Imitators exist. Jailor and Prosecutor cannot use their meeting abilities, and Vigi does not get safe shots.",
             TouCrewAssets.InspectSprite),
         new("Neutral Counterparts",

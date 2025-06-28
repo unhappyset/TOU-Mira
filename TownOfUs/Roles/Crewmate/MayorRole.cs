@@ -12,6 +12,7 @@ using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
@@ -21,7 +22,7 @@ namespace TownOfUs.Roles.Crewmate;
 
 public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable, IUnguessable
 {
-    public string RoleName => "Mayor";
+    public string RoleName => TouLocale.Get(TouNames.Mayor, "Mayor");
     public string RoleDescription => "Reveal Yourself To Save The Crew";
     public string RoleLongDescription => "Lead the crew to victory!";
     public Color RoleColor => TownOfUsColors.Mayor;
@@ -235,7 +236,7 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
     }
     public string GetAdvancedDescription()
     {
-        return "The Mayor is a Crewmate Power role that gains three votes and is revealed to all players, also changing their look in meetings.";
+        return $"The {RoleName} is a Crewmate Power role that gains three votes and is revealed to all players, also changing their look in meetings.";
     }
 
     [HideFromIl2Cpp]
