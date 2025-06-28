@@ -26,7 +26,7 @@ public static class ProsecutorPatches
             return false;
         }
 
-        if (__instance != prosecutor.ProsecuteButton && prosecutor.SelectingProsecuteVictim)
+        if (__instance != prosecutor.ProsecuteButton && __instance != MeetingHud.Instance.SkipVoteButton && prosecutor.SelectingProsecuteVictim)
         {
             ProsecutorRole.RpcProsecute(PlayerControl.LocalPlayer);
         }
