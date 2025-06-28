@@ -7,6 +7,7 @@ using MiraAPI.Networking;
 using MiraAPI.Utilities;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -32,7 +33,7 @@ public static class JesterEvents
             if (jest.AmOwner)
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>You have successfully won as the {TownOfUsColors.Jester.ToTextColor()}Jester</color>, by getting voted out!</b>", Color.white, spr: TouRoleIcons.Jester.LoadAsset());
+                    $"<b>You have successfully won as the {TownOfUsColors.Jester.ToTextColor()}{TouLocale.Get(TouNames.Jester, "Jester")}</color>, by getting voted out!</b>", Color.white, spr: TouRoleIcons.Jester.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
                     notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -40,7 +41,7 @@ public static class JesterEvents
             else
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>The {TownOfUsColors.Jester.ToTextColor()}Jester</color>, {jest.Data.PlayerName}, has successfully won, as they were voted out!</b>", Color.white, spr: TouRoleIcons.Jester.LoadAsset());
+                    $"<b>The {TownOfUsColors.Jester.ToTextColor()}{TouLocale.Get(TouNames.Jester, "Jester")}</color>, {jest.Data.PlayerName}, has successfully won, as they were voted out!</b>", Color.white, spr: TouRoleIcons.Jester.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
                     notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
