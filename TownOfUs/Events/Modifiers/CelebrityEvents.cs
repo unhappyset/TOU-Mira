@@ -1,6 +1,7 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Modifiers;
 using TownOfUs.Modifiers.Game.Crewmate;
 using TownOfUs.Utilities;
@@ -23,6 +24,17 @@ public static class CelebrityEvents
                 var celeb = target.GetModifier<CelebrityModifier>()!;
                 celeb.Announced = true;
             }
+        }
+    }
+
+    [RegisterEvent]
+    public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
+    {
+        if (@event.DeathReason != DeathReason.Kill) return;
+
+        if (@event.Player.TryGetModifier<CelebrityModifier>(out var celeb))
+        {
+            celeb.Announced = true;
         }
     }
 
