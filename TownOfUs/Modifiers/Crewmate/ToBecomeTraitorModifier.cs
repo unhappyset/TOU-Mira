@@ -1,8 +1,11 @@
 using AmongUs.GameOptions;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
+using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modifiers.Neutral;
+using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities;
@@ -50,8 +53,13 @@ public sealed class ToBecomeTraitorModifier : ExcludedGameModifier, IAssignableT
     {
         if (!player.HasModifier<ToBecomeTraitorModifier>()) return;
 
-        player.RemoveModifier<ToBecomeTraitorModifier>();
         player.ChangeRole(RoleId.Get<TraitorRole>());
+        player.RemoveModifier<ToBecomeTraitorModifier>();
+
+        if (OptionGroupSingleton<AssassinOptions>.Instance.TraitorCanAssassin)
+        {
+            player.AddModifier<ImpostorAssassinModifier>();
+        }
         
         if (SnitchRole.IsTargetOfSnitch(player))
         {
