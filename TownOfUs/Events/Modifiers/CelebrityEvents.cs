@@ -30,7 +30,7 @@ public static class CelebrityEvents
     [RegisterEvent]
     public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
-        if (@event.DeathReason != DeathReason.Kill) return;
+        if (@event.DeathReason != DeathReason.Exile) return;
 
         if (@event.Player.TryGetModifier<CelebrityModifier>(out var celeb))
         {
