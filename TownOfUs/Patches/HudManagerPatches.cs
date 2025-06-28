@@ -32,14 +32,14 @@ namespace TownOfUs.Patches;
 [HarmonyPatch]
 public static class HudManagerPatches
 {
-    public static GameObject ZoomButton;
-    private static GameObject WikiButton;
-    private static GameObject RoleList;
+    public static GameObject ZoomButton; 
+    public static GameObject WikiButton;
+    public static GameObject RoleList;
     public static GameObject TeamChatButton;
 
-    private static bool Zooming;
+    public static bool Zooming;
 
-    private static IEnumerator CoResizeUI()
+    public static IEnumerator CoResizeUI()
     {
         while (!HudManager.Instance) yield return null;
         yield return new WaitForSeconds(0.01f);
@@ -78,7 +78,7 @@ public static class HudManagerPatches
         }
     }
 
-    private static void AdjustCameraSize(float size)
+    public static void AdjustCameraSize(float size)
     {
         Camera.main!.orthographicSize = size;
         foreach (var cam in Camera.allCameras) cam.orthographicSize = Camera.main!.orthographicSize;
@@ -99,7 +99,7 @@ public static class HudManagerPatches
         ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlusActive.LoadAsset() : TouAssets.ZoomMinusActive.LoadAsset();
     }
 
-    private static void ButtonClickZoom()
+    public static void ButtonClickZoom()
     {
         if (MeetingHud.Instance || ExileController.Instance)
         {
@@ -110,7 +110,7 @@ public static class HudManagerPatches
         AdjustCameraSize(!Zooming ? 12f : 3f);
     }
 
-    private static void ScrollZoom(bool zoomOut = false)
+    public static void ScrollZoom(bool zoomOut = false)
     {
         if (MeetingHud.Instance || ExileController.Instance)
         {
@@ -132,7 +132,7 @@ public static class HudManagerPatches
         AdjustCameraSize(3f);
     }
 
-    private static void CheckForScrollZoom()
+    public static void CheckForScrollZoom()
     {
         var scrollWheel = Input.GetAxis("Mouse ScrollWheel");
         var axisRaw = ConsoleJoystick.player.GetAxisRaw(55);
@@ -147,7 +147,7 @@ public static class HudManagerPatches
         }
     }
 
-    private static void UpdateTeamChat()
+    public static void UpdateTeamChat()
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 
@@ -174,7 +174,7 @@ public static class HudManagerPatches
         TeamChatButton.transform.Find("Selected").gameObject.SetActive(true);
     }
 
-    private static void UpdateCamouflageComms()
+    public static void UpdateCamouflageComms()
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 
@@ -216,7 +216,7 @@ public static class HudManagerPatches
         }
     }
 
-    private static void UpdateColorNameText()
+    public static void UpdateColorNameText()
     {
         if (MeetingHud.Instance)
         {
@@ -234,7 +234,7 @@ public static class HudManagerPatches
         }
     }
 
-    private static void UpdateRoleNameText()
+    public static void UpdateRoleNameText()
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
         var taskOpt = OptionGroupSingleton<TaskTrackingOptions>.Instance;
@@ -447,7 +447,7 @@ public static class HudManagerPatches
         }
     }
 
-    private static void UpdateGhostRoles(HudManager instance)
+    public static void UpdateGhostRoles(HudManager instance)
     {
         foreach (var phantom in CustomRoleUtils.GetActiveRolesOfType<PhantomTouRole>())
         {
@@ -462,7 +462,7 @@ public static class HudManagerPatches
         }
     }
 
-    private static string GetRoleForSlot(int slotValue)
+    public static string GetRoleForSlot(int slotValue)
     {
         var roleListText = RoleOptions.OptionStrings.ToList();
         if (slotValue >= 0 && slotValue < roleListText.Count)
@@ -475,7 +475,7 @@ public static class HudManagerPatches
         }
     }
 
-    private static void UpdateRoleList(HudManager instance)
+    public static void UpdateRoleList(HudManager instance)
     {
         if (!LobbyBehaviour.Instance)
         {
@@ -548,7 +548,7 @@ public static class HudManagerPatches
         }
     }
 
-    private static void CreateZoomButton(HudManager instance)
+    public static void CreateZoomButton(HudManager instance)
     {
         var isChatButtonVisible = HudManager.Instance.Chat.isActiveAndEnabled;
 
@@ -576,7 +576,7 @@ public static class HudManagerPatches
         }
     }
 
-    private static void CreateTeamChatButton(HudManager instance)
+    public static void CreateTeamChatButton(HudManager instance)
     {
         if (TeamChatButton) return;
 
@@ -590,7 +590,7 @@ public static class HudManagerPatches
         TeamChatButton.transform.Find("Selected").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatSelected.LoadAsset();
     }
 
-    private static void CreateWikiButton(HudManager instance)
+    public static void CreateWikiButton(HudManager instance)
     {
         var isChatButtonVisible = HudManager.Instance.Chat.isActiveAndEnabled;
 
