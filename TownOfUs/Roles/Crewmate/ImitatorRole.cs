@@ -71,7 +71,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             + "Miner ⇨ Engineer | "
             + "Scavenger ⇨ Tracker\n"
             + "Undertaker ⇨ Altruist | "
-            + "Warlock ⇨ Veteran",
+            + $"Warlock ⇨ {TouLocale.Get(TouNames.Veteran, "Veteran")}",
             TouImpAssets.DragSprite),
     ];
     public string SecondTabName => "Role Guide";

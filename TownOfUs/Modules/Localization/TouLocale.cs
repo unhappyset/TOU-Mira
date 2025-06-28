@@ -43,10 +43,10 @@ public static class TouLocale
             foreach (var translation in File.ReadAllLines(file))
             {
                 var parts = translation.Split('=');
-                if (parts.Length == 2)
+                if (parts.Length >= 2)
                 {
                     var key = parts[0];
-                    var value = parts[1];
+                    var value = string.Join("=", parts.Skip(1));
 
                     if (!Enum.TryParse<TouNames>(key, out var touName))
                     {
