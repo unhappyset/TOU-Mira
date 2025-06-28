@@ -41,19 +41,22 @@ public static class GhostRoleEvents
 
             if (haunterData != null && CustomRoleUtils.GetActiveRoles().OfType<HaunterRole>().Count() < haunterData.Count)
             {
-                if (haunterData.Chance < 100 && HashRandom.Next(101) > haunterData.Chance) return;
+                var isSkipped = haunterData.Chance < 100 && HashRandom.Next(101) > haunterData.Chance;
 
-                var deadCrew = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Data.IsDead && x.IsCrewmate() && !x.HasModifier<AllianceGameModifier>() && x.Data.Role.Role is not RoleTypes.GuardianAngel).ToList();
-
-                if (deadCrew.Count > 0)
+                if (!isSkipped)
                 {
-                    deadCrew.Shuffle();
+                    var deadCrew = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Data.IsDead && x.IsCrewmate() && !x.HasModifier<AllianceGameModifier>() && x.Data.Role.Role is not RoleTypes.GuardianAngel).ToList();
 
-                    var player = deadCrew.TakeFirst();
-
-                    if (player != null)
+                    if (deadCrew.Count > 0)
                     {
-                        player.RpcChangeRole(RoleId.Get<HaunterRole>());
+                        deadCrew.Shuffle();
+
+                        var player = deadCrew.TakeFirst();
+
+                        if (player != null)
+                        {
+                            player.RpcChangeRole(RoleId.Get<HaunterRole>());
+                        }
                     }
                 }
             }
@@ -62,19 +65,22 @@ public static class GhostRoleEvents
 
             if (phantomData != null && CustomRoleUtils.GetActiveRoles().OfType<PhantomTouRole>().Count() < phantomData.Count)
             {
-                if (phantomData.Chance < 100 && HashRandom.Next(101) > phantomData.Chance) return;
+                var isSkipped = phantomData.Chance < 100 && HashRandom.Next(101) > phantomData.Chance;
 
-                var deadNeutral = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Data.IsDead && x.IsNeutral() && !x.Data.Role.DidWin(GameOverReason.CrewmatesByVote) && !x.HasModifier<AllianceGameModifier>()).ToList();
-
-                if (deadNeutral.Count > 0)
+                if (!isSkipped)
                 {
-                    deadNeutral.Shuffle();
+                    var deadNeutral = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Data.IsDead && x.IsNeutral() && !x.Data.Role.DidWin(GameOverReason.CrewmatesByVote) && !x.HasModifier<AllianceGameModifier>()).ToList();
 
-                    var player = deadNeutral.TakeFirst();
-
-                    if (player != null)
+                    if (deadNeutral.Count > 0)
                     {
-                        player.RpcChangeRole(RoleId.Get<PhantomTouRole>());
+                        deadNeutral.Shuffle();
+
+                        var player = deadNeutral.TakeFirst();
+
+                        if (player != null)
+                        {
+                            player.RpcChangeRole(RoleId.Get<PhantomTouRole>());
+                        }
                     }
                 }
             }
