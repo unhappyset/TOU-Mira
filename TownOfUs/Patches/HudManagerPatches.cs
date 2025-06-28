@@ -216,24 +216,6 @@ public static class HudManagerPatches
         }
     }
 
-    private static void UpdateColorNameText()
-    {
-        if (MeetingHud.Instance)
-        {
-            foreach (var colorBlindName in MeetingHud.Instance.playerStates.Select(playerVA => playerVA.ColorBlindName))
-            {
-                colorBlindName.text = colorBlindName.text.ToTitleCase();
-            }
-        }
-        else
-        {
-            foreach (var player in PlayerControl.AllPlayerControls)
-            {
-                player.cosmetics.colorBlindText.text = player.cosmetics.colorBlindText.text.ToTitleCase();
-            }
-        }
-    }
-
     private static void UpdateRoleNameText()
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
@@ -641,11 +623,6 @@ public static class HudManagerPatches
         CreateWikiButton(__instance);
 
         UpdateRoleList(__instance);
-
-        if (PlayerControl.LocalPlayer != null)
-        {
-            UpdateColorNameText();
-        }
 
         if (PlayerControl.LocalPlayer == null ||
             PlayerControl.LocalPlayer.Data == null ||
