@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using BepInEx.Logging;
+using UnityEngine;
 
 namespace TownOfUs.Modules.Localization;
 
@@ -7,6 +8,8 @@ public static class TouLocale
     public static string LocaleDirectory => Path.Combine(Application.persistentDataPath, "TownOfUs", "Locales");
 
     public static Dictionary<SupportedLangs, Dictionary<TouNames, string>> TouLocalization { get; } = [];
+
+    private static ManualLogSource Logger { get; } = BepInEx.Logging.Logger.CreateLogSource("TouLocale");
 
     public static string Get(TouNames name, string? defaultValue = null)
     {
@@ -22,43 +25,54 @@ public static class TouLocale
 
     public static void Initialize()
     {
-        var logger = BepInEx.Logging.Logger.CreateLogSource("TouLocale");
+        SearchDirectory(BepInEx.Paths.PluginPath);
+        SearchDirectory(BepInEx.Paths.BepInExRootPath);
+        SearchDirectory(BepInEx.Paths.GameRootPath);
+        SearchDirectory(LocaleDirectory);
+    }
 
-        Directory.CreateDirectory(LocaleDirectory);
-        var translations = Directory.GetFiles(LocaleDirectory, "*.txt");
-        foreach (var language in Enum.GetValues<SupportedLangs>())
+    public static void SearchDirectory(string directory)
+    {
+        if (!Directory.Exists(directory))
         {
-            TouLocalization.TryAdd(language, []);
+            Logger.LogWarning($"Directory does not exist: {directory}");
+            return;
         }
 
+        var translations = Directory.GetFiles(directory, "*.txt");
         foreach (var file in translations)
         {
             var localeName = Path.GetFileNameWithoutExtension(file);
             if (!Enum.TryParse<SupportedLangs>(localeName, out var language))
             {
-                logger.LogWarning($"Invalid locale name: {localeName}");
+                Logger.LogWarning($"Invalid locale name: {localeName}");
                 continue;
             }
 
-            foreach (var translation in File.ReadAllLines(file))
+            ParseFile(file, language);
+        }
+    }
+
+    public static void ParseFile(string file, SupportedLangs language)
+    {
+        foreach (var translation in File.ReadAllLines(file))
+        {
+            var parts = translation.Split('=');
+            if (parts.Length >= 2)
             {
-                var parts = translation.Split('=');
-                if (parts.Length >= 2)
-                {
-                    var key = parts[0];
-                    var value = string.Join("=", parts.Skip(1));
+                var key = parts[0];
+                var value = string.Join("=", parts.Skip(1));
 
-                    if (!Enum.TryParse<TouNames>(key, out var touName))
-                    {
-                        logger.LogWarning("Invalid key value in translation: " + translation);
-                    }
-
-                    TouLocalization[language].TryAdd(touName, value);
-                }
-                else
+                if (!Enum.TryParse<TouNames>(key, out var touName))
                 {
-                    logger.LogWarning("Invalid translation format: " + translation);
+                    Logger.LogWarning("Invalid key value in translation: " + translation);
                 }
+
+                TouLocalization[language].TryAdd(touName, value);
+            }
+            else
+            {
+                Logger.LogWarning("Invalid translation format: " + translation);
             }
         }
     }
