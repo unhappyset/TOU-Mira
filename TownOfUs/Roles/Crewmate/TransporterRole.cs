@@ -17,6 +17,7 @@ using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Roles.Neutral;
@@ -27,7 +28,7 @@ namespace TownOfUs.Roles.Crewmate;
 
 public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
-    public string RoleName => "Transporter";
+    public string RoleName => TouLocale.Get(TouNames.Transporter, "Transporter");
     public string RoleDescription => "Choose Two Players To Swap Locations";
     public string RoleLongDescription => "Choose two players to swap locations with one another";
     public Color RoleColor => TownOfUsColors.Transporter;
@@ -316,12 +317,12 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     }
     public static void Transport(MonoBehaviour mono, Vector3 position)
     {
-        if (mono.TryCast<PlayerControl>() is PlayerControl player && player.HasModifier<ImmovableModifier>())
+        if (mono.TryCast<PlayerControl>() is { } player && player.HasModifier<ImmovableModifier>())
         {
             return;
         }
 
-        if (mono.TryCast<DeadBody>() is DeadBody deadBody && MiscUtils.PlayerById(deadBody.ParentId)?.HasModifier<ImmovableModifier>() == true)
+        if (mono.TryCast<DeadBody>() is { } deadBody && MiscUtils.PlayerById(deadBody.ParentId)?.HasModifier<ImmovableModifier>() == true)
         {
             return;
         }
@@ -355,7 +356,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             mono.transform.position = position;
         }
 
-        if (mono.TryCast<PlayerControl>() is PlayerControl player2 && player2.AmOwner)
+        if (mono.TryCast<PlayerControl>() is { } player2 && player2.AmOwner)
         {
             MiscUtils.SnapPlayerCamera(PlayerControl.LocalPlayer);
         }
@@ -369,7 +370,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     public string GetAdvancedDescription()
     {
         return
-            "The Transporter is a Crewmate Support role that can transport two players, dead or alive, to swap their locations."
+            $"The {RoleName} is a Crewmate Support role that can transport two players, dead or alive, to swap their locations."
                + MiscUtils.AppendOptionsText(GetType());
     }
 

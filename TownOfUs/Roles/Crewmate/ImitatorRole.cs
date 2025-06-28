@@ -65,7 +65,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             TouNeutAssets.GuardSprite),
         new("Impostor Counterparts",
             $"{TouLocale.Get(TouNames.Bomber, "Bomber")} ⇨ Trapper | "
-            + "Escapist ⇨ Transporter\n"
+            + $"Escapist ⇨ {TouLocale.Get(TouNames.Transporter, "Transporter")}\n"
             + "Hypnotist ⇨ Lookout | "
             + "Janitor ⇨ Detective\n"
             + "Miner ⇨ Engineer | "
