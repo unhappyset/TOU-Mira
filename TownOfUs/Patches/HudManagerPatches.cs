@@ -70,12 +70,21 @@ public static class HudManagerPatches
 
         foreach (var arrange in HudManager.Instance.transform.FindChild("Buttons").GetComponentsInChildren<GridArrange>(true))
         {
-            if (arrange.gameObject == null || arrange.gameObject.transform == null) continue;
+            if (!arrange.gameObject || !arrange.transform) continue;
 
             arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
             arrange.CellSize = new Vector2(scaleFactor, scaleFactor);
             arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
-            if (arrange.gameObject.transform.childCount != 0) arrange.ArrangeChilds();
+            if (arrange.isActiveAndEnabled && arrange.gameObject.transform.childCount != 0)
+            {
+                try
+                {
+                    arrange.ArrangeChilds();
+                } catch (Exception e)
+                {
+                    Logger<TownOfUsPlugin>.Error($"Error arranging child objects in GridArrange: {e}");
+                }
+            }
         }
     }
 
@@ -680,8 +689,9 @@ public static class HudManagerPatches
         UpdateGhostRoles(__instance);
     }
 
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
     [HarmonyPostfix]
+    [HarmonyPriority(Priority.Last)]
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
     public static void HudManagerStartPatch(HudManager __instance)
     {
         Coroutines.Start(CoResizeUI());
