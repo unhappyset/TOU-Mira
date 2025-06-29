@@ -5,7 +5,7 @@ namespace TownOfUs.Assets;
 
 public static class TouRoleIcons
 {
-    private static string iconPath = "TownOfUsMira.Resources.RoleIcons";
+    private static string iconPath = "TownOfUs.Resources.RoleIcons";
     // THIS FILE SHOULD ONLY HOLD ROLE ICONS
     public static LoadableAsset<Sprite> Aurial { get; } = new LoadableResourceAsset($"{iconPath}.Aurial.png");
     public static LoadableAsset<Sprite> Detective { get; } = new LoadableResourceAsset($"{iconPath}.Detective.png");

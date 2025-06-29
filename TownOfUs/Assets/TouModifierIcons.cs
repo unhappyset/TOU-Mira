@@ -5,7 +5,7 @@ namespace TownOfUs.Assets;
 
 public static class TouModifierIcons
 {
-    private static string iconPath = "TownOfUsMira.Resources.ModifierIcons";
+    private static string iconPath = "TownOfUs.Resources.ModifierIcons";
 
     public static LoadableAsset<Sprite> Aftermath { get; } = new LoadableResourceAsset($"{iconPath}.Aftermath.png");
     public static LoadableAsset<Sprite> Bait { get; } = new LoadableResourceAsset($"{iconPath}.Bait.png");

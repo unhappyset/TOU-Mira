@@ -5,7 +5,7 @@ namespace TownOfUs.Assets;
 
 public static class TouAudio
 {
-    private const string AudioPath = "TownOfUsMira.Resources.Audio";
+    private const string AudioPath = "TownOfUs.Resources.Audio";
 
     // THIS FILE SHOULD ONLY HOLD AUDIO
     public static LoadableAsset<AudioClip> NoisemakerDeathSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.NoisemakerDeath.wav");

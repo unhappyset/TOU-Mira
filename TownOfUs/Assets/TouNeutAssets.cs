@@ -5,7 +5,7 @@ namespace TownOfUs.Assets;
 
 public static class TouNeutAssets
 {
-    private const string ShortPath = "TownOfUsMira.Resources";
+    private const string ShortPath = "TownOfUs.Resources";
     // private const string BannerPath = $"{ShortPath}.RoleBanners"; // Commenting until it is used, so that the warnings stop screaming
     private const string ButtonPath = $"{ShortPath}.NeutButtons";
 

@@ -5,7 +5,7 @@ namespace TownOfUs.Assets;
 
 public static class TouImpAssets
 {
-    private const string ShortPath = "TownOfUsMira.Resources";
+    private const string ShortPath = "TownOfUs.Resources";
     private const string BannerPath = $"{ShortPath}.RoleBanners";
     private const string ButtonPath = $"{ShortPath}.ImpButtons";
 
