@@ -7,6 +7,7 @@ using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Impostor;
+using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -175,12 +176,19 @@ public static class GameHistory
         {
             return role;
         }
+
         var role2 = player.Data.RoleWhenAlive;
+
         if (role2.HasValue)
         {
             return RoleManager.Instance.GetRole(role2.Value);
         }
 
         return player.Data.Role;
+    }
+
+    public static int RoleCount<T>() where T : RoleBehaviour
+    {
+        return RoleWhenAlive.Count(x => x.Value is T);
     }
 }

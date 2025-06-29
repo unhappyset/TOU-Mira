@@ -37,7 +37,35 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
         MaxRoleCount = 1,
     };
+
     public bool HasImpostorVision => OptionGroupSingleton<VampireOptions>.Instance.HasVision;
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } = [
+        new("Bite",
+            "Bite a player. If the bitten player is a Crewmate and you have not exceeded the maximum amount of vampires in a game yet. You convert them into a vampire. Otherwise they just get killed.",
+            TouNeutAssets.BiteSprite)
+    ];
+
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        var alignment = RoleAlignment.ToDisplayString().Replace("Neutral", "<color=#8A8A8AFF>Neutral");
+
+        var stringB = new StringBuilder();
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"{RoleColor.ToTextColor()}You are a<b> {RoleName}.</b></color>");
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>Alignment: <b>{alignment}</color></b></size>");
+        stringB.Append("<size=70%>");
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"{RoleLongDescription}");
+
+        return stringB;
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return "The Vampire is a Neutral Killing role that wins by being the last killer(s) alive. They can bite, changing others into Vampires, or kill players." + MiscUtils.AppendOptionsText(GetType());
+    }
+
     public override void Initialize(PlayerControl player)
     {
         RoleStubs.RoleBehaviourInitialize(this, player);
@@ -47,6 +75,7 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Vampire);
         }
     }
+
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
@@ -57,7 +86,6 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         }
     }
 
-    //public bool CanChangeRole => false;
     public override bool CanUse(IUsable usable)
     {
         if (!GameManager.Instance.LogicUsables.CanUse(usable, Player))
@@ -97,41 +125,10 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
 
         target.ChangeRole(RoleId.Get<VampireRole>());
         target.AddModifier<VampireBittenModifier>();
+
         if (OptionGroupSingleton<VampireOptions>.Instance.CanGuessAsNewVamp)
         {
             target.AddModifier<NeutralKillerAssassinModifier>();
         }
-
-        // if (source.AmOwner && target.TryGetModifier<LoverModifier>(out var lovers) && lovers.OtherLover!.Data.Role is not VampireRole)
-        //{
-        //    MiscUtils.ChangeRole(lovers.OtherLover, RoleType.Vampire);
-        //    lovers.OtherLover.GetModifierComponent()?.AddModifier<BittenModifier>();
-        //}
     }
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        var alignment = RoleAlignment.ToDisplayString().Replace("Neutral", "<color=#8A8A8AFF>Neutral");
-
-
-        var stringB = new StringBuilder();
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"{RoleColor.ToTextColor()}You are a<b> {RoleName}.</b></color>");
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>Alignment: <b>{alignment}</color></b></size>");
-        stringB.Append("<size=70%>");
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"{RoleLongDescription}");
-
-        return stringB;
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return "The Vampire is a Neutral Killing role that wins by being the last killer(s) alive. They can bite, changing others into Vampires, or kill players." + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Bite",
-            "Bite a player. If the bitten player is a Crewmate and you have not exceeded the maximum amount of vampires in a game yet. You convert them into a vampire. Otherwise they just get killed.",
-            TouNeutAssets.BiteSprite)
-    ];
 }
