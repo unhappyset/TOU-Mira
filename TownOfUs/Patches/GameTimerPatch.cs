@@ -115,9 +115,9 @@ public static class GameTimerPatch
         if (PlayerControl.LocalPlayer == null ||
             PlayerControl.LocalPlayer.Data == null ||
             PlayerControl.LocalPlayer.Data.Role == null ||
-            !ShipStatus.Instance)// ||
-            //TutorialManager.InstanceExists ||
-            //AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+            !ShipStatus.Instance ||
+            TutorialManager.InstanceExists ||
+            AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
         {
             return;
         }
