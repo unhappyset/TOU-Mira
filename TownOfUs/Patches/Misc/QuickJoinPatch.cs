@@ -4,6 +4,7 @@ using InnerNet;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TownOfUs.Patches.Misc;
 
@@ -37,7 +38,7 @@ public static class LobbyJoin
             return;
         }
 
-        LobbyText = GameObject.Instantiate(__instance.transform.FindChild("Header").gameObject, __instance.transform);
+        LobbyText = Object.Instantiate(__instance.transform.FindChild("Header").gameObject, __instance.transform);
         LobbyText.name = "LobbyText";
         Text = LobbyText.transform.GetChild(1).GetComponent<TextMeshPro>();
         Text.fontSizeMin = 3.35f;

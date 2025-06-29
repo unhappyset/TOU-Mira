@@ -8,6 +8,7 @@ using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Modifiers.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TownOfUs.Modifiers.Game.Crewmate;
 
@@ -28,7 +29,7 @@ public sealed class RottingModifier : TouGameModifier, IWikiDiscoverable
     public static IEnumerator StartRotting(PlayerControl player)
     {
         yield return new WaitForSeconds(OptionGroupSingleton<RottingOptions>.Instance.RotDelay);
-        var rotting = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId);
+        var rotting = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId);
         if (rotting == null) yield break;
         Coroutines.Start(rotting.CoClean());
         Coroutines.Start(CrimeSceneComponent.CoClean(rotting));

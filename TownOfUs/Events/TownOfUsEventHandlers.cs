@@ -100,7 +100,7 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void ClearBodiesAndResetPlayersEventHandler(RoundStartEvent @event)
     {
-        GameObject.FindObjectsOfType<DeadBody>().ToList().ForEach(x => x.gameObject.Destroy());
+        Object.FindObjectsOfType<DeadBody>().ToList().ForEach(x => x.gameObject.Destroy());
 
         foreach (var player in PlayerControl.AllPlayerControls)
         {
@@ -218,7 +218,7 @@ public static class TownOfUsEventHandlers
         }
         else
         {
-            var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == target.PlayerId);
+            var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == target.PlayerId);
 
             if (target.HasModifier<MiniModifier>() && body != null)
             {

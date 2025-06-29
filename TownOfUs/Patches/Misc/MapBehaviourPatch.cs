@@ -2,6 +2,7 @@ using HarmonyLib;
 using TownOfUs.Modules;
 using TownOfUs.Utilities;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TownOfUs.Patches.Misc;
 
@@ -22,9 +23,9 @@ public static class ShowVentsPatch
     {
         if (!TownOfUsPlugin.ShowVents.Value)
         {
-            foreach (var icon in VentIcons.Values)
+            foreach (var icon in VentIcons.Values.Where(x=> x))
             {
-                if (icon != null) GameObject.Destroy(icon);
+                Object.Destroy(icon);
             }
             VentIcons.Clear();
             VentNetworks.Clear();
@@ -41,7 +42,7 @@ public static class ShowVentsPatch
 
             if (!VentIcons.TryGetValue(vent.Id, out GameObject? Icon) || Icon == null)
             {
-                Icon = GameObject.Instantiate(__instance.HerePoint.gameObject, __instance.HerePoint.transform.parent);
+                Icon = Object.Instantiate(__instance.HerePoint.gameObject, __instance.HerePoint.transform.parent);
                 var renderer = Icon.GetComponent<SpriteRenderer>();
                 renderer.sprite = TouAssets.MapVentSprite.LoadAsset();
                 Icon.name = $"Vent {vent.Id} Map Icon";
