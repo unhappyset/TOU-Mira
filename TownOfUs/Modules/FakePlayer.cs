@@ -26,8 +26,8 @@ public sealed class FakePlayer : IDisposable
 
     private readonly PlayerCosmicInfo _cosmicInfo;
     private readonly SpriteRenderer? _rend;
-    private GameObject? _colorBindTextObj;
     private readonly CosmeticsLayer? _cosmeticsLayer;
+    private GameObject? _colorBindTextObj;
     private TextMeshPro _colorBindText;
     private TextMeshPro _nameTextMaster;
 
