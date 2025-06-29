@@ -81,12 +81,7 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         allPlayers.Shuffle();
         evilPlayers.Shuffle();
         var secondPlayer = allPlayers[0];
-        var firstTwoEvil = false;
-
-        foreach (var evilPlayer in evilPlayers)
-        {
-            if (evilPlayer == player || evilPlayer == secondPlayer) firstTwoEvil = true;
-        }
+        var firstTwoEvil = evilPlayers.Any(plr => plr == player || plr == secondPlayer);
 
         if (firstTwoEvil)
         {
