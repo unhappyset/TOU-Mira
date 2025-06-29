@@ -8,6 +8,28 @@ namespace TownOfUs.Patches.Roles;
 [HarmonyPatch]
 public static class GhostRoleUsePatches
 {
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(DeconControl), nameof(DeconControl.Use))]
+    public static bool DeconControlUsePatch(DeconControl __instance)
+    {
+        // DeconControl.CanUse was inlined, so we "uninline" it here
+        __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out _);
+        if (!canUse)
+        {
+            return false;
+        }
+
+        __instance.cooldown = 6f;
+        if (Constants.ShouldPlaySfx())
+        {
+            SoundManager.Instance.PlaySound(__instance.UseSound, false, 1f, null);
+        }
+        __instance.OnUse.Invoke();
+
+        return false;
+    }
+
     [HarmonyPatch(typeof(MovingPlatformBehaviour))]
     [HarmonyPatch(nameof(MovingPlatformBehaviour.Use), typeof(PlayerControl))]
     [HarmonyPrefix]
@@ -15,7 +37,7 @@ public static class GhostRoleUsePatches
     {
         __state = false;
 
-        if (player.Data.Role is IGhostRole ghost && ghost.GhostActive && player.Data.IsDead)
+        if (player.Data.Role is IGhostRole { GhostActive: true } && player.Data.IsDead)
         {
             // Logger<TownOfUsPlugin>.Message($"CanUsePrefixPatch IsDead");
             player.Data.IsDead = false;
@@ -44,7 +66,7 @@ public static class GhostRoleUsePatches
         __state = false;
         var targetData = target.CachedPlayerData;
 
-        if (target.Data.Role is IGhostRole ghost && ghost.GhostActive && target.Data.IsDead)
+        if (target.Data.Role is IGhostRole { GhostActive: true } && target.Data.IsDead)
         {
             targetData.IsDead = false;
             __state = true;
