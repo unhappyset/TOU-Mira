@@ -15,7 +15,8 @@ public static class AprilFoolsPatches
         {
             {0, "Off"},
             {1, "Horse"},
-            {2, "Long"}
+            {2, "Long"},
+            {3, "Long Horse"}
         };
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
@@ -41,7 +42,7 @@ public static class AprilFoolsPatches
             passive.OnClick.AddListener((Action)(() =>
             {
                 int num = CurrentMode + 1;
-                CurrentMode = num > 2 ? 0 : num;
+                CurrentMode = num > 3 ? 0 : num;
                 var text = aprilfoolstoggle.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>();
                 text.text = $"April fools mode: {Modes[CurrentMode]}";
             }));
@@ -68,7 +69,7 @@ public static class AprilFoolsPatches
     public static bool Prefix(ref bool __result)
     {
         __result = CurrentMode == 2;
-        return false;
+        return true;
     }
 
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.SetBodyType))]
@@ -80,6 +81,12 @@ public static class AprilFoolsPatches
         {
             case 1:
                 bodyType = PlayerBodyTypes.Horse;
+                break;
+            case 2:
+                bodyType = PlayerBodyTypes.Long;
+                break;
+            case 3:
+                bodyType = PlayerBodyTypes.LongSeeker;
                 break;
         }
     }
@@ -96,6 +103,9 @@ public static class AprilFoolsPatches
                 return false;
             case 2:
                 __result = PlayerBodyTypes.Long;
+                return false;
+            case 3:
+                __result = PlayerBodyTypes.LongSeeker;
                 return false;
             default:
                 return true;
