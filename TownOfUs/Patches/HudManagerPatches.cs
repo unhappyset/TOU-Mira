@@ -603,7 +603,7 @@ public static class HudManagerPatches
             var distanceFromEdge = aspectPosition.DistanceFromEdge;
             distanceFromEdge.x = isChatButtonVisible ? 2.73f : 2.15f;
             
-            if (((ModCompatibility.IsWikiButtonOffset && !ZoomButton.active) || ZoomButton.active) && (!MeetingHud.Instance) && Minigame.Instance == null && (PlayerJoinPatch.SentOnce || TutorialManager.InstanceExists)) distanceFromEdge.x += 0.84f;
+            if ((ModCompatibility.IsWikiButtonOffset || ZoomButton.active) && (!MeetingHud.Instance)/*  && Minigame.Instance == null */ && (PlayerJoinPatch.SentOnce || TutorialManager.InstanceExists)) distanceFromEdge.x += 0.84f;
             
             if (TeamChatButton.active) distanceFromEdge.x += 0.84f;
 
