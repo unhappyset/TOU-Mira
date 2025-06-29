@@ -7,6 +7,7 @@ using MiraAPI.Patches.Stubs;
 using MiraAPI.PluginLoading;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using Reactor.Utilities;
 using Reactor.Utilities.Attributes;
 using Reactor.Utilities.Extensions;
 using TMPro;
@@ -309,13 +310,18 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
     private void Awake()
     {
         if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(false));
+
+        if (GameStartManager.Instance)
+        {
+            GameStartManager.Instance.HostInfoPanel.gameObject.SetActive(false);
+        }
+        
         _pluginInfo = MiraPluginManager.GetPluginByGuid(TownOfUsPlugin.Id)!;
 
         UpdatePage(WikiPage.Homepage);
 
         var closeAction = new Action(() => {
-            if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(true));
-            this.BaseClose();
+            Close();
             });
 
         CloseButton.Value.OnClick.AddListener((UnityAction)closeAction);
@@ -407,6 +413,11 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
     public override void Close()
     {
         MinigameStubs.Close(this);
+
+        if (GameStartManager.Instance)
+        {
+            GameStartManager.Instance.HostInfoPanel.gameObject.SetActive(true);
+        }
 
         if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(true));
         TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;

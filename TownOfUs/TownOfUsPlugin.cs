@@ -36,7 +36,7 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
     public Harmony Harmony { get; } = new(Id);
 
     /// <inheritdoc/>
-    public string OptionsTitleText => "Town of Us\nMira";
+    public string OptionsTitleText => "TOU Mira";
 
     /// <inheritdoc/>
     public ConfigFile GetConfigFile()
