@@ -27,15 +27,15 @@ namespace TownOfUs.Utilities;
 
 public static class MiscUtils
 {
-    public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish && !inquis.TargetsDead) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } && !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
-        OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
+    public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis is { CanVanquish: true, TargetsDead: false }) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } && !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
+                                                                                                                                                                                                                                                                                                                            OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
-    public static int RealKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish && !inquis.TargetsDead));
+    public static int RealKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis is { CanVanquish: true, TargetsDead: false }));
 
-    public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish && !inquis.TargetsDead));
+    public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis is { CanVanquish: true, TargetsDead: false }));
 
-    public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis.CanVanquish && !inquis.TargetsDead) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } && !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
-        OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
+    public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis is { CanVanquish: true, TargetsDead: false }) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } && !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
+                                                                                                                                                                                                                                                                                                                OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
     public static int ImpAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor());
 
@@ -82,7 +82,7 @@ public static class MiscUtils
                     else if (optionStr.Contains(".00")) optionStr = optionStr.Replace(".00", "");
                     else if (optionStr.Contains(".0")) optionStr = optionStr.Replace(".0", "");
 
-                    if (numberOption.ZeroInfinity && numberOption.Value == 0) builder.AppendLine(numberOption.Title + ": ∞");
+                    if (numberOption is { ZeroInfinity: true, Value: 0 }) builder.AppendLine(numberOption.Title + ": ∞");
                     else builder.AppendLine(numberOption.Title + ": " + optionStr);
                     break;
             }
@@ -716,28 +716,28 @@ public static class MiscUtils
     /// <returns>A fake player or null if its not found.</returns>
     public static FakePlayer? GetFakePlayer(PlayerControl player)
     {
-        var faker = FakePlayer.FakePlayers.FirstOrDefault(x => x.body?.name == $"Fake {player.gameObject.name}");
-        return faker != null ? faker : null;
+        return FakePlayer.FakePlayers.FirstOrDefault(x => x.body?.name == $"Fake {player.gameObject.name}");
     }
 
     public static bool IsMap(byte mapid)
     {
-        return GameOptionsManager.Instance.currentNormalGameOptions.MapId == mapid
-              || TutorialManager.InstanceExists && AmongUsClient.Instance.TutorialMapId == mapid;
+        return (GameOptionsManager.Instance != null && GameOptionsManager.Instance.currentNormalGameOptions.MapId == mapid)
+              || (TutorialManager.InstanceExists && AmongUsClient.Instance.TutorialMapId == mapid);
     }
-    public static bool IsConcealed(this PlayerControl Player)
+
+    public static bool IsConcealed(this PlayerControl player)
     {
-        if (Player.HasModifier<ConcealedModifier>() || !Player.Visible || (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive))
+        if (player.HasModifier<ConcealedModifier>() || !player.Visible || (player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive))
         {
             return true;
         }
 
-        if (Player.inVent)
+        if (player.inVent)
         {
             return true;
         }
 
-        var mushroom = UnityEngine.Object.FindObjectOfType<MushroomMixupSabotageSystem>();
+        var mushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
         if (mushroom && mushroom.IsActive)
         {
             return true;
