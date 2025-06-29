@@ -15,8 +15,8 @@ namespace TownOfUs.Patches
             // change the text shown on the screen for the keybinds menu
             __instance.userData.GetAction("ActionSecondary").descriptiveName = "Kill / Secondary Ability";
             __instance.userData.GetAction("ActionQuaternary").descriptiveName = "Primary Ability";
-             __instance.userData.RegisterBind("tou.ActionCustom", "Tertiary Ability (Hack Ability)");
-             __instance.userData.RegisterBind("tou.ActionCustom2", "Modifier Ability");
+            __instance.userData.RegisterBind("tou.ActionCustom", "Tertiary Ability (Hack Ability)");
+            __instance.userData.RegisterBind("tou.ActionCustom2", "Modifier Ability");
         }
 
         private static int RegisterBind(this UserData self, string name, string description, int elementIdentifierId = -1, int category = 0, InputActionType type = InputActionType.Button)
