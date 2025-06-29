@@ -6,8 +6,8 @@ namespace TownOfUs.Assets;
 
 public static class TouAssets
 {
-    private const string ShortPath = "TownOfUs.Resources";
-    private const string CounterPath = "TownOfUs.Resources.AbilityCounters";
+    private const string ShortPath = "TownOfUsMira.Resources";
+    private const string CounterPath = "TownOfUsMira.Resources.AbilityCounters";
 
     public static readonly AssetBundle MainBundle = AssetBundleManager.Load("tou-assets");
 
