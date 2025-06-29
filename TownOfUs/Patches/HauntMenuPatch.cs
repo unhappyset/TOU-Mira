@@ -14,6 +14,7 @@ using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TownOfUs.Patches
 {
@@ -24,8 +25,8 @@ namespace TownOfUs.Patches
         {
             if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return;
 
-            var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
-            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId);
+            var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
+            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x.PlayerId == PlayerControl.LocalPlayer.PlayerId);
 
             if (!TutorialManager.InstanceExists && (body || fakePlayer?.body))
             {
@@ -52,7 +53,7 @@ namespace TownOfUs.Patches
                     modifierTextBuilder.Append(CultureInfo.InvariantCulture, $"{color.ToTextColor()}{modifier.ModifierName}</color>");
                     first = false;
                 }
-                modifierTextBuilder.Append($")</size></color>");
+                modifierTextBuilder.Append(")</size></color>");
                 __instance.FilterText.text = modifierTextBuilder.ToString();
             }
             

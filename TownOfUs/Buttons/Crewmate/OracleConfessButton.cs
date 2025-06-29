@@ -30,7 +30,7 @@ public sealed class OracleConfessButton : TownOfUsRoleButton<OracleRole, PlayerC
             return;
         }
 
-        var players = ModifierUtils.GetPlayersWithModifier<OracleConfessModifier>(x => x.Oracle == PlayerControl.LocalPlayer);
+        var players = ModifierUtils.GetPlayersWithModifier<OracleConfessModifier>(x => x.Oracle.AmOwner);
         players.Do(x => x.RpcRemoveModifier<OracleConfessModifier>());
 
         var faction = ChooseRevealedFaction(Target);

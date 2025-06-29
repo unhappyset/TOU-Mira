@@ -67,7 +67,7 @@ public static class MedicEvents
 
         if (victim.TryGetModifier<MedicShieldModifier>(out var medMod)
             && PlayerControl.LocalPlayer.Data.Role is MedicRole
-            && medMod.Medic == PlayerControl.LocalPlayer)
+            && medMod.Medic.AmOwner)
         {
             CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
         }
@@ -84,7 +84,7 @@ public static class MedicEvents
 
         if (exiled.TryGetModifier<MedicShieldModifier>(out var medMod)
             && PlayerControl.LocalPlayer.Data.Role is MedicRole
-            && medMod.Medic == PlayerControl.LocalPlayer)
+            && medMod.Medic.AmOwner)
         {
             CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
         }
@@ -95,14 +95,14 @@ public static class MedicEvents
     {
         var player = @event.ClientData.Character;
 
-        if (player == null)
+        if (!player)
         {
             return;
         }
 
         if (player && player.TryGetModifier<MedicShieldModifier>(out var medMod)
             && PlayerControl.LocalPlayer.Data.Role is MedicRole
-            && medMod.Medic == PlayerControl.LocalPlayer)
+            && medMod.Medic.AmOwner)
         {
             CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
         }

@@ -63,7 +63,7 @@ public sealed class NoisemakerModifier : TouGameModifier, IWikiDiscoverable
 
 		var deathArrow = deathArrowPrefab.GetComponent<NoisemakerArrow>();
 		deathArrow.SetDuration(OptionGroupSingleton<NoisemakerOptions>.Instance.AlertDuration);
-		if (Player == PlayerControl.LocalPlayer)
+		if (Player.AmOwner)
 		{
 			deathArrow.alwaysMaxSize = true;
 		}

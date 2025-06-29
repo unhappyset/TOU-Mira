@@ -23,7 +23,7 @@ public sealed class WatchButton : TownOfUsRoleButton<LookoutRole, PlayerControl>
 
     public override bool IsTargetValid(PlayerControl? target)
     {
-        return base.IsTargetValid(target) && !target!.HasModifier<LookoutWatchedModifier>(x => x.Lookout == PlayerControl.LocalPlayer);
+        return base.IsTargetValid(target) && !target!.HasModifier<LookoutWatchedModifier>(x => x.Lookout.AmOwner);
     }
 
     public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);

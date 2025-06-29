@@ -345,7 +345,7 @@ public static class HudManagerPatches
         else
         {
             var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
-            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
 
             foreach (var player in PlayerControl.AllPlayerControls)
             {
@@ -636,7 +636,7 @@ public static class HudManagerPatches
             
         // TERRIBLE FOR PERFORMANCE (FindObjectsOfType is very costly)
         var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
-        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId);
+        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x.PlayerId == PlayerControl.LocalPlayer.PlayerId);
 
         if (((PlayerControl.LocalPlayer.Data.IsDead && !body && !fakePlayer?.body && (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } || PlayerControl.LocalPlayer.Data.Role is not IGhostRole)) || TutorialManager.InstanceExists)
             && Input.GetAxis("Mouse ScrollWheel") != 0 && !MeetingHud.Instance && Minigame.Instance == null && !HudManager.Instance.Chat.IsOpenOrOpening)

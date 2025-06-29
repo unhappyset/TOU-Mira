@@ -86,7 +86,7 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
-        var stalkedPlayer = ModifierUtils.GetPlayersWithModifier<HunterStalkedModifier>(x => x.Hunter == PlayerControl.LocalPlayer).FirstOrDefault();
+        var stalkedPlayer = ModifierUtils.GetPlayersWithModifier<HunterStalkedModifier>(x => x.Hunter.AmOwner).FirstOrDefault();
         var stalked = (stalkedPlayer != null && !stalkedPlayer.HasDied()) ? stalkedPlayer.Data.PlayerName : "Nobody";
         stringB.AppendLine(CultureInfo.InvariantCulture, $"Stalking: <b>{stalked}</b>");
         if (CaughtPlayers.Count != 0) stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Caught Players:</b>");

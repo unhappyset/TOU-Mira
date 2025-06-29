@@ -29,7 +29,7 @@ public sealed class OracleBlessButton : TownOfUsRoleButton<OracleRole, PlayerCon
             return;
         }
 
-        var players = ModifierUtils.GetPlayersWithModifier<OracleBlessedModifier>(x => x.Oracle == PlayerControl.LocalPlayer);
+        var players = ModifierUtils.GetPlayersWithModifier<OracleBlessedModifier>(x => x.Oracle.AmOwner);
         players.Do(x => x.RpcRemoveModifier<OracleBlessedModifier>());
 
         Target.RpcAddModifier<OracleBlessedModifier>(PlayerControl.LocalPlayer);
