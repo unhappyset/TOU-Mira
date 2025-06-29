@@ -13,17 +13,17 @@ public static class ImitatorEvents
     [RegisterEvent]
     public static void MeetingHandler(StartMeetingEvent @event)
     {
-        var imitators = ModifierUtils.GetActiveModifiers<ImitatorCacheModifier>();
+        var imitators = ModifierUtils.GetActiveModifiers<ImitatorCacheModifier>().ToArray();
 
-        if (!imitators.Any())
+        if (imitators.Length == 0)
         {
             return;
         }
 
-        foreach (var mod in imitators)
+        foreach (var mod in imitators.Where(x=>x.Player.Data.Role.Role != x.OldRole.Role))
         {
             // This makes converted imitators not be imitators anymore
-            if (mod.Player.Data.Role.GetType() != mod.OldRole.GetType()) mod.ModifierComponent?.RemoveModifier(mod);
+            mod.ModifierComponent?.RemoveModifier(mod);
         }
     }
 
