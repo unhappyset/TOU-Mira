@@ -7,11 +7,11 @@ using Reactor.Utilities;
 using System.Collections;
 using System.Globalization;
 using System.Text;
+using MiraAPI.Patches.Stubs;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -41,13 +41,13 @@ public sealed class ScavengerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
     public override void OnDeath(DeathReason reason)
     {
-        RoleStubs.RoleBehaviourOnDeath(this, reason);
+        RoleBehaviourStubs.OnDeath(this, reason);
 
         Clear();
     }
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
         if (TutorialManager.InstanceExists && Target == null && Player.AmOwner)
         {
             Coroutines.Start(SetTutorialTarget(this, Player));
@@ -72,7 +72,7 @@ public sealed class ScavengerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
         Clear();
     }
 

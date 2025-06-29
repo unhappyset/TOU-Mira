@@ -2,10 +2,10 @@
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Hud;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using TownOfUs.Buttons.Impostor;
 using TownOfUs.Modules.Wiki;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -31,7 +31,7 @@ public sealed class WarlockRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
 
     public override void OnMeetingStart()
     {
-        RoleStubs.RoleBehaviourOnMeetingStart(this);
+        RoleBehaviourStubs.OnMeetingStart(this);
         
         CustomButtonSingleton<WarlockKillButton>.Instance.Charge = 0f;
     }

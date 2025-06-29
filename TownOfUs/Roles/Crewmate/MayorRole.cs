@@ -5,6 +5,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using PowerTools;
 using Reactor.Networking.Attributes;
@@ -13,7 +14,6 @@ using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -45,7 +45,7 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
     public bool IsPowerCrew => true;
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
         if (MeetingHud.Instance)
         {
             var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == player.PlayerId);
@@ -71,7 +71,7 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
 
     public override void OnMeetingStart()
     {
-        RoleStubs.RoleBehaviourOnMeetingStart(this);
+        RoleBehaviourStubs.OnMeetingStart(this);
 
         var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == Player.PlayerId);
         if (Revealed) Coroutines.Start(CoAnimatePostReveal(targetVoteArea));
@@ -85,7 +85,7 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
 
     public override void OnVotingComplete()
     {
-        RoleStubs.RoleBehaviourOnVotingComplete(this);
+        RoleBehaviourStubs.OnVotingComplete(this);
 
         if (Player.AmOwner)
         {
@@ -95,7 +95,7 @@ public sealed class MayorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRol
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         if (Player.AmOwner)
         {
