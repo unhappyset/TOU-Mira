@@ -14,7 +14,6 @@ using TownOfUs.Utilities;
 using UnityEngine;
 using TownOfUs.Modifiers.Game.Impostor;
 using MiraAPI.PluginLoading;
-using Il2CppSystem.Linq;
 using TownOfUs.Roles.Neutral;
 using MiraAPI.Roles;
 using TownOfUs.Roles.Crewmate;
