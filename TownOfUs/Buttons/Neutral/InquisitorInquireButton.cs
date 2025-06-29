@@ -33,6 +33,13 @@ public sealed class InquisitorInquireButton : TownOfUsRoleButton<InquisitorRole,
         {
             return;
         }
+        
+        if (ModifierUtils.GetActiveModifiers<InquisitorInquiredModifier>().Any())
+        {
+            ++UsesLeft;
+            SetUses(UsesLeft);
+        }
+
         ModifierUtils.GetPlayersWithModifier<InquisitorInquiredModifier>().Do(x => x.RemoveModifier<InquisitorInquiredModifier>());
 
         Target.AddModifier<InquisitorInquiredModifier>();
