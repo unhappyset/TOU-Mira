@@ -38,6 +38,7 @@ public static class HudManagerPatches
     public static GameObject TeamChatButton;
 
     public static bool Zooming;
+    public static bool CamouflageCommsEnabled;
 
     public static IEnumerator CoResizeUI()
     {
@@ -174,17 +175,23 @@ public static class HudManagerPatches
         TeamChatButton.transform.Find("Selected").gameObject.SetActive(true);
     }
 
-    public static void UpdateCamouflageComms()
+    public static bool CommsSaboActive()
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 
         // Camo comms
-        if (!genOpt.CamouflageComms) return;
+        if (!genOpt.CamouflageComms)
+        {
+            return false;
+        }
 
         if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Comms, out var commsSystem) || commsSystem == null)
-            return;
+        {
+            return false;
+        }
 
         var isActive = false;
+
         if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq || ShipStatus.Instance.Type == ShipStatus.MapType.Fungle)
         {
             var hqSystem = commsSystem.Cast<HqHudSystemType>();
@@ -195,6 +202,13 @@ public static class HudManagerPatches
             var hudSystem = commsSystem.Cast<HudOverrideSystemType>();
             if (hudSystem != null) isActive = hudSystem.IsActive;
         }
+
+        return isActive;
+    }
+
+    public static void UpdateCamouflageComms()
+    {
+        var isActive = CommsSaboActive();
 
         foreach (var player in PlayerControl.AllPlayerControls)
         {
@@ -213,6 +227,22 @@ public static class HudManagerPatches
                     player.SetCamouflage(false);
                 }
             }
+        }
+
+        if (isActive)
+        {
+            CamouflageCommsEnabled = true;
+
+            FakePlayer.FakePlayers.Do(x => x.Camo());
+
+            return;
+        }
+
+        if (CamouflageCommsEnabled)
+        {
+            CamouflageCommsEnabled = false;
+
+            FakePlayer.FakePlayers.Do(x => x.UnCamo());
         }
     }
 
