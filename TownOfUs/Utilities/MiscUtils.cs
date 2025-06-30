@@ -75,10 +75,9 @@ public static class MiscUtils
 
     public static ReadOnlyCollection<IModdedOption>? GetModdedOptionsForRole(Type classType)
     {
-        var plugin = MiraPluginManager.GetPluginByGuid(TownOfUsPlugin.Id);
-        var optionGroup = plugin!.OptionGroups.FirstOrDefault(g => classType.IsAssignableFrom(g.OptionableType));
+        var optionGroups = AccessTools.Field(typeof(ModdedOptionsManager), "Groups").GetValue(null) as List<AbstractOptionGroup>;
 
-        return optionGroup?.Children;
+        return optionGroups?.FirstOrDefault(x => x.OptionableType == classType)?.Children;
     }
 
     public static string AppendOptionsText(Type classType)
