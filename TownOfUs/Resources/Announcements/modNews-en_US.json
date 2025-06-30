@@ -8,8 +8,8 @@
       "Title": "Town of Us: Mira v1.0.0",
       "Text":
       [
-        "\n\n\r<b> The initial release!</b>",
-        "\n\n★ Welcome to Town of Us: Mira <link=https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.0>v1.0.0</link> ★",
+        "\r<b> The initial release!</b>",
+        "\n\n★ <link=https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.0>TOU Mira v1.0.0 Download</link> ★ <link=https://au-avengers.github.io/docs.toum.gg/>Mod Guide & Details</link> ★",
         "\n\n THIS MOD IS IN PUBLIC BETA. EXPECT BUGS AND ISSUES."
       ]
     },
@@ -21,8 +21,8 @@
       "Title": "Town of Us: Mira v1.0.1",
       "Text":
       [
-        "\n\n\r<b> Update now Available!</b>",
-        "\n\n★ Welcome to Town of Us: Mira <link=https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.1>v1.0.1</link> ★",
+        "\r<b> Update now Available!</b>",
+        "\n\n★ <link=https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.1>TOU Mira v1.0.1 Download</link> ★ <link=https://au-avengers.github.io/docs.toum.gg/>Mod Guide & Details</link> ★",
         "\n\n\r<size=105%>Crewmate Role Bugfixes:</size>",
         "\n- Detective report settings are now toggled correctly",
         "\n- Haunter can open Decontam doors again!",
@@ -33,6 +33,7 @@
         "\n- Altruist revives dead lovers properly",
         "\n- Imitator Mayor no longer reveals themselves to the crew as Imitator",
         "\n- Imitator role change rpc has been fixed, shouldn't result in errors anymore",
+        "\n- Medium arrows are removed after a meeting",
         "\n\n\r<size=105%>Neutral Role Bugfixes</size>",
         "\n- Inquisitor checks if all their targets have died to determine if the game will end or not",
         "\n- Inquisitor Inquire uses no longer drain if someone was picked during the round already",
