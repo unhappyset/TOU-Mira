@@ -47,7 +47,6 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
     private WikiPage _currentPage = WikiPage.Homepage;
     private bool _modifiersSelected;
-    private MiraPluginInfo _pluginInfo;
     private List<Transform> _activeItems = [];
     private IWikiDiscoverable? _selectedItem;
 
@@ -166,7 +165,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
             var comparer = new ModifierComparer(activeModifiers);
 
-            var modifiers = _pluginInfo.Modifiers
+            var modifiers = MiscUtils.AllModifiers
                 .Where(x => x is IWikiDiscoverable)
                 .OrderBy(x => x, comparer)
                 .ToList();
@@ -230,7 +229,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 roleList.Add((ushort)PlayerControl.LocalPlayer.GetRoleWhenAlive().Role);
             }
             var comparer = new RoleComparer(roleList);
-            var roles = _pluginInfo.Roles.Values.OrderBy(x => x, comparer).OfType<ITownOfUsRole>();
+            var roles = MiscUtils.AllRoles.OrderBy(x => x, comparer).OfType<ITownOfUsRole>();
 
             foreach (var role in roles)
             {
@@ -314,8 +313,6 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         {
             GameStartManager.Instance.HostInfoPanel.gameObject.SetActive(false);
         }
-        
-        _pluginInfo = MiraPluginManager.GetPluginByGuid(TownOfUsPlugin.Id)!;
 
         UpdatePage(WikiPage.Homepage);
 
