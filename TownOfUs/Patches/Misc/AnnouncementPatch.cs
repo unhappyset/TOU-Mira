@@ -54,7 +54,7 @@ public class TouMiraModNews
 public static class ModNewsFetcher
 {
 #pragma warning disable S1075 // URIs should not be hardcoded
-    private static string TouMiraModNewsURL = "https://raw.githubusercontent.com/AU-Avengers/TOU-Mira/refs/heads/dev/TownOfUs/Resources/Announcements/modNews-";
+    private static string TouMiraModNewsURL = "https://raw.githubusercontent.com/AU-Avengers/TOU-Mira/refs/heads/main/TownOfUs/Resources/Announcements/modNews-";
 #pragma warning restore S1075 // URIs should not be hardcoded
 
     static bool downloaded;

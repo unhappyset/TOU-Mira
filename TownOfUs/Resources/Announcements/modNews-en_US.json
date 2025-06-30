@@ -47,6 +47,7 @@
         "\n- Celebrity no longer sends a report message when they are exiled",
         "\n- In Freeplay, removing the Shy modifier no longer keeps your player or pet invisible",
         "\n- Multitasker no longer makes security minigames transparent",
+        "\n- Lovers die together and revive together correctly",
         "\n\n\r<size=105%>Other Bugfixes</size>",
         "\n- Spamming to join into a lobby is no longer possible and will not queue a join attempt repeatedly",
         "\n- Zooming in freeplay no longer shows broken shadows, instead opting to hide them",
