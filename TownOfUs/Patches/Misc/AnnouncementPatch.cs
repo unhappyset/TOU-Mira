@@ -9,7 +9,6 @@ using System.Collections;
 using System.Text.Json;
 using UnityEngine;
 using UnityEngine.Networking;
-using LibCpp2IL;
 
 namespace TownOfUs.Patches.Misc;
 
