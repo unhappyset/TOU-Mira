@@ -9,7 +9,7 @@
       "Text":
       [
         "\n\n\r<b> The initial release!</b>",
-        "\n\n★ Welcome to Town of Us: Mira [v1.0.0](https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.0) ★",
+        "\n\n★ Welcome to Town of Us: Mira <link=https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.0>v1.0.0</link> ★",
         "\n\n THIS MOD IS IN PUBLIC BETA. EXPECT BUGS AND ISSUES."
       ]
     },
@@ -22,7 +22,7 @@
       "Text":
       [
         "\n\n\r<b> Update now Available!</b>",
-        "\n\n★ Welcome to Town of Us: Mira [v1.0.1](https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.1) ★",
+        "\n\n★ Welcome to Town of Us: Mira <link=https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.1>v1.0.1</link> ★",
         "\n\n\r<size=105%>Crewmate Role Bugfixes:</size>",
         "\n- Detective report settings are now toggled correctly",
         "\n- Haunter can open Decontam doors again!",
