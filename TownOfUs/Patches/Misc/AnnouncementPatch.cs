@@ -108,7 +108,7 @@ public static class ModNewsFetcher
                 var shortTitle = (numberString != null && newsElement.GetProperty("ShortTitle").GetString() != null) ? newsElement.GetProperty("ShortTitle").GetString()! : "No Short Title";
                 var subTitle = (numberString != null && newsElement.GetProperty("SubTitle").GetString() != null) ? newsElement.GetProperty("SubTitle").GetString()! : "No Subtitle";
                 var title = (numberString != null && newsElement.GetProperty("Title").GetString() != null) ? newsElement.GetProperty("Title").GetString()! : "No Title";
-                var body = newsElement.GetProperty("Text").EnumerateArray().ToStringEnumerable().ToString();
+                var body = string.Join(" ", newsElement.GetProperty("Text").EnumerateArray().Select(element => element.GetString()));
                 // Create ModNews object
                 var modNew = new TouMiraModNews(number, title, subTitle, shortTitle, body, dateString);
                 ModNewsHistory.AllModNews = ModNewsHistory.AllModNews.Add(modNew);
@@ -159,7 +159,7 @@ public static class ModNewsFetcher
             var shortTitle = (numberString != null && newsElement.GetProperty("ShortTitle").GetString() != null) ? newsElement.GetProperty("ShortTitle").GetString()! : "No Short Title";
             var subTitle = (numberString != null && newsElement.GetProperty("SubTitle").GetString() != null) ? newsElement.GetProperty("SubTitle").GetString()! : "No Subtitle";
             var title = (numberString != null && newsElement.GetProperty("Title").GetString() != null) ? newsElement.GetProperty("Title").GetString()! : "No Title";
-            var body = newsElement.GetProperty("Text").EnumerateArray().ToStringEnumerable().ToString();
+                var body = string.Join(" ", newsElement.GetProperty("Text").EnumerateArray().Select(element => element.GetString()));
             // Create ModNews object
             var modNew = new TouMiraModNews(number, title, subTitle, shortTitle, body, dateString);
             ModNewsHistory.AllModNews = ModNewsHistory.AllModNews.Add(modNew);

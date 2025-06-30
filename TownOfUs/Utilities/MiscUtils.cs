@@ -774,6 +774,19 @@ public static class MiscUtils
         // Replace matched tags with an empty string
         return richTagRegex.Replace(text, string.Empty);
     }
+    [System.Serializable]
+    public class Wrapper<T>
+    {
+        public T[] array;
+    }
+    // Method to parse a JSON array string into an array of objects
+    public static T[] jsonToArray<T>(string json)
+    {
+        // Wrap the JSON array in an object
+        string newJson = "{ \"array\": " + json + "}";
+        Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(newJson);
+        return wrapper.array;
+    }
 
     /// <summary>
     /// Gets a FakePlayer by comparing PlayerControl.
