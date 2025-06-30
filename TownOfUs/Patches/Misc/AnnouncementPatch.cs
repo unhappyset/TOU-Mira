@@ -18,12 +18,11 @@ public class TouMiraModNews
 {
     // ReSharper disable UnassignedField.Global
     // ReSharper disable UnusedAutoPropertyAccessor.Global
-    public int Number { get; set; }
     public string Date { get; set; }
-    public string Title { get; set; }
-    public string SubTitle { get; set; }
+    public int Number { get; set; }
     public string ShortTitle { get; set; }
-
+    public string SubTitle { get; set; }
+    public string Title { get; set; }
     public string Text { get; set; }
     // ReSharper restore UnassignedField.Global
     // ReSharper restore UnusedAutoPropertyAccessor.Global
@@ -32,13 +31,13 @@ public class TouMiraModNews
     {
         return new()
         {
+            Date = Date,
             Number = Number,
-            Title = Title,
-            SubTitle = SubTitle,
             ShortTitle = ShortTitle,
+            SubTitle = SubTitle,
+            Title = Title,
             Text = Text,
             Language = (uint)DataManager.Settings.Language.CurrentLanguage,
-            Date = Date,
             Id = "TouMiraModNews"
         };
     }
