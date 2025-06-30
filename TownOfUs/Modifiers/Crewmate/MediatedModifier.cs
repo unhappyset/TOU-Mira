@@ -23,6 +23,11 @@ public sealed class MediatedModifier(byte mediumId) : BaseModifier
     private PlayerControl? _mediumPlayer;
     private ArrowBehaviour? _arrow;
 
+    public override void OnMeetingStart()
+    {
+        ModifierComponent?.RemoveModifier(this);
+    }
+
     public override void OnActivate()
     {
 
