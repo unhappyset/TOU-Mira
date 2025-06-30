@@ -8,7 +8,7 @@
       "Title": "Town of Us: Mira v1.0.0",
       "Text":
       [
-        "\n\r<b> The initial release!</b>\r\n",
+        "\n\r<b> The initial release!</b>\n",
         "\n\n★ Welcome to TOU MIRA v1.0.0 ★",
         "\n THIS MOD IS IN PUBLIC BETA. EXPECT BUGS AND ISSUES."
       ]
@@ -21,7 +21,7 @@
       "Title": "Town of Us: Mira v1.0.1",
       "Text":
       [
-        "\n\r<b> Update now Available!</b>\r\n",
+        "\n\r<b> Update now Available!</b>\n",
         "\n\n★ Welcome to TOU MIRA v1.0.1 ★",
         "\n\r<size=120%>Crewmate Role Bugfixes:</size>",
         "\n     • Detective report settings are now toggled correctly",
