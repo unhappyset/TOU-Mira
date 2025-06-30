@@ -11,6 +11,11 @@ public static class TaskmasterEvents
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
+        if (@event.TriggeredByIntro)
+        {
+            return; // Only run when round starts.
+        }
+
         ModifierUtils.GetActiveModifiers<TaskmasterModifier>().Do(x => x.OnRoundStart());
     }
 }
