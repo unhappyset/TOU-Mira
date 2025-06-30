@@ -9,6 +9,7 @@ using System.Collections;
 using System.Text.Json;
 using UnityEngine;
 using UnityEngine.Networking;
+using LibCpp2IL;
 
 namespace TownOfUs.Patches.Misc;
 
@@ -41,10 +42,14 @@ public class TouMiraModNews
             Id = "TouMiraModNews"
         };
     }
-    public static List<TouMiraModNews> FromJson(string json)
+    public TouMiraModNews(int Number, string Title, string SubTitle, string ShortTitle, string Text, string Date)
     {
-        var result = JsonSerializer.Deserialize<List<TouMiraModNews>>(json);
-        return result ?? new List<TouMiraModNews>();
+        this.Number = Number;
+        this.Title = Title;
+        this.SubTitle = SubTitle;
+        this.ShortTitle = ShortTitle;
+        this.Text = Text;
+        this.Date = Date;
     }
 }
 public static class ModNewsFetcher
@@ -92,8 +97,22 @@ public static class ModNewsFetcher
 
         try
         {
-            List<TouMiraModNews> newsList = TouMiraModNews.FromJson(request.downloadHandler.text);
-            ModNewsHistory.AllModNews = newsList.OrderByDescending(n => DateTime.Parse(n.Date, System.Globalization.CultureInfo.InvariantCulture)).ToImmutableList();
+            using var jsonDocument = JsonDocument.Parse(request.downloadHandler.text);
+            var newsArray = jsonDocument.RootElement.GetProperty("News");
+
+            foreach (var newsElement in newsArray.EnumerateArray())
+            {
+                var dateString = (newsElement.GetProperty("Date").GetString() != null) ? newsElement.GetProperty("Date").GetString()! : "Unknown Date";
+                var numberString = newsElement.GetProperty("Number").GetString();
+                var number = numberString != null ? int.Parse(numberString, System.Globalization.CultureInfo.InvariantCulture) : 0;
+                var shortTitle = (numberString != null && newsElement.GetProperty("ShortTitle").GetString() != null) ? newsElement.GetProperty("ShortTitle").GetString()! : "No Short Title";
+                var subTitle = (numberString != null && newsElement.GetProperty("SubTitle").GetString() != null) ? newsElement.GetProperty("SubTitle").GetString()! : "No Subtitle";
+                var title = (numberString != null && newsElement.GetProperty("Title").GetString() != null) ? newsElement.GetProperty("Title").GetString()! : "No Title";
+                var body = newsElement.GetProperty("Text").EnumerateArray().ToStringEnumerable().ToString();
+                // Create ModNews object
+                var modNew = new TouMiraModNews(number, title, subTitle, shortTitle, body, dateString);
+                ModNewsHistory.AllModNews = ModNewsHistory.AllModNews.Add(modNew);
+            }
         }
         catch (Exception ex)
         {
@@ -129,8 +148,22 @@ public static class ModNewsFetcher
         using Stream resourceStream = assembly.GetManifestResourceStream("TownOfUs.Resources.Announcements.modNews-" + filename)
             ?? throw new InvalidOperationException($"Resource not found: TownOfUs.Resources.Announcements.modNews-{filename}");
         using StreamReader reader = new(resourceStream);
-        List<TouMiraModNews> newsList = TouMiraModNews.FromJson(reader.ReadToEnd());
-        ModNewsHistory.AllModNews = newsList.OrderByDescending(n => DateTime.Parse(n.Date, System.Globalization.CultureInfo.InvariantCulture)).ToImmutableList();
+        using var jsonDocument = JsonDocument.Parse(reader.ReadToEnd());
+        var newsArray = jsonDocument.RootElement.GetProperty("News");
+
+        foreach (var newsElement in newsArray.EnumerateArray())
+        {
+            var dateString = (newsElement.GetProperty("Date").GetString() != null) ? newsElement.GetProperty("Date").GetString()! : "Unknown Date";
+            var numberString = newsElement.GetProperty("Number").GetString();
+            var number = numberString != null ? int.Parse(numberString, System.Globalization.CultureInfo.InvariantCulture) : 0;
+            var shortTitle = (numberString != null && newsElement.GetProperty("ShortTitle").GetString() != null) ? newsElement.GetProperty("ShortTitle").GetString()! : "No Short Title";
+            var subTitle = (numberString != null && newsElement.GetProperty("SubTitle").GetString() != null) ? newsElement.GetProperty("SubTitle").GetString()! : "No Subtitle";
+            var title = (numberString != null && newsElement.GetProperty("Title").GetString() != null) ? newsElement.GetProperty("Title").GetString()! : "No Title";
+            var body = newsElement.GetProperty("Text").EnumerateArray().ToStringEnumerable().ToString();
+            // Create ModNews object
+            var modNew = new TouMiraModNews(number, title, subTitle, shortTitle, body, dateString);
+            ModNewsHistory.AllModNews = ModNewsHistory.AllModNews.Add(modNew);
+        }
     }
 
     [HarmonyPatch]
