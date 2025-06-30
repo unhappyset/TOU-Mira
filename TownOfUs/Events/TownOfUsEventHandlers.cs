@@ -41,7 +41,7 @@ public static class TownOfUsEventHandlers
     {
         if (!@event.TriggeredByIntro)
         {
-            return; // Only run when round starts.
+            return; // Only run when game starts.
         }
 
         HudManager.Instance.SetHudActive(false);
@@ -70,6 +70,7 @@ public static class TownOfUsEventHandlers
         CustomButtonSingleton<TransporterTransportButton>.Instance.SetUses((int)OptionGroupSingleton<TransporterOptions>.Instance.MaxNumTransports);
 
         CustomButtonSingleton<WarlockKillButton>.Instance.Charge = 0f;
+        CustomButtonSingleton<WarlockKillButton>.Instance.BurstActive = false;
 
         CustomButtonSingleton<BarryButton>.Instance.Usable = OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
         CustomButtonSingleton<SatelliteButton>.Instance.Usable = OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;

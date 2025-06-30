@@ -1,10 +1,7 @@
 ﻿using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
-using MiraAPI.Hud;
-using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
-using TownOfUs.Buttons.Impostor;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -28,13 +25,6 @@ public sealed class WarlockRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
         IntroSound = TouAudio.WarlockIntroSound,
         Icon = TouRoleIcons.Warlock,
     };
-
-    public override void OnMeetingStart()
-    {
-        RoleBehaviourStubs.OnMeetingStart(this);
-        
-        CustomButtonSingleton<WarlockKillButton>.Instance.Charge = 0f;
-    }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
