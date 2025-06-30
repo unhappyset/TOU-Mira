@@ -9,6 +9,7 @@ using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using System.Collections;
 using System.Text;
+using MiraAPI.Patches.Stubs;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Crewmate;
@@ -17,7 +18,6 @@ using TownOfUs.Modules;
 using TownOfUs.Modules.Anims;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -43,7 +43,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
 
     public override void OnMeetingStart()
     {
-        RoleStubs.RoleBehaviourOnMeetingStart(this);
+        RoleBehaviourStubs.OnMeetingStart(this);
 
         Logger<TownOfUsPlugin>.Error($"AltruistRole.OnMeetingStart");
 
@@ -52,21 +52,21 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
 
     public override void OnVotingComplete()
     {
-        RoleStubs.RoleBehaviourOnVotingComplete(this);
+        RoleBehaviourStubs.OnVotingComplete(this);
 
         CustomButtonSingleton<AltruistReviveButton>.Instance.RevivedInRound = false;
     }
 
     public override void OnDeath(DeathReason reason)
     {
-        RoleStubs.RoleBehaviourOnDeath(this, reason);
+        RoleBehaviourStubs.OnDeath(this, reason);
 
         ClearArrows();
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         ClearArrows();
     }

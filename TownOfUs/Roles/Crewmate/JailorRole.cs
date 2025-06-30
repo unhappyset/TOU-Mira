@@ -6,6 +6,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
@@ -17,7 +18,6 @@ using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,21 +51,21 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
 
         Executes = (int)OptionGroupSingleton<JailorOptions>.Instance.MaxExecutes;
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         Clear();
     }
 
     public override void OnMeetingStart()
     {
-        RoleStubs.RoleBehaviourOnMeetingStart(this);
+        RoleBehaviourStubs.OnMeetingStart(this);
 
         Clear();
 
@@ -85,7 +85,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
     public override void OnVotingComplete()
     {
-        RoleStubs.RoleBehaviourOnVotingComplete(this);
+        RoleBehaviourStubs.OnVotingComplete(this);
 
         executeButton?.Destroy();
         usesText?.Destroy();
@@ -161,34 +161,30 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             Clear();
 
             Executes--;
-
-            if (Jailed.HasModifier<InvulnerabilityModifier>())
-            {
-                Coroutines.Start(MiscUtils.CoFlash(Color.red));
-
-                var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfUsColors.Jailor.ToTextColor()}{Jailed.Data.PlayerName} cannot be executed! They must be Invulnerable!</color></b>", Color.white, spr: TouRoleIcons.Jailor.LoadAsset());
-
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-            }
-            else
+            var text = $"{Jailed.Data.PlayerName} cannot be executed! They must be Invulnerable!";
+            if (!Jailed.HasModifier<InvulnerabilityModifier>())
             {
                 if (Jailed.Is(ModdedRoleTeams.Crewmate) && !(PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished) && !(Jailed.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
                 {
                     Executes = 0;
 
                     CustomButtonSingleton<JailorJailButton>.Instance.ExecutedACrew = true;
-
-                    Coroutines.Start(MiscUtils.CoFlash(Color.red));
+                    text = $"{Jailed.Data.PlayerName} was a crewmate! You can no longer jail anyone!";
                 }
                 else
                 {
                     Coroutines.Start(MiscUtils.CoFlash(Color.green));
+                    text = $"{Jailed.Data.PlayerName} was successfully executed!";
                 }
 
                 Player.RpcCustomMurder(Jailed, createDeadBody: false, teleportMurderer: false);
             }
+
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>{text}</b>", Color.white, spr: TouRoleIcons.Jailor.LoadAsset());
+
+            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
         }
 
         return Listener;

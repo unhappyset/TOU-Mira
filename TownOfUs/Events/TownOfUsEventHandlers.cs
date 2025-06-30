@@ -20,7 +20,6 @@ using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modules.Anims;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers.Types;
-using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Buttons.Crewmate;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.GameOptions;
@@ -42,7 +41,7 @@ public static class TownOfUsEventHandlers
     {
         if (!@event.TriggeredByIntro)
         {
-            return; // Only run when round starts.
+            return; // Only run when game starts.
         }
 
         HudManager.Instance.SetHudActive(false);
@@ -71,6 +70,7 @@ public static class TownOfUsEventHandlers
         CustomButtonSingleton<TransporterTransportButton>.Instance.SetUses((int)OptionGroupSingleton<TransporterOptions>.Instance.MaxNumTransports);
 
         CustomButtonSingleton<WarlockKillButton>.Instance.Charge = 0f;
+        CustomButtonSingleton<WarlockKillButton>.Instance.BurstActive = false;
 
         CustomButtonSingleton<BarryButton>.Instance.Usable = OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
         CustomButtonSingleton<SatelliteButton>.Instance.Usable = OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;
@@ -90,19 +90,6 @@ public static class TownOfUsEventHandlers
             HudManager.Instance.SetHudActive(false);
             HudManager.Instance.SetHudActive(true);
         }
-
-        // Should make a converted imitator into whatever role they become after the next meeting starts
-        if (player.TryGetModifier<ImitatorCacheModifier>(out var imi))
-        {
-            if (!@event.NewRole.IsCrewmate())
-            {
-                player.RemoveModifier<ImitatorCacheModifier>();
-            }
-            else
-            {
-                imi.OldRole = @event.NewRole;
-            }
-        }
     }
 
     [RegisterEvent]
@@ -114,13 +101,14 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void ClearBodiesAndResetPlayersEventHandler(RoundStartEvent @event)
     {
-        GameObject.FindObjectsOfType<DeadBody>().ToList().ForEach(x => x.gameObject.Destroy());
+        Object.FindObjectsOfType<DeadBody>().ToList().ForEach(x => x.gameObject.Destroy());
 
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             player.MyPhysics.ResetAnimState();
             player.MyPhysics.ResetMoveState();
         }
+
         FakePlayer.ClearAll();
     }
 
@@ -136,6 +124,7 @@ public static class TownOfUsEventHandlers
         if (exiled.AmOwner)
         {
             HudManager.Instance.SetHudActive(false);
+
             if (!MeetingHud.Instance)
             {
                 HudManager.Instance.SetHudActive(true);
@@ -143,15 +132,17 @@ public static class TownOfUsEventHandlers
         }
 
         if (exiled.Data.Role is IAnimated animated)
-            {
-                animated.IsVisible = false;
-                animated.SetVisible();
-            }
+        {
+            animated.IsVisible = false;
+            animated.SetVisible();
+        }
+
         foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(exiled.Data.Role)).OfType<IAnimated>())
         {
             button.IsVisible = false;
             button.SetVisible();
         }
+
         foreach (var modifier in exiled.GetModifiers<GameModifier>().Where(x => x is IAnimated))
         {
             var animatedMod = modifier as IAnimated;
@@ -160,12 +151,6 @@ public static class TownOfUsEventHandlers
                 animatedMod.IsVisible = false;
                 animatedMod.SetVisible();
             }
-        }
-        if (@exiled.TryGetModifier<MedicShieldModifier>(out var medMod)
-        && PlayerControl.LocalPlayer.Data.Role is MedicRole
-        && medMod.Medic == PlayerControl.LocalPlayer)
-        {
-            CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
         }
     }
 
@@ -180,6 +165,7 @@ public static class TownOfUsEventHandlers
         if (target.AmOwner)
         {
             HudManager.Instance.SetHudActive(false);
+
             if (!MeetingHud.Instance)
             {
                 HudManager.Instance.SetHudActive(true);
@@ -187,15 +173,17 @@ public static class TownOfUsEventHandlers
         }
 
         if (target.Data.Role is IAnimated animated)
-            {
-                animated.IsVisible = false;
-                animated.SetVisible();
-            }
+        {
+            animated.IsVisible = false;
+            animated.SetVisible();
+        }
+
         foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(target.Data.Role)).OfType<IAnimated>())
         {
             button.IsVisible = false;
             button.SetVisible();
         }
+
         foreach (var modifier in target.GetModifiers<GameModifier>().Where(x => x is IAnimated))
         {
             var animatedMod = modifier as IAnimated;
@@ -205,6 +193,7 @@ public static class TownOfUsEventHandlers
                 animatedMod.SetVisible();
             }
         }
+
         if (source.IsImpostor() && source.AmOwner && source != target && !MeetingHud.Instance)
         {
             switch (source.Data.Role)
@@ -222,12 +211,6 @@ public static class TownOfUsEventHandlers
                     break;
             }
         }
-        if (@target.TryGetModifier<MedicShieldModifier>(out var medMod)
-            && PlayerControl.LocalPlayer.Data.Role is MedicRole
-            && medMod.Medic == PlayerControl.LocalPlayer)
-        {
-            CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
-        }
 
         // here we're adding support for kills during a meeting
         if (MeetingHud.Instance)
@@ -236,7 +219,7 @@ public static class TownOfUsEventHandlers
         }
         else
         {
-            var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == target.PlayerId);
+            var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == target.PlayerId);
 
             if (target.HasModifier<MiniModifier>() && body != null)
             {
@@ -300,13 +283,6 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void PlayerLeaveEventHandler(PlayerLeaveEvent @event)
     {
-        if (@event.ClientData.Character && @event.ClientData.Character.TryGetModifier<MedicShieldModifier>(out var medMod)
-        && PlayerControl.LocalPlayer.Data.Role is MedicRole
-        && medMod.Medic == PlayerControl.LocalPlayer)
-        {
-            CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
-        }
-
         if (!MeetingHud.Instance)
         {
             return;
@@ -364,12 +340,12 @@ public static class TownOfUsEventHandlers
         
         var bloodAnim = animation.transform.GetChild(0).GetComponent<SpriteAnim>();
         
-            bloodAnim.Play(trueAnim.Key);
-            bodysAnim.Play(trueAnim.Value);
+        bloodAnim.Play(trueAnim.Key);
+        bodysAnim.Play(trueAnim.Value);
 
-            bodysAnim.SetSpeed(1.05f);
-            bloodAnim.SetSpeed(1.05f);
-            var bodyAnimLength = bodysAnim.m_currAnim.length;
+        bodysAnim.SetSpeed(1.05f);
+        bloodAnim.SetSpeed(1.05f);
+        var bodyAnimLength = bodysAnim.m_currAnim.length;
 
         yield return new WaitForSeconds(0.1f);
         SoundManager.Instance.PlaySound(voteArea.GetPlayer()!.KillSfx, false);

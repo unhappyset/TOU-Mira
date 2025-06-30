@@ -38,6 +38,12 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
     private static float InvisDelay => OptionGroupSingleton<ShyOptions>.Instance.InvisDelay;
     private static float TransformInvisDuration => OptionGroupSingleton<ShyOptions>.Instance.TransformInvisDuration;
 
+    public override void OnDeactivate()
+    {
+        if (Player == null) return;
+        SetVisibility(Player, 1f);
+    }
+    
     private DateTime LastMoved { get; set; }
     public void OnRoundStart()
     {

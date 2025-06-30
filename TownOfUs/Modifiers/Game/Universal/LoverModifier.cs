@@ -1,11 +1,8 @@
 ﻿using System.Collections;
 using HarmonyLib;
-using MiraAPI.Events;
-using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameEnd;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using MiraAPI.Networking;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
@@ -139,33 +136,6 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
     public string LoverString()
     {
         return !OtherLover ? "You are in love with nobody" : $"You are in love with {OtherLover!.Data.PlayerName}";
-    }
-
-    public void KillOther(bool isHidden = false)
-    {
-        if (!Player || !OtherLover || OtherLover!.Data.IsDead)
-        {
-            Logger<TownOfUsPlugin>.Error("Invalid Lover");
-            return;
-        }
-        if (MeetingHud.Instance || ExileController.Instance) isHidden = true;
-
-        if (!OtherLover.HasModifier<InvulnerabilityModifier>())
-        {
-            var murderResultFlags = MurderResultFlags.Succeeded;
-
-            var beforeMurderEvent = new BeforeMurderEvent(OtherLover!, OtherLover!);
-            MiraEventManager.InvokeEvent(beforeMurderEvent);
-
-            if (beforeMurderEvent.IsCancelled)
-            {
-                murderResultFlags = MurderResultFlags.FailedError;
-            }
-
-            var murderResultFlags2 = MurderResultFlags.DecisionByHost | murderResultFlags;
-
-            OtherLover!.CustomMurder(OtherLover!, murderResultFlags2, true, !isHidden, true, !isHidden, true);
-        }
     }
 
     public PlayerControl? GetOtherLover()

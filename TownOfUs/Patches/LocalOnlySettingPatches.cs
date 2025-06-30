@@ -178,7 +178,7 @@ public static class LocalSettings
         transform.localPosition = pos;
 
         Object.Destroy(popUp.GetComponent<OptionsMenuBehaviour>());
-        foreach (var gObj in popUp.gameObject.GetAllChilds())
+        foreach (var gObj in popUp.gameObject.GetAllChildren())
         {
             if (gObj.name == "Background")
             {
@@ -334,19 +334,23 @@ public static class LocalSettings
 
         foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (player == PlayerControl.LocalPlayer) continue;
+            if (player.AmOwner) continue;
             if (!player.Data.IsDead) continue;
-            if (player.Data.Role is PhantomTouRole phantom && !phantom.Caught) continue;
-            if (player.Data.Role is HaunterRole haunter && !haunter.Caught) continue;
+            switch (player.Data.Role)
+            {
+                case PhantomTouRole { Caught: false }:
+                case HaunterRole { Caught: false }:
+                    continue;
+            }
 
-            bool show = TownOfUsPlugin.DeadSeeGhosts.Value;
-            var bodyforms = player.gameObject.transform.GetChild(1).gameObject;
+            var show = TownOfUsPlugin.DeadSeeGhosts.Value;
+            var bodyForms = player.gameObject.transform.GetChild(1).gameObject;
 
-            foreach (var form in bodyforms.GetAllChilds())
+            foreach (var form in bodyForms.GetAllChildren())
             {
                 if (form.activeSelf)
                 {
-                    form.GetComponent<SpriteRenderer>().color = new(1f, 1f, 1f, show ? 1f : 0f);
+                    form.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, show ? 1f : 0f);
                 }
             }
 
@@ -356,11 +360,11 @@ public static class LocalSettings
         }
     }
 
-    public static IEnumerable<GameObject> GetAllChilds(this GameObject Go)
+    public static IEnumerable<GameObject> GetAllChildren(this GameObject go)
     {
-        for (var i = 0; i < Go.transform.childCount; i++)
+        for (var i = 0; i < go.transform.childCount; i++)
         {
-            yield return Go.transform.GetChild(i).gameObject;
+            yield return go.transform.GetChild(i).gameObject;
         }
     }
 }

@@ -3,10 +3,10 @@ using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules.Wiki;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -48,7 +48,7 @@ public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         Clear();
     }

@@ -4,8 +4,12 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Networking;
+using MiraAPI.Utilities;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Options.Modifiers.Alliance;
+using TownOfUs.Utilities;
 
 namespace TownOfUs.Events.Modifiers;
 
@@ -14,9 +18,9 @@ public static class LoverEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (!@event.Target.TryGetModifier<LoverModifier>(out var loveMod)) return;
+        if (!@event.Target.TryGetModifier<LoverModifier>(out var loveMod) || !PlayerControl.LocalPlayer.IsHost() || loveMod.OtherLover == null || loveMod.OtherLover.HasDied() || loveMod.OtherLover.HasModifier<InvulnerabilityModifier>()) return;
 
-        if (OptionGroupSingleton<LoversOptions>.Instance.BothLoversDie) loveMod.KillOther();
+        if (OptionGroupSingleton<LoversOptions>.Instance.BothLoversDie) loveMod.OtherLover.RpcCustomMurder(loveMod.OtherLover);
     }
     [RegisterEvent]
     public static void EjectionEventHandler(EjectionEvent @event)
@@ -24,7 +28,11 @@ public static class LoverEvents
         var exiled = @event.ExileController?.initData?.networkedPlayer?.Object;
         if (exiled == null || !exiled.TryGetModifier<LoverModifier>(out var loveMod)) return;
 
-        if (OptionGroupSingleton<LoversOptions>.Instance.BothLoversDie) loveMod.KillOther(true);
+        if (OptionGroupSingleton<LoversOptions>.Instance.BothLoversDie && loveMod.OtherLover != null &&
+            !loveMod.OtherLover.HasDied() && !loveMod.OtherLover.HasModifier<InvulnerabilityModifier>())
+        {
+            loveMod.OtherLover.Exiled();
+        }
     }
 
     [RegisterEvent]

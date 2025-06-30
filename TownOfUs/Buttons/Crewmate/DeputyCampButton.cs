@@ -37,7 +37,7 @@ public sealed class CampButton : TownOfUsRoleButton<DeputyRole, PlayerControl>
             return;
         }
 
-        var player = ModifierUtils.GetPlayersWithModifier<DeputyCampedModifier>(x => x.Deputy == PlayerControl.LocalPlayer).FirstOrDefault();
+        var player = ModifierUtils.GetPlayersWithModifier<DeputyCampedModifier>(x => x.Deputy.AmOwner).FirstOrDefault();
 
         if (player != null)
         {

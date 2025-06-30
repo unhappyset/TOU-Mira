@@ -1,12 +1,12 @@
 ﻿using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Networking.Rpc;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules.Wiki;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -34,7 +34,7 @@ public sealed class MediumRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         MediatedPlayers.ForEach(mod => mod.Player?.GetModifierComponent()?.RemoveModifier(mod));
     }

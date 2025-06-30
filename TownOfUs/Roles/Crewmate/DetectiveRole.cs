@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
@@ -9,7 +10,6 @@ using TownOfUs.Modules;
 using TownOfUs.Modules.Components;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -38,7 +38,7 @@ public sealed class DetectiveRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         InvestigatingScene = null;
         InvestigatedPlayers.Clear();

@@ -6,6 +6,7 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
@@ -14,7 +15,6 @@ using TownOfUs.Buttons.Neutral;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -40,7 +40,7 @@ public sealed class PlaguebearerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
     };
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
         if (Player.AmOwner && (int)OptionGroupSingleton<PlaguebearerOptions>.Instance.PestChance != 0)
         {
             Coroutines.Start(CheckForPestChance(Player));

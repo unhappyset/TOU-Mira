@@ -31,11 +31,11 @@ public static class PlayerRoleTextExtensions
         else if (player.HasModifier<SeerEvilRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
             color = Color.red;
 
-        if (player.HasModifier<PoliticianCampaignedModifier>(x => x.Politician == PlayerControl.LocalPlayer) &&
+        if (player.HasModifier<PoliticianCampaignedModifier>(x => x.Politician.AmOwner) &&
             PlayerControl.LocalPlayer.IsRole<PoliticianRole>())
             color = Color.cyan;
 
-        if (player.HasModifier<MercenaryBribedModifier>(x => x.Mercenary == PlayerControl.LocalPlayer) &&
+        if (player.HasModifier<MercenaryBribedModifier>(x => x.Mercenary.AmOwner) &&
             PlayerControl.LocalPlayer.IsRole<MercenaryRole>())
         {
             color = Color.green;
@@ -61,7 +61,7 @@ public static class PlayerRoleTextExtensions
             name += "<color=#D94291> $</color>";
 
         if (PlayerControl.LocalPlayer.Data.Role is HunterRole &&
-            player.HasModifier<HunterStalkedModifier>(x => x.Hunter == PlayerControl.LocalPlayer))
+            player.HasModifier<HunterStalkedModifier>(x => x.Hunter.AmOwner))
             name += "<color=#29AB87> &</color>";
 
         if (PlayerControl.LocalPlayer.Data.Role is HunterRole hunter && hunter.CaughtPlayers.Contains(player))
@@ -85,7 +85,7 @@ public static class PlayerRoleTextExtensions
                 : "<color=#B3FFFF> ★</color>";
         }
 
-        if ((player.HasModifier<MedicShieldModifier>(x => x.Medic == PlayerControl.LocalPlayer) &&
+        if ((player.HasModifier<MedicShieldModifier>(x => x.Medic.AmOwner) &&
              PlayerControl.LocalPlayer.IsRole<MedicRole>())
             || (player.HasModifier<MedicShieldModifier>() &&
                 ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
@@ -94,7 +94,7 @@ public static class PlayerRoleTextExtensions
             name += "<color=#006600> +</color>";
         }
 
-        if ((player.HasModifier<ClericBarrierModifier>(x => x.Cleric == PlayerControl.LocalPlayer) &&
+        if ((player.HasModifier<ClericBarrierModifier>(x => x.Cleric.AmOwner) &&
              PlayerControl.LocalPlayer.IsRole<ClericRole>())
             || (player.HasModifier<ClericBarrierModifier>() &&
                 ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
@@ -104,7 +104,7 @@ public static class PlayerRoleTextExtensions
             name += "<color=#00FFB3> Ω</color>";
         }
 
-        if ((player.HasModifier<WardenFortifiedModifier>(x => x.Warden == PlayerControl.LocalPlayer) &&
+        if ((player.HasModifier<WardenFortifiedModifier>(x => x.Warden.AmOwner) &&
              PlayerControl.LocalPlayer.IsRole<WardenRole>())
             || (player.HasModifier<WardenFortifiedModifier>() &&
                 ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
@@ -162,7 +162,7 @@ public static class PlayerRoleTextExtensions
                 genOpt.TheDeadKnow && !hidden))
             name += "<color=#2A1119> M</color>";
 
-        if ((player.HasModifier<HypnotisedModifier>(x => x.Hypnotist == PlayerControl.LocalPlayer) &&
+        if ((player.HasModifier<HypnotisedModifier>(x => x.Hypnotist.AmOwner) &&
              PlayerControl.LocalPlayer.IsRole<HypnotistRole>())
             || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.IsImpostor() &&
                 genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)

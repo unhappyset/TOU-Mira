@@ -3,6 +3,7 @@ using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
@@ -10,7 +11,6 @@ using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -44,7 +44,7 @@ public sealed class HypnotistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.AmOwner)
         {
@@ -63,7 +63,7 @@ public sealed class HypnotistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
     public override void OnMeetingStart()
     {
-        RoleStubs.RoleBehaviourOnMeetingStart(this);
+        RoleBehaviourStubs.OnMeetingStart(this);
 
         if (Player.AmOwner)
         {
@@ -73,7 +73,7 @@ public sealed class HypnotistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
     public override void OnVotingComplete()
     {
-        RoleStubs.RoleBehaviourOnVotingComplete(this);
+        RoleBehaviourStubs.OnVotingComplete(this);
 
         if (Player.AmOwner)
         {
@@ -83,7 +83,7 @@ public sealed class HypnotistRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         HysteriaActive = false;
 

@@ -8,6 +8,7 @@ using TownOfUs.Options.Modifiers.Crewmate;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TownOfUs.Modifiers.Game.Crewmate;
 
@@ -46,7 +47,7 @@ public sealed class NoisemakerModifier : TouGameModifier, IWikiDiscoverable
 		{
 			return;
 		}
-		if (GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId) == null && OptionGroupSingleton<NoisemakerOptions>.Instance.BodyCheck)
+		if (Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId) == null && OptionGroupSingleton<NoisemakerOptions>.Instance.BodyCheck)
 		{
 			return;
 		}
@@ -63,7 +64,7 @@ public sealed class NoisemakerModifier : TouGameModifier, IWikiDiscoverable
 
 		var deathArrow = deathArrowPrefab.GetComponent<NoisemakerArrow>();
 		deathArrow.SetDuration(OptionGroupSingleton<NoisemakerOptions>.Instance.AlertDuration);
-		if (Player == PlayerControl.LocalPlayer)
+		if (Player.AmOwner)
 		{
 			deathArrow.alwaysMaxSize = true;
 		}

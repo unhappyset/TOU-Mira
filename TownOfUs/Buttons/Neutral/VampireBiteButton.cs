@@ -24,6 +24,7 @@ public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerCo
     public override Color TextOutlineColor => TownOfUsColors.Vampire;
     public override float Cooldown => OptionGroupSingleton<VampireOptions>.Instance.BiteCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.BiteSprite;
+
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
@@ -31,8 +32,13 @@ public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerCo
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
-        var numOfVampiresAlive = CustomRoleUtils.GetActiveRolesOfType<VampireRole>().Count(plr => !plr.Player.HasDied());
-        Button?.OverrideText(numOfVampiresAlive < 2 ? "Bite" : "Kill");
+        var options = OptionGroupSingleton<VampireOptions>.Instance;
+
+        var vampireCount = CustomRoleUtils.GetActiveRolesOfType<VampireRole>().Count();
+        var totalVamps = GameHistory.RoleCount<VampireRole>();
+        var canBite = vampireCount < 2 && totalVamps < options.MaxVampires && (!PlayerControl.LocalPlayer.HasModifier<VampireBittenModifier>() || options.CanConvertAsNewVamp);
+
+        OverrideName(canBite ? "Bite" : "Kill");
 
         base.FixedUpdate(playerControl);
     }
@@ -67,9 +73,9 @@ public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerCo
         if (target.HasModifier<EgotistModifier>()) return false;
 
         var options = OptionGroupSingleton<VampireOptions>.Instance;
-        //var vampireCount = CustomRoleUtils.GetActiveRolesOfType<VampireRole>().Count(x => !x.Player.HasDied());
-        var vampireCount = CustomRoleUtils.GetActiveRolesOfType<VampireRole>().Count(); 
-        var totalVamps = GameHistory.AllRoles.Count(x => x is VampireRole);
+
+        var vampireCount = CustomRoleUtils.GetActiveRolesOfType<VampireRole>().Count();
+        var totalVamps = GameHistory.RoleCount<VampireRole>();//GameHistory.AllRoles.Count(x => x is VampireRole);
 
         var canConvertRole = true;
         var canConvertAlliance = true;

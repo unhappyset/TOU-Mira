@@ -2,11 +2,11 @@
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -28,7 +28,7 @@ public sealed class SpyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole
     };
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
         if (Player.AmOwner)
         {
             CustomButtonSingleton<SpyAdminTableRoleButton>.Instance.AvailableCharge = OptionGroupSingleton<SpyOptions>.Instance.StartingCharge.Value;

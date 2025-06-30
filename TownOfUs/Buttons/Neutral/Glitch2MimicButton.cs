@@ -9,6 +9,7 @@ using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TownOfUs.Buttons.Neutral;
 
@@ -31,7 +32,7 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
             playerMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
             playerMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
             playerMenu.Begin(
-                plr => (!plr.HasDied() || GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == plr.PlayerId) ||
+                plr => (!plr.HasDied() || Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == plr.PlayerId) ||
                 FakePlayer.FakePlayers.FirstOrDefault(x => x?.body?.name == $"Fake {plr.gameObject.name}")?.body) && plr != PlayerControl.LocalPlayer,
                 plr =>
                 {

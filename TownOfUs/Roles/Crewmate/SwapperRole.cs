@@ -2,13 +2,13 @@ using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -38,7 +38,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.AmOwner)
         {
@@ -56,7 +56,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
     public override void OnMeetingStart()
     {
-        RoleStubs.RoleBehaviourOnMeetingStart(this);
+        RoleBehaviourStubs.OnMeetingStart(this);
 
         if (Player.AmOwner)
         {
@@ -66,7 +66,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
     public override void OnVotingComplete()
     {
-        RoleStubs.RoleBehaviourOnVotingComplete(this);
+        RoleBehaviourStubs.OnVotingComplete(this);
 
         if (Player.AmOwner)
         {
@@ -76,7 +76,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         if (Player.AmOwner)
         {
@@ -130,7 +130,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
         RpcSyncSwaps(Player, Swap1?.TargetPlayerId ?? 255, Swap2?.TargetPlayerId ?? 255);
     }
 
-    [MethodRpc((uint)TownOfUsRpc.SetSwaps)]
+    [MethodRpc((uint)TownOfUsRpc.SetSwaps, SendImmediately = true)]
     public static void RpcSyncSwaps(PlayerControl swapper, byte swap1, byte swap2)
     {
         var swapperRole = swapper.Data?.Role as SwapperRole;

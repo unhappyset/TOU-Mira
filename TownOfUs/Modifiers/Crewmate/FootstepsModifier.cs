@@ -5,6 +5,7 @@ using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Crewmate;
+using TownOfUs.Patches;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -79,6 +80,8 @@ public sealed class FootstepsModifier : BaseModifier
         _currentSteps.Add(footstep, sprite);
         _lastPos = Player.transform.position;
         Coroutines.Start(FootstepDisappear(footstep, sprite));
+        
+        _currentSteps.ToList().ForEach(step => step.Value.color = HudManagerPatches.CommsSaboActive() ? new Color(0.2f, 0.2f, 0.2f, 1f) : _footstepColor);
     }
 
     public override void OnDeath(DeathReason reason)

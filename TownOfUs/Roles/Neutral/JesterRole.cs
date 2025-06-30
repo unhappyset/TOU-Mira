@@ -3,6 +3,7 @@ using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
@@ -11,7 +12,6 @@ using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Patches;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -58,7 +58,7 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
 
         if (!OptionGroupSingleton<JesterOptions>.Instance.CanButton)
         {
@@ -77,7 +77,7 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         if (Player.AmOwner)
         {
@@ -91,7 +91,7 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public override void OnDeath(DeathReason reason)
     {
-        RoleStubs.RoleBehaviourOnDeath(this, reason);
+        RoleBehaviourStubs.OnDeath(this, reason);
 
         if (reason == DeathReason.Exile)
             RpcJesterWin(Player);
@@ -101,7 +101,7 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public override void OnVotingComplete()
     {
-        RoleStubs.RoleBehaviourOnVotingComplete(this);
+        RoleBehaviourStubs.OnVotingComplete(this);
 
         Voters.Clear();
 

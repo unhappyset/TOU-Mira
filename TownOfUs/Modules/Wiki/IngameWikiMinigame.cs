@@ -4,7 +4,6 @@ using Il2CppInterop.Runtime.InteropTypes.Fields;
 using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Patches.Stubs;
-using MiraAPI.PluginLoading;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities.Attributes;
@@ -47,7 +46,6 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
     private WikiPage _currentPage = WikiPage.Homepage;
     private bool _modifiersSelected;
-    private MiraPluginInfo _pluginInfo;
     private List<Transform> _activeItems = [];
     private IWikiDiscoverable? _selectedItem;
 
@@ -166,7 +164,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
             var comparer = new ModifierComparer(activeModifiers);
 
-            var modifiers = _pluginInfo.Modifiers
+            var modifiers = MiscUtils.AllModifiers
                 .Where(x => x is IWikiDiscoverable)
                 .OrderBy(x => x, comparer)
                 .ToList();
@@ -230,7 +228,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 roleList.Add((ushort)PlayerControl.LocalPlayer.GetRoleWhenAlive().Role);
             }
             var comparer = new RoleComparer(roleList);
-            var roles = _pluginInfo.Roles.Values.OrderBy(x => x, comparer).OfType<ITownOfUsRole>();
+            var roles = MiscUtils.AllRoles.OrderBy(x => x, comparer).OfType<ITownOfUsRole>();
 
             foreach (var role in roles)
             {
@@ -309,13 +307,16 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
     private void Awake()
     {
         if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(false));
-        _pluginInfo = MiraPluginManager.GetPluginByGuid(TownOfUsPlugin.Id)!;
+
+        if (GameStartManager.InstanceExists && LobbyBehaviour.Instance)
+        {
+            GameStartManager.Instance.HostInfoPanel.gameObject.SetActive(false);
+        }
 
         UpdatePage(WikiPage.Homepage);
 
         var closeAction = new Action(() => {
-            if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(true));
-            this.BaseClose();
+            Close();
             });
 
         CloseButton.Value.OnClick.AddListener((UnityAction)closeAction);
@@ -407,6 +408,11 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
     public override void Close()
     {
         MinigameStubs.Close(this);
+
+        if (GameStartManager.InstanceExists && LobbyBehaviour.Instance)
+        {
+            GameStartManager.Instance.HostInfoPanel.gameObject.SetActive(true);
+        }
 
         if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(true));
         TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;

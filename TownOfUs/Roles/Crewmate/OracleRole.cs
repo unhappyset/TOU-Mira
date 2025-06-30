@@ -2,13 +2,13 @@ using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
@@ -39,7 +39,7 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
     public override void OnDeath(DeathReason reason)
     {
-        RoleStubs.RoleBehaviourOnDeath(this, reason);
+        RoleBehaviourStubs.OnDeath(this, reason);
 
         RpcOracleConfess(Player);
     }
@@ -81,12 +81,7 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         allPlayers.Shuffle();
         evilPlayers.Shuffle();
         var secondPlayer = allPlayers[0];
-        var firstTwoEvil = false;
-
-        foreach (var evilPlayer in evilPlayers)
-        {
-            if (evilPlayer == player || evilPlayer == secondPlayer) firstTwoEvil = true;
-        }
+        var firstTwoEvil = evilPlayers.Any(plr => plr == player || plr == secondPlayer);
 
         if (firstTwoEvil)
         {

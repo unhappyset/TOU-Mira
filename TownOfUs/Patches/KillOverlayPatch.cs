@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TownOfUs.Patches;
 
-[HarmonyPatch(typeof(OverlayKillAnimation), nameof(OverlayKillAnimation.CoShow), [typeof(KillOverlay)])]
+[HarmonyPatch(typeof(OverlayKillAnimation), nameof(OverlayKillAnimation.CoShow), typeof(KillOverlay))]
 public static class KillOverlayPatch
 {
     [HarmonyPrefix]

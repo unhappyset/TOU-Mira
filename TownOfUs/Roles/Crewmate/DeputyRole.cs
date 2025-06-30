@@ -4,6 +4,7 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities.Extensions;
@@ -12,7 +13,6 @@ using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -45,7 +45,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.AmOwner)
         {
@@ -64,7 +64,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
     public override void OnMeetingStart()
     {
-        RoleStubs.RoleBehaviourOnMeetingStart(this);
+        RoleBehaviourStubs.OnMeetingStart(this);
 
         if (Player.AmOwner)
         {
@@ -74,7 +74,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
     public override void OnVotingComplete()
     {
-        RoleStubs.RoleBehaviourOnVotingComplete(this);
+        RoleBehaviourStubs.OnVotingComplete(this);
 
         if (Player.AmOwner)
         {
@@ -86,14 +86,14 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
     public override void OnDeath(DeathReason reason)
     {
-        RoleStubs.RoleBehaviourOnDeath(this, reason);
+        RoleBehaviourStubs.OnDeath(this, reason);
 
         Clear();
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         Clear();
 
@@ -106,7 +106,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
     public void Clear()
     {
-        var player = ModifierUtils.GetPlayersWithModifier<DeputyCampedModifier>(x => x.Deputy == PlayerControl.LocalPlayer).FirstOrDefault();
+        var player = ModifierUtils.GetPlayersWithModifier<DeputyCampedModifier>(x => x.Deputy.AmOwner).FirstOrDefault();
 
         if (player != null && Player.AmOwner)
         {

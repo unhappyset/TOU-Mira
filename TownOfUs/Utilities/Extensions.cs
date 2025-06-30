@@ -12,7 +12,6 @@ using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
-using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
@@ -23,6 +22,7 @@ using TownOfUs.Patches;
 using TownOfUs.Events.TouEvents;
 using MiraAPI.Events;
 using TMPro;
+using TownOfUs.Modifiers.Crewmate;
 
 namespace TownOfUs.Utilities;
 
@@ -121,7 +121,7 @@ public static class Extensions
 
     public static bool IsJailed(this PlayerControl player)
     {
-        return CustomRoleUtils.GetActiveRolesOfType<JailorRole>().Any(x => x.Jailed == player && !player.HasDied());
+        return player.HasModifier<JailedModifier>() && !player.HasDied();
     }
 
     public static bool IsHysteria(this PlayerControl player)

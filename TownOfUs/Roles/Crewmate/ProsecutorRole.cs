@@ -4,6 +4,7 @@ using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities.Extensions;
@@ -12,7 +13,6 @@ using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
@@ -54,7 +54,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
 
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.HasModifier<ImitatorCacheModifier>()) ProsecutionsCompleted = (int)OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions;
     }
@@ -74,7 +74,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
 
     public override void OnMeetingStart()
     {
-        RoleStubs.RoleBehaviourOnMeetingStart(this);
+        RoleBehaviourStubs.OnMeetingStart(this);
 
         var meeting = MeetingHud.Instance;
         if (!Player.AmOwner || meeting == null || ProsecutionsCompleted >= OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions) return;

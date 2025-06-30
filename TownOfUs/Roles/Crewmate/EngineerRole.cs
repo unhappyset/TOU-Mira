@@ -12,8 +12,8 @@ using TownOfUs.Utilities;
 using UnityEngine;
 using TownOfUs.Events.TouEvents;
 using MiraAPI.Events;
-using TownOfUs.Patches.Stubs;
 using MiraAPI.Hud;
+using MiraAPI.Patches.Stubs;
 using TownOfUs.Buttons;
 
 namespace TownOfUs.Roles.Crewmate;
@@ -37,7 +37,7 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     public override bool IsAffectedByComms => false;
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
         if (Player.AmOwner)
         {
             CustomButtonSingleton<FakeVentButton>.Instance.Show = false;
@@ -45,7 +45,7 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     }
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
         if (Player.AmOwner)
         {
             CustomButtonSingleton<FakeVentButton>.Instance.Show = true;

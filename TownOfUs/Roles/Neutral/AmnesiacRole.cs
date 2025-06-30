@@ -10,7 +10,6 @@ using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
 using TownOfUs.Options;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 using TownOfUs.Modifiers.Neutral;
@@ -20,6 +19,7 @@ using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modifiers.Game.Neutral;
 using TownOfUs.Events.TouEvents;
 using MiraAPI.Events;
+using MiraAPI.Patches.Stubs;
 
 namespace TownOfUs.Roles.Neutral;
 
@@ -42,7 +42,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         if (Player.HasModifier<AmnesiacArrowModifier>())
         {

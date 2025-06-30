@@ -3,11 +3,11 @@ using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -49,7 +49,7 @@ public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
 
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.AmOwner && OptionGroupSingleton<SurvivorOptions>.Instance.ScatterOn)
         {
@@ -59,7 +59,7 @@ public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         if (Player.AmOwner && OptionGroupSingleton<SurvivorOptions>.Instance.ScatterOn)
         {

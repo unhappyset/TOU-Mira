@@ -2,12 +2,12 @@
 using System.Collections;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Color = UnityEngine.Color;
@@ -34,7 +34,7 @@ public sealed class AurialRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         _senseArrows.Values.DestroyAll();
         _senseArrows.Clear();

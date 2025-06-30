@@ -15,7 +15,6 @@ using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -51,7 +50,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
         CanVanquish = true;
 
         // if Inuquisitor was revived
@@ -81,7 +80,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     }
     public override void OnMeetingStart()
     {
-        RoleStubs.RoleBehaviourOnMeetingStart(this);
+        RoleBehaviourStubs.OnMeetingStart(this);
 
         if (Player.AmOwner)
         {
@@ -104,6 +103,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
                 reportBuilder.AppendLine(TownOfUsPlugin.Culture, $"Your inquiry reveals that {player.PlayerName} is a heretic!\n");
                 var roles = TargetRoles;
                 var lastRole = roles[roles.Count - 1];
+                roles.Remove(lastRole);
 
                 if (roles.Count != 0)
                 {

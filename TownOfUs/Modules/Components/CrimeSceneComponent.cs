@@ -40,7 +40,7 @@ public sealed class CrimeSceneComponent(nint cppPtr) : MonoBehaviour(cppPtr)
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             if (player.Data.IsDead) continue;
-            if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
+            if (player.AmOwner) continue;
 
             // Debug.Log(GetComponent<BoxCollider2D>().IsTouching(player.Collider));
             if (Vector2.Distance(player.GetTruePosition(), gameObject.transform.position) >

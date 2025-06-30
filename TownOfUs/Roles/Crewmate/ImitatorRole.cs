@@ -1,10 +1,10 @@
 ﻿using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules.Wiki;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -26,7 +26,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     };
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
         player.AddModifier<ImitatorCacheModifier>();
     }
 

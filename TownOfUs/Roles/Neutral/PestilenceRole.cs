@@ -6,10 +6,10 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using System.Globalization;
 using System.Text;
+using MiraAPI.Patches.Stubs;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -43,7 +43,7 @@ public sealed class PestilenceRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     };
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
         player.AddModifier<InvulnerabilityModifier>(true, true, false);
 
         if (Player.AmOwner)
@@ -54,7 +54,7 @@ public sealed class PestilenceRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     }
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
         targetPlayer.RemoveModifier<InvulnerabilityModifier>();
 
         if (Player.AmOwner)

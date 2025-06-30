@@ -23,8 +23,13 @@ public sealed class FakePlayer : IDisposable
 
     public readonly GameObject? body;
     public int PlayerId;
-    private readonly SpriteRenderer? rend;
-    private GameObject? colorBindTextObj;
+
+    private readonly PlayerCosmicInfo _cosmicInfo;
+    private readonly SpriteRenderer? _rend;
+    private readonly CosmeticsLayer? _cosmeticsLayer;
+    private GameObject? _colorBindTextObj;
+    private TextMeshPro _colorBindText;
+    private TextMeshPro _nameTextMaster;
 
     private static Vector3 Scale => new(0.35f, 0.35f, 0.35f);
     private static Vector2 PosOffset => new(-0.045f, 0.575f);
@@ -44,7 +49,7 @@ public sealed class FakePlayer : IDisposable
     {
         var playerOutfit = player.Data.DefaultOutfit;
 
-        var cosmicInfo = new PlayerCosmicInfo
+        _cosmicInfo = new PlayerCosmicInfo
         {
             Cosmetics = player.cosmetics,
             FlipX = player.cosmetics.currentBodySprite.BodySprite.flipX,
@@ -52,22 +57,21 @@ public sealed class FakePlayer : IDisposable
             ColorInfo = playerOutfit.ColorId,
         };
 
-        cosmicInfo.Cosmetics.Visible = true;
+        _cosmicInfo.Cosmetics.Visible = true;
 
         body = new GameObject($"Fake {player.gameObject.name}");
         PlayerId = player.PlayerId;
 
-
         body.layer = LayerMask.NameToLayer("Players");
 
-        CreateNameTextParentObj(player, body, cosmicInfo);
+        CreateNameTextParentObj(player, body, _cosmicInfo);
 
-        rend = CreateBodyImage(cosmicInfo);
-        var cosmetics = CreateCosmetics(rend, cosmicInfo);
+        _rend = CreateBodyImage(_cosmicInfo);
+        _cosmeticsLayer = CreateCosmetics(_rend, _cosmicInfo);
 
         DataManager.Settings.Accessibility.OnChangedEvent += new Action(SwitchColorName);
 
-        DecorateDummy(cosmetics, cosmicInfo, player);
+        DecorateDummy(_cosmeticsLayer, _cosmicInfo, player);
 
         SpriteAnimNodeSync[] syncs = body.GetComponentsInChildren<SpriteAnimNodeSync>(true);
         for (int i = 0; i < syncs.Length; ++i)
@@ -84,29 +88,37 @@ public sealed class FakePlayer : IDisposable
 
         body.transform.position = vector;
 
-        if (player.HasModifier<GiantModifier>()) body.transform.localScale /= 0.7f;
-        else if (player.HasModifier<MiniModifier>()) body.transform.localScale *= 0.7f;
+        if (player.HasModifier<GiantModifier>())
+        {
+            body.transform.localScale /= 0.7f;
+        }
+        else if (player.HasModifier<MiniModifier>())
+        {
+            body.transform.localScale *= 0.7f;
+        }
+
         if (player.HasModifier<ShyModifier>())
         {
             var colour = player.cosmetics.currentBodySprite.BodySprite.color;
             var transparency = OptionGroupSingleton<ShyOptions>.Instance.FinalTransparency / 100;
 
             colour.a = transparency;
-            cosmetics.currentBodySprite.BodySprite.color = colour;
+            _cosmeticsLayer.currentBodySprite.BodySprite.color = colour;
 
-            cosmetics.nameText.color = cosmetics.nameText.color.SetAlpha(transparency);
+            _cosmeticsLayer.nameText.color = _cosmeticsLayer.nameText.color.SetAlpha(transparency);
 
             if (DataManager.Settings.Accessibility.ColorBlindMode)
-                cosmetics.colorBlindText.color = cosmetics.colorBlindText.color.SetAlpha(transparency);
+                _cosmeticsLayer.colorBlindText.color = _cosmeticsLayer.colorBlindText.color.SetAlpha(transparency);
 
             //player.SetHatAndVisorAlpha(transparency);
-            cosmetics.skin.layer.color = cosmetics.skin.layer.color.SetAlpha(transparency);
+            _cosmeticsLayer.skin.layer.color = _cosmeticsLayer.skin.layer.color.SetAlpha(transparency);
 
-            foreach (var animation in cosmetics.GetComponentsInParent<SpriteRenderer>())
+            foreach (var animation in _cosmeticsLayer.GetComponentsInParent<SpriteRenderer>())
             {
                 animation.color = animation.color.SetAlpha(transparency);
             }
-            foreach (var animation in cosmetics.GetComponentsInChildren<SpriteRenderer>())
+
+            foreach (var animation in _cosmeticsLayer.GetComponentsInChildren<SpriteRenderer>())
             {
                 animation.color = animation.color.SetAlpha(transparency);
             }
@@ -115,6 +127,7 @@ public sealed class FakePlayer : IDisposable
             {
                 animation.color = animation.color.SetAlpha(transparency);
             }
+
             foreach (var animation in body.GetComponentsInChildren<SpriteRenderer>())
             {
                 animation.color = animation.color.SetAlpha(transparency);
@@ -126,31 +139,31 @@ public sealed class FakePlayer : IDisposable
 
     public void SwitchColorName()
     {
-        colorBindTextObj?.SetActive(DataManager.Settings.Accessibility.ColorBlindMode);
+        _colorBindTextObj?.SetActive(DataManager.Settings.Accessibility.ColorBlindMode);
     }
 
-    /* public void Camo()
+    public void Camo()
     {
-        cosmetics!.SetHat(string.Empty, cosmicInfo.ColorInfo);
-        cosmetics.SetVisor(string.Empty, cosmicInfo.ColorInfo);
-        cosmetics.SetSkin(string.Empty, cosmicInfo.ColorInfo);
+        _cosmeticsLayer!.SetHat(string.Empty, _cosmicInfo.ColorInfo);
+        _cosmeticsLayer.SetVisor(string.Empty, _cosmicInfo.ColorInfo);
+        _cosmeticsLayer.SetSkin(string.Empty, _cosmicInfo.ColorInfo);
 
-        PlayerMaterial.SetColors(Color.grey, cosmetics.currentBodySprite.BodySprite);
+        PlayerMaterial.SetColors(Color.grey, _cosmeticsLayer.currentBodySprite.BodySprite);
 
-        nameTextMaster!.color = Color.clear;
-        colorBindText!.color = Color.clear;
+        _nameTextMaster!.color = Color.clear;
+        _colorBindText!.color = Color.clear;
     }
 
     public void UnCamo()
     {
-        cosmetics!.SetHat(cosmicInfo.OutfitInfo.HatId, cosmicInfo.ColorInfo);
-        cosmetics.SetVisor(cosmicInfo.OutfitInfo.VisorId, cosmicInfo.ColorInfo);
-        cosmetics.SetSkin(cosmicInfo.OutfitInfo.SkinId, cosmicInfo.ColorInfo);
-        cosmetics.SetColor(cosmicInfo.ColorInfo);
+        _cosmeticsLayer!.SetHat(_cosmicInfo.OutfitInfo.HatId, _cosmicInfo.ColorInfo);
+        _cosmeticsLayer.SetVisor(_cosmicInfo.OutfitInfo.VisorId, _cosmicInfo.ColorInfo);
+        _cosmeticsLayer.SetSkin(_cosmicInfo.OutfitInfo.SkinId, _cosmicInfo.ColorInfo);
+        _cosmeticsLayer.SetColor(_cosmicInfo.ColorInfo);
 
-        nameTextMaster!.color = Color.white;
-        colorBindText!.color = Color.white;
-    } */
+        _nameTextMaster!.color = Color.white;
+        _colorBindText!.color = Color.white;
+    }
 
     private SpriteRenderer CreateBodyImage(PlayerCosmicInfo info)
     {
@@ -223,6 +236,7 @@ public sealed class FakePlayer : IDisposable
             petBehaviour.transform.localPosition = Vector2.zero + (flipX ? (Vector2.right * UnityEngine.Random.RandomRange(0, 0.2f)) : (Vector2.left * UnityEngine.Random.RandomRange(0, 0.2f))) + (Vector2.down * UnityEngine.Random.RandomRange(-0.05f, 0.15f));
             petBehaviour.transform.localScale = Scale;
             petBehaviour.FlipX = flipX;
+
             RemovePet(playerRef);
 
             DestroyAllCollider(petBehaviour.gameObject);
@@ -237,13 +251,16 @@ public sealed class FakePlayer : IDisposable
                 petBehaviour.transform.localScale /= 0.7f;
                 petBehaviour.transform.localPosition += Vector3.down * 0.1f;
             }
+
             if (playerRef.HasModifier<ShyModifier>())
             {
                 var transparency = OptionGroupSingleton<ShyOptions>.Instance.FinalTransparency / 100;
+
                 foreach (var pet in petBehaviour.GetComponentsInParent<SpriteRenderer>())
                 {
                     pet.color = pet.color.SetAlpha(transparency);
                 }
+
                 foreach (var pet in petBehaviour.GetComponentsInChildren<SpriteRenderer>())
                 {
                     pet.color = pet.color.SetAlpha(transparency);
@@ -272,41 +289,54 @@ public sealed class FakePlayer : IDisposable
         nameObj.transform.localScale = player.gameObject.transform.localScale;
         nameObj.transform.localPosition = baseObject.transform.localPosition;
         nameObj.transform.localPosition -= new Vector3(0f, 0.247f, 0f);
-        if (player.HasModifier<GiantModifier>()) nameObj.transform.localScale *= 0.7f;
-        else if (player.HasModifier<MiniModifier>()) nameObj.transform.localScale /= 0.7f;
+
+        if (player.HasModifier<GiantModifier>())
+        {
+            nameObj.transform.localScale *= 0.7f;
+        }
+        else if (player.HasModifier<MiniModifier>())
+        {
+            nameObj.transform.localScale /= 0.7f;
+        }
 
         var nameText = nameObj.transform.FindChild(NameTextObjName).GetComponent<TextMeshPro>();
         var baseNameText = baseObject.transform.FindChild(NameTextObjName).GetComponent<TextMeshPro>();
 
-        colorBindTextObj = nameObj.transform.FindChild(ColorBindTextName).gameObject;
-        var colorBindText = colorBindTextObj.GetComponent<TextMeshPro>();
+        _colorBindTextObj = nameObj.transform.FindChild(ColorBindTextName).gameObject;
+        _colorBindText = _colorBindTextObj.GetComponent<TextMeshPro>();
 
         var baseColorBindText = baseObject.transform.FindChild(ColorBindTextName).GetComponent<TextMeshPro>();
+        var transparency = OptionGroupSingleton<ShyOptions>.Instance.FinalTransparency / 100;
 
-            var transparency = OptionGroupSingleton<ShyOptions>.Instance.FinalTransparency / 100;
         if (nameText != null && baseNameText != null)
         {
             ChangeDummyName(nameText, baseNameText, info);
-            if (player.HasModifier<ShyModifier>()) nameText.GetComponent<TextMeshPro>().color = nameText.GetComponent<TextMeshPro>().color.SetAlpha(transparency);
+            if (player.HasModifier<ShyModifier>())
+            {
+                nameText.GetComponent<TextMeshPro>().color = nameText.GetComponent<TextMeshPro>().color.SetAlpha(transparency);
+            }
         }
 
-        if (colorBindText != null && baseColorBindText != null)
+        if (_colorBindText != null && baseColorBindText != null)
         {
-            UpdateColorName(colorBindText, baseColorBindText, info.ColorInfo);
-            if (player.HasModifier<ShyModifier>()) colorBindText.GetComponent<TextMeshPro>().color = colorBindText.GetComponent<TextMeshPro>().color.SetAlpha(transparency);
+            UpdateColorName(_colorBindText, baseColorBindText, info.ColorInfo);
+            if (player.HasModifier<ShyModifier>())
+            {
+                _colorBindText.GetComponent<TextMeshPro>().color = _colorBindText.GetComponent<TextMeshPro>().color.SetAlpha(transparency);
+            }
         }
 
         RemoveRoleInfo(nameObj);
     }
 
-    private static void ChangeDummyName(TextMeshPro nameText, TextMeshPro baseNameText, PlayerCosmicInfo info)
+    private void ChangeDummyName(TextMeshPro nameText, TextMeshPro baseNameText, PlayerCosmicInfo info)
     {
         FitTextMeshPro(nameText, baseNameText);
 
         nameText.text = info.OutfitInfo.PlayerName;
         nameText.color = Palette.White;
 
-        // nameTextMaster = nameText;
+        _nameTextMaster = nameText;
     }
 
     private static void RemoveRoleInfo(GameObject nameTextObjct)
@@ -385,11 +415,11 @@ public sealed class FakePlayer : IDisposable
             if (body != null)
                 Object.Destroy(body);
 
-            if (colorBindTextObj != null)
-                Object.Destroy(colorBindTextObj);
+            if (_colorBindTextObj != null)
+                Object.Destroy(_colorBindTextObj);
 
-            if (rend != null)
-                Object.Destroy(rend);
+            if (_rend != null)
+                Object.Destroy(_rend);
         }
     }
     public static void RemovePet(PlayerControl pc)

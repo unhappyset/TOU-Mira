@@ -3,6 +3,7 @@ using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers.Crewmate;
@@ -10,7 +11,6 @@ using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -40,7 +40,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
 
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.AmOwner)
         {
@@ -59,7 +59,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
 
     public override void OnMeetingStart()
     {
-        RoleStubs.RoleBehaviourOnMeetingStart(this);
+        RoleBehaviourStubs.OnMeetingStart(this);
 
         CanCampaign = true;
 
@@ -72,7 +72,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
 
     public override void OnVotingComplete()
     {
-        RoleStubs.RoleBehaviourOnVotingComplete(this);
+        RoleBehaviourStubs.OnVotingComplete(this);
 
         if (Player.AmOwner)
         {
@@ -82,7 +82,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         if (Player.AmOwner)
         {

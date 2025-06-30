@@ -5,13 +5,13 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TownOfUs.Buttons.Neutral;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -36,7 +36,7 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     };
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
         if (Player.AmOwner)
         {
             HudManager.Instance.ImpostorVentButton.graphic.sprite = TouNeutAssets.ArsoVentSprite.LoadAsset();
@@ -45,7 +45,7 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     }
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
         if (Player.AmOwner)
         {
             HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
@@ -82,7 +82,7 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
             button.Ignite = null;
         }
 
-        RoleStubs.RoleBehaviourOnDeath(this, reason);
+        RoleBehaviourStubs.OnDeath(this, reason);
     }
 
     public override bool CanUse(IUsable usable)

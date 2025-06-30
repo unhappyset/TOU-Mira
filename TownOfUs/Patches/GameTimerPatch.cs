@@ -21,6 +21,7 @@ public static class GameTimerPatch
         GameTimerObj = UnityEngine.Object.Instantiate(pingTracker.gameObject, instance.transform);
         GameTimerObj.name = "GameTimerText";
         GameTimerObj.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(-0.6f, 5.5f);
+        GameTimerObj.GetComponent<AspectPosition>().Alignment = AspectPosition.EdgeAlignments.Bottom;
 
         TimeSpan ts = TimeSpan.FromSeconds(GameTimer);
 
@@ -80,11 +81,13 @@ public static class GameTimerPatch
         if (!MeetingHud.Instance)
         {
             GameTimerObj.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(-0.6f, 5.5f);
+            GameTimerObj.GetComponent<AspectPosition>().Alignment = AspectPosition.EdgeAlignments.Bottom;
             timerText.text = $"<size=200%>Time:{colour.ToTextColor()}{ts.ToString(format: @"mm\:ss", TownOfUsPlugin.Culture)}</color></size>";
         }
         else
         {
             GameTimerObj.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(-0.25f, 0.9f);
+            GameTimerObj.GetComponent<AspectPosition>().Alignment = AspectPosition.EdgeAlignments.Bottom;
             timerText.text = $"<size=130%>Time:{colour.ToTextColor()}{ts.ToString(format: @"mm\:ss", TownOfUsPlugin.Culture)}</color></size>";
         }
 
