@@ -27,24 +27,50 @@ namespace TownOfUs.Utilities;
 
 public static class MiscUtils
 {
-    public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis is { CanVanquish: true, TargetsDead: false }) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } && !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
-                                                                                                                                                                                                                                                                                                                            OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
+    public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() ||
+        x.Is(RoleAlignment.NeutralKilling) ||
+        (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame &&
+         inquis is { CanVanquish: true, TargetsDead: false }) ||
+        (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
+         !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
+         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
-    public static int RealKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis is { CanVanquish: true, TargetsDead: false }));
+    public static int RealKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>
+        x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis &&
+                                                                 OptionGroupSingleton<InquisitorOptions>.Instance
+                                                                     .StallGame && inquis is
+                                                                     { CanVanquish: true, TargetsDead: false }));
 
-    public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis is { CanVanquish: true, TargetsDead: false }));
+    public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>
+        x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis &&
+                                               OptionGroupSingleton<InquisitorOptions>.Instance.StallGame &&
+                                               inquis is { CanVanquish: true, TargetsDead: false }));
 
-    public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame && inquis is { CanVanquish: true, TargetsDead: false }) || (x.Data.Role is ITouCrewRole { IsPowerCrew: true } && !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
-                                                                                                                                                                                                                                                                                                                OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
+    public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>
+        x.Is(RoleAlignment.NeutralKilling) ||
+        (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame &&
+         inquis is { CanVanquish: true, TargetsDead: false }) ||
+        (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
+         !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
+         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
 
     public static int ImpAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor());
 
-    public static int CrewKillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.Data.Role is ITouCrewRole { IsPowerCrew: true } && !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
+    public static int CrewKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>
+        x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
+        !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue);
 
-    public static IEnumerable<BaseModifier> AllModifiers => MiraPluginManager.GetPluginByGuid(TownOfUsPlugin.Id)!.Modifiers;
+    // TODO: update this when mira api updates
+    public static IEnumerable<BaseModifier> AllModifiers =>
+        (AccessTools.Property(typeof(MiraPluginManager), "RegisteredPlugins")
+            .GetValue(AccessTools.Property(typeof(MiraPluginManager), "Instance").GetValue(null)) as MiraPluginInfo[])!
+        .SelectMany(x => x.Modifiers);
 
-    public static IEnumerable<RoleBehaviour> AllRoles => MiraPluginManager.GetPluginByGuid(TownOfUsPlugin.Id)!.Roles.Values;
+    // TODO: update this when mira api updates
+    public static IEnumerable<RoleBehaviour> AllRoles =>
+        (AccessTools.Field(typeof(CustomRoleManager), "CustomRoles")
+            .GetValue(null) as Dictionary<ushort, RoleBehaviour>)!.Values;
     // public static IEnumerable<RoleBehaviour> AllRoles => RoleManager.Instance.AllRoles;
 
     public static ReadOnlyCollection<IModdedOption>? GetModdedOptionsForRole(Type classType)
@@ -61,7 +87,8 @@ public static class MiscUtils
         if (options == null) return string.Empty;
 
         var builder = new StringBuilder();
-        builder.AppendLine(CultureInfo.InvariantCulture, $"\n<size=50%> \n</size><b>{TownOfUsColors.Vigilante.ToTextColor()}Options</color></b>");
+        builder.AppendLine(CultureInfo.InvariantCulture,
+            $"\n<size=50%> \n</size><b>{TownOfUsColors.Vigilante.ToTextColor()}Options</color></b>");
 
         foreach (var option in options)
         {
@@ -82,7 +109,8 @@ public static class MiscUtils
                     else if (optionStr.Contains(".00")) optionStr = optionStr.Replace(".00", "");
                     else if (optionStr.Contains(".0")) optionStr = optionStr.Replace(".0", "");
 
-                    if (numberOption is { ZeroInfinity: true, Value: 0 }) builder.AppendLine(numberOption.Title + ": ∞");
+                    if (numberOption is { ZeroInfinity: true, Value: 0 })
+                        builder.AppendLine(numberOption.Title + ": ∞");
                     else builder.AppendLine(numberOption.Title + ": " + optionStr);
                     break;
             }
@@ -153,17 +181,21 @@ public static class MiscUtils
 
     public static RoleBehaviour? GetRegisteredRole(RoleTypes roleType)
     {
-        // we want to prioritise the custom roles because the role has the right RoleColour/TeamColor
-        var role = AllRoles.FirstOrDefault(x => x.Role == roleType) ?? RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == roleType);
+        // we want to prioritize the custom roles because the role has the right RoleColour/TeamColor
+        var role = AllRoles.FirstOrDefault(x => x.Role == roleType) ??
+                   RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == roleType);
 
         return role;
     }
 
-    public static T? GetRole<T>() where T : RoleBehaviour => PlayerControl.AllPlayerControls.ToArray().ToList().Find(x => x.Data.Role is T)?.Data?.Role as T;
+    public static T? GetRole<T>() where T : RoleBehaviour =>
+        PlayerControl.AllPlayerControls.ToArray().ToList().Find(x => x.Data.Role is T)?.Data?.Role as T;
 
-    public static IEnumerable<RoleBehaviour> GetRoles(RoleAlignment alignment) => CustomRoleUtils.GetActiveRoles().Where(x => x is ITownOfUsRole role && role.RoleAlignment == alignment);
+    public static IEnumerable<RoleBehaviour> GetRoles(RoleAlignment alignment) => CustomRoleUtils.GetActiveRoles()
+        .Where(x => x is ITownOfUsRole role && role.RoleAlignment == alignment);
 
-    public static PlayerControl? GetPlayerWithModifier<T>() where T : BaseModifier => ModifierUtils.GetPlayersWithModifier<T>().FirstOrDefault();
+    public static PlayerControl? GetPlayerWithModifier<T>() where T : BaseModifier =>
+        ModifierUtils.GetPlayersWithModifier<T>().FirstOrDefault();
 
     public static Color GetRoleColour(string name)
     {
@@ -185,7 +217,9 @@ public static class MiscUtils
     {
         var currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
         var roleOptions = currentGameOptions.RoleOptions;
-        var assignmentData = RoleManager.Instance.AllRoles.Select(role => new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role), roleOptions.GetChancePerGame(role.Role))).ToList();
+        var assignmentData = RoleManager.Instance.AllRoles.Select(role =>
+            new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role),
+                roleOptions.GetChancePerGame(role.Role))).ToList();
 
         var roleList = assignmentData.Where(x => x is { Chance: > 0, Role: ICustomRole }).Select(x => x.Role);
 
@@ -201,7 +235,9 @@ public static class MiscUtils
 
         return roleList;
     }
-    public static void AddFakeChat(NetworkedPlayerInfo basePlayer, string nameText, string message, bool showHeadsup = false, bool altColors = false, bool onLeft = true)
+
+    public static void AddFakeChat(NetworkedPlayerInfo basePlayer, string nameText, string message,
+        bool showHeadsup = false, bool altColors = false, bool onLeft = true)
     {
         var chat = HudManager.Instance.Chat;
 
@@ -219,7 +255,8 @@ public static class MiscUtils
         pooledBubble.Xmark.enabled = false;
         pooledBubble.TextArea.text = message;
         pooledBubble.TextArea.ForceMeshUpdate(true, true);
-        pooledBubble.Background.size = new(5.52f, 0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
+        pooledBubble.Background.size = new(5.52f,
+            0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
         pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
         if (altColors)
         {
@@ -235,13 +272,17 @@ public static class MiscUtils
         {
             chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());
         }
+
         if (showHeadsup && !chat.IsOpenOrOpening)
         {
-            SoundManager.Instance.PlaySound(chat.messageSound, false).pitch = 0.5f + PlayerControl.LocalPlayer.PlayerId / 15f;
+            SoundManager.Instance.PlaySound(chat.messageSound, false).pitch =
+                0.5f + PlayerControl.LocalPlayer.PlayerId / 15f;
             chat.chatNotification.SetUp(PlayerControl.LocalPlayer, message);
         }
     }
-    public static void AddTeamChat(NetworkedPlayerInfo basePlayer, string nameText, string message, bool showHeadsup = false, bool onLeft = true)
+
+    public static void AddTeamChat(NetworkedPlayerInfo basePlayer, string nameText, string message,
+        bool showHeadsup = false, bool onLeft = true)
     {
         var chat = HudManager.Instance.Chat;
 
@@ -259,7 +300,8 @@ public static class MiscUtils
         pooledBubble.Xmark.enabled = false;
         pooledBubble.TextArea.text = message;
         pooledBubble.TextArea.ForceMeshUpdate(true, true);
-        pooledBubble.Background.size = new(5.52f, 0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
+        pooledBubble.Background.size = new(5.52f,
+            0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
         pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
 
         pooledBubble.Background.color = new Color(0.2f, 0.2f, 0.27f, 1f);
@@ -273,6 +315,7 @@ public static class MiscUtils
         {
             chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());
         }
+
         if (showHeadsup && !chat.IsOpenOrOpening)
         {
             SoundManager.Instance.PlaySound(chat.messageSound, false).pitch = 0.1f;
@@ -288,7 +331,8 @@ public static class MiscUtils
 
     public static List<PlayerControl> GetCrewmates(List<PlayerControl> impostors)
     {
-        return PlayerControl.AllPlayerControls.ToArray().Where(player => impostors.All(imp => imp.PlayerId != player.PlayerId)).ToList();
+        return PlayerControl.AllPlayerControls.ToArray()
+            .Where(player => impostors.All(imp => imp.PlayerId != player.PlayerId)).ToList();
     }
 
     public static List<PlayerControl> GetImpostors(List<NetworkedPlayerInfo> infected)
@@ -296,26 +340,31 @@ public static class MiscUtils
         return infected.Select(impData => impData.Object).ToList();
     }
 
-    public static List<(ushort RoleType, int Chance)> GetRolesToAssign(ModdedRoleTeams team, Func<RoleBehaviour, bool>? filter = null)
+    public static List<(ushort RoleType, int Chance)> GetRolesToAssign(ModdedRoleTeams team,
+        Func<RoleBehaviour, bool>? filter = null)
     {
         var roles = GetRegisteredRoles(team);
 
         return GetRolesToAssign(roles, filter);
     }
 
-    public static List<(ushort RoleType, int Chance)> GetRolesToAssign(RoleAlignment alignment, Func<RoleBehaviour, bool>? filter = null)
+    public static List<(ushort RoleType, int Chance)> GetRolesToAssign(RoleAlignment alignment,
+        Func<RoleBehaviour, bool>? filter = null)
     {
         var roles = GetRegisteredRoles(alignment);
 
         return GetRolesToAssign(roles, filter);
     }
 
-    private static List<(ushort RoleType, int Chance)> GetRolesToAssign(IEnumerable<RoleBehaviour> roles, Func<RoleBehaviour, bool>? filter = null)
+    private static List<(ushort RoleType, int Chance)> GetRolesToAssign(IEnumerable<RoleBehaviour> roles,
+        Func<RoleBehaviour, bool>? filter = null)
     {
         var currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
         var roleOptions = currentGameOptions.RoleOptions;
 
-        var assignmentData = roles.Where(x => !x.IsDead && (filter == null || filter(x))).Select(role => new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role), roleOptions.GetChancePerGame(role.Role))).ToList();
+        var assignmentData = roles.Where(x => !x.IsDead && (filter == null || filter(x))).Select(role =>
+            new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role),
+                roleOptions.GetChancePerGame(role.Role))).ToList();
 
         var chosenRoles = GetPossibleRoles(assignmentData);
 
@@ -326,28 +375,33 @@ public static class MiscUtils
         return rolesToKeep;
     }
 
-    public static List<ushort> GetMaxRolesToAssign(ModdedRoleTeams team, int max = 1, Func<RoleBehaviour, bool>? filter = null)
+    public static List<ushort> GetMaxRolesToAssign(ModdedRoleTeams team, int max = 1,
+        Func<RoleBehaviour, bool>? filter = null)
     {
         var roles = GetRegisteredRoles(team);
 
         return GetMaxRolesToAssign(roles, max, filter);
     }
 
-    public static List<ushort> GetMaxRolesToAssign(RoleAlignment alignment, int max, Func<RoleBehaviour, bool>? filter = null)
+    public static List<ushort> GetMaxRolesToAssign(RoleAlignment alignment, int max,
+        Func<RoleBehaviour, bool>? filter = null)
     {
         var roles = GetRegisteredRoles(alignment);
 
         return GetMaxRolesToAssign(roles, max, filter);
     }
 
-    private static List<ushort> GetMaxRolesToAssign(IEnumerable<RoleBehaviour> roles, int max, Func<RoleBehaviour, bool>? filter = null)
+    private static List<ushort> GetMaxRolesToAssign(IEnumerable<RoleBehaviour> roles, int max,
+        Func<RoleBehaviour, bool>? filter = null)
     {
         if (max <= 0) return [];
 
         var currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
         var roleOptions = currentGameOptions.RoleOptions;
 
-        var assignmentData = roles.Where(x => !x.IsDead && (filter == null || filter(x))).Select(role => new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role), roleOptions.GetChancePerGame(role.Role))).ToList();
+        var assignmentData = roles.Where(x => !x.IsDead && (filter == null || filter(x))).Select(role =>
+            new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role),
+                roleOptions.GetChancePerGame(role.Role))).ToList();
 
         var chosenRoles = GetPossibleRoles(assignmentData, x => x.Chance == 100);
 
@@ -374,7 +428,8 @@ public static class MiscUtils
             if (chosenRoles.Count < max)
             {
                 potentialRoles.Shuffle();
-                chosenRoles.AddRange(potentialRoles.GetRange(0, Math.Min(max - chosenRoles.Count, potentialRoles.Count)));
+                chosenRoles.AddRange(
+                    potentialRoles.GetRange(0, Math.Min(max - chosenRoles.Count, potentialRoles.Count)));
             }
         }
 
@@ -385,7 +440,9 @@ public static class MiscUtils
         return rolesToKeep;
     }
 
-    private static List<(ushort RoleType, int Chance)> GetPossibleRoles(List<RoleManager.RoleAssignmentData> assignmentData, Func<RoleManager.RoleAssignmentData, bool>? predicate = null)
+    private static List<(ushort RoleType, int Chance)> GetPossibleRoles(
+        List<RoleManager.RoleAssignmentData> assignmentData,
+        Func<RoleManager.RoleAssignmentData, bool>? predicate = null)
     {
         var roles = new List<(ushort, int)>();
 
@@ -406,7 +463,8 @@ public static class MiscUtils
         var roleOptions = currentGameOptions.RoleOptions;
 
         var role = GetRegisteredRole(roleType);
-        var assignmentData = new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role!.Role), roleOptions.GetChancePerGame(role.Role));
+        var assignmentData = new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role!.Role),
+            roleOptions.GetChancePerGame(role.Role));
 
         return assignmentData;
     }
@@ -513,6 +571,7 @@ public static class MiscUtils
 
         return spherePrimitive;
     }
+
     public static string ToTitleCase(this string input)
     {
         if (string.IsNullOrEmpty(input))
@@ -521,7 +580,9 @@ public static class MiscUtils
         }
 
         TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
-        return textInfo.ToTitleCase(input.ToLower(CultureInfo.CurrentCulture)); // Convert to lowercase first and then title case
+        return
+            textInfo.ToTitleCase(
+                input.ToLower(CultureInfo.CurrentCulture)); // Convert to lowercase first and then title case
     }
 
 
@@ -547,12 +608,14 @@ public static class MiscUtils
         return arrow;
     }
 
-    public static IEnumerator BetterBloop(Transform target, float delay = 0, float finalSize = 1f, float duration = 0.5f, float intensity = 1f)
+    public static IEnumerator BetterBloop(Transform target, float delay = 0, float finalSize = 1f,
+        float duration = 0.5f, float intensity = 1f)
     {
         for (var t = 0f; t < delay; t += Time.deltaTime)
         {
             yield return null;
         }
+
         var localScale = default(Vector3);
         for (var t = 0f; t < duration; t += Time.deltaTime)
         {
@@ -562,6 +625,7 @@ public static class MiscUtils
             target.localScale = localScale;
             yield return null;
         }
+
         localScale.z = localScale.y = localScale.x = finalSize;
         target.localScale = localScale;
     }
@@ -591,10 +655,11 @@ public static class MiscUtils
                 {
                     normalPlayerTask.taskStep = 1;
                 }
+
                 if (normalPlayerTask.TaskType is TaskTypes.EmptyGarbage or TaskTypes.EmptyChute
                     && (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 0 ||
-                    GameOptionsManager.Instance.currentNormalGameOptions.MapId == 3 ||
-                    GameOptionsManager.Instance.currentNormalGameOptions.MapId == 4))
+                        GameOptionsManager.Instance.currentNormalGameOptions.MapId == 3 ||
+                        GameOptionsManager.Instance.currentNormalGameOptions.MapId == 4))
                 {
                     normalPlayerTask.taskStep = 1;
                 }
@@ -624,7 +689,8 @@ public static class MiscUtils
         cam.centerPosition = cam.Target.transform.position;
     }
 
-    public static List<ushort> ReadFromBucket(List<RoleListOption> buckets, List<(ushort RoleType, int Chance)> roles, RoleListOption roleType, RoleListOption replaceType)
+    public static List<ushort> ReadFromBucket(List<RoleListOption> buckets, List<(ushort RoleType, int Chance)> roles,
+        RoleListOption roleType, RoleListOption replaceType)
     {
         var result = new List<ushort>();
 
@@ -648,7 +714,8 @@ public static class MiscUtils
         return result;
     }
 
-    public static List<ushort> ReadFromBucket(List<RoleListOption> buckets, List<(ushort RoleType, int Chance)> roles, RoleListOption roleType)
+    public static List<ushort> ReadFromBucket(List<RoleListOption> buckets, List<(ushort RoleType, int Chance)> roles,
+        RoleListOption roleType)
     {
         var result = new List<ushort>();
 
@@ -703,10 +770,10 @@ public static class MiscUtils
     public static string WithoutRichText(this string text)
     {
         // Regular expression to match any tag enclosed in < >
-        var richTagRegex = new Regex(@"<[^>]*>"); 
+        var richTagRegex = new Regex(@"<[^>]*>");
 
         // Replace matched tags with an empty string
-        return richTagRegex.Replace(text, string.Empty); 
+        return richTagRegex.Replace(text, string.Empty);
     }
 
     /// <summary>
@@ -721,13 +788,15 @@ public static class MiscUtils
 
     public static bool IsMap(byte mapid)
     {
-        return (GameOptionsManager.Instance != null && GameOptionsManager.Instance.currentNormalGameOptions.MapId == mapid)
-              || (TutorialManager.InstanceExists && AmongUsClient.Instance.TutorialMapId == mapid);
+        return (GameOptionsManager.Instance != null &&
+                GameOptionsManager.Instance.currentNormalGameOptions.MapId == mapid)
+               || (TutorialManager.InstanceExists && AmongUsClient.Instance.TutorialMapId == mapid);
     }
 
     public static bool IsConcealed(this PlayerControl player)
     {
-        if (player.HasModifier<ConcealedModifier>() || !player.Visible || (player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive))
+        if (player.HasModifier<ConcealedModifier>() || !player.Visible ||
+            (player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive))
         {
             return true;
         }
@@ -751,7 +820,8 @@ public static class MiscUtils
             }
 
             var isActive = false;
-            if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq || ShipStatus.Instance.Type == ShipStatus.MapType.Fungle)
+            if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq ||
+                ShipStatus.Instance.Type == ShipStatus.MapType.Fungle)
             {
                 var hqSystem = commsSystem.Cast<HqHudSystemType>();
                 if (hqSystem != null) isActive = hqSystem.IsActive;
