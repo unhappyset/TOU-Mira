@@ -7,6 +7,8 @@ using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Modifiers.Crewmate;
+using TownOfUs.Options.Roles.Crewmate;
+using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -38,9 +40,17 @@ public sealed class ScientistModifier : TouGameModifier, IWikiDiscoverable
     public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.ScientistAmount;
 
     public override bool IsModifierValidOn(RoleBehaviour role)
-	{
-		return base.IsModifierValidOn(role) && role.IsCrewmate() && role is not ScientistRole && !role.Player.GetModifierComponent().HasModifier<SatelliteModifier>(true) && !role.Player.GetModifierComponent().HasModifier<ButtonBarryModifier>(true);
-	}
+    {
+        if (role is TransporterRole && !OptionGroupSingleton<TransporterOptions>.Instance.CanUseVitals)
+        {
+            return false;
+        }
+
+        return base.IsModifierValidOn(role) && role.IsCrewmate() && role is not ScientistRole
+            && !role.Player.GetModifierComponent().HasModifier<SatelliteModifier>(true)
+            && !role.Player.GetModifierComponent().HasModifier<ButtonBarryModifier>(true);
+    }
+    
     public string GetAdvancedDescription()
     {
         return
