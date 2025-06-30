@@ -44,7 +44,7 @@ namespace TownOfUs.Patches
         [HarmonyPrefix]
         public static void PrefixUpdate(GameStartManager __instance)
         {
-            if (__instance == null || !AmongUsClient.Instance.AmHost || !LobbyBehaviour.Instance) return;
+            if (__instance == null || !AmongUsClient.Instance.AmHost || !LobbyBehaviour.Instance || !GameStartManager.Instance || !TutorialManager.InstanceExists) return;
 
             CancelStartButton.gameObject.SetActive(__instance.startState is GameStartManager.StartingStates.Countdown);
 
