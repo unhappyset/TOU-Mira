@@ -171,15 +171,16 @@ public abstract class AssassinModifier : ExcludedGameModifier
 
     public bool IsExempt(PlayerVoteArea voteArea)
     {
+        var votePlayer = voteArea.GetPlayer();
         return voteArea?.TargetPlayerId == Player.PlayerId ||
             Player.Data.IsDead ||
             voteArea!.AmDead ||
-            Player.IsImpostor() && voteArea.GetPlayer()?.IsImpostor() == true && !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode ||
-            Player.Data.Role is VampireRole && voteArea.GetPlayer()?.Data.Role is VampireRole ||
-            voteArea.GetPlayer()?.Data.Role is MayorRole mayor && mayor.Revealed ||
-            voteArea.GetPlayer() != null && voteArea.GetPlayer()?.Data.Role is SnitchRole snitch && snitch.CompletedAllTasks && SnitchRole.SnitchVisibilityFlag(voteArea.GetPlayer()!, true) ||
-            Player.IsLover() && voteArea.GetPlayer()?.IsLover() == true ||
-            voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
+            Player.IsImpostor() && votePlayer?.IsImpostor() == true && !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode ||
+            Player.Data.Role is VampireRole && votePlayer?.Data.Role is VampireRole ||
+            votePlayer?.Data.Role is MayorRole mayor && mayor.Revealed ||
+            votePlayer?.Data.Role is SnitchRole && SnitchRole.SnitchVisibilityFlag(votePlayer, true) ||
+            Player.IsLover() && votePlayer?.IsLover() == true ||
+            votePlayer?.HasModifier<JailedModifier>() == true;
     }
 
     private bool IsRoleValid(RoleBehaviour role)
