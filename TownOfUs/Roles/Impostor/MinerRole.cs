@@ -75,7 +75,7 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
 
         //Logger<TownOfUsPlugin>.Error("RpcPlaceVent");
 
-        var ventPrefab = FindObjectOfType<Vent>();
+        var ventPrefab = ShipStatus.Instance.AllVents[0];
         var vent = Instantiate(ventPrefab, ventPrefab.transform.parent);
         vent.name = $"MinerVent-{player.PlayerId}-{ventId}";
 
