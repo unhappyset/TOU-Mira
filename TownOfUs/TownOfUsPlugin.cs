@@ -11,7 +11,9 @@ using Reactor;
 using Reactor.Localization;
 using Reactor.Networking;
 using Reactor.Networking.Attributes;
+using Reactor.Utilities;
 using TownOfUs.Modules.Localization;
+using TownOfUs.Patches.Misc;
 
 namespace TownOfUs;
 
@@ -87,5 +89,7 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
         PreciseCooldowns = Config.Bind("LocalSettings", "PreciseCooldowns", false, "Whether Button Cooldowns Show To 1 Decimal Place When It is Less Than 10 Seconds Remaining.");
 
         Harmony.PatchAll();
+
+        Coroutines.Start(ModNewsFetcher.FetchNews());
     }
 }
