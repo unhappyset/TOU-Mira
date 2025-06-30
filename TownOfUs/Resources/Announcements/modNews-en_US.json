@@ -1,7 +1,7 @@
 {
   "News": [
     {
-      "Date": "2025• 06• 27T12:50:00Z",
+      "Date": "2025-06-27T12:50:00Z",
       "Number": "100001",
       "ShortTitle": "TOU: Mira v1.0.0",
       "SubTitle": "Initial Release!",
@@ -14,7 +14,7 @@
         ]
     },
     {
-      "Date": "2025• 06• 30T12:50:00Z",
+      "Date": "2025-06-30T12:50:00Z",
       "Number": "100002",
       "ShortTitle": "TOU: Mira v1.0.1",
       "SubTitle": "Many Bugfixes!",
