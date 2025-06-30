@@ -103,6 +103,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
                 reportBuilder.AppendLine(TownOfUsPlugin.Culture, $"Your inquiry reveals that {player.PlayerName} is a heretic!\n");
                 var roles = TargetRoles;
                 var lastRole = roles[roles.Count - 1];
+                roles.Remove(lastRole);
 
                 if (roles.Count != 0)
                 {
