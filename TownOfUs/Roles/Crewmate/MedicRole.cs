@@ -215,6 +215,7 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
             { 15, "darker" }, // Gray
             { 16, "darker" }, // Tan
             { 17, "lighter" }, // Coral
+            
             { 18, "darker" }, // Watermelon
             { 19, "darker" }, // Chocolate
             { 20, "lighter" }, // Sky Blue

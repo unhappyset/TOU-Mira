@@ -2,7 +2,6 @@ using System.Collections;
 using HarmonyLib;
 using Reactor.Utilities;
 using TownOfUs.Modules;
-using TownOfUs.Patches.Misc;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -27,8 +26,6 @@ public static class PlayerJoinPatch
         var player = PlayerControl.LocalPlayer;
 
         while (!player) yield return null;
-        Logger<TownOfUsPlugin>.Info("New Player Joined, Resetting Host");
-        if (AmongUsClient.Instance && !TutorialManager.InstanceExists) ChatPatches.DoHostSetup();
 
         if (!player.AmOwner) yield break;
         Logger<TownOfUsPlugin>.Info("Sending Message to Local Player...");

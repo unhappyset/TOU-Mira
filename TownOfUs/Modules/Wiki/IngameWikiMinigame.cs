@@ -310,7 +310,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
     {
         if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(false));
 
-        if (GameStartManager.Instance && LobbyBehaviour.Instance)
+        if (GameStartManager.InstanceExists && LobbyBehaviour.Instance)
         {
             GameStartManager.Instance.HostInfoPanel.gameObject.SetActive(false);
         }
@@ -413,7 +413,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
     {
         MinigameStubs.Close(this);
 
-        if (GameStartManager.Instance && LobbyBehaviour.Instance)
+        if (GameStartManager.InstanceExists && LobbyBehaviour.Instance)
         {
             GameStartManager.Instance.HostInfoPanel.gameObject.SetActive(true);
         }
