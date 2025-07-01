@@ -3,7 +3,7 @@ using HarmonyLib;
 using Twitch;
 using UnityEngine;
 
-namespace TownOfUs;
+namespace TownOfUs.Patches;
 
 [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
 public static class VersionCheckPatch
