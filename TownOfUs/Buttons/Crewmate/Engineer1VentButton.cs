@@ -23,7 +23,22 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
 
     private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.Usables);
 
-    public override Vent? GetTarget() => PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
+    public override Vent? GetTarget()
+    {
+        var vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
+
+        if (vent)
+        {
+            vent.CanUse(PlayerControl.LocalPlayer.Data, out bool canUse, out bool _);
+
+            if (canUse)
+            {
+                return vent;
+            }
+        }
+
+        return null;
+    }
 
     public override bool CanUse()
     {
