@@ -75,6 +75,11 @@ public static class VeteranEvents
 
     private static void CheckForVeteranAlert(MiraCancelableEvent miraEvent, PlayerControl source, PlayerControl target)
     {
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
+        
         var preventAttack = source.TryGetModifier<IndirectAttackerModifier>(out var indirectMod);
 
         if (target.HasModifier<VeteranAlertModifier>() && source != target)

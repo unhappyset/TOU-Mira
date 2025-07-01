@@ -59,10 +59,14 @@ public static class ClericEvents
 
     private static bool CheckForClericBarrier(MiraCancelableEvent @event, PlayerControl target, PlayerControl? source=null)
     {
-        if (!target.HasModifier<ClericBarrierModifier>() || 
-            MeetingHud.Instance ||
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return false;
+        }
+        
+        if (!target.HasModifier<ClericBarrierModifier>() ||
             source == null ||
-            target.PlayerId == source.PlayerId || 
+            target.PlayerId == source.PlayerId ||
             (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield))
         {
             return false;

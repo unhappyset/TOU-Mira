@@ -41,6 +41,11 @@ public static class MercenaryEvents
 
     private static void CheckForMercenaryGuard(PlayerControl source, PlayerControl target)
     {
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
+        
         if (!target.HasModifier<MercenaryGuardModifier>()) return;
         var mercenary = target.GetModifier<MercenaryGuardModifier>()?.Mercenary;
 

@@ -49,7 +49,12 @@ public static class WardenEvents
 
     private static void CheckForWardenFortify(MiraCancelableEvent @event, PlayerControl source, PlayerControl target)
     {
-        if (!target.HasModifier<WardenFortifiedModifier>() || source == target || MeetingHud.Instance || (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield)) return;
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
+
+        if (!target.HasModifier<WardenFortifiedModifier>() || source == target || (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield)) return;
         @event.Cancel();
 
         // Find the warden which fortified the target

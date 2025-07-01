@@ -39,6 +39,11 @@ public static class FirstShieldEvents
 
     private static void CheckForFirstDeathShield(MiraCancelableEvent @event, PlayerControl target, PlayerControl source, CustomActionButton<PlayerControl>? button = null)
     {
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
+
         if (!target.HasModifier<FirstDeadShield>() || source == target || (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield)) return;
 
         @event.Cancel();

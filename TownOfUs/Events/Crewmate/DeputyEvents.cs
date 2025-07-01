@@ -41,6 +41,11 @@ public static class DeputyEvents
 
     private static void CheckForDeputyCamped(PlayerControl source, PlayerControl target)
     {
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
+        
         if (!target.HasModifier<DeputyCampedModifier>()) return;
 
         var mod = target.GetModifier<DeputyCampedModifier>();

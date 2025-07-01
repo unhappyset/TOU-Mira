@@ -51,6 +51,11 @@ public static class SurvivorEvents
 
     private static bool CheckForSurvivorVest(MiraCancelableEvent @event, PlayerControl target)
     {
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return false;
+        }
+
         if (!target.HasModifier<SurvivorVestModifier>()) return false;
 
         @event.Cancel();

@@ -62,6 +62,11 @@ public static class LookoutEvents
 
     public static void CheckForLookoutWatched(PlayerControl source, PlayerControl target)
     {
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
+        
         if (!target.HasModifier<LookoutWatchedModifier>() || !source.AmOwner) return;
         LookoutRole.RpcSeePlayer(target, source);
     }

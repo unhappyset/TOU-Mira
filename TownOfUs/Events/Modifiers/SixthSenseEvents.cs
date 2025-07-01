@@ -17,6 +17,11 @@ public static class SixthSenseEvents
     public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
     {
         // Logger<TownOfUsPlugin>.Warning("SixthSense click event!");
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
+
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var target = button?.Target;
 

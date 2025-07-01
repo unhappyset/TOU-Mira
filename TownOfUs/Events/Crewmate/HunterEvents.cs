@@ -100,6 +100,11 @@ public static class HunterEvents
 
     private static void CheckForHunterStalked(PlayerControl source)
     {
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
+        
         if (!source.HasModifier<HunterStalkedModifier>()) return;
 
         var mod = source.GetModifier<HunterStalkedModifier>();
