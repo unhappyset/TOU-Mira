@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
+using MiraAPI.GameEnd;
 using MiraAPI.Roles;
 using Reactor.Utilities.Extensions;
+using TownOfUs.GameOver;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
 
@@ -33,6 +35,11 @@ public static class GameManagerPatches
         {
             winType = 2;
             GameHistory.WinningFaction = $"<color=#{Palette.ImpostorRed.ToHtmlStringRGBA()}>Impostors</color>";
+        }
+
+        if (reason == CustomGameOver.GameOverReason<DrawGameOver>())
+        {
+            winType = 0;
         }
 
         return true;

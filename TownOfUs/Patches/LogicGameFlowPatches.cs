@@ -2,9 +2,11 @@
 using MiraAPI.GameEnd;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
+using Reactor.Utilities.Extensions;
 using TownOfUs.GameOver;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game;
@@ -37,10 +39,17 @@ public static class LogicGameFlowPatches
     {
         if (OptionGroupSingleton<GameTimerOptions>.Instance.GameTimerEnabled && GameTimerPatch.TriggerEndGame)
         {
-            instance.Manager.RpcEndGame(GameOverReason.ImpostorsBySabotage, false);
-
+            var timeType = (GameTimerType)OptionGroupSingleton<GameTimerOptions>.Instance.TimerEndOption.Value;
+            if (timeType is GameTimerType.Impostors)
+            {
+                instance.Manager.RpcEndGame(GameOverReason.ImpostorsBySabotage, false);
+            }
+            else
+            {
+                var randomPlayer = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.Role.DidWin(CustomGameOver.GameOverReason<DrawGameOver>()) && !x.GetModifiers<GameModifier>().Any(x => x.DidWin(CustomGameOver.GameOverReason<DrawGameOver>()) == true)).Random();
+                CustomGameOver.Trigger<DrawGameOver>([randomPlayer != null ? randomPlayer.Data : PlayerControl.LocalPlayer.Data]);
+            }
             GameTimerPatch.TriggerEndGame = false;
-
             return true;
         }
 

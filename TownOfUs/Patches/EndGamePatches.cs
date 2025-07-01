@@ -351,24 +351,31 @@ public static class EndGamePatches
 
     public static void AfterEndGameSetup(EndGameManager instance)
     {
-        if (GameManagerPatches.winType is 0) return;
         var text = Object.Instantiate(instance.WinText);
-        text.text = $"<size=4>Crewmates Win!</size>";
-        text.color = Palette.CrewmateBlue;
-        instance.BackgroundBar.material.SetColor(ShaderID.Color, Palette.CrewmateBlue);
-
+        switch (GameManagerPatches.winType)
+        {
+            case 1:
+                text.text = $"<size=4>Crewmates Win!</size>";
+                text.color = Palette.CrewmateBlue;
+                instance.BackgroundBar.material.SetColor(ShaderID.Color, Palette.CrewmateBlue);
+                break;
+            case 2:
+                text.text = $"<size=4>Impostors Win!</size>";
+                text.color = Palette.ImpostorRed;
+                instance.BackgroundBar.material.SetColor(ShaderID.Color, Palette.ImpostorRed);
+                break;
+            default:
+                text.text = string.Empty;
+                text.color = TownOfUsColors.Neutral;
+                instance.BackgroundBar.material.SetColor(ShaderID.Color, TownOfUsColors.Neutral);
+                break;
+        }
         var pos = instance.WinText.transform.localPosition;
         pos.y = 1.5f;
         pos += Vector3.down * 0.15f;
         text.transform.localScale = new Vector3(1f, 1f, 1f);
 
         text.transform.position = pos;
-
-        if (GameManagerPatches.winType is 1) return;
-
-        text.text = $"<size=4>Impostors Win!</size>";
-        text.color = Palette.ImpostorRed;
-        instance.BackgroundBar.material.SetColor(ShaderID.Color, Palette.ImpostorRed);
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]

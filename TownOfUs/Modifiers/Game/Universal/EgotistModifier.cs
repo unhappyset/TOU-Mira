@@ -1,6 +1,8 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.GameEnd;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
+using TownOfUs.GameOver;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
@@ -44,6 +46,6 @@ public sealed class EgotistModifier : AllianceGameModifier, IWikiDiscoverable
     }
     public override bool? DidWin(GameOverReason reason)
     {
-        return !(reason is GameOverReason.CrewmatesByVote or GameOverReason.CrewmatesByTask or GameOverReason.ImpostorDisconnect);
+        return !(reason is GameOverReason.CrewmatesByVote or GameOverReason.CrewmatesByTask or GameOverReason.ImpostorDisconnect || reason == CustomGameOver.GameOverReason<DrawGameOver>());
     }
 }

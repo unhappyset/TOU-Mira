@@ -72,12 +72,3 @@ public enum SkipState
     Emergency,
     Always,
 }
-
-public enum OnTaskComplete
-{
-    Off,
-    Sheriff,
-    Veteran,
-    Vigilante,
-    Random,
-}
