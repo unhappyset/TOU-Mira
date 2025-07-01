@@ -75,6 +75,7 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
 
                 player.RawSetAppearance(swoop);
             }
+            player?.cosmetics.ToggleNameVisible(false);
         }
 
         if (Player.AmOwner)
