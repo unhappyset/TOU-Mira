@@ -2,24 +2,23 @@ using HarmonyLib;
 using MiraAPI.GameOptions;
 using TownOfUs.Options;
 
-namespace TownOfUs
+namespace TownOfUs.Patches.PrefabSwitching;
+
+[HarmonyPatch]
+
+public static class AirshipDoors
 {
-    [HarmonyPatch]
+    [HarmonyPatch(typeof(AirshipStatus), nameof(AirshipStatus.OnEnable))]
+    [HarmonyPostfix]
 
-    public static class AirshipDoors
+    public static void Postfix(AirshipStatus __instance)
     {
-        [HarmonyPatch(typeof(AirshipStatus), nameof(AirshipStatus.OnEnable))]
-        [HarmonyPostfix]
+        if (!OptionGroupSingleton<BetterMapOptions>.Instance.AirshipPolusDoors) return;
 
-        public static void Postfix(AirshipStatus __instance)
+        var polusdoor = PrefabLoader.Polus.GetComponentInChildren<DoorConsole>().MinigamePrefab;
+        foreach (var door in __instance.GetComponentsInChildren<DoorConsole>())
         {
-            if (!OptionGroupSingleton<BetterMapOptions>.Instance.AirshipPolusDoors) return;
-
-            var polusdoor = PrefabLoader.Polus.GetComponentInChildren<DoorConsole>().MinigamePrefab;
-            foreach (var door in __instance.GetComponentsInChildren<DoorConsole>())
-            {
-                door.MinigamePrefab = polusdoor;
-            }
+            door.MinigamePrefab = polusdoor;
         }
     }
 }
