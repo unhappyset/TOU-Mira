@@ -9,7 +9,6 @@ using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Modifiers;
-using MiraAPI.PluginLoading;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TownOfUs.Modifiers;
@@ -61,17 +60,9 @@ public static class MiscUtils
         !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue);
 
-    // TODO: update this when mira api updates
-    public static IEnumerable<BaseModifier> AllModifiers =>
-        (AccessTools.Property(typeof(MiraPluginManager), "RegisteredPlugins")
-            .GetValue(AccessTools.Property(typeof(MiraPluginManager), "Instance").GetValue(null)) as MiraPluginInfo[])!
-        .SelectMany(x => x.Modifiers);
+    public static IEnumerable<BaseModifier> AllModifiers => ModifierManager.Modifiers;
 
-    // TODO: update this when mira api updates
-    public static IEnumerable<RoleBehaviour> AllRoles =>
-        (AccessTools.Field(typeof(CustomRoleManager), "CustomRoles")
-            .GetValue(null) as Dictionary<ushort, RoleBehaviour>)!.Values;
-    // public static IEnumerable<RoleBehaviour> AllRoles => RoleManager.Instance.AllRoles;
+    public static IEnumerable<RoleBehaviour> AllRoles => CustomRoleManager.CustomRoleBehaviours;
 
     public static ReadOnlyCollection<IModdedOption>? GetModdedOptionsForRole(Type classType)
     {
