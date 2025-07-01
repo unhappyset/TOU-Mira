@@ -6,6 +6,7 @@ using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TMPro;
+using TownOfUs.Buttons;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Options;
 using TownOfUs.Roles;
@@ -40,6 +41,7 @@ public static class IntroScenePatches
 
         foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(PlayerControl.LocalPlayer.Data.Role)))
         {
+            if (button is FakeVentButton) continue;
             button.SetTimer(OptionGroupSingleton<GeneralOptions>.Instance.GameStartCd);
         }
 

@@ -28,15 +28,6 @@ public sealed class FakeVentButton : CustomActionButton
         SetButtonLocation(ButtonLocation.BottomLeft);
         SetButtonLocation(ButtonLocation.BottomRight);
     }
-    protected override void FixedUpdate(PlayerControl playerControl)
-    {
-        if (MeetingHud.Instance)
-        {
-            return;
-        }
-
-        Button?.cooldownTimerText.gameObject.SetActive(false);
-    }
     public override bool Enabled(RoleBehaviour? role)
     {
         return TownOfUsPlugin.OffsetButtons.Value && Show && HudManager.InstanceExists && !MeetingHud.Instance && role != null && !role.IsImpostor
