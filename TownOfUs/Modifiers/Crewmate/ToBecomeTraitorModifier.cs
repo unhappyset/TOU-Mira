@@ -3,6 +3,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
+using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options;
@@ -38,6 +39,7 @@ public sealed class ToBecomeTraitorModifier : ExcludedGameModifier, IAssignableT
                                     !x.Data.IsDead && 
                                     !x.Data.Disconnected && 
                                     !x.HasModifier<ExecutionerTargetModifier>() &&
+                                    !x.HasModifier<EgotistModifier>() &&
                                     x.Data.Role is not MayorRole).ToList();
 
             Random rndIndex = new();
