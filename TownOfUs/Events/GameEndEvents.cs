@@ -1,29 +1,30 @@
-﻿using HarmonyLib;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameEnd;
 using MiraAPI.Roles;
 using Reactor.Utilities.Extensions;
 using TownOfUs.GameOver;
 using TownOfUs.Modules;
+using TownOfUs.Patches;
 using TownOfUs.Roles;
 
-namespace TownOfUs.Patches;
+namespace TownOfUs.Events;
 
-[HarmonyPatch]
-public static class GameManagerPatches
+public static class EndGameEvents
 {
     public static int winType;
-    [HarmonyPatch(typeof(GameManager), nameof(GameManager.DidImpostorsWin))]
-    [HarmonyPatch(typeof(GameManager), nameof(GameManager.DidHumansWin))]
-    [HarmonyPrefix]
-    public static bool DidHumansOrImpostorsWinPatch(GameManager __instance, GameOverReason reason, ref bool __result)
+
+    [RegisterEvent(priority: -100)]
+
+    public static void OnGameEnd(GameEndEvent @event)
     {
         winType = 0;
+        var reason = EndGameResult.CachedGameOverReason;
         var neutralWinner = CustomRoleUtils.GetActiveRolesOfTeam(ModdedRoleTeams.Custom).Any(x => x is ITownOfUsRole role && role.WinConditionMet());
 
         if (neutralWinner)
         {
-            __result = false;
-            return false;
+            return;
         }
 
         if (reason is GameOverReason.CrewmatesByVote or GameOverReason.CrewmatesByTask or GameOverReason.ImpostorDisconnect)
@@ -41,14 +42,11 @@ public static class GameManagerPatches
         {
             winType = 0;
         }
-
-        return true;
     }
 
-    // [HarmonyPatch(typeof(GameManager), nameof(GameManager.RpcEndGame))]
-    // [HarmonyPostfix]
-    // public static void RpcEndGamePatch(GameManager __instance, [HarmonyArgument(0)] GameOverReason endReason)
-    // {
-    //    Logger<TownOfUsPlugin>.Message($"RpcEndGamePatch - GameOverReason: {endReason}");
-    // }
+    [RegisterEvent]
+    public static void GameEndEventHandler(GameEndEvent @event)
+    {
+        EndGamePatches.BuildEndGameSummary(@event.EndGameManager);
+    }
 }

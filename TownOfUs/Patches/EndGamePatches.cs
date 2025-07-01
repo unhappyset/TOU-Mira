@@ -7,6 +7,7 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities.Extensions;
 using TMPro;
+using TownOfUs.Events;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
@@ -352,7 +353,7 @@ public static class EndGamePatches
     public static void AfterEndGameSetup(EndGameManager instance)
     {
         var text = Object.Instantiate(instance.WinText);
-        switch (GameManagerPatches.winType)
+        switch (EndGameEvents.winType)
         {
             case 1:
                 text.text = $"<size=4>Crewmates Win!</size>";

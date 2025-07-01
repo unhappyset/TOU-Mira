@@ -6,7 +6,6 @@ using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Events.Vanilla.Usables;
 using MiraAPI.Utilities;
 using TownOfUs.Modules;
-using TownOfUs.Patches;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -272,12 +271,6 @@ public static class TownOfUsEventHandlers
                 @event.Cancel();
             }
         }
-    }
-
-    [RegisterEvent]
-    public static void GameEndEventHandler(GameEndEvent @event)
-    {
-        EndGamePatches.BuildEndGameSummary(@event.EndGameManager);
     }
     
     [RegisterEvent]
