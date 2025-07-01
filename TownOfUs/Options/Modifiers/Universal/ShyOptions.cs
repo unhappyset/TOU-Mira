@@ -12,10 +12,10 @@ public sealed class ShyOptions : AbstractOptionGroup<ShyModifier>
     public override uint GroupPriority => 28;
     public override Color GroupColor => TownOfUsColors.Shy;
 
-    [ModdedNumberOption("Transparency Delay", 1f, 15f, 1f, MiraNumberSuffixes.Seconds)]
+    [ModdedNumberOption("Transparency Delay", 0f, 15f, 1f, MiraNumberSuffixes.Seconds)]
     public float InvisDelay { get; set; } = 5f;
 
-    [ModdedNumberOption("Turn Transparent Duration", 1f, 15f, 1f, MiraNumberSuffixes.Seconds)]
+    [ModdedNumberOption("Turn Transparent Duration", 0f, 15f, 1f, MiraNumberSuffixes.Seconds)]
     public float TransformInvisDuration { get; set; } = 5f;
 
     [ModdedNumberOption("Final Opacity", 0f, 80f, 10f, MiraNumberSuffixes.Percent)]

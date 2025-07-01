@@ -61,8 +61,19 @@ public static class TownOfUsEventHandlers
 
         CustomButtonSingleton<JailorJailButton>.Instance.ExecutedACrew = false;
 
-        CustomButtonSingleton<EngineerVentButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<EngineerVentButton>.Instance.SetUses((int)OptionGroupSingleton<EngineerOptions>.Instance.MaxVents);
+        var engiVent = CustomButtonSingleton<EngineerVentButton>.Instance;
+        engiVent.ExtraUses = 0;
+        engiVent.SetUses((int)OptionGroupSingleton<EngineerOptions>.Instance.MaxVents);
+        if ((int)OptionGroupSingleton<EngineerOptions>.Instance.MaxVents == 0)
+        {
+            engiVent.Button?.usesRemainingText.gameObject.SetActive(false);
+            engiVent.Button?.usesRemainingSprite.gameObject.SetActive(false);
+        }
+        else
+        {
+            engiVent.Button?.usesRemainingText.gameObject.SetActive(true);
+            engiVent.Button?.usesRemainingSprite.gameObject.SetActive(true);
+        }
         CustomButtonSingleton<PlumberBlockButton>.Instance.ExtraUses = 0;
         CustomButtonSingleton<PlumberBlockButton>.Instance.SetUses((int)OptionGroupSingleton<PlumberOptions>.Instance.MaxBarricades);
         CustomButtonSingleton<TransporterTransportButton>.Instance.ExtraUses = 0;

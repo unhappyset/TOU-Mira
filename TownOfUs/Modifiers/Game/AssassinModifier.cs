@@ -5,7 +5,6 @@ using MiraAPI.Networking;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
-using TownOfUs.Modifiers.Game.Crewmate;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Components;
 using TownOfUs.Options;
@@ -269,12 +268,7 @@ public abstract class AssassinModifier : ExcludedGameModifier
             return false;
         }
 
-        if (!OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessInvModifier && modifier is InvestigatorModifier)
-        {
-            return false;
-        }
-
-        if (!OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessSpyModifier && modifier is SpyModifier)
+        if (!OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessUtilityModifiers && modifier is TouGameModifier touMod2 && touMod2.FactionType == ModifierFaction.CrewmateUtility)
         {
             return false;
         }
