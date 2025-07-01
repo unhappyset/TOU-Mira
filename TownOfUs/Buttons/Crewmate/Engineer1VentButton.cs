@@ -21,7 +21,7 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.EngiVentSprite;
     public int ExtraUses { get; set; }
 
-    private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.ShipAndObjectsMask);
+    private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.Usables);
 
     public override Vent? GetTarget() => PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
 
