@@ -1,11 +1,14 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Modifiers;
+using MiraAPI.Utilities;
+using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TownOfUs.Events.Crewmate;
 
@@ -45,14 +48,25 @@ public static class DeputyEvents
         {
             return;
         }
-        
+
         if (!target.HasModifier<DeputyCampedModifier>()) return;
 
         var mod = target.GetModifier<DeputyCampedModifier>();
 
         if (mod == null) return;
+        if (mod.Deputy.HasDied()) return;
         if (mod.Deputy.Data.Role is not DeputyRole deputy) return;
 
         deputy.Killer = source;
+        if (mod.Deputy.AmOwner)
+        {
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>{TownOfUsColors.Deputy.ToTextColor()}Your camped target, {target.Data.PlayerName}, has died! Avenge them in the meeting.</color></b>",
+                Color.white, spr: TouRoleIcons.Deputy.LoadAsset());
+
+            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Deputy));
+        }
     }
 }
