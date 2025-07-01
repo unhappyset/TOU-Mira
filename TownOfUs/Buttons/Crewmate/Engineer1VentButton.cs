@@ -29,9 +29,10 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
 
         if (vent)
         {
-            vent.CanUse(PlayerControl.LocalPlayer.Data, out bool canUse, out bool _);
-
-            if (canUse)
+            Vector3 center = PlayerControl.LocalPlayer.Collider.bounds.center;
+            Vector3 position = vent.transform.position;
+            var num = Vector2.Distance(center, position);
+            if (num <= vent.UsableDistance && !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.Collider, center, position, Constants.ShipOnlyMask, false))
             {
                 return vent;
             }
