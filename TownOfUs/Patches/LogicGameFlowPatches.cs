@@ -171,6 +171,13 @@ public static class LogicGameFlowPatches
         {
             return false;
         }
+        
+        // Causes the game to draw in extreme scenarios
+        if (Helpers.GetAlivePlayers().Count <= 0)
+        {
+            var randomPlayer = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.Role.DidWin(CustomGameOver.GameOverReason<DrawGameOver>()) && !x.GetModifiers<GameModifier>().Any(x => x.DidWin(CustomGameOver.GameOverReason<DrawGameOver>()) == true)).Random();
+            CustomGameOver.Trigger<DrawGameOver>([randomPlayer != null ? randomPlayer.Data : PlayerControl.LocalPlayer.Data]);
+        }
 
         return true;
     }

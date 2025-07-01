@@ -367,7 +367,6 @@ public static class EndGamePatches
             default:
                 text.text = string.Empty;
                 text.color = TownOfUsColors.Neutral;
-                instance.BackgroundBar.material.SetColor(ShaderID.Color, TownOfUsColors.Neutral);
                 break;
         }
         var pos = instance.WinText.transform.localPosition;
