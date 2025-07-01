@@ -46,6 +46,12 @@ public sealed class ImitatorCacheModifier() : BaseModifier, ICachedRole
     }
     public override void OnMeetingStart()
     {
+        if (!Player.Data.Role.IsCrewmate())
+        {
+            ModifierComponent?.RemoveModifier(this);
+            return;
+        }
+        
         if (Player.AmOwner)
         {
             // _selectedPlr = null;
@@ -190,10 +196,5 @@ public sealed class ImitatorCacheModifier() : BaseModifier, ICachedRole
         {
             mod.OldRole = RoleManager.Instance.GetRole((RoleTypes)role);
         }
-    }
-
-    public override void OnDeath(DeathReason reason)
-    {
-        ModifierComponent?.RemoveModifier(this);
     }
 }
