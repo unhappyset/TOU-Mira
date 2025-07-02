@@ -28,6 +28,7 @@ public sealed class PestilenceRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public bool IsGuessable => false;
+    public bool HasImpostorVision => true;
     public RoleBehaviour AppearAs => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<PlaguebearerRole>());
     public CustomRoleConfiguration Configuration => new(this)
     {
