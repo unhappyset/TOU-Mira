@@ -17,7 +17,7 @@ public static class EgotistEvents
         if (@event.TriggeredByIntro) return;
         
         var ego = ModifierUtils.GetActiveModifiers<EgotistModifier>().FirstOrDefault(x => !x.Player.HasDied());
-        if (ego != null && Helpers.GetAlivePlayers().Where(x => x.IsCrewmate() && !x.HasModifier<AllianceGameModifier>()).ToList().Count == 0)
+        if (ego != null && Helpers.GetAlivePlayers().Where(x => x.IsCrewmate() && !(x.TryGetModifier<AllianceGameModifier>(out var ally) && !ally.GetsPunished)).ToList().Count == 0)
         {
             if (ego.Player.AmOwner)
             {
