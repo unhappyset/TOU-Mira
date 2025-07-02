@@ -1,11 +1,14 @@
+using System.Collections;
 using HarmonyLib;
+using Reactor.Utilities;
+using Reactor.Utilities.Extensions;
 using UnityEngine;
 
 namespace TownOfUs.Patches;
 
-[HarmonyPatch(typeof(OverlayKillAnimation), nameof(OverlayKillAnimation.CoShow), typeof(KillOverlay))]
 public static class KillOverlayPatch
 {
+    [HarmonyPatch(typeof(OverlayKillAnimation), nameof(OverlayKillAnimation.CoShow), typeof(KillOverlay))]
     [HarmonyPrefix]
     public static void SetKillAnimationMaskInteraction(OverlayKillAnimation __instance)
     {
@@ -29,5 +32,13 @@ public static class KillOverlayPatch
             __instance.GetComponentsInChildren<SpriteRenderer>(true).ToList().ForEach(x => x.maskInteraction = SpriteMaskInteraction.None);
             __instance.transform.localPosition -= new Vector3(2.4f, 1.5f);
         }
+        Coroutines.Start(CoKillDestroy());
+    }
+    private static IEnumerator CoKillDestroy()
+    {
+        var obj = GameObject.Find("KillOverlay").transform.GetChild(2).gameObject;
+        yield return new WaitForSeconds(5f);
+
+        obj?.Destroy();
     }
 }
