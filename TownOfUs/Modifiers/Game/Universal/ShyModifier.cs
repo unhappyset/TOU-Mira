@@ -56,6 +56,7 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
         if (IntroCutscene.Instance) return;
         if (Player == null) return;
         if (PlayerControl.LocalPlayer == null) return;
+        if (Player.HasDied()) return;
 
         // check movement by animation
         PlayerPhysics playerPhysics = Player.MyPhysics;
