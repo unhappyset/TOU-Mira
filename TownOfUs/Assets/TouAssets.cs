@@ -97,6 +97,7 @@ public static class TouAssets
     public static LoadableAsset<Sprite> AbilityCounterBasicSprite { get; } = new LoadableResourceAsset($"{CounterPath}.Basic.png");
     public static LoadableAsset<Sprite> GameSummarySprite { get; } = new LoadableResourceAsset($"{ShortPath}.GameSummaryButton.png");
     public static LoadableAsset<Sprite> MapVentSprite { get; } = new LoadableResourceAsset($"{ShortPath}.MapVent.png", 350);
+    public static LoadableAsset<Sprite> MapBodySprite { get; } = new LoadableResourceAsset($"{ShortPath}.MapBody.png", 350);
     public static LoadableAsset<Sprite> WikiBgSprite { get; } = new LoadableResourceAsset($"{ShortPath}.WikiBg.png");
 
     public static void Initialize()
