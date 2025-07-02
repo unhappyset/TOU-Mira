@@ -336,7 +336,9 @@ public static class TownOfUsEventHandlers
         animation.gameObject.SetActive(false);
 
         Coroutines.Start(MiscUtils.CoFlash(Palette.ImpostorRed, 0.5f, 0.15f));
-        yield return new WaitForSeconds(UnityEngine.Random.RandomRange(0.4f, 1.1f));
+        var seconds = UnityEngine.Random.RandomRange(0.4f, 1.1f);
+        if (Helpers.GetAlivePlayers().Count <= 6) seconds = 0.01f;
+        yield return new WaitForSeconds(seconds);
 
         voteArea.PlayerIcon.gameObject.SetActive(false);
         animation.gameObject.SetActive(true);
