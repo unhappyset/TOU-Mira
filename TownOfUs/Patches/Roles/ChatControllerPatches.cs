@@ -38,9 +38,16 @@ public static class ChatControllerPatches
             __instance.freeChatField.SetVisible(false);
             __instance.quickChatField.SetVisible(false);
         }
-        else if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.HasModifier<JailedModifier>() && !TeamChatPatches.TeamChatActive && !PlayerControl.LocalPlayer.Data.IsDead)
+        else if (TeamChatPatches.TeamChatActive)
         {
-            if (OptionGroupSingleton<JailorOptions>.Instance.JaileePublicChat)
+            _noticeText.text = string.Empty;
+            __instance.freeChatField.SetVisible(true);
+            __instance.quickChatField.SetVisible(false);
+        }
+        else if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.HasModifier<JailedModifier>() && !PlayerControl.LocalPlayer.Data.IsDead && !TeamChatPatches.TeamChatActive)
+        {
+            var canChat = OptionGroupSingleton<JailorOptions>.Instance.JaileePublicChat;
+            if (canChat)
             {
                 _noticeText.text = "You are jailed. You can use public chat.";
                 __instance.freeChatField.SetVisible(true);
