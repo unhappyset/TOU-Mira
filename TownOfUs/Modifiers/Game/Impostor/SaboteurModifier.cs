@@ -10,6 +10,7 @@ namespace TownOfUs.Modifiers.Game.Impostor;
 public sealed class SaboteurModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Saboteur";
+    public override string IntroInfo => $"You also have reduced sabotage cooldowns.";
     public override string GetDescription() => "You have reduced sabotage cooldowns";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Saboteur;
     public override ModifierFaction FactionType => ModifierFaction.ImpostorPassive;

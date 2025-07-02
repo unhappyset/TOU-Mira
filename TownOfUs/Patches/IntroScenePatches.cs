@@ -5,6 +5,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Buttons;
 using TownOfUs.Modifiers.Game;
@@ -187,6 +188,13 @@ public static class ModifierIntroPatch
                 __instance.__4__this.YouAreText.text = custom.YouAreText;
                 __instance.__4__this.RoleBlurbText.text = custom.RoleDescription;
             }
+            var teamModifier = PlayerControl.LocalPlayer.GetModifiers<TouGameModifier>().FirstOrDefault();
+            if (teamModifier != null && OptionGroupSingleton<GeneralOptions>.Instance.TeamModifierReveal)
+            {
+                var color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
+                if (teamModifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
+                __instance.__4__this.RoleBlurbText.text = $"<size={teamModifier.IntroSize}>\n</size>{__instance.__4__this.RoleBlurbText.text}\n<size={teamModifier.IntroSize}><color=#{color.ToHtmlStringRGBA()}>{teamModifier.IntroInfo}</color></size>";
+            }
 
             if (ModifierText == null) return;
 
@@ -248,7 +256,6 @@ public static class ModifierIntroPatch
         var option = OptionGroupSingleton<GeneralOptions>.Instance.ModifierReveal;
         var modifier = PlayerControl.LocalPlayer.GetModifiers<AllianceGameModifier>().FirstOrDefault();
         var uniModifier = PlayerControl.LocalPlayer.GetModifiers<UniversalGameModifier>().FirstOrDefault();
-        var teamModifier = PlayerControl.LocalPlayer.GetModifiers<TouGameModifier>().FirstOrDefault();
 
         if (modifier != null && option is ModReveal.Alliance)
         {
@@ -263,13 +270,6 @@ public static class ModifierIntroPatch
 
             ModifierText.color = MiscUtils.GetRoleColour(uniModifier.ModifierName.Replace(" ", string.Empty));
             if (uniModifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
-        }
-        else if (teamModifier != null && option is ModReveal.Faction)
-        {
-            ModifierText.text = $"<size=4><color=#FFFFFF>Modifier: </color>{teamModifier.ModifierName}</size>";
-
-            ModifierText.color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
-            if (teamModifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
         }
         else
         {

@@ -11,7 +11,10 @@ public sealed class GeneralOptions : AbstractOptionGroup
     public override uint GroupPriority => 1;
 
     [ModdedEnumOption("Modifier Type To Show In Role Intro", typeof(ModReveal))]
-    public ModReveal ModifierReveal { get; set; } = ModReveal.Faction;
+    public ModReveal ModifierReveal { get; set; } = ModReveal.Universal;
+
+    [ModdedToggleOption("Show Faction Modifier On Role Reveal")]
+    public bool TeamModifierReveal { get; set; } = true;
 
     [ModdedToggleOption("Camouflage Comms")]
     public bool CamouflageComms { get; set; } = true;
@@ -62,8 +65,7 @@ public enum ModReveal
 {
     Alliance,
     Universal,
-    Faction,
-    None,
+    Neither,
 }
 
 public enum SkipState

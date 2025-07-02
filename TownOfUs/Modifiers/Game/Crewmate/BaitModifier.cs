@@ -14,6 +14,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class BaitModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Bait";
+    public override string IntroInfo => $"You will also force your killer to report your body.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Bait;
     public override string GetDescription() => "Force your killer to self-report.";
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;

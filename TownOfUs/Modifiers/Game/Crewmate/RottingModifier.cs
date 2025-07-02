@@ -15,6 +15,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class RottingModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Rotting";
+    public override string IntroInfo => $"Your body will also rot away upon death.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Rotting;
     public override string GetDescription() => $"Your body will rot away after {OptionGroupSingleton<RottingOptions>.Instance.RotDelay} second(s).";
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;

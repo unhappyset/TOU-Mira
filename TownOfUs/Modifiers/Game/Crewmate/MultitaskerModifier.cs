@@ -12,6 +12,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class MultitaskerModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Multitasker";
+    public override string IntroInfo => $"You can also see through tasks.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Multitasker;
     public override string GetDescription() => "Your tasks are transparent.";
     public override ModifierFaction FactionType => ModifierFaction.CrewmateVisibility;

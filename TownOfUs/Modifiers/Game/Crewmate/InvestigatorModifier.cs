@@ -15,6 +15,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class InvestigatorModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Investigator";
+    public override string IntroInfo => $"You will also see everyone's footprints for some time.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Investigator;
     public override string GetDescription() => "You can see everyone's footprints.";
     public override ModifierFaction FactionType => ModifierFaction.CrewmateUtility;

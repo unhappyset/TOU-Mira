@@ -13,6 +13,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class TaskmasterModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Taskmaster";
+    public override string IntroInfo => $"You also finish random tasks each round.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Taskmaster;
     public override string GetDescription() => "A random task is auto completed for you after each meeting";
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePassive;

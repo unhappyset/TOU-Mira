@@ -11,6 +11,7 @@ namespace TownOfUs.Modifiers.Game.Impostor;
 public sealed class TelepathModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Telepath";
+    public override string IntroInfo => $"You also know information about teammates' kills" + (OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath ? " and deaths." : ".");
     public override string GetDescription() =>
             (OptionGroupSingleton<TelepathOptions>.Instance.KnowKillLocation ? "Know when & where your teammate kills" : "Know when your teammate kills")
             + (OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath && !OptionGroupSingleton<TelepathOptions>.Instance.KnowDeathLocation ? ", know when they die" : string.Empty)

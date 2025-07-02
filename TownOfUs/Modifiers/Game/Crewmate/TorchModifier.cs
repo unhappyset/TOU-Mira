@@ -11,6 +11,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class TorchModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Torch";
+    public override string IntroInfo => $"You can also see without lights on.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Torch;
     public override string GetDescription() => "Your vision wont get reduced\nwhen the lights are sabotaged.";
     public override ModifierFaction FactionType => ModifierFaction.CrewmateVisibility;

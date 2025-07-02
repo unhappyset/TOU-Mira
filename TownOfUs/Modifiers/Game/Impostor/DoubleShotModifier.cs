@@ -11,6 +11,7 @@ namespace TownOfUs.Modifiers.Game.Impostor;
 public sealed class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Double Shot";
+    public override string IntroInfo => $"You also get a second chance when guessing.";
     public override string GetDescription() => "You have an extra chance when assassinating";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.DoubleShot;
     public override ModifierFaction FactionType => ModifierFaction.KillerUtility;

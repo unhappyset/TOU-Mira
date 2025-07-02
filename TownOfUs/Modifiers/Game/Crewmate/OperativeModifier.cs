@@ -15,6 +15,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class OperativeModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Operative";
+    public override string IntroInfo => $"You can also use security systems on-the-go.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Operative;
     public override string GetDescription() => $"Utilize the Cameras from anywhere";
     public override ModifierFaction FactionType => ModifierFaction.CrewmateUtility;

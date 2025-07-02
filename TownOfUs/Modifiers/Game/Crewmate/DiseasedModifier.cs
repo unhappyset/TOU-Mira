@@ -11,6 +11,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class DiseasedModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Diseased";
+    public override string IntroInfo => $"You will also extend your killer's cooldown upon death.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Diseased;
     public override string GetDescription() => "Increase your killer's kill cooldown.";
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;

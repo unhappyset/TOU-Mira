@@ -13,6 +13,7 @@ namespace TownOfUs.Modifiers.Game.Impostor;
 public sealed class UnderdogModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Underdog";
+    public override string IntroInfo => $"Your kill cooldown is also faster when you're on your own.";
     public override string GetDescription() => "When you're alone your kill cooldown is shortened";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Underdog;
     public override ModifierFaction FactionType => ModifierFaction.ImpostorPassive;

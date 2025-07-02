@@ -10,6 +10,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class FrostyModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Frosty";
+    public override string IntroInfo => $"You will also slow down your killer upon death.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Frosty;
     public override string GetDescription() => "Slow your killer for a short duration.";
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;

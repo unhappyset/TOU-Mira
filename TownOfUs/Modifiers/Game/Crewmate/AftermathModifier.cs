@@ -10,6 +10,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class AftermathModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Aftermath";
+    public override string IntroInfo => $"You will also trigger your killer's abilities upon death.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Aftermath;
     public override string GetDescription() => "Your killer will be forced to use their abilities!";
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
