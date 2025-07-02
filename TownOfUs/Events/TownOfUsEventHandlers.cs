@@ -337,7 +337,8 @@ public static class TownOfUsEventHandlers
 
         Coroutines.Start(MiscUtils.CoFlash(Palette.ImpostorRed, 0.5f, 0.15f));
         var seconds = UnityEngine.Random.RandomRange(0.4f, 1.1f);
-        if (Helpers.GetAlivePlayers().Count <= 6) seconds = 0.01f;
+        // if there's less than 6 players alive, animation will play instantly
+        if (Helpers.GetAlivePlayers().Count <= 5) seconds = 0.01f;
         yield return new WaitForSeconds(seconds);
 
         voteArea.PlayerIcon.gameObject.SetActive(false);
