@@ -53,14 +53,10 @@ public static class ChatControllerPatches
                 __instance.quickChatField.SetVisible(false);
             }
         }
-        else if (TeamChatPatches.TeamChatActive)
+        else
         {
             __instance.freeChatField.SetVisible(true);
             __instance.quickChatField.SetVisible(true);
-            _noticeText.text = string.Empty;
-        }
-        else
-        {
             _noticeText.text = string.Empty;
         }
     }
