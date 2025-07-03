@@ -99,6 +99,8 @@ public static class TouAssets
     public static LoadableAsset<Sprite> MapVentSprite { get; } = new LoadableResourceAsset($"{ShortPath}.MapVent.png", 350);
     public static LoadableAsset<Sprite> MapBodySprite { get; } = new LoadableResourceAsset($"{ShortPath}.MapBody.png", 350);
     public static LoadableAsset<Sprite> WikiBgSprite { get; } = new LoadableResourceAsset($"{ShortPath}.WikiBg.png");
+    public static LoadableAsset<Sprite> TimerDrawSprite { get; } = new LoadableResourceAsset($"{ShortPath}.TimerDraw.png", 300);
+    public static LoadableAsset<Sprite> TimerImpSprite { get; } = new LoadableResourceAsset($"{ShortPath}.TimerImp.png", 300);
 
     public static void Initialize()
     {
