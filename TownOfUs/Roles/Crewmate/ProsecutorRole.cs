@@ -19,7 +19,7 @@ using UnityEngine.Events;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
     public string RoleName => "Prosecutor";
     public string RoleDescription => "Exile Players Of Your Choosing";
@@ -28,6 +28,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
     public DoomableType DoomHintType => DoomableType.Fearmonger;
+    public bool IsPowerCrew => ProsecutionsCompleted < (int)OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions; // Disable end game checks if prosecutes are available
     public CustomRoleConfiguration Configuration => new(this)
     {
         MaxRoleCount = 1,

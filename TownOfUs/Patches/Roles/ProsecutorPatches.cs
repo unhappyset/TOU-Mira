@@ -31,6 +31,11 @@ public static class ProsecutorPatches
             ProsecutorRole.RpcProsecute(PlayerControl.LocalPlayer);
         }
 
+        if (__instance == MeetingHud.Instance.SkipVoteButton && prosecutor.SelectingProsecuteVictim)
+        {
+            prosecutor.SelectingProsecuteVictim = false;
+        }
+
         return true;
     }
 }
