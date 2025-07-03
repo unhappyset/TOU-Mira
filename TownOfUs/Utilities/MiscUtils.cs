@@ -842,4 +842,25 @@ public static class MiscUtils
 
         return false;
     }
+    public static bool CanUseVent(this PlayerControl player, Vent vent)
+    {
+		var couldUse = (!player.MustCleanVent(vent.Id) || (player.inVent && Vent.currentVent == vent)) && !player.Data.IsDead && (player.CanMove || player.inVent);
+		ISystemType systemType;
+		if (ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out systemType))
+		{
+			VentilationSystem ventilationSystem = ShipStatus.Instance.Systems[SystemTypes.Ventilation].Cast<VentilationSystem>();
+			if (ventilationSystem != null && ventilationSystem.IsVentCurrentlyBeingCleaned(vent.Id))
+			{
+				couldUse = false;
+			}
+		}
+		if (couldUse)
+		{
+			Vector3 center = player.Collider.bounds.center;
+			Vector3 position = vent.transform.position;
+			var num = Vector2.Distance(center, position);
+			couldUse &= num <= vent.UsableDistance && !PhysicsHelpers.AnythingBetween(player.Collider, center, position, Constants.ShipOnlyMask, false);
+		}
+		return couldUse;
+    }
 }

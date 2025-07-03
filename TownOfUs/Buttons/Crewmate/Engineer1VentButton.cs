@@ -6,6 +6,7 @@ using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Buttons.Crewmate;
@@ -30,15 +31,9 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
         if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 2, Filter);
         if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
 
-        if (vent != null)
+        if (vent != null && PlayerControl.LocalPlayer.CanUseVent(vent))
         {
-            Vector3 center = PlayerControl.LocalPlayer.Collider.bounds.center;
-            Vector3 position = vent.transform.position;
-            var num = Vector2.Distance(center, position);
-            if (num <= vent.UsableDistance && !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.Collider, center, position, Constants.Usables, false))
-            {
-                return vent;
-            }
+            return vent;
         }
 
         return null;
