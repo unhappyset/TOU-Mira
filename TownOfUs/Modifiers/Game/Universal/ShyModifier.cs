@@ -47,6 +47,8 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
     private DateTime LastMoved { get; set; }
     public void OnRoundStart()
     {
+        if (Player.HasDied()) return;
+        
         LastMoved = DateTime.UtcNow;
         SetVisibility(Player, 1f);
     }
