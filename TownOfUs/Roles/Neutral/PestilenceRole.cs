@@ -28,6 +28,7 @@ public sealed class PestilenceRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public bool IsGuessable => false;
+    public bool Announced { get; set; }
     public bool HasImpostorVision => true;
     public RoleBehaviour AppearAs => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<PlaguebearerRole>());
     public CustomRoleConfiguration Configuration => new(this)
@@ -52,6 +53,7 @@ public sealed class PestilenceRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
             HudManager.Instance.ImpostorVentButton.graphic.sprite = TouNeutAssets.PestVentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Pestilence);
         }
+        Announced = !OptionGroupSingleton<PlaguebearerOptions>.Instance.AnnouncePest;
     }
     public override void Deinitialize(PlayerControl targetPlayer)
     {

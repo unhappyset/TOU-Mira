@@ -466,6 +466,14 @@ public static class HudManagerPatches
                 player.cosmetics.nameText.transform.localPosition = new Vector3(0f, 0.15f, -0.5f);
             }
         }
+        if (HudManager.Instance.TaskPanel != null)
+        {
+            var completed = PlayerControl.LocalPlayer.myTasks.ToArray().Count(x => x.IsComplete);
+            var totalTasks = PlayerControl.LocalPlayer.myTasks.ToArray().Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
+
+            TMPro.TextMeshPro tabText = HudManager.Instance.TaskPanel.tab.transform.FindChild("TabText_TMP").GetComponent<TMPro.TextMeshPro>();
+            tabText.SetText($"Tasks {Color.yellow.ToTextColor()}({completed}/{totalTasks})</color>");
+        }
     }
 
     public static void UpdateGhostRoles(HudManager instance)

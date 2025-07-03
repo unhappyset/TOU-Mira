@@ -51,7 +51,7 @@ public static class ChatControllerPatches
             {
                 _noticeText.text = "You are jailed. You can use public chat.";
                 __instance.freeChatField.SetVisible(true);
-                __instance.quickChatField.SetVisible(true);
+                __instance.quickChatField.SetVisible(false);
             }
             else
             {
@@ -63,7 +63,6 @@ public static class ChatControllerPatches
         else
         {
             __instance.freeChatField.SetVisible(true);
-            __instance.quickChatField.SetVisible(true);
             _noticeText.text = string.Empty;
         }
     }

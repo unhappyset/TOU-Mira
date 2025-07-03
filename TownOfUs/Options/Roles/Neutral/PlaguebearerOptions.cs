@@ -15,6 +15,9 @@ public sealed class PlaguebearerOptions : AbstractOptionGroup<PlaguebearerRole>
     [ModdedNumberOption("Infect Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float InfectCooldown { get; set; } = 25f;
 
+    [ModdedToggleOption("Announce Pestilence Transformation")]
+    public bool AnnouncePest { get; set; } = true;
+
     [ModdedNumberOption("Pestilence Kill Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float PestKillCooldown { get; set; } = 25f;
 
