@@ -1,8 +1,11 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Hud;
+using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
+using TownOfUs.Modifiers;
+using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
@@ -44,5 +47,20 @@ public sealed class PlumberFlushButton : TownOfUsRoleButton<PlumberRole, Vent>
         }
 
         return vent;
+    }
+    public override bool CanUse()
+    {
+        var newTarget = GetTarget();
+        if (newTarget != Target)
+        {
+            Target?.SetOutline(false, false);
+        }
+
+        Target = IsTargetValid(newTarget) ? newTarget : null;
+        SetOutline(true);
+
+        return Timer <= 0 && Target != null
+            && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>()
+            && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
     }
 }

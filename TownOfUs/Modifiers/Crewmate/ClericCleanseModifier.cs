@@ -48,6 +48,8 @@ public sealed class ClericCleanseModifier(PlayerControl cleric) : BaseModifier
 
             text = text.Remove(text.Length - 1, 1);
 
+            if (Effects.Count == 0) text = new StringBuilder($"No negative effects were found on {Player.Data.PlayerName}.");
+
             var title = $"<color=#{TownOfUsColors.Cleric.ToHtmlStringRGBA()}>Cleric Feedback</color>";
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, text.ToString(), false, true);
         }

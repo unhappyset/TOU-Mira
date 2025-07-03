@@ -42,6 +42,8 @@ public sealed class FootstepsModifier : BaseModifier
 
     public override void FixedUpdate()
     {
+        if (_currentSteps != null) _currentSteps.ToList().ForEach(step => step.Value.color = HudManagerPatches.CommsSaboActive() ? new Color(0.2f, 0.2f, 0.2f, 1f) : _footstepColor);
+        
         if (_currentSteps == null || Player.HasModifier<ConcealedModifier>() || (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive) || Vector3.Distance(_lastPos, Player.transform.position) < OptionGroupSingleton<InvestigatorOptions>.Instance.FootprintInterval)
         {
             return;
@@ -80,8 +82,6 @@ public sealed class FootstepsModifier : BaseModifier
         _currentSteps.Add(footstep, sprite);
         _lastPos = Player.transform.position;
         Coroutines.Start(FootstepDisappear(footstep, sprite));
-        
-        _currentSteps.ToList().ForEach(step => step.Value.color = HudManagerPatches.CommsSaboActive() ? new Color(0.2f, 0.2f, 0.2f, 1f) : _footstepColor);
     }
 
     public override void OnDeath(DeathReason reason)

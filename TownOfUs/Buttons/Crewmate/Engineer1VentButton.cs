@@ -25,14 +25,17 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
 
     public override Vent? GetTarget()
     {
-        var vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
+        var vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 4, Filter);
+        if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 3, Filter);
+        if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 2, Filter);
+        if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
 
-        if (vent)
+        if (vent != null)
         {
             Vector3 center = PlayerControl.LocalPlayer.Collider.bounds.center;
             Vector3 position = vent.transform.position;
             var num = Vector2.Distance(center, position);
-            if (num <= vent.UsableDistance && !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.Collider, center, position, Constants.ShipOnlyMask, false))
+            if (num <= vent.UsableDistance && !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.Collider, center, position, Constants.Usables, false))
             {
                 return vent;
             }
