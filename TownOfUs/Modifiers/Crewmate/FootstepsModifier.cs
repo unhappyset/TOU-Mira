@@ -16,9 +16,9 @@ public sealed class FootstepsModifier : BaseModifier
     public override string ModifierName => "Footsteps";
     public override bool HideOnUi => true;
 
-    private Dictionary<GameObject, SpriteRenderer>? _currentSteps;
+    public Dictionary<GameObject, SpriteRenderer>? _currentSteps;
     private Vector3 _lastPos;
-    private Color _footstepColor;
+    public Color _footstepColor;
 
     public override void OnActivate()
     {
@@ -42,8 +42,6 @@ public sealed class FootstepsModifier : BaseModifier
 
     public override void FixedUpdate()
     {
-        if (_currentSteps != null) _currentSteps.ToList().ForEach(step => step.Value.color = HudManagerPatches.CommsSaboActive() ? new Color(0.2f, 0.2f, 0.2f, 1f) : _footstepColor);
-        
         if (_currentSteps == null || Player.HasModifier<ConcealedModifier>() || (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive) || Vector3.Distance(_lastPos, Player.transform.position) < OptionGroupSingleton<InvestigatorOptions>.Instance.FootprintInterval)
         {
             return;
@@ -74,7 +72,7 @@ public sealed class FootstepsModifier : BaseModifier
 
         var sprite = footstep.AddComponent<SpriteRenderer>();
         sprite.sprite = TouAssets.FootprintSprite.LoadAsset();
-        sprite.color = _footstepColor;
+        sprite.color = HudManagerPatches.CommsSaboActive() ? new Color(0.2f, 0.2f, 0.2f, 1f) : _footstepColor;
         footstep.layer = LayerMask.NameToLayer("Players");
 
         footstep.transform.localScale *= new Vector2(1.2f, 1f) * (OptionGroupSingleton<InvestigatorOptions>.Instance.FootprintSize / 10);

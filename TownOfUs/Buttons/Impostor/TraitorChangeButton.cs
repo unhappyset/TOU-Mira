@@ -24,7 +24,7 @@ public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
 
     public override void ClickHandler()
     {
-        if (!CanClick() || Minigame.Instance != null)
+        if (!CanClick() || Minigame.Instance != null || PlayerControl.LocalPlayer.HasDied())
         {
             return;
         }

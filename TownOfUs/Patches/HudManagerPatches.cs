@@ -39,6 +39,7 @@ public static class HudManagerPatches
 
     public static bool Zooming;
     public static bool CamouflageCommsEnabled;
+    public static bool CamouflageFootsteps;
 
     public static IEnumerator CoResizeUI()
     {
@@ -237,14 +238,38 @@ public static class HudManagerPatches
                 }
             }
         }
-
         if (isActive)
         {
+            if (!CamouflageFootsteps)
+            {
+                foreach (var steps in ModifierUtils.GetActiveModifiers<FootstepsModifier>().Select(mod => mod._currentSteps))
+                {
+                    if (steps != null && steps.Count > 0)
+                    {
+                        steps.DoIf(x => x.Key, x => x.Value.color = new Color(0.2f, 0.2f, 0.2f, x.Value.color.a));
+                    }
+                }
+            }
+
             CamouflageCommsEnabled = true;
+            CamouflageFootsteps = true;
 
             FakePlayer.FakePlayers.Do(x => x.Camo());
 
             return;
+        }
+
+        if (CamouflageFootsteps)
+        {
+            CamouflageFootsteps = false;
+
+            foreach (var mod in ModifierUtils.GetActiveModifiers<FootstepsModifier>())
+            {
+                if (mod._currentSteps != null && mod._currentSteps.Count > 0)
+                {
+                    mod._currentSteps.DoIf(x => x.Key, x => x.Value.color = new Color(mod._footstepColor.r, mod._footstepColor.g, mod._footstepColor.b, x.Value.color.a));
+                }
+            }
         }
 
         if (CamouflageCommsEnabled)
