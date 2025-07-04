@@ -17,7 +17,7 @@ public sealed class GameTimerOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<GameTimerOptions>.Instance.GameTimerEnabled,
     };
 
-    public ModdedNumberOption GameTimeLimit { get; } = new ModdedNumberOption("Game Time Limit", 3f, 1f, 30f, 0.5f, MiraNumberSuffixes.None, "0.0m")
+    public ModdedNumberOption GameTimeLimit { get; } = new ModdedNumberOption("Game Time Limit", 15f, 1f, 30f, 0.5f, MiraNumberSuffixes.None, "0.0m")
     {
         Visible = () => OptionGroupSingleton<GameTimerOptions>.Instance.GameTimerEnabled,
     };
