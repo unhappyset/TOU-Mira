@@ -99,11 +99,7 @@ public static class LocalSettings
                 }
 
                 var newVal = TownOfUsPlugin.ButtonUIFactor.Value + 0.1f;
-                if (newVal >= 1.6f)
-                {
-                    newVal = 0.5f;
-                }
-                else if (newVal <= 0.5f)
+                if (newVal is <= 0.5f or >= 1.6f)
                 {
                     newVal = 0.5f;
                 }
@@ -114,11 +110,7 @@ public static class LocalSettings
                     HudManagerPatches.ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
                 }
 
-                var optionsMenu = GameObject.Find("Menu(Clone)");
-                if (optionsMenu == null)
-                {
-                    optionsMenu = GameObject.Find("OptionsMenu(Clone)");
-                }
+                var optionsMenu = GameObject.Find("Menu(Clone)") ? GameObject.Find("Menu(Clone)") : GameObject.Find("OptionsMenu(Clone)");
 
                 if (optionsMenu != null)
                 {

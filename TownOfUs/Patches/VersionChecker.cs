@@ -43,7 +43,7 @@ public static class VersionCheckPatch
             .GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
 #pragma warning restore S1075 // URIs should not be hardcoded
         var data = JsonSerializer.Deserialize<List<ModUpdater.UpdateData>>(text,
-            options: new JsonSerializerOptions { ReadCommentHandling = JsonCommentHandling.Skip });
+            options: new() { ReadCommentHandling = JsonCommentHandling.Skip });
         return data;
     }
 }
