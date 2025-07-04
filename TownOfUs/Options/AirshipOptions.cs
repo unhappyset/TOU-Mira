@@ -6,7 +6,7 @@ namespace TownOfUs.Options;
 
 public sealed class AirshipOptions : AbstractOptionGroup
 {
-    public override string GroupName => "Airship Options";
+    public override string GroupName => "Better Airship";
     public override uint GroupPriority => 5;
     public override Func<bool> GroupVisible => () =>
         (GameOptionsManager.Instance.currentGameOptions.MapId == 4) || (OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps && OptionGroupSingleton<TownOfUsMapOptions>.Instance.AirshipChance > 0);
