@@ -173,10 +173,53 @@ public static class TouAssets
     public static LoadableAsset<Sprite> AuAvengersSprite { get; } =
         new LoadableResourceAsset($"{ShortPath}.AuAvengers.png", 290);
 
-    public static LoadableAsset<Sprite> ArrowSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Arrow.png", 110);
+    public static LoadableAsset<Sprite> ArrowSprite
+    {
+        get
+        {
+            var sprite = ArrowBasicSprite;
+            switch (TownOfUsPlugin.ArrowStyle.Value)
+            {
+                case 1:
+                    sprite = ArrowDarkOutSprite;
+                    break;
+                case 2:
+                    sprite = ArrowLightOutSprite;
+                    break;
+                case 3:
+                    sprite = ArrowLegacySprite;
+                    break;
+            }
+            return sprite;
+        }
+    }
+    public static string ArrowSpriteName
+    {
+        get
+        {
+            var name = "Default";
+            switch (TownOfUsPlugin.ArrowStyle.Value)
+            {
+                case 1:
+                    name = "Dark Glow";
+                    break;
+                case 2:
+                    name = "Color Glow";
+                    break;
+                case 3:
+                    name = "Legacy";
+                    break;
+            }
+            return name;
+        }
+    }
 
-    public static LoadableAsset<Sprite> BasicArrowSprite { get; } =
-        new LoadableResourceAsset($"{ShortPath}.Arrow-OLD.png");
+    public static LoadableAsset<Sprite> ArrowBasicSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Arrow.png", 110);
+    public static LoadableAsset<Sprite> ArrowDarkOutSprite { get; } = new LoadableResourceAsset($"{ShortPath}.ArrowDarkOut.png", 110);
+    public static LoadableAsset<Sprite> ArrowLightOutSprite { get; } = new LoadableResourceAsset($"{ShortPath}.ArrowLightOut.png", 110);
+    
+    public static LoadableAsset<Sprite> ArrowLegacySprite { get; } =
+        new LoadableResourceAsset($"{ShortPath}.ArrowLegacy.png");
 
     public static LoadableAsset<Sprite> CrimeSceneSprite { get; } =
         new LoadableResourceAsset($"{ShortPath}.CrimeScene.png");

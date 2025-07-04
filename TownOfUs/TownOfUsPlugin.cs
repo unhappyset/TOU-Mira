@@ -50,6 +50,7 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
     public static ConfigEntry<bool> OffsetButtons { get; set; }
     public static ConfigEntry<bool> SortGuessingByAlignment { get; set; }
     public static ConfigEntry<bool> PreciseCooldowns { get; set; }
+    public static ConfigEntry<int> ArrowStyle { get; set; }
 
     /// <inheritdoc />
     public string OptionsTitleText => "TOU Mira";
@@ -100,6 +101,8 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
             "Sorts the guessing menu by alignment alphabetically or purely alphabetical order.");
         PreciseCooldowns = Config.Bind("LocalSettings", "PreciseCooldowns", false,
             "Whether Button Cooldowns Show To 1 Decimal Place When It is Less Than 10 Seconds Remaining.");
+        ArrowStyle = Config.Bind("LocalSettings", "ArrowStyle", 2,
+            "How role arrows appear. 0 is the basic arrow, 1 is the arrow with a dark glow, 2 is the arrow with a light glow, and 3 is the legacy arrow / task arrow.");
 
         Harmony.PatchAll();
 

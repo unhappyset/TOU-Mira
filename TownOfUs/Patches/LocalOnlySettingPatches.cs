@@ -117,7 +117,7 @@ public static class LocalSettings
                     var title = optionsMenu.transform.FindChild("ButtonScaleFloat");
                     if (title != null && title.transform.GetChild(2).TryGetComponent<TextMeshPro>(out var txt))
                     {
-                        txt.text = $"Button UI Scale Factor: {Math.Round(newVal, 2)}x";
+                        txt.text = $"Button Scale Factor: {Math.Round(newVal, 2)}x";
                     }
                 }
 
@@ -148,6 +148,35 @@ public static class LocalSettings
             ObjName = "PreciseCooldowns",
             OnClick = () => { return TownOfUsPlugin.PreciseCooldowns.Value = !TownOfUsPlugin.PreciseCooldowns.Value; },
             DefaultValue = TownOfUsPlugin.PreciseCooldowns.Value
+        },
+        new()
+        {
+            Title = $"Arrow Style: {TouAssets.ArrowSpriteName}",
+            ObjName = "ArrowStyle",
+            OnClick = () =>
+            {
+                var newVal = TownOfUsPlugin.ArrowStyle.Value + 1;
+                if (newVal is < 0 or > 3)
+                {
+                    newVal = 0;
+                }
+
+                TownOfUsPlugin.ArrowStyle.Value = newVal;
+
+                var optionsMenu = GameObject.Find("Menu(Clone)") ? GameObject.Find("Menu(Clone)") : GameObject.Find("OptionsMenu(Clone)");
+
+                if (optionsMenu != null)
+                {
+                    var title = optionsMenu.transform.FindChild("ArrowStyle");
+                    if (title != null && title.transform.GetChild(2).TryGetComponent<TextMeshPro>(out var txt))
+                    {
+                        txt.text = $"Arrow Style: {TouAssets.ArrowSpriteName}";
+                    }
+                }
+
+                return TownOfUsPlugin.ArrowStyle.Value <= 0;
+            },
+            DefaultValue = TownOfUsPlugin.ArrowStyle.Value <= 0
         }
     ];
 
