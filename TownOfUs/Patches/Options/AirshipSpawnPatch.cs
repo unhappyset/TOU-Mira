@@ -54,7 +54,7 @@ public static class AirshipSpawnPatch
         };
     }
 
-    [MethodRpc((uint)TownOfUsRpc.ChangeHost, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.RemoveSpawns, SendImmediately = true)]
 
     public static void RemoveSpawns(PlayerControl player, StringNames location, StringNames location2, StringNames location3)
     {
