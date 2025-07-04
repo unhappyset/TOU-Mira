@@ -20,6 +20,7 @@ using TownOfUs.Modifiers.Game.Neutral;
 using TownOfUs.Events.TouEvents;
 using MiraAPI.Events;
 using MiraAPI.Patches.Stubs;
+using MiraAPI.Utilities;
 
 namespace TownOfUs.Roles.Neutral;
 
@@ -66,10 +67,30 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
             return;
         }
 
-        var touAbilityEvent = new TouAbilityEvent(AbilityType.AmnesiacPreRemember, player, target);
-        MiraEventManager.InvokeEvent(touAbilityEvent);
+        if (target.Data == null)
+        {
+            if (player.AmOwner)
+            {
+                var notif1 = Helpers.CreateAndShowNotification($"<b>{target.CachedPlayerData.PlayerName} was disconnected, so their role is not valid.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Amnesiac.LoadAsset());
+                notif1.Text.SetOutlineThickness(0.35f);
+            }
+            return;
+        }
 
         var roleWhenAlive = target.GetRoleWhenAlive();
+
+        if (roleWhenAlive is AmnesiacRole)
+        {
+            if (player.AmOwner)
+            {
+                var notif1 = Helpers.CreateAndShowNotification($"<b>{target.CachedPlayerData.PlayerName} was an{TownOfUsColors.Amnesiac.ToTextColor()}Amnesiac</color>, so their role cannot be picked up.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Amnesiac.LoadAsset());
+                notif1.Text.SetOutlineThickness(0.35f);
+            }
+            return;
+        }
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.AmnesiacPreRemember, player, target);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
 
         player.ChangeRole((ushort)roleWhenAlive.Role);
         if (player.Data.Role is InquisitorRole inquis)
