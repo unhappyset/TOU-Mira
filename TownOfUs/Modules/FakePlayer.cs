@@ -129,11 +129,6 @@ public sealed class FakePlayer : IDisposable
     private static Vector3 Scale => new(0.35f, 0.35f, 0.35f);
     private static Vector2 PosOffset => new(-0.045f, 0.575f);
 
-    public void Dispose()
-    {
-        Dispose(true);
-    }
-
     public void SwitchColorName()
     {
         _colorBindTextObj?.SetActive(DataManager.Settings.Accessibility.ColorBlindMode);
@@ -408,6 +403,10 @@ public sealed class FakePlayer : IDisposable
         Dispose();
     }
 
+    public void Dispose()
+    {
+        Dispose(true);
+    }
     public void Dispose(bool disposing)
     {
         if (disposing)
