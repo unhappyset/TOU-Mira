@@ -5,6 +5,10 @@ using MiraAPI.Modifiers;
 using TownOfUs.Buttons.Modifiers;
 using TownOfUs.Modifiers.Game.Crewmate;
 using TownOfUs.Options.Modifiers.Crewmate;
+using TownOfUs.Options.Roles.Crewmate;
+using TownOfUs.Options.Roles.Neutral;
+using TownOfUs.Roles.Crewmate;
+using TownOfUs.Roles.Neutral;
 
 namespace TownOfUs.Patches;
 
@@ -42,7 +46,7 @@ public static class MinigameCanMovePatch
             __result = __instance.moveable;
             return false;
         }
-        /*
+
         if (PlayerControl.LocalPlayer.Data.Role is TransporterRole && ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard && OptionGroupSingleton<TransporterOptions>.Instance.MoveWithMenu && Minigame.Instance is CustomPlayerMenu)
         {
             __result = __instance.moveable;
@@ -52,7 +56,7 @@ public static class MinigameCanMovePatch
         {
             __result = __instance.moveable;
             return false;
-        } */
+        }
 
         return true;
     }
