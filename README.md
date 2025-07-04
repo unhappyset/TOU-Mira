@@ -96,8 +96,9 @@ An [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod based on T
 
 **Disclaimer: The mod is *not* guaranteed to work on the latest versions of Among Us when the game updates.**
 
-| Among Us   | Mod Version | Download Link                                                                                   |
-|------------|-------------|-------------------------------------------------------------------------------------------------|
+| Among Us   | Mod Version | Download Link                                                           |
+|------------|-------------|-------------------------------------------------------------------------|
+| 2025.5.20  | 1.0.2       | [Download](https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.2) |
 | 2025.5.20  | 1.0.1       | [Download](https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.1) |
 | 2025.5.20  | 1.0.0       | [Download](https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.0) |
 
