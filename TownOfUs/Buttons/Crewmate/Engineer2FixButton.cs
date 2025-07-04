@@ -22,21 +22,21 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
     {
         Button?.cooldownTimerText.gameObject.SetActive(false);
     }
+
     public override bool CanUse()
     {
         var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
 
         return base.CanUse() && system is { AnyActive: true };
     }
+
     protected override void OnClick()
     {
         var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
 
-        if (system is not { AnyActive: true })
-        {
-            ResetCooldownAndOrEffect();
-        }
+        if (system is not { AnyActive: true }) ResetCooldownAndOrEffect();
     }
+
     public override void OnEffectEnd()
     {
         var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();

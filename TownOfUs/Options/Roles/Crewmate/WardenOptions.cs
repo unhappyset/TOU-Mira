@@ -17,5 +17,5 @@ public enum FortifyOptions
     Self,
     Warden,
     SelfAndWarden,
-    Everyone,
+    Everyone
 }

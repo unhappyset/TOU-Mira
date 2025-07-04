@@ -52,10 +52,7 @@ public static class SaboteurPatches
         if (__instance.AnyActive) return;
         if (__instance.initialCooldown) return;
 
-        foreach (var sab in ModifierUtils.GetActiveModifiers<SaboteurModifier>())
-        {
-            sab.Timer = __instance.Timer;
-        }
+        foreach (var sab in ModifierUtils.GetActiveModifiers<SaboteurModifier>()) sab.Timer = __instance.Timer;
     }
 
     [HarmonyPatch(typeof(SabotageSystemType), nameof(SabotageSystemType.Deserialize))]
@@ -68,9 +65,6 @@ public static class SaboteurPatches
         if (__instance.AnyActive) return;
         if (__instance.initialCooldown) return;
 
-        foreach (var sab in ModifierUtils.GetActiveModifiers<SaboteurModifier>())
-        {
-            __instance.Timer = sab.Timer;
-        }
+        foreach (var sab in ModifierUtils.GetActiveModifiers<SaboteurModifier>()) __instance.Timer = sab.Timer;
     }
 }

@@ -18,38 +18,36 @@ public sealed class SpyAdminTableRoleButton : TownOfUsRoleButton<SpyRole>
     public override float Cooldown => OptionGroupSingleton<SpyOptions>.Instance.DisplayCooldown.Value + MapCooldown;
     public float AvailableCharge { get; set; } = OptionGroupSingleton<SpyOptions>.Instance.StartingCharge.Value;
     public bool usingPortable { get; set; }
+
     public override float EffectDuration
     {
         get
         {
-            if (OptionGroupSingleton<SpyOptions>.Instance.DisplayDuration == 0)
-            {
-                return AvailableCharge;
-            }
-            else
-            {
-                return AvailableCharge < OptionGroupSingleton<SpyOptions>.Instance.DisplayDuration.Value ? AvailableCharge : OptionGroupSingleton<SpyOptions>.Instance.DisplayDuration.Value;
-            }
+            if (OptionGroupSingleton<SpyOptions>.Instance.DisplayDuration == 0) return AvailableCharge;
+
+            return AvailableCharge < OptionGroupSingleton<SpyOptions>.Instance.DisplayDuration.Value
+                ? AvailableCharge
+                : OptionGroupSingleton<SpyOptions>.Instance.DisplayDuration.Value;
         }
     }
+
     public override ButtonLocation Location => ButtonLocation.BottomRight;
     public override LoadableAsset<Sprite> Sprite => TouAssets.AdminSprite;
 
-	private void RefreshAbilityButton()
-	{
-		if (AvailableCharge > 0f && !PlayerControl.LocalPlayer.AreCommsAffected())
-		{
-			Button?.SetEnabled();
-			return;
-		}
-		Button?.SetDisabled();
-	}
-    protected override void FixedUpdate(PlayerControl playerControl)
+    private void RefreshAbilityButton()
     {
-        if (!playerControl.AmOwner || MeetingHud.Instance)
+        if (AvailableCharge > 0f && !PlayerControl.LocalPlayer.AreCommsAffected())
         {
+            Button?.SetEnabled();
             return;
         }
+
+        Button?.SetDisabled();
+    }
+
+    protected override void FixedUpdate(PlayerControl playerControl)
+    {
+        if (!playerControl.AmOwner || MeetingHud.Instance) return;
         if (usingPortable && !MapBehaviour.Instance.gameObject.activeSelf)
         {
             RefreshAbilityButton();
@@ -57,6 +55,7 @@ public sealed class SpyAdminTableRoleButton : TownOfUsRoleButton<SpyRole>
             usingPortable = false;
             return;
         }
+
         if (usingPortable)
         {
             AvailableCharge -= Time.deltaTime;
@@ -82,26 +81,32 @@ public sealed class SpyAdminTableRoleButton : TownOfUsRoleButton<SpyRole>
 
     public override bool Enabled(RoleBehaviour? role)
     {
-        return base.Enabled(role) && OptionGroupSingleton<SpyOptions>.Instance.HasPortableAdmin is PortableAdmin.Role or PortableAdmin.Both;
+        return base.Enabled(role) &&
+               OptionGroupSingleton<SpyOptions>.Instance.HasPortableAdmin is PortableAdmin.Role or PortableAdmin.Both;
     }
+
     public override bool CanUse()
     {
         return Timer <= 0 && !EffectActive && AvailableCharge > 0f &&
-            !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>() && 
-            !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>();
+               !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>() &&
+               !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>();
     }
+
     public override void CreateButton(Transform parent)
     {
         base.CreateButton(parent);
         AvailableCharge = OptionGroupSingleton<SpyOptions>.Instance.StartingCharge.Value;
-        Button!.transform.localPosition = new Vector3(Button.transform.localPosition.x, Button.transform.localPosition.y, -150f);
+        Button!.transform.localPosition =
+            new Vector3(Button.transform.localPosition.x, Button.transform.localPosition.y, -150f);
     }
+
     protected override void OnClick()
     {
         if (!OptionGroupSingleton<SpyOptions>.Instance.MoveWithMenu) PlayerControl.LocalPlayer.NetTransform.Halt();
         usingPortable = true;
         ToggleMapVisible(OptionGroupSingleton<SpyOptions>.Instance.MoveWithMenu);
     }
+
     public override void OnEffectEnd()
     {
         base.OnEffectEnd();
@@ -113,12 +118,10 @@ public sealed class SpyAdminTableRoleButton : TownOfUsRoleButton<SpyRole>
             usingPortable = false;
         }
     }
+
     public override void ClickHandler()
     {
-        if (!CanUse() || Minigame.Instance != null)
-        {
-            return;
-        }
+        if (!CanUse() || Minigame.Instance != null) return;
 
         OnClick();
         Button?.SetDisabled();
@@ -137,6 +140,7 @@ public sealed class SpyAdminTableRoleButton : TownOfUsRoleButton<SpyRole>
             Timer = Cooldown;
         }
     }
+
     private static void ToggleMapVisible(bool canMove = false)
     {
         if (MapBehaviour.Instance && MapBehaviour.Instance.gameObject.activeSelf)
@@ -144,28 +148,20 @@ public sealed class SpyAdminTableRoleButton : TownOfUsRoleButton<SpyRole>
             MapBehaviour.Instance.Close();
             return;
         }
-        if (!ShipStatus.Instance)
-        {
-            return;
-        }
+
+        if (!ShipStatus.Instance) return;
         HudManager.Instance.InitMap();
-        if (!PlayerControl.LocalPlayer.CanMove && !MeetingHud.Instance)
-        {
-            return;
-        }
+        if (!PlayerControl.LocalPlayer.CanMove && !MeetingHud.Instance) return;
         var opts = GameManager.Instance.GetMapOptions();
         var portableAdmin = MapBehaviour.Instance;
 
-		portableAdmin.GenericShow();
-		portableAdmin.countOverlay.gameObject.SetActive(true);
-		portableAdmin.countOverlay.SetOptions(opts.ShowLivePlayerPosition, opts.IncludeDeadBodies);
-		portableAdmin.countOverlayAllowsMovement = canMove;
-		portableAdmin.taskOverlay.Hide();
-		portableAdmin.HerePoint.enabled = !opts.ShowLivePlayerPosition;
-		portableAdmin.TrackedHerePoint.gameObject.SetActive(false);
-		if (portableAdmin.HerePoint.enabled)
-		{
-			PlayerControl.LocalPlayer.SetPlayerMaterialColors(portableAdmin.HerePoint);
-		}
-	}
+        portableAdmin.GenericShow();
+        portableAdmin.countOverlay.gameObject.SetActive(true);
+        portableAdmin.countOverlay.SetOptions(opts.ShowLivePlayerPosition, opts.IncludeDeadBodies);
+        portableAdmin.countOverlayAllowsMovement = canMove;
+        portableAdmin.taskOverlay.Hide();
+        portableAdmin.HerePoint.enabled = !opts.ShowLivePlayerPosition;
+        portableAdmin.TrackedHerePoint.gameObject.SetActive(false);
+        if (portableAdmin.HerePoint.enabled) PlayerControl.LocalPlayer.SetPlayerMaterialColors(portableAdmin.HerePoint);
+    }
 }

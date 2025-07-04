@@ -39,7 +39,7 @@ public static class MiscUtils
                                                                  OptionGroupSingleton<InquisitorOptions>.Instance
                                                                      .StallGame && inquis is
                                                                      { CanVanquish: true, TargetsDead: false }
-                                                                     && Helpers.GetAlivePlayers().Count <= 3));
+                                                                 && Helpers.GetAlivePlayers().Count <= 3));
 
     public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>
         x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis &&
@@ -68,7 +68,8 @@ public static class MiscUtils
 
     public static ReadOnlyCollection<IModdedOption>? GetModdedOptionsForRole(Type classType)
     {
-        var optionGroups = AccessTools.Field(typeof(ModdedOptionsManager), "Groups").GetValue(null) as List<AbstractOptionGroup>;
+        var optionGroups =
+            AccessTools.Field(typeof(ModdedOptionsManager), "Groups").GetValue(null) as List<AbstractOptionGroup>;
 
         return optionGroups?.FirstOrDefault(x => x.OptionableType == classType)?.Children;
     }
@@ -83,7 +84,6 @@ public static class MiscUtils
             $"\n<size=50%> \n</size><b>{TownOfUsColors.Vigilante.ToTextColor()}Options</color></b>");
 
         foreach (var option in options)
-        {
             switch (option)
             {
                 case ModdedToggleOption toggleOption:
@@ -106,7 +106,6 @@ public static class MiscUtils
                     else builder.AppendLine(numberOption.Title + ": " + optionStr);
                     break;
             }
-        }
 
         return builder.ToString();
     }
@@ -180,14 +179,21 @@ public static class MiscUtils
         return role;
     }
 
-    public static T? GetRole<T>() where T : RoleBehaviour =>
-        PlayerControl.AllPlayerControls.ToArray().ToList().Find(x => x.Data.Role is T)?.Data?.Role as T;
+    public static T? GetRole<T>() where T : RoleBehaviour
+    {
+        return PlayerControl.AllPlayerControls.ToArray().ToList().Find(x => x.Data.Role is T)?.Data?.Role as T;
+    }
 
-    public static IEnumerable<RoleBehaviour> GetRoles(RoleAlignment alignment) => CustomRoleUtils.GetActiveRoles()
-        .Where(x => x is ITownOfUsRole role && role.RoleAlignment == alignment);
+    public static IEnumerable<RoleBehaviour> GetRoles(RoleAlignment alignment)
+    {
+        return CustomRoleUtils.GetActiveRoles()
+            .Where(x => x is ITownOfUsRole role && role.RoleAlignment == alignment);
+    }
 
-    public static PlayerControl? GetPlayerWithModifier<T>() where T : BaseModifier =>
-        ModifierUtils.GetPlayersWithModifier<T>().FirstOrDefault();
+    public static PlayerControl? GetPlayerWithModifier<T>() where T : BaseModifier
+    {
+        return ModifierUtils.GetPlayersWithModifier<T>().FirstOrDefault();
+    }
 
     public static Color GetRoleColour(string name)
     {
@@ -247,7 +253,7 @@ public static class MiscUtils
         pooledBubble.Xmark.enabled = false;
         pooledBubble.TextArea.text = message;
         pooledBubble.TextArea.ForceMeshUpdate(true, true);
-        pooledBubble.Background.size = new(5.52f,
+        pooledBubble.Background.size = new Vector2(5.52f,
             0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
         pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
         if (altColors)
@@ -261,9 +267,7 @@ public static class MiscUtils
         pooledBubble.NameText.transform.localPosition = pos;
         chat.AlignAllBubbles();
         if (chat is { IsOpenOrOpening: false, notificationRoutine: null })
-        {
             chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());
-        }
 
         if (showHeadsup && !chat.IsOpenOrOpening)
         {
@@ -292,7 +296,7 @@ public static class MiscUtils
         pooledBubble.Xmark.enabled = false;
         pooledBubble.TextArea.text = message;
         pooledBubble.TextArea.ForceMeshUpdate(true, true);
-        pooledBubble.Background.size = new(5.52f,
+        pooledBubble.Background.size = new Vector2(5.52f,
             0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
         pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
 
@@ -304,9 +308,7 @@ public static class MiscUtils
         pooledBubble.NameText.transform.localPosition = pos;
         chat.AlignAllBubbles();
         if (chat is { IsOpenOrOpening: false, notificationRoutine: null })
-        {
             chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());
-        }
 
         if (showHeadsup && !chat.IsOpenOrOpening)
         {
@@ -438,12 +440,9 @@ public static class MiscUtils
     {
         var roles = new List<(ushort, int)>();
 
-        assignmentData.Where(x => predicate == null || predicate(x)).ToList().ForEach((x) =>
+        assignmentData.Where(x => predicate == null || predicate(x)).ToList().ForEach(x =>
         {
-            for (var i = 0; i < x.Count; i++)
-            {
-                roles.Add(((ushort)x.Role.Role, x.Chance));
-            }
+            for (var i = 0; i < x.Count; i++) roles.Add(((ushort)x.Role.Role, x.Chance));
         });
 
         return roles;
@@ -464,10 +463,8 @@ public static class MiscUtils
     public static PlayerControl? PlayerById(byte id)
     {
         foreach (var player in PlayerControl.AllPlayerControls)
-        {
             if (player.PlayerId == id)
                 return player;
-        }
 
         return null;
     }
@@ -508,10 +505,7 @@ public static class MiscUtils
 
     public static IEnumerator FadeOut(SpriteRenderer? rend, float delay = 0.01f, float decrease = 0.01f)
     {
-        if (rend == null)
-        {
-            yield break;
-        }
+        if (rend == null) yield break;
 
         var alphaVal = rend.color.a;
         var tmp = rend.color;
@@ -528,10 +522,7 @@ public static class MiscUtils
 
     public static IEnumerator FadeIn(SpriteRenderer? rend, float delay = 0.01f, float increase = 0.01f)
     {
-        if (rend == null)
-        {
-            yield break;
-        }
+        if (rend == null) yield break;
 
         var tmp = rend.color;
         tmp.a = 0;
@@ -566,12 +557,9 @@ public static class MiscUtils
 
     public static string ToTitleCase(this string input)
     {
-        if (string.IsNullOrEmpty(input))
-        {
-            return input; // Return empty or null string if input is empty or null
-        }
+        if (string.IsNullOrEmpty(input)) return input; // Return empty or null string if input is empty or null
 
-        TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+        var textInfo = CultureInfo.CurrentCulture.TextInfo;
         return
             textInfo.ToTitleCase(
                 input.ToLower(CultureInfo.CurrentCulture)); // Convert to lowercase first and then title case
@@ -603,10 +591,7 @@ public static class MiscUtils
     public static IEnumerator BetterBloop(Transform target, float delay = 0, float finalSize = 1f,
         float duration = 0.5f, float intensity = 1f)
     {
-        for (var t = 0f; t < delay; t += Time.deltaTime)
-        {
-            yield return null;
-        }
+        for (var t = 0f; t < delay; t += Time.deltaTime) yield return null;
 
         var localScale = default(Vector3);
         for (var t = 0f; t < duration; t += Time.deltaTime)
@@ -625,7 +610,6 @@ public static class MiscUtils
     public static void AdjustGhostTasks(PlayerControl player)
     {
         foreach (var task in player.myTasks)
-        {
             if (task.TryCast<NormalPlayerTask>() != null)
             {
                 var normalPlayerTask = task.Cast<NormalPlayerTask>();
@@ -635,36 +619,23 @@ public static class MiscUtils
                 normalPlayerTask.taskStep = 0;
                 normalPlayerTask.Initialize();
                 if (normalPlayerTask.TaskType is TaskTypes.PickUpTowels)
-                {
                     foreach (var console in Object.FindObjectsOfType<TowelTaskConsole>())
-                    {
                         console.Image.color = Color.white;
-                    }
-                }
 
                 normalPlayerTask.taskStep = 0;
-                if (normalPlayerTask.TaskType == TaskTypes.UploadData)
-                {
-                    normalPlayerTask.taskStep = 1;
-                }
+                if (normalPlayerTask.TaskType == TaskTypes.UploadData) normalPlayerTask.taskStep = 1;
 
                 if (normalPlayerTask.TaskType is TaskTypes.EmptyGarbage or TaskTypes.EmptyChute
                     && (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 0 ||
                         GameOptionsManager.Instance.currentNormalGameOptions.MapId == 3 ||
                         GameOptionsManager.Instance.currentNormalGameOptions.MapId == 4))
-                {
                     normalPlayerTask.taskStep = 1;
-                }
 
-                if (updateArrow)
-                {
-                    normalPlayerTask.UpdateArrowAndLocation();
-                }
+                if (updateArrow) normalPlayerTask.UpdateArrowAndLocation();
 
                 var taskInfo = player.Data.FindTaskById(task.Id);
                 taskInfo.Complete = false;
             }
-        }
     }
 
     public static void UpdateLocalPlayerCamera(MonoBehaviour target, Transform lightParent)
@@ -767,22 +738,18 @@ public static class MiscUtils
         // Replace matched tags with an empty string
         return richTagRegex.Replace(text, string.Empty);
     }
-    [System.Serializable]
-    public class Wrapper<T>
-    {
-        public T[] array;
-    }
+
     // Method to parse a JSON array string into an array of objects
     public static T[] jsonToArray<T>(string json)
     {
         // Wrap the JSON array in an object
-        string newJson = "{ \"array\": " + json + "}";
-        Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(newJson);
+        var newJson = "{ \"array\": " + json + "}";
+        var wrapper = JsonUtility.FromJson<Wrapper<T>>(newJson);
         return wrapper.array;
     }
 
     /// <summary>
-    /// Gets a FakePlayer by comparing PlayerControl.
+    ///     Gets a FakePlayer by comparing PlayerControl.
     /// </summary>
     /// <param name="player">The player themselves.</param>
     /// <returns>A fake player or null if its not found.</returns>
@@ -802,27 +769,17 @@ public static class MiscUtils
     {
         if (player.HasModifier<ConcealedModifier>() || !player.Visible ||
             (player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive))
-        {
             return true;
-        }
 
-        if (player.inVent)
-        {
-            return true;
-        }
+        if (player.inVent) return true;
 
         var mushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
-        if (mushroom && mushroom.IsActive)
-        {
-            return true;
-        }
+        if (mushroom && mushroom.IsActive) return true;
 
         if (OptionGroupSingleton<GeneralOptions>.Instance.CamouflageComms)
         {
-            if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Comms, out var commsSystem) || commsSystem == null)
-            {
-                return false;
-            }
+            if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Comms, out var commsSystem) ||
+                commsSystem == null) return false;
 
             var isActive = false;
             if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq ||
@@ -842,25 +799,34 @@ public static class MiscUtils
 
         return false;
     }
+
     public static bool CanUseVent(this PlayerControl player, Vent vent)
     {
-		var couldUse = (!player.MustCleanVent(vent.Id) || (player.inVent && Vent.currentVent == vent)) && !player.Data.IsDead && (player.CanMove || player.inVent);
-		ISystemType systemType;
-		if (ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out systemType))
-		{
-			VentilationSystem ventilationSystem = ShipStatus.Instance.Systems[SystemTypes.Ventilation].Cast<VentilationSystem>();
-			if (ventilationSystem != null && ventilationSystem.IsVentCurrentlyBeingCleaned(vent.Id))
-			{
-				couldUse = false;
-			}
-		}
-		if (couldUse)
-		{
-			Vector3 center = player.Collider.bounds.center;
-			Vector3 position = vent.transform.position;
-			var num = Vector2.Distance(center, position);
-			couldUse &= num <= vent.UsableDistance && !PhysicsHelpers.AnythingBetween(player.Collider, center, position, Constants.ShipOnlyMask, false);
-		}
-		return couldUse;
+        var couldUse = (!player.MustCleanVent(vent.Id) || (player.inVent && Vent.currentVent == vent)) &&
+                       !player.Data.IsDead && (player.CanMove || player.inVent);
+        ISystemType systemType;
+        if (ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out systemType))
+        {
+            var ventilationSystem = ShipStatus.Instance.Systems[SystemTypes.Ventilation].Cast<VentilationSystem>();
+            if (ventilationSystem != null && ventilationSystem.IsVentCurrentlyBeingCleaned(vent.Id)) couldUse = false;
+        }
+
+        if (couldUse)
+        {
+            var center = player.Collider.bounds.center;
+            var position = vent.transform.position;
+            var num = Vector2.Distance(center, position);
+            couldUse &= num <= vent.UsableDistance &&
+                        !PhysicsHelpers.AnythingBetween(player.Collider, center, position, Constants.ShipOnlyMask,
+                            false);
+        }
+
+        return couldUse;
+    }
+
+    [Serializable]
+    public class Wrapper<T>
+    {
+        public T[] array;
     }
 }

@@ -27,19 +27,43 @@ namespace TownOfUs.Roles.Crewmate;
 
 public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
+    public override bool IsAffectedByComms => false;
+    public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string RoleName => "Transporter";
     public string RoleDescription => "Choose Two Players To Swap Locations";
     public string RoleLongDescription => "Choose two players to swap locations with one another";
     public Color RoleColor => TownOfUsColors.Transporter;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
-    public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public override bool IsAffectedByComms => false;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Transporter,
-        IntroSound = TouAudio.TimeLordIntroSound,
+        IntroSound = TouAudio.TimeLordIntroSound
     };
+
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        return ITownOfUsRole.SetNewTabText(this);
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return
+            "The Transporter is a Crewmate Support role that can transport two players, dead or alive, to swap their locations."
+            + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Transport",
+            "Switch the positions of two players. Players can be transported out of vents." +
+            "A red flash means one of the players became an invalid target," +
+            "such as going on a ladder or zipline",
+            TouCrewAssets.Transport)
+    ];
 
     [MethodRpc((uint)TownOfUsRpc.Transport, SendImmediately = true)]
     public static void RpcTransport(PlayerControl transporter, byte player1, byte player2)
@@ -56,10 +80,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         //also check again incase they went on the usable while the transporter was picking but ignore vents
         if (t1 == null || t2 == null)
         {
-            if (transporter.AmOwner)
-            {
-                Coroutines.Start(MiscUtils.CoFlash(Color.red));
-            }
+            if (transporter.AmOwner) Coroutines.Start(MiscUtils.CoFlash(Color.red));
             return;
         }
 
@@ -115,10 +136,8 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         LookoutEvents.CheckForLookoutWatched(transporter, play2);
 
         var mercenary = PlayerControl.LocalPlayer.Data.Role as MercenaryRole;
-        if (play1.HasModifier<MercenaryGuardModifier>() || play2.HasModifier<MercenaryGuardModifier>() && mercenary)
-        {
+        if (play1.HasModifier<MercenaryGuardModifier>() || (play2.HasModifier<MercenaryGuardModifier>() && mercenary))
             mercenary!.AddPayment();
-        }
 
         if (play1.TryGetModifier<InvulnerabilityModifier>(out var invic) && invic.AttackAllInteractions)
         {
@@ -144,15 +163,9 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             return;
         }
 
-        if (play1.TryGetModifier<ShyModifier>(out var shy))
-        {
-            shy.OnRoundStart();
-        }
+        if (play1.TryGetModifier<ShyModifier>(out var shy)) shy.OnRoundStart();
 
-        if (play2.TryGetModifier<ShyModifier>(out var shy2))
-        {
-            shy2.OnRoundStart();
-        }
+        if (play2.TryGetModifier<ShyModifier>(out var shy2)) shy2.OnRoundStart();
 
         if (t1.TryCast<DeadBody>()) PreCheckUndertaker(t1.TryCast<DeadBody>()!);
         if (t2.TryCast<DeadBody>()) PreCheckUndertaker(t2.TryCast<DeadBody>()!);
@@ -176,13 +189,15 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
                 button.SetTextOutline(button.TextOutlineColor);
                 if (button.Button != null) button.Button.usesRemainingSprite.color = button.TextOutlineColor;
             }
+
             TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
         }
 
         if (play1.AmOwner || play2.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfUsColors.Transporter.ToTextColor()}You were transported!</color></b>", Color.white, spr: TouRoleIcons.Transporter.LoadAsset());
+                $"<b>{TownOfUsColors.Transporter.ToTextColor()}You were transported!</color></b>", Color.white,
+                spr: TouRoleIcons.Transporter.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -191,22 +206,13 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         MonoBehaviour? GetTarget(byte id)
         {
             var data = GameData.Instance.GetPlayerById(id);
-            if (!data)
-            {
-                return null;
-            }
+            if (!data) return null;
 
             var body = Helpers.GetBodyById(id);
-            if (data.IsDead && body)
-            {
-                return body;
-            }
+            if (data.IsDead && body) return body;
 
             var pc = data.Object;
-            if (!pc)
-            {
-                return null;
-            }
+            if (!pc) return null;
             // FAKE PLAYER MUST BE A MONO BEHAVIOUR FOR THIS TO WORK
             /*var fakePlayer = Utilities.MiscUtils.GetFakePlayer(pc)?.body;
 
@@ -215,12 +221,10 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
                 return fakePlayer;
             } */
 
-            if (pc.moveable || pc.inVent || (pc.TryGetModifier<DisabledModifier>(out var mod) && (!mod.IsConsideredAlive || !mod.CanBeInteractedWith)))
+            if (pc.moveable || pc.inVent || (pc.TryGetModifier<DisabledModifier>(out var mod) &&
+                                             (!mod.IsConsideredAlive || !mod.CanBeInteractedWith)))
             {
-                if (pc.inVent)
-                {
-                    pc.MyPhysics.ExitAllVents();
-                }
+                if (pc.inVent) pc.MyPhysics.ExitAllVents();
 
                 return pc;
             }
@@ -230,20 +234,13 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 
         void PreCheckUndertaker(DeadBody body)
         {
-            if (PlayerControl.LocalPlayer.Data.Role is not TransporterRole)
-            {
-                return;
-            }
+            if (PlayerControl.LocalPlayer.Data.Role is not TransporterRole) return;
 
             var mods = ModifierUtils.GetActiveModifiers<DragModifier>();
 
             foreach (var mod in mods)
-            {
                 if (mod.BodyId == body.ParentId)
-                {
                     UndertakerRole.RpcStopDragging(mod.Player, body.transform.position);
-                }
-            }
         }
 
         (Vector2, Vector2) GetAdjustedPositions(MonoBehaviour transportable, MonoBehaviour transportable2)
@@ -314,17 +311,13 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             return (TP1Position, TP2Position);
         }
     }
+
     public static void Transport(MonoBehaviour mono, Vector3 position)
     {
-        if (mono.TryCast<PlayerControl>() is PlayerControl player && player.HasModifier<ImmovableModifier>())
-        {
-            return;
-        }
+        if (mono.TryCast<PlayerControl>() is PlayerControl player && player.HasModifier<ImmovableModifier>()) return;
 
-        if (mono.TryCast<DeadBody>() is DeadBody deadBody && MiscUtils.PlayerById(deadBody.ParentId)?.HasModifier<ImmovableModifier>() == true)
-        {
-            return;
-        }
+        if (mono.TryCast<DeadBody>() is DeadBody deadBody &&
+            MiscUtils.PlayerById(deadBody.ParentId)?.HasModifier<ImmovableModifier>() == true) return;
 
         var cnt = mono.TryCast<CustomNetworkTransform>();
         if (cnt != null)
@@ -356,31 +349,6 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         }
 
         if (mono.TryCast<PlayerControl>() is PlayerControl player2 && player2.AmOwner)
-        {
             MiscUtils.SnapPlayerCamera(PlayerControl.LocalPlayer);
-        }
     }
-
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        return ITownOfUsRole.SetNewTabText(this);
-    }
-    public string GetAdvancedDescription()
-    {
-        return
-            "The Transporter is a Crewmate Support role that can transport two players, dead or alive, to swap their locations."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Transport",
-            "Switch the positions of two players. Players can be transported out of vents." +
-            "A red flash means one of the players became an invalid target," +
-            "such as going on a ladder or zipline",
-            TouCrewAssets.Transport),
-    ];
 }
-
-

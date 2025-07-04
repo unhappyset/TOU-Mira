@@ -20,6 +20,7 @@ public sealed class HunterOptions : AbstractOptionGroup<HunterRole>
 
     [ModdedNumberOption("Max Stalk Uses", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float StalkUses { get; set; } = 5;
+
     [ModdedToggleOption("Get More Uses From Completing Tasks")]
     public bool TaskUses { get; set; } = true;
 

@@ -16,6 +16,7 @@ namespace TownOfUs.Buttons.Crewmate;
 
 public sealed class PlumberBlockButton : TownOfUsRoleButton<PlumberRole, Vent>
 {
+    private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.Usables);
     public override string Name => "Block";
     public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Plumber;
@@ -26,10 +27,9 @@ public sealed class PlumberBlockButton : TownOfUsRoleButton<PlumberRole, Vent>
 
     public override bool IsTargetValid(Vent? target)
     {
-        return base.IsTargetValid(target) && !Role.VentsBlocked.Contains(target!.Id) && !Role.FutureBlocks.Contains(target.Id);
+        return base.IsTargetValid(target) && !Role.VentsBlocked.Contains(target!.Id) &&
+               !Role.FutureBlocks.Contains(target.Id);
     }
-
-    private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.Usables);
 
     public override Vent? GetTarget()
     {
@@ -38,32 +38,24 @@ public sealed class PlumberBlockButton : TownOfUsRoleButton<PlumberRole, Vent>
         if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 2, Filter);
         if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
 
-        if (ModCompatibility.IsSubmerged() && vent != null && (vent.Id == 0 || vent.Id == 14))
-        {
-            vent = null;
-        }
+        if (ModCompatibility.IsSubmerged() && vent != null && (vent.Id == 0 || vent.Id == 14)) vent = null;
 
-        if (vent != null && PlayerControl.LocalPlayer.CanUseVent(vent))
-        {
-            return vent;
-        }
+        if (vent != null && PlayerControl.LocalPlayer.CanUseVent(vent)) return vent;
         return null;
     }
+
     public override bool CanUse()
     {
         var newTarget = GetTarget();
-        if (newTarget != Target)
-        {
-            Target?.SetOutline(false, false);
-        }
+        if (newTarget != Target) Target?.SetOutline(false, false);
 
         Target = IsTargetValid(newTarget) ? newTarget : null;
         SetOutline(true);
 
         return Timer <= 0 && Target != null
-            && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>()
-            && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>()
-            && UsesLeft > 0;
+                          && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>()
+                          && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>()
+                          && UsesLeft > 0;
     }
 
     protected override void OnClick()
@@ -74,7 +66,9 @@ public sealed class PlumberBlockButton : TownOfUsRoleButton<PlumberRole, Vent>
             return;
         }
 
-        var notif1 = Helpers.CreateAndShowNotification($"<b>{TownOfUsColors.Plumber.ToTextColor()}This vent will be blocked at the beginning of the next round.</b></color>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Plumber.LoadAsset());
+        var notif1 = Helpers.CreateAndShowNotification(
+            $"<b>{TownOfUsColors.Plumber.ToTextColor()}This vent will be blocked at the beginning of the next round.</b></color>",
+            Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Plumber.LoadAsset());
         notif1.Text.SetOutlineThickness(0.35f);
 
         PlumberRole.RpcPlumberBlockVent(PlayerControl.LocalPlayer, Target.Id);

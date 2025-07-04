@@ -21,7 +21,11 @@ public sealed class VampireOptions : AbstractOptionGroup<VampireRole>
     [ModdedToggleOption("New Vampires Can Assassinate")]
     public bool CanGuessAsNewVamp { get; set; } = true;
 
-    [ModdedEnumOption("Valid Conversions", typeof(BiteOptions), ["Crewmates", "Crew & NBs", "Crew & NEs", "Crew, NBs & NEs", "Crew & Lovers", "Crew, Lovers & NBs", "Crew, Lovers & NEs", "Crew, Lovers, NBs & NEs"])]
+    [ModdedEnumOption("Valid Conversions", typeof(BiteOptions),
+    [
+        "Crewmates", "Crew & NBs", "Crew & NEs", "Crew, NBs & NEs", "Crew & Lovers", "Crew, Lovers & NBs",
+        "Crew, Lovers & NEs", "Crew, Lovers, NBs & NEs"
+    ])]
     public BiteOptions ConvertOptions { get; set; } = BiteOptions.CrewNeutralBenignAndNeutralEvil;
 
     [ModdedToggleOption("New Vampires Can Convert")]
@@ -30,6 +34,7 @@ public sealed class VampireOptions : AbstractOptionGroup<VampireRole>
     [ModdedToggleOption("Vampires Can Vent")]
     public bool CanVent { get; set; } = true;
 }
+
 public enum BiteOptions
 {
     OnlyCrewmates,
@@ -39,5 +44,5 @@ public enum BiteOptions
     CrewAndLovers,
     CrewLoversAndNeutralBenign,
     CrewLoversAndNeutralEvil,
-    CrewLoversNeutralBenignAndNeutralEvil,
+    CrewLoversNeutralBenignAndNeutralEvil
 }

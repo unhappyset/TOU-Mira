@@ -23,18 +23,48 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.MimicSprite;
     public override ButtonLocation Location => ButtonLocation.BottomRight;
     public override bool ShouldPauseInVent => false;
-    public override bool Enabled(RoleBehaviour? role) => role is GlitchRole;
+
+    public override void ClickHandler()
+    {
+        if (!CanUse()) return;
+
+        OnClick();
+        Button?.SetDisabled();
+        if (EffectActive)
+        {
+            Timer = Cooldown;
+            EffectActive = false;
+        }
+        else if (HasEffect)
+        {
+            EffectActive = true;
+            Timer = EffectDuration;
+        }
+        else
+        {
+            Timer = Cooldown;
+        }
+    }
+
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return role is GlitchRole;
+    }
 
     protected override void OnClick()
     {
         if (!EffectActive)
         {
             var playerMenu = CustomPlayerMenu.Create();
-            playerMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
-            playerMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+            playerMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material =
+                PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+            playerMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material =
+                PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
             playerMenu.Begin(
-                plr => (!plr.HasDied() || Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == plr.PlayerId) ||
-                FakePlayer.FakePlayers.FirstOrDefault(x => x?.body?.name == $"Fake {plr.gameObject.name}")?.body) && plr != PlayerControl.LocalPlayer,
+                plr => (!plr.HasDied() ||
+                        Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == plr.PlayerId) ||
+                        FakePlayer.FakePlayers.FirstOrDefault(x => x?.body?.name == $"Fake {plr.gameObject.name}")
+                            ?.body) && plr != PlayerControl.LocalPlayer,
                 plr =>
                 {
                     playerMenu.ForceClose();
@@ -54,10 +84,7 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
                         Timer = 0.01f;
                     }
                 });
-            foreach (var panel in playerMenu.potentialVictims)
-            {
-                panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);
-            }
+            foreach (var panel in playerMenu.potentialVictims) panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);
         }
         else
         {
@@ -75,31 +102,8 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
 
     public override bool CanUse()
     {
-        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= (EffectDuration - 2f))) && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
-    }
-
-    public override void ClickHandler()
-    {
-        if (!CanUse())
-        {
-            return;
-        }
-
-        OnClick();
-        Button?.SetDisabled();
-        if (EffectActive)
-        {
-            Timer = Cooldown;
-            EffectActive = false;
-        }
-        else if (HasEffect)
-        {
-            EffectActive = true;
-            Timer = EffectDuration;
-        }
-        else
-        {
-            Timer = Cooldown;
-        }
+        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= EffectDuration - 2f)) &&
+               !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() &&
+               !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
     }
 }

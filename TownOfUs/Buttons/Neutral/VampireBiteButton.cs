@@ -36,7 +36,8 @@ public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerCo
 
         var vampireCount = CustomRoleUtils.GetActiveRolesOfType<VampireRole>().Count();
         var totalVamps = GameHistory.RoleCount<VampireRole>();
-        var canBite = vampireCount < 2 && totalVamps < options.MaxVampires && (!PlayerControl.LocalPlayer.HasModifier<VampireBittenModifier>() || options.CanConvertAsNewVamp);
+        var canBite = vampireCount < 2 && totalVamps < options.MaxVampires &&
+                      (!PlayerControl.LocalPlayer.HasModifier<VampireBittenModifier>() || options.CanConvertAsNewVamp);
 
         OverrideName(canBite ? "Bite" : "Kill");
 
@@ -45,10 +46,19 @@ public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerCo
 
     public override bool IsTargetValid(PlayerControl? target)
     {
-        return base.IsTargetValid(target) && target != null && (!target.IsRole<VampireRole>() || (PlayerControl.LocalPlayer.IsLover() && OptionGroupSingleton<LoversOptions>.Instance.LoverKillTeammates));
+        return base.IsTargetValid(target) && target != null && (!target.IsRole<VampireRole>() ||
+                                                                (PlayerControl.LocalPlayer.IsLover() &&
+                                                                 OptionGroupSingleton<LoversOptions>.Instance
+                                                                     .LoverKillTeammates));
     }
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: plr => !plr.IsRole<VampireRole>() || (PlayerControl.LocalPlayer.IsLover() && OptionGroupSingleton<LoversOptions>.Instance.LoverKillTeammates));
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance,
+            predicate: plr => !plr.IsRole<VampireRole>() || (PlayerControl.LocalPlayer.IsLover() &&
+                                                             OptionGroupSingleton<LoversOptions>.Instance
+                                                                 .LoverKillTeammates));
+    }
 
     protected override void OnClick()
     {
@@ -75,25 +85,20 @@ public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerCo
         var options = OptionGroupSingleton<VampireOptions>.Instance;
 
         var vampireCount = CustomRoleUtils.GetActiveRolesOfType<VampireRole>().Count();
-        var totalVamps = GameHistory.RoleCount<VampireRole>();//GameHistory.AllRoles.Count(x => x is VampireRole);
+        var totalVamps = GameHistory.RoleCount<VampireRole>(); //GameHistory.AllRoles.Count(x => x is VampireRole);
 
         var canConvertRole = true;
         var canConvertAlliance = true;
 
         if (target.HasModifier<LoverModifier>())
-        {
             canConvertAlliance = options.ConvertOptions.ToDisplayString().Contains("Lovers");
-        }
 
         if (target.Is(RoleAlignment.NeutralBenign))
-        {
             canConvertRole = options.ConvertOptions.ToDisplayString().Contains("Neutral Benign");
-        }
         else if (target.Is(RoleAlignment.NeutralEvil))
-        {
             canConvertRole = options.ConvertOptions.ToDisplayString().Contains("Neutral Evil");
-        }
 
-        return canConvertRole && canConvertAlliance && vampireCount < 2 && totalVamps < options.MaxVampires && (!PlayerControl.LocalPlayer.HasModifier<VampireBittenModifier>() || options.CanConvertAsNewVamp);
+        return canConvertRole && canConvertAlliance && vampireCount < 2 && totalVamps < options.MaxVampires &&
+               (!PlayerControl.LocalPlayer.HasModifier<VampireBittenModifier>() || options.CanConvertAsNewVamp);
     }
 }

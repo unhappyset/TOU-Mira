@@ -13,10 +13,7 @@ public static class MayorEvents
 
         @event.VoteData.SetRemainingVotes(0);
 
-        for (var i = 0; i < 3; i++)
-        {
-            @event.VoteData.VoteForPlayer(@event.TargetId);
-        }
+        for (var i = 0; i < 3; i++) @event.VoteData.VoteForPlayer(@event.TargetId);
 
         @event.Cancel();
     }

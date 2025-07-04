@@ -1,4 +1,5 @@
 using HarmonyLib;
+using InnerNet;
 using MiraAPI.GameOptions;
 using TMPro;
 using TownOfUs.Options;
@@ -6,124 +7,136 @@ using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 namespace TownOfUs.Patches;
 
 [HarmonyPatch]
-
 public static class LocalSettings
 {
-    private static SelectionBehaviour[] AllOptions = [
-            new()
+    private static readonly SelectionBehaviour[] AllOptions =
+    [
+        new()
+        {
+            Title = "Show Other Ghosts When Dead",
+            ObjName = "VisibleGhostsToggle",
+            OnClick = () => { return TownOfUsPlugin.DeadSeeGhosts.Value = !TownOfUsPlugin.DeadSeeGhosts.Value; },
+            DefaultValue = TownOfUsPlugin.DeadSeeGhosts.Value
+        },
+        new()
+        {
+            Title = "Show Vents On Map",
+            ObjName = "ShowVentsToggle",
+            OnClick = () => { return TownOfUsPlugin.ShowVents.Value = !TownOfUsPlugin.ShowVents.Value; },
+            DefaultValue = TownOfUsPlugin.ShowVents.Value
+        },
+        new()
+        {
+            Title = "Show Welcome Msg",
+            ObjName = "WelcomeMsgToggle",
+            OnClick = () =>
             {
-                Title = "Show Other Ghosts When Dead",
-                ObjName = "VisibleGhostsToggle",
-                OnClick = () => { return TownOfUsPlugin.DeadSeeGhosts.Value = !TownOfUsPlugin.DeadSeeGhosts.Value; },
-                DefaultValue = TownOfUsPlugin.DeadSeeGhosts.Value
+                return TownOfUsPlugin.ShowWelcomeMessage.Value = !TownOfUsPlugin.ShowWelcomeMessage.Value;
             },
-            new()
+            DefaultValue = TownOfUsPlugin.ShowWelcomeMessage.Value
+        },
+        new()
+        {
+            Title = "Show Summary Msg",
+            ObjName = "SummaryMsgToggle",
+            OnClick = () =>
             {
-                Title = "Show Vents On Map",
-                ObjName = "ShowVentsToggle",
-                OnClick = () => { return TownOfUsPlugin.ShowVents.Value = !TownOfUsPlugin.ShowVents.Value; },
-                DefaultValue = TownOfUsPlugin.ShowVents.Value
+                return TownOfUsPlugin.ShowSummaryMessage.Value = !TownOfUsPlugin.ShowSummaryMessage.Value;
             },
-            new()
+            DefaultValue = TownOfUsPlugin.ShowSummaryMessage.Value
+        },
+        new()
+        {
+            Title = "Colored Player Name",
+            ObjName = "ColoredPlayerNameToggle",
+            Enabled = Palette.CrewmateBlue,
+            //Disabled = new(0.4f, 0f, 0.6f, 1f),
+            Hover = Palette.CrewmateRoleBlue,
+            OnClick = () => { return TownOfUsPlugin.ColorPlayerName.Value = !TownOfUsPlugin.ColorPlayerName.Value; },
+            DefaultValue = TownOfUsPlugin.ColorPlayerName.Value
+        },
+        new()
+        {
+            Title = "Use Basic Crew Colors",
+            ObjName = "BasicCrewColorsToggle",
+            Enabled = Palette.CrewmateBlue,
+            //Disabled = new(0.4f, 0f, 0.6f, 1f),
+            Hover = Palette.CrewmateRoleBlue,
+            OnClick = () =>
             {
-                Title = "Show Welcome Msg",
-                ObjName = "WelcomeMsgToggle",
-                OnClick = () => { return TownOfUsPlugin.ShowWelcomeMessage.Value = !TownOfUsPlugin.ShowWelcomeMessage.Value; },
-                DefaultValue = TownOfUsPlugin.ShowWelcomeMessage.Value
+                TownOfUsColors.UseBasic = !TownOfUsPlugin.UseCrewmateTeamColor.Value;
+                return TownOfUsPlugin.UseCrewmateTeamColor.Value = !TownOfUsPlugin.UseCrewmateTeamColor.Value;
             },
-            new()
+            DefaultValue = TownOfUsPlugin.UseCrewmateTeamColor.Value
+        },
+        new()
+        {
+            Title = "Show Shields On Hud",
+            //Enabled = new(0f, 1f, 0.7f, 1f),
+            //Hover = new(0f, 0.4f, 0f, 1f),
+            ObjName = "ShieldsHudToggle",
+            OnClick = () => { return TownOfUsPlugin.ShowShieldHud.Value = !TownOfUsPlugin.ShowShieldHud.Value; },
+            DefaultValue = TownOfUsPlugin.ShowShieldHud.Value
+        },
+        new()
+        {
+            Title = $"Button Scale Factor: {Math.Round(TownOfUsPlugin.ButtonUIFactor.Value, 2)}x",
+            ObjName = "ButtonScaleFloat",
+            Enabled = TownOfUsColors.Inquisitor,
+            Disabled = TownOfUsColors.Juggernaut,
+            Hover = TownOfUsColors.Vampire,
+            OnClick = () =>
             {
-                Title = "Show Summary Msg",
-                ObjName = "SummaryMsgToggle",
-                OnClick = () => { return TownOfUsPlugin.ShowSummaryMessage.Value = !TownOfUsPlugin.ShowSummaryMessage.Value; },
-                DefaultValue = TownOfUsPlugin.ShowSummaryMessage.Value
-            },
-            new()
-            {
-                Title = "Colored Player Name",
-                ObjName = "ColoredPlayerNameToggle",
-                Enabled = Palette.CrewmateBlue,
-                //Disabled = new(0.4f, 0f, 0.6f, 1f),
-                Hover = Palette.CrewmateRoleBlue,
-                OnClick = () => { return TownOfUsPlugin.ColorPlayerName.Value = !TownOfUsPlugin.ColorPlayerName.Value; },
-                DefaultValue = TownOfUsPlugin.ColorPlayerName.Value
-            },
-            new()
-            {
-                Title = "Use Basic Crew Colors",
-                ObjName = "BasicCrewColorsToggle",
-                Enabled = Palette.CrewmateBlue,
-                //Disabled = new(0.4f, 0f, 0.6f, 1f),
-                Hover = Palette.CrewmateRoleBlue,
-                OnClick = () =>
+                if (HudManager.InstanceExists) HudManagerPatches.ResizeUI(1f / TownOfUsPlugin.ButtonUIFactor.Value);
+                var newVal = TownOfUsPlugin.ButtonUIFactor.Value + 0.1f;
+                if (newVal >= 1.6f) newVal = 0.5f;
+                else if (newVal <= 0.5f) newVal = 0.5f;
+                TownOfUsPlugin.ButtonUIFactor.Value = newVal;
+                if (HudManager.InstanceExists) HudManagerPatches.ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
+                var optionsMenu = GameObject.Find("Menu(Clone)");
+                if (optionsMenu == null) optionsMenu = GameObject.Find("OptionsMenu(Clone)");
+                if (optionsMenu != null)
                 {
-                    TownOfUsColors.UseBasic = !TownOfUsPlugin.UseCrewmateTeamColor.Value;
-                    return TownOfUsPlugin.UseCrewmateTeamColor.Value = !TownOfUsPlugin.UseCrewmateTeamColor.Value;
-                },
-                DefaultValue = TownOfUsPlugin.UseCrewmateTeamColor.Value
+                    var title = optionsMenu.transform.FindChild("ButtonScaleFloat");
+                    if (title != null && title.transform.GetChild(2).TryGetComponent<TextMeshPro>(out var txt))
+                        txt.text = $"Button UI Scale Factor: {Math.Round(newVal, 2)}x";
+                }
+
+                return TownOfUsPlugin.ButtonUIFactor.Value < 1f;
             },
-            new()
+            DefaultValue = TownOfUsPlugin.ButtonUIFactor.Value < 1f
+        },
+        new()
+        {
+            Title = "Offset Buttons If You Can't Vent",
+            ObjName = "OffsetButtons",
+            OnClick = () => { return TownOfUsPlugin.OffsetButtons.Value = !TownOfUsPlugin.OffsetButtons.Value; },
+            DefaultValue = TownOfUsPlugin.OffsetButtons.Value
+        },
+        new()
+        {
+            Title = "Sort Guessing By Alignment",
+            ObjName = "SortGuessingByAlignment",
+            OnClick = () =>
             {
-                Title = "Show Shields On Hud",
-                //Enabled = new(0f, 1f, 0.7f, 1f),
-                //Hover = new(0f, 0.4f, 0f, 1f),
-                ObjName = "ShieldsHudToggle",
-                OnClick = () => { return TownOfUsPlugin.ShowShieldHud.Value = !TownOfUsPlugin.ShowShieldHud.Value; },
-                DefaultValue = TownOfUsPlugin.ShowShieldHud.Value
+                return TownOfUsPlugin.SortGuessingByAlignment.Value = !TownOfUsPlugin.SortGuessingByAlignment.Value;
             },
-            new()
-            {
-                Title = $"Button Scale Factor: {Math.Round(TownOfUsPlugin.ButtonUIFactor.Value, 2)}x",
-                ObjName = "ButtonScaleFloat",
-                Enabled = TownOfUsColors.Inquisitor,
-                Disabled = TownOfUsColors.Juggernaut,
-                Hover = TownOfUsColors.Vampire,
-                OnClick = () =>
-                {
-                    if (HudManager.InstanceExists) HudManagerPatches.ResizeUI(1f / TownOfUsPlugin.ButtonUIFactor.Value);
-                    var newVal = TownOfUsPlugin.ButtonUIFactor.Value + 0.1f;
-                    if (newVal >= 1.6f) newVal = 0.5f;
-                    else if (newVal <= 0.5f) newVal = 0.5f;
-                    TownOfUsPlugin.ButtonUIFactor.Value = newVal;
-                    if (HudManager.InstanceExists) HudManagerPatches.ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
-                    var optionsMenu = GameObject.Find("Menu(Clone)");
-                    if (optionsMenu == null) optionsMenu = GameObject.Find("OptionsMenu(Clone)");
-                    if (optionsMenu != null)
-                    {
-                        var title = optionsMenu.transform.FindChild("ButtonScaleFloat");
-                        if (title != null && title.transform.GetChild(2).TryGetComponent<TextMeshPro>(out var txt)) txt.text = $"Button UI Scale Factor: {Math.Round(newVal, 2)}x";
-                    }
-                    return TownOfUsPlugin.ButtonUIFactor.Value < 1f;
-                },
-                DefaultValue = TownOfUsPlugin.ButtonUIFactor.Value < 1f
-            },
-            new()
-            {
-                Title = "Offset Buttons If You Can't Vent",
-                ObjName = "OffsetButtons",
-                OnClick = () => { return TownOfUsPlugin.OffsetButtons.Value = !TownOfUsPlugin.OffsetButtons.Value; },
-                DefaultValue = TownOfUsPlugin.OffsetButtons.Value
-            },
-            new()
-            {
-                Title = "Sort Guessing By Alignment",
-                ObjName = "SortGuessingByAlignment",
-                OnClick = () => { return TownOfUsPlugin.SortGuessingByAlignment.Value = !TownOfUsPlugin.SortGuessingByAlignment.Value; },
-                DefaultValue = TownOfUsPlugin.SortGuessingByAlignment.Value
-            },
-            new()
-            {
-                Title = "Button Cooldowns are in Decimal Under 10s",
-                ObjName = "PreciseCooldowns",
-                OnClick = () => { return TownOfUsPlugin.PreciseCooldowns.Value = !TownOfUsPlugin.PreciseCooldowns.Value; },
-                DefaultValue = TownOfUsPlugin.PreciseCooldowns.Value
-            },
-        ];
+            DefaultValue = TownOfUsPlugin.SortGuessingByAlignment.Value
+        },
+        new()
+        {
+            Title = "Button Cooldowns are in Decimal Under 10s",
+            ObjName = "PreciseCooldowns",
+            OnClick = () => { return TownOfUsPlugin.PreciseCooldowns.Value = !TownOfUsPlugin.PreciseCooldowns.Value; },
+            DefaultValue = TownOfUsPlugin.PreciseCooldowns.Value
+        }
+    ];
 
     private static GameObject popUp;
     private static TextMeshPro titleText;
@@ -148,15 +161,11 @@ public static class LocalSettings
 
     [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Start))]
     [HarmonyPostfix]
-
     public static void OptionsMenuBehaviour_StartPostfix(OptionsMenuBehaviour __instance)
     {
         if (!__instance.CensorChatButton) return;
 
-        if (!popUp)
-        {
-            CreateCustom(__instance);
-        }
+        if (!popUp) CreateCustom(__instance);
         if (!buttonPrefab)
         {
             buttonPrefab = Object.Instantiate(__instance.CensorChatButton);
@@ -164,6 +173,7 @@ public static class LocalSettings
             buttonPrefab.name = "CensorChatPrefab";
             buttonPrefab.gameObject.SetActive(false);
         }
+
         SetUpOptions();
         InitializeMoreButton(__instance);
     }
@@ -179,7 +189,6 @@ public static class LocalSettings
 
         Object.Destroy(popUp.GetComponent<OptionsMenuBehaviour>());
         foreach (var gObj in popUp.gameObject.GetAllChildren())
-        {
             if (gObj.name == "Background")
             {
                 var scale = gObj.transform.localScale;
@@ -193,7 +202,6 @@ public static class LocalSettings
             {
                 Object.Destroy(gObj);
             }
-        }
 
         popUp.SetActive(false);
     }
@@ -218,10 +226,10 @@ public static class LocalSettings
         moreOptions.Text.text = "Tou Client Options";
         moreOptions.Text.transform.localScale = new Vector3(1 / 0.66f, 1, 1);
         var moreOptionsButton = moreOptions.GetComponent<PassiveButton>();
-        moreOptionsButton.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
+        moreOptionsButton.OnClick = new Button.ButtonClickedEvent();
         moreOptionsButton.OnClick.AddListener((Action)(() =>
         {
-            bool closeUnderlying = false;
+            var closeUnderlying = false;
             if (!popUp) return;
 
             if (__instance.transform.parent && __instance.transform.parent == HudManager.Instance.transform)
@@ -238,7 +246,7 @@ public static class LocalSettings
 
             CheckSetTitle();
             RefreshOpen();
-            if (closeUnderlying)  __instance.Close();
+            if (closeUnderlying) __instance.Close();
         }));
     }
 
@@ -257,7 +265,7 @@ public static class LocalSettings
         title.GetComponent<RectTransform>().localPosition = Vector3.up * 2.3f;
         title.gameObject.SetActive(true);
         title.gameObject.layer = LayerMask.NameToLayer("UI");
-        title.text = $"<size=80%>Town of Us Mira\n</size><size=60%>Client Options</size>\n";
+        title.text = "<size=80%>Town of Us Mira\n</size><size=60%>Client Options</size>\n";
         title.name = "TitleText";
     }
 
@@ -270,7 +278,7 @@ public static class LocalSettings
             var info = AllOptions[i];
 
             var button = Object.Instantiate(buttonPrefab, popUp.transform);
-            var pos = new Vector3(-2.34f + (i % 3) * 2.34f, 1.3f - i / 3 * 0.8f, -.5f);
+            var pos = new Vector3(-2.34f + i % 3 * 2.34f, 1.3f - i / 3 * 0.8f, -.5f);
 
             var transform = button.transform;
             transform.localPosition = pos;
@@ -291,7 +299,7 @@ public static class LocalSettings
 
             colliderButton.size = new Vector2(2.2f, .7f);
 
-            passiveButton.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
+            passiveButton.OnClick = new Button.ButtonClickedEvent();
             passiveButton.OnMouseOut = new UnityEvent();
             passiveButton.OnMouseOver = new UnityEvent();
 
@@ -302,32 +310,19 @@ public static class LocalSettings
             }));
 
             passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = info.Hover));
-            passiveButton.OnMouseOut.AddListener((Action)(() => button.Background.color = button.onState ? info.Enabled : info.Disabled));
+            passiveButton.OnMouseOut.AddListener((Action)(() =>
+                button.Background.color = button.onState ? info.Enabled : info.Disabled));
 
             foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
                 spr.size = new Vector2(2.2f, .7f);
         }
     }
 
-    public sealed class SelectionBehaviour
-    {
-        public string Title;
-
-        public Func<bool> OnClick;
-
-        public bool DefaultValue;
-        public string ObjName;
-        public Color Enabled { get; set; } = Color.green;
-        public Color Disabled { get; set; } = Palette.ImpostorRed;
-        public Color Hover { get; set; } = new Color32(34, 139, 34, 255);
-    }
-
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     [HarmonyPostfix]
-
     public static void HideGhosts()
     {
-        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+        if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
         if (!PlayerControl.LocalPlayer.Data.IsDead) return;
         if (MeetingHud.Instance) return;
         if (!OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow) return;
@@ -347,12 +342,8 @@ public static class LocalSettings
             var bodyForms = player.gameObject.transform.GetChild(1).gameObject;
 
             foreach (var form in bodyForms.GetAllChildren())
-            {
                 if (form.activeSelf)
-                {
                     form.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, show ? 1f : 0f);
-                }
-            }
 
             if (player.cosmetics.HasPetEquipped()) player.cosmetics.CurrentPet.Visible = show;
             player.cosmetics.gameObject.SetActive(show);
@@ -362,10 +353,18 @@ public static class LocalSettings
 
     public static IEnumerable<GameObject> GetAllChildren(this GameObject go)
     {
-        for (var i = 0; i < go.transform.childCount; i++)
-        {
-            yield return go.transform.GetChild(i).gameObject;
-        }
+        for (var i = 0; i < go.transform.childCount; i++) yield return go.transform.GetChild(i).gameObject;
+    }
+
+    public sealed class SelectionBehaviour
+    {
+        public bool DefaultValue;
+        public string ObjName;
+
+        public Func<bool> OnClick;
+        public string Title;
+        public Color Enabled { get; set; } = Color.green;
+        public Color Disabled { get; set; } = Palette.ImpostorRed;
+        public Color Hover { get; set; } = new Color32(34, 139, 34, 255);
     }
 }
-

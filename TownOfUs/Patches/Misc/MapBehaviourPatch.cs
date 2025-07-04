@@ -9,7 +9,6 @@ using Object = UnityEngine.Object;
 namespace TownOfUs.Patches.Misc;
 
 [HarmonyPatch]
-
 public static class ShowVentsPatch
 {
     public static readonly List<List<Vent>> VentNetworks = [];
@@ -21,17 +20,16 @@ public static class ShowVentsPatch
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowCountOverlay))]
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
     [HarmonyPostfix]
-
     public static void Postfix(MapBehaviour __instance)
     {
         if (PlayerControl.LocalPlayer.HasModifier<SatelliteModifier>())
-        {
-            foreach (var deadBody in ModifierUtils.GetActiveModifiers<SatelliteArrowModifier>().Select(bodyMod => bodyMod.DeadBody))
+            foreach (var deadBody in ModifierUtils.GetActiveModifiers<SatelliteArrowModifier>()
+                         .Select(bodyMod => bodyMod.DeadBody))
             {
                 var location = deadBody.transform.position / ShipStatus.Instance.MapScale;
                 location.z = -1.99f;
 
-                if (!BodyIcons.TryGetValue(deadBody.ParentId, out GameObject? Icon) || Icon == null)
+                if (!BodyIcons.TryGetValue(deadBody.ParentId, out var Icon) || Icon == null)
                 {
                     Icon = Object.Instantiate(__instance.HerePoint.gameObject, __instance.HerePoint.transform.parent);
                     var renderer = Icon.GetComponent<SpriteRenderer>();
@@ -40,31 +38,26 @@ public static class ShowVentsPatch
                     Icon.transform.localPosition = location;
                     BodyIcons[deadBody.ParentId] = Icon;
                 }
+
                 Icon.transform.localScale = Vector3.one;
             }
-        }
 
         if (!ModifierUtils.GetActiveModifiers<SatelliteArrowModifier>().Any())
         {
-            foreach (var icon in BodyIcons.Values.Where(x => x))
-            {
-                Object.Destroy(icon);
-            }
+            foreach (var icon in BodyIcons.Values.Where(x => x)) Object.Destroy(icon);
             BodyIcons.Clear();
         }
-        
+
         if (!TownOfUsPlugin.ShowVents.Value)
         {
-            foreach (var icon in VentIcons.Values.Where(x => x))
-            {
-                Object.Destroy(icon);
-            }
+            foreach (var icon in VentIcons.Values.Where(x => x)) Object.Destroy(icon);
             VentIcons.Clear();
             VentNetworks.Clear();
             return;
         }
 
-        var task = PlayerControl.LocalPlayer.myTasks.ToArray().FirstOrDefault(x => x.TaskType == TaskTypes.VentCleaning);
+        var task = PlayerControl.LocalPlayer.myTasks.ToArray()
+            .FirstOrDefault(x => x.TaskType == TaskTypes.VentCleaning);
 
         foreach (var vent in ShipStatus.Instance.AllVents)
         {
@@ -72,7 +65,7 @@ public static class ShowVentsPatch
             var location = vent.transform.position / ShipStatus.Instance.MapScale;
             location.z = -0.99f;
 
-            if (!VentIcons.TryGetValue(vent.Id, out GameObject? Icon) || Icon == null)
+            if (!VentIcons.TryGetValue(vent.Id, out var Icon) || Icon == null)
             {
                 Icon = Object.Instantiate(__instance.HerePoint.gameObject, __instance.HerePoint.transform.parent);
                 var renderer = Icon.GetComponent<SpriteRenderer>();
@@ -83,20 +76,16 @@ public static class ShowVentsPatch
             }
 
             if (task?.IsComplete == false && task.FindConsoles()[0].ConsoleId == vent.Id)
-            {
                 Icon.transform.localScale *= 0.6f;
-            }
             else
-            {
                 Icon.transform.localScale = Vector3.one;
-            }
 
             HandleMiraOrSub();
 
             var network = GetNetworkFor(vent);
             if (network == null)
             {
-                VentNetworks.Add(new(vent.NearbyVents.Where(x => x != null)) { vent });
+                VentNetworks.Add(new List<Vent>(vent.NearbyVents.Where(x => x != null)) { vent });
             }
             else
             {
@@ -110,14 +99,14 @@ public static class ShowVentsPatch
             foreach (var connectedgroup in VentNetworks)
             {
                 var index = Array.IndexOf(array, connectedgroup);
-                connectedgroup.Do(x => VentIcons[x.Id].GetComponent<SpriteRenderer>().color = Palette.PlayerColors[index]);
+                connectedgroup.Do(x =>
+                    VentIcons[x.Id].GetComponent<SpriteRenderer>().color = Palette.PlayerColors[index]);
             }
         }
     }
 
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
     [HarmonyPostfix]
-
     public static void Postfix()
     {
         BodyIcons.Clear();
@@ -127,7 +116,8 @@ public static class ShowVentsPatch
 
     public static List<Vent>? GetNetworkFor(Vent vent)
     {
-        return VentNetworks.FirstOrDefault(x => x.Any(y => y == vent || y == vent.Left || y == vent.Center || y == vent.Right));
+        return VentNetworks.FirstOrDefault(x =>
+            x.Any(y => y == vent || y == vent.Left || y == vent.Center || y == vent.Right));
     }
 
     public static bool AllVentsRegistered()
@@ -139,6 +129,7 @@ public static class ShowVentsPatch
             var network = GetNetworkFor(vent);
             if (network == null || !network.Any(x => x == vent)) return false;
         }
+
         return true;
     }
 

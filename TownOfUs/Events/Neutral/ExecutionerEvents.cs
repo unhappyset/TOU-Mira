@@ -26,13 +26,15 @@ public static class ExecutionerEvents
 
         var role = @event.Source.Data.Role;
         if (@event.Source.HasDied()) role = @event.Source.GetRoleWhenAlive();
-        if (role is ExecutionerRole exe && exe.TargetVoted && OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
+        if (role is ExecutionerRole exe && exe.TargetVoted &&
+            OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
         {
             if (exe.Player.AmOwner)
             {
                 PlayerControl.LocalPlayer.RpcPlayerExile();
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>You have successfully won as the {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, as your target was exiled!</b>", Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
+                    $"<b>You have successfully won as the {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, as your target was exiled!</b>",
+                    Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -40,7 +42,8 @@ public static class ExecutionerEvents
             else
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>The {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, {exe.Player.Data.PlayerName}, has successfully won, as their target was exiled!</b>", Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
+                    $"<b>The {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, {exe.Player.Data.PlayerName}, has successfully won, as their target was exiled!</b>",
+                    Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -62,7 +65,8 @@ public static class ExecutionerEvents
         if (@event.TriggeredByIntro) return;
         if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.EndsGame) return;
 
-        var exe = CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>().FirstOrDefault(x => x.TargetVoted && !x.Player.HasDied());
+        var exe = CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>()
+            .FirstOrDefault(x => x.TargetVoted && !x.Player.HasDied());
         if (exe != null)
         {
             if (exe.Player.AmOwner)
@@ -70,27 +74,29 @@ public static class ExecutionerEvents
                 if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
                 {
                     var voters = exe.Voters.ToArray();
-                    Func<PlayerControl, bool> _playerMatch = plr => plr != exe.Target && plr != exe.Player && voters.Contains(plr.PlayerId) && !plr.HasDied() && !plr.HasModifier<InvulnerabilityModifier>();
+                    Func<PlayerControl, bool> _playerMatch = plr =>
+                        plr != exe.Target && plr != exe.Player && voters.Contains(plr.PlayerId) && !plr.HasDied() &&
+                        !plr.HasModifier<InvulnerabilityModifier>();
 
                     var killMenu = CustomPlayerMenu.Create();
-                    killMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
-                    killMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+                    killMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material =
+                        PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+                    killMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material =
+                        PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
                     killMenu.Begin(
                         _playerMatch,
                         plr =>
                         {
                             killMenu.ForceClose();
 
-                            if (plr != null)
-                            {
-                                PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
-                            }
+                            if (plr != null) PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
                         });
                 }
                 else
                 {
                     var notif1 = Helpers.CreateAndShowNotification(
-                        $"<b>You have successfully won as the {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, as your target was exiled!</b>", Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
+                        $"<b>You have successfully won as the {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, as your target was exiled!</b>",
+                        Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
 
                     notif1.Text.SetOutlineThickness(0.35f);
                     notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -101,10 +107,11 @@ public static class ExecutionerEvents
             else if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Nothing)
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>The {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, {exe.Player.Data.PlayerName}, has successfully won, as their target was exiled!</b>", Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
+                    $"<b>The {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, {exe.Player.Data.PlayerName}, has successfully won, as their target was exiled!</b>",
+                    Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
-                    notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
             }
         }
     }

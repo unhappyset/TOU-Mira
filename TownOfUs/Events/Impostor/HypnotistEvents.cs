@@ -13,10 +13,7 @@ public static class HypnotistEvents
     [RegisterEvent]
     private static void StartMeetingEventHandler(StartMeetingEvent @event)
     {
-        foreach (var mod in ModifierUtils.GetActiveModifiers<HypnotisedModifier>())
-        {
-            mod.UnHysteria();
-        }
+        foreach (var mod in ModifierUtils.GetActiveModifiers<HypnotisedModifier>()) mod.UnHysteria();
     }
 
     [RegisterEvent]

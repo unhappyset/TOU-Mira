@@ -20,19 +20,9 @@ public sealed class MorphlingMorphButton : TownOfUsRoleButton<MorphlingRole>, IA
     public override int MaxUses => (int)OptionGroupSingleton<MorphlingOptions>.Instance.MaxMorphs;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.MorphSprite;
 
-    public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && Role is not { Sampled: null };
-
-    public override bool CanUse()
-    {
-        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= (EffectDuration - 2f))) && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
-    }
-
     public override void ClickHandler()
     {
-        if (!CanUse())
-        {
-            return;
-        }
+        if (!CanUse()) return;
 
         OnClick();
         Button?.SetDisabled();
@@ -50,6 +40,18 @@ public sealed class MorphlingMorphButton : TownOfUsRoleButton<MorphlingRole>, IA
         {
             Timer = Cooldown;
         }
+    }
+
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return base.Enabled(role) && Role is not { Sampled: null };
+    }
+
+    public override bool CanUse()
+    {
+        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= EffectDuration - 2f)) &&
+               !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() &&
+               !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
     }
 
     protected override void OnClick()

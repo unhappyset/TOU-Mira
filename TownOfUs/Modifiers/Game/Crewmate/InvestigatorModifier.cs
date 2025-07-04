@@ -15,13 +15,34 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class InvestigatorModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Investigator";
-    public override string IntroInfo => $"You will also see everyone's footprints for some time.";
+    public override string IntroInfo => "You will also see everyone's footprints for some time.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Investigator;
-    public override string GetDescription() => "You can see everyone's footprints.";
+
     public override ModifierFaction FactionType => ModifierFaction.CrewmateUtility;
 
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.InvestigatorChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.InvestigatorAmount;
+    public string GetAdvancedDescription()
+    {
+        return
+            "The Investigator can see player's footprints throughout the game. Swooped players' footprints will not be visible to the Investigator."
+            + MiscUtils.AppendOptionsText(CustomRoleSingleton<InvestigatorRole>.Instance.GetType());
+    }
+
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "You can see everyone's footprints.";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.InvestigatorChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.InvestigatorAmount;
+    }
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
@@ -43,12 +64,4 @@ public sealed class InvestigatorModifier : TouGameModifier, IWikiDiscoverable
         PlayerControl.AllPlayerControls.ToArray().Where(plr => plr.HasModifier<FootstepsModifier>())
             .ToList().ForEach(plr => plr.GetModifierComponent().RemoveModifier<FootstepsModifier>());
     }
-    public string GetAdvancedDescription()
-    {
-        return
-            "The Investigator can see player's footprints throughout the game. Swooped players' footprints will not be visible to the Investigator."
-            + MiscUtils.AppendOptionsText(CustomRoleSingleton<InvestigatorRole>.Instance.GetType());
-    }
-
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
 }

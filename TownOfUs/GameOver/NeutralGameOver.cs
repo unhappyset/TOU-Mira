@@ -13,8 +13,8 @@ namespace TownOfUs.GameOver;
 
 public sealed class NeutralGameOver : CustomGameOver
 {
-    private string _roleName = "PLACEHOLDER";
     private Color _roleColor;
+    private string _roleName = "PLACEHOLDER";
 
     public override bool VerifyCondition(PlayerControl playerControl, NetworkedPlayerInfo[] winners)
     {

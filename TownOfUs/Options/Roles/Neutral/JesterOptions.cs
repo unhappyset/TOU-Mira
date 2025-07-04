@@ -26,7 +26,6 @@ public sealed class JesterOptions : AbstractOptionGroup<JesterRole>
 
     [ModdedEnumOption("Jester Win", typeof(JestWinOptions), ["Ends Game", "Haunts", "Nothing"])]
     public JestWinOptions JestWin { get; set; } = JestWinOptions.EndsGame;
-
 }
 
 public enum JestWinOptions

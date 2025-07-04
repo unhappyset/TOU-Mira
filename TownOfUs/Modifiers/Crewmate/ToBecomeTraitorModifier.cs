@@ -17,30 +17,25 @@ public sealed class ToBecomeTraitorModifier : ExcludedGameModifier, IAssignableT
 {
     public override string ModifierName => "Possible Traitor";
     public override bool HideOnUi => true;
-    public override int GetAmountPerGame() => 0;
-    public override int GetAssignmentChance() => 0;
-    public int Priority { get; set; } = 3;
 
-    public void Clear()
-    {
-        AssignTargets();
-        ModifierComponent?.RemoveModifier(this);
-    }
+    public int Priority { get; set; } = 3;
 
     public void AssignTargets()
     {
         Random rnd = new();
         var chance = rnd.Next(0, 100);
 
-        if (chance <= GameOptionsManager.Instance.CurrentGameOptions.RoleOptions.GetChancePerGame((RoleTypes)RoleId.Get<TraitorRole>()))
+        if (chance <=
+            GameOptionsManager.Instance.CurrentGameOptions.RoleOptions.GetChancePerGame(
+                (RoleTypes)RoleId.Get<TraitorRole>()))
         {
             var filtered = PlayerControl.AllPlayerControls.ToArray()
-                .Where(x => x.Is(ModdedRoleTeams.Crewmate) && 
-                                    !x.Data.IsDead && 
-                                    !x.Data.Disconnected && 
-                                    !x.HasModifier<ExecutionerTargetModifier>() &&
-                                    !x.HasModifier<EgotistModifier>() &&
-                                    x.Data.Role is not MayorRole).ToList();
+                .Where(x => x.Is(ModdedRoleTeams.Crewmate) &&
+                            !x.Data.IsDead &&
+                            !x.Data.Disconnected &&
+                            !x.HasModifier<ExecutionerTargetModifier>() &&
+                            !x.HasModifier<EgotistModifier>() &&
+                            x.Data.Role is not MayorRole).ToList();
 
             Random rndIndex = new();
             if (filtered.Count == 0) return;
@@ -48,6 +43,22 @@ public sealed class ToBecomeTraitorModifier : ExcludedGameModifier, IAssignableT
 
             randomTarget.RpcAddModifier<ToBecomeTraitorModifier>();
         }
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return 0;
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return 0;
+    }
+
+    public void Clear()
+    {
+        AssignTargets();
+        ModifierComponent?.RemoveModifier(this);
     }
 
     [MethodRpc((uint)TownOfUsRpc.SetTraitor, SendImmediately = true)]
@@ -59,13 +70,10 @@ public sealed class ToBecomeTraitorModifier : ExcludedGameModifier, IAssignableT
         player.RemoveModifier<ToBecomeTraitorModifier>();
 
         if (OptionGroupSingleton<AssassinOptions>.Instance.TraitorCanAssassin)
-        {
             player.AddModifier<ImpostorAssassinModifier>();
-        }
-        
+
         if (SnitchRole.IsTargetOfSnitch(player))
-        {
-            CustomRoleUtils.GetActiveRolesOfType<SnitchRole>().ToList().ForEach(snitch => snitch.AddSnitchTraitorArrows());
-        }
+            CustomRoleUtils.GetActiveRolesOfType<SnitchRole>().ToList()
+                .ForEach(snitch => snitch.AddSnitchTraitorArrows());
     }
 }

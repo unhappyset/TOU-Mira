@@ -18,13 +18,18 @@ public static class MinigameCanMovePatch
         if (PlayerControl.LocalPlayer == null) return true;
         if (MeetingHud.Instance) return true;
         // Only allows Scientist Vitals to allow you to move, not just vitals on the map
-        if (PlayerControl.LocalPlayer.HasModifier<ScientistModifier>() && CustomButtonSingleton<ScientistButton>.Instance.EffectActive &&
+        if (PlayerControl.LocalPlayer.HasModifier<ScientistModifier>() &&
+            CustomButtonSingleton<ScientistButton>.Instance.EffectActive &&
             Minigame.Instance is VitalsMinigame && OptionGroupSingleton<ScientistOptions>.Instance.MoveWithMenu)
         {
             __result = __instance.moveable;
             return false;
         }
-        if (PlayerControl.LocalPlayer.HasModifier<OperativeModifier>() && ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard && CustomButtonSingleton<SecurityButton>.Instance.EffectActive && CustomButtonSingleton<SecurityButton>.Instance.canMoveWithMinigame)
+
+        if (PlayerControl.LocalPlayer.HasModifier<OperativeModifier>() &&
+            ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard &&
+            CustomButtonSingleton<SecurityButton>.Instance.EffectActive &&
+            CustomButtonSingleton<SecurityButton>.Instance.canMoveWithMinigame)
         {
             __result = __instance.moveable;
             return false;

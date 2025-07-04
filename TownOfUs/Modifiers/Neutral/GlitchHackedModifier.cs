@@ -25,7 +25,7 @@ public sealed class GlitchHackedModifier(byte glitchId) : TimedModifier
     private GameObject? VentButtonHackedSprite { get; set; }
     private GameObject? UseButtonHackedSprite { get; set; }
     private GameObject? SabotageButtonHackedSprite { get; set; }
-    private List<GameObject> CustomButtonHackedSprites { get; set; } = [];
+    private List<GameObject> CustomButtonHackedSprites { get; } = [];
 
     public override void OnActivate()
     {
@@ -47,7 +47,7 @@ public sealed class GlitchHackedModifier(byte glitchId) : TimedModifier
             }
         }
     }
-    
+
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent!.RemoveModifier(this);

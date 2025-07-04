@@ -13,17 +13,19 @@ namespace TownOfUs.Buttons.Crewmate;
 
 public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Vent>
 {
+    private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.Usables);
     public override string Name => "Vent";
     public override string Keybind => Keybinds.VentAction;
     public override Color TextOutlineColor => TownOfUsColors.Engineer;
-    public override float Cooldown => OptionGroupSingleton<EngineerOptions>.Instance.VentCooldown + 0.001f + MapCooldown;
+
+    public override float Cooldown =>
+        OptionGroupSingleton<EngineerOptions>.Instance.VentCooldown + 0.001f + MapCooldown;
+
     public override float EffectDuration => OptionGroupSingleton<EngineerOptions>.Instance.VentDuration;
     public override int MaxUses => (int)OptionGroupSingleton<EngineerOptions>.Instance.MaxVents;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.EngiVentSprite;
     public override bool ShouldPauseInVent => false;
     public int ExtraUses { get; set; }
-
-    private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.Usables);
 
     public override Vent? GetTarget()
     {
@@ -32,10 +34,7 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
         if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 2, Filter);
         if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
 
-        if (vent != null && PlayerControl.LocalPlayer.CanUseVent(vent))
-        {
-            return vent;
-        }
+        if (vent != null && PlayerControl.LocalPlayer.CanUseVent(vent)) return vent;
 
         return null;
     }
@@ -43,25 +42,20 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
     public override bool CanUse()
     {
         var newTarget = GetTarget();
-        if (newTarget != Target)
-        {
-            Target?.SetOutline(false, false);
-        }
+        if (newTarget != Target) Target?.SetOutline(false, false);
 
         Target = IsTargetValid(newTarget) ? newTarget : null;
         SetOutline(true);
 
         return ((Timer <= 0 && !PlayerControl.LocalPlayer.inVent && Target != null) || PlayerControl.LocalPlayer.inVent)
-            && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>()
-            && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>()
-            && (MaxUses == 0 || UsesLeft > 0);
+               && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>()
+               && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>()
+               && (MaxUses == 0 || UsesLeft > 0);
     }
+
     public override void ClickHandler()
     {
-        if (!CanUse())
-        {
-            return;
-        }
+        if (!CanUse()) return;
 
         OnClick();
         Button?.SetDisabled();
@@ -84,6 +78,7 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
             // Logger<TownOfUsPlugin>.Error($"Cooldown is active");
         }
     }
+
     protected override void OnClick()
     {
         if (!PlayerControl.LocalPlayer.inVent)
@@ -107,6 +102,7 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
             }
         }
     }
+
     public override void OnEffectEnd()
     {
         if (PlayerControl.LocalPlayer.inVent)

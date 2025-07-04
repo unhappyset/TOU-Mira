@@ -10,7 +10,7 @@ public static class ColorblindTextPatch
     {
         var name = Palette.GetColorName(__instance.bodyMatProperties.ColorId).ToTitleCase();
         __result = name;
-        
+
         return false;
     }
 }

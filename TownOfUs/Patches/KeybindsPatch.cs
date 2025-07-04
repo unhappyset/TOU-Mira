@@ -19,7 +19,8 @@ public static class Keybinds
         __instance.userData.RegisterBind("tou.ActionCustom2", "Modifier Ability");
     }
 
-    private static int RegisterBind(this UserData self, string name, string description, int elementIdentifierId = -1, int category = 0, InputActionType type = InputActionType.Button)
+    private static int RegisterBind(this UserData self, string name, string description, int elementIdentifierId = -1,
+        int category = 0, InputActionType type = InputActionType.Button)
     {
         self.AddAction(category);
         var action = self.GetAction(self.actions.Count - 1)!;
@@ -38,7 +39,7 @@ public static class Keybinds
             _axisContribution = Pole.Positive,
             _modifierKey1 = ModifierKey.None,
             _modifierKey2 = ModifierKey.None,
-            _modifierKey3 = ModifierKey.None,
+            _modifierKey3 = ModifierKey.None
         };
         self.keyboardMaps[0].actionElementMaps.Add(map);
         self.joystickMaps[0].actionElementMaps.Add(map);
@@ -64,7 +65,7 @@ public static class KillVentBinds
 
         if (button.isActiveAndEnabled)
         {
-            bool killKey = ReInput.players.GetPlayer(0).GetButtonDown("ActionSecondary");
+            var killKey = ReInput.players.GetPlayer(0).GetButtonDown("ActionSecondary");
             var controllerKill = ConsoleJoystick.player.GetButtonDown(8);
             if (killKey || controllerKill)
                 button.DoClick();
@@ -72,7 +73,7 @@ public static class KillVentBinds
 
         if (vent.isActiveAndEnabled)
         {
-            bool ventKey = ReInput.players.GetPlayer(0).GetButtonDown("UseVent");
+            var ventKey = ReInput.players.GetPlayer(0).GetButtonDown("UseVent");
             var controllerVent = ConsoleJoystick.player.GetButtonDown(50);
             if (ventKey || controllerVent)
                 vent.DoClick();

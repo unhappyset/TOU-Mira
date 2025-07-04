@@ -29,18 +29,12 @@ public static class GlitchEvents
 
     private static void CheckForGlitchHacked(MiraCancelableEvent miraEvent, PlayerControl source)
     {
-        if (MeetingHud.Instance || ExileController.Instance)
-        {
-            return;
-        }
+        if (MeetingHud.Instance || ExileController.Instance) return;
 
         if (!source.HasModifier<GlitchHackedModifier>()) return;
 
         miraEvent.Cancel();
 
-        if (source.AmOwner)
-        {
-            PlayerControl.LocalPlayer.GetModifier<GlitchHackedModifier>()!.ShowHacked();
-        }
+        if (source.AmOwner) PlayerControl.LocalPlayer.GetModifier<GlitchHackedModifier>()!.ShowHacked();
     }
 }

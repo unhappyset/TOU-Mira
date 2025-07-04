@@ -20,7 +20,11 @@ public sealed class OracleConfessButton : TownOfUsRoleButton<OracleRole, PlayerC
     public override float Cooldown => OptionGroupSingleton<OracleOptions>.Instance.ConfessCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.ConfessSprite;
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: x => !x.HasModifier<OracleConfessModifier>());
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance,
+            predicate: x => !x.HasModifier<OracleConfessModifier>());
+    }
 
     protected override void OnClick()
     {

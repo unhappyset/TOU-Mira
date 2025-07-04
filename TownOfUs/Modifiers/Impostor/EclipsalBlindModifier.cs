@@ -30,17 +30,17 @@ public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifi
         MiraEventManager.InvokeEvent(touAbilityEvent);
 
         VisionPerc = 1f;
-        
-        if (PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
-        {
+
+        if (PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.HasDied() &&
+                                                       OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
             Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
-        }
-        EclipseBack = AnimStore.SpawnAnimBody(Player, TouAssets.EclipsedPrefab.LoadAsset(), false, -1.1f, -0.575f)!;
+        EclipseBack = AnimStore.SpawnAnimBody(Player, TouAssets.EclipsedPrefab.LoadAsset(), false, -1.1f)!;
         EclipseBack.SetActive(false);
         if (Player.AmOwner && !Eclipsal.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You were blinded by an Eclipsal!</color></b>", Color.white, spr: TouRoleIcons.Eclipsal.LoadAsset());
+                $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You were blinded by an Eclipsal!</color></b>", Color.white,
+                spr: TouRoleIcons.Eclipsal.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -61,31 +61,24 @@ public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifi
         var opts = OptionGroupSingleton<EclipsalOptions>.Instance;
 
         if (PlayerControl.LocalPlayer.IsImpostor())
-        {
             Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Color.black);
-        }
 
         if (TimeRemaining > opts.BlindDuration - 1f)
-        {
             VisionPerc = TimeRemaining - opts.BlindDuration + 1f;
-        }
         else if (TimeRemaining < 1f)
-        {
             VisionPerc = 1f - TimeRemaining;
-        }
         else
-        {
             VisionPerc = 0f;
-        }
         EclipseBack?.SetActive(false);
-        if ((PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow)) && EclipseBack?.gameObject != null)
+        if ((PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.HasDied() &&
+                                                        OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow)) &&
+            EclipseBack?.gameObject != null)
         {
             var visible = true;
-            
-            if (Player.HasModifier<ConcealedModifier>() || !Player.Visible || (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive) || Player.inVent)
-            {
-                visible = false;
-            }
+
+            if (Player.HasModifier<ConcealedModifier>() || !Player.Visible ||
+                (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive) ||
+                Player.inVent) visible = false;
             Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Color.black);
             EclipseBack?.SetActive(visible);
         }
@@ -97,13 +90,9 @@ public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifi
 
         VisionPerc = 1f;
 
-        if (PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
-        {
+        if (PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.HasDied() &&
+                                                       OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
             Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
-        }
-        if (EclipseBack?.gameObject != null)
-        {
-            EclipseBack.gameObject.Destroy();
-        }
+        if (EclipseBack?.gameObject != null) EclipseBack.gameObject.Destroy();
     }
 }

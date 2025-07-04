@@ -14,7 +14,7 @@ public sealed class AllianceModifierOptions : AbstractOptionGroup
 
     [ModdedNumberOption("Egotist Chance", 0, 100f, 10f, MiraNumberSuffixes.Percent)]
     public float EgotistChance { get; set; } = 0;
-    
+
     [ModdedNumberOption("Lovers Chance", 0, 100, 10f, MiraNumberSuffixes.Percent)]
     public float LoversChance { get; set; } = 0;
 }

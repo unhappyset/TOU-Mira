@@ -30,7 +30,8 @@ public static class RainbowUtils
         try
         {
             return Palette.ColorNames[id] == TownOfUsPlayerColors.Rainbow.Name;
-        } catch
+        }
+        catch
         {
             return false;
         }

@@ -49,7 +49,8 @@ public static class PlaguebearerEvents
             if (pest.Player.AmOwner)
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>The crew know of the {TownOfUsColors.Pestilence.ToTextColor()}Pestilence</color>.</b>", Color.white, spr: TouRoleIcons.Pestilence.LoadAsset());
+                    $"<b>The crew know of the {TownOfUsColors.Pestilence.ToTextColor()}Pestilence</color>.</b>",
+                    Color.white, spr: TouRoleIcons.Pestilence.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -57,7 +58,8 @@ public static class PlaguebearerEvents
             else
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>The {TownOfUsColors.Plaguebearer.ToTextColor()}plague</color> has consumed the crew. {TownOfUsColors.Pestilence.ToTextColor()}Pestilence</color>, Horseman of the Apocalypse, has emerged!</b>", Color.white, spr: TouRoleIcons.Pestilence.LoadAsset());
+                    $"<b>The {TownOfUsColors.Plaguebearer.ToTextColor()}plague</color> has consumed the crew. {TownOfUsColors.Pestilence.ToTextColor()}Pestilence</color>, Horseman of the Apocalypse, has emerged!</b>",
+                    Color.white, spr: TouRoleIcons.Pestilence.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);

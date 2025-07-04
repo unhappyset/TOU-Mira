@@ -34,7 +34,9 @@ public static class OracleEvents
         if (@event.TriggeredByIntro) return;
         if (!AmongUsClient.Instance.AmHost) return;
 
-        ModifierUtils.GetPlayersWithModifier<OracleConfessModifier>().Do(x => x.RpcRemoveModifier<OracleConfessModifier>());
-        ModifierUtils.GetPlayersWithModifier<OracleBlessedModifier>().Do(x => x.RpcRemoveModifier<OracleBlessedModifier>());
+        ModifierUtils.GetPlayersWithModifier<OracleConfessModifier>()
+            .Do(x => x.RpcRemoveModifier<OracleConfessModifier>());
+        ModifierUtils.GetPlayersWithModifier<OracleBlessedModifier>()
+            .Do(x => x.RpcRemoveModifier<OracleBlessedModifier>());
     }
 }

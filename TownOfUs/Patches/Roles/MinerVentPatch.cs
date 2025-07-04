@@ -17,18 +17,15 @@ public static class MinerVentPatch
         if (PlayerControl.LocalPlayer.Data == null) return;
         if (!enabled) return;
         if (PlayerControl.LocalPlayer.Data.Role is MinerRole) return;
-        if (!__instance.name.Contains($"MinerVent")) return;
+        if (!__instance.name.Contains("MinerVent")) return;
 
         Vent[] nearbyVents = __instance.NearbyVents;
-        for (int i = 0; i < __instance.Buttons.Length; i++)
+        for (var i = 0; i < __instance.Buttons.Length; i++)
         {
             var buttonBehavior = __instance.Buttons[i];
             var vent = nearbyVents[i];
 
-            if (vent != null && !vent.myRend.enabled)
-            {
-                buttonBehavior.gameObject.SetActive(false);
-            }
+            if (vent != null && !vent.myRend.enabled) buttonBehavior.gameObject.SetActive(false);
         }
     }
 }

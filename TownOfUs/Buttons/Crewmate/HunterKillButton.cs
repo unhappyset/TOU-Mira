@@ -19,6 +19,7 @@ public sealed class HunterKillButton : TownOfUsRoleButton<HunterRole, PlayerCont
     public override Color TextOutlineColor => TownOfUsColors.Hunter;
     public override float Cooldown => OptionGroupSingleton<HunterOptions>.Instance.HunterKillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.HunterKillSprite;
+
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
@@ -26,7 +27,8 @@ public sealed class HunterKillButton : TownOfUsRoleButton<HunterRole, PlayerCont
 
     private static IEnumerator CoSetBodyReportable(byte bodyId)
     {
-        var waitDelegate = DelegateSupport.ConvertDelegate<Il2CppSystem.Func<bool>>(() => Helpers.GetBodyById(bodyId) != null);
+        var waitDelegate =
+            DelegateSupport.ConvertDelegate<Il2CppSystem.Func<bool>>(() => Helpers.GetBodyById(bodyId) != null);
         yield return new WaitUntil(waitDelegate);
         var body = Helpers.GetBodyById(bodyId);
 
@@ -48,9 +50,7 @@ public sealed class HunterKillButton : TownOfUsRoleButton<HunterRole, PlayerCont
         PlayerControl.LocalPlayer.RpcCustomMurder(Target);
 
         if (!OptionGroupSingleton<HunterOptions>.Instance.HunterBodyReport)
-        {
             Coroutines.Start(CoSetBodyReportable(Target.PlayerId));
-        }
     }
 
     public override PlayerControl? GetTarget()

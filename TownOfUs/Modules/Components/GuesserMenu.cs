@@ -18,17 +18,22 @@ namespace TownOfUs.Modules.Components;
 [RegisterInIl2Cpp]
 public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
 {
-    private ShapeshifterPanel? panelPrefab;
-    private float xStart = -0.8f;
-    private float yStart = 2.15f;
-    private float xOffset = 1.95f;
-    private float yOffset = -0.65f;
     private UiElement? backButton;
-    private UiElement? defaultButtonSelected;
-    private Action<RoleBehaviour>? onRoleClick;
-    private Action<BaseModifier>? onModifierClick;
-    private List<ShapeshifterPanel>? potentialVictims;
     private int currentPage;
+    private UiElement? defaultButtonSelected;
+    private Action<BaseModifier>? onModifierClick;
+    private Action<RoleBehaviour>? onRoleClick;
+    private ShapeshifterPanel? panelPrefab;
+    private List<ShapeshifterPanel>? potentialVictims;
+    private float xOffset = 1.95f;
+    private float xStart = -0.8f;
+    private float yOffset = -0.65f;
+    private float yStart = 2.15f;
+
+    public void OnDisable()
+    {
+        ControllerManager.Instance.CloseOverlayMenu(name);
+    }
 
     public static GuesserMenu Create()
     {
@@ -71,10 +76,8 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
         passiveButton.OnClick.AddListener((UnityAction)(() =>
         {
             customMenu.currentPage++;
-            if (customMenu.currentPage > Mathf.CeilToInt(customMenu.potentialVictims!.Count/15f)-1)
-            {
+            if (customMenu.currentPage > Mathf.CeilToInt(customMenu.potentialVictims!.Count / 15f) - 1)
                 customMenu.currentPage = 0;
-            }
 
             customMenu.ShowPage();
         }));
@@ -88,29 +91,21 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
         {
             customMenu.currentPage--;
             if (customMenu.currentPage < 0)
-            {
-                customMenu.currentPage = Mathf.CeilToInt(customMenu.potentialVictims!.Count/15f)-1;
-            }
+                customMenu.currentPage = Mathf.CeilToInt(customMenu.potentialVictims!.Count / 15f) - 1;
 
             customMenu.ShowPage();
         }));
-        customMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
-        customMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material = PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+        customMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material =
+            PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+        customMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material =
+            PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
 
         return customMenu;
     }
 
-    public void OnDisable()
-    {
-        ControllerManager.Instance.CloseOverlayMenu(name);
-    }
-
     public Il2CppSystem.Collections.Generic.List<UiElement> ShowPage()
     {
-        foreach (var panel in potentialVictims!)
-        {
-            panel.gameObject.SetActive(false);
-        }
+        foreach (var panel in potentialVictims!) panel.gameObject.SetActive(false);
 
         var list = potentialVictims.Skip(currentPage * 15).Take(15).ToList();
         var list2 = new Il2CppSystem.Collections.Generic.List<UiElement>();
@@ -125,7 +120,8 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public void Begin(Func<RoleBehaviour, bool> roleMatch, Action<RoleBehaviour> roleClickHandler, Func<BaseModifier, bool>? modifierMatch = null, Action<BaseModifier>? modifierClickHandler = null)
+    public void Begin(Func<RoleBehaviour, bool> roleMatch, Action<RoleBehaviour> roleClickHandler,
+        Func<BaseModifier, bool>? modifierMatch = null, Action<BaseModifier>? modifierClickHandler = null)
     {
         MinigameStubs.Begin(this, null);
 
@@ -133,18 +129,23 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
         onModifierClick = modifierClickHandler;
         potentialVictims = [];
 
-        var roles = MiscUtils.GetPotentialRoles().Where(roleMatch).OrderBy(x => (x is ITownOfUsRole touRole && TownOfUsPlugin.SortGuessingByAlignment.Value) ? touRole.RoleAlignment.ToDisplayString() + x.NiceName : x.NiceName).ToList();
+        var roles = MiscUtils.GetPotentialRoles().Where(roleMatch).OrderBy(x =>
+            x is ITownOfUsRole touRole && TownOfUsPlugin.SortGuessingByAlignment.Value
+                ? touRole.RoleAlignment.ToDisplayString() + x.NiceName
+                : x.NiceName).ToList();
 
         for (var i = 0; i < roles.Count; i++)
         {
             var role = roles[i];
             var num = i % 3;
-            var num2 = (i / 3) % 5;
+            var num2 = i / 3 % 5;
 
             var shapeshifterPanel = Instantiate(panelPrefab, transform);
-            shapeshifterPanel!.transform.localPosition = new Vector3(xStart + num * xOffset, yStart + num2 * yOffset, -1f);
+            shapeshifterPanel!.transform.localPosition =
+                new Vector3(xStart + num * xOffset, yStart + num2 * yOffset, -1f);
             shapeshifterPanel.SetRole(i, role, () => { onRoleClick(role); });
-            shapeshifterPanel.gameObject.transform.FindChild("Nameplate").FindChild("Highlight").FindChild("ShapeshifterIcon").gameObject.SetActive(false);
+            shapeshifterPanel.gameObject.transform.FindChild("Nameplate").FindChild("Highlight")
+                .FindChild("ShapeshifterIcon").gameObject.SetActive(false);
 
             potentialVictims.Add(shapeshifterPanel);
         }
@@ -158,12 +159,14 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
                 var index = roles.Count + i;
                 var modifier = modifiers[i];
                 var num = index % 3;
-                var num2 = (index / 3) % 5;
+                var num2 = index / 3 % 5;
 
                 var shapeshifterPanel = Instantiate(panelPrefab, transform);
-                shapeshifterPanel!.transform.localPosition = new Vector3(xStart + num * xOffset, yStart + num2 * yOffset, -1f);
+                shapeshifterPanel!.transform.localPosition =
+                    new Vector3(xStart + num * xOffset, yStart + num2 * yOffset, -1f);
                 shapeshifterPanel.SetModifier(index, modifier, () => { onModifierClick(modifier); });
-                shapeshifterPanel.gameObject.transform.FindChild("Nameplate").FindChild("Highlight").FindChild("ShapeshifterIcon").gameObject.SetActive(false);
+                shapeshifterPanel.gameObject.transform.FindChild("Nameplate").FindChild("Highlight")
+                    .FindChild("ShapeshifterIcon").gameObject.SetActive(false);
 
                 potentialVictims.Add(shapeshifterPanel);
             }

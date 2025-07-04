@@ -9,19 +9,14 @@ namespace TownOfUs.Events.Crewmate;
 
 public static class SpyEvents
 {
-
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
         if (@event.Player.HasModifier<SpyModifier>() && @event.Player.AmOwner)
-        {
             SpyModifier.OnTaskComplete();
-        }
-        else if (@event.Player.Data.Role is SpyRole && @event.Player.AmOwner)
-        {
-            SpyRole.OnTaskComplete();
-        }
+        else if (@event.Player.Data.Role is SpyRole && @event.Player.AmOwner) SpyRole.OnTaskComplete();
     }
+
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {

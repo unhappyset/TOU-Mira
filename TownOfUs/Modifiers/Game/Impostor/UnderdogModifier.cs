@@ -13,16 +13,37 @@ namespace TownOfUs.Modifiers.Game.Impostor;
 public sealed class UnderdogModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Underdog";
-    public override string IntroInfo => $"Your kill cooldown is also faster when you're on your own.";
-    public override string GetDescription() => "When you're alone your kill cooldown is shortened";
+    public override string IntroInfo => "Your kill cooldown is also faster when you're on your own.";
+
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Underdog;
     public override ModifierFaction FactionType => ModifierFaction.ImpostorPassive;
 
     private static float KillCooldownIncrease => OptionGroupSingleton<UnderdogOptions>.Instance.KillCooldownIncrease;
     private static bool ExtraImpsKillCooldown => OptionGroupSingleton<UnderdogOptions>.Instance.ExtraImpsKillCooldown;
 
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.UnderdogChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.UnderdogAmount;
+    public string GetAdvancedDescription()
+    {
+        return
+            "Your kill cooldown is lower if you're solo or your teammate is dead."
+            + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "When you're alone your kill cooldown is shortened";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.UnderdogChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.UnderdogAmount;
+    }
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
@@ -53,12 +74,4 @@ public sealed class UnderdogModifier : TouGameModifier, IWikiDiscoverable
 
         return timer;
     }
-    public string GetAdvancedDescription()
-    {
-        return
-            "Your kill cooldown is lower if you're solo or your teammate is dead."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
 }

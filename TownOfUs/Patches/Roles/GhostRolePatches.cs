@@ -16,7 +16,8 @@ public static class GhostRolePatches
         if (PlayerControl.LocalPlayer.Data.IsDead) return;
         if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null) return;
 
-        var nearGhost = !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.GetTruePosition(), __instance.GetTruePosition(), Constants.ShipAndObjectsMask, false);
+        var nearGhost = !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.GetTruePosition(),
+            __instance.GetTruePosition(), Constants.ShipAndObjectsMask, false);
 
         if (__instance.Data.Role is IGhostRole { CanBeClicked: true } ghost && nearGhost && ghost.CanCatch())
             __instance.RpcCatchGhost();
@@ -42,10 +43,7 @@ public static class GhostRolePatches
         if (__instance.myPlayer == null) return;
         if (__instance.myPlayer.Data == null) return;
 
-        if (__instance.myPlayer.Data.Role is IGhostRole ghost)
-        {
-            amDead = !ghost.GhostActive;
-        }
+        if (__instance.myPlayer.Data.Role is IGhostRole ghost) amDead = !ghost.GhostActive;
     }
 
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.ResetMoveState))]
@@ -55,20 +53,14 @@ public static class GhostRolePatches
         if (__instance.myPlayer == null) return;
         if (__instance.myPlayer.Data == null) return;
 
-        if (__instance.myPlayer.Data.Role is IGhostRole ghost)
-        {
-            __instance.myPlayer.Collider.enabled = ghost.GhostActive;
-        }
+        if (__instance.myPlayer.Data.Role is IGhostRole ghost) __instance.myPlayer.Collider.enabled = ghost.GhostActive;
     }
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Visible), MethodType.Setter)]
     [HarmonyPrefix]
     public static void VisibleOverridePatch(PlayerControl __instance, [HarmonyArgument(0)] ref bool value)
     {
-        if (__instance.Data.Role is IGhostRole { GhostActive: true })
-        {
-            value = !__instance.inVent;
-        }
+        if (__instance.Data.Role is IGhostRole { GhostActive: true }) value = !__instance.inVent;
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
@@ -82,7 +74,8 @@ public static class GhostRolePatches
             PlayerControl.LocalPlayer.Data == null)
             return;
 
-        if (PlayerControl.LocalPlayer.Data.Role is IGhostRole { GhostActive: true } && PlayerControl.LocalPlayer.inVent != __instance.ImpostorVentButton.gameObject.active)
+        if (PlayerControl.LocalPlayer.Data.Role is IGhostRole { GhostActive: true } &&
+            PlayerControl.LocalPlayer.inVent != __instance.ImpostorVentButton.gameObject.active)
             __instance.ImpostorVentButton.gameObject.SetActive(PlayerControl.LocalPlayer.inVent);
     }
 }

@@ -18,32 +18,62 @@ namespace TownOfUs.Roles.Crewmate;
 
 public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
+    private MeetingMenu meetingMenu;
+    public override bool IsAffectedByComms => false;
+
+    public bool CanCampaign { get; set; } = true;
+    public DoomableType DoomHintType => DoomableType.Trickster;
     public string RoleName => "Politician";
     public string RoleDescription => "Campaign To Become The Mayor!";
     public string RoleLongDescription => "Spread your campaign to become the Mayor!";
     public Color RoleColor => TownOfUsColors.Politician;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
-    public DoomableType DoomHintType => DoomableType.Trickster;
-    public override bool IsAffectedByComms => false;
     public bool IsPowerCrew => true;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Politician,
         IntroSound = TouAudio.MayorRevealSound,
-        MaxRoleCount = 1,
+        MaxRoleCount = 1
     };
 
-    public bool CanCampaign { get; set; } = true;
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        var stringB = ITownOfUsRole.SetNewTabText(this);
+        if (PlayerControl.LocalPlayer.HasModifier<EgotistModifier>())
+            stringB.AppendLine(CultureInfo.InvariantCulture,
+                $"<b>The Impostors will know your true motives when revealed.</b>");
 
-    private MeetingMenu meetingMenu;
+        return stringB;
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return
+            "The Politician is a Crewmate Power role that can reveal themselves to the crew as the Mayor, given that they have campaigned at least half of the crewmates."
+            + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Campaign",
+            "Give a player a ballot, which will only be useful to you if they are a Crewmate.",
+            TouCrewAssets.CampaignButtonSprite),
+        new("Reveal (Meeting)",
+            "If you reveal and you have more than half of the crewmates campaigned (or no other crewmates remain), you will become the Mayor! Otherwise, your ability will fail and you " +
+            (OptionGroupSingleton<PoliticianOptions>.Instance.PreventCampaign ? "cannot" : "can") +
+            " campaign the following round.",
+            TouAssets.RevealCleanSprite)
+    ];
 
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.AmOwner)
-        {
             meetingMenu = new MeetingMenu(
                 this,
                 Click,
@@ -52,9 +82,8 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
                 null!,
                 IsExempt)
             {
-                Position = new Vector3(-0.35f, 0f, -3f),
+                Position = new Vector3(-0.35f, 0f, -3f)
             };
-        }
     }
 
     public override void OnMeetingStart()
@@ -64,20 +93,16 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
         CanCampaign = true;
 
         if (Player.AmOwner)
-        {
             // Logger<TownOfUsPlugin>.Message($"PoliticianRole.OnMeetingStart '{Player.Data.PlayerName}' {Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>()}");
-            meetingMenu.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
-        }
+            meetingMenu.GenButtons(MeetingHud.Instance,
+                Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
     }
 
     public override void OnVotingComplete()
     {
         RoleBehaviourStubs.OnVotingComplete(this);
 
-        if (Player.AmOwner)
-        {
-            meetingMenu.HideButtons();
-        }
+        if (Player.AmOwner) meetingMenu.HideButtons();
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -99,16 +124,17 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
 
         var aliveCrew = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.HasDied() && x.IsCrewmate());
         var aliveCampaigned = aliveCrew.Count(x => x.HasModifier<PoliticianCampaignedModifier>());
-        var hasMajority = aliveCampaigned >= Math.Max(aliveCrew.Count() / 2 - 1, 1); // minus one to account for politician, max of at least 1 crewmate campaigned
-        if (!aliveCrew.Any(x => x.Data.Role is not PoliticianRole)) hasMajority = true; // if all crew are dead, politician can reveal
+        var hasMajority =
+            aliveCampaigned >=
+            Math.Max(aliveCrew.Count() / 2 - 1,
+                1); // minus one to account for politician, max of at least 1 crewmate campaigned
+        if (!aliveCrew.Any(x => x.Data.Role is not PoliticianRole))
+            hasMajority = true; // if all crew are dead, politician can reveal
 
         if (hasMajority)
         {
             Player.RpcChangeRole(RoleId.Get<MayorRole>());
-            if (Player.HasModifier<ToBecomeTraitorModifier>())
-            {
-                Player.GetModifier<ToBecomeTraitorModifier>()!.Clear();
-            }
+            if (Player.HasModifier<ToBecomeTraitorModifier>()) Player.GetModifier<ToBecomeTraitorModifier>()!.Clear();
         }
         else
         {
@@ -118,6 +144,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
                 CanCampaign = false;
                 text = "You need to campaign more Crewmates! However, you may not campaign next round.";
             }
+
             var title = $"<color=#{TownOfUsColors.Mayor.ToHtmlStringRGBA()}>Politician Feedback</color>";
             MiscUtils.AddFakeChat(Player.Data, title, text, false, true);
         }
@@ -127,31 +154,4 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
     {
         return voteArea?.TargetPlayerId != Player.PlayerId;
     }
-
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        var stringB = ITownOfUsRole.SetNewTabText(this);
-        if (PlayerControl.LocalPlayer.HasModifier<EgotistModifier>())
-        {
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>The Impostors will know your true motives when revealed.</b>");
-        }
-
-        return stringB;
-    }
-    public string GetAdvancedDescription()
-    {
-        return "The Politician is a Crewmate Power role that can reveal themselves to the crew as the Mayor, given that they have campaigned at least half of the crewmates."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Campaign",
-            $"Give a player a ballot, which will only be useful to you if they are a Crewmate.",
-            TouCrewAssets.CampaignButtonSprite),
-        new("Reveal (Meeting)",
-            $"If you reveal and you have more than half of the crewmates campaigned (or no other crewmates remain), you will become the Mayor! Otherwise, your ability will fail and you " + (OptionGroupSingleton<PoliticianOptions>.Instance.PreventCampaign ? "cannot" : "can") + " campaign the following round.",
-            TouAssets.RevealCleanSprite),
-    ];
 }

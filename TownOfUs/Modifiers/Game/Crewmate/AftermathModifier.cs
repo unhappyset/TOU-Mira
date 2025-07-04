@@ -10,17 +10,11 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class AftermathModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Aftermath";
-    public override string IntroInfo => $"You will also trigger your killer's abilities upon death.";
+    public override string IntroInfo => "You will also trigger your killer's abilities upon death.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Aftermath;
-    public override string GetDescription() => "Your killer will be forced to use their abilities!";
-    public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.AftermathChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.AftermathAmount;
 
-    public override bool IsModifierValidOn(RoleBehaviour role)
-    {
-        return base.IsModifierValidOn(role) && role.IsCrewmate();
-    }
+    public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
+
     public string GetAdvancedDescription()
     {
         return
@@ -28,4 +22,24 @@ public sealed class AftermathModifier : TouGameModifier, IWikiDiscoverable
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "Your killer will be forced to use their abilities!";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.AftermathChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.AftermathAmount;
+    }
+
+    public override bool IsModifierValidOn(RoleBehaviour role)
+    {
+        return base.IsModifierValidOn(role) && role.IsCrewmate();
+    }
 }

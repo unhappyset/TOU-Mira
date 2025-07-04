@@ -1,12 +1,14 @@
+using System.Collections;
+using System.Collections.Immutable;
+using System.Globalization;
+using System.Reflection;
+using System.Text.Json;
 using AmongUs.Data;
 using AmongUs.Data.Player;
 using Assets.InnerNet;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using System.Collections.Immutable;
 using Reactor.Utilities;
-using System.Collections;
-using System.Text.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -16,20 +18,19 @@ namespace TownOfUs.Patches.Misc;
 [HarmonyPatch]
 public class TouMiraModNews
 {
-    // ReSharper disable UnassignedField.Global
-    // ReSharper disable UnusedAutoPropertyAccessor.Global
-    public string Date { get; set; }
-    public int Number { get; set; }
-    public string ShortTitle { get; set; }
-    public string SubTitle { get; set; }
-    public string Title { get; set; }
-    public string Text { get; set; }
-    // ReSharper restore UnassignedField.Global
-    // ReSharper restore UnusedAutoPropertyAccessor.Global
+    public TouMiraModNews(int Number, string Title, string SubTitle, string ShortTitle, string Text, string Date)
+    {
+        this.Number = Number;
+        this.Title = Title;
+        this.SubTitle = SubTitle;
+        this.ShortTitle = ShortTitle;
+        this.Text = Text;
+        this.Date = Date;
+    }
 
     public Announcement ToAnnouncement()
     {
-        return new()
+        return new Announcement
         {
             Date = Date,
             Number = Number,
@@ -41,30 +42,32 @@ public class TouMiraModNews
             Id = "TouMiraModNews"
         };
     }
-    public TouMiraModNews(int Number, string Title, string SubTitle, string ShortTitle, string Text, string Date)
-    {
-        this.Number = Number;
-        this.Title = Title;
-        this.SubTitle = SubTitle;
-        this.ShortTitle = ShortTitle;
-        this.Text = Text;
-        this.Date = Date;
-    }
+
+    // ReSharper disable UnassignedField.Global
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
+    public string Date { get; set; }
+    public int Number { get; set; }
+    public string ShortTitle { get; set; }
+    public string SubTitle { get; set; }
+    public string Title { get; set; }
+
+    public string Text { get; set; }
+    // ReSharper restore UnassignedField.Global
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }
+
 public static class ModNewsFetcher
 {
 #pragma warning disable S1075 // URIs should not be hardcoded
-    private static string TouMiraModNewsURL = "https://raw.githubusercontent.com/AU-Avengers/TOU-Mira/refs/heads/main/TownOfUs/Resources/Announcements/modNews-";
+    private static string TouMiraModNewsURL =
+        "https://raw.githubusercontent.com/AU-Avengers/TOU-Mira/refs/heads/main/TownOfUs/Resources/Announcements/modNews-";
 #pragma warning restore S1075 // URIs should not be hardcoded
 
-    static bool downloaded;
+    private static bool downloaded;
 
     public static IEnumerator FetchNews()
     {
-        if (downloaded)
-        {
-            yield break;
-        }
+        if (downloaded) yield break;
         downloaded = true;
         /* TouMiraModNewsURL += TranslationController.Instance.currentLanguage.languageID switch
         {
@@ -101,13 +104,22 @@ public static class ModNewsFetcher
 
             foreach (var newsElement in newsArray.EnumerateArray())
             {
-                var dateString = (newsElement.GetProperty("Date").GetString() != null) ? newsElement.GetProperty("Date").GetString()! : "Unknown Date";
+                var dateString = newsElement.GetProperty("Date").GetString() != null
+                    ? newsElement.GetProperty("Date").GetString()!
+                    : "Unknown Date";
                 var numberString = newsElement.GetProperty("Number").GetString();
-                var number = numberString != null ? int.Parse(numberString, System.Globalization.CultureInfo.InvariantCulture) : 0;
-                var shortTitle = (numberString != null && newsElement.GetProperty("ShortTitle").GetString() != null) ? newsElement.GetProperty("ShortTitle").GetString()! : "No Short Title";
-                var subTitle = (numberString != null && newsElement.GetProperty("SubTitle").GetString() != null) ? newsElement.GetProperty("SubTitle").GetString()! : "No Subtitle";
-                var title = (numberString != null && newsElement.GetProperty("Title").GetString() != null) ? newsElement.GetProperty("Title").GetString()! : "No Title";
-                var body = string.Join(" ", newsElement.GetProperty("Text").EnumerateArray().Select(element => element.GetString()));
+                var number = numberString != null ? int.Parse(numberString, CultureInfo.InvariantCulture) : 0;
+                var shortTitle = numberString != null && newsElement.GetProperty("ShortTitle").GetString() != null
+                    ? newsElement.GetProperty("ShortTitle").GetString()!
+                    : "No Short Title";
+                var subTitle = numberString != null && newsElement.GetProperty("SubTitle").GetString() != null
+                    ? newsElement.GetProperty("SubTitle").GetString()!
+                    : "No Subtitle";
+                var title = numberString != null && newsElement.GetProperty("Title").GetString() != null
+                    ? newsElement.GetProperty("Title").GetString()!
+                    : "No Title";
+                var body = string.Join(" ",
+                    newsElement.GetProperty("Text").EnumerateArray().Select(element => element.GetString()));
                 // Create ModNews object
                 var modNew = new TouMiraModNews(number, title, subTitle, shortTitle, body, dateString);
                 ModNewsHistory.AllModNews = ModNewsHistory.AllModNews.Add(modNew);
@@ -115,7 +127,8 @@ public static class ModNewsFetcher
         }
         catch (Exception ex)
         {
-            Logger<TownOfUsPlugin>.Error($"Couldn't fetch mod news from github, loading from resources instead: {ex.Message}");
+            Logger<TownOfUsPlugin>.Error(
+                $"Couldn't fetch mod news from github, loading from resources instead: {ex.Message}");
             // Use local Mod news instead
             LoadTouMiraModNewsFromResources();
         }
@@ -141,24 +154,35 @@ public static class ModNewsFetcher
             _ => "en_US.json", //English and any other unsupported language
         }; */
 
-        string filename = "en_US.json";
+        var filename = "en_US.json";
 
-        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-        using Stream resourceStream = assembly.GetManifestResourceStream("TownOfUs.Resources.Announcements.modNews-" + filename)
-            ?? throw new InvalidOperationException($"Resource not found: TownOfUs.Resources.Announcements.modNews-{filename}");
+        var assembly = Assembly.GetExecutingAssembly();
+        using var resourceStream =
+            assembly.GetManifestResourceStream("TownOfUs.Resources.Announcements.modNews-" + filename)
+            ?? throw new InvalidOperationException(
+                $"Resource not found: TownOfUs.Resources.Announcements.modNews-{filename}");
         using StreamReader reader = new(resourceStream);
         using var jsonDocument = JsonDocument.Parse(reader.ReadToEnd());
         var newsArray = jsonDocument.RootElement.GetProperty("News");
 
         foreach (var newsElement in newsArray.EnumerateArray())
         {
-            var dateString = (newsElement.GetProperty("Date").GetString() != null) ? newsElement.GetProperty("Date").GetString()! : "Unknown Date";
+            var dateString = newsElement.GetProperty("Date").GetString() != null
+                ? newsElement.GetProperty("Date").GetString()!
+                : "Unknown Date";
             var numberString = newsElement.GetProperty("Number").GetString();
-            var number = numberString != null ? int.Parse(numberString, System.Globalization.CultureInfo.InvariantCulture) : 0;
-            var shortTitle = (numberString != null && newsElement.GetProperty("ShortTitle").GetString() != null) ? newsElement.GetProperty("ShortTitle").GetString()! : "No Short Title";
-            var subTitle = (numberString != null && newsElement.GetProperty("SubTitle").GetString() != null) ? newsElement.GetProperty("SubTitle").GetString()! : "No Subtitle";
-            var title = (numberString != null && newsElement.GetProperty("Title").GetString() != null) ? newsElement.GetProperty("Title").GetString()! : "No Title";
-                var body = string.Join(" ", newsElement.GetProperty("Text").EnumerateArray().Select(element => element.GetString()));
+            var number = numberString != null ? int.Parse(numberString, CultureInfo.InvariantCulture) : 0;
+            var shortTitle = numberString != null && newsElement.GetProperty("ShortTitle").GetString() != null
+                ? newsElement.GetProperty("ShortTitle").GetString()!
+                : "No Short Title";
+            var subTitle = numberString != null && newsElement.GetProperty("SubTitle").GetString() != null
+                ? newsElement.GetProperty("SubTitle").GetString()!
+                : "No Subtitle";
+            var title = numberString != null && newsElement.GetProperty("Title").GetString() != null
+                ? newsElement.GetProperty("Title").GetString()!
+                : "No Title";
+            var body = string.Join(" ",
+                newsElement.GetProperty("Text").EnumerateArray().Select(element => element.GetString()));
             // Create ModNews object
             var modNew = new TouMiraModNews(number, title, subTitle, shortTitle, body, dateString);
             ModNewsHistory.AllModNews = ModNewsHistory.AllModNews.Add(modNew);
@@ -180,19 +204,21 @@ public static class ModNewsFetcher
                 return;
             }
 
-            List<Announcement> finalAllNews = AllModNews.Select(n => n.ToAnnouncement()).ToList();
+            var finalAllNews = AllModNews.Select(n => n.ToAnnouncement()).ToList();
             finalAllNews.AddRange(aRange.Where(news => AllModNews.All(x => x.Number != news.Number)));
-            finalAllNews.Sort((a1, a2) => DateTime.Compare(DateTime.Parse(a2.Date, System.Globalization.CultureInfo.InvariantCulture), DateTime.Parse(a1.Date, System.Globalization.CultureInfo.InvariantCulture)));
+            finalAllNews.Sort((a1, a2) => DateTime.Compare(DateTime.Parse(a2.Date, CultureInfo.InvariantCulture),
+                DateTime.Parse(a1.Date, CultureInfo.InvariantCulture)));
 
             aRange = new Il2CppReferenceArray<Announcement>(finalAllNews.Count);
 
             for (var i = 0; i < finalAllNews.Count; i++)
                 aRange[i] = finalAllNews[i];
-
         }
 
-        [HarmonyPatch(typeof(AnnouncementPanel), nameof(AnnouncementPanel.SetUp)), HarmonyPostfix]
-        public static void SetUpPanel_Postfix(AnnouncementPanel __instance, [HarmonyArgument(0)] Announcement announcement)
+        [HarmonyPatch(typeof(AnnouncementPanel), nameof(AnnouncementPanel.SetUp))]
+        [HarmonyPostfix]
+        public static void SetUpPanel_Postfix(AnnouncementPanel __instance,
+            [HarmonyArgument(0)] Announcement announcement)
         {
             if (announcement.Number < 100000) return;
             var obj = new GameObject("ModLabel");

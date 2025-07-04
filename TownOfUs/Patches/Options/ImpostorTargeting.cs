@@ -17,10 +17,11 @@ public static class ImpostorTargeting
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 
-        __result &= !(target?.Object?.TryGetModifier<DisabledModifier>(out var mod) == true && !mod.CanBeInteractedWith) &&
+        __result &=
+            !(target?.Object?.TryGetModifier<DisabledModifier>(out var mod) == true && !mod.CanBeInteractedWith) &&
             (target?.Object?.IsImpostor() == false ||
-            genOpt.FFAImpostorMode ||
-            (PlayerControl.LocalPlayer.IsLover() && OptionGroupSingleton<LoversOptions>.Instance.LoverKillTeammates) ||
-            (genOpt.KillDuringCamoComms && target?.Object?.GetAppearanceType() == TownOfUsAppearances.Camouflage));
+             genOpt.FFAImpostorMode ||
+             (PlayerControl.LocalPlayer.IsLover() && OptionGroupSingleton<LoversOptions>.Instance.LoverKillTeammates) ||
+             (genOpt.KillDuringCamoComms && target?.Object?.GetAppearanceType() == TownOfUsAppearances.Camouflage));
     }
 }

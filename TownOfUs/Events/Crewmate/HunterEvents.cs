@@ -22,7 +22,8 @@ public static class HunterEvents
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
-        if (@event.Player.AmOwner && @event.Player.Data.Role is HunterRole && OptionGroupSingleton<HunterOptions>.Instance.TaskUses)
+        if (@event.Player.AmOwner && @event.Player.Data.Role is HunterRole &&
+            OptionGroupSingleton<HunterOptions>.Instance.TaskUses)
         {
             var button = CustomButtonSingleton<HunterStalkButton>.Instance;
             ++button.UsesLeft;
@@ -30,6 +31,7 @@ public static class HunterEvents
             button.SetUses(button.UsesLeft);
         }
     }
+
     [RegisterEvent]
     public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
     {
@@ -57,24 +59,17 @@ public static class HunterEvents
         CheckForHunterStalked(source);
 
         if (source.Data.Role is not HunterRole) return;
-        
-        if (source.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
-        {
-            return;
-        }
+
+        if (source.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished) return;
 
         var target = @event.Target;
 
         if (GameHistory.PlayerStats.TryGetValue(source.PlayerId, out var stats))
         {
-            if (!target.IsCrewmate() || (target.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
-            {
+            if (!target.IsCrewmate() ||
+                (target.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
                 stats.CorrectKills += 1;
-            }
-            else if (source != target)
-            {
-                stats.IncorrectKills += 1;
-            }
+            else if (source != target) stats.IncorrectKills += 1;
         }
     }
 
@@ -105,11 +100,8 @@ public static class HunterEvents
 
     private static void CheckForHunterStalked(PlayerControl source)
     {
-        if (MeetingHud.Instance || ExileController.Instance)
-        {
-            return;
-        }
-        
+        if (MeetingHud.Instance || ExileController.Instance) return;
+
         if (!source.HasModifier<HunterStalkedModifier>()) return;
 
         var mod = source.GetModifier<HunterStalkedModifier>();

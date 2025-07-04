@@ -11,6 +11,7 @@ namespace TownOfUs.Buttons.Impostor;
 
 public sealed class VenererAbilityButton : TownOfUsRoleButton<VenererRole>, IAftermathableButton
 {
+    private VenererAbility _queuedAbility = VenererAbility.None;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override string Keybind => Keybinds.SecondaryAction;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.NoAbilitySprite;
@@ -18,9 +19,11 @@ public sealed class VenererAbilityButton : TownOfUsRoleButton<VenererRole>, IAft
     public override float EffectDuration => OptionGroupSingleton<VenererOptions>.Instance.AbilityDuration;
 
     public VenererAbility ActiveAbility { get; private set; } = VenererAbility.None;
-    private VenererAbility _queuedAbility = VenererAbility.None;
 
-    public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && ActiveAbility != VenererAbility.None;
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return base.Enabled(role) && ActiveAbility != VenererAbility.None;
+    }
 
     public void UpdateAbility(VenererAbility ability)
     {
@@ -32,10 +35,7 @@ public sealed class VenererAbilityButton : TownOfUsRoleButton<VenererRole>, IAft
             SetActive(false, PlayerControl.LocalPlayer.Data.Role);
         }
 
-        if (ActiveAbility == VenererAbility.Freeze)
-        {
-            return;
-        }
+        if (ActiveAbility == VenererAbility.Freeze) return;
 
         if (ability != VenererAbility.None && PlayerControl.LocalPlayer.Data.Role is VenererRole)
         {
@@ -48,23 +48,16 @@ public sealed class VenererAbilityButton : TownOfUsRoleButton<VenererRole>, IAft
         }
 
         if (EffectActive)
-        {
             _queuedAbility = ability;
-        }
         else
-        {
             UpdateButton(ability);
-        }
     }
 
     private void UpdateButton(VenererAbility ability)
     {
         ActiveAbility = ability;
 
-        if (EffectActive)
-        {
-            ResetCooldownAndOrEffect();
-        }
+        if (EffectActive) ResetCooldownAndOrEffect();
 
         switch (ActiveAbility)
         {
@@ -90,12 +83,10 @@ public sealed class VenererAbilityButton : TownOfUsRoleButton<VenererRole>, IAft
 
     public override void OnEffectEnd()
     {
-        var mod = PlayerControl.LocalPlayer.GetModifierComponent()?.ActiveModifiers.FirstOrDefault(mod => mod is IVenererModifier);
+        var mod = PlayerControl.LocalPlayer.GetModifierComponent()?.ActiveModifiers
+            .FirstOrDefault(mod => mod is IVenererModifier);
 
-        if (mod != null)
-        {
-            PlayerControl.LocalPlayer.RpcRemoveModifier(mod.UniqueId);
-        }
+        if (mod != null) PlayerControl.LocalPlayer.RpcRemoveModifier(mod.UniqueId);
 
         if (_queuedAbility == VenererAbility.None) return;
 
@@ -120,10 +111,7 @@ public sealed class VenererAbilityButton : TownOfUsRoleButton<VenererRole>, IAft
 
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
-                    if (player.Data.IsDead || player.Data.Disconnected || player.AmOwner)
-                    {
-                        continue;
-                    }
+                    if (player.Data.IsDead || player.Data.Disconnected || player.AmOwner) continue;
 
                     player.RpcAddModifier<VenererFreezeModifier>(PlayerControl.LocalPlayer);
                 }

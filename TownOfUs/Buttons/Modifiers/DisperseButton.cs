@@ -22,8 +22,9 @@ public sealed class DisperseButton : TownOfUsButton
     {
         return PlayerControl.LocalPlayer != null &&
                PlayerControl.LocalPlayer.HasModifier<DisperserModifier>() &&
-                !PlayerControl.LocalPlayer.Data.IsDead;
+               !PlayerControl.LocalPlayer.Data.IsDead;
     }
+
     public override void CreateButton(Transform parent)
     {
         base.CreateButton(parent);

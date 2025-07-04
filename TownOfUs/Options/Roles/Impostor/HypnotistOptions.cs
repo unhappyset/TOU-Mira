@@ -11,6 +11,7 @@ public sealed class HypnotistOptions : AbstractOptionGroup<HypnotistRole>
 
     [ModdedNumberOption("Hypnotise Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float HypnotiseCooldown { get; set; } = 25f;
+
     [ModdedToggleOption("Hypnotist Can Kill With Teammate")]
     public bool HypnoKill { get; set; } = true;
 }

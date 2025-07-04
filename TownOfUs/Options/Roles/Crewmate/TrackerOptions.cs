@@ -25,8 +25,8 @@ public sealed class TrackerOptions : AbstractOptionGroup<TrackerTouRole>
     [ModdedToggleOption("Tracker Arrows Reset After Each Round")]
     public bool ResetOnNewRound { get; set; } = true;
 
-    public ModdedToggleOption TaskUses { get; } = new ModdedToggleOption("Get More Uses From Completing Tasks", false)
+    public ModdedToggleOption TaskUses { get; } = new("Get More Uses From Completing Tasks", false)
     {
-        Visible = () => !OptionGroupSingleton<TrackerOptions>.Instance.ResetOnNewRound,
+        Visible = () => !OptionGroupSingleton<TrackerOptions>.Instance.ResetOnNewRound
     };
 }

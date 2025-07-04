@@ -43,18 +43,12 @@ public static class SurvivorEvents
         var source = @event.Source;
         var target = @event.Target;
 
-        if (CheckForSurvivorVest(@event, target))
-        {
-            ResetButtonTimer(source);
-        }
+        if (CheckForSurvivorVest(@event, target)) ResetButtonTimer(source);
     }
 
     private static bool CheckForSurvivorVest(MiraCancelableEvent @event, PlayerControl target)
     {
-        if (MeetingHud.Instance || ExileController.Instance)
-        {
-            return false;
-        }
+        if (MeetingHud.Instance || ExileController.Instance) return false;
 
         if (!target.HasModifier<SurvivorVestModifier>()) return false;
 

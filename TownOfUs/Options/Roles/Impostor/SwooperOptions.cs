@@ -2,13 +2,14 @@
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.Utilities;
 using TownOfUs.Roles.Impostor;
+
 namespace TownOfUs.Options.Roles.Impostor;
 
 public sealed class SwooperOptions : AbstractOptionGroup<SwooperRole>
 {
     public override string GroupName => "Swooper";
 
-    [ModdedNumberOption("Swoop Uses Per Round", 0f, 10f, 1f, MiraNumberSuffixes.None, "0", zeroInfinity: true)]
+    [ModdedNumberOption("Swoop Uses Per Round", 0f, 10f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float MaxSwoops { get; set; } = 0f;
 
     [ModdedNumberOption("Swoop Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]

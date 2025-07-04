@@ -35,7 +35,7 @@ public enum ProtectOptions
 {
     GA,
     SelfAndGA,
-    Everyone,
+    Everyone
 }
 
 public enum BecomeOptions
@@ -44,5 +44,5 @@ public enum BecomeOptions
     Amnesiac,
     Survivor,
     Mercenary,
-    Jester,
+    Jester
 }

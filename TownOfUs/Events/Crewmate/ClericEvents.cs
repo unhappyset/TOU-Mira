@@ -19,7 +19,8 @@ public static class ClericEvents
     [RegisterEvent]
     public static void EjectionEventEventHandler(EjectionEvent @event)
     {
-        ModifierUtils.GetPlayersWithModifier<ClericCleanseModifier>().Do(x => x.RemoveModifier<ClericCleanseModifier>());
+        ModifierUtils.GetPlayersWithModifier<ClericCleanseModifier>()
+            .Do(x => x.RemoveModifier<ClericCleanseModifier>());
     }
 
     [RegisterEvent]
@@ -51,35 +52,25 @@ public static class ClericEvents
         var source = @event.Source;
         var target = @event.Target;
 
-        if (CheckForClericBarrier(@event, target, source))
-        {
-            ResetButtonTimer(source);
-        }
+        if (CheckForClericBarrier(@event, target, source)) ResetButtonTimer(source);
     }
 
-    private static bool CheckForClericBarrier(MiraCancelableEvent @event, PlayerControl target, PlayerControl? source=null)
+    private static bool CheckForClericBarrier(MiraCancelableEvent @event, PlayerControl target,
+        PlayerControl? source = null)
     {
-        if (MeetingHud.Instance || ExileController.Instance)
-        {
-            return false;
-        }
-        
+        if (MeetingHud.Instance || ExileController.Instance) return false;
+
         if (!target.HasModifier<ClericBarrierModifier>() ||
             source == null ||
             target.PlayerId == source.PlayerId ||
             (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield))
-        {
             return false;
-        }
 
         @event.Cancel();
 
         var cleric = target.GetModifier<ClericBarrierModifier>()?.Cleric.GetRole<ClericRole>();
 
-        if (cleric != null && source!.AmOwner)
-        {
-            ClericRole.RpcClericBarrierAttacked(cleric.Player, source, target);
-        }
+        if (cleric != null && source!.AmOwner) ClericRole.RpcClericBarrierAttacked(cleric.Player, source, target);
 
         return true;
     }

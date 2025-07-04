@@ -18,10 +18,8 @@ public static class MinerEvents
 
         if (vent == null) return;
 
-        if (vent.name.Contains($"MinerVent") && PlayerControl.LocalPlayer.Data.Role is not MinerRole && !vent.myRend.enabled)
-        {
-            @event.Cancel();
-        }
+        if (vent.name.Contains("MinerVent") && PlayerControl.LocalPlayer.Data.Role is not MinerRole &&
+            !vent.myRend.enabled) @event.Cancel();
     }
 
     [RegisterEvent]

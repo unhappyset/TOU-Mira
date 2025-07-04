@@ -24,12 +24,10 @@ public sealed class GrenadierFlashButton : TownOfUsRoleButton<GrenadierRole>, IA
     protected override void OnClick()
     {
         var flashRadius = OptionGroupSingleton<GrenadierOptions>.Instance.FlashRadius;
-        var flashedPlayers = Helpers.GetClosestPlayers(PlayerControl.LocalPlayer, flashRadius * ShipStatus.Instance.MaxLightRadius);
+        var flashedPlayers =
+            Helpers.GetClosestPlayers(PlayerControl.LocalPlayer, flashRadius * ShipStatus.Instance.MaxLightRadius);
 
-        foreach (var player in flashedPlayers)
-        {
-            player.RpcAddModifier<GrenadierFlashModifier>(PlayerControl.LocalPlayer);
-        }
+        foreach (var player in flashedPlayers) player.RpcAddModifier<GrenadierFlashModifier>(PlayerControl.LocalPlayer);
         PlayerControl.LocalPlayer.RpcAddModifier<GrenadierFlashModifier>(PlayerControl.LocalPlayer);
 
         Coroutines.Start(

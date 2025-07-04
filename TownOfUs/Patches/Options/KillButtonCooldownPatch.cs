@@ -8,7 +8,6 @@ public static class KillButtonCooldownPatch
 {
     [HarmonyPatch(typeof(ActionButton), nameof(ActionButton.SetCoolDown))]
     [HarmonyPostfix]
-
     public static void Postfix(ActionButton __instance, ref float timer)
     {
         if (__instance != HudManager.Instance.KillButton) return;
@@ -16,8 +15,6 @@ public static class KillButtonCooldownPatch
         if (!TownOfUsPlugin.PreciseCooldowns.Value) return;
 
         if (__instance.isCoolingDown && timer <= 10f)
-        {
             __instance.cooldownTimerText.text = timer.ToString("0.0", NumberFormatInfo.InvariantInfo);
-        }
     }
 }

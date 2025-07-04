@@ -6,8 +6,7 @@
       "ShortTitle": "TOU: Mira v1.0.0",
       "SubTitle": "Initial Release!",
       "Title": "Town of Us: Mira v1.0.0",
-      "Text":
-      [
+      "Text": [
         "\r<b> The initial release!</b>",
         "\n\n★ <link=https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.0>TOU Mira v1.0.0 Download</link> ★ <link=https://au-avengers.github.io/docs.toum.gg/>Mod Guide & Details</link> ★",
         "\n\n THIS MOD IS IN PUBLIC BETA. EXPECT BUGS AND ISSUES."
@@ -19,8 +18,7 @@
       "ShortTitle": "TOU: Mira v1.0.1",
       "SubTitle": "Many Bugfixes!",
       "Title": "Town of Us: Mira v1.0.1",
-      "Text":
-      [
+      "Text": [
         "\r<b> Update now Available!</b>",
         "\n\n★ <link=https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.1>TOU Mira v1.0.1 Download</link> ★ <link=https://au-avengers.github.io/docs.toum.gg/>Mod Guide & Details</link> ★",
         "\n\n\r<size=105%>Crewmate Role Bugfixes:</size>",
@@ -66,7 +64,7 @@
         "\n- Long Horse April Fools (<b>Long and Long Horse have issues with cosmetics, be aware of this</b>)",
         "\n\n\r<size=105%>Removals</size>",
         "\n- <b>/sethost</b> command is being removed as it just causes trouble"
-        ]
+      ]
     },
     {
       "Date": "2025-07-04T12:50:00Z",
@@ -74,8 +72,7 @@
       "ShortTitle": "TOU: Mira v1.0.2",
       "SubTitle": "Bugfixes and Improvements galore!",
       "Title": "Town of Us: Mira v1.0.2",
-      "Text":
-      [
+      "Text": [
         "\r<b> Update now Available!</b>",
         "\n\nThis update includes numerous bugfixes and improvements, and should hopefully clear up the recent crashes happening on Epic Games. As always, if you encounter a bug, feel free to make a bug report!",
         "\n\n★ <link=https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.2>TOU Mira v1.0.2 Download</link> ★ <link=https://au-avengers.github.io/docs.toum.gg/>Mod Guide & Details</link> ★",
@@ -123,7 +120,7 @@
         "\n- Assassin's <b>Guess Spy / Investigator Modifier</b> options are now merged into one option that includes all Crewmate Utility Modifiers in general",
         "\n- Just like in TOUR, all button timers will now pause in vents (besides Glitch's buttons)",
         "\n- Imitator can no longer pick up Politician or Mayor (because they can stay as those roles forever)"
-        ]
+      ]
     }
   ]
 }

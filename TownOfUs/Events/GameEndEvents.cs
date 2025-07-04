@@ -14,34 +14,30 @@ public static class EndGameEvents
 {
     public static int winType;
 
-    [RegisterEvent(priority: -100)]
-
+    [RegisterEvent(-100)]
     public static void OnGameEnd(GameEndEvent @event)
     {
         winType = 0;
         var reason = EndGameResult.CachedGameOverReason;
-        var neutralWinner = CustomRoleUtils.GetActiveRolesOfTeam(ModdedRoleTeams.Custom).Any(x => x is ITownOfUsRole role && role.WinConditionMet());
+        var neutralWinner = CustomRoleUtils.GetActiveRolesOfTeam(ModdedRoleTeams.Custom)
+            .Any(x => x is ITownOfUsRole role && role.WinConditionMet());
 
-        if (neutralWinner)
-        {
-            return;
-        }
+        if (neutralWinner) return;
 
-        if (reason is GameOverReason.CrewmatesByVote or GameOverReason.CrewmatesByTask or GameOverReason.ImpostorDisconnect)
+        if (reason is GameOverReason.CrewmatesByVote or GameOverReason.CrewmatesByTask
+            or GameOverReason.ImpostorDisconnect)
         {
             winType = 1;
             GameHistory.WinningFaction = $"<color=#{Palette.CrewmateBlue.ToHtmlStringRGBA()}>Crewmates</color>";
         }
-        else if (reason is GameOverReason.ImpostorsByKill or GameOverReason.ImpostorsBySabotage or GameOverReason.ImpostorsByVote or GameOverReason.CrewmateDisconnect)
+        else if (reason is GameOverReason.ImpostorsByKill or GameOverReason.ImpostorsBySabotage
+                 or GameOverReason.ImpostorsByVote or GameOverReason.CrewmateDisconnect)
         {
             winType = 2;
             GameHistory.WinningFaction = $"<color=#{Palette.ImpostorRed.ToHtmlStringRGBA()}>Impostors</color>";
         }
 
-        if (reason == CustomGameOver.GameOverReason<DrawGameOver>())
-        {
-            winType = 0;
-        }
+        if (reason == CustomGameOver.GameOverReason<DrawGameOver>()) winType = 0;
     }
 
     [RegisterEvent]

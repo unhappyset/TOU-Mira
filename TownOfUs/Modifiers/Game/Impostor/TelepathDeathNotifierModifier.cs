@@ -9,18 +9,18 @@ namespace TownOfUs.Modifiers.Game.Impostor;
 
 public sealed class TelepathDeathNotifierModifier(PlayerControl telepath) : TimedModifier
 {
+    private ArrowBehaviour? _arrow;
     public override string ModifierName => "Death Notifier";
     public override float Duration => OptionGroupSingleton<TelepathOptions>.Instance.TelepathArrowDuration.Value;
     public override bool HideOnUi => true;
-
-    private ArrowBehaviour? _arrow;
     public PlayerControl Telepath { get; set; } = telepath;
 
     public override void OnActivate()
     {
         base.OnActivate();
 
-        var deadPlayer = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(x => x.PlayerId == Player.PlayerId && x.IsDead);
+        var deadPlayer = GameData.Instance.AllPlayers.ToArray()
+            .FirstOrDefault(x => x.PlayerId == Player.PlayerId && x.IsDead);
         if (deadPlayer == null) return;
 
         _arrow = MiscUtils.CreateArrow(Telepath.transform, Color.white);

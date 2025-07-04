@@ -1,12 +1,12 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
-using TownOfUs.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Buttons.Crewmate;
@@ -25,7 +25,10 @@ public sealed class ClericBarrierButton : TownOfUsRoleButton<ClericRole, PlayerC
         return base.IsTargetValid(target) && !target!.HasModifier<ClericBarrierModifier>();
     }
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
 
     protected override void OnClick()
     {

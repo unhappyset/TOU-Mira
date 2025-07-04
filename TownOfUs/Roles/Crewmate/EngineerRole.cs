@@ -1,55 +1,72 @@
 ﻿using System.Text;
-using Il2CppInterop.Runtime.Attributes;
 using AmongUs.GameOptions;
+using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
+using MiraAPI.Hud;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
+using TownOfUs.Buttons;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
-using TownOfUs.Events.TouEvents;
-using MiraAPI.Events;
-using MiraAPI.Hud;
-using MiraAPI.Patches.Stubs;
-using TownOfUs.Buttons;
 
 namespace TownOfUs.Roles.Crewmate;
 
 public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
+    public override bool IsAffectedByComms => false;
+    public DoomableType DoomHintType => DoomableType.Protective;
     public string RoleName => "Engineer";
     public string RoleDescription => "Maintain Important Systems On The Ship";
     public string RoleLongDescription => "Vent around and fix sabotages remotely";
     public Color RoleColor => TownOfUsColors.Engineer;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
-    public DoomableType DoomHintType => DoomableType.Protective;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         // CanUseVent = true,
         Icon = TouRoleIcons.Engineer,
         OptionsScreenshot = TouCrewAssets.EngineerRoleBanner,
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Engineer),
+        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Engineer)
     };
-    public override bool IsAffectedByComms => false;
+
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        return ITownOfUsRole.SetNewTabText(this);
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return "The Engineer is a Crewmate Support role that can vent and fix sabotages remotely."
+               + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Fix",
+            $"It doesn't matter where you are on the map, you can use your fix button to instantly fix the active sabotage. You can do this {OptionGroupSingleton<EngineerOptions>.Instance.MaxFixes} times per game.",
+            TouCrewAssets.FixButtonSprite)
+    ];
+
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
-        if (Player.AmOwner)
-        {
-            CustomButtonSingleton<FakeVentButton>.Instance.Show = false;
-        }
+        if (Player.AmOwner) CustomButtonSingleton<FakeVentButton>.Instance.Show = false;
     }
+
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
-        if (Player.AmOwner)
-        {
-            CustomButtonSingleton<FakeVentButton>.Instance.Show = true;
-        }
+        if (Player.AmOwner) CustomButtonSingleton<FakeVentButton>.Instance.Show = true;
     }
 
     public static void EngineerFix(PlayerControl engineer)
@@ -98,7 +115,8 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
                 if (reactor7.IsActive) FixReactor(SystemTypes.Reactor);
                 var comms7 = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
                 if (comms7.IsActive) FixMiraComms();
-                var mushroom = ShipStatus.Instance.Systems[SystemTypes.MushroomMixupSabotage].Cast<MushroomMixupSabotageSystem>();
+                var mushroom = ShipStatus.Instance.Systems[SystemTypes.MushroomMixupSabotage]
+                    .Cast<MushroomMixupSabotageSystem>();
                 if (mushroom.IsActive) RpcFix(engineer, 1);
                 break;
             case 6:
@@ -108,13 +126,10 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
                 if (lights5.IsActive) RpcFix(engineer, 0);
                 var comms5 = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
                 if (comms5.IsActive) FixComms();
-                foreach (PlayerTask i in PlayerControl.LocalPlayer.myTasks)
-                {
+                foreach (var i in PlayerControl.LocalPlayer.myTasks)
                     if (i.TaskType == ModCompatibility.RetrieveOxygenMask)
-                    {
                         RpcFix(engineer, 2);
-                    }
-                }
+
                 break;
             case 7:
                 var comms6 = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
@@ -126,10 +141,8 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
                 var lights6 = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                 if (lights6.IsActive) RpcFix(engineer, 0);
 
-                if (ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Laboratory, out var seismic1) && seismic1.Cast<IActivatable>().IsActive)
-                {
-                    FixReactor(SystemTypes.Laboratory);
-                }
+                if (ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Laboratory, out var seismic1) &&
+                    seismic1.Cast<IActivatable>().IsActive) FixReactor(SystemTypes.Laboratory);
                 break;
         }
     }
@@ -182,16 +195,19 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         }
         else if (type == 1)
         {
-            var mushroom = ShipStatus.Instance.Systems[SystemTypes.MushroomMixupSabotage].Cast<MushroomMixupSabotageSystem>();
+            var mushroom = ShipStatus.Instance.Systems[SystemTypes.MushroomMixupSabotage]
+                .Cast<MushroomMixupSabotageSystem>();
             mushroom.currentSecondsUntilHeal = 0.1f;
         }
         else if (type == 2)
         {
             ModCompatibility.RepairOxygen();
         }
+
         var touAbilityEvent = new TouAbilityEvent(AbilityType.EngineerFix, engineer);
         MiraEventManager.InvokeEvent(touAbilityEvent);
     }
+
     [MethodRpc((uint)TownOfUsRpc.EngineerEventFix, SendImmediately = true)]
     public static void RpcEngineerEventFix(PlayerControl engi)
     {
@@ -200,27 +216,8 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             Logger<TownOfUsPlugin>.Error("Invalid engineer");
             return;
         }
-        
+
         var touAbilityEvent = new TouAbilityEvent(AbilityType.EngineerFix, engi);
         MiraEventManager.InvokeEvent(touAbilityEvent);
     }
-
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        return ITownOfUsRole.SetNewTabText(this);
-    }
-    
-    public string GetAdvancedDescription()
-    {
-        return "The Engineer is a Crewmate Support role that can vent and fix sabotages remotely."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Fix",
-            $"It doesn't matter where you are on the map, you can use your fix button to instantly fix the active sabotage. You can do this {OptionGroupSingleton<EngineerOptions>.Instance.MaxFixes} times per game.",
-            TouCrewAssets.FixButtonSprite),
-    ];
 }

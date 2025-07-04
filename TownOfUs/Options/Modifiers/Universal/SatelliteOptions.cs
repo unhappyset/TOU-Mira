@@ -20,7 +20,7 @@ public sealed class SatelliteOptions : AbstractOptionGroup<SatelliteModifier>
 
     [ModdedToggleOption("One Usage Per Round")]
     public bool OneUsePerRound { get; set; } = true;
-    
+
     [ModdedToggleOption("Allow Usage in First Round")]
     public bool FirstRoundUse { get; set; } = true;
 }

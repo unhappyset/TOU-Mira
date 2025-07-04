@@ -10,9 +10,6 @@ public static class AmongUsClientPatches
     [HarmonyPostfix]
     public static void StartPatch(AmongUsClient __instance)
     {
-        if (AmongUsClient.Instance != __instance)
-        {
-            Logger<TownOfUsPlugin>.Error("AmongUsClient duplicate detected.");
-        }
+        if (AmongUsClient.Instance != __instance) Logger<TownOfUsPlugin>.Error("AmongUsClient duplicate detected.");
     }
 }

@@ -1,11 +1,11 @@
-﻿using HarmonyLib;
+﻿using System.Collections;
+using HarmonyLib;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using MiraAPI.Voting;
 using Reactor.Utilities;
-using System.Collections;
 using TownOfUs.Events.Modifiers;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -33,43 +33,26 @@ public static class SwapperEvents
 
     private static void SwapVotes(ProcessVotesEvent @event, SwapperRole swapper)
     {
-        if (!swapper || swapper.Player.HasDied() || !swapper.Swap1 || !swapper.Swap2)
-        {
-            return;
-        }
+        if (!swapper || swapper.Player.HasDied() || !swapper.Swap1 || !swapper.Swap2) return;
 
         var swap1 = swapper.Swap1!.TargetPlayerId;
         var swap2 = swapper.Swap2!.TargetPlayerId;
 
         var originalVoteList = @event.Votes.ToList();
 
-        if (TiebreakerEvents.TiebreakingVote.HasValue)
-        {
-            originalVoteList.Add(TiebreakerEvents.TiebreakingVote.Value);
-        }
+        if (TiebreakerEvents.TiebreakingVote.HasValue) originalVoteList.Add(TiebreakerEvents.TiebreakingVote.Value);
 
         var voteList = new List<CustomVote>();
 
         foreach (var vote in originalVoteList)
-        {
             if (vote.Suspect == swap1)
-            {
                 voteList.Add(new CustomVote(vote.Voter, swap2));
-            }
             else if (vote.Suspect == swap2)
-            {
                 voteList.Add(new CustomVote(vote.Voter, swap1));
-            }
             else
-            {
                 voteList.Add(vote);
-            }
-        }
 
-        if (@event.ExiledPlayer != null)
-        {
-            @event.ExiledPlayer = VotingUtils.GetExiled(voteList, out _);
-        }
+        if (@event.ExiledPlayer != null) @event.ExiledPlayer = VotingUtils.GetExiled(voteList, out _);
     }
 
     private static IEnumerator PerformSwaps()
@@ -95,10 +78,12 @@ public static class SwapperEvents
             var votes1 = GetVoteTransforms(role.Swap1);
             var votes2 = GetVoteTransforms(role.Swap2);
 
-            votes2.ForEach(vote => vote.GetComponent<SpriteRenderer>().material.SetInt(PlayerMaterial.MaskLayer, role.Swap1.MaskLayer));
-            votes1.ForEach(vote => vote.GetComponent<SpriteRenderer>().material.SetInt(PlayerMaterial.MaskLayer, role.Swap2.MaskLayer));
+            votes2.ForEach(vote =>
+                vote.GetComponent<SpriteRenderer>().material.SetInt(PlayerMaterial.MaskLayer, role.Swap1.MaskLayer));
+            votes1.ForEach(vote =>
+                vote.GetComponent<SpriteRenderer>().material.SetInt(PlayerMaterial.MaskLayer, role.Swap2.MaskLayer));
 
-            for (int i = 0; i < elements1.Length; i++)
+            for (var i = 0; i < elements1.Length; i++)
             {
                 Coroutines.Start(Slide2D(elements1[i], elements1[i].position, elements2[i].position, duration));
                 Coroutines.Start(Slide2D(elements2[i], elements2[i].position, elements1[i].position, duration));
@@ -130,11 +115,9 @@ public static class SwapperEvents
         for (var i = 0; i < voteArea.transform.childCount; i++)
         {
             var child = voteArea.transform.GetChild(i);
-            if (child.name == "playerVote(Clone)")
-            {
-                votes.Add(child);
-            }
+            if (child.name == "playerVote(Clone)") votes.Add(child);
         }
+
         return votes;
     }
 

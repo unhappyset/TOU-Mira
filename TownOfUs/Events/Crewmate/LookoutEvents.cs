@@ -19,7 +19,9 @@ public static class LookoutEvents
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
-        if (@event.Player.AmOwner && @event.Player.Data.Role is LookoutRole && OptionGroupSingleton<LookoutOptions>.Instance.TaskUses && !OptionGroupSingleton<LookoutOptions>.Instance.LoResetOnNewRound)
+        if (@event.Player.AmOwner && @event.Player.Data.Role is LookoutRole &&
+            OptionGroupSingleton<LookoutOptions>.Instance.TaskUses &&
+            !OptionGroupSingleton<LookoutOptions>.Instance.LoResetOnNewRound)
         {
             var button = CustomButtonSingleton<WatchButton>.Instance;
             ++button.UsesLeft;
@@ -27,6 +29,7 @@ public static class LookoutEvents
             button.SetUses(button.UsesLeft);
         }
     }
+
     [RegisterEvent]
     public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
     {
@@ -54,7 +57,8 @@ public static class LookoutEvents
     {
         if (!OptionGroupSingleton<LookoutOptions>.Instance.LoResetOnNewRound) return;
 
-        ModifierUtils.GetPlayersWithModifier<LookoutWatchedModifier>().Do(x => x.RemoveModifier<LookoutWatchedModifier>());
+        ModifierUtils.GetPlayersWithModifier<LookoutWatchedModifier>()
+            .Do(x => x.RemoveModifier<LookoutWatchedModifier>());
 
         var button = CustomButtonSingleton<WatchButton>.Instance;
         button.SetUses((int)OptionGroupSingleton<LookoutOptions>.Instance.MaxWatches);
@@ -62,11 +66,8 @@ public static class LookoutEvents
 
     public static void CheckForLookoutWatched(PlayerControl source, PlayerControl target)
     {
-        if (MeetingHud.Instance || ExileController.Instance)
-        {
-            return;
-        }
-        
+        if (MeetingHud.Instance || ExileController.Instance) return;
+
         if (!target.HasModifier<LookoutWatchedModifier>() || !source.AmOwner) return;
         LookoutRole.RpcSeePlayer(target, source);
     }

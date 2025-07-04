@@ -19,27 +19,60 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Impostor;
 
-public sealed class JanitorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
+public sealed class JanitorRole(IntPtr cppPtr)
+    : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner ||
+            MeetingHud.Instance || (!HudManager.Instance.UseButton.isActiveAndEnabled &&
+                                    !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
+        HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<JanitorOptions>.Instance.JanitorKill ||
+                                                     (Player != null && Player.GetModifiers<BaseModifier>()
+                                                         .Any(x => x is ICachedRole)) ||
+                                                     (Player != null && MiscUtils.ImpAliveCount == 1));
+    }
+
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<DetectiveRole>());
+    public DoomableType DoomHintType => DoomableType.Death;
     public string RoleName => "Janitor";
     public string RoleDescription => "Sanitize The Ship";
-    public string RoleLongDescription => "Clean bodies to hide kills" + (OptionGroupSingleton<JanitorOptions>.Instance.CleanDelay == 0 ? string.Empty : "\n<b>You must stay next to the body while cleaning.</b>");
-    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<DetectiveRole>());
+
+    public string RoleLongDescription => "Clean bodies to hide kills" +
+                                         (OptionGroupSingleton<JanitorOptions>.Instance.CleanDelay == 0
+                                             ? string.Empty
+                                             : "\n<b>You must stay next to the body while cleaning.</b>");
+
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
-    public DoomableType DoomHintType => DoomableType.Death;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         UseVanillaKillButton = true,
         Icon = TouRoleIcons.Janitor,
-        IntroSound = TouAudio.JanitorCleanSound,
+        IntroSound = TouAudio.JanitorCleanSound
     };
-    public void FixedUpdate()
+
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
     {
-        if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner || MeetingHud.Instance || (!HudManager.Instance.UseButton.isActiveAndEnabled && !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
-        HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<JanitorOptions>.Instance.JanitorKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)) || (Player != null && MiscUtils.ImpAliveCount == 1));
+        return ITownOfUsRole.SetNewTabText(this);
     }
+
+    public string GetAdvancedDescription()
+    {
+        return "The Janitor is an Impostor Support role that can clean dead bodies." +
+               MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Clean",
+            "Clean a dead body, making it disapear and making it unreportable.",
+            TouImpAssets.CleanButtonSprite)
+    ];
 
     [MethodRpc((uint)TownOfUsRpc.CleanBody, LocalHandling = RpcLocalHandling.Before, SendImmediately = true)]
     public static void RpcCleanBody(PlayerControl player, byte bodyId)
@@ -61,22 +94,4 @@ public sealed class JanitorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
             Coroutines.Start(CrimeSceneComponent.CoClean(body));
         }
     }
-
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        return ITownOfUsRole.SetNewTabText(this);
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return "The Janitor is an Impostor Support role that can clean dead bodies." + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Clean",
-            "Clean a dead body, making it disapear and making it unreportable.",
-            TouImpAssets.CleanButtonSprite)
-    ];
 }

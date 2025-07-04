@@ -30,14 +30,13 @@ public sealed class VenererFreezeModifier(PlayerControl venerer) : TimedModifier
         if (Player.HasDied() || Venerer.HasDied()) return;
 
         var minFreezeSpeed = OptionGroupSingleton<VenererOptions>.Instance.MinFreezeSpeed;
-        var freezeRadius = OptionGroupSingleton<VenererOptions>.Instance.FreezeRadius * ShipStatus.Instance.MaxLightRadius;
+        var freezeRadius = OptionGroupSingleton<VenererOptions>.Instance.FreezeRadius *
+                           ShipStatus.Instance.MaxLightRadius;
         var rangeFromVenerer = (Player.GetTruePosition() - Venerer.GetTruePosition()).magnitude;
 
         SpeedFactor = 1f;
 
         if (rangeFromVenerer < freezeRadius)
-        {
             SpeedFactor = Mathf.Lerp(minFreezeSpeed, 1f, rangeFromVenerer / freezeRadius);
-        }
     }
 }

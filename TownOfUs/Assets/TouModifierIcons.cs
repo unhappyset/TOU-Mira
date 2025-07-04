@@ -5,7 +5,7 @@ namespace TownOfUs.Assets;
 
 public static class TouModifierIcons
 {
-    private static string iconPath = "TownOfUs.Resources.ModifierIcons";
+    private static readonly string iconPath = "TownOfUs.Resources.ModifierIcons";
 
     public static LoadableAsset<Sprite> Aftermath { get; } = new LoadableResourceAsset($"{iconPath}.Aftermath.png");
     public static LoadableAsset<Sprite> Bait { get; } = new LoadableResourceAsset($"{iconPath}.Bait.png");
@@ -41,5 +41,6 @@ public static class TouModifierIcons
     public static LoadableAsset<Sprite> Sleuth { get; } = new LoadableResourceAsset($"{iconPath}.Sleuth.png");
     public static LoadableAsset<Sprite> Tiebreaker { get; } = new LoadableResourceAsset($"{iconPath}.Tiebreaker.png");
 
-    public static LoadableAsset<Sprite> FirstRoundShield { get; } = new LoadableResourceAsset($"{iconPath}.FirstRoundShield.png");
+    public static LoadableAsset<Sprite> FirstRoundShield { get; } =
+        new LoadableResourceAsset($"{iconPath}.FirstRoundShield.png");
 }

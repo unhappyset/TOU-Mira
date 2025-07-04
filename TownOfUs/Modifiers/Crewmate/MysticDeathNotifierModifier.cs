@@ -10,20 +10,20 @@ namespace TownOfUs.Modifiers.Crewmate;
 
 public sealed class MysticDeathNotifierModifier(PlayerControl mystic) : TimedModifier
 {
-    public override string ModifierName => "Death Notifier";
-    public override float Duration => OptionGroupSingleton<MysticOptions>.Instance.MysticArrowDuration;
-    public override bool HideOnUi => true;
-
     private static readonly Color FlashColor = Palette.CrewmateRoleBlue;
 
     private ArrowBehaviour? _arrow;
+    public override string ModifierName => "Death Notifier";
+    public override float Duration => OptionGroupSingleton<MysticOptions>.Instance.MysticArrowDuration;
+    public override bool HideOnUi => true;
     public PlayerControl Mystic { get; set; } = mystic;
 
     public override void OnActivate()
     {
         base.OnActivate();
 
-        var deadPlayer = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(x => x.PlayerId == Player.PlayerId && x.IsDead);
+        var deadPlayer = GameData.Instance.AllPlayers.ToArray()
+            .FirstOrDefault(x => x.PlayerId == Player.PlayerId && x.IsDead);
         if (deadPlayer == null) return;
 
         _arrow = MiscUtils.CreateArrow(Mystic.transform, Color.white);

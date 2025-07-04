@@ -20,34 +20,117 @@ namespace TownOfUs.Modules.Wiki;
 [RegisterInIl2Cpp]
 public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 {
-    public Il2CppReferenceField<Transform> Homepage;
-    public Il2CppReferenceField<PassiveButton> HomepageModifiersBtn;
-    public Il2CppReferenceField<PassiveButton> HomepageRolesBtn;
-    public Il2CppReferenceField<PassiveButton> CloseButton;
-    public Il2CppReferenceField<PassiveButton> OutsideCloseButton;
-
-    public Il2CppReferenceField<Transform> SearchScreen;
-    public Il2CppReferenceField<PassiveButton> SearchScreenBackBtn;
-    public Il2CppReferenceField<TextBoxTMP> SearchTextbox;
-    public Il2CppReferenceField<Scroller> SearchScroller;
-    public Il2CppReferenceField<Transform> SearchItemTemplate;
-    public Il2CppReferenceField<SpriteRenderer> SearchPageIcon;
     public GameObject SearchIcon;
-    public Il2CppReferenceField<TextMeshPro> SearchPageText;
-
-    public Il2CppReferenceField<Transform> DetailScreen;
-    public Il2CppReferenceField<TextMeshPro> DetailDescription;
-    public Il2CppReferenceField<PassiveButton> ToggleAbilitiesBtn;
-    public Il2CppReferenceField<Transform> AbilityTemplate;
-    public Il2CppReferenceField<Scroller> AbilityScroller;
-    public Il2CppReferenceField<PassiveButton> DetailScreenBackBtn;
-    public Il2CppReferenceField<SpriteRenderer> DetailScreenIcon;
-    public Il2CppReferenceField<TextMeshPro> DetailScreenItemName;
+    private List<Transform> _activeItems = [];
 
     private WikiPage _currentPage = WikiPage.Homepage;
     private bool _modifiersSelected;
-    private List<Transform> _activeItems = [];
     private IWikiDiscoverable? _selectedItem;
+    public Il2CppReferenceField<Scroller> AbilityScroller;
+    public Il2CppReferenceField<Transform> AbilityTemplate;
+    public Il2CppReferenceField<PassiveButton> CloseButton;
+    public Il2CppReferenceField<TextMeshPro> DetailDescription;
+
+    public Il2CppReferenceField<Transform> DetailScreen;
+    public Il2CppReferenceField<PassiveButton> DetailScreenBackBtn;
+    public Il2CppReferenceField<SpriteRenderer> DetailScreenIcon;
+    public Il2CppReferenceField<TextMeshPro> DetailScreenItemName;
+    public Il2CppReferenceField<Transform> Homepage;
+    public Il2CppReferenceField<PassiveButton> HomepageModifiersBtn;
+    public Il2CppReferenceField<PassiveButton> HomepageRolesBtn;
+    public Il2CppReferenceField<PassiveButton> OutsideCloseButton;
+    public Il2CppReferenceField<Transform> SearchItemTemplate;
+    public Il2CppReferenceField<SpriteRenderer> SearchPageIcon;
+    public Il2CppReferenceField<TextMeshPro> SearchPageText;
+
+    public Il2CppReferenceField<Transform> SearchScreen;
+    public Il2CppReferenceField<PassiveButton> SearchScreenBackBtn;
+    public Il2CppReferenceField<Scroller> SearchScroller;
+    public Il2CppReferenceField<TextBoxTMP> SearchTextbox;
+    public Il2CppReferenceField<PassiveButton> ToggleAbilitiesBtn;
+
+    private void Awake()
+    {
+        if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(false));
+
+        if (GameStartManager.InstanceExists && LobbyBehaviour.Instance)
+            GameStartManager.Instance.HostInfoPanel.gameObject.SetActive(false);
+
+        UpdatePage(WikiPage.Homepage);
+
+        var closeAction = new Action(() => { Close(); });
+
+        CloseButton.Value.OnClick.AddListener((UnityAction)closeAction);
+        OutsideCloseButton.Value.OnClick.AddListener((UnityAction)closeAction);
+
+        HomepageModifiersBtn.Value.OnClick.AddListener((UnityAction)(() =>
+        {
+            _modifiersSelected = true;
+            UpdatePage(WikiPage.SearchScreen);
+        }));
+
+        HomepageRolesBtn.Value.OnClick.AddListener((UnityAction)(() =>
+        {
+            _modifiersSelected = false;
+            UpdatePage(WikiPage.SearchScreen);
+        }));
+
+        SearchScreenBackBtn.Value.OnClick.AddListener((UnityAction)(() => { UpdatePage(WikiPage.Homepage); }));
+
+        DetailScreenBackBtn.Value.OnClick.AddListener((UnityAction)(() =>
+        {
+            _selectedItem = null;
+            UpdatePage(WikiPage.SearchScreen);
+        }));
+
+        SearchTextbox.Value.gameObject.GetComponent<PassiveButton>().OnClick.AddListener((UnityAction)(() =>
+        {
+            SearchTextbox.Value.GiveFocus();
+        }));
+
+        SearchTextbox.Value.OnChange.AddListener((UnityAction)(() =>
+        {
+            if (_currentPage != WikiPage.SearchScreen || _activeItems.Count == 0) return;
+
+            var text = SearchTextbox.Value.outputText.text;
+            _activeItems = _activeItems
+                .OrderByDescending(child => child.name.Equals(text, StringComparison.OrdinalIgnoreCase))
+                .ThenByDescending(child => child.name.Contains(text, StringComparison.InvariantCultureIgnoreCase))
+                .ThenBy(child => child.name.ToLowerInvariant())
+                .ToList();
+
+            for (var i = 0; i < _activeItems.Count; i++) _activeItems[i].SetSiblingIndex(i);
+            SearchScroller.Value.ScrollToTop();
+        }));
+
+        ToggleAbilitiesBtn.Value.OnClick.AddListener((UnityAction)(() =>
+        {
+            if (DetailDescription.Value.gameObject.activeSelf)
+            {
+                ToggleAbilitiesBtn.Value.buttonText.text = "Description";
+                DetailDescription.Value.gameObject.SetActive(false);
+                AbilityScroller.Value.transform.parent.gameObject.SetActive(true);
+            }
+            else
+            {
+                ToggleAbilitiesBtn.Value.buttonText.text =
+                    _selectedItem != null ? _selectedItem.SecondTabName : "Abilities";
+                DetailDescription.Value.gameObject.SetActive(true);
+                AbilityScroller.Value.transform.parent.gameObject.SetActive(false);
+            }
+        }));
+
+        foreach (var text in GetComponentsInChildren<TextMeshPro>(true))
+        {
+            if (text.color == Color.black) continue;
+
+            text.font = HudManager.Instance.TaskPanel.taskText.font;
+            text.fontMaterial = HudManager.Instance.TaskPanel.taskText.fontMaterial;
+        }
+
+        foreach (var btn in GetComponentsInChildren<PassiveButton>(true))
+            btn.ClickSound = HudManager.Instance.MapButton.ClickSound;
+    }
 
     private void UpdatePage(WikiPage newPage)
     {
@@ -73,6 +156,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 LoadDetailScreen();
                 break;
         }
+
         TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
     }
 
@@ -96,7 +180,8 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
         if (_selectedItem is ITownOfUsRole customRole)
         {
-            DetailScreenItemName.Value.text = $"{customRole.RoleName}\n<size=60%>{customRole.RoleColor.ToTextColor()}{customRole.RoleAlignment.ToDisplayString()}</size></color>";
+            DetailScreenItemName.Value.text =
+                $"{customRole.RoleName}\n<size=60%>{customRole.RoleColor.ToTextColor()}{customRole.RoleAlignment.ToDisplayString()}</size></color>";
             DetailScreenIcon.Value.sprite = customRole.Configuration.Icon != null
                 ? customRole.Configuration.Icon.LoadAsset()
                 : TouRoleIcons.RandomAny.LoadAsset();
@@ -122,8 +207,10 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
             icon.size = new Vector2(0.8f, 0.8f * icon.sprite.bounds.size.y / icon.sprite.bounds.size.x);
             icon.tileMode = SpriteTileMode.Adaptive;
 
-            text.text  = $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{ability.name}</font>";
-            desc.text = $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{ability.description}</font>";
+            text.text =
+                $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{ability.name}</font>";
+            desc.text =
+                $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{ability.description}</font>";
             newAbility.gameObject.SetActive(true);
         }
 
@@ -131,6 +218,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         AbilityScroller.Value.SetBounds(new FloatRange(-0.5f, max), null);
         AbilityScroller.Value.ScrollToTop();
     }
+
     private void LoadSearchScreen()
     {
         SearchScreen.Value.gameObject.SetActive(true);
@@ -147,6 +235,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
             _renderer.sprite = TouRoleIcons.Detective.LoadAsset();
             SearchIcon.name = "SearchboxIcon";
         }
+
         SearchIcon.SetActive(true);
 
         var oldMax = Mathf.Max(0f, SearchScroller.Value.Inner.GetChildCount() * 0.725f);
@@ -160,7 +249,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         {
             var activeModifiers = PlayerControl.LocalPlayer.GetModifiers<GameModifier>()
                 .Where(x => x is IWikiDiscoverable)
-                .Select(x=>x.TypeId);
+                .Select(x => x.TypeId);
 
             var comparer = new ModifierComparer(activeModifiers);
 
@@ -203,7 +292,8 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
                 var txt = amount != 0 ? $"Amount: {amount} - Chance: {chance}%" : "Amount: 0";
 
-                amountTxt.text = $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{txt}</font>";
+                amountTxt.text =
+                    $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{txt}</font>";
                 amountTxt.fontSizeMin = 1.85f;
                 amountTxt.fontSizeMax = 1.85f;
                 amountTxt.fontSize = 1.85f;
@@ -223,10 +313,9 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         else
         {
             List<ushort> roleList = [(ushort)PlayerControl.LocalPlayer.Data.Role.Role];
-            if (PlayerControl.LocalPlayer.Data.IsDead && !roleList.Contains((ushort)PlayerControl.LocalPlayer.GetRoleWhenAlive().Role))
-            {
+            if (PlayerControl.LocalPlayer.Data.IsDead &&
+                !roleList.Contains((ushort)PlayerControl.LocalPlayer.GetRoleWhenAlive().Role))
                 roleList.Add((ushort)PlayerControl.LocalPlayer.GetRoleWhenAlive().Role);
-            }
             var comparer = new RoleComparer(roleList);
             var roles = MiscUtils.AllRoles.OrderBy(x => x, comparer).OfType<ITownOfUsRole>();
 
@@ -245,14 +334,16 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 team.SetOutlineColor(Color.black);
                 team.SetOutlineThickness(0.35f);
 
-                if (role is ICustomRole customRole && customRole.Configuration.MaxRoleCount != 0 && !customRole.Configuration.HideSettings)
+                if (role is ICustomRole customRole && customRole.Configuration.MaxRoleCount != 0 &&
+                    !customRole.Configuration.HideSettings)
                 {
                     var amount = role.GetCount();
                     var chance = role.GetChance();
                     var amountTxt = newItem.transform.FindChild("AmountTxt").gameObject.GetComponent<TextMeshPro>();
-                    
+
                     var txt = amount != 0 ? $"Amount: {amount} - Chance: {chance}%" : "Amount: 0";
-                    amountTxt.text = $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{txt}</font>";
+                    amountTxt.text =
+                        $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{txt}</font>";
                     amountTxt.fontSizeMin = 1.85f;
                     amountTxt.fontSizeMax = 1.85f;
                     amountTxt.fontSize = 1.85f;
@@ -291,111 +382,19 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         var bgSprite = bgColorObj.GetComponent<SpriteRenderer>();
         bgSprite.sprite = TouAssets.WikiBgSprite.LoadAsset();
 
-        var amountTextObj = Instantiate(newItem.GetChild(1).gameObject, newItem.GetChild(1).gameObject.transform.parent);
+        var amountTextObj =
+            Instantiate(newItem.GetChild(1).gameObject, newItem.GetChild(1).gameObject.transform.parent);
         amountTextObj.name = "AmountTxt";
         amountTextObj.transform.localPosition -= new Vector3(0f, 0.22f);
 
         newItem.name = itemName.ToLowerInvariant();
         icon.sprite = sprite != null ? sprite : TouRoleIcons.RandomAny.LoadAsset();
         amountTextObj.GetComponent<TextMeshPro>().text = string.Empty;
-        itemText.text  = $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{itemName}</font>";
+        itemText.text =
+            $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{itemName}</font>";
         newItem.gameObject.SetActive(true);
         _activeItems.Add(newItem);
         return newItem;
-    }
-
-    private void Awake()
-    {
-        if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(false));
-
-        if (GameStartManager.InstanceExists && LobbyBehaviour.Instance)
-        {
-            GameStartManager.Instance.HostInfoPanel.gameObject.SetActive(false);
-        }
-
-        UpdatePage(WikiPage.Homepage);
-
-        var closeAction = new Action(() => {
-            Close();
-            });
-
-        CloseButton.Value.OnClick.AddListener((UnityAction)closeAction);
-        OutsideCloseButton.Value.OnClick.AddListener((UnityAction)closeAction);
-
-        HomepageModifiersBtn.Value.OnClick.AddListener((UnityAction)(() =>
-        {
-            _modifiersSelected = true;
-            UpdatePage(WikiPage.SearchScreen);
-        }));
-
-        HomepageRolesBtn.Value.OnClick.AddListener((UnityAction)(() =>
-        {
-            _modifiersSelected = false;
-            UpdatePage(WikiPage.SearchScreen);
-        }));
-
-        SearchScreenBackBtn.Value.OnClick.AddListener((UnityAction)(() =>
-        {
-            UpdatePage(WikiPage.Homepage);
-        }));
-
-        DetailScreenBackBtn.Value.OnClick.AddListener((UnityAction)(() =>
-        {
-            _selectedItem = null;
-            UpdatePage(WikiPage.SearchScreen);
-        }));
-
-        SearchTextbox.Value.gameObject.GetComponent<PassiveButton>().OnClick.AddListener((UnityAction)(() =>
-        {
-            SearchTextbox.Value.GiveFocus();
-        }));
-
-        SearchTextbox.Value.OnChange.AddListener((UnityAction)(() =>
-        {
-            if (_currentPage != WikiPage.SearchScreen || _activeItems.Count == 0) return;
-
-            var text = SearchTextbox.Value.outputText.text;
-            _activeItems = _activeItems
-                .OrderByDescending(child => child.name.Equals(text, StringComparison.OrdinalIgnoreCase))
-                .ThenByDescending(child => child.name.Contains(text, StringComparison.InvariantCultureIgnoreCase))
-                .ThenBy(child => child.name.ToLowerInvariant())
-                .ToList();
-
-            for (int i = 0; i < _activeItems.Count; i++)
-            {
-                _activeItems[i].SetSiblingIndex(i);
-            }
-            SearchScroller.Value.ScrollToTop();
-        }));
-
-        ToggleAbilitiesBtn.Value.OnClick.AddListener((UnityAction)(() =>
-        {
-            if (DetailDescription.Value.gameObject.activeSelf)
-            {
-                ToggleAbilitiesBtn.Value.buttonText.text = "Description";
-                DetailDescription.Value.gameObject.SetActive(false);
-                AbilityScroller.Value.transform.parent.gameObject.SetActive(true);
-            }
-            else
-            {
-                ToggleAbilitiesBtn.Value.buttonText.text = _selectedItem != null ? _selectedItem.SecondTabName : "Abilities";
-                DetailDescription.Value.gameObject.SetActive(true);
-                AbilityScroller.Value.transform.parent.gameObject.SetActive(false);
-            }
-        }));
-
-        foreach (var text in GetComponentsInChildren<TextMeshPro>(true))
-        {
-            if(text.color == Color.black) continue;
-
-            text.font = HudManager.Instance.TaskPanel.taskText.font;
-            text.fontMaterial = HudManager.Instance.TaskPanel.taskText.fontMaterial;
-        }
-
-        foreach (var btn in GetComponentsInChildren<PassiveButton>(true))
-        {
-            btn.ClickSound = HudManager.Instance.MapButton.ClickSound;
-        }
     }
 
     public static IngameWikiMinigame Create()
@@ -405,14 +404,13 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         gameObject.transform.localPosition = new Vector3(0f, 0f, -50f);
         return gameObject.GetComponent<IngameWikiMinigame>();
     }
+
     public override void Close()
     {
         MinigameStubs.Close(this);
 
         if (GameStartManager.InstanceExists && LobbyBehaviour.Instance)
-        {
             GameStartManager.Instance.HostInfoPanel.gameObject.SetActive(true);
-        }
 
         if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(true));
         TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
@@ -423,5 +421,5 @@ public enum WikiPage
 {
     Homepage,
     SearchScreen,
-    DetailScreen,
+    DetailScreen
 }

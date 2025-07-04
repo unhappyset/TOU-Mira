@@ -35,7 +35,8 @@ public sealed class CrimeSceneComponent(nint cppPtr) : MonoBehaviour(cppPtr)
 
     public void FixedUpdate()
     {
-        var killDistances = GameOptionsManager.Instance.currentNormalGameOptions.GetFloatArray(FloatArrayOptionNames.KillDistances);
+        var killDistances =
+            GameOptionsManager.Instance.currentNormalGameOptions.GetFloatArray(FloatArrayOptionNames.KillDistances);
 
         foreach (var player in PlayerControl.AllPlayerControls)
         {
@@ -47,15 +48,16 @@ public sealed class CrimeSceneComponent(nint cppPtr) : MonoBehaviour(cppPtr)
                 killDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance]) continue;
 
             if (!_scenePlayers.Contains(player.PlayerId))
-            {
                 // Debug.Log(player.name + " contaminated the crime scene");
                 _scenePlayers.Add(player.PlayerId);
-            }
         }
     }
 
     [HideFromIl2Cpp]
-    public List<byte> GetScenePlayers() => _scenePlayers;
+    public List<byte> GetScenePlayers()
+    {
+        return _scenePlayers;
+    }
 
     public static void CreateCrimeScene(PlayerControl victim, Vector3 location)
     {

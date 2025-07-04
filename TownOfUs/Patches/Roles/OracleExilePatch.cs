@@ -3,13 +3,15 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using MiraAPI.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Utilities.Appearances;
+using Object = Il2CppSystem.Object;
 
 namespace TownOfUs.Patches.Roles;
 
 [HarmonyPatch]
 public static class OracleExilePatch
 {
-    [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>))]
+    [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), typeof(StringNames),
+        typeof(Il2CppReferenceArray<Object>))]
     [HarmonyPostfix]
     public static void TranslationControllerGetStringPostfix(ref string __result, [HarmonyArgument(0)] StringNames name)
     {

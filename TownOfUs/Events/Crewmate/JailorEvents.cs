@@ -22,7 +22,8 @@ public static class JailorEvents
         sparedPlayers.Do(x => x.RemoveModifier<JailSparedModifier>());
 
         var players = ModifierUtils.GetPlayersWithModifier<JailedModifier>().ToList();
-        if (!OptionGroupSingleton<JailorOptions>.Instance.JailInARow) players.Do(x => x.AddModifier<JailSparedModifier>(x.GetModifier<JailedModifier>()!.JailorId));
+        if (!OptionGroupSingleton<JailorOptions>.Instance.JailInARow)
+            players.Do(x => x.AddModifier<JailSparedModifier>(x.GetModifier<JailedModifier>()!.JailorId));
         players.Do(x => x.RemoveModifier<JailedModifier>());
     }
 
@@ -33,24 +34,20 @@ public static class JailorEvents
         var victim = @event.Target;
 
         if ((victim.Data.Role is JailorRole || victim.GetRoleWhenAlive() is JailorRole) && !MeetingHud.Instance)
-        {
             ModifierUtils.GetPlayersWithModifier<JailedModifier>().Do(x => x.RemoveModifier<JailedModifier>());
-        }
 
         if (source.Data.Role is not JailorRole jailor) return;
 
         jailor.Executes--;
 
-        if (source.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
-        {
-            return;
-        }
-        
+        if (source.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished) return;
+
         var target = @event.Target;
 
         if (GameHistory.PlayerStats.TryGetValue(source.PlayerId, out var stats))
         {
-            if (!target.IsCrewmate() || (target.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
+            if (!target.IsCrewmate() ||
+                (target.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
             {
                 stats.CorrectKills += 1;
             }

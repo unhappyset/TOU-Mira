@@ -62,9 +62,7 @@ public static class MapPatches
     private static byte GetSelectedMap()
     {
         if (!OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps)
-        {
             return GameOptionsManager.Instance.CurrentGameOptions.MapId;
-        }
 
         var skeldChance = OptionGroupSingleton<TownOfUsMapOptions>.Instance.SkeldChance.Value;
         var miraChance = OptionGroupSingleton<TownOfUsMapOptions>.Instance.MiraChance.Value;
@@ -87,45 +85,27 @@ public static class MapPatches
         totalWeight += ModCompatibility.SubLoaded ? submergedChance : 0;
         totalWeight += ModCompatibility.LILoaded ? liChance : 0;
 
-        if ((int)totalWeight == 0)
-        {
-            return GameOptionsManager.Instance.currentNormalGameOptions.MapId;
-        }
+        if ((int)totalWeight == 0) return GameOptionsManager.Instance.currentNormalGameOptions.MapId;
 
         float randomNumber = rnd.Next(0, (int)totalWeight);
 
-        if (randomNumber < skeldChance)
-        {
-            return 0;
-        }
+        if (randomNumber < skeldChance) return 0;
 
         randomNumber -= skeldChance;
 
-        if (randomNumber < miraChance)
-        {
-            return 1;
-        }
+        if (randomNumber < miraChance) return 1;
 
         randomNumber -= miraChance;
 
-        if (randomNumber < polusChance)
-        {
-            return 2;
-        }
+        if (randomNumber < polusChance) return 2;
 
         randomNumber -= polusChance;
 
-        if (randomNumber < airshipChance)
-        {
-            return 4;
-        }
+        if (randomNumber < airshipChance) return 4;
 
         randomNumber -= airshipChance;
 
-        if (randomNumber < fungleChance)
-        {
-            return 5;
-        }
+        if (randomNumber < fungleChance) return 5;
 
         randomNumber -= fungleChance;
 

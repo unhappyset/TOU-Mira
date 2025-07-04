@@ -24,12 +24,8 @@ public static class MedScanMinigameFixedUpdatePatch
     public static void Postfix(MedScanMinigame __instance)
     {
         if (PlayerControl.LocalPlayer.HasModifier<GiantModifier>())
-        {
             __instance.completeString = __instance.completeString.Replace("3' 6\"", "5' 3\"").Replace("92lb", "184lb");
-        }
         else if (PlayerControl.LocalPlayer.HasModifier<MiniModifier>())
-        {
             __instance.completeString = __instance.completeString.Replace("3' 6\"", "1' 9\"").Replace("92lb", "46lb");
-        }
     }
 }

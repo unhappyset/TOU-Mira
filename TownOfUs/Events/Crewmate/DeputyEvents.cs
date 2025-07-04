@@ -19,6 +19,7 @@ public static class DeputyEvents
     {
         if (PlayerControl.LocalPlayer.Data.Role is DeputyRole) DeputyRole.OnRoundStart();
     }
+
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
@@ -29,30 +30,20 @@ public static class DeputyEvents
 
         if (source.Data.Role is not DeputyRole) return;
 
-        if (source.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
-        {
-            return;
-        }
-        
+        if (source.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished) return;
+
         if (GameHistory.PlayerStats.TryGetValue(source.PlayerId, out var stats))
         {
-            if (!target.IsCrewmate() || (target.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
-            {
+            if (!target.IsCrewmate() ||
+                (target.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
                 stats.CorrectKills += 1;
-            }
-            else if (source != target)
-            {
-                stats.IncorrectKills += 1;
-            }
+            else if (source != target) stats.IncorrectKills += 1;
         }
     }
 
     private static void CheckForDeputyCamped(PlayerControl source, PlayerControl target)
     {
-        if (MeetingHud.Instance || ExileController.Instance)
-        {
-            return;
-        }
+        if (MeetingHud.Instance || ExileController.Instance) return;
 
         if (!target.HasModifier<DeputyCampedModifier>()) return;
 

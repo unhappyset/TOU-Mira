@@ -24,10 +24,12 @@ public sealed class GeneralOptions : AbstractOptionGroup
 
     [ModdedToggleOption("Impostors Don't Know Each Other")]
     public bool FFAImpostorMode { get; set; } = false;
+
     public ModdedToggleOption ImpsKnowRoles { get; set; } = new("Impostors Know Each Other's Roles", true)
     {
         Visible = () => !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode
     };
+
     public ModdedToggleOption ImpostorChat { get; set; } = new("Impostors Get A Private Meeting Chat", true)
     {
         Visible = () => !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode
@@ -65,12 +67,12 @@ public enum ModReveal
 {
     Alliance,
     Universal,
-    Neither,
+    Neither
 }
 
 public enum SkipState
 {
     No,
     Emergency,
-    Always,
+    Always
 }

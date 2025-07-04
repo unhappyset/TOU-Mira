@@ -10,25 +10,9 @@ namespace TownOfUs.Modules;
 // Code Review: This works, and isn't too bad but could definitely be improved by yet again using a MonoBehaviour.
 public sealed class MeetingMenu : IDisposable
 {
-    public static List<MeetingMenu> Instances { get; set; } = [];
-
-    public RoleBehaviour Owner { get; }
-    public OnClick Click { get; }
-    public Exemption IsExempt { get; }
-    public LoadableAsset<Sprite> ActiveSprite { get; }
-    public LoadableAsset<Sprite> DisabledSprite { get; }
-    private Color ActiveColor { get; }
-    private Color DisabledColor { get; }
-    private Color HoverColor { get; }
-    public MeetingAbilityType Type { get; }
-    public Vector3 Position { get; set; }
-    public Dictionary<byte, bool> Actives { get; } = [];
-    public Dictionary<byte, GameObject> Buttons { get; } = [];
-    private Dictionary<byte, SpriteRenderer> ButtonSprites { get; } = [];
+    public delegate bool Exemption(PlayerVoteArea voteArea);
 
     public delegate void OnClick(PlayerVoteArea voteArea, MeetingHud meeting);
-
-    public delegate bool Exemption(PlayerVoteArea voteArea);
 
     public MeetingMenu(
         RoleBehaviour owner,
@@ -51,9 +35,30 @@ public sealed class MeetingMenu : IDisposable
         DisabledColor = disabledColor ?? Color.white;
         HoverColor = hoverColor ?? Color.red;
         Type = abilityType;
-        Position = position ?? new(-0.95f, 0.03f, -3f);
+        Position = position ?? new Vector3(-0.95f, 0.03f, -3f);
 
         Instances.Add(this);
+    }
+
+    public static List<MeetingMenu> Instances { get; set; } = [];
+
+    public RoleBehaviour Owner { get; }
+    public OnClick Click { get; }
+    public Exemption IsExempt { get; }
+    public LoadableAsset<Sprite> ActiveSprite { get; }
+    public LoadableAsset<Sprite> DisabledSprite { get; }
+    private Color ActiveColor { get; }
+    private Color DisabledColor { get; }
+    private Color HoverColor { get; }
+    public MeetingAbilityType Type { get; }
+    public Vector3 Position { get; set; }
+    public Dictionary<byte, bool> Actives { get; } = [];
+    public Dictionary<byte, GameObject> Buttons { get; } = [];
+    private Dictionary<byte, SpriteRenderer> ButtonSprites { get; } = [];
+
+    public void Dispose()
+    {
+        HideButtons();
     }
 
     public void HideButtons()
@@ -68,10 +73,7 @@ public sealed class MeetingMenu : IDisposable
     {
         Actives[targetId] = false;
 
-        if (!Buttons.TryGetValue(targetId, out var button) || !button)
-        {
-            return;
-        }
+        if (!Buttons.TryGetValue(targetId, out var button) || !button) return;
 
         button.SetActive(false);
         button.Destroy();
@@ -100,8 +102,8 @@ public sealed class MeetingMenu : IDisposable
         var button = targetBox.GetComponent<PassiveButton>();
         button.OverrideOnClickListeners(() => Click(voteArea, __instance));
         button.OverrideOnMouseOverListeners(() => renderer.color = HoverColor);
-        button.OverrideOnMouseOutListeners(
-            () => renderer.color = Type == MeetingAbilityType.Toggle && Actives[voteArea.TargetPlayerId]
+        button.OverrideOnMouseOutListeners(() => renderer.color =
+            Type == MeetingAbilityType.Toggle && Actives[voteArea.TargetPlayerId]
                 ? ActiveColor
                 : DisabledColor);
         var collider = targetBox.GetComponent<BoxCollider2D>();
@@ -117,10 +119,7 @@ public sealed class MeetingMenu : IDisposable
         HideButtons();
 
         // Logger<TownOfUsPlugin>.Message($"MeetingMenu.GenButtons '{Owner.Player.Data.PlayerName}' AmOwner: {Owner.Player.AmOwner}");
-        if (!usable || !Owner.Player.AmOwner)
-        {
-            return;
-        }
+        if (!usable || !Owner.Player.AmOwner) return;
 
         Actives.Clear();
         Buttons.Clear();
@@ -130,24 +129,16 @@ public sealed class MeetingMenu : IDisposable
 
     public void Update()
     {
-        if (!MeetingHud.Instance || Type != MeetingAbilityType.Toggle)
-        {
-            return;
-        }
+        if (!MeetingHud.Instance || Type != MeetingAbilityType.Toggle) return;
 
         foreach (var pair in ButtonSprites)
         {
-            if (!pair.Value)
-            {
-                continue;
-            }
+            if (!pair.Value) continue;
 
             pair.Value.sprite = (Actives[pair.Key] ? ActiveSprite : DisabledSprite).LoadAsset();
             pair.Value.color = Actives[pair.Key] ? ActiveColor : DisabledColor;
         }
     }
-
-    public void Dispose() => HideButtons();
 
     public static void ClearAll()
     {
@@ -158,5 +149,5 @@ public sealed class MeetingMenu : IDisposable
 public enum MeetingAbilityType : byte
 {
     Toggle,
-    Click,
+    Click
 }

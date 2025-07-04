@@ -1,7 +1,7 @@
-﻿using MiraAPI.Events;
+﻿using System.Text;
+using MiraAPI.Events;
 using MiraAPI.Modifiers;
 using Reactor.Utilities.Extensions;
-using System.Text;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modifiers.Neutral;
@@ -11,6 +11,17 @@ namespace TownOfUs.Modifiers.Crewmate;
 
 public sealed class ClericCleanseModifier(PlayerControl cleric) : BaseModifier
 {
+    public enum EffectType : byte
+    {
+        Douse,
+        Hack,
+        Infect,
+        Blackmail,
+        Blind,
+        Flash,
+        Hypnosis
+    }
+
     public override string ModifierName => "Cleric Cleanse";
     public override bool HideOnUi => true;
     public PlayerControl Cleric { get; } = cleric;
@@ -41,14 +52,12 @@ public sealed class ClericCleanseModifier(PlayerControl cleric) : BaseModifier
         {
             var text = new StringBuilder($"Cleansed effects on {Player.Data.PlayerName}:");
 
-            foreach (var effect in Effects)
-            {
-                text.Append(TownOfUsPlugin.Culture, $" {effect.ToString()},");
-            }
+            foreach (var effect in Effects) text.Append(TownOfUsPlugin.Culture, $" {effect.ToString()},");
 
             text = text.Remove(text.Length - 1, 1);
 
-            if (Effects.Count == 0) text = new StringBuilder($"No negative effects were found on {Player.Data.PlayerName}.");
+            if (Effects.Count == 0)
+                text = new StringBuilder($"No negative effects were found on {Player.Data.PlayerName}.");
 
             var title = $"<color=#{TownOfUsColors.Cleric.ToHtmlStringRGBA()}>Cleric Feedback</color>";
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, text.ToString(), false, true);
@@ -82,7 +91,7 @@ public sealed class ClericCleanseModifier(PlayerControl cleric) : BaseModifier
             Player.RemoveModifier<BlackmailedModifier>();
 
         if (Effects.Contains(EffectType.Blind))
-           Player.RpcRemoveModifier<EclipsalBlindModifier>();
+            Player.RpcRemoveModifier<EclipsalBlindModifier>();
 
         if (Effects.Contains(EffectType.Flash))
             Player.RemoveModifier<GrenadierFlashModifier>();
@@ -108,7 +117,7 @@ public sealed class ClericCleanseModifier(PlayerControl cleric) : BaseModifier
             effects.Add(EffectType.Blackmail);
 
         if (player.HasModifier<EclipsalBlindModifier>())
-           effects.Add(EffectType.Blind);
+            effects.Add(EffectType.Blind);
 
         if (player.HasModifier<GrenadierFlashModifier>())
             effects.Add(EffectType.Flash);
@@ -117,16 +126,5 @@ public sealed class ClericCleanseModifier(PlayerControl cleric) : BaseModifier
             effects.Add(EffectType.Hypnosis);
 
         return effects;
-    }
-
-    public enum EffectType : byte
-    {
-        Douse,
-        Hack,
-        Infect,
-        Blackmail,
-        Blind,
-        Flash,
-        Hypnosis,
     }
 }

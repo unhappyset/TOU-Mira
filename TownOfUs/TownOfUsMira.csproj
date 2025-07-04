@@ -7,9 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="Resources\**\*.*" />
+        <EmbeddedResource Include="Resources\**\*.*"/>
     </ItemGroup>
 
-    <Import Project="../AmongUs.props" />
+    <Import Project="../AmongUs.props"/>
 
 </Project>

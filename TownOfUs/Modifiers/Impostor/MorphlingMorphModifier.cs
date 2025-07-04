@@ -26,7 +26,7 @@ public sealed class MorphlingMorphModifier(PlayerControl target) : ConcealedModi
         var touAbilityEvent = new TouAbilityEvent(AbilityType.MorphlingMorph, Player, target);
         MiraEventManager.InvokeEvent(touAbilityEvent);
     }
-    
+
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent!.RemoveModifier(this);

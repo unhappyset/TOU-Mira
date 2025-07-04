@@ -4,6 +4,7 @@ using MiraAPI.Events.Vanilla.Meeting;
 using TownOfUs.Patches.Options;
 
 namespace TownOfUs.Events.Misc;
+
 // Never hurts to check... i think - Atony
 public static class TeamChatEvents
 {
@@ -18,6 +19,7 @@ public static class TeamChatEvents
     {
         if (TeamChatPatches.TeamChatActive) TeamChatPatches.ToggleTeamChat();
     }
+
     [RegisterEvent]
     public static void EjectionEventHandler(EjectionEvent @event)
     {

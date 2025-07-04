@@ -17,10 +17,9 @@ public static class DetectiveEvents
         if (@event.Target == null) return;
 
         if (@event.Reporter.Data.Role is DetectiveRole detective && @event.Reporter.AmOwner)
-        {
             detective.Report(@event.Target.PlayerId);
-        }
     }
+
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
@@ -28,17 +27,10 @@ public static class DetectiveEvents
         if (CrimeSceneComponent._crimeScenes.Count == 0) return;
         if (!Helpers.GetAlivePlayers().Any(x => x.Data.Role is DetectiveRole)) return;
 
-        foreach (var scene in CrimeSceneComponent._crimeScenes)
-        {
-            scene.gameObject.SetActive(false);
-        }
+        foreach (var scene in CrimeSceneComponent._crimeScenes) scene.gameObject.SetActive(false);
         if (PlayerControl.LocalPlayer.Data.Role is DetectiveRole)
-        {
             foreach (var scene in CrimeSceneComponent._crimeScenes)
-            {
                 scene.gameObject.SetActive(true);
-            }
-        }
     }
 
     /* [RegisterEvent]

@@ -8,10 +8,16 @@ namespace TownOfUs.Modifiers;
 public abstract class ConcealedModifier : TimedModifier
 {
     public override string ModifierName => "Concealed Modifier";
-    public override string GetDescription() => "You are concealed!";
+
     public override float Duration => 1f;
     public override bool AutoStart => false;
     public override bool HideOnUi => true;
+
+    public override string GetDescription()
+    {
+        return "You are concealed!";
+    }
+
     public override void OnDeath(DeathReason reason)
     {
         base.OnDeath(reason);

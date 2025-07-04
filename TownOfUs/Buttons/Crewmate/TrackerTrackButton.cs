@@ -1,11 +1,11 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using TownOfUs.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
 
@@ -26,7 +26,10 @@ public sealed class TrackerTrackButton : TownOfUsRoleButton<TrackerTouRole, Play
         return base.IsTargetValid(target) && !target!.HasModifier<TrackerArrowTargetModifier>();
     }
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
 
     protected override void OnClick()
     {

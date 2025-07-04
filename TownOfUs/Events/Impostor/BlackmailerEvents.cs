@@ -17,7 +17,9 @@ public static class BlackmailerEvents
         sparedPlayers.Do(x => x.RemoveModifier<BlackmailSparedModifier>());
 
         var players = ModifierUtils.GetPlayersWithModifier<BlackmailedModifier>().ToList();
-        if (!OptionGroupSingleton<BlackmailerOptions>.Instance.BlackmailInARow) players.Do(x => x.AddModifier<BlackmailSparedModifier>(x.GetModifier<BlackmailedModifier>()!.BlackMailerId));
+        if (!OptionGroupSingleton<BlackmailerOptions>.Instance.BlackmailInARow)
+            players.Do(x =>
+                x.AddModifier<BlackmailSparedModifier>(x.GetModifier<BlackmailedModifier>()!.BlackMailerId));
         players.Do(x => x.RemoveModifier<BlackmailedModifier>());
     }
 }

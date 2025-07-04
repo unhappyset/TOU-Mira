@@ -21,10 +21,8 @@ public static class SpyMapCountOverlayPatch
         __instance.SabotageText.gameObject.SetActive(sabotaged);
 
         if (sabotaged)
-        {
             foreach (var area in __instance.CountAreas)
                 area.UpdateCount(0);
-        }
     }
 
     public static void UpdateBlips(CounterArea area, List<int> colorMapping, bool isSpy)
@@ -70,8 +68,8 @@ public static class SpyMapCountOverlayPatch
 
                 if (collider.tag == "DeadBody" &&
                     ((isSpy && WhoSeesDead == AdminDeadPlayers.Spy) ||
-                    (!isSpy && WhoSeesDead == AdminDeadPlayers.EveryoneButSpy) ||
-                    WhoSeesDead == AdminDeadPlayers.Everyone))
+                     (!isSpy && WhoSeesDead == AdminDeadPlayers.EveryoneButSpy) ||
+                     WhoSeesDead == AdminDeadPlayers.Everyone))
                 {
                     var playerId = collider.GetComponent<DeadBody>().ParentId;
                     colorMap.Add(GameData.Instance.GetPlayerById(playerId).DefaultOutfit.ColorId);
@@ -79,10 +77,11 @@ public static class SpyMapCountOverlayPatch
                 }
                 else
                 {
-                    PlayerControl component = collider.GetComponent<PlayerControl>();
+                    var component = collider.GetComponent<PlayerControl>();
                     var data = component?.Data;
 
-                    if (component == null || data == null || !component || component.Data == null || component.Data.Disconnected || component.Data.IsDead
+                    if (component == null || data == null || !component || component.Data == null ||
+                        component.Data.Disconnected || component.Data.IsDead
                         || (!__instance.showLivePlayerPosition && component.AmOwner) ||
                         colorMapDuplicate.Contains(data.DefaultOutfit.ColorId)) continue;
 

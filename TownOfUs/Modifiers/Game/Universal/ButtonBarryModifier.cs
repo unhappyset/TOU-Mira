@@ -19,34 +19,9 @@ public sealed class ButtonBarryModifier : UniversalGameModifier, IWikiDiscoverab
 {
     public override string ModifierName => "Button Barry";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.ButtonBarry;
-    public override string GetDescription() => "You can call a meeting\n from anywhere on the map.";
+
     public int Priority { get; set; } = 5;
     public override ModifierFaction FactionType => ModifierFaction.UniversalUtility;
-
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ButtonBarryAmount != 0 ? 1 : 0;
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ButtonBarryChance;
-    public override bool IsModifierValidOn(RoleBehaviour role)
-    {
-        if (role is SwapperRole && !OptionGroupSingleton<SwapperOptions>.Instance.CanButton)
-        {
-            return false;
-        }
-        else if (role is JesterRole && !OptionGroupSingleton<JesterOptions>.Instance.CanButton)
-        {
-            return false;
-        }
-        else if (role is ExecutionerRole && !OptionGroupSingleton<ExecutionerOptions>.Instance.CanButton)
-        {
-            return false;
-        }
-
-        return base.IsModifierValidOn(role);
-    }
-
-    public static void OnRoundStart()
-    {
-        CustomButtonSingleton<BarryButton>.Instance.Usable = true;
-    }
 
     public string GetAdvancedDescription()
     {
@@ -55,10 +30,41 @@ public sealed class ButtonBarryModifier : UniversalGameModifier, IWikiDiscoverab
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
         new("Button",
             $"You can trigger an emergency meeting from across the map, which you may do {OptionGroupSingleton<ButtonBarryOptions>.Instance.MaxNumButtons} time(s) per game.",
-            TouAssets.BarryButtonSprite),
+            TouAssets.BarryButtonSprite)
     ];
-    
+
+    public override string GetDescription()
+    {
+        return "You can call a meeting\n from anywhere on the map.";
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ButtonBarryAmount != 0 ? 1 : 0;
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.ButtonBarryChance;
+    }
+
+    public override bool IsModifierValidOn(RoleBehaviour role)
+    {
+        if (role is SwapperRole && !OptionGroupSingleton<SwapperOptions>.Instance.CanButton) return false;
+
+        if (role is JesterRole && !OptionGroupSingleton<JesterOptions>.Instance.CanButton) return false;
+
+        if (role is ExecutionerRole && !OptionGroupSingleton<ExecutionerOptions>.Instance.CanButton) return false;
+
+        return base.IsModifierValidOn(role);
+    }
+
+    public static void OnRoundStart()
+    {
+        CustomButtonSingleton<BarryButton>.Instance.Usable = true;
+    }
 }

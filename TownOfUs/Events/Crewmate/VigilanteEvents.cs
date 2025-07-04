@@ -21,13 +21,9 @@ public static class VigilanteEvents
         if (GameHistory.PlayerStats.TryGetValue(source.PlayerId, out var stats))
         {
             if (source != target)
-            {
                 stats.CorrectAssassinKills++;
-            }
             else
-            {
                 stats.CorrectAssassinKills--;
-            }
         }
     }
 }

@@ -15,6 +15,7 @@ using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 namespace TownOfUs.Patches;
@@ -22,25 +23,6 @@ namespace TownOfUs.Patches;
 [HarmonyPatch]
 public static class EndGamePatches
 {
-    public static class EndGameData
-    {
-        public static List<PlayerRecord> PlayerRecords { get; set; } = [];
-
-        public static void Clear()
-        {
-            PlayerRecords.Clear();
-        }
-
-        public sealed class PlayerRecord
-        {
-            public string? PlayerName { get; set; }
-            public string? RoleString { get; set; }
-            public bool Winner { get; set; }
-            public RoleTypes LastRole { get; set; }
-            public ModdedRoleTeams Team { get; set; }
-        }
-    }
-
     public static void BuildEndGameData()
     {
         EndGameData.Clear();
@@ -52,7 +34,8 @@ public static class EndGamePatches
         {
             playerRoleString.Clear();
 
-            foreach (var role in GameHistory.RoleHistory.Where(x => x.Key == playerControl.PlayerId).Select(x => x.Value))
+            foreach (var role in GameHistory.RoleHistory.Where(x => x.Key == playerControl.PlayerId)
+                         .Select(x => x.Value))
             {
                 if (role.Role is RoleTypes.CrewmateGhost or RoleTypes.ImpostorGhost ||
                     role.Role == (RoleTypes)RoleId.Get<NeutralGhostRole>()) continue;
@@ -80,63 +63,61 @@ public static class EndGamePatches
             else if (lastRole.IsImpostor)
                 playerTeam = ModdedRoleTeams.Impostor;
 
-            var modifiers = playerControl.GetModifiers<GameModifier>().Where(x => x is TouGameModifier || x is UniversalGameModifier);
+            var modifiers = playerControl.GetModifiers<GameModifier>()
+                .Where(x => x is TouGameModifier || x is UniversalGameModifier);
             var modifierCount = modifiers.Count();
             var modifierNames = modifiers.Select(modifier => modifier.ModifierName);
             if (modifierCount != 0)
-                    playerRoleString.Append(TownOfUsPlugin.Culture, $" (");
+                playerRoleString.Append(TownOfUsPlugin.Culture, $" (");
             foreach (var modifierName in modifierNames)
             {
                 var modColor = MiscUtils.GetRoleColour(modifierName.Replace(" ", string.Empty));
-                if (modifiers.FirstOrDefault(x => x.ModifierName == modifierName) is IColoredModifier colorMod) modColor = colorMod.ModifierColor;
+                if (modifiers.FirstOrDefault(x => x.ModifierName == modifierName) is IColoredModifier colorMod)
+                    modColor = colorMod.ModifierColor;
                 modifierCount--;
                 if (modifierCount == 0)
                     playerRoleString.Append(TownOfUsPlugin.Culture, $"{modColor.ToTextColor()}{modifierName}</color>)");
                 else
-                    playerRoleString.Append(TownOfUsPlugin.Culture, $"{modColor.ToTextColor()}{modifierName}</color>, ");
+                    playerRoleString.Append(TownOfUsPlugin.Culture,
+                        $"{modColor.ToTextColor()}{modifierName}</color>, ");
             }
 
             if (playerControl.IsRole<PhantomTouRole>() || playerTeam == ModdedRoleTeams.Crewmate)
             {
-                if ((playerControl.Data.Tasks.Count - playerControl.GetTasksLeft()) / playerControl.Data.Tasks.Count == 1)
-                {
-                    playerRoleString.Append(TownOfUsPlugin.Culture, $" | Tasks: {Color.green.ToTextColor()}{playerControl.Data.Tasks.Count - playerControl.GetTasksLeft()}/{playerControl.Data.Tasks.Count}</color>");
-                }
+                if ((playerControl.Data.Tasks.Count - playerControl.GetTasksLeft()) / playerControl.Data.Tasks.Count ==
+                    1)
+                    playerRoleString.Append(TownOfUsPlugin.Culture,
+                        $" | Tasks: {Color.green.ToTextColor()}{playerControl.Data.Tasks.Count - playerControl.GetTasksLeft()}/{playerControl.Data.Tasks.Count}</color>");
                 else
-                {
-                    playerRoleString.Append(TownOfUsPlugin.Culture, $" | Tasks: {playerControl.Data.Tasks.Count - playerControl.GetTasksLeft()}/{playerControl.Data.Tasks.Count}");
-                }
+                    playerRoleString.Append(TownOfUsPlugin.Culture,
+                        $" | Tasks: {playerControl.Data.Tasks.Count - playerControl.GetTasksLeft()}/{playerControl.Data.Tasks.Count}");
             }
 
-            var killedPlayers = GameHistory.KilledPlayers.Count(x => x.KillerId == playerControl.PlayerId && x.VictimId != playerControl.PlayerId);
+            var killedPlayers = GameHistory.KilledPlayers.Count(x =>
+                x.KillerId == playerControl.PlayerId && x.VictimId != playerControl.PlayerId);
 
             if (killedPlayers > 0 && !playerControl.IsCrewmate() && !playerControl.Is(RoleAlignment.NeutralEvil))
-            {
-                playerRoleString.Append(TownOfUsPlugin.Culture, $" |{TownOfUsColors.Impostor.ToTextColor()} Kills: {killedPlayers}</color>");
-            }
+                playerRoleString.Append(TownOfUsPlugin.Culture,
+                    $" |{TownOfUsColors.Impostor.ToTextColor()} Kills: {killedPlayers}</color>");
 
             if (GameHistory.PlayerStats.TryGetValue(playerControl.PlayerId, out var stats))
             {
-                if (killedPlayers > 0 && playerControl.IsCrewmate() && stats.CorrectKills <= 0 && stats.IncorrectKills <= 0 && !playerControl.Is(RoleAlignment.NeutralEvil))
-                {
-                    playerRoleString.Append(TownOfUsPlugin.Culture, $" |{TownOfUsColors.Impostor.ToTextColor()} Kills: {killedPlayers}</color>");
-                }
+                if (killedPlayers > 0 && playerControl.IsCrewmate() && stats.CorrectKills <= 0 &&
+                    stats.IncorrectKills <= 0 && !playerControl.Is(RoleAlignment.NeutralEvil))
+                    playerRoleString.Append(TownOfUsPlugin.Culture,
+                        $" |{TownOfUsColors.Impostor.ToTextColor()} Kills: {killedPlayers}</color>");
                 if (stats.CorrectKills > 0)
-                {
-                    playerRoleString.Append(TownOfUsPlugin.Culture, $" | {Color.green.ToTextColor()}Correct Kills: {stats.CorrectKills}</color>");
-                }
+                    playerRoleString.Append(TownOfUsPlugin.Culture,
+                        $" | {Color.green.ToTextColor()}Correct Kills: {stats.CorrectKills}</color>");
                 if (stats.IncorrectKills > 0)
-                {
-                    playerRoleString.Append(TownOfUsPlugin.Culture, $" | {TownOfUsColors.Impostor.ToTextColor()}Incorrect Kills: {stats.IncorrectKills}</color>");
-                }
+                    playerRoleString.Append(TownOfUsPlugin.Culture,
+                        $" | {TownOfUsColors.Impostor.ToTextColor()}Incorrect Kills: {stats.IncorrectKills}</color>");
                 if (stats.CorrectAssassinKills > 0)
-                {
-                    playerRoleString.Append(TownOfUsPlugin.Culture, $" | {Color.green.ToTextColor()}Correct Guesses: {stats.CorrectAssassinKills}</color>");
-                }
+                    playerRoleString.Append(TownOfUsPlugin.Culture,
+                        $" | {Color.green.ToTextColor()}Correct Guesses: {stats.CorrectAssassinKills}</color>");
                 if (stats.IncorrectAssassinKills > 0)
-                {
-                    playerRoleString.Append(TownOfUsPlugin.Culture, $" | {TownOfUsColors.Impostor.ToTextColor()}Incorrect Guesses: {stats.IncorrectAssassinKills}</color>");
-                }
+                    playerRoleString.Append(TownOfUsPlugin.Culture,
+                        $" | {TownOfUsColors.Impostor.ToTextColor()}Incorrect Guesses: {stats.IncorrectAssassinKills}</color>");
             }
 
             var playerName = new StringBuilder();
@@ -157,16 +138,17 @@ public static class EndGamePatches
             {
                 var modColor = MiscUtils.GetRoleColour(alliance.ModifierName.Replace(" ", string.Empty));
                 if (alliance is IColoredModifier colorMod) modColor = colorMod.ModifierColor;
-                playerName.Append(TownOfUsPlugin.Culture, $" <b>{modColor.ToTextColor()}<size=60%>{alliance.Symbol}</size></color></b>");
+                playerName.Append(TownOfUsPlugin.Culture,
+                    $" <b>{modColor.ToTextColor()}<size=60%>{alliance.Symbol}</size></color></b>");
             }
 
-            EndGameData.PlayerRecords.Add(new EndGameData.PlayerRecord()
+            EndGameData.PlayerRecords.Add(new EndGameData.PlayerRecord
             {
                 PlayerName = playerName.ToString(),
                 RoleString = playerRoleString.ToString(),
                 Winner = playerWinner,
                 LastRole = playerRoleType,
-                Team = playerTeam,
+                Team = playerTeam
             });
         }
     }
@@ -177,16 +159,16 @@ public static class EndGamePatches
         var exitBtn = instance.Navigation.ExitButton;
 
         var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
-        GameObject roleSummaryLeft = Object.Instantiate(winText.gameObject);
+        var roleSummaryLeft = Object.Instantiate(winText.gameObject);
         roleSummaryLeft.transform.position = new Vector3(exitBtn.transform.position.x + 0.1f, position.y - 0.1f, -14f);
         roleSummaryLeft.transform.localScale = new Vector3(1f, 1f, 1f);
         roleSummaryLeft.gameObject.SetActive(false);
 
-        GameObject roleSummary = Object.Instantiate(winText.gameObject);
+        var roleSummary = Object.Instantiate(winText.gameObject);
         roleSummary.transform.position = new Vector3(exitBtn.transform.position.x + 0.1f, position.y - 0.1f, -14f);
         roleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
 
-        GameObject roleSummary2 = Object.Instantiate(winText.gameObject);
+        var roleSummary2 = Object.Instantiate(winText.gameObject);
         roleSummary2.transform.position = new Vector3(exitBtn.transform.position.x + 0.1f, position.y - 0.1f, -14f);
         roleSummary2.transform.localScale = new Vector3(1f, 1f, 1f);
 
@@ -254,16 +236,17 @@ public static class EndGamePatches
 
         GameHistory.EndGameSummary = roleSummaryBackup.ToString();
 
-        SpriteRenderer GameSummaryButton = Object.Instantiate(exitBtn);
+        var GameSummaryButton = Object.Instantiate(exitBtn);
         GameSummaryButton.gameObject.SetActive(true);
         GameSummaryButton.sprite = TouAssets.GameSummarySprite.LoadAsset();
         GameSummaryButton.transform.position += Vector3.up * 1.65f;
         if (GameSummaryButton.transform.GetChild(1).TryGetComponent<TextTranslatorTMP>(out var tmp2))
         {
-            tmp2.defaultStr = $"<size=70%>Game</size>\n<size=55%>Summary</size>";
+            tmp2.defaultStr = "<size=70%>Game</size>\n<size=55%>Summary</size>";
             tmp2.TargetText = StringNames.None;
             tmp2.ResetText();
         }
+
         switch (TownOfUsPlugin.GameSummaryMode.Value)
         {
             default:
@@ -286,6 +269,7 @@ public static class EndGamePatches
                 roleSummaryLeft.gameObject.SetActive(true);
                 break;
         }
+
         var toggleAction = new Action(() =>
         {
             switch (TownOfUsPlugin.GameSummaryMode.Value)
@@ -315,43 +299,47 @@ public static class EndGamePatches
         });
 
         var passiveButton = GameSummaryButton.GetComponent<PassiveButton>();
-        passiveButton.OnClick = new();
+        passiveButton.OnClick = new Button.ButtonClickedEvent();
         passiveButton.OnClick.AddListener((UnityAction)toggleAction);
 
         AfterEndGameSetup(instance);
         HandlePlayerNames();
     }
+
     public static void HandlePlayerNames()
     {
         PoolablePlayer[] array = Object.FindObjectsOfType<PoolablePlayer>();
         var winnerArray = EndGameResult.CachedWinners.ToArray();
         if (array.Length > 0)
-        {
             foreach (var player in array)
             {
                 var realPlayer = winnerArray.FirstOrDefault(x => x.PlayerName == player.cosmetics.nameText.text);
-                if (realPlayer == null) realPlayer = winnerArray.FirstOrDefault(x => x.Outfit.HatId == player.cosmetics.hat.Hat.ProdId
-                    && x.Outfit.ColorId == player.cosmetics.ColorId /*&& HatManager.Instance.GetPetById(x.Outfit.PetId) == player.cosmetics.currentPet */);
+                if (realPlayer == null)
+                    realPlayer = winnerArray.FirstOrDefault(x => x.Outfit.HatId == player.cosmetics.hat.Hat.ProdId
+                                                                 && x.Outfit.ColorId ==
+                                                                 player.cosmetics
+                                                                     .ColorId /*&& HatManager.Instance.GetPetById(x.Outfit.PetId) == player.cosmetics.currentPet */);
                 if (realPlayer == null) continue;
                 var roleType = realPlayer.RoleWhenAlive;
                 var role = RoleManager.Instance.GetRole(roleType);
                 var nameTxt = player.cosmetics.nameText;
                 nameTxt.gameObject.SetActive(true);
-                player.SetName($"\n<size=85%>{realPlayer.PlayerName}</size>\n<size=65%><color=#{role.TeamColor.ToHtmlStringRGBA()}>{role.NiceName}</size>", new Vector3(1.1619f, 1.1619f, 1f), Color.white, -15f);
+                player.SetName(
+                    $"\n<size=85%>{realPlayer.PlayerName}</size>\n<size=65%><color=#{role.TeamColor.ToHtmlStringRGBA()}>{role.NiceName}</size>",
+                    new Vector3(1.1619f, 1.1619f, 1f), Color.white, -15f);
                 player.SetNamePosition(new Vector3(0f, -1.31f, -0.5f));
                 nameTxt.fontSize = 1.9f;
                 nameTxt.fontSizeMax = 2f;
                 nameTxt.fontSizeMin = 0.5f;
                 winnerArray.ToList().Remove(realPlayer);
             }
-        }
         //{
         //    array[0].SetFlipX(true);
 
-            //    array[0].gameObject.transform.position -= new Vector3(1.5f, 0f, 0f);
-            //    array[0].cosmetics.skin.transform.localScale = new Vector3(-1, 1, 1);
-            //    array[0].cosmetics.nameText.color = new Color(1f, 0.4f, 0.8f, 1f);
-            //}
+        //    array[0].gameObject.transform.position -= new Vector3(1.5f, 0f, 0f);
+        //    array[0].cosmetics.skin.transform.localScale = new Vector3(-1, 1, 1);
+        //    array[0].cosmetics.nameText.color = new Color(1f, 0.4f, 0.8f, 1f);
+        //}
     }
 
     public static void AfterEndGameSetup(EndGameManager instance)
@@ -360,12 +348,12 @@ public static class EndGamePatches
         switch (EndGameEvents.winType)
         {
             case 1:
-                text.text = $"<size=4>Crewmates Win!</size>";
+                text.text = "<size=4>Crewmates Win!</size>";
                 text.color = Palette.CrewmateBlue;
                 instance.BackgroundBar.material.SetColor(ShaderID.Color, Palette.CrewmateBlue);
                 break;
             case 2:
-                text.text = $"<size=4>Impostors Win!</size>";
+                text.text = "<size=4>Impostors Win!</size>";
                 text.color = Palette.ImpostorRed;
                 instance.BackgroundBar.material.SetColor(ShaderID.Color, Palette.ImpostorRed);
                 break;
@@ -374,6 +362,7 @@ public static class EndGamePatches
                 text.color = TownOfUsColors.Neutral;
                 break;
         }
+
         var pos = instance.WinText.transform.localPosition;
         pos.y = 1.5f;
         pos += Vector3.down * 0.15f;
@@ -394,5 +383,24 @@ public static class EndGamePatches
     public static void EndGameManagerStart(EndGameManager __instance)
     {
         EndGameData.Clear();
+    }
+
+    public static class EndGameData
+    {
+        public static List<PlayerRecord> PlayerRecords { get; set; } = [];
+
+        public static void Clear()
+        {
+            PlayerRecords.Clear();
+        }
+
+        public sealed class PlayerRecord
+        {
+            public string? PlayerName { get; set; }
+            public string? RoleString { get; set; }
+            public bool Winner { get; set; }
+            public RoleTypes LastRole { get; set; }
+            public ModdedRoleTeams Team { get; set; }
+        }
     }
 }

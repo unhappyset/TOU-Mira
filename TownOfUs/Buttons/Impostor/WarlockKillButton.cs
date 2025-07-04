@@ -18,14 +18,15 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => PlayerControl.LocalPlayer.GetKillCooldown() + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
-    public void SetDiseasedTimer(float multiplier)
-    {
-        SetTimer(Cooldown * multiplier);
-    }
 
     public float Charge { get; set; }
     public bool BurstActive { get; set; }
     public int Kills { get; set; }
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
@@ -44,7 +45,8 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
         {
             if (Timer <= 0 && Charge < 100 && !PlayerControl.LocalPlayer.inVent)
             {
-                var duration = OptionGroupSingleton<WarlockOptions>.Instance.ChargeTimeDuration * (1f + Kills * OptionGroupSingleton<WarlockOptions>.Instance.AddedTimeDuration);
+                var duration = OptionGroupSingleton<WarlockOptions>.Instance.ChargeTimeDuration *
+                               (1f + Kills * OptionGroupSingleton<WarlockOptions>.Instance.AddedTimeDuration);
                 var delta = Time.fixedDeltaTime;
                 Charge += 100 * delta / duration;
 
@@ -72,10 +74,7 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
 
     protected override void OnClick()
     {
-        if (Target == null)
-        {
-            return;
-        }
+        if (Target == null) return;
 
         if (!Target.Data.IsDead) PlayerControl.LocalPlayer.RpcCustomMurder(Target);
 
@@ -92,17 +91,11 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
 
     public override void ClickHandler()
     {
-        if (!CanClick())
-        {
-            return;
-        }
+        if (!CanClick()) return;
 
         OnClick();
         Button?.SetDisabled();
-        if (!BurstActive)
-        {
-            Timer = Cooldown;
-        }
+        if (!BurstActive) Timer = Cooldown;
     }
 
     public override PlayerControl? GetTarget()
@@ -111,8 +104,10 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
         var closePlayer = PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
 
         var includePostors = genOpt.FFAImpostorMode ||
-            (PlayerControl.LocalPlayer.IsLover() && OptionGroupSingleton<LoversOptions>.Instance.LoverKillTeammates) ||
-            (genOpt.KillDuringCamoComms && closePlayer?.GetAppearanceType() == TownOfUsAppearances.Camouflage);
+                             (PlayerControl.LocalPlayer.IsLover() &&
+                              OptionGroupSingleton<LoversOptions>.Instance.LoverKillTeammates) ||
+                             (genOpt.KillDuringCamoComms &&
+                              closePlayer?.GetAppearanceType() == TownOfUsAppearances.Camouflage);
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(includePostors, Distance);
     }
 }

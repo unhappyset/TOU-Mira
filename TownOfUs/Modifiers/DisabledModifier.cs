@@ -10,12 +10,18 @@ namespace TownOfUs.Modifiers;
 public abstract class DisabledModifier : TimedModifier
 {
     public override string ModifierName => "Disabled Modifier";
-    public override string GetDescription() => "You are disabled!";
+
     public virtual bool CanBeInteractedWith => true;
     public virtual bool IsConsideredAlive => true;
     public override float Duration => 1f;
     public override bool AutoStart => false;
     public override bool HideOnUi => true;
+
+    public override string GetDescription()
+    {
+        return "You are disabled!";
+    }
+
     public override void OnDeath(DeathReason reason)
     {
         base.OnDeath(reason);

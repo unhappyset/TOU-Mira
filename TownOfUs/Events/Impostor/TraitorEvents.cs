@@ -18,25 +18,22 @@ public static class TraitorEvents
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (@event.TriggeredByIntro) return;
-        var traitor = ModifierUtils.GetActiveModifiers<ToBecomeTraitorModifier>().Where(x => !x.Player.HasDied() && x.Player.IsCrewmate()).Random();
+        var traitor = ModifierUtils.GetActiveModifiers<ToBecomeTraitorModifier>()
+            .Where(x => !x.Player.HasDied() && x.Player.IsCrewmate()).Random();
         if (traitor != null && AmongUsClient.Instance.AmHost)
         {
             var alives = Helpers.GetAlivePlayers().ToList();
             if (alives.Count < OptionGroupSingleton<TraitorOptions>.Instance.LatestSpawn) return;
             foreach (var player in alives)
-            {
-                if (player.IsImpostor() || (player.Is(RoleAlignment.NeutralKilling) && OptionGroupSingleton<TraitorOptions>.Instance.NeutralKillingStopsTraitor))
-                {
+                if (player.IsImpostor() || (player.Is(RoleAlignment.NeutralKilling) &&
+                                            OptionGroupSingleton<TraitorOptions>.Instance.NeutralKillingStopsTraitor))
                     return;
-                }
-            }
+
             var traitorPlayer = traitor.Player;
             if (traitorPlayer.Data.IsDead) return;
-            var otherTraitors = Helpers.GetAlivePlayers().Where(x => x.HasModifier<ToBecomeTraitorModifier>() && x != traitorPlayer).ToList();
-            foreach (var faker in otherTraitors)
-            {
-                faker.RpcRemoveModifier<ToBecomeTraitorModifier>();
-            }
+            var otherTraitors = Helpers.GetAlivePlayers()
+                .Where(x => x.HasModifier<ToBecomeTraitorModifier>() && x != traitorPlayer).ToList();
+            foreach (var faker in otherTraitors) faker.RpcRemoveModifier<ToBecomeTraitorModifier>();
             ToBecomeTraitorModifier.RpcSetTraitor(traitorPlayer);
         }
 

@@ -19,26 +19,29 @@ public sealed class ClericBarrierModifier(PlayerControl cleric) : BaseShieldModi
     public override string ShieldDescription => "You are shielded by a Cleric!\nNo one can interact with you.";
     public override float Duration => OptionGroupSingleton<ClericOptions>.Instance.BarrierCooldown;
     public override bool AutoStart => true;
+
     public override bool HideOnUi
     {
         get
         {
             var showBarrier = OptionGroupSingleton<ClericOptions>.Instance.ShowBarriered;
             var showBarrierSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-                (showBarrier == BarrierOptions.Self || showBarrier == BarrierOptions.SelfAndCleric);
+                                  (showBarrier == BarrierOptions.Self || showBarrier == BarrierOptions.SelfAndCleric);
             return !TownOfUsPlugin.ShowShieldHud.Value && !showBarrierSelf;
         }
     }
+
     public override bool VisibleSymbol
     {
         get
         {
             var showBarrier = OptionGroupSingleton<ClericOptions>.Instance.ShowBarriered;
             var showBarrierSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-                (showBarrier == BarrierOptions.Self || showBarrier == BarrierOptions.SelfAndCleric);
+                                  (showBarrier == BarrierOptions.Self || showBarrier == BarrierOptions.SelfAndCleric);
             return showBarrierSelf;
         }
     }
+
     public PlayerControl Cleric { get; } = cleric;
     public GameObject? ClericBarrier { get; set; }
 
@@ -51,21 +54,20 @@ public sealed class ClericBarrierModifier(PlayerControl cleric) : BaseShieldModi
         var showBarrier = OptionGroupSingleton<ClericOptions>.Instance.ShowBarriered;
 
         var showBarrierSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-            (showBarrier == BarrierOptions.Self || showBarrier == BarrierOptions.SelfAndCleric);
+                              (showBarrier == BarrierOptions.Self || showBarrier == BarrierOptions.SelfAndCleric);
         var showBarrierCleric = PlayerControl.LocalPlayer.PlayerId == Cleric.PlayerId &&
-                 (showBarrier == BarrierOptions.Cleric || showBarrier == BarrierOptions.SelfAndCleric);
+                                (showBarrier == BarrierOptions.Cleric || showBarrier == BarrierOptions.SelfAndCleric);
 
-        if (showBarrierSelf || showBarrierCleric || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        if (showBarrierSelf || showBarrierCleric || (PlayerControl.LocalPlayer.HasDied() &&
+                                                     OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
         {
             ClericBarrier = AnimStore.SpawnAnimBody(Player, TouAssets.ClericBarrier.LoadAsset(), false, -1.1f, -0.35f)!;
             ClericBarrier.GetComponent<SpriteAnim>().SetSpeed(2f);
         }
     }
+
     public override void OnDeactivate()
     {
-        if (ClericBarrier?.gameObject != null)
-        {
-            ClericBarrier.gameObject.Destroy();
-        }
+        if (ClericBarrier?.gameObject != null) ClericBarrier.gameObject.Destroy();
     }
 }

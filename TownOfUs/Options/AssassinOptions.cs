@@ -12,17 +12,21 @@ public sealed class AssassinOptions : AbstractOptionGroup
 
     [ModdedNumberOption("Number Of Impostor Assassins", 0, 4, 1, MiraNumberSuffixes.None, "0")]
     public float NumberOfImpostorAssassins { get; set; } = 1;
-    public ModdedNumberOption ImpAssassinChance { get; } = new ModdedNumberOption("Impostor Assassin Chance", 100f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
-    {
-        Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.NumberOfImpostorAssassins > 0,
-    };
+
+    public ModdedNumberOption ImpAssassinChance { get; } =
+        new("Impostor Assassin Chance", 100f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+        {
+            Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.NumberOfImpostorAssassins > 0
+        };
 
     [ModdedNumberOption("Number Of Neutral Assassins", 0, 5, 1, MiraNumberSuffixes.None, "0")]
     public float NumberOfNeutralAssassins { get; set; } = 1;
-    public ModdedNumberOption NeutAssassinChance { get; } = new ModdedNumberOption("Neutral Assassin Chance", 100f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
-    {
-        Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.NumberOfNeutralAssassins > 0,
-    };
+
+    public ModdedNumberOption NeutAssassinChance { get; } =
+        new("Neutral Assassin Chance", 100f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+        {
+            Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.NumberOfNeutralAssassins > 0
+        };
 
     [ModdedToggleOption("Amnesiac Turned Impostor Gets Ability")]
     public bool AmneTurnImpAssassin { get; set; } = true;
@@ -60,12 +64,12 @@ public sealed class AssassinOptions : AbstractOptionGroup
     [ModdedToggleOption("Assassin Can Guess Crewmate Modifiers")]
     public bool AssassinGuessCrewModifiers { get; set; } = true;
 
-    public ModdedToggleOption AssassinGuessUtilityModifiers { get; } = new ModdedToggleOption("Assassin Can Guess Crew Utility Modifiers", false)
-    {
-        Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessCrewModifiers,
-    };
+    public ModdedToggleOption AssassinGuessUtilityModifiers { get; } =
+        new("Assassin Can Guess Crew Utility Modifiers", false)
+        {
+            Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessCrewModifiers
+        };
 
     [ModdedToggleOption("Assassin Can Guess Alliances")]
     public bool AssassinGuessAlliances { get; set; } = true;
-
 }

@@ -20,6 +20,7 @@ public sealed class TransporterOptions : AbstractOptionGroup<TransporterRole>
 
     [ModdedToggleOption("Transporter Can Use Vitals")]
     public bool CanUseVitals { get; set; } = true;
+
     [ModdedToggleOption("Get More Uses From Completing Tasks")]
     public bool TaskUses { get; set; } = true;
 }

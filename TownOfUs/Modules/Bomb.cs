@@ -15,10 +15,19 @@ namespace TownOfUs.Modules;
 // Code Review: Should be using a MonoBehaviour
 public sealed class Bomb : IDisposable
 {
-    private GameObject? _obj;
     private PlayerControl? _bomber;
+    private GameObject? _obj;
 
-    public void Detonate() => Coroutines.Start(CoDetonate());
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    public void Detonate()
+    {
+        Coroutines.Start(CoDetonate());
+    }
 
     private IEnumerator CoDetonate()
     {
@@ -42,16 +51,21 @@ public sealed class Bomb : IDisposable
 
             _bomber?.RpcCustomMurder(player, teleportMurderer: false);
         }
+
         _bomber?.RpcRemoveModifier<IndirectAttackerModifier>();
 
         _obj.Destroy();
     }
 
-    public static Bomb CreateBomb(PlayerControl player, Vector3 location) => new()
+    public static Bomb CreateBomb(PlayerControl player, Vector3 location)
     {
-        _obj = MiscUtils.CreateSpherePrimitive(location, OptionGroupSingleton<BomberOptions>.Instance.DetonateRadius),
-        _bomber = player,
-    };
+        return new Bomb
+        {
+            _obj = MiscUtils.CreateSpherePrimitive(location,
+                OptionGroupSingleton<BomberOptions>.Instance.DetonateRadius),
+            _bomber = player
+        };
+    }
 
     public static IEnumerator BombShowTeammate(PlayerControl player, Vector3 location)
     {
@@ -59,8 +73,14 @@ public sealed class Bomb : IDisposable
 
         yield return new WaitForSeconds(OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay);
 
-        try { bomb.Destroy(); }
-        catch { /* ignored */ }
+        try
+        {
+            bomb.Destroy();
+        }
+        catch
+        {
+            /* ignored */
+        }
     }
 
     public void Destroy()
@@ -68,17 +88,8 @@ public sealed class Bomb : IDisposable
         Dispose();
     }
 
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
     private void Dispose(bool disposing)
     {
-        if (disposing && _obj != null)
-        {
-            _obj.Destroy();
-        }
+        if (disposing && _obj != null) _obj.Destroy();
     }
 }

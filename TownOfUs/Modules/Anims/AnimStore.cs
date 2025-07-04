@@ -1,6 +1,6 @@
-﻿using MiraAPI.Modifiers;
+﻿using AuAvengers.Animations;
+using MiraAPI.Modifiers;
 using PowerTools;
-using AuAvengers.Animations;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -37,15 +37,9 @@ public static class AnimStore
 
         var cMat = SetSpriteColourMatch(player, PlayerMat);
         var search = spawned.transform.FindRecursive("Hands");
-        if (!search)
-        {
-            search = spawned.transform.FindRecursive("Hand");
-        }
+        if (!search) search = spawned.transform.FindRecursive("Hand");
 
-        if (search)
-        {
-            SetSpriteColourMatch(PlayerControl.LocalPlayer, cMat, search.GetComponent<Renderer>(), isCamo);
-        }
+        if (search) SetSpriteColourMatch(PlayerControl.LocalPlayer, cMat, search.GetComponent<Renderer>(), isCamo);
 
         return spawned;
     }

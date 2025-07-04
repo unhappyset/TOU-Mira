@@ -1,7 +1,7 @@
-﻿using MiraAPI.Events;
+﻿using System.Text;
+using MiraAPI.Events;
 using MiraAPI.Modifiers;
 using Reactor.Utilities.Extensions;
-using System.Text;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -23,6 +23,7 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
         var touAbilityEvent = new TouAbilityEvent(AbilityType.LookoutWatch, Lookout, Player);
         MiraEventManager.InvokeEvent(touAbilityEvent);
     }
+
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent!.RemoveModifier(this);
@@ -33,9 +34,7 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
         base.FixedUpdate();
 
         if (Lookout.AmOwner)
-        {
             Player?.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Lookout));
-        }
     }
 
     public override void OnMeetingStart()
@@ -50,10 +49,7 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
 
             SeenPlayers.Shuffle();
 
-            foreach (var role in SeenPlayers)
-            {
-                message.Append(TownOfUsPlugin.Culture, $"{role.NiceName}, ");
-            }
+            foreach (var role in SeenPlayers) message.Append(TownOfUsPlugin.Culture, $"{role.NiceName}, ");
 
             message = message.Remove(message.Length - 2, 2);
 

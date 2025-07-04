@@ -79,20 +79,16 @@ public static class PlayerRoleTextExtensions
                 ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
                  || (player.AmOwner &&
                      OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect is ProtectOptions.SelfAndGA))))
-        {
             name += player.HasModifier<GuardianAngelProtectModifier>()
                 ? "<color=#FFD900> ★</color>"
                 : "<color=#B3FFFF> ★</color>";
-        }
 
         if ((player.HasModifier<MedicShieldModifier>(x => x.Medic.AmOwner) &&
              PlayerControl.LocalPlayer.IsRole<MedicRole>())
             || (player.HasModifier<MedicShieldModifier>() &&
                 ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
                  || (player.AmOwner && player.TryGetModifier<MedicShieldModifier>(out var med) && med.VisibleSymbol))))
-        {
             name += "<color=#006600> +</color>";
-        }
 
         if ((player.HasModifier<ClericBarrierModifier>(x => x.Cleric.AmOwner) &&
              PlayerControl.LocalPlayer.IsRole<ClericRole>())
@@ -100,9 +96,7 @@ public static class PlayerRoleTextExtensions
                 ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
                  || (player.AmOwner && player.TryGetModifier<ClericBarrierModifier>(out var cleric) &&
                      cleric.VisibleSymbol))))
-        {
             name += "<color=#00FFB3> Ω</color>";
-        }
 
         if ((player.HasModifier<WardenFortifiedModifier>(x => x.Warden.AmOwner) &&
              PlayerControl.LocalPlayer.IsRole<WardenRole>())
@@ -110,9 +104,7 @@ public static class PlayerRoleTextExtensions
                 ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
                  || (player.AmOwner && player.TryGetModifier<WardenFortifiedModifier>(out var warden) &&
                      warden.VisibleSymbol))))
-        {
             name += "<color=#9900FF> π</color>";
-        }
 
         return name;
     }
@@ -127,9 +119,9 @@ public static class PlayerRoleTextExtensions
             name += "<color=#FF66CC> ♥</color>";
 
         if (player.HasModifier<EgotistModifier>() && (player.AmOwner ||
-                                                      EgotistModifier.EgoVisibilityFlag(player) &&
-                                                      (SnitchRole.SnitchVisibilityFlag(player, true) ||
-                                                       MayorRole.MayorVisibilityFlag(player)) ||
+                                                      (EgotistModifier.EgoVisibilityFlag(player) &&
+                                                       (SnitchRole.SnitchVisibilityFlag(player, true) ||
+                                                        MayorRole.MayorVisibilityFlag(player))) ||
                                                       (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow &&
                                                        !hidden)))
             name += "<color=#FFFFFF> (<color=#669966>Egotist</color>)</color>";

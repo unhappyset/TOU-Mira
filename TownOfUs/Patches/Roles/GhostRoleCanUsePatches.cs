@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using HarmonyLib;
 using TownOfUs.Roles;
+using Object = Il2CppSystem.Object;
 
 namespace TownOfUs.Patches.Roles;
 
@@ -20,7 +21,8 @@ public static class GhostRoleCanUsePatches
 
     [HarmonyPriority(Priority.Last)]
     [HarmonyPrefix]
-    public static bool CanUsePrefixPatch(Il2CppSystem.Object __instance, [HarmonyArgument(0)] NetworkedPlayerInfo pc, ref bool __state)
+    public static bool CanUsePrefixPatch(Object __instance, [HarmonyArgument(0)] NetworkedPlayerInfo pc,
+        ref bool __state)
     {
         __state = false;
         var playerControl = pc.Object;
@@ -37,12 +39,11 @@ public static class GhostRoleCanUsePatches
 
     [HarmonyPriority(Priority.Last)]
     [HarmonyPostfix]
-    public static void CanUsePostfixPatch(Il2CppSystem.Object __instance, [HarmonyArgument(0)] NetworkedPlayerInfo pc, ref bool __state)
+    public static void CanUsePostfixPatch(Object __instance, [HarmonyArgument(0)] NetworkedPlayerInfo pc,
+        ref bool __state)
     {
         if (__state)
-        {
             // Logger<TownOfUsPlugin>.Message($"CanUsePostfixPatch IsDead");
             pc.IsDead = true;
-        }
     }
 }

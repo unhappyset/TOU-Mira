@@ -14,7 +14,12 @@ public sealed class MinerPlaceVentButton : TownOfUsRoleButton<MinerRole>, IAfter
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<MinerOptions>.Instance.MineCooldown + MapCooldown;
-    public override float EffectDuration => (OptionGroupSingleton<MinerOptions>.Instance.MineVisibility is MineVisiblityOptions.Immediate) ? OptionGroupSingleton<MinerOptions>.Instance.MineDelay.Value + 0.001f : 0.001f;
+
+    public override float EffectDuration =>
+        OptionGroupSingleton<MinerOptions>.Instance.MineVisibility is MineVisiblityOptions.Immediate
+            ? OptionGroupSingleton<MinerOptions>.Instance.MineDelay.Value + 0.001f
+            : 0.001f;
+
     public override int MaxUses => (int)OptionGroupSingleton<MinerOptions>.Instance.MaxMines;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.MineSprite;
 
@@ -28,9 +33,8 @@ public sealed class MinerPlaceVentButton : TownOfUsRoleButton<MinerRole>, IAfter
         var vents = Object.FindObjectsOfType<Vent>();
 
         if (vents.Count > 0)
-        {
-            VentSize = Vector2.Scale(vents[0].GetComponent<BoxCollider2D>().size, vents[0].transform.localScale) * 0.75f;
-        }
+            VentSize = Vector2.Scale(vents[0].GetComponent<BoxCollider2D>().size, vents[0].transform.localScale) *
+                       0.75f;
     }
 
     public override bool CanUse()
@@ -40,10 +44,12 @@ public sealed class MinerPlaceVentButton : TownOfUsRoleButton<MinerRole>, IAfter
 
         var hits = Physics2D.OverlapBoxAll(PlayerControl.LocalPlayer.transform.position, VentSize, 0);
 
-        hits = hits.Where(c => (c.name.Contains("Vent") || !c.isTrigger) && c.gameObject.layer != 8 && c.gameObject.layer != 5).ToArray();
+        hits = hits.Where(c =>
+            (c.name.Contains("Vent") || !c.isTrigger) && c.gameObject.layer != 8 && c.gameObject.layer != 5).ToArray();
 
         var noConflict = !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.Collider,
-            PlayerControl.LocalPlayer.Collider.bounds.center, PlayerControl.LocalPlayer.transform.position, Constants.ShipAndAllObjectsMask,
+            PlayerControl.LocalPlayer.Collider.bounds.center, PlayerControl.LocalPlayer.transform.position,
+            Constants.ShipAndAllObjectsMask,
             false);
 
         return hits.Count == 0 && noConflict && !ModCompatibility.GetPlayerElevator(PlayerControl.LocalPlayer).Item1;

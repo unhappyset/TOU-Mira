@@ -26,7 +26,7 @@ public sealed class ScientistOptions : AbstractOptionGroup<ScientistModifier>
 
     [ModdedNumberOption("Vitals Display Cooldown", 0f, 30f, 5f, MiraNumberSuffixes.Seconds)]
     public float DisplayCooldown { get; set; } = 15f;
-    
+
     [ModdedNumberOption("Max Vitals Display Duration", 0f, 30f, 5f, MiraNumberSuffixes.Seconds, zeroInfinity: true)]
     public float DisplayDuration { get; set; } = 15f;
 }

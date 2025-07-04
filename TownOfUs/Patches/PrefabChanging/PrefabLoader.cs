@@ -2,28 +2,12 @@ using System.Collections;
 using HarmonyLib;
 using Reactor.Utilities;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace TownOfUs.Patches.PrefabSwitching;
 
 [HarmonyPatch]
-
 public class PrefabLoader
 {
-    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
-    [HarmonyPostfix]
-
-    public static void Postfix()
-    {
-        Coroutines.Start(LoadMaps());
-    }
-
-    private sealed class Out<T>
-    {
-        public T Value { get; set; }
-    }
-
     public static ShipStatus Skeld { get; private set; }
 
     public static PolusShipStatus Polus { get; private set; }
@@ -31,6 +15,13 @@ public class PrefabLoader
     public static AirshipStatus Airship { get; private set; }
 
     public static FungleShipStatus Fungle { get; private set; }
+
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
+    [HarmonyPostfix]
+    public static void Postfix()
+    {
+        Coroutines.Start(LoadMaps());
+    }
 
     public static IEnumerator LoadMaps()
     {
@@ -67,7 +58,7 @@ public class PrefabLoader
 
     private static IEnumerator LoadMap<T>(MapNames map, Out<T> shipStatus) where T : ShipStatus
     {
-        AssetReference reference = AmongUsClient.Instance.ShipPrefabs._items[(int)map];
+        var reference = AmongUsClient.Instance.ShipPrefabs._items[(int)map];
 
         if (reference.IsValid())
         {
@@ -75,10 +66,15 @@ public class PrefabLoader
         }
         else
         {
-            AsyncOperationHandle<GameObject> asset = reference.LoadAsset<GameObject>();
+            var asset = reference.LoadAsset<GameObject>();
             yield return asset;
 
             shipStatus.Value = asset.Result.GetComponent<T>();
         }
+    }
+
+    private sealed class Out<T>
+    {
+        public T Value { get; set; }
     }
 }

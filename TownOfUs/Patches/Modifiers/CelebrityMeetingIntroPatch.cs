@@ -17,7 +17,8 @@ public static class CelebrityMeetingIntroPatch
     {
         //if (PlayerControl.AllPlayerControls.ToArray().Any(x => x.protectedByGuardianThisRound && !x.HasDied())) return;
 
-        var celebrity = ModifierUtils.GetActiveModifiers<CelebrityModifier>(x => x.Player.HasDied() && !x.Announced).FirstOrDefault();
+        var celebrity = ModifierUtils.GetActiveModifiers<CelebrityModifier>(x => x.Player.HasDied() && !x.Announced)
+            .FirstOrDefault();
 
         if (celebrity == null) return;
 

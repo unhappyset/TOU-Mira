@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace TownOfUs.Modifiers.Crewmate;
 
-public sealed class TrackerArrowTargetModifier(PlayerControl owner, Color color, float update) : ArrowTargetModifier(owner, color, update)
+public sealed class TrackerArrowTargetModifier(PlayerControl owner, Color color, float update)
+    : ArrowTargetModifier(owner, color, update)
 {
     public override string ModifierName => "Tracker Arrow";
 

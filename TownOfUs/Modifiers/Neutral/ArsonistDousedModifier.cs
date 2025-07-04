@@ -19,6 +19,7 @@ public sealed class ArsonistDousedModifier(byte arsonistId) : BaseModifier
         var touAbilityEvent = new TouAbilityEvent(AbilityType.ArsonistDouse, arso!, Player);
         MiraEventManager.InvokeEvent(touAbilityEvent);
     }
+
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent!.RemoveModifier(this);

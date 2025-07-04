@@ -8,24 +8,20 @@ namespace TownOfUs.Events.Misc;
 
 public static class ZoomEvents
 {
-
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (@event.TriggeredByIntro) return;
-        if (PlayerControl.LocalPlayer.Data.IsDead && (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } || PlayerControl.LocalPlayer.Data.Role is not IGhostRole) || TutorialManager.InstanceExists)
-        {
-            HudManagerPatches.ZoomButton.SetActive(true);
-        }
+        if ((PlayerControl.LocalPlayer.Data.IsDead &&
+             (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } ||
+              PlayerControl.LocalPlayer.Data.Role is not IGhostRole)) ||
+            TutorialManager.InstanceExists) HudManagerPatches.ZoomButton.SetActive(true);
     }
-    
+
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (TutorialManager.InstanceExists)
-        {
-            HudManagerPatches.ZoomButton.SetActive(true);
-        }
+        if (TutorialManager.InstanceExists) HudManagerPatches.ZoomButton.SetActive(true);
     }
 
     [RegisterEvent]

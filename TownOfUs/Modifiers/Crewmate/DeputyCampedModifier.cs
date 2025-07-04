@@ -19,14 +19,12 @@ public sealed class DeputyCampedModifier(PlayerControl deputy) : BaseModifier
         var touAbilityEvent = new TouAbilityEvent(AbilityType.DeputyCamp, Deputy, Player);
         MiraEventManager.InvokeEvent(touAbilityEvent);
     }
+
     public override void FixedUpdate()
     {
         base.FixedUpdate();
 
-        if (Deputy.AmOwner)
-        {
-            Player?.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Deputy));
-        }
+        if (Deputy.AmOwner) Player?.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Deputy));
     }
 
     public override void OnDeath(DeathReason reason)

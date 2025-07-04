@@ -10,9 +10,11 @@ public sealed class OperativeOptions : AbstractOptionGroup<OperativeModifier>
 {
     public override string GroupName => "Operative";
     public override uint GroupPriority => 35;
+
     public override Color GroupColor => new(0.8f, 0.33f, 0.37f, 1f);
+
     // THESE BREAK THE CAMERA MINIGAME!!
-/* 
+/*
         [ModdedToggleOption("Move While Using Cameras")]
         public bool MoveWithCams { get; set; } = false;
 
@@ -33,7 +35,7 @@ public sealed class OperativeOptions : AbstractOptionGroup<OperativeModifier>
 
     [ModdedNumberOption("Security Display Cooldown", 0f, 30f, 5f, MiraNumberSuffixes.Seconds)]
     public float DisplayCooldown { get; set; } = 15f;
-    
+
     [ModdedNumberOption("Max Security Display Duration", 0f, 30f, 5f, MiraNumberSuffixes.Seconds, zeroInfinity: true)]
     public float DisplayDuration { get; set; } = 15f;
 }

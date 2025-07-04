@@ -13,7 +13,7 @@ namespace TownOfUs.Events.Crewmate;
 
 public static class WardenEvents
 {
-    [RegisterEvent(priority: -1)]
+    [RegisterEvent(-1)]
     public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
     {
         // Logger<TownOfUsPlugin>.Error("WardenEvents KillButtonClickHandler");
@@ -26,7 +26,7 @@ public static class WardenEvents
         CheckForWardenFortify(@event, source, target);
     }
 
-    [RegisterEvent(priority: -1)]
+    [RegisterEvent(-1)]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
         var source = @event.Source;
@@ -41,28 +41,21 @@ public static class WardenEvents
         var victim = @event.Target;
 
         foreach (var warden in CustomRoleUtils.GetActiveRolesOfType<WardenRole>())
-        {
             if (victim == warden.Fortified)
                 warden.Clear();
-        }
     }
 
     private static void CheckForWardenFortify(MiraCancelableEvent @event, PlayerControl source, PlayerControl target)
     {
-        if (MeetingHud.Instance || ExileController.Instance)
-        {
-            return;
-        }
+        if (MeetingHud.Instance || ExileController.Instance) return;
 
-        if (!target.HasModifier<WardenFortifiedModifier>() || source == target || (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield)) return;
+        if (!target.HasModifier<WardenFortifiedModifier>() || source == target ||
+            (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield)) return;
         @event.Cancel();
 
         // Find the warden which fortified the target
         var warden = target.GetModifier<WardenFortifiedModifier>()?.Warden.GetRole<WardenRole>();
 
-        if (warden != null && source.AmOwner)
-        {
-            WardenRole.RpcWardenNotify(warden.Player, source, target);
-        }
+        if (warden != null && source.AmOwner) WardenRole.RpcWardenNotify(warden.Player, source, target);
     }
 }

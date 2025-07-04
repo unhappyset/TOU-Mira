@@ -10,10 +10,12 @@ public sealed class MedicOptions : AbstractOptionGroup<MedicRole>
 {
     public override string GroupName => "Medic";
 
-    [ModdedEnumOption("Show Shielded Player", typeof(MedicOption), ["Medic", "Shielded", "Shielded + Medic", "Everyone", "No One"])]
+    [ModdedEnumOption("Show Shielded Player", typeof(MedicOption),
+        ["Medic", "Shielded", "Shielded + Medic", "Everyone", "No One"])]
     public MedicOption ShowShielded { get; set; } = MedicOption.ShieldedAndMedic;
 
-    [ModdedEnumOption("Who Gets Murder Attempt Indicator", typeof(MedicOption), ["Medic", "Shielded", "Shielded + Medic", "Everyone", "No One"])]
+    [ModdedEnumOption("Who Gets Murder Attempt Indicator", typeof(MedicOption),
+        ["Medic", "Shielded", "Shielded + Medic", "Everyone", "No One"])]
     public MedicOption WhoGetsNotification { get; set; } = MedicOption.Medic;
 
     [ModdedToggleOption("Allow Medic To Give Shield Away Next Round")]
@@ -25,14 +27,16 @@ public sealed class MedicOptions : AbstractOptionGroup<MedicRole>
     [ModdedToggleOption("Show Medic Reports")]
     public bool ShowReports { get; set; } = true;
 
-    public ModdedNumberOption MedicReportNameDuration { get; } = new ModdedNumberOption("Time Where Medic Will Have Name", 0f, 0f, 60f, 2.5f, MiraNumberSuffixes.Seconds)
+    public ModdedNumberOption MedicReportNameDuration { get; } = new("Time Where Medic Will Have Name", 0f, 0f, 60f,
+        2.5f, MiraNumberSuffixes.Seconds)
     {
-        Visible = () => OptionGroupSingleton<MedicOptions>.Instance.ShowReports,
+        Visible = () => OptionGroupSingleton<MedicOptions>.Instance.ShowReports
     };
 
-    public ModdedNumberOption MedicReportColorDuration { get; } = new ModdedNumberOption("Time Where Medic Will Have Color Type", 15, 0f, 60f, 2.5f, MiraNumberSuffixes.Seconds)
+    public ModdedNumberOption MedicReportColorDuration { get; } = new("Time Where Medic Will Have Color Type", 15, 0f,
+        60f, 2.5f, MiraNumberSuffixes.Seconds)
     {
-        Visible = () => OptionGroupSingleton<MedicOptions>.Instance.ShowReports,
+        Visible = () => OptionGroupSingleton<MedicOptions>.Instance.ShowReports
     };
 }
 
@@ -42,5 +46,5 @@ public enum MedicOption
     Shielded,
     ShieldedAndMedic,
     Everyone,
-    Nobody,
+    Nobody
 }

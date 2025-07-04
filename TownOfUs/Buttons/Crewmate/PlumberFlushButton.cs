@@ -16,12 +16,12 @@ namespace TownOfUs.Buttons.Crewmate;
 
 public sealed class PlumberFlushButton : TownOfUsRoleButton<PlumberRole, Vent>
 {
+    private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.Usables);
     public override string Name => "Flush";
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Plumber;
     public override float Cooldown => OptionGroupSingleton<PlumberOptions>.Instance.FlushCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.FlushSprite;
-    private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.Usables);
 
     public override Vent? GetTarget()
     {
@@ -30,17 +30,12 @@ public sealed class PlumberFlushButton : TownOfUsRoleButton<PlumberRole, Vent>
         if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 2, Filter);
         if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
 
-        if (ModCompatibility.IsSubmerged() && vent != null && (vent.Id == 0 || vent.Id == 14))
-        {
-            vent = null;
-        }
+        if (ModCompatibility.IsSubmerged() && vent != null && (vent.Id == 0 || vent.Id == 14)) vent = null;
 
-        if (vent != null && PlayerControl.LocalPlayer.CanUseVent(vent))
-        {
-            return vent;
-        }
+        if (vent != null && PlayerControl.LocalPlayer.CanUseVent(vent)) return vent;
         return null;
     }
+
     protected override void OnClick()
     {
         if (Target == null)
@@ -59,16 +54,13 @@ public sealed class PlumberFlushButton : TownOfUsRoleButton<PlumberRole, Vent>
     public override bool CanUse()
     {
         var newTarget = GetTarget();
-        if (newTarget != Target)
-        {
-            Target?.SetOutline(false, false);
-        }
+        if (newTarget != Target) Target?.SetOutline(false, false);
 
         Target = IsTargetValid(newTarget) ? newTarget : null;
         SetOutline(true);
 
         return Timer <= 0 && Target != null
-            && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>()
-            && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
+                          && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>()
+                          && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
     }
 }

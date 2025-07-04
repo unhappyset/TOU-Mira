@@ -16,9 +16,7 @@ public static class WerewolfEvents
 
         if (vent == null) return;
 
-        if (!PlayerControl.LocalPlayer.inVent && PlayerControl.LocalPlayer.Data.Role is WerewolfRole werewolf && !werewolf.Rampaging)
-        {
-            @event.Cancel();
-        }
+        if (!PlayerControl.LocalPlayer.inVent && PlayerControl.LocalPlayer.Data.Role is WerewolfRole werewolf &&
+            !werewolf.Rampaging) @event.Cancel();
     }
 }

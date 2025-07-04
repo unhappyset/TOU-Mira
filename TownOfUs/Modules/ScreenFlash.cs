@@ -29,6 +29,12 @@ public sealed class ScreenFlash : IDisposable
         SetActive(false);
     }
 
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
     public static void Clear()
     {
         _screenFlashes.Do(x => x.Destroy());
@@ -70,12 +76,6 @@ public sealed class ScreenFlash : IDisposable
     public void Destroy()
     {
         Dispose();
-    }
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
     }
 
     private void Dispose(bool disposing)

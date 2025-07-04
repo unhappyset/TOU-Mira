@@ -8,6 +8,8 @@ using TownOfUs.Modules.Components;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
+using Random = UnityEngine.Random;
+using Version = SemanticVersioning.Version;
 
 namespace TownOfUs.Modules;
 
@@ -16,20 +18,14 @@ public static class ModCompatibility
     public const string SubmergedGuid = "Submerged";
     public const ShipStatus.MapType SubmergedMapType = (ShipStatus.MapType)6;
 
-    public static SemanticVersioning.Version SubVersion { get; private set; }
-    public static bool SubLoaded { get; private set; }
-    public static BasePlugin SubPlugin { get; private set; }
-    public static Assembly SubAssembly { get; private set; }
-    public static Type[] SubTypes { get; private set; }
-    public static Dictionary<string, Type> SubInjectedTypes { get; private set; }
+    public const string LevelImpostorGuid = "com.DigiWorm.LevelImposter";
+    public const ShipStatus.MapType LevelImpostorMapType = (ShipStatus.MapType)7;
 
     private static MethodInfo rpcRequestChangeFloor;
     private static MethodInfo registerFloorOverride;
     private static MethodInfo getFloorHandler;
 
     private static PropertyInfo inTransition;
-
-    public static TaskTypes RetrieveOxygenMask { get; private set; }
     private static PropertyInfo submarineOxygenSystemInstance;
     private static MethodInfo repairDamage;
 
@@ -41,6 +37,31 @@ public static class ModCompatibility
 
     private static FieldInfo submergedInstance;
     private static FieldInfo submergedElevators;
+
+    public static FieldInfo lastMapID;
+
+    private static PropertyInfo currentMap;
+    private static PropertyInfo elements;
+
+    private static PropertyInfo liElementType;
+    private static PropertyInfo liElementName;
+
+    public static Type MapObjectData;
+
+    public static Version SubVersion { get; private set; }
+    public static bool SubLoaded { get; private set; }
+    public static BasePlugin SubPlugin { get; private set; }
+    public static Assembly SubAssembly { get; private set; }
+    public static Type[] SubTypes { get; private set; }
+    public static Dictionary<string, Type> SubInjectedTypes { get; private set; }
+
+    public static TaskTypes RetrieveOxygenMask { get; private set; }
+
+    public static bool LILoaded { get; private set; }
+    private static BasePlugin LIPlugin { get; set; }
+    private static Assembly LIAssembly { get; set; }
+    private static Type[] LITypes { get; set; }
+    public static bool IsWikiButtonOffset { get; set; }
 
     public static void Initialize()
     {
@@ -58,7 +79,9 @@ public static class ModCompatibility
         SubAssembly = SubPlugin.GetType().Assembly;
         SubTypes = AccessTools.GetTypesFromAssembly(SubAssembly);
 
-        SubInjectedTypes = (Dictionary<string, Type>)AccessTools.PropertyGetter(SubTypes.FirstOrDefault(t => t.Name == "ComponentExtensions"), "RegisteredTypes").Invoke(null, null)!;
+        SubInjectedTypes = (Dictionary<string, Type>)AccessTools
+            .PropertyGetter(SubTypes.FirstOrDefault(t => t.Name == "ComponentExtensions"), "RegisteredTypes")
+            .Invoke(null, null)!;
 
         var submarineStatusType = SubTypes.First(t => t.Name == "SubmarineStatus");
         submergedInstance = AccessTools.Field(submarineStatusType, "instance");
@@ -97,8 +120,10 @@ public static class ModCompatibility
         var compatType = typeof(ModCompatibility);
         var harmony = new Harmony("tou.submerged.patch");
 
-        harmony.Patch(submergedExileWrapUp, null, new(AccessTools.Method(compatType, nameof(ExileRoleChangePostfix))));
-        harmony.Patch(canUse, new(AccessTools.Method(compatType, nameof(CanUsePrefix))), new(AccessTools.Method(compatType, nameof(CanUsePostfix))));
+        harmony.Patch(submergedExileWrapUp, null,
+            new HarmonyMethod(AccessTools.Method(compatType, nameof(ExileRoleChangePostfix))));
+        harmony.Patch(canUse, new HarmonyMethod(AccessTools.Method(compatType, nameof(CanUsePrefix))),
+            new HarmonyMethod(AccessTools.Method(compatType, nameof(CanUsePostfix))));
 
         SubLoaded = true;
         Logger<TownOfUsPlugin>.Message("Submerged was detected");
@@ -109,33 +134,31 @@ public static class ModCompatibility
         if (!SubLoaded) return;
         if (!IsSubmerged()) return;
 
-        Tuple<bool, object> elevator = GetPlayerElevator(player);
+        var elevator = GetPlayerElevator(player);
         if (!elevator.Item1) return;
-        bool currentFloor = (bool)upperDeckIsTargetFloor.GetValue(getSubElevatorSystem.GetValue(elevator.Item2))!; // true is top, false is bottom
-        bool playerFloor = player.transform.position.y > -7f; // true is top, false is bottom
+        var currentFloor =
+            (bool)upperDeckIsTargetFloor.GetValue(
+                getSubElevatorSystem.GetValue(elevator.Item2))!; // true is top, false is bottom
+        var playerFloor = player.transform.position.y > -7f; // true is top, false is bottom
 
-        if (currentFloor != playerFloor)
-        {
-            ChangeFloor(currentFloor);
-        }
+        if (currentFloor != playerFloor) ChangeFloor(currentFloor);
     }
 
     public static void MoveDeadPlayerElevator(PlayerControl player)
     {
         if (!IsSubmerged()) return;
-        Tuple<bool, object> elevator = GetPlayerElevator(player);
+        var elevator = GetPlayerElevator(player);
         if (!elevator.Item1) return;
 
-        int movementStage = (int)getMovementStageFromTime.Invoke(elevator.Item2, null)!;
+        var movementStage = (int)getMovementStageFromTime.Invoke(elevator.Item2, null)!;
         if (movementStage >= 5)
         {
             // Fade to clear
-            bool topFloorTarget = (bool)upperDeckIsTargetFloor.GetValue(getSubElevatorSystem.GetValue(elevator.Item2))!; // true is top, false is bottom
-            bool topIntendedTarget = player.transform.position.y > -7f; // true is top, false is bottom
-            if (topFloorTarget != topIntendedTarget)
-            {
-                ChangeFloor(!topIntendedTarget);
-            }
+            var topFloorTarget =
+                (bool)upperDeckIsTargetFloor.GetValue(
+                    getSubElevatorSystem.GetValue(elevator.Item2))!; // true is top, false is bottom
+            var topIntendedTarget = player.transform.position.y > -7f; // true is top, false is bottom
+            if (topFloorTarget != topIntendedTarget) ChangeFloor(!topIntendedTarget);
         }
     }
 
@@ -144,10 +167,9 @@ public static class ModCompatibility
         if (!IsSubmerged()) return Tuple.Create(false, (object)null!);
 
         var elevatorList = (IList)submergedElevators.GetValue(submergedInstance.GetValue(null))!;
-        foreach (object elevator in elevatorList)
-        {
-            if ((bool)getInElevator.Invoke(elevator, [player])!) return Tuple.Create(true, elevator);
-        }
+        foreach (var elevator in elevatorList)
+            if ((bool)getInElevator.Invoke(elevator, [player])!)
+                return Tuple.Create(true, elevator);
 
         return Tuple.Create(false, (object)null!);
     }
@@ -163,10 +185,7 @@ public static class ModCompatibility
         var player = PlayerControl.LocalPlayer;
         var targetData = player.CachedPlayerData;
 
-        if (player.Data.Role is IGhostRole ghost && ghost.GhostActive && targetData.IsDead)
-        {
-            targetData.IsDead = false;
-        }
+        if (player.Data.Role is IGhostRole ghost && ghost.GhostActive && targetData.IsDead) targetData.IsDead = false;
     }
 
     public static void CanUsePostfix()
@@ -174,25 +193,16 @@ public static class ModCompatibility
         var player = PlayerControl.LocalPlayer;
         var targetData = player.CachedPlayerData;
 
-        if (player.Data.Role is IGhostRole && !targetData.IsDead)
-        {
-            targetData.IsDead = true;
-        }
+        if (player.Data.Role is IGhostRole && !targetData.IsDead) targetData.IsDead = true;
     }
 
     public static IEnumerator WaitMeeting(Action next)
     {
-        while (!PlayerControl.LocalPlayer.moveable)
-        {
-            yield return null;
-        }
+        while (!PlayerControl.LocalPlayer.moveable) yield return null;
 
         yield return new WaitForSeconds(0.5f);
 
-        while (HudManager.Instance.PlayerCam.transform.Find("SpawnInMinigame(Clone)") != null)
-        {
-            yield return null;
-        }
+        while (HudManager.Instance.PlayerCam.transform.Find("SpawnInMinigame(Clone)") != null) yield return null;
 
         next();
     }
@@ -208,16 +218,16 @@ public static class ModCompatibility
 
         if (PlayerControl.LocalPlayer.Data.Role is IGhostRole ghost && !ghost.Caught)
         {
-            var startingVent = ShipStatus.Instance.AllVents[UnityEngine.Random.RandomRangeInt(0, ShipStatus.Instance.AllVents.Count)];
+            var startingVent =
+                ShipStatus.Instance.AllVents[Random.RandomRangeInt(0, ShipStatus.Instance.AllVents.Count)];
 
             while (startingVent == ShipStatus.Instance.AllVents[0] || startingVent == ShipStatus.Instance.AllVents[14])
-            {
-                startingVent = ShipStatus.Instance.AllVents[UnityEngine.Random.RandomRangeInt(0, ShipStatus.Instance.AllVents.Count)];
-            }
+                startingVent =
+                    ShipStatus.Instance.AllVents[Random.RandomRangeInt(0, ShipStatus.Instance.AllVents.Count)];
 
             ChangeFloor(startingVent.transform.position.y > -7f);
 
-            Vector2 pos = new Vector2(startingVent.transform.position.x, startingVent.transform.position.y + 0.3636f);
+            var pos = new Vector2(startingVent.transform.position.x, startingVent.transform.position.y + 0.3636f);
 
             PlayerControl.LocalPlayer.RpcSetPos(pos);
             PlayerControl.LocalPlayer.MyPhysics.RpcEnterVent(startingVent.Id);
@@ -230,7 +240,7 @@ public static class ModCompatibility
     {
         if (SubLoaded && __instance.myPlayer.Data != null && __instance.myPlayer.Data.IsDead)
         {
-            PlayerControl player = __instance.myPlayer;
+            var player = __instance.myPlayer;
 
             if (player.Data.Role is IGhostRole ghost && ghost.GhostActive)
             {
@@ -239,8 +249,8 @@ public static class ModCompatibility
                 else
                     player.Collider.enabled = false;
 
-                Transform transform = __instance.transform;
-                Vector3 position = transform.position;
+                var transform = __instance.transform;
+                var position = transform.position;
                 position.z = position.y / 1000;
 
                 transform.position = position;
@@ -252,9 +262,11 @@ public static class ModCompatibility
     public static MonoBehaviour AddSubmergedComponent(this GameObject obj, string typeName)
     {
         if (!SubLoaded) return obj.AddComponent<MissingBehaviour>();
-        bool validType = SubInjectedTypes.TryGetValue(typeName, out var type);
+        var validType = SubInjectedTypes.TryGetValue(typeName, out var type);
 
-        return validType ? obj.AddComponent(Il2CppType.From(type)).TryCast<MonoBehaviour>()! : obj.AddComponent<MissingBehaviour>();
+        return validType
+            ? obj.AddComponent(Il2CppType.From(type)).TryCast<MonoBehaviour>()!
+            : obj.AddComponent<MissingBehaviour>();
     }
 
     public static void ChangeFloor(bool toUpper)
@@ -293,24 +305,6 @@ public static class ModCompatibility
         return SubLoaded && ShipStatus.Instance && ShipStatus.Instance.Type == SubmergedMapType;
     }
 
-    public const string LevelImpostorGuid = "com.DigiWorm.LevelImposter";
-    public const ShipStatus.MapType LevelImpostorMapType = (ShipStatus.MapType)7;
-
-    public static bool LILoaded { get; private set; }
-    private static BasePlugin LIPlugin { get; set; }
-    private static Assembly LIAssembly { get; set; }
-    private static Type[] LITypes { get; set; }
-
-    public static FieldInfo lastMapID;
-
-    private static PropertyInfo currentMap;
-    private static PropertyInfo elements;
-
-    private static PropertyInfo liElementType;
-    private static PropertyInfo liElementName;
-
-    public static Type MapObjectData;
-
     public static bool IsLevelImpostor()
     {
         var map = GameOptionsManager.Instance.currentGameOptions.MapId;
@@ -348,8 +342,10 @@ public static class ModCompatibility
 
         var compatType = typeof(ModCompatibility);
         var harmony = new Harmony("tou.levelimposter.patch");
-        harmony.Patch(killAllPlayersMethod, new HarmonyMethod(AccessTools.Method(compatType, nameof(KillAllPlayersPrefix))));
-        harmony.Patch(canUseMethod, new(AccessTools.Method(compatType, nameof(TriggerPrefix))), new(AccessTools.Method(compatType, nameof(TriggerPostfix))));
+        harmony.Patch(killAllPlayersMethod,
+            new HarmonyMethod(AccessTools.Method(compatType, nameof(KillAllPlayersPrefix))));
+        harmony.Patch(canUseMethod, new HarmonyMethod(AccessTools.Method(compatType, nameof(TriggerPrefix))),
+            new HarmonyMethod(AccessTools.Method(compatType, nameof(TriggerPostfix))));
 
         LILoaded = true;
         Logger<TownOfUsPlugin>.Message("LevelImpostor was detected");
@@ -392,10 +388,9 @@ public static class ModCompatibility
         if (!AmongUsClient.Instance.AmHost)
             return;
 
-       var playersToDie = __instance.CurrentPlayersIDs as List<byte>;
+        var playersToDie = __instance.CurrentPlayersIDs as List<byte>;
 
-       if (playersToDie?.Count is null or 0)
+        if (playersToDie?.Count is null or 0)
             return;
     }
-    public static bool IsWikiButtonOffset { get; set; }
 }

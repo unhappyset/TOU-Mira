@@ -54,25 +54,19 @@ public static class GuardianAngelEvents
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         foreach (var ga in CustomRoleUtils.GetActiveRolesOfType<GuardianAngelTouRole>())
-        {
             ga.CheckTargetDeath(@event.Source, @event.Target);
-        }
     }
 
-    private static bool CheckForGaProtection(MiraCancelableEvent @event, PlayerControl target, PlayerControl? source=null)
+    private static bool CheckForGaProtection(MiraCancelableEvent @event, PlayerControl target,
+        PlayerControl? source = null)
     {
-        if (MeetingHud.Instance || ExileController.Instance)
-        {
-            return false;
-        }
+        if (MeetingHud.Instance || ExileController.Instance) return false;
 
         if (!target.HasModifier<GuardianAngelProtectModifier>() ||
             source == null ||
             source.PlayerId == target.PlayerId ||
             (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield))
-        {
             return false;
-        }
 
         @event.Cancel();
 

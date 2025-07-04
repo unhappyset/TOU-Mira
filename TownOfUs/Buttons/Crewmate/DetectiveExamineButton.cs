@@ -1,8 +1,8 @@
 using MiraAPI.GameOptions;
-using TownOfUs.Utilities;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Buttons.Crewmate;
@@ -20,14 +20,14 @@ public sealed class DetectiveExamineButton : TownOfUsRoleButton<DetectiveRole, P
         return base.CanUse() && Role.InvestigatingScene;
     }
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
 
     protected override void OnClick()
     {
-        if (Target == null)
-        {
-            return;
-        }
+        if (Target == null) return;
 
         Role.ExaminePlayer(Target);
     }

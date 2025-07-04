@@ -1,15 +1,15 @@
+using System.Collections;
+using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
-using System.Collections;
-using System.Text;
-using MiraAPI.Patches.Stubs;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Crewmate;
@@ -20,26 +20,47 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace TownOfUs.Roles.Crewmate;
 
 public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
+    public override bool IsAffectedByComms => false;
+    public DoomableType DoomHintType => DoomableType.Death;
     public string RoleName => "Altruist";
     public string RoleDescription => "Revive Dead Crewmates";
     public string RoleLongDescription => "Revive dead crewmates in groups";
     public Color RoleColor => TownOfUsColors.Altruist;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
-    public DoomableType DoomHintType => DoomableType.Death;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         IntroSound = TouAudio.AltruistReviveSound,
-        Icon = TouRoleIcons.Altruist,
+        Icon = TouRoleIcons.Altruist
     };
 
-    public override bool IsAffectedByComms => false;
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        return ITownOfUsRole.SetNewTabText(this);
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return
+            "The Altruist is a Crewmate Protective role can revive dead players in groups. However, their location and the revived players' locations will be revealed to all Impostors." +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Revive",
+            "Revive a group of dead bodies near you. You will be frozen during the revival and you will be unable to move until the revival is complete." +
+            " Impostors will also have an arrow pointing towards you during the revival, so be cautious.",
+            TouCrewAssets.ReviveSprite)
+    ];
 
     public override void OnMeetingStart()
     {
@@ -81,9 +102,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             Logger<TownOfUsPlugin>.Error($"AltruistRole.ClearArrows BadGuys Only");
 
             foreach (var playerWithArrow in ModifierUtils.GetPlayersWithModifier<AltruistArrowModifier>())
-            {
                 playerWithArrow.RemoveModifier<AltruistArrowModifier>();
-            }
         }
     }
 
@@ -113,7 +132,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         }
 
         yield return new WaitForSeconds(OptionGroupSingleton<AltruistOptions>.Instance.ReviveDuration);
-        
+
         if (!MeetingHud.Instance)
         {
             GameHistory.ClearMurder(dead);
@@ -124,11 +143,10 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             if (dead.AmOwner) PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(position.x, position.y));
 
             if (ModCompatibility.IsSubmerged() && PlayerControl.LocalPlayer.PlayerId == dead.PlayerId)
-            {
                 ModCompatibility.ChangeFloor(dead.transform.position.y > -7);
-            }
 
-            if (dead.AmOwner && !dead.HasModifier<LoverModifier>()) HudManager.Instance.Chat.gameObject.SetActive(false);
+            if (dead.AmOwner && !dead.HasModifier<LoverModifier>())
+                HudManager.Instance.Chat.gameObject.SetActive(false);
             // return player from ghost role back to what they were when alive
             dead.ChangeRole((ushort)roleWhenAlive!.Role, false);
 
@@ -137,11 +155,14 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
                 animated.IsVisible = true;
                 animated.SetVisible();
             }
-            foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(dead.Data.Role)).OfType<IAnimated>())
+
+            foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(dead.Data.Role))
+                         .OfType<IAnimated>())
             {
                 button.IsVisible = true;
                 button.SetVisible();
             }
+
             foreach (var modifier in dead.GetModifiers<GameModifier>().Where(x => x is IAnimated))
             {
                 var animatedMod = modifier as IAnimated;
@@ -156,23 +177,20 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
 
             Player.RemainingEmergencies = 0;
 
-            body = Object.FindObjectsOfType<DeadBody>()
+            body = FindObjectsOfType<DeadBody>()
                 .FirstOrDefault(b => b.ParentId == dead.PlayerId);
-            if (!OptionGroupSingleton<AltruistOptions>.Instance.HideAtBeginningOfRevive && body != null) Object.Destroy(body.gameObject);
+            if (!OptionGroupSingleton<AltruistOptions>.Instance.HideAtBeginningOfRevive && body != null)
+                Destroy(body.gameObject);
 
             if (PlayerControl.LocalPlayer.IsImpostor() || PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling))
             {
-                if (Player.HasModifier<AltruistArrowModifier>())
-                {
-                    Player.RemoveModifier<AltruistArrowModifier>();
-                }
+                if (Player.HasModifier<AltruistArrowModifier>()) Player.RemoveModifier<AltruistArrowModifier>();
 
                 if (!dead.HasModifier<AltruistArrowModifier>() && dead != PlayerControl.LocalPlayer)
-                {
                     dead.AddModifier<AltruistArrowModifier>(PlayerControl.LocalPlayer, Color.white);
-                }
             }
         }
+
         Player.moveable = true;
     }
 
@@ -190,32 +208,12 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Altruist));
 
             if (!alt.HasModifier<AltruistArrowModifier>())
-            {
                 alt.AddModifier<AltruistArrowModifier>(PlayerControl.LocalPlayer, TownOfUsColors.Impostor);
-            }
         }
+
         var touAbilityEvent = new TouAbilityEvent(AbilityType.AltruistRevive, alt, target);
         MiraEventManager.InvokeEvent(touAbilityEvent);
 
         Coroutines.Start(role.CoRevivePlayer(target));
     }
-
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        return ITownOfUsRole.SetNewTabText(this);
-    }
-    
-    public string GetAdvancedDescription()
-    {
-        return "The Altruist is a Crewmate Protective role can revive dead players in groups. However, their location and the revived players' locations will be revealed to all Impostors." + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Revive",
-            "Revive a group of dead bodies near you. You will be frozen during the revival and you will be unable to move until the revival is complete." +
-            " Impostors will also have an arrow pointing towards you during the revival, so be cautious.",
-            TouCrewAssets.ReviveSprite)
-    ];
 }

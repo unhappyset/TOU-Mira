@@ -46,9 +46,15 @@ public static class LogicGameFlowPatches
             }
             else
             {
-                var randomPlayer = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.Role.DidWin(CustomGameOver.GameOverReason<DrawGameOver>()) && !x.GetModifiers<GameModifier>().Any(x => x.DidWin(CustomGameOver.GameOverReason<DrawGameOver>()) == true)).Random();
-                CustomGameOver.Trigger<DrawGameOver>([randomPlayer != null ? randomPlayer.Data : PlayerControl.LocalPlayer.Data]);
+                var randomPlayer = PlayerControl.AllPlayerControls.ToArray().Where(x =>
+                    !x.Data.Role.DidWin(CustomGameOver.GameOverReason<DrawGameOver>()) && !x
+                        .GetModifiers<GameModifier>()
+                        .Any(x => x.DidWin(CustomGameOver.GameOverReason<DrawGameOver>()) == true)).Random();
+                CustomGameOver.Trigger<DrawGameOver>([
+                    randomPlayer != null ? randomPlayer.Data : PlayerControl.LocalPlayer.Data
+                ]);
             }
+
             GameTimerPatch.TriggerEndGame = false;
             return true;
         }
@@ -67,43 +73,35 @@ public static class LogicGameFlowPatches
         {
             var playerInfo = __instance.AllPlayers.ToArray()[i];
             if (!playerInfo.Disconnected && playerInfo.Tasks != null && playerInfo.Object &&
-                (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !playerInfo.IsDead) && !playerInfo._object.IsImpostor() &&
+                (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !playerInfo.IsDead) &&
+                !playerInfo._object.IsImpostor() &&
                 !(
                     (playerInfo._object.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.DoesTasks)
                     || !playerInfo._object.Data.Role.TasksCountTowardProgress
                 ))
-            {
                 for (var j = 0; j < playerInfo.Tasks.Count; j++)
                 {
                     __instance.TotalTasks++;
                     if (playerInfo.Tasks.ToArray()[j].Complete) __instance.CompletedTasks++;
                 }
-            }
         }
 
-        if (__instance.TotalTasks == 0) __instance.TotalTasks = 1; // This results in avoiding unfair task wins by essentially defaulting to 0/1 which can never lead to a win
+        if (__instance.TotalTasks == 0)
+            __instance.TotalTasks =
+                1; // This results in avoiding unfair task wins by essentially defaulting to 0/1 which can never lead to a win
 
         return false;
     }
-    
+
     [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))]
     [HarmonyPrefix]
     public static bool CheckEndCriteriaPatch(LogicGameFlowNormal __instance)
     {
-        if (TutorialManager.InstanceExists)
-        {
-            return true;
-        }
+        if (TutorialManager.InstanceExists) return true;
 
-        if (!AmongUsClient.Instance.AmHost)
-        {
-            return false;
-        }
+        if (!AmongUsClient.Instance.AmHost) return false;
 
-        if (!GameData.Instance)
-        {
-            return false;
-        }
+        if (!GameData.Instance) return false;
 
         if (ShipStatus.Instance.Systems.ContainsKey(SystemTypes.LifeSupp))
         {
@@ -117,11 +115,11 @@ public static class LogicGameFlowPatches
             }
         }
 
-        foreach (ISystemType systemType2 in ShipStatus.Instance.Systems.Values)
+        foreach (var systemType2 in ShipStatus.Instance.Systems.Values)
         {
             var sabo = systemType2.TryCast<ICriticalSabotage>();
             if (sabo == null) continue;
-            ICriticalSabotage criticalSabotage = sabo;
+            var criticalSabotage = sabo;
             if (criticalSabotage != null && criticalSabotage.Countdown < 0f)
             {
                 __instance.EndGameForSabotage();
@@ -129,15 +127,9 @@ public static class LogicGameFlowPatches
             }
         }
 
-        if (CheckEndGameViaTasks(__instance))
-        {
-            return false;
-        }
+        if (CheckEndGameViaTasks(__instance)) return false;
 
-        if (CheckEndGameViaTimeLimit(__instance))
-        {
-            return false;
-        }
+        if (CheckEndGameViaTimeLimit(__instance)) return false;
 
         // End game if there are 3 players alive and 2 are lovers.
         var activeLovers = ModifierUtils.GetActiveModifiers<LoverModifier>().ToArray();
@@ -160,23 +152,24 @@ public static class LogicGameFlowPatches
         }
 
         // Prevents game end when all impostors are dead but there are neutral killers left alive
-        if (MiscUtils.NKillersAliveCount > 0 || (MiscUtils.ImpAliveCount > 0 && MiscUtils.CrewKillersAliveCount > 0))
-        {
-            return false;
-        }
+        if (MiscUtils.NKillersAliveCount > 0 ||
+            (MiscUtils.ImpAliveCount > 0 && MiscUtils.CrewKillersAliveCount > 0)) return false;
 
         // Prevents game end when all impostors are dead but there is a possibility for a traitor to spawn given the conditions
-        var possibleTraitor = ModifierUtils.GetActiveModifiers<ToBecomeTraitorModifier>().FirstOrDefault(x => !x.Player.HasDied() && x.Player.IsCrewmate());
-        if (Helpers.GetAlivePlayers().Count > (int)OptionGroupSingleton<TraitorOptions>.Instance.LatestSpawn - 1 && possibleTraitor != null)
-        {
-            return false;
-        }
-        
+        var possibleTraitor = ModifierUtils.GetActiveModifiers<ToBecomeTraitorModifier>()
+            .FirstOrDefault(x => !x.Player.HasDied() && x.Player.IsCrewmate());
+        if (Helpers.GetAlivePlayers().Count > (int)OptionGroupSingleton<TraitorOptions>.Instance.LatestSpawn - 1 &&
+            possibleTraitor != null) return false;
+
         // Causes the game to draw in extreme scenarios
         if (Helpers.GetAlivePlayers().Count <= 0)
         {
-            var randomPlayer = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.Data.Role.DidWin(CustomGameOver.GameOverReason<DrawGameOver>()) && !x.GetModifiers<GameModifier>().Any(x => x.DidWin(CustomGameOver.GameOverReason<DrawGameOver>()) == true)).Random();
-            CustomGameOver.Trigger<DrawGameOver>([randomPlayer != null ? randomPlayer.Data : PlayerControl.LocalPlayer.Data]);
+            var randomPlayer = PlayerControl.AllPlayerControls.ToArray().Where(x =>
+                !x.Data.Role.DidWin(CustomGameOver.GameOverReason<DrawGameOver>()) && !x.GetModifiers<GameModifier>()
+                    .Any(x => x.DidWin(CustomGameOver.GameOverReason<DrawGameOver>()) == true)).Random();
+            CustomGameOver.Trigger<DrawGameOver>([
+                randomPlayer != null ? randomPlayer.Data : PlayerControl.LocalPlayer.Data
+            ]);
         }
 
         return true;

@@ -1,10 +1,10 @@
-﻿using MiraAPI.Events;
+﻿using System.Collections;
+using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using Reactor.Utilities;
-using System.Collections;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
@@ -34,11 +34,7 @@ public static class AmnesiacEvents
         if (deadBody == null) yield break;
 
         foreach (var amne in CustomRoleUtils.GetActiveRolesOfType<AmnesiacRole>().Select(x => x.Player))
-        {
             if (amne.AmOwner)
-            {
                 amne.AddModifier<AmnesiacArrowModifier>(deadBody, Color.white);
-            }
-        }
     }
 }

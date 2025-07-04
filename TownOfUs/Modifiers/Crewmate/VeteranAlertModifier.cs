@@ -20,9 +20,6 @@ public sealed class VeteranAlertModifier : TimedModifier
         var touAbilityEvent = new TouAbilityEvent(AbilityType.VeteranAlert, Player);
         MiraEventManager.InvokeEvent(touAbilityEvent);
 
-        if (Player.Data.Role is VeteranRole vet)
-        {
-            vet.Alerts--;
-        }
+        if (Player.Data.Role is VeteranRole vet) vet.Alerts--;
     }
 }

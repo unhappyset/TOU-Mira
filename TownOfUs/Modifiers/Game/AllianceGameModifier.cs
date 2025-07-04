@@ -19,7 +19,13 @@ public abstract class AllianceGameModifier : GameModifier
 
     public override bool HideOnUi => false;
 
-    public override int GetAmountPerGame() => 1;
+    public override int GetAmountPerGame()
+    {
+        return 1;
+    }
 
-    public override bool IsModifierValidOn(RoleBehaviour role) => !role.Player.GetModifierComponent().HasModifier<AllianceGameModifier>(true);
+    public override bool IsModifierValidOn(RoleBehaviour role)
+    {
+        return !role.Player.GetModifierComponent().HasModifier<AllianceGameModifier>(true);
+    }
 }
