@@ -20,28 +20,51 @@ namespace TownOfUs.Roles.Crewmate;
 
 public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
+    private MeetingMenu meetingMenu;
+    public override bool IsAffectedByComms => false;
+
+    public PlayerControl? Killer { get; set; }
+    public DoomableType DoomHintType => DoomableType.Relentless;
     public string RoleName => "Deputy";
     public string RoleDescription => "Camp Crewmates To Catch Their Killer";
     public string RoleLongDescription => "Camp crewmates, then shoot their killer in the meeting!";
     public Color RoleColor => TownOfUsColors.Deputy;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
-    public DoomableType DoomHintType => DoomableType.Relentless;
-    public override bool IsAffectedByComms => false;
     public bool IsPowerCrew => Killer; // Only stop end game checks if the deputy can actually kill someone
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Deputy,
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Impostor),
+        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Impostor)
     };
+
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        return ITownOfUsRole.SetNewTabText(this);
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return
+            "The Deputy is a Crewmate Killing role that can camp other players. Once a camped player dies the Deputy is alerted to their death. " +
+            "The following meeting the Deputy may then attempt to shoot the killer of the camped player. If successful the killer dies and if not nothing happens." +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Camp",
+            "Camp a player to be alerted once they die. After their death, you may attempt to shoot the killer. If your shot is successful, the killer dies, if not, nothing will happen.",
+            TouCrewAssets.CampButtonSprite)
+    ];
+
     public static void OnRoundStart()
     {
         CustomButtonSingleton<CampButton>.Instance.Usable = true;
     }
-
-    public PlayerControl? Killer { get; set; }
-
-    private MeetingMenu meetingMenu;
 
     public override void Initialize(PlayerControl player)
     {
@@ -57,7 +80,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
                 null!,
                 IsExempt)
             {
-                Position = new Vector3(-0.40f, 0f, -3f),
+                Position = new Vector3(-0.40f, 0f, -3f)
             };
         }
     }
@@ -68,7 +91,8 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
         if (Player.AmOwner)
         {
-            meetingMenu.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && Killer != null && !Player.HasModifier<JailedModifier>());
+            meetingMenu.GenButtons(MeetingHud.Instance,
+                Player.AmOwner && !Player.HasDied() && Killer != null && !Player.HasModifier<JailedModifier>());
         }
     }
 
@@ -126,8 +150,11 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         else
         {
             var title = $"<color=#{TownOfUsColors.Deputy.ToHtmlStringRGBA()}>Deputy Feedback</color>";
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, "You missed your shot! They are either not the killer or are invincible.", false, true);
-            var notif1 = Helpers.CreateAndShowNotification($"<b>{TownOfUsColors.Deputy.ToTextColor()}You missed your shot! They are either not the killer or are invincible.</b></color>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Deputy.LoadAsset());
+            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title,
+                "You missed your shot! They are either not the killer or are invincible.", false, true);
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>{TownOfUsColors.Deputy.ToTextColor()}You missed your shot! They are either not the killer or are invincible.</b></color>",
+                Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Deputy.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
         }
 
@@ -141,25 +168,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
     public bool IsExempt(PlayerVoteArea voteArea)
     {
-        return voteArea?.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || voteArea!.AmDead || voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
+        return voteArea?.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || voteArea!.AmDead ||
+               voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
     }
-
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        return ITownOfUsRole.SetNewTabText(this);
-    }
-    
-    public string GetAdvancedDescription()
-    {
-        return "The Deputy is a Crewmate Killing role that can camp other players. Once a camped player dies the Deputy is alerted to their death. " +
-               "The following meeting the Deputy may then attempt to shoot the killer of the camped player. If successful the killer dies and if not nothing happens." + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Camp",
-            $"Camp a player to be alerted once they die. After their death, you may attempt to shoot the killer. If your shot is successful, the killer dies, if not, nothing will happen.",
-            TouCrewAssets.CampButtonSprite),
-    ];
 }

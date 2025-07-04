@@ -14,6 +14,7 @@ using Object = UnityEngine.Object;
 namespace TownOfUs.Modules;
 
 public record PlayerEvent(byte PlayerId, float Unix, Vector3 Position);
+
 public record DeadPlayer(byte KillerId, byte VictimId, DateTime KillTime);
 
 public sealed class PlayerStats(byte playerId)
@@ -39,41 +40,74 @@ public sealed class BodyReport
         var reportNameDuration = OptionGroupSingleton<MedicOptions>.Instance.MedicReportNameDuration;
 
         if (br.KillAge > reportColorDuration * 1000)
-            return $"Body Report: The corpse is too old to gain information from. (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        {
+            return
+                $"Body Report: The corpse is too old to gain information from. (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
 
         if (br.Killer?.PlayerId == br.Body?.PlayerId)
-            return $"Body Report: The kill appears to have been a suicide! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        {
+            return
+                $"Body Report: The kill appears to have been a suicide! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
 
         if (br.KillAge < reportNameDuration * 1000)
-            return $"Body Report: The killer appears to be {br.Killer?.Data.PlayerName}! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        {
+            return
+                $"Body Report: The killer appears to be {br.Killer?.Data.PlayerName}! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
 
         var typeOfColor = MedicRole.GetColorTypeForPlayer(br.Killer!);
 
-        return $"Body Report: The killer appears to be a {typeOfColor} color. (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        return
+            $"Body Report: The killer appears to be a {typeOfColor} color. (Killed {Math.Round(br.KillAge / 1000)}s ago)";
     }
 
     public static string ParseDetectiveReport(BodyReport br)
     {
         if (br.KillAge > OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveFactionDuration * 1000)
-            return $"Body Report: The corpse is too old to gain information from. (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        {
+            return
+                $"Body Report: The corpse is too old to gain information from. (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
 
         if (br.Killer!.PlayerId == br.Body!.PlayerId)
-            return $"Body Report: The kill appears to have been a suicide! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        {
+            return
+                $"Body Report: The kill appears to have been a suicide! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
+
         // if the killer died, they would still appear correctly here
         var role = br.Killer.GetRoleWhenAlive();
-        if (br.Killer.HasModifier<TraitorCacheModifier>()) role = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TraitorRole>());
+        if (br.Killer.HasModifier<TraitorCacheModifier>())
+        {
+            role = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TraitorRole>());
+        }
 
         var prefix = "a";
-        if (role.NiceName.StartsWithVowel()) prefix = "an";
+        if (role.NiceName.StartsWithVowel())
+        {
+            prefix = "an";
+        }
+
         if (br.KillAge < OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveRoleDuration * 1000)
-            return $"Body Report: The killer appears to be {prefix} {role.NiceName}! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        {
+            return
+                $"Body Report: The killer appears to be {prefix} {role.NiceName}! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
 
         if (br.Killer.IsNeutral())
-            return $"Body Report: The killer appears to be a Neutral Role! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
-        else if (br.Killer.IsCrewmate())
+        {
+            return
+                $"Body Report: The killer appears to be a Neutral Role! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
+
+        if (br.Killer.IsCrewmate())
+        {
             return $"Body Report: The killer appears to be a Crewmate! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
-        else
-            return $"Body Report: The killer appears to be an Impostor! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
+
+        return $"Body Report: The killer appears to be an Impostor! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
     }
 }
 
@@ -88,9 +122,9 @@ public static class GameHistory
     public static readonly List<DeadPlayer> KilledPlayers = [];
     public static readonly List<(byte, DeathReason)> DeathHistory = [];
     public static readonly Dictionary<byte, PlayerStats> PlayerStats = [];
-    public static IEnumerable<RoleBehaviour> AllRoles => [.. RoleDictionary.Values];
     public static string EndGameSummary = string.Empty;
     public static string WinningFaction = string.Empty;
+    public static IEnumerable<RoleBehaviour> AllRoles => [.. RoleDictionary.Values];
 
     public static void RegisterRole(PlayerControl player, RoleBehaviour role, bool clean = false)
     {
@@ -122,16 +156,19 @@ public static class GameHistory
     {
         var deadBody = new DeadPlayer(killer.PlayerId, victim.PlayerId, DateTime.UtcNow);
 
-        GameHistory.KilledPlayers.Add(deadBody);
+        KilledPlayers.Add(deadBody);
     }
 
     public static void ClearMurder(PlayerControl player)
     {
-        var instance = GameHistory.KilledPlayers.FirstOrDefault(x => x.VictimId == player.PlayerId);
+        var instance = KilledPlayers.FirstOrDefault(x => x.VictimId == player.PlayerId);
 
-        if (instance == null) return;
+        if (instance == null)
+        {
+            return;
+        }
 
-        GameHistory.KilledPlayers.Remove(instance);
+        KilledPlayers.Remove(instance);
     }
 
     public static void ClearAll()
@@ -139,7 +176,9 @@ public static class GameHistory
         RoleDictionary.Do(x =>
         {
             if (x.Value != null && x.Value.gameObject != null)
+            {
                 Object.Destroy(x.Value.gameObject);
+            }
         });
 
         RoleDictionary.Clear();
@@ -147,7 +186,9 @@ public static class GameHistory
         RoleHistory.Do(x =>
         {
             if (x.Value != null && x.Value.gameObject != null)
+            {
                 Object.Destroy(x.Value.gameObject);
+            }
         });
 
         RoleHistory.Clear();
@@ -155,7 +196,9 @@ public static class GameHistory
         RoleWhenAlive.Do(x =>
         {
             if (x.Value != null && x.Value.gameObject != null)
+            {
                 Object.Destroy(x.Value.gameObject);
+            }
         });
 
         RoleWhenAlive.Clear();

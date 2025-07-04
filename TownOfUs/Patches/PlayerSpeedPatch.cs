@@ -14,7 +14,7 @@ public static class PlayerSpeedPatch
     public static void Postfix(PlayerControl pc, ref float __result)
     {
         __result *= pc.GetAppearance().Speed;
-        
+
 
         if (pc.HasModifier<VenererSprintModifier>())
         {

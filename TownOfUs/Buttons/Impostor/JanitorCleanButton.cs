@@ -8,7 +8,8 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Impostor;
 
-public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBody>, IAftermathableBodyButton, IDiseaseableButton
+public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBody>, IAftermathableBodyButton,
+    IDiseaseableButton
 {
     public override string Name => "Clean";
     public override string Keybind => Keybinds.SecondaryAction;
@@ -18,11 +19,16 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
     public override int MaxUses => (int)OptionGroupSingleton<JanitorOptions>.Instance.MaxClean;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.CleanButtonSprite;
 
-    public override DeadBody? GetTarget() => PlayerControl.LocalPlayer.GetNearestDeadBody(Distance);
     public DeadBody? CleaningBody { get; set; }
+
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
+    }
+
+    public override DeadBody? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetNearestDeadBody(Distance);
     }
 
     protected override void OnClick()
@@ -31,8 +37,10 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
         {
             return;
         }
+
         CleaningBody = Target;
     }
+
     public override void OnEffectEnd()
     {
         if (CleaningBody == Target && CleaningBody != null)
@@ -40,6 +48,7 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
             JanitorRole.RpcCleanBody(PlayerControl.LocalPlayer, CleaningBody.ParentId);
             TouAudio.PlaySound(TouAudio.JanitorCleanSound);
         }
+
         CleaningBody = null;
         if (OptionGroupSingleton<JanitorOptions>.Instance.ResetCooldowns)
         {

@@ -8,7 +8,6 @@ namespace TownOfUs.Patches.Roles;
 [HarmonyPatch]
 public static class GhostRoleUsePatches
 {
-
     [HarmonyPrefix]
     [HarmonyPatch(typeof(DeconControl), nameof(DeconControl.Use))]
     public static bool DeconControlUsePatch(DeconControl __instance)
@@ -23,8 +22,9 @@ public static class GhostRoleUsePatches
         __instance.cooldown = 6f;
         if (Constants.ShouldPlaySfx())
         {
-            SoundManager.Instance.PlaySound(__instance.UseSound, false, 1f, null);
+            SoundManager.Instance.PlaySound(__instance.UseSound, false);
         }
+
         __instance.OnUse.Invoke();
 
         return false;
@@ -33,7 +33,8 @@ public static class GhostRoleUsePatches
     [HarmonyPatch(typeof(MovingPlatformBehaviour))]
     [HarmonyPatch(nameof(MovingPlatformBehaviour.Use), typeof(PlayerControl))]
     [HarmonyPrefix]
-    public static bool MovingPlatformBehaviourUsePrefixPatch(Il2CppSystem.Object __instance, [HarmonyArgument(0)] PlayerControl player, ref bool __state)
+    public static bool MovingPlatformBehaviourUsePrefixPatch(Il2CppSystem.Object __instance,
+        [HarmonyArgument(0)] PlayerControl player, ref bool __state)
     {
         __state = false;
 
@@ -50,11 +51,12 @@ public static class GhostRoleUsePatches
     [HarmonyPatch(typeof(MovingPlatformBehaviour))]
     [HarmonyPatch(nameof(MovingPlatformBehaviour.Use), typeof(PlayerControl))]
     [HarmonyPostfix]
-    public static void MovingPlatformBehaviourUsePostfixPatch(Il2CppSystem.Object __instance, [HarmonyArgument(0)] PlayerControl player, ref bool __state)
+    public static void MovingPlatformBehaviourUsePostfixPatch(Il2CppSystem.Object __instance,
+        [HarmonyArgument(0)] PlayerControl player, ref bool __state)
     {
         if (__state)
-        {
             // Logger<TownOfUsPlugin>.Message($"CanUsePostfixPatch IsDead");
+        {
             player.Data.IsDead = true;
         }
     }
@@ -80,7 +82,9 @@ public static class GhostRoleUsePatches
         var targetData = target.CachedPlayerData;
 
         if (__state)
+        {
             targetData.IsDead = true;
+        }
     }
 
     [HarmonyPatch(typeof(OpenDoorConsole), nameof(OpenDoorConsole.Use))]
@@ -89,7 +93,11 @@ public static class GhostRoleUsePatches
     {
         __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out _);
 
-        if (!canUse) return false;
+        if (!canUse)
+        {
+            return false;
+        }
+
         __instance.myDoor.SetDoorway(true);
 
         return false;
@@ -101,7 +109,10 @@ public static class GhostRoleUsePatches
     {
         __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out _);
 
-        if (!canUse) return false;
+        if (!canUse)
+        {
+            return false;
+        }
 
         PlayerControl.LocalPlayer.NetTransform.Halt();
         var minigame = Object.Instantiate(__instance.MinigamePrefab, Camera.main.transform);
@@ -111,7 +122,10 @@ public static class GhostRoleUsePatches
         {
             minigame.Cast<IDoorMinigame>().SetDoor(__instance.MyDoor);
         }
-        catch (InvalidCastException) { /* ignored */ }
+        catch (InvalidCastException)
+        {
+            /* ignored */
+        }
 
         minigame.Begin(null);
 

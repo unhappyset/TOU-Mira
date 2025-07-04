@@ -1,10 +1,10 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Networking;
-using TownOfUs.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Buttons.Neutral;
@@ -16,6 +16,8 @@ public sealed class GlitchKillButton : TownOfUsRoleButton<GlitchRole, PlayerCont
     public override Color TextOutlineColor => TownOfUsColors.Glitch;
     public override float Cooldown => OptionGroupSingleton<GlitchOptions>.Instance.KillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.GlitchKillSprite;
+    public override bool ShouldPauseInVent => false;
+
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
@@ -32,5 +34,8 @@ public sealed class GlitchKillButton : TownOfUsRoleButton<GlitchRole, PlayerCont
         PlayerControl.LocalPlayer.RpcCustomMurder(Target);
     }
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
 }

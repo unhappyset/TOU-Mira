@@ -18,7 +18,10 @@ public static class CelebrityEvents
 
         if (target.HasModifier<CelebrityModifier>())
         {
-            if (!MeetingHud.Instance) CelebrityModifier.CelebrityKilled(source, target);
+            if (!MeetingHud.Instance)
+            {
+                CelebrityModifier.CelebrityKilled(source, target);
+            }
             else
             {
                 var celeb = target.GetModifier<CelebrityModifier>()!;
@@ -30,7 +33,10 @@ public static class CelebrityEvents
     [RegisterEvent]
     public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
-        if (@event.DeathReason != DeathReason.Exile) return;
+        if (@event.DeathReason != DeathReason.Exile)
+        {
+            return;
+        }
 
         if (@event.Player.TryGetModifier<CelebrityModifier>(out var celeb))
         {
@@ -43,7 +49,8 @@ public static class CelebrityEvents
     {
         if (@event.Reporter.AmOwner)
         {
-            var celebrity = ModifierUtils.GetActiveModifiers<CelebrityModifier>(x => x.Player.HasDied() && !x.Announced).FirstOrDefault();
+            var celebrity = ModifierUtils.GetActiveModifiers<CelebrityModifier>(x => x.Player.HasDied() && !x.Announced)
+                .FirstOrDefault();
             if (celebrity != null)
             {
                 var milliSeconds = (float)(DateTime.UtcNow - celebrity.DeathTime).TotalMilliseconds;
@@ -52,11 +59,16 @@ public static class CelebrityEvents
             }
         }
     }
+
     [RegisterEvent]
     public static void WrapUpEvent(EjectionEvent @event)
     {
         var player = @event.ExileController.initData.networkedPlayer?.Object;
-        if (player == null) return;
+        if (player == null)
+        {
+            return;
+        }
+
         if (player.TryGetModifier<CelebrityModifier>(out var celeb))
         {
             celeb.Announced = true;

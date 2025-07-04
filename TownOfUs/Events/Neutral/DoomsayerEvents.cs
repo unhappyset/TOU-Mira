@@ -15,7 +15,8 @@ public static class DoomsayerEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (@event.Source.Data.Role is DoomsayerRole doom && @event.Source.AmOwner && (int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin == doom.NumberOfGuesses)
+        if (@event.Source.Data.Role is DoomsayerRole doom && @event.Source.AmOwner &&
+            (int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin == doom.NumberOfGuesses)
         {
             DoomsayerRole.RpcDoomsayerWin(@event.Source);
         }
@@ -24,28 +25,38 @@ public static class DoomsayerEvents
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return;
-        if (OptionGroupSingleton<DoomsayerOptions>.Instance.DoomWin is not DoomWinOptions.Leaves) return;
+        if (@event.TriggeredByIntro)
+        {
+            return;
+        }
 
-        var doom = CustomRoleUtils.GetActiveRolesOfType<DoomsayerRole>().FirstOrDefault(x => x.AllGuessesCorrect && !x.Player.HasDied());
+        if (OptionGroupSingleton<DoomsayerOptions>.Instance.DoomWin is not DoomWinOptions.Leaves)
+        {
+            return;
+        }
+
+        var doom = CustomRoleUtils.GetActiveRolesOfType<DoomsayerRole>()
+            .FirstOrDefault(x => x.AllGuessesCorrect && !x.Player.HasDied());
         if (doom != null)
         {
             if (doom.Player.AmOwner)
             {
                 PlayerControl.LocalPlayer.RpcPlayerExile();
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>You have successfully won as the {TownOfUsColors.Doomsayer.ToTextColor()}Doomsayer</color>, as you have guessed enough players successfully!</b>", Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
+                    $"<b>You have successfully won as the {TownOfUsColors.Doomsayer.ToTextColor()}Doomsayer</color>, as you have guessed enough players successfully!</b>",
+                    Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
-                    notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
             }
             else
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>The {TownOfUsColors.Doomsayer.ToTextColor()}Doomsayer</color>, {doom.Player.Data.PlayerName}, has successfully won, as they have guessed enough players!</b>", Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
+                    $"<b>The {TownOfUsColors.Doomsayer.ToTextColor()}Doomsayer</color>, {doom.Player.Data.PlayerName}, has successfully won, as they have guessed enough players!</b>",
+                    Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
-                    notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
             }
         }
     }

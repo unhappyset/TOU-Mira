@@ -18,8 +18,11 @@ public static class LoverChatPatches
     [HarmonyPrefix]
     public static bool SendChatPatch(ChatController __instance)
     {
-        if (MeetingHud.Instance || ExileController.Instance != null || PlayerControl.LocalPlayer.Data.IsDead || overrideMessages)
+        if (MeetingHud.Instance || ExileController.Instance != null || PlayerControl.LocalPlayer.Data.IsDead ||
+            overrideMessages)
+        {
             return true;
+        }
 
         var text = __instance.freeChatField.Text.WithoutRichText();
 
@@ -48,10 +51,14 @@ public static class LoverChatPatches
     [MethodRpc((uint)TownOfUsRpc.SendLoveChat, SendImmediately = true)]
     public static void RpcSendLoveChat(PlayerControl player, string text)
     {
-        if ((PlayerControl.LocalPlayer.IsLover() && player != PlayerControl.LocalPlayer) || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        if ((PlayerControl.LocalPlayer.IsLover() && player != PlayerControl.LocalPlayer) ||
+            (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
         {
             LoverMessage = true;
-            if (player != PlayerControl.LocalPlayer) HudManager.Instance.Chat.AddChat(player, text);
+            if (player != PlayerControl.LocalPlayer)
+            {
+                HudManager.Instance.Chat.AddChat(player, text);
+            }
         }
     }
 
@@ -59,11 +66,11 @@ public static class LoverChatPatches
     [HarmonyPostfix]
     public static void SetNamePatch(ChatBubble __instance, [HarmonyArgument(0)] string playerName)
     {
-       if (LoverMessage && !overrideMessages)
-       {
-           __instance.NameText.color = TownOfUsColors.Lover;
-           __instance.NameText.text = playerName + " (Lover)";
-           LoverMessage = false;
-       }
+        if (LoverMessage && !overrideMessages)
+        {
+            __instance.NameText.color = TownOfUsColors.Lover;
+            __instance.NameText.text = playerName + " (Lover)";
+            LoverMessage = false;
+        }
     }
 }

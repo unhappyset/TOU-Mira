@@ -12,14 +12,15 @@ public abstract class BaseShieldModifier : TimedModifier, IAnimated
     public override float Duration => 1f;
     public override bool AutoStart => false;
     public override bool HideOnUi => !TownOfUsPlugin.ShowShieldHud.Value;
+    public virtual bool VisibleSymbol => false;
+    public bool IsVisible { get; set; } = true;
+
+    public void SetVisible()
+    {
+    }
+
     public override string GetDescription()
     {
         return !HideOnUi ? ShieldDescription : string.Empty;
-    }
-    public bool IsVisible { get; set; } = true;
-    public virtual bool VisibleSymbol => false;
-    public void SetVisible()
-    {
-
     }
 }

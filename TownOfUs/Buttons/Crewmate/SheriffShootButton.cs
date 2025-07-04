@@ -23,7 +23,10 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
     public override Color TextOutlineColor => TownOfUsColors.Sheriff;
     public override float Cooldown => OptionGroupSingleton<SheriffOptions>.Instance.KillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.SheriffShootSprite;
-    public bool Usable { get; set; } = OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse;
+
+    public bool Usable { get; set; } =
+        OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse || TutorialManager.InstanceExists;
+
     public bool FailedShot { get; set; }
 
     public override bool CanUse()
@@ -38,7 +41,9 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
             Logger<TownOfUsPlugin>.Error("Misfire: Target is null");
             return;
         }
+
         var missType = OptionGroupSingleton<SheriffOptions>.Instance.MisfireType;
+        SheriffRole.RpcSheriffMisfire(PlayerControl.LocalPlayer);
 
         if (missType is MisfireOptions.Target or MisfireOptions.Both)
         {
@@ -52,17 +57,19 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
 
         FailedShot = true;
 
-        var notif1 = Helpers.CreateAndShowNotification("<b>You have lost the ability to shoot!</b>", Color.white, spr: TouRoleIcons.Sheriff.LoadAsset());
+        var notif1 = Helpers.CreateAndShowNotification("<b>You have lost the ability to shoot!</b>", Color.white,
+            spr: TouRoleIcons.Sheriff.LoadAsset());
 
         notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
 
         Coroutines.Start(MiscUtils.CoFlash(Color.red));
     }
 
     private static IEnumerator CoSetBodyReportable(byte bodyId)
     {
-        var waitDelegate = DelegateSupport.ConvertDelegate<Il2CppSystem.Func<bool>>(() => Helpers.GetBodyById(bodyId) != null);
+        var waitDelegate =
+            DelegateSupport.ConvertDelegate<Il2CppSystem.Func<bool>>(() => Helpers.GetBodyById(bodyId) != null);
         yield return new WaitUntil(waitDelegate);
         var body = Helpers.GetBodyById(bodyId);
 
@@ -85,7 +92,7 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
         {
             return;
         }
-        
+
         if (Target.HasModifier<BaseShieldModifier>())
         {
             return;
@@ -95,10 +102,17 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
         var options = OptionGroupSingleton<SheriffOptions>.Instance;
 
         if (Target.Data.Role is ITownOfUsRole touRole)
+        {
             alignment = touRole.RoleAlignment;
+        }
         else if (Target.IsImpostor())
+        {
             alignment = RoleAlignment.ImpostorSupport;
-        if (!(PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished) && !(Target.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
+        }
+
+        if (!(PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) &&
+              !allyMod.GetsPunished) &&
+            !(Target.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
         {
             switch (alignment)
             {
@@ -126,6 +140,7 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
                     {
                         PlayerControl.LocalPlayer.RpcCustomMurder(Target);
                     }
+
                     break;
 
                 case RoleAlignment.NeutralEvil:
@@ -137,6 +152,7 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
                     {
                         PlayerControl.LocalPlayer.RpcCustomMurder(Target);
                     }
+
                     break;
                 default:
                     Misfire();

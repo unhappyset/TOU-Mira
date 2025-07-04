@@ -13,7 +13,10 @@ public sealed class EscapistMarkButton : TownOfUsRoleButton<EscapistRole>, IAfte
     public override float Cooldown => 0;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.MarkSprite;
 
-    public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && Role is { MarkedLocation: null };
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return base.Enabled(role) && Role is { MarkedLocation: null };
+    }
 
     public override bool CanUse()
     {

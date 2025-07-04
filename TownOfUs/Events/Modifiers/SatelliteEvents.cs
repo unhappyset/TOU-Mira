@@ -11,7 +11,11 @@ public static class SatelliteEvents
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return; // Never run when round starts.
+        if (@event.TriggeredByIntro)
+        {
+            return; // Never run when round starts.
+        }
+
         ModifierUtils.GetActiveModifiers<SatelliteModifier>().Do(x => x.OnRoundStart());
     }
 }

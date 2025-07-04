@@ -14,7 +14,8 @@ public static class TransporterEvents
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
-        if (@event.Player.AmOwner && @event.Player.Data.Role is TransporterRole && OptionGroupSingleton<TransporterOptions>.Instance.TaskUses)
+        if (@event.Player.AmOwner && @event.Player.Data.Role is TransporterRole &&
+            OptionGroupSingleton<TransporterOptions>.Instance.TaskUses)
         {
             var button = CustomButtonSingleton<TransporterTransportButton>.Instance;
             ++button.UsesLeft;
@@ -22,6 +23,7 @@ public static class TransporterEvents
             button.SetUses(button.UsesLeft);
         }
     }
+
     [RegisterEvent]
     public static void PlayerCanUseEventHandler(PlayerCanUseEvent @event)
     {
@@ -40,8 +42,8 @@ public static class TransporterEvents
         var console = @event.Usable.TryCast<SystemConsole>();
 
         if (console == null)
-        {
             // Not a SystemConsole, return
+        {
             return;
         }
 

@@ -14,6 +14,7 @@ public sealed class SheriffOptions : AbstractOptionGroup<SheriffRole>
 
     [ModdedToggleOption("Can Self Report")]
     public bool SheriffBodyReport { get; set; } = false;
+
     [ModdedToggleOption("Allow Shooting in First Round")]
     public bool FirstRoundUse { get; set; } = false;
 
@@ -25,8 +26,8 @@ public sealed class SheriffOptions : AbstractOptionGroup<SheriffRole>
 
     [ModdedEnumOption("Misfire Kills", typeof(MisfireOptions), ["Sheriff", "Target", "Sheriff & Target", "No One"])]
     public MisfireOptions MisfireType { get; set; } = MisfireOptions.Sheriff;
-
 }
+
 public enum MisfireOptions
 {
     Sheriff,

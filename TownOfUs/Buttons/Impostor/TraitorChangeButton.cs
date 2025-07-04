@@ -24,10 +24,11 @@ public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
 
     public override void ClickHandler()
     {
-        if (!CanClick() || Minigame.Instance != null)
+        if (!CanClick() || Minigame.Instance != null || PlayerControl.LocalPlayer.HasDied())
         {
             return;
         }
+
         OnClick();
     }
 
@@ -37,7 +38,8 @@ public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
         {
             Func<RoleBehaviour, bool>? impFilter = x => x.Role != (RoleTypes)RoleId.Get<TraitorRole>();
 
-            var impRoles = MiscUtils.GetRolesToAssign(ModdedRoleTeams.Impostor, filter: impFilter).Select(x => x.RoleType).ToList();
+            var impRoles = MiscUtils.GetRolesToAssign(ModdedRoleTeams.Impostor, impFilter).Select(x => x.RoleType)
+                .ToList();
 
             var roleList = MiscUtils.GetPotentialRoles()
                 .Where(role => role is ICustomRole)
@@ -53,8 +55,10 @@ public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
                     if (player.IsImpostor() && !player.AmOwner)
                     {
                         var role = player.GetRoleWhenAlive();
-                        if (role) 
+                        if (role)
+                        {
                             impRoles.Remove((ushort)role!.Role);
+                        }
                     }
                 }
             }
@@ -67,10 +71,15 @@ public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
             for (var i = 0; i < 3; i++)
             {
                 var selected = roleList.Random();
-                if (selected == null) continue;
+                if (selected == null)
+                {
+                    continue;
+                }
+
                 Role.ChosenRoles.Add(selected);
                 roleList.Remove(selected);
             }
+
             Role.RandomRole = random;
         }
 

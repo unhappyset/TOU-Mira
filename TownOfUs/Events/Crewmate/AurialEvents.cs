@@ -15,7 +15,10 @@ public static class AurialEvents
         var button = @event.Button;
         var source = PlayerControl.LocalPlayer;
 
-        if (!source.AmOwner || button == null || !button.CanClick()) return;
+        if (!source.AmOwner || button == null || !button.CanClick())
+        {
+            return;
+        }
 
         CustomRoleUtils.GetActiveRolesOfType<AurialRole>().Do(x => AurialRole.RpcSense(x.Player, source));
     }
@@ -25,7 +28,10 @@ public static class AurialEvents
     {
         var source = @event.Source;
 
-        if (!source.AmOwner) return;
+        if (!source.AmOwner)
+        {
+            return;
+        }
 
         CustomRoleUtils.GetActiveRolesOfType<AurialRole>().Do(x => AurialRole.RpcSense(x.Player, source));
     }

@@ -1,7 +1,7 @@
-﻿using MiraAPI.Events;
+﻿using System.Text;
+using MiraAPI.Events;
 using MiraAPI.Modifiers;
 using Reactor.Utilities.Extensions;
-using System.Text;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -23,6 +23,7 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
         var touAbilityEvent = new TouAbilityEvent(AbilityType.LookoutWatch, Lookout, Player);
         MiraEventManager.InvokeEvent(touAbilityEvent);
     }
+
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent!.RemoveModifier(this);
@@ -40,7 +41,11 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
 
     public override void OnMeetingStart()
     {
-        if (!Lookout.AmOwner) return;
+        if (!Lookout.AmOwner)
+        {
+            return;
+        }
+
         var title = $"<color=#{TownOfUsColors.Lookout.ToHtmlStringRGBA()}>Lookout Feedback</color>";
         var msg = $"No players interacted with {Player.Data.PlayerName}";
 
@@ -60,7 +65,9 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
             var final = message.ToString();
 
             if (string.IsNullOrWhiteSpace(final))
+            {
                 return;
+            }
 
             msg = final;
         }

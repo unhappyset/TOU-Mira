@@ -1,23 +1,21 @@
 using Reactor.Localization;
 using Reactor.Localization.Utilities;
 
-namespace TownOfUs.Modules.Localization
+namespace TownOfUs.Modules.Localization;
+
+public sealed class TaskProvider : LocalizationProvider
 {
-    public sealed class TaskProvider : LocalizationProvider
+    public const SystemTypes DeathValleySystemType = (SystemTypes)250;
+    private static readonly StringNames DeathValley = CustomStringName.CreateAndRegister("Death Valley");
+
+    public override bool TryGetStringName(SystemTypes systemType, out StringNames? result)
     {
-        private static StringNames DeathValley = CustomStringName.CreateAndRegister("Death Valley");
-
-        public const SystemTypes DeathValleySystemType = (SystemTypes)250;
-
-        public override bool TryGetStringName(SystemTypes systemType, out StringNames? result)
+        if (systemType == DeathValleySystemType)
         {
-            if (systemType == DeathValleySystemType)
-            {
-                result = DeathValley;
-                return true;
-            }
-
-            return base.TryGetStringName(systemType, out result);
+            result = DeathValley;
+            return true;
         }
+
+        return base.TryGetStringName(systemType, out result);
     }
 }

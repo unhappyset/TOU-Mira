@@ -29,7 +29,7 @@ public sealed class VenererCamouflageModifier : ConcealedModifier, IVenererModif
         appearance.PlayerMaterialColor = Color.grey;
         return appearance;
     }
-    
+
     public override void OnActivate()
     {
         Player.RawSetAppearance(this);

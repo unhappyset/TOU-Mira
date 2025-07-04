@@ -16,6 +16,7 @@ public sealed class FakeVentButton : CustomActionButton
     public override ButtonLocation Location => ButtonLocation.BottomLeft;
 
     public bool Show { get; set; } = true;
+
     public override void CreateButton(Transform parent)
     {
         base.CreateButton(parent);
@@ -25,14 +26,18 @@ public sealed class FakeVentButton : CustomActionButton
         {
             pb.OnClick = new Button.ButtonClickedEvent();
         }
+
         SetButtonLocation(ButtonLocation.BottomLeft);
         SetButtonLocation(ButtonLocation.BottomRight);
     }
+
     public override bool Enabled(RoleBehaviour? role)
     {
-        return TownOfUsPlugin.OffsetButtons.Value && Show && HudManager.InstanceExists && !MeetingHud.Instance && role != null && !role.IsImpostor
-             && (!role.CanVent || (role is ICustomRole customRole && !customRole.Configuration.CanUseVent));
+        return TownOfUsPlugin.OffsetButtons.Value && Show && HudManager.InstanceExists && !MeetingHud.Instance &&
+               role != null && !role.IsImpostor
+               && (!role.CanVent || (role is ICustomRole customRole && !customRole.Configuration.CanUseVent));
     }
+
     protected override void OnClick()
     {
     }

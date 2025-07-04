@@ -14,24 +14,40 @@ public static class DetectiveEvents
     [RegisterEvent]
     public static void ReportBodyEventHandler(ReportBodyEvent @event)
     {
-        if (@event.Target == null) return;
+        if (@event.Target == null)
+        {
+            return;
+        }
 
         if (@event.Reporter.Data.Role is DetectiveRole detective && @event.Reporter.AmOwner)
         {
             detective.Report(@event.Target.PlayerId);
         }
     }
+
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return;
-        if (CrimeSceneComponent._crimeScenes.Count == 0) return;
-        if (!Helpers.GetAlivePlayers().Any(x => x.Data.Role is DetectiveRole)) return;
+        if (@event.TriggeredByIntro)
+        {
+            return;
+        }
+
+        if (CrimeSceneComponent._crimeScenes.Count == 0)
+        {
+            return;
+        }
+
+        if (!Helpers.GetAlivePlayers().Any(x => x.Data.Role is DetectiveRole))
+        {
+            return;
+        }
 
         foreach (var scene in CrimeSceneComponent._crimeScenes)
         {
             scene.gameObject.SetActive(false);
         }
+
         if (PlayerControl.LocalPlayer.Data.Role is DetectiveRole)
         {
             foreach (var scene in CrimeSceneComponent._crimeScenes)
@@ -50,8 +66,15 @@ public static class DetectiveEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (@event.Source.IsRole<SoulCollectorRole>()) return;
-        if (MeetingHud.Instance) return;
+        if (@event.Source.IsRole<SoulCollectorRole>())
+        {
+            return;
+        }
+
+        if (MeetingHud.Instance)
+        {
+            return;
+        }
 
         var victim = @event.Target;
         var bodyPos = victim.transform.position;

@@ -20,16 +20,23 @@ public sealed class JailorJailButton : TownOfUsRoleButton<JailorRole, PlayerCont
 
     public bool ExecutedACrew { get; set; }
 
-    public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && !ExecutedACrew;
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return base.Enabled(role) && !ExecutedACrew;
+    }
 
     public override PlayerControl? GetTarget()
     {
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: player => (!player.HasModifier<JailedModifier>()) && !player.HasModifier<JailSparedModifier>());
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance,
+            predicate: player => !player.HasModifier<JailedModifier>() && !player.HasModifier<JailSparedModifier>());
     }
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
 
         ModifierUtils.GetPlayersWithModifier<JailedModifier>().Do(x => x.RpcRemoveModifier<JailedModifier>());
         Target?.RpcAddModifier<JailedModifier>(PlayerControl.LocalPlayer.PlayerId);

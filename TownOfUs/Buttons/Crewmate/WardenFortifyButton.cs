@@ -1,7 +1,7 @@
-﻿using TownOfUs.Utilities;
-using MiraAPI.Utilities.Assets;
+﻿using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Buttons.Crewmate;
@@ -19,7 +19,10 @@ public sealed class WardenFortifyButton : TownOfUsRoleButton<WardenRole, PlayerC
         return base.CanUse() && Role is { Fortified: null };
     }
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
 
     protected override void OnClick()
     {

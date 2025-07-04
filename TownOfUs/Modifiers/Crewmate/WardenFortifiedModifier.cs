@@ -12,6 +12,7 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
     public override string ModifierName => "Fortified";
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Warden;
     public override string ShieldDescription => "You are fortified by a Warden!\nNo one can interact with you.";
+
     public override bool HideOnUi
     {
         get
@@ -19,10 +20,11 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
             var show = OptionGroupSingleton<WardenOptions>.Instance.ShowFortified;
             var showShieldedEveryone = show == FortifyOptions.Everyone;
             var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-            (show is FortifyOptions.Self or FortifyOptions.SelfAndWarden);
+                                   show is FortifyOptions.Self or FortifyOptions.SelfAndWarden;
             return !TownOfUsPlugin.ShowShieldHud.Value && (!showShieldedSelf || !showShieldedEveryone);
         }
     }
+
     public override bool VisibleSymbol
     {
         get
@@ -30,10 +32,11 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
             var show = OptionGroupSingleton<WardenOptions>.Instance.ShowFortified;
             var showShieldedEveryone = show == FortifyOptions.Everyone;
             var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-            (show is FortifyOptions.Self or FortifyOptions.SelfAndWarden);
+                                   show is FortifyOptions.Self or FortifyOptions.SelfAndWarden;
             return showShieldedSelf || showShieldedEveryone;
         }
     }
+
     public PlayerControl Warden { get; } = warden;
 
     public override void OnActivate()
@@ -54,9 +57,9 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
 
         var showShieldedEveryone = show == FortifyOptions.Everyone;
         var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-            (show is FortifyOptions.Self or FortifyOptions.SelfAndWarden);
+                               show is FortifyOptions.Self or FortifyOptions.SelfAndWarden;
         var showShieldedWarden = PlayerControl.LocalPlayer.PlayerId == Warden.PlayerId &&
-                 (show is FortifyOptions.Warden or FortifyOptions.SelfAndWarden);
+                                 show is FortifyOptions.Warden or FortifyOptions.SelfAndWarden;
 
         if (showShieldedEveryone || showShieldedSelf || showShieldedWarden)
         {

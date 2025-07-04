@@ -11,6 +11,7 @@ public sealed class PlumberOptions : AbstractOptionGroup<PlumberRole>
 
     [ModdedNumberOption("Flush Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds, "0.0")]
     public float FlushCooldown { get; set; } = 25f;
+
     [ModdedNumberOption("Block Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds, "0.0")]
     public float BlockCooldown { get; set; } = 25f;
 

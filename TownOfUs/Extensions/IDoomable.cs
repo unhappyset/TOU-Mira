@@ -4,6 +4,7 @@ public interface IDoomable
 {
     DoomableType DoomHintType { get; }
 }
+
 public enum DoomableType
 {
     Default,

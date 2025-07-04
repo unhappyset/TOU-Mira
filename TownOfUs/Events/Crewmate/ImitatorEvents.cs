@@ -20,9 +20,9 @@ public static class ImitatorEvents
             return;
         }
 
-        foreach (var mod in imitators.Where(x=>x.Player.Data.Role.Role != x.OldRole.Role))
+        // This makes converted imitators not be imitators anymore
+        foreach (var mod in imitators.Where(x => !x.Player.IsCrewmate()))
         {
-            // This makes converted imitators not be imitators anymore
             mod.ModifierComponent?.RemoveModifier(mod);
         }
     }
@@ -44,7 +44,10 @@ public static class ImitatorEvents
 
         foreach (var mod in imitators)
         {
-            if (mod.Player.AmOwner) mod.UpdateRole();
+            if (mod.Player.AmOwner)
+            {
+                mod.UpdateRole();
+            }
         }
     }
 

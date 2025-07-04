@@ -16,17 +16,20 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
     public override float EffectDuration => OptionGroupSingleton<EngineerOptions>.Instance.FixDelay + 0.01f;
     public override int MaxUses => (int)OptionGroupSingleton<EngineerOptions>.Instance.MaxFixes;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.FixButtonSprite;
+    public override bool ShouldPauseInVent => false;
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
         Button?.cooldownTimerText.gameObject.SetActive(false);
     }
+
     public override bool CanUse()
     {
         var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
 
         return base.CanUse() && system is { AnyActive: true };
     }
+
     protected override void OnClick()
     {
         var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
@@ -36,6 +39,7 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
             ResetCooldownAndOrEffect();
         }
     }
+
     public override void OnEffectEnd()
     {
         var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();

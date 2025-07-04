@@ -11,17 +11,11 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class DiseasedModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Diseased";
+    public override string IntroInfo => "You will also extend your killer's cooldown upon death.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Diseased;
-    public override string GetDescription() => "Increase your killer's kill cooldown.";
+
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
 
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.DiseasedChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.DiseasedAmount;
-
-    public override bool IsModifierValidOn(RoleBehaviour role)
-    {
-        return base.IsModifierValidOn(role) && role.IsCrewmate();
-    }
     public string GetAdvancedDescription()
     {
         return
@@ -29,4 +23,24 @@ public sealed class DiseasedModifier : TouGameModifier, IWikiDiscoverable
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "Increase your killer's kill cooldown.";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.DiseasedChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.DiseasedAmount;
+    }
+
+    public override bool IsModifierValidOn(RoleBehaviour role)
+    {
+        return base.IsModifierValidOn(role) && role.IsCrewmate();
+    }
 }

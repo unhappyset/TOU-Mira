@@ -12,23 +12,19 @@ namespace TownOfUs.Roles.Crewmate;
 
 public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
+    public DoomableType DoomHintType => DoomableType.Perception;
     public string RoleName => "Imitator";
     public string RoleDescription => "Use Dead Roles To Benefit The Crew";
     public string RoleLongDescription => "Use the true-hearted dead to benefit the crew once more";
     public Color RoleColor => TownOfUsColors.Imitator;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
-    public DoomableType DoomHintType => DoomableType.Perception;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Imitator,
-        IntroSound = TouAudio.SpyIntroSound,
+        IntroSound = TouAudio.SpyIntroSound
     };
-    public override void Initialize(PlayerControl player)
-    {
-        RoleBehaviourStubs.Initialize(this, player);
-        player.AddModifier<ImitatorCacheModifier>();
-    }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
@@ -39,14 +35,16 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     public string GetAdvancedDescription()
     {
         return "The Imitator is a Crewmate Support role that can select a dead crewmate to imitate their role. " +
-            "They will become their role and abilities until they change targets. " +
-            "Certain roles are innacessible if there are multiple living imitators."
-            + MiscUtils.AppendOptionsText(GetType());
+               "They will become their role and abilities until they change targets. " +
+               "Certain roles are innacessible if there are multiple living imitators."
+               + MiscUtils.AppendOptionsText(GetType());
     }
+
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
         new("Crewmate Imitation",
-            $"All crewmate roles are available besides Imitator, and Crewmate. Politician, Mayor, Prosecutor and Jailor are limited,"
+            "All crewmate roles are available besides Imitator, and Crewmate. Politician, Mayor, Prosecutor and Jailor are limited,"
             + " as they can only be selected if no other Imitators exist. Jailor and Prosecutor cannot use their meeting abilities, and Vigi does not get safe shots.",
             TouCrewAssets.InspectSprite),
         new("Neutral Counterparts",
@@ -71,7 +69,14 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             + "Scavenger ⇨ Tracker\n"
             + "Undertaker ⇨ Altruist | "
             + "Warlock ⇨ Veteran",
-            TouImpAssets.DragSprite),
+            TouImpAssets.DragSprite)
     ];
+
     public string SecondTabName => "Role Guide";
+
+    public override void Initialize(PlayerControl player)
+    {
+        RoleBehaviourStubs.Initialize(this, player);
+        player.AddModifier<ImitatorCacheModifier>();
+    }
 }

@@ -1,27 +1,32 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Networking;
-using TownOfUs.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Buttons.Neutral;
 
-public sealed class WerewolfKillButton : TownOfUsRoleButton<WerewolfRole, PlayerControl>, IDiseaseableButton, IKillButton
+public sealed class WerewolfKillButton : TownOfUsRoleButton<WerewolfRole, PlayerControl>, IDiseaseableButton,
+    IKillButton
 {
     public override string Name => "Kill";
     public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Werewolf;
     public override float Cooldown => OptionGroupSingleton<WerewolfOptions>.Instance.RampageKillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.WerewolfKillSprite;
+
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
     }
 
-    public override bool Enabled(RoleBehaviour? role) => role is WerewolfRole { Rampaging: true };
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return role is WerewolfRole { Rampaging: true };
+    }
 
     protected override void OnClick()
     {

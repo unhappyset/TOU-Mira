@@ -9,7 +9,6 @@ using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Modifiers;
-using MiraAPI.PluginLoading;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TownOfUs.Modifiers;
@@ -30,7 +29,7 @@ public static class MiscUtils
     public static int KillersAliveCount => Helpers.GetAlivePlayers().Count(x => x.IsImpostor() ||
         x.Is(RoleAlignment.NeutralKilling) ||
         (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame &&
-         inquis is { CanVanquish: true, TargetsDead: false }) ||
+         inquis is { CanVanquish: true, TargetsDead: false } && Helpers.GetAlivePlayers().Count <= 3) ||
         (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
          !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
          OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
@@ -39,17 +38,19 @@ public static class MiscUtils
         x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis &&
                                                                  OptionGroupSingleton<InquisitorOptions>.Instance
                                                                      .StallGame && inquis is
-                                                                     { CanVanquish: true, TargetsDead: false }));
+                                                                     { CanVanquish: true, TargetsDead: false }
+                                                                 && Helpers.GetAlivePlayers().Count <= 3));
 
     public static int NKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>
         x.Is(RoleAlignment.NeutralKilling) || (x.Data.Role is InquisitorRole inquis &&
                                                OptionGroupSingleton<InquisitorOptions>.Instance.StallGame &&
-                                               inquis is { CanVanquish: true, TargetsDead: false }));
+                                               inquis is { CanVanquish: true, TargetsDead: false }
+                                               && Helpers.GetAlivePlayers().Count <= 3));
 
     public static int NonImpKillersAliveCount => Helpers.GetAlivePlayers().Count(x =>
         x.Is(RoleAlignment.NeutralKilling) ||
         (x.Data.Role is InquisitorRole inquis && OptionGroupSingleton<InquisitorOptions>.Instance.StallGame &&
-         inquis is { CanVanquish: true, TargetsDead: false }) ||
+         inquis is { CanVanquish: true, TargetsDead: false } && Helpers.GetAlivePlayers().Count <= 3) ||
         (x.Data.Role is ITouCrewRole { IsPowerCrew: true } &&
          !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
          OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue));
@@ -61,21 +62,14 @@ public static class MiscUtils
         !(x.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.CrewContinuesGame) &&
         OptionGroupSingleton<GeneralOptions>.Instance.CrewKillersContinue);
 
-    // TODO: update this when mira api updates
-    public static IEnumerable<BaseModifier> AllModifiers =>
-        (AccessTools.Property(typeof(MiraPluginManager), "RegisteredPlugins")
-            .GetValue(AccessTools.Property(typeof(MiraPluginManager), "Instance").GetValue(null)) as MiraPluginInfo[])!
-        .SelectMany(x => x.Modifiers);
+    public static IEnumerable<BaseModifier> AllModifiers => ModifierManager.Modifiers;
 
-    // TODO: update this when mira api updates
-    public static IEnumerable<RoleBehaviour> AllRoles =>
-        (AccessTools.Field(typeof(CustomRoleManager), "CustomRoles")
-            .GetValue(null) as Dictionary<ushort, RoleBehaviour>)!.Values;
-    // public static IEnumerable<RoleBehaviour> AllRoles => RoleManager.Instance.AllRoles;
+    public static IEnumerable<RoleBehaviour> AllRoles => CustomRoleManager.CustomRoleBehaviours;
 
     public static ReadOnlyCollection<IModdedOption>? GetModdedOptionsForRole(Type classType)
     {
-        var optionGroups = AccessTools.Field(typeof(ModdedOptionsManager), "Groups").GetValue(null) as List<AbstractOptionGroup>;
+        var optionGroups =
+            AccessTools.Field(typeof(ModdedOptionsManager), "Groups").GetValue(null) as List<AbstractOptionGroup>;
 
         return optionGroups?.FirstOrDefault(x => x.OptionableType == classType)?.Children;
     }
@@ -83,7 +77,10 @@ public static class MiscUtils
     public static string AppendOptionsText(Type classType)
     {
         var options = GetModdedOptionsForRole(classType);
-        if (options == null) return string.Empty;
+        if (options == null)
+        {
+            return string.Empty;
+        }
 
         var builder = new StringBuilder();
         builder.AppendLine(CultureInfo.InvariantCulture,
@@ -94,23 +91,50 @@ public static class MiscUtils
             switch (option)
             {
                 case ModdedToggleOption toggleOption:
-                    if (!toggleOption.Visible()) continue;
+                    if (!toggleOption.Visible())
+                    {
+                        continue;
+                    }
+
                     builder.AppendLine(option.Title + ": " + toggleOption.Value);
                     break;
                 case ModdedEnumOption enumOption:
-                    if (!enumOption.Visible()) continue;
+                    if (!enumOption.Visible())
+                    {
+                        continue;
+                    }
+
                     builder.AppendLine(enumOption.Title + ": " + enumOption.Values[enumOption.Value]);
                     break;
                 case ModdedNumberOption numberOption:
-                    if (!numberOption.Visible()) continue;
+                    if (!numberOption.Visible())
+                    {
+                        continue;
+                    }
+
                     var optionStr = numberOption.Data.GetValueString(numberOption.Value);
-                    if (optionStr.Contains(".000")) optionStr = optionStr.Replace(".000", "");
-                    else if (optionStr.Contains(".00")) optionStr = optionStr.Replace(".00", "");
-                    else if (optionStr.Contains(".0")) optionStr = optionStr.Replace(".0", "");
+                    if (optionStr.Contains(".000"))
+                    {
+                        optionStr = optionStr.Replace(".000", "");
+                    }
+                    else if (optionStr.Contains(".00"))
+                    {
+                        optionStr = optionStr.Replace(".00", "");
+                    }
+                    else if (optionStr.Contains(".0"))
+                    {
+                        optionStr = optionStr.Replace(".0", "");
+                    }
 
                     if (numberOption is { ZeroInfinity: true, Value: 0 })
+                    {
                         builder.AppendLine(numberOption.Title + ": ∞");
-                    else builder.AppendLine(numberOption.Title + ": " + optionStr);
+                    }
+                    else
+                    {
+                        builder.AppendLine(numberOption.Title + ": " + optionStr);
+                    }
+
                     break;
             }
         }
@@ -187,20 +211,31 @@ public static class MiscUtils
         return role;
     }
 
-    public static T? GetRole<T>() where T : RoleBehaviour =>
-        PlayerControl.AllPlayerControls.ToArray().ToList().Find(x => x.Data.Role is T)?.Data?.Role as T;
+    public static T? GetRole<T>() where T : RoleBehaviour
+    {
+        return PlayerControl.AllPlayerControls.ToArray().ToList().Find(x => x.Data.Role is T)?.Data?.Role as T;
+    }
 
-    public static IEnumerable<RoleBehaviour> GetRoles(RoleAlignment alignment) => CustomRoleUtils.GetActiveRoles()
-        .Where(x => x is ITownOfUsRole role && role.RoleAlignment == alignment);
+    public static IEnumerable<RoleBehaviour> GetRoles(RoleAlignment alignment)
+    {
+        return CustomRoleUtils.GetActiveRoles()
+            .Where(x => x is ITownOfUsRole role && role.RoleAlignment == alignment);
+    }
 
-    public static PlayerControl? GetPlayerWithModifier<T>() where T : BaseModifier =>
-        ModifierUtils.GetPlayersWithModifier<T>().FirstOrDefault();
+    public static PlayerControl? GetPlayerWithModifier<T>() where T : BaseModifier
+    {
+        return ModifierUtils.GetPlayersWithModifier<T>().FirstOrDefault();
+    }
 
     public static Color GetRoleColour(string name)
     {
         var pInfo = typeof(TownOfUsColors).GetProperty(name, BindingFlags.Public | BindingFlags.Static);
 
-        if (pInfo == null) return TownOfUsColors.Impostor;
+        if (pInfo == null)
+        {
+            return TownOfUsColors.Impostor;
+        }
+
         var colour = (Color)pInfo.GetValue(null)!;
 
         return colour;
@@ -244,8 +279,15 @@ public static class MiscUtils
 
         pooledBubble.transform.SetParent(chat.scroller.Inner);
         pooledBubble.transform.localScale = Vector3.one;
-        if (onLeft) pooledBubble.SetLeft();
-        else pooledBubble.SetRight();
+        if (onLeft)
+        {
+            pooledBubble.SetLeft();
+        }
+        else
+        {
+            pooledBubble.SetRight();
+        }
+
         pooledBubble.SetCosmetics(basePlayer);
         pooledBubble.NameText.text = nameText;
         pooledBubble.NameText.color = Color.white;
@@ -254,7 +296,7 @@ public static class MiscUtils
         pooledBubble.Xmark.enabled = false;
         pooledBubble.TextArea.text = message;
         pooledBubble.TextArea.ForceMeshUpdate(true, true);
-        pooledBubble.Background.size = new(5.52f,
+        pooledBubble.Background.size = new Vector2(5.52f,
             0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
         pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
         if (altColors)
@@ -289,8 +331,15 @@ public static class MiscUtils
 
         pooledBubble.transform.SetParent(chat.scroller.Inner);
         pooledBubble.transform.localScale = Vector3.one;
-        if (onLeft) pooledBubble.SetLeft();
-        else pooledBubble.SetRight();
+        if (onLeft)
+        {
+            pooledBubble.SetLeft();
+        }
+        else
+        {
+            pooledBubble.SetRight();
+        }
+
         pooledBubble.SetCosmetics(basePlayer);
         pooledBubble.NameText.text = nameText;
         pooledBubble.NameText.color = Color.white;
@@ -299,7 +348,7 @@ public static class MiscUtils
         pooledBubble.Xmark.enabled = false;
         pooledBubble.TextArea.text = message;
         pooledBubble.TextArea.ForceMeshUpdate(true, true);
-        pooledBubble.Background.size = new(5.52f,
+        pooledBubble.Background.size = new Vector2(5.52f,
             0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
         pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
 
@@ -393,7 +442,10 @@ public static class MiscUtils
     private static List<ushort> GetMaxRolesToAssign(IEnumerable<RoleBehaviour> roles, int max,
         Func<RoleBehaviour, bool>? filter = null)
     {
-        if (max <= 0) return [];
+        if (max <= 0)
+        {
+            return [];
+        }
 
         var currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
         var roleOptions = currentGameOptions.RoleOptions;
@@ -445,7 +497,7 @@ public static class MiscUtils
     {
         var roles = new List<(ushort, int)>();
 
-        assignmentData.Where(x => predicate == null || predicate(x)).ToList().ForEach((x) =>
+        assignmentData.Where(x => predicate == null || predicate(x)).ToList().ForEach(x =>
         {
             for (var i = 0; i < x.Count; i++)
             {
@@ -473,7 +525,9 @@ public static class MiscUtils
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             if (player.PlayerId == id)
+            {
                 return player;
+            }
         }
 
         return null;
@@ -506,7 +560,10 @@ public static class MiscUtils
         if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
         {
             var fullscreen = HudManager.Instance.FullScreen;
-            if (!fullscreen.color.Equals(color)) yield break;
+            if (!fullscreen.color.Equals(color))
+            {
+                yield break;
+            }
 
             fullscreen.color = new Color(1f, 0f, 0f, 0.37254903f);
             fullscreen.enabled = false;
@@ -578,7 +635,7 @@ public static class MiscUtils
             return input; // Return empty or null string if input is empty or null
         }
 
-        TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+        var textInfo = CultureInfo.CurrentCulture.TextInfo;
         return
             textInfo.ToTitleCase(
                 input.ToLower(CultureInfo.CurrentCulture)); // Convert to lowercase first and then title case
@@ -774,22 +831,18 @@ public static class MiscUtils
         // Replace matched tags with an empty string
         return richTagRegex.Replace(text, string.Empty);
     }
-    [System.Serializable]
-    public class Wrapper<T>
-    {
-        public T[] array;
-    }
+
     // Method to parse a JSON array string into an array of objects
     public static T[] jsonToArray<T>(string json)
     {
         // Wrap the JSON array in an object
-        string newJson = "{ \"array\": " + json + "}";
-        Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(newJson);
+        var newJson = "{ \"array\": " + json + "}";
+        var wrapper = JsonUtility.FromJson<Wrapper<T>>(newJson);
         return wrapper.array;
     }
 
     /// <summary>
-    /// Gets a FakePlayer by comparing PlayerControl.
+    ///     Gets a FakePlayer by comparing PlayerControl.
     /// </summary>
     /// <param name="player">The player themselves.</param>
     /// <returns>A fake player or null if its not found.</returns>
@@ -826,7 +879,8 @@ public static class MiscUtils
 
         if (OptionGroupSingleton<GeneralOptions>.Instance.CamouflageComms)
         {
-            if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Comms, out var commsSystem) || commsSystem == null)
+            if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Comms, out var commsSystem) ||
+                commsSystem == null)
             {
                 return false;
             }
@@ -836,17 +890,56 @@ public static class MiscUtils
                 ShipStatus.Instance.Type == ShipStatus.MapType.Fungle)
             {
                 var hqSystem = commsSystem.Cast<HqHudSystemType>();
-                if (hqSystem != null) isActive = hqSystem.IsActive;
+                if (hqSystem != null)
+                {
+                    isActive = hqSystem.IsActive;
+                }
             }
             else
             {
                 var hudSystem = commsSystem.Cast<HudOverrideSystemType>();
-                if (hudSystem != null) isActive = hudSystem.IsActive;
+                if (hudSystem != null)
+                {
+                    isActive = hudSystem.IsActive;
+                }
             }
 
             return isActive;
         }
 
         return false;
+    }
+
+    public static bool CanUseVent(this PlayerControl player, Vent vent)
+    {
+        var couldUse = (!player.MustCleanVent(vent.Id) || (player.inVent && Vent.currentVent == vent)) &&
+                       !player.Data.IsDead && (player.CanMove || player.inVent);
+        ISystemType systemType;
+        if (ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out systemType))
+        {
+            var ventilationSystem = ShipStatus.Instance.Systems[SystemTypes.Ventilation].Cast<VentilationSystem>();
+            if (ventilationSystem != null && ventilationSystem.IsVentCurrentlyBeingCleaned(vent.Id))
+            {
+                couldUse = false;
+            }
+        }
+
+        if (couldUse)
+        {
+            var center = player.Collider.bounds.center;
+            var position = vent.transform.position;
+            var num = Vector2.Distance(center, position);
+            couldUse &= num <= vent.UsableDistance &&
+                        !PhysicsHelpers.AnythingBetween(player.Collider, center, position, Constants.ShipOnlyMask,
+                            false);
+        }
+
+        return couldUse;
+    }
+
+    [Serializable]
+    public class Wrapper<T>
+    {
+        public T[] array;
     }
 }

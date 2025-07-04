@@ -10,7 +10,10 @@ public static class SkipButtonPatches
     private static NetworkedPlayerInfo? meetingTarget;
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.StartMeeting))]
-    public static void Prefix(NetworkedPlayerInfo target) => meetingTarget = target;
+    public static void Prefix(NetworkedPlayerInfo target)
+    {
+        meetingTarget = target;
+    }
 
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
     public static void Postfix(MeetingHud __instance)

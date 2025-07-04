@@ -18,7 +18,10 @@ public static class WarlockEvents
         }
 
         var button = CustomButtonSingleton<WarlockKillButton>.Instance;
-        if (button.BurstActive) ++button.Kills;
+        if (button.BurstActive)
+        {
+            ++button.Kills;
+        }
     }
 
     [RegisterEvent]

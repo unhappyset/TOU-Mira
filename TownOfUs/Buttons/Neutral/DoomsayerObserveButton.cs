@@ -19,11 +19,15 @@ public sealed class DoomsayerObserveButton : TownOfUsRoleButton<DoomsayerRole, P
     public override float Cooldown => OptionGroupSingleton<DoomsayerOptions>.Instance.ObserveCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.Observe;
 
-    public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && !OptionGroupSingleton<DoomsayerOptions>.Instance.CantObserve;
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return base.Enabled(role) && !OptionGroupSingleton<DoomsayerOptions>.Instance.CantObserve;
+    }
 
     public override PlayerControl? GetTarget()
     {
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: x => !x.HasModifier<DoomsayerObservedModifier>());
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance,
+            predicate: x => !x.HasModifier<DoomsayerObservedModifier>());
     }
 
     protected override void OnClick()
@@ -32,14 +36,17 @@ public sealed class DoomsayerObserveButton : TownOfUsRoleButton<DoomsayerRole, P
         {
             return;
         }
-        ModifierUtils.GetPlayersWithModifier<DoomsayerObservedModifier>().Do(x => x.RemoveModifier<DoomsayerObservedModifier>());
+
+        ModifierUtils.GetPlayersWithModifier<DoomsayerObservedModifier>()
+            .Do(x => x.RemoveModifier<DoomsayerObservedModifier>());
 
         Target.AddModifier<DoomsayerObservedModifier>();
-        
+
         var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfUsColors.Doomsayer.ToTextColor()}You will recieve a report on {Target.Data.PlayerName} during the next meeting. This will help you narrow down their role.</color></b>", Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
+            $"<b>{TownOfUsColors.Doomsayer.ToTextColor()}You will recieve a report on {Target.Data.PlayerName} during the next meeting. This will help you narrow down their role.</color></b>",
+            Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
 
         notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
     }
 }

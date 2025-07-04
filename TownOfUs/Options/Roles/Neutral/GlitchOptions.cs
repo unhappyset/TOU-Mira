@@ -17,8 +17,10 @@ public sealed class GlitchOptions : AbstractOptionGroup<GlitchRole>
 
     [ModdedNumberOption("Mimic Duration", 5f, 15f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float MimicDuration { get; set; } = 10f;
-    /* [ModdedToggleOption("Move While Using Mimic Menu")]
-    public bool MoveWithMenu { get; set; } = true; */
+
+    [ModdedToggleOption("Move While Using Mimic Menu (KB ONLY)")]
+    public bool MoveWithMenu { get; set; } = true;
+    
     [ModdedNumberOption("Hack Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float HackCooldown { get; set; } = 25f;
 
@@ -27,5 +29,4 @@ public sealed class GlitchOptions : AbstractOptionGroup<GlitchRole>
 
     [ModdedToggleOption("Glitch Can Vent")]
     public bool CanVent { get; set; } = true;
-
 }

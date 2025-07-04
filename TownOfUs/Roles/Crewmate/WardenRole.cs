@@ -15,21 +15,36 @@ namespace TownOfUs.Roles.Crewmate;
 
 public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
+    public override bool IsAffectedByComms => false;
+
+    public PlayerControl? Fortified { get; set; }
+
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not WardenRole)
+        {
+            return;
+        }
+
+        if (Fortified != null && Fortified.HasDied())
+        {
+            Clear();
+        }
+    }
+
+    public DoomableType DoomHintType => DoomableType.Protective;
     public string RoleName => "Warden";
     public string RoleDescription => "Fortify Crewmates";
     public string RoleLongDescription => "Fortify crewmates to prevent interactions with them";
     public Color RoleColor => TownOfUsColors.Warden;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
-    public DoomableType DoomHintType => DoomableType.Protective;
-    public override bool IsAffectedByComms => false;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         IntroSound = TouAudio.SpyIntroSound,
-        Icon = TouRoleIcons.Warden,
+        Icon = TouRoleIcons.Warden
     };
-
-    public PlayerControl? Fortified { get; set; }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
@@ -38,11 +53,27 @@ public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
         if (Fortified != null)
         {
-            stringB.Append(CultureInfo.InvariantCulture, $"\n<b>Fortified: </b>{Color.white.ToTextColor()}{Fortified.Data.PlayerName}</color>");
+            stringB.Append(CultureInfo.InvariantCulture,
+                $"\n<b>Fortified: </b>{Color.white.ToTextColor()}{Fortified.Data.PlayerName}</color>");
         }
 
         return stringB;
     }
+
+    public string GetAdvancedDescription()
+    {
+        return
+            "The Warden is a Crewmate Protective role that can fortify players to prevent them from being interacted with. "
+            + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Fortify",
+            "Fortify a player to prevent them from being interacted with. If anyone tries to interact with a fortified player, the ability will not work and both the Warden and fortified player will be alerted with a purple flash.",
+            TouCrewAssets.FortifySprite)
+    ];
 
     public void Clear()
     {
@@ -61,13 +92,6 @@ public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         Clear();
-    }
-
-    public void FixedUpdate()
-    {
-        if (Player == null || Player.Data.Role is not WardenRole) return;
-        if (Fortified != null && Fortified.HasDied())
-            Clear();
     }
 
     public void SetFortifiedPlayer(PlayerControl? player)
@@ -116,23 +140,13 @@ public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
         // Logger<TownOfUsPlugin>.Error("RpcWardenNotify");
         if (player.AmOwner)
+        {
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Warden));
+        }
 
         if (source.AmOwner)
+        {
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Warden));
+        }
     }
-    
-    public string GetAdvancedDescription()
-    {
-        return
-            "The Warden is a Crewmate Protective role that can fortify players to prevent them from being interacted with. "
-            + MiscUtils.AppendOptionsText(GetType());
-    }
-    
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Fortify",
-            $"Fortify a player to prevent them from being interacted with. If anyone tries to interact with a fortified player, the ability will not work and both the Warden and fortified player will be alerted with a purple flash.",
-            TouCrewAssets.FortifySprite),
-    ];
 }

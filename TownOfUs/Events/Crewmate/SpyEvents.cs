@@ -9,7 +9,6 @@ namespace TownOfUs.Events.Crewmate;
 
 public static class SpyEvents
 {
-
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
@@ -22,11 +21,22 @@ public static class SpyEvents
             SpyRole.OnTaskComplete();
         }
     }
+
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return; // Never run when round starts.
-        if (PlayerControl.LocalPlayer.HasModifier<SpyModifier>()) SpyModifier.OnRoundStart();
-        else if (PlayerControl.LocalPlayer.Data.Role is SpyRole) SpyRole.OnRoundStart();
+        if (@event.TriggeredByIntro)
+        {
+            return; // Never run when round starts.
+        }
+
+        if (PlayerControl.LocalPlayer.HasModifier<SpyModifier>())
+        {
+            SpyModifier.OnRoundStart();
+        }
+        else if (PlayerControl.LocalPlayer.Data.Role is SpyRole)
+        {
+            SpyRole.OnRoundStart();
+        }
     }
 }

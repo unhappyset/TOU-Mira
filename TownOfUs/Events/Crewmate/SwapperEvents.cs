@@ -1,11 +1,11 @@
-﻿using HarmonyLib;
+﻿using System.Collections;
+using HarmonyLib;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using MiraAPI.Voting;
 using Reactor.Utilities;
-using System.Collections;
 using TownOfUs.Events.Modifiers;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -26,7 +26,10 @@ public static class SwapperEvents
     [RegisterEvent]
     public static void VotingCompleteEventHandler(VotingCompleteEvent @event)
     {
-        if (!CustomRoleUtils.GetActiveRolesOfType<SwapperRole>().Any()) return;
+        if (!CustomRoleUtils.GetActiveRolesOfType<SwapperRole>().Any())
+        {
+            return;
+        }
 
         Coroutines.Start(PerformSwaps());
     }
@@ -81,13 +84,17 @@ public static class SwapperEvents
         foreach (var role in swapperRoles)
         {
             if (role == null || role.Player.HasDied() || role.Swap1 == null || role.Swap2 == null)
+            {
                 yield break;
+            }
 
             var swapPlayer1 = role.Swap1.GetPlayer();
             var swapPlayer2 = role.Swap2.GetPlayer();
 
             if (swapPlayer1!.HasDied() || swapPlayer2!.HasDied())
+            {
                 yield break;
+            }
 
             var elements1 = GetUIElements(role.Swap1);
             var elements2 = GetUIElements(role.Swap2);
@@ -95,10 +102,12 @@ public static class SwapperEvents
             var votes1 = GetVoteTransforms(role.Swap1);
             var votes2 = GetVoteTransforms(role.Swap2);
 
-            votes2.ForEach(vote => vote.GetComponent<SpriteRenderer>().material.SetInt(PlayerMaterial.MaskLayer, role.Swap1.MaskLayer));
-            votes1.ForEach(vote => vote.GetComponent<SpriteRenderer>().material.SetInt(PlayerMaterial.MaskLayer, role.Swap2.MaskLayer));
+            votes2.ForEach(vote =>
+                vote.GetComponent<SpriteRenderer>().material.SetInt(PlayerMaterial.MaskLayer, role.Swap1.MaskLayer));
+            votes1.ForEach(vote =>
+                vote.GetComponent<SpriteRenderer>().material.SetInt(PlayerMaterial.MaskLayer, role.Swap2.MaskLayer));
 
-            for (int i = 0; i < elements1.Length; i++)
+            for (var i = 0; i < elements1.Length; i++)
             {
                 Coroutines.Start(Slide2D(elements1[i], elements1[i].position, elements2[i].position, duration));
                 Coroutines.Start(Slide2D(elements2[i], elements2[i].position, elements1[i].position, duration));
@@ -135,6 +144,7 @@ public static class SwapperEvents
                 votes.Add(child);
             }
         }
+
         return votes;
     }
 

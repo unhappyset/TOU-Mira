@@ -24,12 +24,16 @@ public sealed class PoliticianCampaignButton : TownOfUsRoleButton<PoliticianRole
 
     public override PlayerControl? GetTarget()
     {
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: x => !x.HasModifier<PoliticianCampaignedModifier>());
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance,
+            predicate: x => !x.HasModifier<PoliticianCampaignedModifier>());
     }
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
 
         Target?.RpcAddModifier<PoliticianCampaignedModifier>(PlayerControl.LocalPlayer);
     }

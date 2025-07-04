@@ -8,7 +8,6 @@ namespace TownOfUs.Events.Crewmate;
 
 public static class OperativeEvents
 {
-
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
@@ -17,10 +16,18 @@ public static class OperativeEvents
             OperativeModifier.OnTaskComplete();
         }
     }
+
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return; // Never run when round starts.
-        if (PlayerControl.LocalPlayer.HasModifier<OperativeModifier>()) OperativeModifier.OnRoundStart();
+        if (@event.TriggeredByIntro)
+        {
+            return; // Never run when round starts.
+        }
+
+        if (PlayerControl.LocalPlayer.HasModifier<OperativeModifier>())
+        {
+            OperativeModifier.OnRoundStart();
+        }
     }
 }

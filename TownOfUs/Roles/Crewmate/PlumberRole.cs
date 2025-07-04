@@ -20,29 +20,59 @@ namespace TownOfUs.Roles.Crewmate;
 
 public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
+    public override bool IsAffectedByComms => false;
+
+    [HideFromIl2Cpp] public List<int> FutureBlocks { get; set; } = [];
+
+    [HideFromIl2Cpp] public List<int> VentsBlocked { get; set; } = [];
+
+    [HideFromIl2Cpp] public List<GameObject> Barricades { get; set; } = [];
+
+    public DoomableType DoomHintType => DoomableType.Trickster;
     public string RoleName => "Plumber";
     public string RoleDescription => "Get The Rats Out Of The Sewers";
-    public string RoleLongDescription => "Flush the vent system to rid of venters, and\nbarricade vents to block them the next round";
+
+    public string RoleLongDescription =>
+        "Flush the vent system to rid of venters, and\nbarricade vents to block them the next round";
+
     public Color RoleColor => TownOfUsColors.Plumber;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
-    public DoomableType DoomHintType => DoomableType.Trickster;
-    public override bool IsAffectedByComms => false;
 
     public CustomRoleConfiguration Configuration => new(this)
     {
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Engineer),
-        Icon = TouRoleIcons.Plumber,
+        Icon = TouRoleIcons.Plumber
     };
 
-    [HideFromIl2Cpp]
-    public List<int> FutureBlocks { get; set; } = [];
+    public void LobbyStart()
+    {
+        Clear();
+    }
 
     [HideFromIl2Cpp]
-    public List<int> VentsBlocked { get; set; } = [];
+    public StringBuilder SetTabText()
+    {
+        return ITownOfUsRole.SetNewTabText(this);
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return
+            "The Plumber is a Crewmate Support role that can place Barricades on vents and Flush anyone out of vents."
+            + MiscUtils.AppendOptionsText(GetType());
+    }
 
     [HideFromIl2Cpp]
-    public List<GameObject> Barricades { get; set; } = [];
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Flush",
+            "Flushing the vents makes every vent open and close, kicking out anyone who is actively in a vent. The Plumber also gets an arrow pointing to every flushed player for one second.",
+            TouCrewAssets.FlushSprite),
+        new("Barricade",
+            "Barricading a vent places a barricade on the vent selected for the next round, preventing players from using it.",
+            TouCrewAssets.BarricadeSprite)
+    ];
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
@@ -63,11 +93,6 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
         Barricades.Clear();
     }
 
-    public void LobbyStart()
-    {
-        Clear();
-    }
-
     public void SetupBarricades()
     {
         foreach (var ventId in FutureBlocks)
@@ -76,14 +101,17 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 
             GameObject barricade = new("Barricade");
 
-            Vent? trueVent = Helpers.GetVentById(ventId);
+            var trueVent = Helpers.GetVentById(ventId);
 
-            if (trueVent == null) continue;
+            if (trueVent == null)
+            {
+                continue;
+            }
 
             barricade.transform.SetParent(trueVent.transform);
             barricade.gameObject.layer = trueVent.gameObject.layer;
 
-            SpriteRenderer render = barricade.AddComponent<SpriteRenderer>();
+            var render = barricade.AddComponent<SpriteRenderer>();
 
             switch (ShipStatus.Instance.Type)
             {
@@ -101,11 +129,13 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
                     barricade.transform.localPosition = new Vector3(0, 0, -0.001f);
                     break;
             }
+
             if (trueVent.gameObject.name == "LowerCentralVent" && ModCompatibility.IsSubmerged())
             {
                 barricade.transform.localPosition = new Vector3(0, 0.7f, -0.001f);
                 barricade.transform.localScale = new Vector3(1.05f, 1.15f, 1.0625f);
             }
+
             if (ModCompatibility.IsLevelImpostor())
             {
                 switch (ModCompatibility.GetLIVentType(trueVent))
@@ -128,6 +158,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 
             Barricades.Add(barricade);
         }
+
         FutureBlocks.Clear();
     }
 
@@ -156,6 +187,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
             Logger<TownOfUsPlugin>.Error("RpcPlumberFlush - Invalid Plumber");
             return;
         }
+
         var touAbilityEvent = new TouAbilityEvent(AbilityType.PlumberFlush, player);
         MiraEventManager.InvokeEvent(touAbilityEvent);
 
@@ -167,9 +199,16 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Plumber));
         }
 
-        if (!player.AmOwner) return;
+        if (!player.AmOwner)
+        {
+            return;
+        }
+
         var someoneInVent = PlayerControl.AllPlayerControls.ToArray().Any(x => x.inVent);
-        if (!someoneInVent) return;
+        if (!someoneInVent)
+        {
+            return;
+        }
 
         Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Plumber));
         Coroutines.Start(SeeVenter(player));
@@ -185,31 +224,11 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
         }
 
         if (!plumber.FutureBlocks.Contains(ventId))
+        {
             plumber.FutureBlocks.Add(ventId);
-        
+        }
+
         var touAbilityEvent = new TouAbilityEvent(AbilityType.PlumberBlock, player, Helpers.GetVentById(ventId));
         MiraEventManager.InvokeEvent(touAbilityEvent);
     }
-
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        return ITownOfUsRole.SetNewTabText(this);
-    }
-    public string GetAdvancedDescription()
-    {
-        return
-            "The Plumber is a Crewmate Support role that can place Barricades on vents and Flush anyone out of vents."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Flush",
-            $"Flushing the vents makes every vent open and close, kicking out anyone who is actively in a vent. The Plumber also gets an arrow pointing to every flushed player for one second.",
-            TouCrewAssets.FlushSprite),
-        new("Barricade",
-            $"Barricading a vent places a barricade on the vent selected for the next round, preventing players from using it.",
-            TouCrewAssets.BarricadeSprite),
-    ];
 }

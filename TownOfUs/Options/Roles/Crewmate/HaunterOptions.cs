@@ -17,7 +17,8 @@ public sealed class HaunterOptions : AbstractOptionGroup<HaunterRole>
     [ModdedToggleOption("Reveal Neutral Roles")]
     public bool RevealNeutralRoles { get; set; } = false;
 
-    [ModdedEnumOption("Can Be Clicked By", typeof(HaunterRoleClickableType), ["Everyone", "Non-Crew", "Impostors Only"])]
+    [ModdedEnumOption("Can Be Clicked By", typeof(HaunterRoleClickableType),
+        ["Everyone", "Non-Crew", "Impostors Only"])]
     public HaunterRoleClickableType HaunterCanBeClickedBy { get; set; } = HaunterRoleClickableType.NonCrew;
 }
 
@@ -25,5 +26,5 @@ public enum HaunterRoleClickableType
 {
     Everyone,
     NonCrew,
-    ImpsOnly,
+    ImpsOnly
 }

@@ -18,15 +18,27 @@ public static class LoverEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (!@event.Target.TryGetModifier<LoverModifier>(out var loveMod) || !PlayerControl.LocalPlayer.IsHost() || loveMod.OtherLover == null || loveMod.OtherLover.HasDied() || loveMod.OtherLover.HasModifier<InvulnerabilityModifier>()) return;
+        if (!@event.Target.TryGetModifier<LoverModifier>(out var loveMod) || !PlayerControl.LocalPlayer.IsHost() ||
+            loveMod.OtherLover == null || loveMod.OtherLover.HasDied() ||
+            loveMod.OtherLover.HasModifier<InvulnerabilityModifier>())
+        {
+            return;
+        }
 
-        if (OptionGroupSingleton<LoversOptions>.Instance.BothLoversDie) loveMod.OtherLover.RpcCustomMurder(loveMod.OtherLover);
+        if (OptionGroupSingleton<LoversOptions>.Instance.BothLoversDie)
+        {
+            loveMod.OtherLover.RpcCustomMurder(loveMod.OtherLover);
+        }
     }
+
     [RegisterEvent]
     public static void EjectionEventHandler(EjectionEvent @event)
     {
         var exiled = @event.ExileController?.initData?.networkedPlayer?.Object;
-        if (exiled == null || !exiled.TryGetModifier<LoverModifier>(out var loveMod)) return;
+        if (exiled == null || !exiled.TryGetModifier<LoverModifier>(out var loveMod))
+        {
+            return;
+        }
 
         if (OptionGroupSingleton<LoversOptions>.Instance.BothLoversDie && loveMod.OtherLover != null &&
             !loveMod.OtherLover.HasDied() && !loveMod.OtherLover.HasModifier<InvulnerabilityModifier>())

@@ -19,7 +19,11 @@ public sealed class OracleBlessButton : TownOfUsRoleButton<OracleRole, PlayerCon
     public override float Cooldown => OptionGroupSingleton<OracleOptions>.Instance.BlessCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.BlessSprite;
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: x => !x.HasModifier<OracleBlessedModifier>());
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance,
+            predicate: x => !x.HasModifier<OracleBlessedModifier>());
+    }
 
     protected override void OnClick()
     {

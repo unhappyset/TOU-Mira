@@ -13,18 +13,34 @@ namespace TownOfUs.Roles.Crewmate;
 
 public sealed class InvestigatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
+    public DoomableType DoomHintType => DoomableType.Hunter;
     public string RoleName => "Investigator";
     public string RoleDescription => "Find All Impostors By Examining Footprints.";
     public string RoleLongDescription => "You can see everyone's footprints.";
     public Color RoleColor => TownOfUsColors.Investigator;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
-    public DoomableType DoomHintType => DoomableType.Hunter;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Investigator,
-        IntroSound = TouAudio.SpyIntroSound,
+        IntroSound = TouAudio.SpyIntroSound
     };
+
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        return ITownOfUsRole.SetNewTabText(this);
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return
+            "The Investigator is a Crewmate Investigative role can see player's footprints throughout the game. Swooped players' footprints will not be visible to the Investigator."
+            + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp] public List<CustomButtonWikiDescription> Abilities { get; } = [];
 
     public override void Initialize(PlayerControl player)
     {
@@ -51,20 +67,4 @@ public sealed class InvestigatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
         PlayerControl.AllPlayerControls.ToArray().Where(plr => plr.HasModifier<FootstepsModifier>())
             .ToList().ForEach(plr => plr.GetModifierComponent().RemoveModifier<FootstepsModifier>());
     }
-
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        return ITownOfUsRole.SetNewTabText(this);
-    }
-    
-    public string GetAdvancedDescription()
-    {
-        return
-            "The Investigator is a Crewmate Investigative role can see player's footprints throughout the game. Swooped players' footprints will not be visible to the Investigator."
-            + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
 }

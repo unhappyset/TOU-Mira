@@ -20,7 +20,7 @@ public sealed class ButtonBarryOptions : AbstractOptionGroup<ButtonBarryModifier
 
     [ModdedToggleOption("Ignore Sabotages")]
     public bool IgnoreSabo { get; set; } = true;
-    
+
     [ModdedToggleOption("Allow Usage in First Round")]
     public bool FirstRoundUse { get; set; } = false;
 }

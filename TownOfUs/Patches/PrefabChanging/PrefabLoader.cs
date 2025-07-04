@@ -2,84 +2,82 @@ using System.Collections;
 using HarmonyLib;
 using Reactor.Utilities;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace TownOfUs
+namespace TownOfUs.Patches.PrefabSwitching;
+
+[HarmonyPatch]
+public class PrefabLoader
 {
-    [HarmonyPatch]
-    
-    public class PrefabLoader
+    public static ShipStatus Skeld { get; private set; }
+
+    public static PolusShipStatus Polus { get; private set; }
+
+    public static AirshipStatus Airship { get; private set; }
+
+    public static FungleShipStatus Fungle { get; private set; }
+
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
+    [HarmonyPostfix]
+    public static void Postfix()
     {
-        [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
-        [HarmonyPostfix]
+        Coroutines.Start(LoadMaps());
+    }
 
-        public static void Postfix()
+    public static IEnumerator LoadMaps()
+    {
+        while (AmongUsClient.Instance == null)
         {
-            Coroutines.Start(LoadMaps());
+            yield return null;
         }
 
-        private sealed class Out<T>
+        if (!Skeld)
         {
-            public T Value { get; set; }
+            Out<ShipStatus> o = new();
+            yield return LoadMap(MapNames.Skeld, o);
+            Skeld = o.Value;
         }
 
-        public static ShipStatus Skeld { get; private set; }
-
-        public static PolusShipStatus Polus { get; private set; }
-
-        public static AirshipStatus Airship { get; private set; }
-
-        public static FungleShipStatus Fungle { get; private set; }
-
-        public static IEnumerator LoadMaps()
+        if (!Polus)
         {
-            while (AmongUsClient.Instance == null) yield return null;
-
-            if (!Skeld)
-            {
-                Out<ShipStatus> o = new();
-                yield return LoadMap(MapNames.Skeld, o);
-                Skeld = o.Value;
-            }
-
-            if (!Polus)
-            {
-                Out<PolusShipStatus> o = new();
-                yield return LoadMap(MapNames.Polus, o);
-                Polus = o.Value;
-            }
-
-            if (!Airship)
-            {
-                Out<AirshipStatus> o = new();
-                yield return LoadMap(MapNames.Airship, o);
-                Airship = o.Value;
-            }
-
-            if (!Fungle)
-            {
-                Out<FungleShipStatus> o = new();
-                yield return LoadMap(MapNames.Fungle, o);
-                Fungle = o.Value;
-            }
+            Out<PolusShipStatus> o = new();
+            yield return LoadMap(MapNames.Polus, o);
+            Polus = o.Value;
         }
 
-        private static IEnumerator LoadMap<T>(MapNames map, Out<T> shipStatus) where T : ShipStatus
+        if (!Airship)
         {
-            AssetReference reference = AmongUsClient.Instance.ShipPrefabs._items[(int)map];
-
-            if (reference.IsValid())
-            {
-                shipStatus.Value = reference.OperationHandle.Result.Cast<GameObject>().GetComponent<T>();
-            }
-            else
-            {
-                AsyncOperationHandle<GameObject> asset = reference.LoadAsset<GameObject>();
-                yield return asset;
-
-                shipStatus.Value = asset.Result.GetComponent<T>();
-            }
+            Out<AirshipStatus> o = new();
+            yield return LoadMap(MapNames.Airship, o);
+            Airship = o.Value;
         }
+
+        if (!Fungle)
+        {
+            Out<FungleShipStatus> o = new();
+            yield return LoadMap(MapNames.Fungle, o);
+            Fungle = o.Value;
+        }
+    }
+
+    private static IEnumerator LoadMap<T>(MapNames map, Out<T> shipStatus) where T : ShipStatus
+    {
+        var reference = AmongUsClient.Instance.ShipPrefabs._items[(int)map];
+
+        if (reference.IsValid())
+        {
+            shipStatus.Value = reference.OperationHandle.Result.Cast<GameObject>().GetComponent<T>();
+        }
+        else
+        {
+            var asset = reference.LoadAsset<GameObject>();
+            yield return asset;
+
+            shipStatus.Value = asset.Result.GetComponent<T>();
+        }
+    }
+
+    private sealed class Out<T>
+    {
+        public T Value { get; set; }
     }
 }

@@ -16,7 +16,7 @@ public sealed class TrackerOptions : AbstractOptionGroup<TrackerTouRole>
     [ModdedNumberOption("Max Number Of Tracks", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxTracks { get; set; } = 5f;
 
-    [ModdedNumberOption("Arrow Update Interval", 0.5f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
+    [ModdedNumberOption("Arrow Update Interval", 0f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float UpdateInterval { get; set; } = 5f;
 
     [ModdedToggleOption("Tracker Arrows Make Sound On Death")]
@@ -25,8 +25,8 @@ public sealed class TrackerOptions : AbstractOptionGroup<TrackerTouRole>
     [ModdedToggleOption("Tracker Arrows Reset After Each Round")]
     public bool ResetOnNewRound { get; set; } = true;
 
-    public ModdedToggleOption TaskUses { get; } = new ModdedToggleOption("Get More Uses From Completing Tasks", false)
+    public ModdedToggleOption TaskUses { get; } = new("Get More Uses From Completing Tasks", false)
     {
-        Visible = () => !OptionGroupSingleton<TrackerOptions>.Instance.ResetOnNewRound,
+        Visible = () => !OptionGroupSingleton<TrackerOptions>.Instance.ResetOnNewRound
     };
 }

@@ -20,11 +20,6 @@ public sealed class SwooperSwoopButton : TownOfUsRoleButton<SwooperRole>, IAfter
     public override int MaxUses => (int)OptionGroupSingleton<SwooperOptions>.Instance.MaxSwoops;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.SwoopSprite;
 
-    public override bool CanUse()
-    {
-        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= EffectDuration - 2f)) && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
-    }
-
     public override void ClickHandler()
     {
         if (!CanUse())
@@ -50,13 +45,23 @@ public sealed class SwooperSwoopButton : TownOfUsRoleButton<SwooperRole>, IAfter
         }
     }
 
+    public override bool CanUse()
+    {
+        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= EffectDuration - 2f)) &&
+               !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() &&
+               !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
+    }
+
     protected override void OnClick()
     {
         if (!EffectActive)
         {
             PlayerControl.LocalPlayer.RpcAddModifier<SwoopModifier>();
             UsesLeft--;
-            if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
+            if (MaxUses != 0)
+            {
+                Button?.SetUsesRemaining(UsesLeft);
+            }
         }
         else
         {

@@ -13,4 +13,12 @@ public static class ShyEvents
     {
         ModifierUtils.GetActiveModifiers<ShyModifier>().Do(x => x.OnRoundStart());
     }
+
+    public static void AfterMurderEventHandler(AfterMurderEvent @event)
+    {
+        if (@event.Target.HasModifier<ShyModifier>())
+        {
+            ShyModifier.SetVisibility(@event.Target, 1f);
+        }
+    }
 }

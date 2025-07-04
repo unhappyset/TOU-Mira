@@ -1,13 +1,13 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using TownOfUs.Utilities;
+using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Utilities;
 using UnityEngine;
-using MiraAPI.Utilities;
 
 namespace TownOfUs.Buttons.Neutral;
 
@@ -20,8 +20,11 @@ public sealed class MercenaryGuardButton : TownOfUsRoleButton<MercenaryRole, Pla
     public override int MaxUses => (int)OptionGroupSingleton<MercenaryOptions>.Instance.MaxUses;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.GuardSprite;
 
-    public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && !PlayerControl.LocalPlayer.Data.IsDead;
-    
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return base.Enabled(role) && !PlayerControl.LocalPlayer.Data.IsDead;
+    }
+
     protected override void OnClick()
     {
         if (Target == null)
@@ -31,9 +34,15 @@ public sealed class MercenaryGuardButton : TownOfUsRoleButton<MercenaryRole, Pla
         }
 
         Target.RpcAddModifier<MercenaryGuardModifier>(PlayerControl.LocalPlayer);
-        var notif1 = Helpers.CreateAndShowNotification($"<b>Once {Target.Data.PlayerName} is interacted with, you will get one gold.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mercenary.LoadAsset());
+        var notif1 = Helpers.CreateAndShowNotification(
+            $"<b>Once {Target.Data.PlayerName} is interacted with, you will get one gold.</b>", Color.white,
+            new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mercenary.LoadAsset());
         notif1.Text.SetOutlineThickness(0.35f);
     }
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: x => !x.HasModifier<MercenaryGuardModifier>());
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance,
+            predicate: x => !x.HasModifier<MercenaryGuardModifier>());
+    }
 }

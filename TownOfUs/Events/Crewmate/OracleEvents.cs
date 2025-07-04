@@ -21,8 +21,15 @@ public static class OracleEvents
     [RegisterEvent]
     public static void ProcessVotesEventHandler(ProcessVotesEvent @event)
     {
-        if (@event.ExiledPlayer == null) return;
-        if (@event.ExiledPlayer?.Object.HasModifier<OracleBlessedModifier>() == false) return;
+        if (@event.ExiledPlayer == null)
+        {
+            return;
+        }
+
+        if (@event.ExiledPlayer?.Object.HasModifier<OracleBlessedModifier>() == false)
+        {
+            return;
+        }
 
         OracleRole.RpcOracleBless(@event.ExiledPlayer!.Object);
         @event.ExiledPlayer = null;
@@ -31,10 +38,19 @@ public static class OracleEvents
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return;
-        if (!AmongUsClient.Instance.AmHost) return;
+        if (@event.TriggeredByIntro)
+        {
+            return;
+        }
 
-        ModifierUtils.GetPlayersWithModifier<OracleConfessModifier>().Do(x => x.RpcRemoveModifier<OracleConfessModifier>());
-        ModifierUtils.GetPlayersWithModifier<OracleBlessedModifier>().Do(x => x.RpcRemoveModifier<OracleBlessedModifier>());
+        if (!AmongUsClient.Instance.AmHost)
+        {
+            return;
+        }
+
+        ModifierUtils.GetPlayersWithModifier<OracleConfessModifier>()
+            .Do(x => x.RpcRemoveModifier<OracleConfessModifier>());
+        ModifierUtils.GetPlayersWithModifier<OracleBlessedModifier>()
+            .Do(x => x.RpcRemoveModifier<OracleBlessedModifier>());
     }
 }

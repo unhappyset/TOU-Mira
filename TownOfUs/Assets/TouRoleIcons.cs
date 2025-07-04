@@ -5,12 +5,16 @@ namespace TownOfUs.Assets;
 
 public static class TouRoleIcons
 {
-    private static string iconPath = "TownOfUs.Resources.RoleIcons";
+    private static readonly string iconPath = "TownOfUs.Resources.RoleIcons";
+
     // THIS FILE SHOULD ONLY HOLD ROLE ICONS
     public static LoadableAsset<Sprite> Aurial { get; } = new LoadableResourceAsset($"{iconPath}.Aurial.png");
     public static LoadableAsset<Sprite> Detective { get; } = new LoadableResourceAsset($"{iconPath}.Detective.png");
     public static LoadableAsset<Sprite> Haunter { get; } = new LoadableResourceAsset($"{iconPath}.Haunter.png");
-    public static LoadableAsset<Sprite> Investigator { get; } = new LoadableResourceAsset($"{iconPath}.Investigator.png");
+
+    public static LoadableAsset<Sprite> Investigator { get; } =
+        new LoadableResourceAsset($"{iconPath}.Investigator.png");
+
     public static LoadableAsset<Sprite> Lookout { get; } = new LoadableResourceAsset($"{iconPath}.Lookout.png");
     public static LoadableAsset<Sprite> Mystic { get; } = new LoadableResourceAsset($"{iconPath}.Mystic.png");
     public static LoadableAsset<Sprite> Seer { get; } = new LoadableResourceAsset($"{iconPath}.Seer.png");
@@ -43,7 +47,10 @@ public static class TouRoleIcons
     public static LoadableAsset<Sprite> Transporter { get; } = new LoadableResourceAsset($"{iconPath}.Transporter.png");
 
     public static LoadableAsset<Sprite> Amnesiac { get; } = new LoadableResourceAsset($"{iconPath}.Amnesiac.png");
-    public static LoadableAsset<Sprite> GuardianAngel { get; } = new LoadableResourceAsset($"{iconPath}.GuardianAngel.png");
+
+    public static LoadableAsset<Sprite> GuardianAngel { get; } =
+        new LoadableResourceAsset($"{iconPath}.GuardianAngel.png");
+
     public static LoadableAsset<Sprite> Mercenary { get; } = new LoadableResourceAsset($"{iconPath}.Mercenary.png");
     public static LoadableAsset<Sprite> Survivor { get; } = new LoadableResourceAsset($"{iconPath}.Survivor.png");
 
@@ -56,9 +63,15 @@ public static class TouRoleIcons
     public static LoadableAsset<Sprite> Arsonist { get; } = new LoadableResourceAsset($"{iconPath}.Arsonist.png");
     public static LoadableAsset<Sprite> Glitch { get; } = new LoadableResourceAsset($"{iconPath}.Glitch.png");
     public static LoadableAsset<Sprite> Juggernaut { get; } = new LoadableResourceAsset($"{iconPath}.Juggernaut.png");
-    public static LoadableAsset<Sprite> Plaguebearer { get; } = new LoadableResourceAsset($"{iconPath}.Plaguebearer.png");
+
+    public static LoadableAsset<Sprite> Plaguebearer { get; } =
+        new LoadableResourceAsset($"{iconPath}.Plaguebearer.png");
+
     public static LoadableAsset<Sprite> Pestilence { get; } = new LoadableResourceAsset($"{iconPath}.Pestilence.png");
-    public static LoadableAsset<Sprite> SoulCollector { get; } = new LoadableResourceAsset($"{iconPath}.SoulCollector.png");
+
+    public static LoadableAsset<Sprite> SoulCollector { get; } =
+        new LoadableResourceAsset($"{iconPath}.SoulCollector.png");
+
     public static LoadableAsset<Sprite> Vampire { get; } = new LoadableResourceAsset($"{iconPath}.Vampire.png");
     public static LoadableAsset<Sprite> Werewolf { get; } = new LoadableResourceAsset($"{iconPath}.Werewolf.png");
 

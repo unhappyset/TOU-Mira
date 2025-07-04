@@ -1,10 +1,10 @@
-﻿using MiraAPI.Events;
+﻿using System.Collections;
+using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using Reactor.Utilities;
-using System.Collections;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
@@ -19,8 +19,15 @@ public static class AmnesiacEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (!CustomRoleUtils.GetActiveRolesOfType<AmnesiacRole>().Any()) return;
-        if (!OptionGroupSingleton<AmnesiacOptions>.Instance.RememberArrows) return;
+        if (!CustomRoleUtils.GetActiveRolesOfType<AmnesiacRole>().Any())
+        {
+            return;
+        }
+
+        if (!OptionGroupSingleton<AmnesiacOptions>.Instance.RememberArrows)
+        {
+            return;
+        }
 
         Coroutines.Start(CoCreateArrow(@event.Target));
     }
@@ -31,7 +38,10 @@ public static class AmnesiacEvents
 
         var deadBody = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == target.PlayerId);
 
-        if (deadBody == null) yield break;
+        if (deadBody == null)
+        {
+            yield break;
+        }
 
         foreach (var amne in CustomRoleUtils.GetActiveRolesOfType<AmnesiacRole>().Select(x => x.Player))
         {

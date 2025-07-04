@@ -23,5 +23,8 @@ public sealed class SurvivorVestButton : TownOfUsRoleButton<SurvivorRole>
     public override int MaxUses => (int)OptionGroupSingleton<SurvivorOptions>.Instance.MaxVests;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.VestSprite;
 
-    protected override void OnClick() => PlayerControl.LocalPlayer.RpcAddModifier<SurvivorVestModifier>();
+    protected override void OnClick()
+    {
+        PlayerControl.LocalPlayer.RpcAddModifier<SurvivorVestModifier>();
+    }
 }

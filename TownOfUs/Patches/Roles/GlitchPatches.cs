@@ -17,6 +17,7 @@ public static class GlitchPatches
         {
             return false;
         }
+
         if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>())
         {
             PlayerControl.LocalPlayer.GetModifier<GlitchHackedModifier>()!.ShowHacked();
@@ -51,6 +52,7 @@ public static class GlitchPatches
         {
             return false;
         }
+
         if (PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
         {
             return false;

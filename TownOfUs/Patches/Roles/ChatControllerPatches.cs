@@ -19,7 +19,8 @@ public static class ChatControllerPatches
     [HarmonyPatch(nameof(ChatController.Awake))]
     public static void AwakePostfix(ChatController __instance)
     {
-        _noticeText = Object.Instantiate(__instance.sendRateMessageText, __instance.sendRateMessageText.transform.parent);
+        _noticeText =
+            Object.Instantiate(__instance.sendRateMessageText, __instance.sendRateMessageText.transform.parent);
         _noticeText.text = string.Empty;
     }
 
@@ -32,17 +33,28 @@ public static class ChatControllerPatches
             return;
         }
 
-        if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.HasModifier<BlackmailedModifier>() && !PlayerControl.LocalPlayer.Data.IsDead)
+        if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.HasModifier<BlackmailedModifier>() &&
+            !PlayerControl.LocalPlayer.Data.IsDead)
         {
             _noticeText.text = "You have been blackmailed.";
             __instance.freeChatField.SetVisible(false);
             __instance.quickChatField.SetVisible(false);
         }
-        if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.HasModifier<JailedModifier>() && !TeamChatPatches.TeamChatActive && !PlayerControl.LocalPlayer.Data.IsDead)
+        else if (TeamChatPatches.TeamChatActive)
         {
-            if (OptionGroupSingleton<JailorOptions>.Instance.JaileePublicChat)
+            _noticeText.text = string.Empty;
+            __instance.freeChatField.SetVisible(true);
+            __instance.quickChatField.SetVisible(false);
+        }
+        else if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.HasModifier<JailedModifier>() &&
+                 !PlayerControl.LocalPlayer.Data.IsDead && !TeamChatPatches.TeamChatActive)
+        {
+            var canChat = OptionGroupSingleton<JailorOptions>.Instance.JaileePublicChat;
+            if (canChat)
             {
                 _noticeText.text = "You are jailed. You can use public chat.";
+                __instance.freeChatField.SetVisible(true);
+                __instance.quickChatField.SetVisible(false);
             }
             else
             {
@@ -51,13 +63,9 @@ public static class ChatControllerPatches
                 __instance.quickChatField.SetVisible(false);
             }
         }
-        else if (TeamChatPatches.TeamChatActive)
-        {
-            __instance.quickChatField.SetVisible(false);
-            _noticeText.text = string.Empty;
-        }
         else
         {
+            __instance.freeChatField.SetVisible(true);
             _noticeText.text = string.Empty;
         }
     }

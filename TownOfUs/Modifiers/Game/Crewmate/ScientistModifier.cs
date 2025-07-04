@@ -17,27 +17,59 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class ScientistModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Scientist";
+    public override string IntroInfo => "You can also use vitals on-the-go.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Scientist;
-    public override string GetDescription() => $"Access vitals anytime, anywhere, as long as you have charge";
+
     public override ModifierFaction FactionType => ModifierFaction.CrewmateUtility;
+
+    public string GetAdvancedDescription()
+    {
+        return
+            "Access Vitals at anytime with a limited battery charge."
+            + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "Access vitals anytime, anywhere, as long as you have charge";
+    }
+
     public override void OnActivate()
     {
         base.OnActivate();
 
-        if (!Player.AmOwner) return;
-        CustomButtonSingleton<ScientistButton>.Instance.AvailableCharge = OptionGroupSingleton<ScientistOptions>.Instance.StartingCharge;
-    }
-    public static void OnRoundStart()
-    {
-        CustomButtonSingleton<ScientistButton>.Instance.AvailableCharge += OptionGroupSingleton<ScientistOptions>.Instance.RoundCharge;
-    }
-    public static void OnTaskComplete()
-    {
-        CustomButtonSingleton<ScientistButton>.Instance.AvailableCharge += OptionGroupSingleton<ScientistOptions>.Instance.TaskCharge;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
+
+        CustomButtonSingleton<ScientistButton>.Instance.AvailableCharge =
+            OptionGroupSingleton<ScientistOptions>.Instance.StartingCharge;
     }
 
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.ScientistChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.ScientistAmount;
+    public static void OnRoundStart()
+    {
+        CustomButtonSingleton<ScientistButton>.Instance.AvailableCharge +=
+            OptionGroupSingleton<ScientistOptions>.Instance.RoundCharge;
+    }
+
+    public static void OnTaskComplete()
+    {
+        CustomButtonSingleton<ScientistButton>.Instance.AvailableCharge +=
+            OptionGroupSingleton<ScientistOptions>.Instance.TaskCharge;
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.ScientistChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.ScientistAmount;
+    }
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
@@ -47,16 +79,7 @@ public sealed class ScientistModifier : TouGameModifier, IWikiDiscoverable
         }
 
         return base.IsModifierValidOn(role) && role.IsCrewmate() && role is not ScientistRole
-            && !role.Player.GetModifierComponent().HasModifier<SatelliteModifier>(true)
-            && !role.Player.GetModifierComponent().HasModifier<ButtonBarryModifier>(true);
+               && !role.Player.GetModifierComponent().HasModifier<SatelliteModifier>(true)
+               && !role.Player.GetModifierComponent().HasModifier<ButtonBarryModifier>(true);
     }
-    
-    public string GetAdvancedDescription()
-    {
-        return
-            $"Access Vitals at anytime with a limited battery charge."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
 }

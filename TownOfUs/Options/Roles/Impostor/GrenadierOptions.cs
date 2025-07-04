@@ -9,7 +9,7 @@ public sealed class GrenadierOptions : AbstractOptionGroup<GrenadierRole>
 {
     public override string GroupName => "Grenadier";
 
-    [ModdedNumberOption("Flash Uses Per Game", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", zeroInfinity: true)]
+    [ModdedNumberOption("Flash Uses Per Game", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float MaxFlashes { get; set; } = 0f;
 
     [ModdedNumberOption("Flash Grenade Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]

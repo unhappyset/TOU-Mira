@@ -19,7 +19,10 @@ public sealed class ClericCleanseButton : TownOfUsRoleButton<ClericRole, PlayerC
     public override float Cooldown => OptionGroupSingleton<ClericOptions>.Instance.CleanseCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.CleanseSprite;
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
 
     protected override void OnClick()
     {

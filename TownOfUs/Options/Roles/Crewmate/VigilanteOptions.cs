@@ -9,10 +9,10 @@ public sealed class VigilanteOptions : AbstractOptionGroup<VigilanteRole>
 {
     public override string GroupName => "Vigilante";
 
-    [ModdedNumberOption("Number Of Vigilante Kills", 1f, 15f)]
+    [ModdedNumberOption("Number Of Vigilante Guesses", 1f, 15f)]
     public float VigilanteKills { get; set; } = 5f;
 
-    [ModdedToggleOption("Vigilante Can Kill More Than Once Per Meeting")]
+    [ModdedToggleOption("Vigilante Can Guess More Than Once Per Meeting")]
     public bool VigilanteMultiKill { get; set; } = true;
 
     [ModdedToggleOption("Vigilante Can Guess Neutral Benign Roles")]
@@ -29,6 +29,7 @@ public sealed class VigilanteOptions : AbstractOptionGroup<VigilanteRole>
 
     [ModdedToggleOption("Vigilante Can Guess Alliances")]
     public bool VigilanteGuessAlliances { get; set; } = true;
+
     [ModdedNumberOption("Safe Shots Available", 0f, 3f, 1f, MiraNumberSuffixes.None, "0")]
     public float MultiShots { get; set; } = 3;
 }

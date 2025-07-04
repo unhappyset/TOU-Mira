@@ -51,10 +51,16 @@ public static class BlackmailedPlayerArea
         if (Helpers.GetAlivePlayers().Count > maxAliveNeeded)
         {
             __instance.SetVote(252);
-            if (targetSeeOnly) __instance.Flag.enabled = false;
-            if (amOwner == true) MeetingHud.Instance.Confirm(252);
-        }
+            if (targetSeeOnly)
+            {
+                __instance.Flag.enabled = false;
+            }
 
+            if (amOwner == true)
+            {
+                MeetingHud.Instance.Confirm(252);
+            }
+        }
     }
 
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]

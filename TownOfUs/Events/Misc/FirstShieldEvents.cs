@@ -25,7 +25,10 @@ public static class FirstShieldEvents
         var source = PlayerControl.LocalPlayer;
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var target = button?.Target;
-        if (target == null || button is not IKillButton) return;
+        if (target == null || button is not IKillButton)
+        {
+            return;
+        }
 
         CheckForFirstDeathShield(@event, target, source, button);
     }
@@ -34,12 +37,24 @@ public static class FirstShieldEvents
     public static void RemoveShieldEventHandler(RoundStartEvent @event)
     {
         if (!@event.TriggeredByIntro && PlayerControl.LocalPlayer.HasModifier<FirstDeadShield>())
+        {
             PlayerControl.LocalPlayer.RpcRemoveModifier<FirstDeadShield>();
+        }
     }
 
-    private static void CheckForFirstDeathShield(MiraCancelableEvent @event, PlayerControl target, PlayerControl source, CustomActionButton<PlayerControl>? button = null)
+    private static void CheckForFirstDeathShield(MiraCancelableEvent @event, PlayerControl target, PlayerControl source,
+        CustomActionButton<PlayerControl>? button = null)
     {
-        if (!target.HasModifier<FirstDeadShield>() || source == target || (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield)) return;
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
+
+        if (!target.HasModifier<FirstDeadShield>() || source == target ||
+            (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield))
+        {
+            return;
+        }
 
         @event.Cancel();
 
@@ -48,7 +63,10 @@ public static class FirstShieldEvents
         button?.SetTimer(reset);
 
         // Reset impostor kill cooldown if they attack a shielded player
-        if (!source.AmOwner || !source.IsImpostor()) return;
+        if (!source.AmOwner || !source.IsImpostor())
+        {
+            return;
+        }
 
         source.SetKillTimer(reset);
     }

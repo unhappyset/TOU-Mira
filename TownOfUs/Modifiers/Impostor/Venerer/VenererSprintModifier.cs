@@ -11,6 +11,7 @@ public sealed class VenererSprintModifier : TimedModifier, IVenererModifier
     public override string ModifierName => "Sprint";
     public override bool AutoStart => true;
     public override float Duration => OptionGroupSingleton<VenererOptions>.Instance.AbilityDuration;
+
     public override void OnActivate()
     {
         var touAbilityEvent = new TouAbilityEvent(AbilityType.VenererSprintAbility, Player);

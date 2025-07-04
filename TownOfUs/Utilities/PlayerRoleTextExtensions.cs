@@ -20,20 +20,30 @@ public static class PlayerRoleTextExtensions
     public static Color UpdateTargetColor(this Color color, PlayerControl player, bool hidden = false)
     {
         if (player.HasModifier<EclipsalBlindModifier>() && PlayerControl.LocalPlayer.IsImpostor())
+        {
             color = Color.black;
+        }
 
         if (player.HasModifier<GrenadierFlashModifier>() && !player.IsImpostor() &&
             PlayerControl.LocalPlayer.IsImpostor())
+        {
             color = Color.black;
+        }
 
         if (player.HasModifier<SeerGoodRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
+        {
             color = Color.green;
+        }
         else if (player.HasModifier<SeerEvilRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
+        {
             color = Color.red;
+        }
 
         if (player.HasModifier<PoliticianCampaignedModifier>(x => x.Politician.AmOwner) &&
             PlayerControl.LocalPlayer.IsRole<PoliticianRole>())
+        {
             color = Color.cyan;
+        }
 
         if (player.HasModifier<MercenaryBribedModifier>(x => x.Mercenary.AmOwner) &&
             PlayerControl.LocalPlayer.IsRole<MercenaryRole>())
@@ -41,7 +51,9 @@ public static class PlayerRoleTextExtensions
             color = Color.green;
 
             if (player.Is(RoleAlignment.NeutralEvil) || player.IsRole<AmnesiacRole>() || player.IsRole<MercenaryRole>())
+            {
                 color = Color.red;
+            }
         }
 
         return color;
@@ -54,18 +66,26 @@ public static class PlayerRoleTextExtensions
              PlayerControl.LocalPlayer.IsRole<ExecutionerRole>())
             || (player.HasModifier<ExecutionerTargetModifier>() && PlayerControl.LocalPlayer.HasDied() &&
                 genOpt.TheDeadKnow && !hidden))
+        {
             name += "<color=#643B1F> X</color>";
+        }
 
         if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() &&
             (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole) && !hidden)
+        {
             name += "<color=#D94291> $</color>";
+        }
 
         if (PlayerControl.LocalPlayer.Data.Role is HunterRole &&
             player.HasModifier<HunterStalkedModifier>(x => x.Hunter.AmOwner))
+        {
             name += "<color=#29AB87> &</color>";
+        }
 
         if (PlayerControl.LocalPlayer.Data.Role is HunterRole hunter && hunter.CaughtPlayers.Contains(player))
+        {
             name += "<color=#21453B> &</color>";
+        }
 
         return name;
     }
@@ -124,15 +144,19 @@ public static class PlayerRoleTextExtensions
         if (player.HasModifier<LoverModifier>() && (PlayerControl.LocalPlayer.HasModifier<LoverModifier>() ||
                                                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow &&
                                                      !hidden)))
+        {
             name += "<color=#FF66CC> ♥</color>";
+        }
 
         if (player.HasModifier<EgotistModifier>() && (player.AmOwner ||
-                                                      EgotistModifier.EgoVisibilityFlag(player) &&
-                                                      (SnitchRole.SnitchVisibilityFlag(player, true) ||
-                                                       MayorRole.MayorVisibilityFlag(player)) ||
+                                                      (EgotistModifier.EgoVisibilityFlag(player) &&
+                                                       (SnitchRole.SnitchVisibilityFlag(player, true) ||
+                                                        MayorRole.MayorVisibilityFlag(player))) ||
                                                       (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow &&
                                                        !hidden)))
+        {
             name += "<color=#FFFFFF> (<color=#669966>Egotist</color>)</color>";
+        }
 
         return name;
     }
@@ -146,13 +170,17 @@ public static class PlayerRoleTextExtensions
              PlayerControl.LocalPlayer.IsRole<PlaguebearerRole>())
             || (player.HasModifier<PlaguebearerInfectedModifier>() && PlayerControl.LocalPlayer.HasDied() &&
                 genOpt.TheDeadKnow && !hidden))
+        {
             name += "<color=#E6FFB3> ¥</color>";
+        }
 
         if ((player.HasModifier<ArsonistDousedModifier>(x => x.ArsonistId == PlayerControl.LocalPlayer.PlayerId) &&
              PlayerControl.LocalPlayer.IsRole<ArsonistRole>())
             || (player.HasModifier<ArsonistDousedModifier>() && PlayerControl.LocalPlayer.HasDied() &&
                 genOpt.TheDeadKnow && !hidden))
+        {
             name += "<color=#FF4D00> Δ</color>";
+        }
 
         if ((player.HasModifier<BlackmailedModifier>(x => x.BlackMailerId == PlayerControl.LocalPlayer.PlayerId) &&
              PlayerControl.LocalPlayer.IsRole<BlackmailerRole>())
@@ -160,7 +188,9 @@ public static class PlayerRoleTextExtensions
                 genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
             || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.HasDied() &&
                 genOpt.TheDeadKnow && !hidden))
+        {
             name += "<color=#2A1119> M</color>";
+        }
 
         if ((player.HasModifier<HypnotisedModifier>(x => x.Hypnotist.AmOwner) &&
              PlayerControl.LocalPlayer.IsRole<HypnotistRole>())
@@ -168,7 +198,9 @@ public static class PlayerRoleTextExtensions
                 genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
             || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow &&
                 !hidden))
+        {
             name += "<color=#D53F42> @</color>";
+        }
 
         return name;
     }

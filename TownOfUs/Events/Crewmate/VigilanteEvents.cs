@@ -12,7 +12,10 @@ public static class VigilanteEvents
     {
         var source = @event.Source;
 
-        if (source.Data.Role is not VigilanteRole vigi) return;
+        if (source.Data.Role is not VigilanteRole vigi)
+        {
+            return;
+        }
 
         vigi.MaxKills--;
 

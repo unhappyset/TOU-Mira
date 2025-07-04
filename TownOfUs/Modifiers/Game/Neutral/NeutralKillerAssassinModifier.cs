@@ -7,8 +7,16 @@ namespace TownOfUs.Modifiers.Game.Neutral;
 public sealed class NeutralKillerAssassinModifier : AssassinModifier
 {
     public override string ModifierName => "Assassin (Neutral)";
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<AssassinOptions>.Instance.NumberOfNeutralAssassins;
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<AssassinOptions>.Instance.NeutAssassinChance;
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<AssassinOptions>.Instance.NumberOfNeutralAssassins;
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<AssassinOptions>.Instance.NeutAssassinChance;
+    }
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {

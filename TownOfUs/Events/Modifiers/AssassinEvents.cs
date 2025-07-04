@@ -19,11 +19,17 @@ public static class AssassinEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (!MeetingHud.Instance) return;
+        if (!MeetingHud.Instance)
+        {
+            return;
+        }
 
         var source = @event.Source;
 
-        if (!source.HasModifier<AssassinModifier>()) return;
+        if (!source.HasModifier<AssassinModifier>())
+        {
+            return;
+        }
 
         var target = @event.Target;
 

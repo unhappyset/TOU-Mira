@@ -15,7 +15,9 @@ public static class TrackerEvents
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
-        if (@event.Player.AmOwner && @event.Player.Data.Role is TrackerRole && OptionGroupSingleton<TrackerOptions>.Instance.TaskUses && !OptionGroupSingleton<TrackerOptions>.Instance.ResetOnNewRound)
+        if (@event.Player.AmOwner && @event.Player.Data.Role is TrackerRole &&
+            OptionGroupSingleton<TrackerOptions>.Instance.TaskUses &&
+            !OptionGroupSingleton<TrackerOptions>.Instance.ResetOnNewRound)
         {
             var button = CustomButtonSingleton<TrackerTrackButton>.Instance;
             ++button.UsesLeft;
@@ -23,10 +25,14 @@ public static class TrackerEvents
             button.SetUses(button.UsesLeft);
         }
     }
+
     [RegisterEvent]
     public static void EjectionEventEventHandler(EjectionEvent @event)
     {
-        if (!OptionGroupSingleton<TrackerOptions>.Instance.ResetOnNewRound) return;
+        if (!OptionGroupSingleton<TrackerOptions>.Instance.ResetOnNewRound)
+        {
+            return;
+        }
 
         foreach (var tracker in CustomRoleUtils.GetActiveRolesOfType<TrackerTouRole>())
         {

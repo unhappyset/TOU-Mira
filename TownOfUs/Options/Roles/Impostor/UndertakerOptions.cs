@@ -5,6 +5,7 @@ using MiraAPI.Utilities;
 using TownOfUs.Roles.Impostor;
 
 namespace TownOfUs.Options.Roles.Impostor;
+
 public sealed class UndertakerOptions : AbstractOptionGroup<UndertakerRole>
 {
     public override string GroupName => "Undertaker";
@@ -21,10 +22,11 @@ public sealed class UndertakerOptions : AbstractOptionGroup<UndertakerRole>
     [ModdedToggleOption("Undertaker Can Vent")]
     public bool CanVent { get; set; } = true;
 
-    public ModdedToggleOption CanVentWithBody { get; } = new ModdedToggleOption("Can Vent With Body", false)
+    public ModdedToggleOption CanVentWithBody { get; } = new("Can Vent With Body", false)
     {
-        Visible = () => OptionGroupSingleton<UndertakerOptions>.Instance.CanVent,
+        Visible = () => OptionGroupSingleton<UndertakerOptions>.Instance.CanVent
     };
+
     [ModdedToggleOption("Undertaker Can Kill With Teammate")]
     public bool UndertakerKill { get; set; } = true;
 }
