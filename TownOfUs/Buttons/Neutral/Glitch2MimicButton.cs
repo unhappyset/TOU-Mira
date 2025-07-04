@@ -58,6 +58,11 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
     {
         if (!EffectActive)
         {
+            if (!OptionGroupSingleton<GlitchOptions>.Instance.MoveWithMenu)
+            {
+                PlayerControl.LocalPlayer.NetTransform.Halt();
+            }
+
             var playerMenu = CustomPlayerMenu.Create();
             playerMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material =
                 PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
