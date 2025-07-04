@@ -15,31 +15,49 @@ public static class ImitatorEvents
     {
         var imitators = ModifierUtils.GetActiveModifiers<ImitatorCacheModifier>().ToArray();
 
-        if (imitators.Length == 0) return;
+        if (imitators.Length == 0)
+        {
+            return;
+        }
 
         foreach (var mod in imitators.Where(x => x.Player.Data.Role.Role != x.OldRole.Role))
             // This makes converted imitators not be imitators anymore
+        {
             mod.ModifierComponent?.RemoveModifier(mod);
+        }
     }
 
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return;
+        if (@event.TriggeredByIntro)
+        {
+            return;
+        }
 
         var imitators = ModifierUtils.GetActiveModifiers<ImitatorCacheModifier>();
 
-        if (!imitators.Any()) return;
+        if (!imitators.Any())
+        {
+            return;
+        }
 
         foreach (var mod in imitators)
+        {
             if (mod.Player.AmOwner)
+            {
                 mod.UpdateRole();
+            }
+        }
     }
 
     [RegisterEvent]
     public static void ChangeRoleHandler(ChangeRoleEvent @event)
     {
-        if (!PlayerControl.LocalPlayer) return;
+        if (!PlayerControl.LocalPlayer)
+        {
+            return;
+        }
 
         var player = @event.Player;
 
@@ -47,9 +65,13 @@ public static class ImitatorEvents
         if (player.TryGetModifier<ImitatorCacheModifier>(out var imi))
         {
             if (!@event.NewRole.IsCrewmate())
+            {
                 player.RemoveModifier<ImitatorCacheModifier>();
+            }
             else
+            {
                 imi.OldRole = @event.NewRole;
+            }
         }
     }
 }

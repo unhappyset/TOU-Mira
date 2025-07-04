@@ -45,8 +45,14 @@ public class NeutralGhostRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownOfUsR
         if (Player.GetRoleWhenAlive() is ITownOfUsRole touRole)
         {
             stringB = ITownOfUsRole.SetDeadTabText(touRole);
-            if (touRole.MetWinCon) stringB.Append("<b>You have already won.</b>");
-            else stringB.Append("<b>You are dead.</b>");
+            if (touRole.MetWinCon)
+            {
+                stringB.Append("<b>You have already won.</b>");
+            }
+            else
+            {
+                stringB.Append("<b>You are dead.</b>");
+            }
         }
         else
         {
@@ -70,7 +76,11 @@ public class NeutralGhostRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownOfUsR
 
     public override bool CanUse(IUsable console)
     {
-        if (!GameManager.Instance.LogicUsables.CanUse(console, Player)) return false;
+        if (!GameManager.Instance.LogicUsables.CanUse(console, Player))
+        {
+            return false;
+        }
+
         var console2 = console.TryCast<Console>()!;
         return console2 == null || console2.AllowImpostor;
     }
@@ -78,10 +88,18 @@ public class NeutralGhostRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownOfUsR
     // reimplement haunt minigame
     public override void UseAbility()
     {
-        if (HudManager.Instance.Chat.IsOpenOrOpening) return;
+        if (HudManager.Instance.Chat.IsOpenOrOpening)
+        {
+            return;
+        }
+
         if (Minigame.Instance)
         {
-            if (Minigame.Instance.TryCast<HauntMenuMinigame>()) Minigame.Instance.Close();
+            if (Minigame.Instance.TryCast<HauntMenuMinigame>())
+            {
+                Minigame.Instance.Close();
+            }
+
             return;
         }
 

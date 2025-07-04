@@ -38,7 +38,11 @@ public sealed class ToBecomeTraitorModifier : ExcludedGameModifier, IAssignableT
                             x.Data.Role is not MayorRole).ToList();
 
             Random rndIndex = new();
-            if (filtered.Count == 0) return;
+            if (filtered.Count == 0)
+            {
+                return;
+            }
+
             var randomTarget = filtered[rndIndex.Next(0, filtered.Count)];
 
             randomTarget.RpcAddModifier<ToBecomeTraitorModifier>();
@@ -64,16 +68,23 @@ public sealed class ToBecomeTraitorModifier : ExcludedGameModifier, IAssignableT
     [MethodRpc((uint)TownOfUsRpc.SetTraitor, SendImmediately = true)]
     public static void RpcSetTraitor(PlayerControl player)
     {
-        if (!player.HasModifier<ToBecomeTraitorModifier>()) return;
+        if (!player.HasModifier<ToBecomeTraitorModifier>())
+        {
+            return;
+        }
 
         player.ChangeRole(RoleId.Get<TraitorRole>());
         player.RemoveModifier<ToBecomeTraitorModifier>();
 
         if (OptionGroupSingleton<AssassinOptions>.Instance.TraitorCanAssassin)
+        {
             player.AddModifier<ImpostorAssassinModifier>();
+        }
 
         if (SnitchRole.IsTargetOfSnitch(player))
+        {
             CustomRoleUtils.GetActiveRolesOfType<SnitchRole>().ToList()
                 .ForEach(snitch => snitch.AddSnitchTraitorArrows());
+        }
     }
 }

@@ -17,13 +17,23 @@ public static class ProsecutorEvents
     [RegisterEvent]
     public static void VoteEvent(HandleVoteEvent @event)
     {
-        if (@event.VoteData.Owner.Data.Role is not ProsecutorRole { HasProsecuted: true } prosecutorRole) return;
+        if (@event.VoteData.Owner.Data.Role is not ProsecutorRole { HasProsecuted: true } prosecutorRole)
+        {
+            return;
+        }
+
         if (prosecutorRole.ProsecutionsCompleted >=
-            OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions) return;
+            OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions)
+        {
+            return;
+        }
 
         @event.VoteData.SetRemainingVotes(0);
 
-        for (var i = 0; i < 5; i++) @event.VoteData.VoteForPlayer(@event.TargetId);
+        for (var i = 0; i < 5; i++)
+        {
+            @event.VoteData.VoteForPlayer(@event.TargetId);
+        }
 
         foreach (var plr in PlayerControl.AllPlayerControls.ToArray().Where(player => player != @event.VoteData.Owner))
         {
@@ -38,7 +48,10 @@ public static class ProsecutorEvents
     public static void WrapUpEvent(EjectionEvent @event)
     {
         var player = @event.ExileController.initData.networkedPlayer?.Object;
-        if (player == null) return;
+        if (player == null)
+        {
+            return;
+        }
 
         foreach (var pros in CustomRoleUtils.GetActiveRolesOfType<ProsecutorRole>())
         {
@@ -47,9 +60,13 @@ public static class ProsecutorEvents
                 !(player.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
             {
                 if (OptionGroupSingleton<ProsecutorOptions>.Instance.ExileOnCrewmate)
+                {
                     pros.Player.Exiled();
+                }
                 else
+                {
                     pros.ProsecutionsCompleted = (int)OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions;
+                }
             }
 
             pros.Cleanup();

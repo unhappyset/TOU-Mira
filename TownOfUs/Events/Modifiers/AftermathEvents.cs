@@ -16,10 +16,17 @@ public static class AftermathEvents
     {
         var source = @event.Source;
 
-        if (!@event.Target.HasModifier<AftermathModifier>() || !source.AmOwner || MeetingHud.Instance) return;
+        if (!@event.Target.HasModifier<AftermathModifier>() || !source.AmOwner || MeetingHud.Instance)
+        {
+            return;
+        }
+
         var button = CustomButtonManager.Buttons.Where(x => x.Enabled(source.Data.Role) && x.Timer <= 0)
             .OfType<IAftermathableButton>().FirstOrDefault();
-        if (button == null) return;
+        if (button == null)
+        {
+            return;
+        }
 
         var notif1 = Helpers.CreateAndShowNotification(
             $"<b>{TownOfUsColors.Aftermath.ToTextColor()}{@event.Target.Data.PlayerName} was an Aftermath, forcing you to use your ability.</color></b>",

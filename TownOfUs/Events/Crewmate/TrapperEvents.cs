@@ -38,6 +38,8 @@ public static class TrapperEvents
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (OptionGroupSingleton<TrapperOptions>.Instance.TrapsRemoveOnNewRound)
+        {
             CustomRoleUtils.GetActiveRolesOfType<TrapperRole>().Do(x => x.Clear());
+        }
     }
 }

@@ -77,35 +77,67 @@ public static class MiscUtils
     public static string AppendOptionsText(Type classType)
     {
         var options = GetModdedOptionsForRole(classType);
-        if (options == null) return string.Empty;
+        if (options == null)
+        {
+            return string.Empty;
+        }
 
         var builder = new StringBuilder();
         builder.AppendLine(CultureInfo.InvariantCulture,
             $"\n<size=50%> \n</size><b>{TownOfUsColors.Vigilante.ToTextColor()}Options</color></b>");
 
         foreach (var option in options)
+        {
             switch (option)
             {
                 case ModdedToggleOption toggleOption:
-                    if (!toggleOption.Visible()) continue;
+                    if (!toggleOption.Visible())
+                    {
+                        continue;
+                    }
+
                     builder.AppendLine(option.Title + ": " + toggleOption.Value);
                     break;
                 case ModdedEnumOption enumOption:
-                    if (!enumOption.Visible()) continue;
+                    if (!enumOption.Visible())
+                    {
+                        continue;
+                    }
+
                     builder.AppendLine(enumOption.Title + ": " + enumOption.Values[enumOption.Value]);
                     break;
                 case ModdedNumberOption numberOption:
-                    if (!numberOption.Visible()) continue;
+                    if (!numberOption.Visible())
+                    {
+                        continue;
+                    }
+
                     var optionStr = numberOption.Data.GetValueString(numberOption.Value);
-                    if (optionStr.Contains(".000")) optionStr = optionStr.Replace(".000", "");
-                    else if (optionStr.Contains(".00")) optionStr = optionStr.Replace(".00", "");
-                    else if (optionStr.Contains(".0")) optionStr = optionStr.Replace(".0", "");
+                    if (optionStr.Contains(".000"))
+                    {
+                        optionStr = optionStr.Replace(".000", "");
+                    }
+                    else if (optionStr.Contains(".00"))
+                    {
+                        optionStr = optionStr.Replace(".00", "");
+                    }
+                    else if (optionStr.Contains(".0"))
+                    {
+                        optionStr = optionStr.Replace(".0", "");
+                    }
 
                     if (numberOption is { ZeroInfinity: true, Value: 0 })
+                    {
                         builder.AppendLine(numberOption.Title + ": ∞");
-                    else builder.AppendLine(numberOption.Title + ": " + optionStr);
+                    }
+                    else
+                    {
+                        builder.AppendLine(numberOption.Title + ": " + optionStr);
+                    }
+
                     break;
             }
+        }
 
         return builder.ToString();
     }
@@ -199,7 +231,11 @@ public static class MiscUtils
     {
         var pInfo = typeof(TownOfUsColors).GetProperty(name, BindingFlags.Public | BindingFlags.Static);
 
-        if (pInfo == null) return TownOfUsColors.Impostor;
+        if (pInfo == null)
+        {
+            return TownOfUsColors.Impostor;
+        }
+
         var colour = (Color)pInfo.GetValue(null)!;
 
         return colour;
@@ -243,8 +279,15 @@ public static class MiscUtils
 
         pooledBubble.transform.SetParent(chat.scroller.Inner);
         pooledBubble.transform.localScale = Vector3.one;
-        if (onLeft) pooledBubble.SetLeft();
-        else pooledBubble.SetRight();
+        if (onLeft)
+        {
+            pooledBubble.SetLeft();
+        }
+        else
+        {
+            pooledBubble.SetRight();
+        }
+
         pooledBubble.SetCosmetics(basePlayer);
         pooledBubble.NameText.text = nameText;
         pooledBubble.NameText.color = Color.white;
@@ -267,7 +310,9 @@ public static class MiscUtils
         pooledBubble.NameText.transform.localPosition = pos;
         chat.AlignAllBubbles();
         if (chat is { IsOpenOrOpening: false, notificationRoutine: null })
+        {
             chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());
+        }
 
         if (showHeadsup && !chat.IsOpenOrOpening)
         {
@@ -286,8 +331,15 @@ public static class MiscUtils
 
         pooledBubble.transform.SetParent(chat.scroller.Inner);
         pooledBubble.transform.localScale = Vector3.one;
-        if (onLeft) pooledBubble.SetLeft();
-        else pooledBubble.SetRight();
+        if (onLeft)
+        {
+            pooledBubble.SetLeft();
+        }
+        else
+        {
+            pooledBubble.SetRight();
+        }
+
         pooledBubble.SetCosmetics(basePlayer);
         pooledBubble.NameText.text = nameText;
         pooledBubble.NameText.color = Color.white;
@@ -308,7 +360,9 @@ public static class MiscUtils
         pooledBubble.NameText.transform.localPosition = pos;
         chat.AlignAllBubbles();
         if (chat is { IsOpenOrOpening: false, notificationRoutine: null })
+        {
             chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());
+        }
 
         if (showHeadsup && !chat.IsOpenOrOpening)
         {
@@ -388,7 +442,10 @@ public static class MiscUtils
     private static List<ushort> GetMaxRolesToAssign(IEnumerable<RoleBehaviour> roles, int max,
         Func<RoleBehaviour, bool>? filter = null)
     {
-        if (max <= 0) return [];
+        if (max <= 0)
+        {
+            return [];
+        }
 
         var currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
         var roleOptions = currentGameOptions.RoleOptions;
@@ -442,7 +499,10 @@ public static class MiscUtils
 
         assignmentData.Where(x => predicate == null || predicate(x)).ToList().ForEach(x =>
         {
-            for (var i = 0; i < x.Count; i++) roles.Add(((ushort)x.Role.Role, x.Chance));
+            for (var i = 0; i < x.Count; i++)
+            {
+                roles.Add(((ushort)x.Role.Role, x.Chance));
+            }
         });
 
         return roles;
@@ -463,8 +523,12 @@ public static class MiscUtils
     public static PlayerControl? PlayerById(byte id)
     {
         foreach (var player in PlayerControl.AllPlayerControls)
+        {
             if (player.PlayerId == id)
+            {
                 return player;
+            }
+        }
 
         return null;
     }
@@ -496,7 +560,10 @@ public static class MiscUtils
         if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
         {
             var fullscreen = HudManager.Instance.FullScreen;
-            if (!fullscreen.color.Equals(color)) yield break;
+            if (!fullscreen.color.Equals(color))
+            {
+                yield break;
+            }
 
             fullscreen.color = new Color(1f, 0f, 0f, 0.37254903f);
             fullscreen.enabled = false;
@@ -505,7 +572,10 @@ public static class MiscUtils
 
     public static IEnumerator FadeOut(SpriteRenderer? rend, float delay = 0.01f, float decrease = 0.01f)
     {
-        if (rend == null) yield break;
+        if (rend == null)
+        {
+            yield break;
+        }
 
         var alphaVal = rend.color.a;
         var tmp = rend.color;
@@ -522,7 +592,10 @@ public static class MiscUtils
 
     public static IEnumerator FadeIn(SpriteRenderer? rend, float delay = 0.01f, float increase = 0.01f)
     {
-        if (rend == null) yield break;
+        if (rend == null)
+        {
+            yield break;
+        }
 
         var tmp = rend.color;
         tmp.a = 0;
@@ -557,7 +630,10 @@ public static class MiscUtils
 
     public static string ToTitleCase(this string input)
     {
-        if (string.IsNullOrEmpty(input)) return input; // Return empty or null string if input is empty or null
+        if (string.IsNullOrEmpty(input))
+        {
+            return input; // Return empty or null string if input is empty or null
+        }
 
         var textInfo = CultureInfo.CurrentCulture.TextInfo;
         return
@@ -591,7 +667,10 @@ public static class MiscUtils
     public static IEnumerator BetterBloop(Transform target, float delay = 0, float finalSize = 1f,
         float duration = 0.5f, float intensity = 1f)
     {
-        for (var t = 0f; t < delay; t += Time.deltaTime) yield return null;
+        for (var t = 0f; t < delay; t += Time.deltaTime)
+        {
+            yield return null;
+        }
 
         var localScale = default(Vector3);
         for (var t = 0f; t < duration; t += Time.deltaTime)
@@ -610,6 +689,7 @@ public static class MiscUtils
     public static void AdjustGhostTasks(PlayerControl player)
     {
         foreach (var task in player.myTasks)
+        {
             if (task.TryCast<NormalPlayerTask>() != null)
             {
                 var normalPlayerTask = task.Cast<NormalPlayerTask>();
@@ -619,23 +699,36 @@ public static class MiscUtils
                 normalPlayerTask.taskStep = 0;
                 normalPlayerTask.Initialize();
                 if (normalPlayerTask.TaskType is TaskTypes.PickUpTowels)
+                {
                     foreach (var console in Object.FindObjectsOfType<TowelTaskConsole>())
+                    {
                         console.Image.color = Color.white;
+                    }
+                }
 
                 normalPlayerTask.taskStep = 0;
-                if (normalPlayerTask.TaskType == TaskTypes.UploadData) normalPlayerTask.taskStep = 1;
+                if (normalPlayerTask.TaskType == TaskTypes.UploadData)
+                {
+                    normalPlayerTask.taskStep = 1;
+                }
 
                 if (normalPlayerTask.TaskType is TaskTypes.EmptyGarbage or TaskTypes.EmptyChute
                     && (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 0 ||
                         GameOptionsManager.Instance.currentNormalGameOptions.MapId == 3 ||
                         GameOptionsManager.Instance.currentNormalGameOptions.MapId == 4))
+                {
                     normalPlayerTask.taskStep = 1;
+                }
 
-                if (updateArrow) normalPlayerTask.UpdateArrowAndLocation();
+                if (updateArrow)
+                {
+                    normalPlayerTask.UpdateArrowAndLocation();
+                }
 
                 var taskInfo = player.Data.FindTaskById(task.Id);
                 taskInfo.Complete = false;
             }
+        }
     }
 
     public static void UpdateLocalPlayerCamera(MonoBehaviour target, Transform lightParent)
@@ -769,29 +862,46 @@ public static class MiscUtils
     {
         if (player.HasModifier<ConcealedModifier>() || !player.Visible ||
             (player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive))
+        {
             return true;
+        }
 
-        if (player.inVent) return true;
+        if (player.inVent)
+        {
+            return true;
+        }
 
         var mushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
-        if (mushroom && mushroom.IsActive) return true;
+        if (mushroom && mushroom.IsActive)
+        {
+            return true;
+        }
 
         if (OptionGroupSingleton<GeneralOptions>.Instance.CamouflageComms)
         {
             if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Comms, out var commsSystem) ||
-                commsSystem == null) return false;
+                commsSystem == null)
+            {
+                return false;
+            }
 
             var isActive = false;
             if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq ||
                 ShipStatus.Instance.Type == ShipStatus.MapType.Fungle)
             {
                 var hqSystem = commsSystem.Cast<HqHudSystemType>();
-                if (hqSystem != null) isActive = hqSystem.IsActive;
+                if (hqSystem != null)
+                {
+                    isActive = hqSystem.IsActive;
+                }
             }
             else
             {
                 var hudSystem = commsSystem.Cast<HudOverrideSystemType>();
-                if (hudSystem != null) isActive = hudSystem.IsActive;
+                if (hudSystem != null)
+                {
+                    isActive = hudSystem.IsActive;
+                }
             }
 
             return isActive;
@@ -808,7 +918,10 @@ public static class MiscUtils
         if (ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out systemType))
         {
             var ventilationSystem = ShipStatus.Instance.Systems[SystemTypes.Ventilation].Cast<VentilationSystem>();
-            if (ventilationSystem != null && ventilationSystem.IsVentCurrentlyBeingCleaned(vent.Id)) couldUse = false;
+            if (ventilationSystem != null && ventilationSystem.IsVentCurrentlyBeingCleaned(vent.Id))
+            {
+                couldUse = false;
+            }
         }
 
         if (couldUse)

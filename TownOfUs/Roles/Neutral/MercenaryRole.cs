@@ -50,10 +50,15 @@ public sealed class MercenaryRole(IntPtr cppPtr)
         stringB.Append(CultureInfo.InvariantCulture, $"\n<b>Gold:</b> {Gold}");
 
         var playerControls = players as PlayerControl[] ?? [.. players];
-        if (playerControls.Length != 0) stringB.Append("\n<b>Bribed:</b>");
+        if (playerControls.Length != 0)
+        {
+            stringB.Append("\n<b>Bribed:</b>");
+        }
 
         foreach (var player in playerControls)
+        {
             stringB.Append(CultureInfo.InvariantCulture, $"\n{player.Data.PlayerName}");
+        }
 
         return stringB;
     }
@@ -87,7 +92,10 @@ public sealed class MercenaryRole(IntPtr cppPtr)
     {
         Gold++;
 
-        if (CanBribe) CustomButtonSingleton<MercenaryBribeButton>.Instance.SetActive(true, this);
+        if (CanBribe)
+        {
+            CustomButtonSingleton<MercenaryBribeButton>.Instance.SetActive(true, this);
+        }
     }
 
     public void Clear()
@@ -107,7 +115,10 @@ public sealed class MercenaryRole(IntPtr cppPtr)
             return;
         }
 
-        if (!player.AmOwner) return;
+        if (!player.AmOwner)
+        {
+            return;
+        }
 
         var mercenary = player.GetRole<MercenaryRole>();
         mercenary?.AddPayment();

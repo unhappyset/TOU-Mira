@@ -27,7 +27,10 @@ public sealed class DetectiveInspectButton : TownOfUsRoleButton<DetectiveRole, C
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
 
         Role.InvestigatingScene = Target;
         Role.InvestigatedPlayers.AddRange(Target.GetScenePlayers());

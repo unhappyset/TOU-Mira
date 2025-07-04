@@ -20,15 +20,30 @@ public static class PlayerJoinPatch
 
     private static IEnumerator CoSendJoinMsg()
     {
-        while (!AmongUsClient.Instance) yield return null;
+        while (!AmongUsClient.Instance)
+        {
+            yield return null;
+        }
+
         Logger<TownOfUsPlugin>.Info("Client Initialized?");
 
-        while (!PlayerControl.LocalPlayer) yield return null;
+        while (!PlayerControl.LocalPlayer)
+        {
+            yield return null;
+        }
+
         var player = PlayerControl.LocalPlayer;
 
-        while (!player) yield return null;
+        while (!player)
+        {
+            yield return null;
+        }
 
-        if (!player.AmOwner) yield break;
+        if (!player.AmOwner)
+        {
+            yield break;
+        }
+
         Logger<TownOfUsPlugin>.Info("Sending Message to Local Player...");
         TouRoleManagerPatches.ReplaceRoleManager = false;
 
@@ -38,7 +53,10 @@ public static class PlayerJoinPatch
             var factionText = string.Empty;
             var msg = string.Empty;
             if (GameHistory.WinningFaction != string.Empty)
+            {
                 factionText = $"<size=80%>Winning Team: {GameHistory.WinningFaction}</size>\n";
+            }
+
             var title =
                 $"<color=#8BFDFD>System (Toggleable In Options)</color>\n<size=62%>{factionText}{GameHistory.EndGameSummary}</size>";
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg);
@@ -57,7 +75,11 @@ public static class PlayerJoinPatch
             time = 2.48f;
         }
 
-        if (time == 0) yield break;
+        if (time == 0)
+        {
+            yield break;
+        }
+
         yield return new WaitForSeconds(time);
         Logger<TownOfUsPlugin>.Info("Offset Wiki Button (if needed)");
         SentOnce = true;

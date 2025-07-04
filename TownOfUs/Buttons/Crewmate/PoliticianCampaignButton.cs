@@ -30,7 +30,10 @@ public sealed class PoliticianCampaignButton : TownOfUsRoleButton<PoliticianRole
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
 
         Target?.RpcAddModifier<PoliticianCampaignedModifier>(PlayerControl.LocalPlayer);
     }

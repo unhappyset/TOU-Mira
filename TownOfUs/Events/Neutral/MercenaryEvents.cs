@@ -19,7 +19,10 @@ public static class MercenaryEvents
         var source = PlayerControl.LocalPlayer;
         var target = button?.Target;
 
-        if (target == null || button == null || !button.CanClick()) return;
+        if (target == null || button == null || !button.CanClick())
+        {
+            return;
+        }
 
         // only check if this interaction was via a custom button
         CheckForMercenaryGuard(source, target);
@@ -34,16 +37,28 @@ public static class MercenaryEvents
         // only check if this interaction was via the standard kill button
         if (source.Data.Role is ICustomRole { Configuration.UseVanillaKillButton: true } ||
             (source.Data.Role is not ICustomRole && source.IsImpostor()))
+        {
             CheckForMercenaryGuard(source, target);
+        }
     }
 
     private static void CheckForMercenaryGuard(PlayerControl source, PlayerControl target)
     {
-        if (MeetingHud.Instance || ExileController.Instance) return;
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
 
-        if (!target.HasModifier<MercenaryGuardModifier>()) return;
+        if (!target.HasModifier<MercenaryGuardModifier>())
+        {
+            return;
+        }
+
         var mercenary = target.GetModifier<MercenaryGuardModifier>()?.Mercenary;
 
-        if (mercenary && source.AmOwner) MercenaryRole.RpcGuarded(mercenary!);
+        if (mercenary && source.AmOwner)
+        {
+            MercenaryRole.RpcGuarded(mercenary!);
+        }
     }
 }

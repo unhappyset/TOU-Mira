@@ -12,7 +12,11 @@ public static class JuggernautEvents
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         var source = @event.Source;
-        if (!source.AmOwner || source.Data.Role is not JuggernautRole juggernaut || MeetingHud.Instance) return;
+        if (!source.AmOwner || source.Data.Role is not JuggernautRole juggernaut || MeetingHud.Instance)
+        {
+            return;
+        }
+
         juggernaut.KillCount++;
         CustomButtonSingleton<JuggernautKillButton>.Instance.ResetCooldownAndOrEffect();
     }

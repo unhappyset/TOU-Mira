@@ -14,10 +14,17 @@ public static class GhostRoleUsePatches
     {
         // DeconControl.CanUse was inlined, so we "uninline" it here
         __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out _);
-        if (!canUse) return false;
+        if (!canUse)
+        {
+            return false;
+        }
 
         __instance.cooldown = 6f;
-        if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.UseSound, false);
+        if (Constants.ShouldPlaySfx())
+        {
+            SoundManager.Instance.PlaySound(__instance.UseSound, false);
+        }
+
         __instance.OnUse.Invoke();
 
         return false;
@@ -49,7 +56,9 @@ public static class GhostRoleUsePatches
     {
         if (__state)
             // Logger<TownOfUsPlugin>.Message($"CanUsePostfixPatch IsDead");
+        {
             player.Data.IsDead = true;
+        }
     }
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckUseZipline))]
@@ -73,7 +82,9 @@ public static class GhostRoleUsePatches
         var targetData = target.CachedPlayerData;
 
         if (__state)
+        {
             targetData.IsDead = true;
+        }
     }
 
     [HarmonyPatch(typeof(OpenDoorConsole), nameof(OpenDoorConsole.Use))]
@@ -82,7 +93,11 @@ public static class GhostRoleUsePatches
     {
         __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out _);
 
-        if (!canUse) return false;
+        if (!canUse)
+        {
+            return false;
+        }
+
         __instance.myDoor.SetDoorway(true);
 
         return false;
@@ -94,7 +109,10 @@ public static class GhostRoleUsePatches
     {
         __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out _);
 
-        if (!canUse) return false;
+        if (!canUse)
+        {
+            return false;
+        }
 
         PlayerControl.LocalPlayer.NetTransform.Halt();
         var minigame = Object.Instantiate(__instance.MinigamePrefab, Camera.main.transform);

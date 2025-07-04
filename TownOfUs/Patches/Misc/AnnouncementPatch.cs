@@ -67,7 +67,11 @@ public static class ModNewsFetcher
 
     public static IEnumerator FetchNews()
     {
-        if (downloaded) yield break;
+        if (downloaded)
+        {
+            yield break;
+        }
+
         downloaded = true;
         /* TouMiraModNewsURL += TranslationController.Instance.currentLanguage.languageID switch
         {
@@ -212,7 +216,9 @@ public static class ModNewsFetcher
             aRange = new Il2CppReferenceArray<Announcement>(finalAllNews.Count);
 
             for (var i = 0; i < finalAllNews.Count; i++)
+            {
                 aRange[i] = finalAllNews[i];
+            }
         }
 
         [HarmonyPatch(typeof(AnnouncementPanel), nameof(AnnouncementPanel.SetUp))]
@@ -220,7 +226,11 @@ public static class ModNewsFetcher
         public static void SetUpPanel_Postfix(AnnouncementPanel __instance,
             [HarmonyArgument(0)] Announcement announcement)
         {
-            if (announcement.Number < 100000) return;
+            if (announcement.Number < 100000)
+            {
+                return;
+            }
+
             var obj = new GameObject("ModLabel");
             //obj.layer = -1;
             obj.transform.SetParent(__instance.transform);

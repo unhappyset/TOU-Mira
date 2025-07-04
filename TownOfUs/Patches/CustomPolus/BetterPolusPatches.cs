@@ -65,13 +65,31 @@ public static class BetterPolusPatches
         var options = OptionGroupSingleton<BetterMapOptions>.Instance;
         if (IsObjectsFetched && IsRoomsFetched)
         {
-            if (options.BPVitalsInLab) MoveVitals();
-            if (!options.BPTempInDeathValley && options.BPVitalsInLab) MoveTempCold();
-            if (options.BPTempInDeathValley) MoveTempColdDV();
-            if (options.BPSwapWifiAndChart) SwitchNavWifi();
+            if (options.BPVitalsInLab)
+            {
+                MoveVitals();
+            }
+
+            if (!options.BPTempInDeathValley && options.BPVitalsInLab)
+            {
+                MoveTempCold();
+            }
+
+            if (options.BPTempInDeathValley)
+            {
+                MoveTempColdDV();
+            }
+
+            if (options.BPSwapWifiAndChart)
+            {
+                SwitchNavWifi();
+            }
         }
 
-        if (options.BPVentNetwork) AdjustVents();
+        if (options.BPVentNetwork)
+        {
+            AdjustVents();
+        }
 
         IsAdjustmentsDone = true;
     }
@@ -81,16 +99,29 @@ public static class BetterPolusPatches
         var ventsList = Object.FindObjectsOfType<Vent>().ToList();
 
         if (ElectricBuildingVent == null)
+        {
             ElectricBuildingVent = ventsList.Find(vent => vent.gameObject.name == "ElectricBuildingVent")!;
+        }
 
-        if (ElectricalVent == null) ElectricalVent = ventsList.Find(vent => vent.gameObject.name == "ElectricalVent")!;
+        if (ElectricalVent == null)
+        {
+            ElectricalVent = ventsList.Find(vent => vent.gameObject.name == "ElectricalVent")!;
+        }
 
         if (ScienceBuildingVent == null)
+        {
             ScienceBuildingVent = ventsList.Find(vent => vent.gameObject.name == "ScienceBuildingVent")!;
+        }
 
-        if (StorageVent == null) StorageVent = ventsList.Find(vent => vent.gameObject.name == "StorageVent")!;
+        if (StorageVent == null)
+        {
+            StorageVent = ventsList.Find(vent => vent.gameObject.name == "StorageVent")!;
+        }
 
-        if (LightCageVent == null) LightCageVent = ventsList.Find(vent => vent.gameObject.name == "ElecFenceVent")!;
+        if (LightCageVent == null)
+        {
+            LightCageVent = ventsList.Find(vent => vent.gameObject.name == "ElecFenceVent")!;
+        }
 
         IsVentsFetched = ElectricBuildingVent != null && ElectricalVent != null && ScienceBuildingVent != null &&
                          StorageVent != null && LightCageVent != null;
@@ -98,14 +129,25 @@ public static class BetterPolusPatches
 
     public static void FindRooms()
     {
-        if (Comms == null) Comms = Object.FindObjectsOfType<GameObject>().ToList().Find(o => o.name == "Comms")!;
+        if (Comms == null)
+        {
+            Comms = Object.FindObjectsOfType<GameObject>().ToList().Find(o => o.name == "Comms")!;
+        }
 
         if (DropShip == null)
+        {
             DropShip = Object.FindObjectsOfType<GameObject>().ToList().FindLast(o => o.name == "Dropship")!;
+        }
 
-        if (Outside == null) Outside = Object.FindObjectsOfType<GameObject>().ToList().Find(o => o.name == "Outside")!;
+        if (Outside == null)
+        {
+            Outside = Object.FindObjectsOfType<GameObject>().ToList().Find(o => o.name == "Outside")!;
+        }
 
-        if (Science == null) Science = Object.FindObjectsOfType<GameObject>().ToList().Find(o => o.name == "Science")!;
+        if (Science == null)
+        {
+            Science = Object.FindObjectsOfType<GameObject>().ToList().Find(o => o.name == "Science")!;
+        }
 
         IsRoomsFetched = Comms != null && DropShip != null && Outside != null && Science != null;
     }
@@ -113,28 +155,39 @@ public static class BetterPolusPatches
     public static void FindObjects()
     {
         if (WifiConsole == null)
+        {
             WifiConsole = Object.FindObjectsOfType<Console>().ToList()
                 .Find(console => console.name == "panel_wifi")!;
+        }
 
         if (NavConsole == null)
+        {
             NavConsole = Object.FindObjectsOfType<Console>().ToList()
                 .Find(console => console.name == "panel_nav")!;
+        }
 
         if (Vitals == null)
+        {
             Vitals = Object.FindObjectsOfType<SystemConsole>().ToList()
                 .Find(console => console.name == "panel_vitals")!;
+        }
 
         if (DvdScreenOffice == null)
         {
             var DvdScreenAdmin = Object.FindObjectsOfType<GameObject>().ToList()
                 .Find(o => o.name == "dvdscreen")!;
 
-            if (DvdScreenAdmin != null) DvdScreenOffice = Object.Instantiate(DvdScreenAdmin);
+            if (DvdScreenAdmin != null)
+            {
+                DvdScreenOffice = Object.Instantiate(DvdScreenAdmin);
+            }
         }
 
         if (TempCold == null)
+        {
             TempCold = Object.FindObjectsOfType<Console>().ToList()
                 .Find(console => console.name == "panel_tempcold")!;
+        }
 
         IsObjectsFetched = WifiConsole != null && NavConsole != null && Vitals != null &&
                            DvdScreenOffice != null && TempCold != null;
@@ -252,7 +305,10 @@ public static class BetterPolusPatches
         [HarmonyPatch]
         public static void Prefix(ShipStatus __instance)
         {
-            if (!IsObjectsFetched || !IsAdjustmentsDone) ApplyChanges(__instance);
+            if (!IsObjectsFetched || !IsAdjustmentsDone)
+            {
+                ApplyChanges(__instance);
+            }
         }
     }
 }
@@ -262,26 +318,39 @@ public static class TaskTextUpdates
 {
     public static void Prefix(HudManager __instance)
     {
-        if (!MiscUtils.IsMap(2)) return;
+        if (!MiscUtils.IsMap(2))
+        {
+            return;
+        }
 
         if (BetterPolusPatches.IsObjectsFetched && BetterPolusPatches.IsAdjustmentsDone)
         {
             var opts = OptionGroupSingleton<BetterMapOptions>.Instance;
 
             if (!PlayerControl.LocalPlayer || PlayerControl.LocalPlayer.myTasks == null ||
-                PlayerControl.LocalPlayer.myTasks.Count == 0) return;
+                PlayerControl.LocalPlayer.myTasks.Count == 0)
+            {
+                return;
+            }
 
             foreach (var task in PlayerControl.LocalPlayer.myTasks)
             {
                 if (task.TaskType == TaskTypes.RecordTemperature && task.StartAt == SystemTypes.Laboratory &&
-                    opts.BPTempInDeathValley) task.StartAt = TaskProvider.DeathValleySystemType;
+                    opts.BPTempInDeathValley)
+                {
+                    task.StartAt = TaskProvider.DeathValleySystemType;
+                }
 
                 if (opts.BPSwapWifiAndChart)
                 {
                     if (task.TaskType == TaskTypes.RebootWifi && task.StartAt != SystemTypes.Dropship)
+                    {
                         task.StartAt = SystemTypes.Dropship;
+                    }
                     else if (task.TaskType == TaskTypes.ChartCourse && task.StartAt != SystemTypes.Comms)
+                    {
                         task.StartAt = SystemTypes.Comms;
+                    }
                 }
             }
         }

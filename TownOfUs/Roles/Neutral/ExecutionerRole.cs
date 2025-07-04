@@ -93,7 +93,10 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
 
     public bool WinConditionMet()
     {
-        if (Player.HasDied()) return false;
+        if (Player.HasDied())
+        {
+            return false;
+        }
 
         return OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.EndsGame && TargetVoted;
     }
@@ -109,16 +112,25 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
     {
         RoleBehaviourStubs.Initialize(this, player);
 
-        if (!OptionGroupSingleton<ExecutionerOptions>.Instance.CanButton) player.RemainingEmergencies = 0;
+        if (!OptionGroupSingleton<ExecutionerOptions>.Instance.CanButton)
+        {
+            player.RemainingEmergencies = 0;
+        }
 
         // if Exe was revived Target will be null but their old target will still have the ExecutionerTargetModifier
         if (Target == null)
+        {
             Target = ModifierUtils
                 .GetPlayersWithModifier<ExecutionerTargetModifier>([HideFromIl2Cpp](x) => x.OwnerId == Player.PlayerId)
                 .FirstOrDefault();
+        }
+
         if (TutorialManager.InstanceExists && Target == null &&
             AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started && Player.AmOwner &&
-            Player.IsHost()) Coroutines.Start(SetTutorialTargets(this));
+            Player.IsHost())
+        {
+            Coroutines.Start(SetTutorialTargets(this));
+        }
     }
 
     private static IEnumerator SetTutorialTargets(ExecutionerRole exe)
@@ -148,7 +160,11 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
 
     public override bool CanUse(IUsable usable)
     {
-        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player)) return false;
+        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player))
+        {
+            return false;
+        }
+
         var console = usable.TryCast<Console>()!;
         return console == null || console.AllowImpostor;
     }
@@ -166,29 +182,44 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
 
         // BUG: The host vote isn't included if they vote for the target
         foreach (var voteArea in MeetingHud.Instance.playerStates)
+        {
             if (voteArea.VotedFor == Target?.PlayerId)
+            {
                 Voters.Add(voteArea.TargetPlayerId);
+            }
+        }
     }
 
     private string TargetString()
     {
-        if (!Target) return "Get your target voted out to win.";
+        if (!Target)
+        {
+            return "Get your target voted out to win.";
+        }
 
         return $"Get {Target?.Data.PlayerName} voted out to win.";
     }
 
     public void CheckTargetEjection(PlayerControl exiled)
     {
-        if (Player.HasDied()) return;
+        if (Player.HasDied())
+        {
+            return;
+        }
 
         if (Player.AmOwner && Target != null && exiled == Target)
             // Logger<TownOfUsPlugin>.Error($"CheckTargetEjection - exiled: {exiled.Data.PlayerName}");
+        {
             RpcExecutionerWin(Player);
+        }
     }
 
     public void CheckTargetDeath(PlayerControl? victim)
     {
-        if (Player.HasDied()) return;
+        if (Player.HasDied())
+        {
+            return;
+        }
 
         // Logger<TownOfUsPlugin>.Error($"OnPlayerDeath '{victim.Data.PlayerName}'");
         if (Target == null || victim == Target)
@@ -208,8 +239,10 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
 
             if ((roleType == RoleId.Get<JesterRole>() && OptionGroupSingleton<JesterOptions>.Instance.ScatterOn) ||
                 (roleType == RoleId.Get<SurvivorRole>() && OptionGroupSingleton<SurvivorOptions>.Instance.ScatterOn))
+            {
                 StartCoroutine(Effects.Lerp(0.2f,
                     new Action<float>(p => { Player.GetModifier<ScatterModifier>()?.OnRoundStart(); })));
+            }
         }
     }
 
@@ -222,11 +255,17 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
             return;
         }
 
-        if (target == null) return;
+        if (target == null)
+        {
+            return;
+        }
 
         var role = player.GetRole<ExecutionerRole>();
 
-        if (role == null) return;
+        if (role == null)
+        {
+            return;
+        }
 
         // Logger<TownOfUsPlugin>.Message($"RpcSetExeTarget - Target: '{target.Data.PlayerName}'");
         role.Target = target;

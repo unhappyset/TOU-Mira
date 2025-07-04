@@ -29,7 +29,10 @@ public static class ClericEvents
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var target = button?.Target;
 
-        if (target == null || button == null || !button.CanClick()) return;
+        if (target == null || button == null || !button.CanClick())
+        {
+            return;
+        }
 
         CheckForClericBarrier(@event, target);
     }
@@ -41,7 +44,10 @@ public static class ClericEvents
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var target = button?.Target;
 
-        if (target && !target!.HasModifier<ClericBarrierModifier>()) return;
+        if (target && !target!.HasModifier<ClericBarrierModifier>())
+        {
+            return;
+        }
 
         ResetButtonTimer(source, button);
     }
@@ -52,25 +58,36 @@ public static class ClericEvents
         var source = @event.Source;
         var target = @event.Target;
 
-        if (CheckForClericBarrier(@event, target, source)) ResetButtonTimer(source);
+        if (CheckForClericBarrier(@event, target, source))
+        {
+            ResetButtonTimer(source);
+        }
     }
 
     private static bool CheckForClericBarrier(MiraCancelableEvent @event, PlayerControl target,
         PlayerControl? source = null)
     {
-        if (MeetingHud.Instance || ExileController.Instance) return false;
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return false;
+        }
 
         if (!target.HasModifier<ClericBarrierModifier>() ||
             source == null ||
             target.PlayerId == source.PlayerId ||
             (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield))
+        {
             return false;
+        }
 
         @event.Cancel();
 
         var cleric = target.GetModifier<ClericBarrierModifier>()?.Cleric.GetRole<ClericRole>();
 
-        if (cleric != null && source!.AmOwner) ClericRole.RpcClericBarrierAttacked(cleric.Player, source, target);
+        if (cleric != null && source!.AmOwner)
+        {
+            ClericRole.RpcClericBarrierAttacked(cleric.Player, source, target);
+        }
 
         return true;
     }
@@ -82,7 +99,10 @@ public static class ClericEvents
         button?.SetTimer(reset);
 
         // Reset impostor kill cooldown if they attack a shielded player
-        if (!source.AmOwner || !source.IsImpostor()) return;
+        if (!source.AmOwner || !source.IsImpostor())
+        {
+            return;
+        }
 
         source.SetKillTimer(reset);
     }

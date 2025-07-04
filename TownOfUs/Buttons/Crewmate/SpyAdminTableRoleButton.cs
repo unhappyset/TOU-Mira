@@ -23,7 +23,10 @@ public sealed class SpyAdminTableRoleButton : TownOfUsRoleButton<SpyRole>
     {
         get
         {
-            if (OptionGroupSingleton<SpyOptions>.Instance.DisplayDuration == 0) return AvailableCharge;
+            if (OptionGroupSingleton<SpyOptions>.Instance.DisplayDuration == 0)
+            {
+                return AvailableCharge;
+            }
 
             return AvailableCharge < OptionGroupSingleton<SpyOptions>.Instance.DisplayDuration.Value
                 ? AvailableCharge
@@ -47,7 +50,11 @@ public sealed class SpyAdminTableRoleButton : TownOfUsRoleButton<SpyRole>
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
-        if (!playerControl.AmOwner || MeetingHud.Instance) return;
+        if (!playerControl.AmOwner || MeetingHud.Instance)
+        {
+            return;
+        }
+
         if (usingPortable && !MapBehaviour.Instance.gameObject.activeSelf)
         {
             RefreshAbilityButton();
@@ -76,7 +83,10 @@ public sealed class SpyAdminTableRoleButton : TownOfUsRoleButton<SpyRole>
         Button?.usesRemainingText.gameObject.SetActive(true);
         Button?.usesRemainingSprite.gameObject.SetActive(true);
         Button!.usesRemainingText.text = (int)AvailableCharge + "%";
-        if (!usingPortable && EffectActive) ResetCooldownAndOrEffect();
+        if (!usingPortable && EffectActive)
+        {
+            ResetCooldownAndOrEffect();
+        }
     }
 
     public override bool Enabled(RoleBehaviour? role)
@@ -102,7 +112,11 @@ public sealed class SpyAdminTableRoleButton : TownOfUsRoleButton<SpyRole>
 
     protected override void OnClick()
     {
-        if (!OptionGroupSingleton<SpyOptions>.Instance.MoveWithMenu) PlayerControl.LocalPlayer.NetTransform.Halt();
+        if (!OptionGroupSingleton<SpyOptions>.Instance.MoveWithMenu)
+        {
+            PlayerControl.LocalPlayer.NetTransform.Halt();
+        }
+
         usingPortable = true;
         ToggleMapVisible(OptionGroupSingleton<SpyOptions>.Instance.MoveWithMenu);
     }
@@ -121,7 +135,10 @@ public sealed class SpyAdminTableRoleButton : TownOfUsRoleButton<SpyRole>
 
     public override void ClickHandler()
     {
-        if (!CanUse() || Minigame.Instance != null) return;
+        if (!CanUse() || Minigame.Instance != null)
+        {
+            return;
+        }
 
         OnClick();
         Button?.SetDisabled();
@@ -149,9 +166,17 @@ public sealed class SpyAdminTableRoleButton : TownOfUsRoleButton<SpyRole>
             return;
         }
 
-        if (!ShipStatus.Instance) return;
+        if (!ShipStatus.Instance)
+        {
+            return;
+        }
+
         HudManager.Instance.InitMap();
-        if (!PlayerControl.LocalPlayer.CanMove && !MeetingHud.Instance) return;
+        if (!PlayerControl.LocalPlayer.CanMove && !MeetingHud.Instance)
+        {
+            return;
+        }
+
         var opts = GameManager.Instance.GetMapOptions();
         var portableAdmin = MapBehaviour.Instance;
 
@@ -162,6 +187,9 @@ public sealed class SpyAdminTableRoleButton : TownOfUsRoleButton<SpyRole>
         portableAdmin.taskOverlay.Hide();
         portableAdmin.HerePoint.enabled = !opts.ShowLivePlayerPosition;
         portableAdmin.TrackedHerePoint.gameObject.SetActive(false);
-        if (portableAdmin.HerePoint.enabled) PlayerControl.LocalPlayer.SetPlayerMaterialColors(portableAdmin.HerePoint);
+        if (portableAdmin.HerePoint.enabled)
+        {
+            PlayerControl.LocalPlayer.SetPlayerMaterialColors(portableAdmin.HerePoint);
+        }
     }
 }

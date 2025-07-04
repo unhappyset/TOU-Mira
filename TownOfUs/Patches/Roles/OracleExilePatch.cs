@@ -15,12 +15,22 @@ public static class OracleExilePatch
     [HarmonyPostfix]
     public static void TranslationControllerGetStringPostfix(ref string __result, [HarmonyArgument(0)] StringNames name)
     {
-        if (ExileController.Instance == null) return;
-        if (ExileController.Instance.initData.networkedPlayer != null) return;
+        if (ExileController.Instance == null)
+        {
+            return;
+        }
+
+        if (ExileController.Instance.initData.networkedPlayer != null)
+        {
+            return;
+        }
 
         foreach (var mod in ModifierUtils.GetActiveModifiers<OracleBlessedModifier>())
         {
-            if (!mod.SavedFromExile) continue;
+            if (!mod.SavedFromExile)
+            {
+                continue;
+            }
 
             mod.SavedFromExile = false;
 

@@ -64,7 +64,10 @@ public sealed class FirstDeadShield : ExcludedGameModifier, IAnimated
 
     public override void OnDeactivate()
     {
-        if (FirstRoundShield?.gameObject != null) FirstRoundShield.Destroy();
+        if (FirstRoundShield?.gameObject != null)
+        {
+            FirstRoundShield.Destroy();
+        }
     }
 
     public override void Update()

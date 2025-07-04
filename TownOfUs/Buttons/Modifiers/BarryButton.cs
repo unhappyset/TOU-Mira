@@ -49,7 +49,10 @@ public sealed class BarryButton : TownOfUsButton
         {
             MeetingRoomManager.Instance.AssignSelf(player, null);
 
-            if (GameManager.Instance.CheckTaskCompletion()) return;
+            if (GameManager.Instance.CheckTaskCompletion())
+            {
+                return;
+            }
 
             HudManager.Instance.OpenMeetingRoom(player);
             player.RpcStartMeeting(null);

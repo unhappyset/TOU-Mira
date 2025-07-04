@@ -87,7 +87,10 @@ public sealed class SatelliteModifier : UniversalGameModifier, IWikiDiscoverable
     public void ClearMapIcons()
     {
         foreach (var gameObject in CastedIcons.Select(icon => icon.gameObject).Where(gameObject => gameObject != null))
+        {
             gameObject.Destroy();
+        }
+
         CastedIcons.Clear();
     }
 }

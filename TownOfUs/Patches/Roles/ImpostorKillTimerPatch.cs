@@ -12,7 +12,10 @@ public static class ImpostorKillTimerPatch
     {
         if (__instance.Data.Role.CanUseKillButton)
         {
-            if (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown <= 0f) return false;
+            if (GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown <= 0f)
+            {
+                return false;
+            }
 
             var maxvalue = time > GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown
                 ? time + 1f

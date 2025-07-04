@@ -57,20 +57,29 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
         var isValid = true;
         if ((role is JesterRole && OptionGroupSingleton<JesterOptions>.Instance.ScatterOn) ||
             (role is SurvivorRole && OptionGroupSingleton<SurvivorOptions>.Instance.ScatterOn))
+        {
             isValid = false;
+        }
 
         return base.IsModifierValidOn(role) && isValid;
     }
 
     public override void OnDeactivate()
     {
-        if (Player == null) return;
+        if (Player == null)
+        {
+            return;
+        }
+
         SetVisibility(Player, 1f);
     }
 
     public void OnRoundStart()
     {
-        if (Player.HasDied()) return;
+        if (Player.HasDied())
+        {
+            return;
+        }
 
         LastMoved = DateTime.UtcNow;
         SetVisibility(Player, 1f);
@@ -78,15 +87,33 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
 
     public override void Update()
     {
-        if (IntroCutscene.Instance) return;
-        if (Player == null) return;
-        if (PlayerControl.LocalPlayer == null) return;
-        if (Player.HasDied()) return;
+        if (IntroCutscene.Instance)
+        {
+            return;
+        }
+
+        if (Player == null)
+        {
+            return;
+        }
+
+        if (PlayerControl.LocalPlayer == null)
+        {
+            return;
+        }
+
+        if (Player.HasDied())
+        {
+            return;
+        }
 
         // check movement by animation
         var playerPhysics = Player.MyPhysics;
         var currentPhysicsAnim = playerPhysics.Animations.Animator.GetCurrentAnimation();
-        if (currentPhysicsAnim != playerPhysics.Animations.group.IdleAnim) LastMoved = DateTime.UtcNow;
+        if (currentPhysicsAnim != playerPhysics.Animations.group.IdleAnim)
+        {
+            LastMoved = DateTime.UtcNow;
+        }
 
         if (Player.GetAppearanceType() == TownOfUsAppearances.Swooper)
         {
@@ -94,7 +121,9 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
 
             if ((PlayerControl.LocalPlayer.IsImpostor() && Player.Data.Role is SwooperRole) ||
                 (Player.AmOwner && Player.Data.Role is SwooperRole))
+            {
                 opacity = 0.1f;
+            }
 
             SetVisibility(Player, opacity, true);
         }
@@ -137,26 +166,41 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
         colour.a = transparency;
         player.cosmetics.currentBodySprite.BodySprite.color = colour;
 
-        if (hideName) transparency = 0f;
+        if (hideName)
+        {
+            transparency = 0f;
+        }
 
         cosmetics.nameText.color = cosmetics.nameText.color.SetAlpha(transparency);
 
         if (DataManager.Settings.Accessibility.ColorBlindMode)
+        {
             cosmetics.colorBlindText.color = cosmetics.colorBlindText.color.SetAlpha(transparency);
+        }
 
         player.SetHatAndVisorAlpha(transparency);
         cosmetics.skin.layer.color = cosmetics.skin.layer.color.SetAlpha(transparency);
         if (player.cosmetics.currentPet != null)
         {
-            foreach (var rend in player.cosmetics.currentPet.renderers) rend.color = rend.color.SetAlpha(transparency);
+            foreach (var rend in player.cosmetics.currentPet.renderers)
+            {
+                rend.color = rend.color.SetAlpha(transparency);
+            }
 
             foreach (var shadow in player.cosmetics.currentPet.shadows)
+            {
                 shadow.color = shadow.color.SetAlpha(transparency);
+            }
         }
 
         foreach (var animation in player.transform.GetChild(2).GetComponentsInParent<SpriteRenderer>())
+        {
             animation.color = animation.color.SetAlpha(transparency);
+        }
+
         foreach (var animation in player.transform.GetChild(2).GetComponentsInChildren<SpriteRenderer>())
+        {
             animation.color = animation.color.SetAlpha(transparency);
+        }
     }
 }

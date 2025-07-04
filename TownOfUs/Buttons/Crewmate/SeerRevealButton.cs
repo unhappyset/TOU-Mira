@@ -34,7 +34,10 @@ public sealed class SeerRevealButton : TownOfUsRoleButton<SeerRole, PlayerContro
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
 
         RevealAlliance(Target);
         TouAudio.PlaySound(TouAudio.QuestionSound);
@@ -51,7 +54,10 @@ public sealed class SeerRevealButton : TownOfUsRoleButton<SeerRole, PlayerContro
         {
             target.AddModifier<SeerEvilRevealModifier>();
             var possiblyGood = options.ShowCrewmateKillingAsRed ? "possibly" : string.Empty;
-            if (options.ShowNeutralBenignAsRed) possiblyGood = "possibly";
+            if (options.ShowNeutralBenignAsRed)
+            {
+                possiblyGood = "possibly";
+            }
 
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You have revealed that {target.Data.PlayerName} is {possiblyGood} evil!</color></b>",
@@ -59,14 +65,36 @@ public sealed class SeerRevealButton : TownOfUsRoleButton<SeerRole, PlayerContro
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
 
-            if (options.ShowCrewmateKillingAsRed) possibleAlignment.Append("Crew Killer, ");
-            if (options.ShowNeutralBenignAsRed) possibleAlignment.Append("Neutral Benign, ");
-            if (options.ShowNeutralEvilAsRed) possibleAlignment.Append("Neutral Evil, ");
-            if (options.ShowNeutralKillingAsRed) possibleAlignment.Append("Neutral Killer, ");
-            if (options.SwapTraitorColors) possibleAlignment.Append("Traitor, ");
+            if (options.ShowCrewmateKillingAsRed)
+            {
+                possibleAlignment.Append("Crew Killer, ");
+            }
+
+            if (options.ShowNeutralBenignAsRed)
+            {
+                possibleAlignment.Append("Neutral Benign, ");
+            }
+
+            if (options.ShowNeutralEvilAsRed)
+            {
+                possibleAlignment.Append("Neutral Evil, ");
+            }
+
+            if (options.ShowNeutralKillingAsRed)
+            {
+                possibleAlignment.Append("Neutral Killer, ");
+            }
+
+            if (options.SwapTraitorColors)
+            {
+                possibleAlignment.Append("Traitor, ");
+            }
 
             if (possibleAlignment.Length > 3)
+            {
                 possibleAlignment = possibleAlignment.Remove(possibleAlignment.Length - 2, 2);
+            }
+
             var impString = possibleAlignment.Length > 1 ? ", or Impostor!" : "Impostor!";
             possibleAlignment.Append(impString);
 
@@ -76,8 +104,15 @@ public sealed class SeerRevealButton : TownOfUsRoleButton<SeerRole, PlayerContro
         {
             target.AddModifier<SeerGoodRevealModifier>();
             var possiblyGood = !options.ShowNeutralBenignAsRed ? "likely" : string.Empty;
-            if (!options.ShowNeutralEvilAsRed) possiblyGood = "probably";
-            if (!options.ShowNeutralKillingAsRed) possiblyGood = "possibly";
+            if (!options.ShowNeutralEvilAsRed)
+            {
+                possiblyGood = "probably";
+            }
+
+            if (!options.ShowNeutralKillingAsRed)
+            {
+                possiblyGood = "possibly";
+            }
 
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{Palette.CrewmateBlue.ToTextColor()}You have revealed that {target.Data.PlayerName} is {possiblyGood} good!</color></b>",
@@ -85,12 +120,26 @@ public sealed class SeerRevealButton : TownOfUsRoleButton<SeerRole, PlayerContro
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
 
-            if (!options.ShowNeutralBenignAsRed) possibleAlignment.Append("Neutral Benign, ");
-            if (!options.ShowNeutralEvilAsRed) possibleAlignment.Append("Neutral Evil, ");
-            if (!options.ShowNeutralKillingAsRed) possibleAlignment.Append("Neutral Killer, ");
+            if (!options.ShowNeutralBenignAsRed)
+            {
+                possibleAlignment.Append("Neutral Benign, ");
+            }
+
+            if (!options.ShowNeutralEvilAsRed)
+            {
+                possibleAlignment.Append("Neutral Evil, ");
+            }
+
+            if (!options.ShowNeutralKillingAsRed)
+            {
+                possibleAlignment.Append("Neutral Killer, ");
+            }
 
             if (possibleAlignment.Length > 3)
+            {
                 possibleAlignment = possibleAlignment.Remove(possibleAlignment.Length - 2, 2);
+            }
+
             var impString = possibleAlignment.Length > 1 ? ", or Crewmate!" : "Crewmate!";
             possibleAlignment.Append(impString);
             var notif2 =

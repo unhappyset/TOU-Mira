@@ -53,10 +53,25 @@ public static class KillVentBinds
 {
     public static void Postfix(HudManager __instance)
     {
-        if (PlayerControl.LocalPlayer == null) return;
-        if (PlayerControl.LocalPlayer.Data == null) return;
-        if (PlayerControl.LocalPlayer.Data.IsDead) return;
-        if (PlayerControl.LocalPlayer.IsImpostor()) return;
+        if (PlayerControl.LocalPlayer == null)
+        {
+            return;
+        }
+
+        if (PlayerControl.LocalPlayer.Data == null)
+        {
+            return;
+        }
+
+        if (PlayerControl.LocalPlayer.Data.IsDead)
+        {
+            return;
+        }
+
+        if (PlayerControl.LocalPlayer.IsImpostor())
+        {
+            return;
+        }
 
         // for neutrals
 
@@ -68,7 +83,9 @@ public static class KillVentBinds
             var killKey = ReInput.players.GetPlayer(0).GetButtonDown("ActionSecondary");
             var controllerKill = ConsoleJoystick.player.GetButtonDown(8);
             if (killKey || controllerKill)
+            {
                 button.DoClick();
+            }
         }
 
         if (vent.isActiveAndEnabled)
@@ -76,7 +93,9 @@ public static class KillVentBinds
             var ventKey = ReInput.players.GetPlayer(0).GetButtonDown("UseVent");
             var controllerVent = ConsoleJoystick.player.GetButtonDown(50);
             if (ventKey || controllerVent)
+            {
                 vent.DoClick();
+            }
         }
     }
 }

@@ -27,7 +27,11 @@ public sealed class MinerRole(IntPtr cppPtr)
     {
         if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner ||
             MeetingHud.Instance || (!HudManager.Instance.UseButton.isActiveAndEnabled &&
-                                    !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
+                                    !HudManager.Instance.PetButton.isActiveAndEnabled))
+        {
+            return;
+        }
+
         HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<MinerOptions>.Instance.MinerKill ||
                                                      (Player != null && Player.GetModifiers<BaseModifier>()
                                                          .Any(x => x is ICachedRole)) ||
@@ -56,7 +60,10 @@ public sealed class MinerRole(IntPtr cppPtr)
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
         if (OptionGroupSingleton<MinerOptions>.Instance.MineVisibility is MineVisiblityOptions.AfterUse)
+        {
             stringB.Append(CultureInfo.InvariantCulture, $"Vents will only be visible once used");
+        }
+
         return stringB;
     }
 
@@ -99,7 +106,10 @@ public sealed class MinerRole(IntPtr cppPtr)
         vent.Id = ventId;
         vent.transform.position = new Vector3(position.x, position.y, zAxis);
 
-        if (miner == null) return;
+        if (miner == null)
+        {
+            return;
+        }
 
         if (miner.Vents.Count > 0)
         {

@@ -11,9 +11,15 @@ public sealed class RainbowBehaviour(IntPtr cppPtr) : MonoBehaviour(cppPtr)
 
     public void Update()
     {
-        if (Renderer == null) return;
+        if (Renderer == null)
+        {
+            return;
+        }
 
-        if (RainbowUtils.IsRainbow(Id)) RainbowUtils.SetRainbow(Renderer);
+        if (RainbowUtils.IsRainbow(Id))
+        {
+            RainbowUtils.SetRainbow(Renderer);
+        }
     }
 
     public void AddRend(Renderer rend, int id)

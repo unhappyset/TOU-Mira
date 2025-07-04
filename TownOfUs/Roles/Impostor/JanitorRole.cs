@@ -26,7 +26,11 @@ public sealed class JanitorRole(IntPtr cppPtr)
     {
         if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner ||
             MeetingHud.Instance || (!HudManager.Instance.UseButton.isActiveAndEnabled &&
-                                    !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
+                                    !HudManager.Instance.PetButton.isActiveAndEnabled))
+        {
+            return;
+        }
+
         HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<JanitorOptions>.Instance.JanitorKill ||
                                                      (Player != null && Player.GetModifiers<BaseModifier>()
                                                          .Any(x => x is ICachedRole)) ||

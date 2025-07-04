@@ -11,13 +11,23 @@ public static class ScientistEvents
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
-        if (@event.Player.HasModifier<ScientistModifier>() && @event.Player.AmOwner) ScientistModifier.OnTaskComplete();
+        if (@event.Player.HasModifier<ScientistModifier>() && @event.Player.AmOwner)
+        {
+            ScientistModifier.OnTaskComplete();
+        }
     }
 
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return; // Never run when round starts.
-        if (PlayerControl.LocalPlayer.HasModifier<ScientistModifier>()) ScientistModifier.OnRoundStart();
+        if (@event.TriggeredByIntro)
+        {
+            return; // Never run when round starts.
+        }
+
+        if (PlayerControl.LocalPlayer.HasModifier<ScientistModifier>())
+        {
+            ScientistModifier.OnRoundStart();
+        }
     }
 }

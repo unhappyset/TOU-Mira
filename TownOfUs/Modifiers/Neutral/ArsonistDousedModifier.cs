@@ -28,7 +28,9 @@ public sealed class ArsonistDousedModifier(byte arsonistId) : BaseModifier
     public override void FixedUpdate()
     {
         if (PlayerControl.LocalPlayer.IsRole<ArsonistRole>())
+        {
             Player?.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(Color.yellow));
+        }
     }
 
     public override void OnDeactivate()

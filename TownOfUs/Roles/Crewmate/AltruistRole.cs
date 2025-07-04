@@ -102,7 +102,9 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             Logger<TownOfUsPlugin>.Error($"AltruistRole.ClearArrows BadGuys Only");
 
             foreach (var playerWithArrow in ModifierUtils.GetPlayersWithModifier<AltruistArrowModifier>())
+            {
                 playerWithArrow.RemoveModifier<AltruistArrowModifier>();
+            }
         }
     }
 
@@ -128,7 +130,9 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         {
             position = new Vector2(body.transform.localPosition.x, body.transform.localPosition.y + 0.3636f);
             if (OptionGroupSingleton<AltruistOptions>.Instance.HideAtBeginningOfRevive)
+            {
                 Destroy(body.gameObject);
+            }
         }
 
         yield return new WaitForSeconds(OptionGroupSingleton<AltruistOptions>.Instance.ReviveDuration);
@@ -140,13 +144,21 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             dead.Revive();
 
             dead.transform.position = new Vector2(position.x, position.y);
-            if (dead.AmOwner) PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(position.x, position.y));
+            if (dead.AmOwner)
+            {
+                PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(position.x, position.y));
+            }
 
             if (ModCompatibility.IsSubmerged() && PlayerControl.LocalPlayer.PlayerId == dead.PlayerId)
+            {
                 ModCompatibility.ChangeFloor(dead.transform.position.y > -7);
+            }
 
             if (dead.AmOwner && !dead.HasModifier<LoverModifier>())
+            {
                 HudManager.Instance.Chat.gameObject.SetActive(false);
+            }
+
             // return player from ghost role back to what they were when alive
             dead.ChangeRole((ushort)roleWhenAlive!.Role, false);
 
@@ -180,14 +192,21 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             body = FindObjectsOfType<DeadBody>()
                 .FirstOrDefault(b => b.ParentId == dead.PlayerId);
             if (!OptionGroupSingleton<AltruistOptions>.Instance.HideAtBeginningOfRevive && body != null)
+            {
                 Destroy(body.gameObject);
+            }
 
             if (PlayerControl.LocalPlayer.IsImpostor() || PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling))
             {
-                if (Player.HasModifier<AltruistArrowModifier>()) Player.RemoveModifier<AltruistArrowModifier>();
+                if (Player.HasModifier<AltruistArrowModifier>())
+                {
+                    Player.RemoveModifier<AltruistArrowModifier>();
+                }
 
                 if (!dead.HasModifier<AltruistArrowModifier>() && dead != PlayerControl.LocalPlayer)
+                {
                     dead.AddModifier<AltruistArrowModifier>(PlayerControl.LocalPlayer, Color.white);
+                }
             }
         }
 
@@ -208,7 +227,9 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Altruist));
 
             if (!alt.HasModifier<AltruistArrowModifier>())
+            {
                 alt.AddModifier<AltruistArrowModifier>(PlayerControl.LocalPlayer, TownOfUsColors.Impostor);
+            }
         }
 
         var touAbilityEvent = new TouAbilityEvent(AbilityType.AltruistRevive, alt, target);

@@ -39,7 +39,11 @@ public sealed class SpyModifier : TouGameModifier, IWikiDiscoverable
     {
         base.OnActivate();
 
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
+
         CustomButtonSingleton<SpyAdminTableModifierButton>.Instance.AvailableCharge =
             OptionGroupSingleton<SpyOptions>.Instance.StartingCharge.Value;
     }

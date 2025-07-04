@@ -34,7 +34,10 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
 
     private void Awake()
     {
-        if (Instance) Instance.Close();
+        if (Instance)
+        {
+            Instance.Close();
+        }
 
         RolesHolder = transform.FindChild("Roles");
         RolePrefab = transform.FindChild("RoleCardHolder").gameObject;
@@ -67,7 +70,10 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
 
     private static IEnumerator CoOpen(TraitorSelectionMinigame minigame)
     {
-        while (ExileController.Instance != null) yield return new WaitForSeconds(0.65f);
+        while (ExileController.Instance != null)
+        {
+            yield return new WaitForSeconds(0.65f);
+        }
 
         minigame.gameObject.SetActive(true);
         minigame.Begin();
@@ -99,17 +105,28 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
             if (role is ICustomRole customRole)
             {
                 if (customRole.Configuration.Icon != null)
+                {
                     roleImg = customRole.Configuration.Icon.LoadAsset();
+                }
                 else if (customRole.Team == ModdedRoleTeams.Crewmate)
+                {
                     roleImg = TouRoleIcons.RandomCrew.LoadAsset();
+                }
                 else if (customRole.Team == ModdedRoleTeams.Impostor)
+                {
                     roleImg = TouRoleIcons.RandomImp.LoadAsset();
+                }
                 else
+                {
                     roleImg = TouRoleIcons.RandomNeut.LoadAsset();
+                }
             }
             else
             {
-                if (role.RoleIconSolid != null) roleImg = role.RoleIconSolid;
+                if (role.RoleIconSolid != null)
+                {
+                    roleImg = role.RoleIconSolid;
+                }
             }
 
             var card = CreateCard(roleName, teamName, roleImg, z, role.TeamColor);
@@ -161,7 +178,10 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
         roleText.text = roleName;
         teamText.text = teamName;
 
-        if (sprite != null) roleImage.sprite = sprite;
+        if (sprite != null)
+        {
+            roleImage.sprite = sprite;
+        }
 
         buttonRollover.OverColor = color;
         roleText.color = color;
@@ -176,7 +196,11 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
         foreach (var o in RolesHolder!.transform)
         {
             var card = o.Cast<Transform>();
-            if (card == null) continue;
+            if (card == null)
+            {
+                continue;
+            }
+
             var child = card.GetChild(0);
             yield return CoAnimateCardIn(child);
             Coroutines.Start(MiscUtils.BetterBloop(child, finalSize: 0.55f, duration: 0.22f, intensity: 0.16f));

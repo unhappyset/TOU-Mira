@@ -55,7 +55,10 @@ public sealed class JesterRole(IntPtr cppPtr)
 
     public bool WinConditionMet()
     {
-        if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is not JestWinOptions.EndsGame) return false;
+        if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is not JestWinOptions.EndsGame)
+        {
+            return false;
+        }
 
         return Voted ||
                GameHistory.DeathHistory.Exists(x => x.Item1 == Player.PlayerId && x.Item2 == DeathReason.Exile);
@@ -71,12 +74,17 @@ public sealed class JesterRole(IntPtr cppPtr)
     {
         RoleBehaviourStubs.Initialize(this, player);
 
-        if (!OptionGroupSingleton<JesterOptions>.Instance.CanButton) player.RemainingEmergencies = 0;
+        if (!OptionGroupSingleton<JesterOptions>.Instance.CanButton)
+        {
+            player.RemainingEmergencies = 0;
+        }
 
         if (Player.AmOwner)
         {
             if (OptionGroupSingleton<JesterOptions>.Instance.ScatterOn)
+            {
                 Player.AddModifier<ScatterModifier>(OptionGroupSingleton<JesterOptions>.Instance.ScatterTimer);
+            }
 
             HudManager.Instance.ImpostorVentButton.graphic.sprite = TouNeutAssets.JesterVentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Jester);
@@ -90,7 +98,9 @@ public sealed class JesterRole(IntPtr cppPtr)
         if (Player.AmOwner)
         {
             if (OptionGroupSingleton<JesterOptions>.Instance.ScatterOn)
+            {
                 Player.RemoveModifier<ScatterModifier>();
+            }
 
             HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
@@ -102,7 +112,9 @@ public sealed class JesterRole(IntPtr cppPtr)
         RoleBehaviourStubs.OnDeath(this, reason);
 
         if (reason == DeathReason.Exile)
+        {
             RpcJesterWin(Player);
+        }
 
         //Logger<TownOfUsPlugin>.Error($"JesterRole.OnDeath - Voted: {Voted}");
     }
@@ -114,13 +126,21 @@ public sealed class JesterRole(IntPtr cppPtr)
         Voters.Clear();
 
         foreach (var state in MeetingHudGetVotesPatch.States)
+        {
             if (state.VotedForId == Player.PlayerId)
+            {
                 Voters.Add(state.VoterId);
+            }
+        }
     }
 
     public override bool CanUse(IUsable usable)
     {
-        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player)) return false;
+        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player))
+        {
+            return false;
+        }
+
         var console = usable.TryCast<Console>()!;
         return console == null || console.AllowImpostor;
     }

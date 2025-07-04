@@ -63,7 +63,10 @@ public static class LobbyJoin
     [HarmonyPostfix]
     public static void Update()
     {
-        if (GameId == 0 || !LobbyText || !LobbyText.active) return;
+        if (GameId == 0 || !LobbyText || !LobbyText.active)
+        {
+            return;
+        }
 
         if (Input.GetKeyDown(KeyCode.Tab) && !JoiningAttempted)
         {
@@ -74,7 +77,11 @@ public static class LobbyJoin
         if (LobbyText && Text)
         {
             var code = GameCode.IntToGameName(GameId);
-            if (DataManager.Settings.Gameplay.StreamerMode) code = "******";
+            if (DataManager.Settings.Gameplay.StreamerMode)
+            {
+                code = "******";
+            }
+
             Text.text = $"<size=110%>Prev Lobby:</size>"
                         + $"\n<size=4.6f>({code})</size>"
                         + $"\nPress Tab to\n<size=2.6f>attempt joining</size>";

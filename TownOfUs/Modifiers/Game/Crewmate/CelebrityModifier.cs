@@ -68,8 +68,12 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
 
         var allRooms2 = ShipStatus.Instance.FastRooms;
         foreach (var plainShipRoom2 in allRooms2.Values)
+        {
             if (plainShipRoom2.roomArea && plainShipRoom2.roomArea.OverlapPoint(player.GetTruePosition()))
+            {
                 plainShipRoom = plainShipRoom2;
+            }
+        }
 
         var room = plainShipRoom != null
             ? TranslationController.Instance.GetString(plainShipRoom.RoomId)
@@ -114,15 +118,26 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
                 break;
         }
 
-        if (customDeath != string.Empty && customDeath != "") cod = customDeath;
-        if (MeetingHud.Instance) celeb.Announced = true;
+        if (customDeath != string.Empty && customDeath != "")
+        {
+            cod = customDeath;
+        }
+
+        if (MeetingHud.Instance)
+        {
+            celeb.Announced = true;
+        }
 
         if (source == player)
+        {
             celeb.DeathMessage =
                 $"The Celebrity, {player.GetDefaultAppearance().PlayerName}, was killed! Location: {celeb.StoredRoom}, Death: By Suicide, Time: ";
+        }
         else
+        {
             celeb.DeathMessage =
                 $"The Celebrity, {player.GetDefaultAppearance().PlayerName}, was {cod}! Location: {celeb.StoredRoom}, Death: By the {source.Data.Role.NiceName}, Time: ";
+        }
     }
 
     [MethodRpc((uint)TownOfUsRpc.UpdateCelebrityKilled, SendImmediately = true)]

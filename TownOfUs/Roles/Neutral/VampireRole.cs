@@ -60,7 +60,10 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
     {
         var vampireCount = CustomRoleUtils.GetActiveRolesOfType<VampireRole>().Count(x => !x.Player.HasDied());
 
-        if (MiscUtils.KillersAliveCount > vampireCount) return false;
+        if (MiscUtils.KillersAliveCount > vampireCount)
+        {
+            return false;
+        }
 
         return vampireCount >= Helpers.GetAlivePlayers().Count - vampireCount;
     }
@@ -102,7 +105,10 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
 
     public override bool CanUse(IUsable usable)
     {
-        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player)) return false;
+        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player))
+        {
+            return false;
+        }
 
         var console = usable.TryCast<Console>()!;
         return console == null || console.AllowImpostor;
@@ -129,6 +135,8 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         target.AddModifier<VampireBittenModifier>();
 
         if (OptionGroupSingleton<VampireOptions>.Instance.CanGuessAsNewVamp)
+        {
             target.AddModifier<NeutralKillerAssassinModifier>();
+        }
     }
 }

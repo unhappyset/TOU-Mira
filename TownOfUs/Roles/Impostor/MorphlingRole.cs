@@ -48,8 +48,10 @@ public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         var stringB = ITownOfUsRole.SetNewTabText(this);
 
         if (Player.HasModifier<MorphlingMorphModifier>())
+        {
             stringB.Append(CultureInfo.InvariantCulture,
                 $"\n<b>Morphed As:</b> {Sampled!.Data.Color.ToTextColor()}{Sampled.Data.PlayerName}</color>");
+        }
 
         return stringB;
     }

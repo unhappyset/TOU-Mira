@@ -55,7 +55,10 @@ public sealed class SatelliteButton : TownOfUsButton
             notif1.Text.SetOutlineThickness(0.35f);
         }
 
-        if (OptionGroupSingleton<SatelliteOptions>.Instance.OneUsePerRound) Usable = false;
+        if (OptionGroupSingleton<SatelliteOptions>.Instance.OneUsePerRound)
+        {
+            Usable = false;
+        }
         // will return to this once i get more freetime
         //deadBodies.Do(x => PlayerControl.LocalPlayer.GetModifier<SatelliteModifier>().NewMapIcon(MiscUtils.PlayerById(x.ParentId)));
     }

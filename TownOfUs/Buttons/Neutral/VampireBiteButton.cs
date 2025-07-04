@@ -69,18 +69,41 @@ public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerCo
         }
 
         if (ConvertCheck(Target))
+        {
             VampireRole.RpcVampireBite(PlayerControl.LocalPlayer, Target);
+        }
         else
+        {
             PlayerControl.LocalPlayer.RpcCustomMurder(Target);
+        }
     }
 
     private static bool ConvertCheck(PlayerControl target)
     {
-        if (target == null) return false;
-        if (target.Data.Role is VampireRole) return false;
-        if (target.IsImpostor()) return false;
-        if (target.Is(RoleAlignment.NeutralKilling)) return false;
-        if (target.HasModifier<EgotistModifier>()) return false;
+        if (target == null)
+        {
+            return false;
+        }
+
+        if (target.Data.Role is VampireRole)
+        {
+            return false;
+        }
+
+        if (target.IsImpostor())
+        {
+            return false;
+        }
+
+        if (target.Is(RoleAlignment.NeutralKilling))
+        {
+            return false;
+        }
+
+        if (target.HasModifier<EgotistModifier>())
+        {
+            return false;
+        }
 
         var options = OptionGroupSingleton<VampireOptions>.Instance;
 
@@ -91,12 +114,18 @@ public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerCo
         var canConvertAlliance = true;
 
         if (target.HasModifier<LoverModifier>())
+        {
             canConvertAlliance = options.ConvertOptions.ToDisplayString().Contains("Lovers");
+        }
 
         if (target.Is(RoleAlignment.NeutralBenign))
+        {
             canConvertRole = options.ConvertOptions.ToDisplayString().Contains("Neutral Benign");
+        }
         else if (target.Is(RoleAlignment.NeutralEvil))
+        {
             canConvertRole = options.ConvertOptions.ToDisplayString().Contains("Neutral Evil");
+        }
 
         return canConvertRole && canConvertAlliance && vampireCount < 2 && totalVamps < options.MaxVampires &&
                (!PlayerControl.LocalPlayer.HasModifier<VampireBittenModifier>() || options.CanConvertAsNewVamp);

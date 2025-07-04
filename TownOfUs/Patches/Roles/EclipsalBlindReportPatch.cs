@@ -16,9 +16,13 @@ public static class EclipsalBlindReportPatch
             PlayerControl.LocalPlayer.Data == null ||
             !ShipStatus.Instance ||
             (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started && !TutorialManager.InstanceExists))
+        {
             return;
+        }
 
         if (PlayerControl.LocalPlayer.HasModifier<EclipsalBlindModifier>())
+        {
             HudManager.Instance.ReportButton.SetActive(false);
+        }
     }
 }

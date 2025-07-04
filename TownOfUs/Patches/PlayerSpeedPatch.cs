@@ -17,8 +17,13 @@ public static class PlayerSpeedPatch
 
 
         if (pc.HasModifier<VenererSprintModifier>())
+        {
             __result *= OptionGroupSingleton<VenererOptions>.Instance.NumSprintSpeed;
+        }
 
-        if (pc.TryGetModifier<VenererFreezeModifier>(out var freeze)) __result *= freeze.SpeedFactor;
+        if (pc.TryGetModifier<VenererFreezeModifier>(out var freeze))
+        {
+            __result *= freeze.SpeedFactor;
+        }
     }
 }

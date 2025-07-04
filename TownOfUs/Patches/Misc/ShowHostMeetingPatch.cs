@@ -13,7 +13,10 @@ public static class ShowHostMeetingPatch
     [HarmonyPostfix]
     public static void MeetingUpdatePatch(MeetingHud __instance)
     {
-        if (AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame) return;
+        if (AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame)
+        {
+            return;
+        }
 
         var host = GameData.Instance.GetHost();
 
@@ -28,7 +31,10 @@ public static class ShowHostMeetingPatch
     [HarmonyPostfix]
     public static void Setup(MeetingHud __instance)
     {
-        if (AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame) return;
+        if (AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame)
+        {
+            return;
+        }
 
         __instance.ProceedButton.transform.localPosition = new Vector3(-2.5f, 2.2f, 0);
         __instance.ProceedButton.GetComponent<SpriteRenderer>().enabled = false;

@@ -79,6 +79,7 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
         if (coordinates.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
         {
             if (Minigame.Instance)
+            {
                 try
                 {
                     Minigame.Instance.Close();
@@ -87,6 +88,7 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
                 {
                     /* ignored */
                 }
+            }
 
             if (PlayerControl.LocalPlayer.inVent)
             {
@@ -100,7 +102,10 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
             var player = MiscUtils.PlayerById(key)!;
             player.transform.position = value;
 
-            if (PlayerControl.LocalPlayer == player) PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(value);
+            if (PlayerControl.LocalPlayer == player)
+            {
+                PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(value);
+            }
         }
 
         if (PlayerControl.LocalPlayer.walkingToVent)
@@ -112,7 +117,9 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
         }
 
         if (ModCompatibility.SubLoaded)
+        {
             ModCompatibility.ChangeFloor(PlayerControl.LocalPlayer.transform.position.y > -7f);
+        }
     }
 
     public static Dictionary<byte, Vector2> GenerateDisperseCoordinates()

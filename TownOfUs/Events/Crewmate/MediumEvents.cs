@@ -11,6 +11,8 @@ public static class MediumEvents
     public static void EjectionEventHandler(EjectionEvent @event)
     {
         if (PlayerControl.LocalPlayer.Data.Role is MediumRole medium)
+        {
             medium.MediatedPlayers.ForEach(mediated => mediated.Player?.RpcRemoveModifier(mediated.UniqueId));
+        }
     }
 }

@@ -25,7 +25,10 @@ public sealed class MediumMediateButton : TownOfUsRoleButton<MediumRole>
                           Object.FindObjectsOfType<DeadBody>().Any(x => x.ParentId == plr.PlayerId)
                           && !plr.HasModifier<MediatedModifier>()).ToList();
 
-        if (deadPlayers.Count == 0) return;
+        if (deadPlayers.Count == 0)
+        {
+            return;
+        }
 
         var targets = OptionGroupSingleton<MediumOptions>.Instance.WhoIsRevealed switch
         {
@@ -36,6 +39,9 @@ public sealed class MediumMediateButton : TownOfUsRoleButton<MediumRole>
             _ => []
         };
 
-        foreach (var plr in targets) MediumRole.RpcMediate(PlayerControl.LocalPlayer, plr);
+        foreach (var plr in targets)
+        {
+            MediumRole.RpcMediate(PlayerControl.LocalPlayer, plr);
+        }
     }
 }

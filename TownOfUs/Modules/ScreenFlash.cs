@@ -44,7 +44,9 @@ public sealed class ScreenFlash : IDisposable
     public bool IsActive()
     {
         if (_overlay != null && _overlay.flameParent != null)
+        {
             return _overlay.flameParent.active;
+        }
 
         return false;
     }
@@ -52,25 +54,33 @@ public sealed class ScreenFlash : IDisposable
     public void SetActive(bool isActive)
     {
         if (_overlay != null && _overlay.flameParent != null)
+        {
             _overlay.flameParent.SetActive(isActive);
+        }
     }
 
     public void SetPosition(Vector3 pos)
     {
         if (_overlay != null && _overlay.flameParent != null)
+        {
             _overlay.flameParent.transform.localPosition = pos;
+        }
     }
 
     public void SetScale(Vector3 scale)
     {
         if (_overlay != null && _overlay.flameParent != null)
+        {
             _overlay.flameParent.transform.localScale = scale;
+        }
     }
 
     public void SetColour(Color color)
     {
         if (_renderer != null)
+        {
             _renderer.color = color;
+        }
     }
 
     public void Destroy()
@@ -83,10 +93,14 @@ public sealed class ScreenFlash : IDisposable
         if (disposing)
         {
             if (_overlay != null)
+            {
                 Object.Destroy(_overlay);
+            }
 
             if (_renderer != null)
+            {
                 Object.Destroy(_renderer);
+            }
         }
     }
 }

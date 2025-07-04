@@ -52,8 +52,10 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         {
             stringB.Append("\n<b>Players Doused:</b>");
             foreach (var plr in allDoused)
+            {
                 stringB.Append(CultureInfo.InvariantCulture,
                     $"\n{Color.white.ToTextColor()}{plr.Data.PlayerName}</color>");
+            }
         }
 
         return stringB;
@@ -61,7 +63,10 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
 
     public bool WinConditionMet()
     {
-        if (Player.HasDied()) return false;
+        if (Player.HasDied())
+        {
+            return false;
+        }
 
         var result = Helpers.GetAlivePlayers().Count <= 2 && MiscUtils.KillersAliveCount == 1;
 
@@ -124,7 +129,11 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
 
     public override bool CanUse(IUsable usable)
     {
-        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player)) return false;
+        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player))
+        {
+            return false;
+        }
+
         var console = usable.TryCast<Console>()!;
         return console == null || console.AllowImpostor;
     }

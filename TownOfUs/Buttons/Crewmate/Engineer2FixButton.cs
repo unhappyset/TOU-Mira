@@ -34,7 +34,10 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
     {
         var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
 
-        if (system is not { AnyActive: true }) ResetCooldownAndOrEffect();
+        if (system is not { AnyActive: true })
+        {
+            ResetCooldownAndOrEffect();
+        }
     }
 
     public override void OnEffectEnd()

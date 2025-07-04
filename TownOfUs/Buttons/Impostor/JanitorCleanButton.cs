@@ -33,7 +33,11 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
+
         CleaningBody = Target;
     }
 
@@ -47,6 +51,8 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
 
         CleaningBody = null;
         if (OptionGroupSingleton<JanitorOptions>.Instance.ResetCooldowns)
+        {
             PlayerControl.LocalPlayer.SetKillTimer(PlayerControl.LocalPlayer.GetKillCooldown());
+        }
     }
 }

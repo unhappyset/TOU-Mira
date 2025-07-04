@@ -40,7 +40,11 @@ public sealed class ScientistModifier : TouGameModifier, IWikiDiscoverable
     {
         base.OnActivate();
 
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
+
         CustomButtonSingleton<ScientistButton>.Instance.AvailableCharge =
             OptionGroupSingleton<ScientistOptions>.Instance.StartingCharge;
     }
@@ -69,7 +73,10 @@ public sealed class ScientistModifier : TouGameModifier, IWikiDiscoverable
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        if (role is TransporterRole && !OptionGroupSingleton<TransporterOptions>.Instance.CanUseVitals) return false;
+        if (role is TransporterRole && !OptionGroupSingleton<TransporterOptions>.Instance.CanUseVitals)
+        {
+            return false;
+        }
 
         return base.IsModifierValidOn(role) && role.IsCrewmate() && role is not ScientistRole
                && !role.Player.GetModifierComponent().HasModifier<SatelliteModifier>(true)

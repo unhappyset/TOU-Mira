@@ -22,6 +22,8 @@ public static class SkipButtonPatches
 
         // Deactivate skip Button if skipping on emergency meetings is disabled
         if ((!meetingTarget && genOpt == SkipState.Emergency) || genOpt == SkipState.Always)
+        {
             __instance.SkipVoteButton.gameObject.SetActive(false);
+        }
     }
 }

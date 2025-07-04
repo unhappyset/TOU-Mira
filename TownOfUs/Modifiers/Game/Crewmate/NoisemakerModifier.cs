@@ -60,15 +60,34 @@ public sealed class NoisemakerModifier : TouGameModifier, IWikiDiscoverable
 
     public void NotifyOfDeath(PlayerControl player)
     {
-        if (!player.HasModifier<NoisemakerModifier>()) return;
+        if (!player.HasModifier<NoisemakerModifier>())
+        {
+            return;
+        }
+
         if (PlayerControl.LocalPlayer.IsImpostor() &&
-            !OptionGroupSingleton<NoisemakerOptions>.Instance.ImpostorsAlerted) return;
+            !OptionGroupSingleton<NoisemakerOptions>.Instance.ImpostorsAlerted)
+        {
+            return;
+        }
+
         if (PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling) &&
-            !OptionGroupSingleton<NoisemakerOptions>.Instance.NeutsAlerted) return;
+            !OptionGroupSingleton<NoisemakerOptions>.Instance.NeutsAlerted)
+        {
+            return;
+        }
+
         if (PlayerControl.LocalPlayer.AreCommsAffected() &&
-            OptionGroupSingleton<NoisemakerOptions>.Instance.CommsAffected) return;
+            OptionGroupSingleton<NoisemakerOptions>.Instance.CommsAffected)
+        {
+            return;
+        }
+
         if (Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId) == null &&
-            OptionGroupSingleton<NoisemakerOptions>.Instance.BodyCheck) return;
+            OptionGroupSingleton<NoisemakerOptions>.Instance.BodyCheck)
+        {
+            return;
+        }
 
         if (Constants.ShouldPlaySfx())
         {
@@ -84,7 +103,11 @@ public sealed class NoisemakerModifier : TouGameModifier, IWikiDiscoverable
 
         var deathArrow = deathArrowPrefab.GetComponent<NoisemakerArrow>();
         deathArrow.SetDuration(OptionGroupSingleton<NoisemakerOptions>.Instance.AlertDuration);
-        if (Player.AmOwner) deathArrow.alwaysMaxSize = true;
+        if (Player.AmOwner)
+        {
+            deathArrow.alwaysMaxSize = true;
+        }
+
         deathArrow.gameObject.SetActive(true);
         deathArrow.target = Player.GetTruePosition();
     }

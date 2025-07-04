@@ -22,7 +22,10 @@ public sealed class MorphlingMorphButton : TownOfUsRoleButton<MorphlingRole>, IA
 
     public override void ClickHandler()
     {
-        if (!CanUse()) return;
+        if (!CanUse())
+        {
+            return;
+        }
 
         OnClick();
         Button?.SetDisabled();
@@ -61,7 +64,10 @@ public sealed class MorphlingMorphButton : TownOfUsRoleButton<MorphlingRole>, IA
             PlayerControl.LocalPlayer.RpcAddModifier<MorphlingMorphModifier>(Role.Sampled!);
             OverrideName("Unmorph");
             UsesLeft--;
-            if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
+            if (MaxUses != 0)
+            {
+                Button?.SetUsesRemaining(UsesLeft);
+            }
         }
         else
         {

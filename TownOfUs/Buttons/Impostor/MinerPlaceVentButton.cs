@@ -33,14 +33,18 @@ public sealed class MinerPlaceVentButton : TownOfUsRoleButton<MinerRole>, IAfter
         var vents = Object.FindObjectsOfType<Vent>();
 
         if (vents.Count > 0)
+        {
             VentSize = Vector2.Scale(vents[0].GetComponent<BoxCollider2D>().size, vents[0].transform.localScale) *
                        0.75f;
+        }
     }
 
     public override bool CanUse()
     {
         if (!base.CanUse())
+        {
             return false;
+        }
 
         var hits = Physics2D.OverlapBoxAll(PlayerControl.LocalPlayer.transform.position, VentSize, 0);
 
@@ -79,7 +83,11 @@ public sealed class MinerPlaceVentButton : TownOfUsRoleButton<MinerRole>, IAfter
 
         while (true)
         {
-            if (ShipStatus.Instance.AllVents.All(v => v.Id != id)) return id;
+            if (ShipStatus.Instance.AllVents.All(v => v.Id != id))
+            {
+                return id;
+            }
+
             id++;
         }
     }

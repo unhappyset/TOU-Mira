@@ -64,13 +64,18 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
         RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.AmOwner)
+        {
             meetingMenu = new MeetingMenu(this, SetActive, MeetingAbilityType.Toggle, TouAssets.SwapActive,
                 TouAssets.SwapInactive, IsExempt)
             {
                 Position = new Vector3(-0.40f, 0f, -3f)
             };
+        }
 
-        if (!OptionGroupSingleton<SwapperOptions>.Instance.CanButton) player.RemainingEmergencies = 0;
+        if (!OptionGroupSingleton<SwapperOptions>.Instance.CanButton)
+        {
+            player.RemainingEmergencies = 0;
+        }
     }
 
     public override void OnMeetingStart()
@@ -78,15 +83,20 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
         RoleBehaviourStubs.OnMeetingStart(this);
 
         if (Player.AmOwner)
+        {
             meetingMenu.GenButtons(MeetingHud.Instance,
                 Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
+        }
     }
 
     public override void OnVotingComplete()
     {
         RoleBehaviourStubs.OnVotingComplete(this);
 
-        if (Player.AmOwner) meetingMenu.HideButtons();
+        if (Player.AmOwner)
+        {
+            meetingMenu.HideButtons();
+        }
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -110,7 +120,10 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
     private void SetActive(PlayerVoteArea voteArea, MeetingHud __instance)
     {
-        if (__instance.state == MeetingHud.VoteStates.Discussion || IsExempt(voteArea)) return;
+        if (__instance.state == MeetingHud.VoteStates.Discussion || IsExempt(voteArea))
+        {
+            return;
+        }
 
         if (!Swap1)
         {

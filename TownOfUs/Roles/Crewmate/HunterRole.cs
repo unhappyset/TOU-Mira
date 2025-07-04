@@ -50,7 +50,11 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             .FirstOrDefault();
         var stalked = stalkedPlayer != null && !stalkedPlayer.HasDied() ? stalkedPlayer.Data.PlayerName : "Nobody";
         stringB.AppendLine(CultureInfo.InvariantCulture, $"Stalking: <b>{stalked}</b>");
-        if (CaughtPlayers.Count != 0) stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Caught Players:</b>");
+        if (CaughtPlayers.Count != 0)
+        {
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Caught Players:</b>");
+        }
+
         foreach (var player in CaughtPlayers)
         {
             var newText = $"<b><size=80%>{player.Data.PlayerName}</size></b>";
@@ -108,11 +112,21 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         }
 
         if (hunter.AmOwner)
+        {
             hunter.RpcCustomMurder(target, resetKillTimer: false, createDeadBody: false, teleportMurderer: false,
                 showKillAnim: false, playKillSound: false);
+        }
+
         // this sound normally plays on the source only
-        if (!hunter.AmOwner) SoundManager.Instance.PlaySound(hunter.KillSfx, false, 0.8f);
+        if (!hunter.AmOwner)
+        {
+            SoundManager.Instance.PlaySound(hunter.KillSfx, false, 0.8f);
+        }
+
         // this kill animations normally plays on the target only
-        if (!target.AmOwner) HudManager.Instance.KillOverlay.ShowKillAnimation(hunter.Data, target.Data);
+        if (!target.AmOwner)
+        {
+            HudManager.Instance.KillOverlay.ShowKillAnimation(hunter.Data, target.Data);
+        }
     }
 }

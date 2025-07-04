@@ -16,7 +16,11 @@ public static class AppearanceExtensions
         {
             var c = ShipStatus.Instance.Systems[SystemTypes.Comms];
             var active = c.TryCast<HudOverrideSystemType>()?.IsActive;
-            if (active == null) active = c.TryCast<HqHudSystemType>()?.IsActive;
+            if (active == null)
+            {
+                active = c.TryCast<HqHudSystemType>()?.IsActive;
+            }
+
             if (active == true)
             {
                 player.SetCamouflage();
@@ -25,21 +29,35 @@ public static class AppearanceExtensions
         }
 
         // preventing glitch from morphing -> camo -> unmorph early sorta thing...
-        if (player.GetAppearanceType() == TownOfUsAppearances.Camouflage && !override_checks) return;
+        if (player.GetAppearanceType() == TownOfUsAppearances.Camouflage && !override_checks)
+        {
+            return;
+        }
 
         if (fullReset)
+        {
             player.RawSetAppearance(new VisualAppearance(player.GetDefaultAppearance(), TownOfUsAppearances.Default)
             {
                 Size = new Vector3(0.7f, 0.7f, 1f)
             });
-        else player.RawSetAppearance(player.GetDefaultModifiedAppearance());
+        }
+        else
+        {
+            player.RawSetAppearance(player.GetDefaultModifiedAppearance());
+        }
 
         // The "just in case" section
         player.SetHatAndVisorAlpha(1f);
         player.cosmetics.skin.layer.color = player.cosmetics.skin.layer.color.SetAlpha(1f);
-        foreach (var rend in player.cosmetics.currentPet.renderers) rend.color = rend.color.SetAlpha(1f);
+        foreach (var rend in player.cosmetics.currentPet.renderers)
+        {
+            rend.color = rend.color.SetAlpha(1f);
+        }
 
-        foreach (var shadow in player.cosmetics.currentPet.shadows) shadow.color = shadow.color.SetAlpha(1f);
+        foreach (var shadow in player.cosmetics.currentPet.shadows)
+        {
+            shadow.color = shadow.color.SetAlpha(1f);
+        }
     }
 
     public static void SetCamouflage(this PlayerControl player, bool toggle = true)
@@ -83,12 +101,19 @@ public static class AppearanceExtensions
         player.cosmetics.currentBodySprite.BodySprite.color = appearance.RendererColor;
 
         if (appearance.PlayerMaterialColor != null)
+        {
             PlayerMaterial.SetColors((Color)appearance.PlayerMaterialColor,
                 player.cosmetics.currentBodySprite.BodySprite);
+        }
 
         if (appearance.NameColor != null)
+        {
             player.cosmetics.nameText.color = (Color)appearance.NameColor;
-        else if (player.IsImpostor()) player.cosmetics.nameText.color = TownOfUsColors.Impostor;
+        }
+        else if (player.IsImpostor())
+        {
+            player.cosmetics.nameText.color = TownOfUsColors.Impostor;
+        }
 
         player.cosmetics.ToggleNameVisible(appearance.NameVisible);
 
@@ -96,9 +121,16 @@ public static class AppearanceExtensions
 
         player.transform.localScale = appearance.Size;
 
-        if (player.CurrentOutfitType != 0) player.Data.Outfits.Remove(player.CurrentOutfitType);
+        if (player.CurrentOutfitType != 0)
+        {
+            player.Data.Outfits.Remove(player.CurrentOutfitType);
+        }
+
         player.CurrentOutfitType = (PlayerOutfitType)appearance.AppearanceType;
-        if (appearance.AppearanceType != 0) player.Data.SetOutfit(player.CurrentOutfitType, appearance);
+        if (appearance.AppearanceType != 0)
+        {
+            player.Data.SetOutfit(player.CurrentOutfitType, appearance);
+        }
     }
 
     public static TownOfUsAppearances GetAppearanceType(this PlayerControl player)
@@ -110,17 +142,26 @@ public static class AppearanceExtensions
     {
         var appearance = player.GetDefaultModifiedAppearance();
 
-        if (player.Data.Role is IVisualAppearance visualRole) appearance = visualRole.GetVisualAppearance()!;
+        if (player.Data.Role is IVisualAppearance visualRole)
+        {
+            appearance = visualRole.GetVisualAppearance()!;
+        }
 
         if (player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is IVisualAppearance
             {
                 VisualPriority: false
             }) is IVisualAppearance visualMod2 &&
-            visualMod2.GetVisualAppearance() != null) appearance = visualMod2.GetVisualAppearance()!;
+            visualMod2.GetVisualAppearance() != null)
+        {
+            appearance = visualMod2.GetVisualAppearance()!;
+        }
 
         if (player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is IVisualAppearance { VisualPriority: true }) is
                 IVisualAppearance { VisualPriority: true } visualMod &&
-            visualMod.GetVisualAppearance() != null) appearance = visualMod.GetVisualAppearance()!;
+            visualMod.GetVisualAppearance() != null)
+        {
+            appearance = visualMod.GetVisualAppearance()!;
+        }
 
         return appearance;
     }
@@ -134,11 +175,18 @@ public static class AppearanceExtensions
     {
         var appearance = new VisualAppearance(playerControl.Data.DefaultOutfit, TownOfUsAppearances.Default);
         if (playerControl.HasModifier<MiniModifier>())
+        {
             appearance = playerControl.GetModifier<MiniModifier>()!.GetVisualAppearance()!;
+        }
         else if (playerControl.HasModifier<GiantModifier>())
+        {
             appearance = playerControl.GetModifier<GiantModifier>()!.GetVisualAppearance()!;
+        }
         else if (playerControl.HasModifier<FlashModifier>())
+        {
             appearance = playerControl.GetModifier<FlashModifier>()!.GetVisualAppearance();
+        }
+
         return appearance;
     }
 }

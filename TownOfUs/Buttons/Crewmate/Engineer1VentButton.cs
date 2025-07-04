@@ -30,11 +30,25 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
     public override Vent? GetTarget()
     {
         var vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 4, Filter);
-        if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 3, Filter);
-        if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 2, Filter);
-        if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
+        if (vent == null)
+        {
+            vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 3, Filter);
+        }
 
-        if (vent != null && PlayerControl.LocalPlayer.CanUseVent(vent)) return vent;
+        if (vent == null)
+        {
+            vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 2, Filter);
+        }
+
+        if (vent == null)
+        {
+            vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
+        }
+
+        if (vent != null && PlayerControl.LocalPlayer.CanUseVent(vent))
+        {
+            return vent;
+        }
 
         return null;
     }
@@ -42,7 +56,10 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
     public override bool CanUse()
     {
         var newTarget = GetTarget();
-        if (newTarget != Target) Target?.SetOutline(false, false);
+        if (newTarget != Target)
+        {
+            Target?.SetOutline(false, false);
+        }
 
         Target = IsTargetValid(newTarget) ? newTarget : null;
         SetOutline(true);
@@ -55,7 +72,10 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
 
     public override void ClickHandler()
     {
-        if (!CanUse()) return;
+        if (!CanUse())
+        {
+            return;
+        }
 
         OnClick();
         Button?.SetDisabled();
@@ -111,7 +131,10 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
             Vent.currentVent.SetButtons(false);
             PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
             UsesLeft--;
-            if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
+            if (MaxUses != 0)
+            {
+                Button?.SetUsesRemaining(UsesLeft);
+            }
         }
     }
 }

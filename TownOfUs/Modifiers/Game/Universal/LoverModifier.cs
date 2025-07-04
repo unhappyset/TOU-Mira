@@ -47,7 +47,10 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
     public void AssignTargets()
     {
         foreach (var lover in PlayerControl.AllPlayerControls.ToArray().Where(x => x.HasModifier<LoverModifier>())
-                     .ToList()) lover.RemoveModifier<LoverModifier>();
+                     .ToList())
+        {
+            lover.RemoveModifier<LoverModifier>();
+        }
 
         Random rnd = new();
         var chance = rnd.Next(0, 100);
@@ -69,13 +72,19 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
             var impostors = new List<PlayerControl>();
 
             foreach (var player in players.SelectMany(_ => players))
+            {
                 if (player.IsImpostor() || (player.Is(RoleAlignment.NeutralKilling) &&
                                             OptionGroupSingleton<LoversOptions>.Instance.NeutralLovers))
+                {
                     impostors.Add(player);
+                }
                 else if (player.Is(ModdedRoleTeams.Crewmate) ||
                          ((player.Is(RoleAlignment.NeutralBenign) || player.Is(RoleAlignment.NeutralEvil)) &&
                           OptionGroupSingleton<LoversOptions>.Instance.NeutralLovers))
+                {
                     crewmates.Add(player);
+                }
+            }
 
             if (crewmates.Count < 2 || impostors.Count < 1)
             {
@@ -94,7 +103,10 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
                 Random rnd2 = new();
                 var chance2 = rnd2.Next(0, 100);
 
-                if (chance2 < impTargetPercent) players = impostors;
+                if (chance2 < impTargetPercent)
+                {
+                    players = impostors;
+                }
             }
             else
             {
@@ -133,11 +145,17 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
 
     public override void OnActivate()
     {
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
+
         HudManager.Instance.Chat.gameObject.SetActive(true);
         if (TutorialManager.InstanceExists && OtherLover == null && Player.AmOwner && Player.IsHost() &&
             AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
+        {
             Coroutines.Start(SetTutorialTarget(this, Player));
+        }
     }
 
     private static IEnumerator SetTutorialTarget(LoverModifier loverMod, PlayerControl localPlr)
@@ -156,13 +174,19 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
         var impostors = new List<PlayerControl>();
 
         foreach (var player in players.SelectMany(_ => players))
+        {
             if (player.IsImpostor() || (player.Is(RoleAlignment.NeutralKilling) &&
                                         OptionGroupSingleton<LoversOptions>.Instance.NeutralLovers))
+            {
                 impostors.Add(player);
+            }
             else if (player.Is(ModdedRoleTeams.Crewmate) ||
                      ((player.Is(RoleAlignment.NeutralBenign) || player.Is(RoleAlignment.NeutralEvil)) &&
                       OptionGroupSingleton<LoversOptions>.Instance.NeutralLovers))
+            {
                 crewmates.Add(player);
+            }
+        }
 
         if (localPlr.IsImpostor() && !OptionGroupSingleton<LoversOptions>.Instance.ImpLovers)
         {
@@ -175,7 +199,10 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
             Random rnd = new();
             var chance2 = rnd.Next(0, 100);
 
-            if (chance2 < impTargetPercent) players = impostors;
+            if (chance2 < impTargetPercent)
+            {
+                players = impostors;
+            }
         }
         else
         {
@@ -193,7 +220,11 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
 
     public override void OnDeactivate()
     {
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
+
         HudManager.Instance.Chat.gameObject.SetActive(false);
         if (TutorialManager.InstanceExists)
         {
@@ -216,7 +247,11 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
 
     public void OnRoundStart()
     {
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
+
         HudManager.Instance.Chat.SetVisible(true);
     }
 

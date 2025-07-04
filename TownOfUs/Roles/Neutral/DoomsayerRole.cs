@@ -63,8 +63,15 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
     public bool WinConditionMet()
     {
-        if (Player.HasDied()) return false;
-        if (OptionGroupSingleton<DoomsayerOptions>.Instance.DoomWin is not DoomWinOptions.EndsGame) return false;
+        if (Player.HasDied())
+        {
+            return false;
+        }
+
+        if (OptionGroupSingleton<DoomsayerOptions>.Instance.DoomWin is not DoomWinOptions.EndsGame)
+        {
+            return false;
+        }
 
         return AllGuessesCorrect;
     }
@@ -92,6 +99,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.AmOwner)
+        {
             meetingMenu = new MeetingMenu(
                 this,
                 ClickGuess,
@@ -99,6 +107,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                 TouAssets.Guess,
                 null!,
                 IsExempt);
+        }
     }
 
     public override void OnMeetingStart()
@@ -110,7 +119,11 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             meetingMenu.GenButtons(MeetingHud.Instance,
                 Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
 
-            if (OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessAllAtOnce) NumberOfGuesses = 0;
+            if (OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessAllAtOnce)
+            {
+                NumberOfGuesses = 0;
+            }
+
             IncorrectGuesses = 0;
             AllVictims.Clear();
             AllGuessesCorrect = false;
@@ -123,7 +136,10 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
     {
         RoleBehaviourStubs.OnVotingComplete(this);
 
-        if (Player.AmOwner) meetingMenu.HideButtons();
+        if (Player.AmOwner)
+        {
+            meetingMenu.HideButtons();
+        }
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -143,8 +159,15 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
         var reportBuilder = new StringBuilder();
 
-        if (Player == null) return;
-        if (!Player.AmOwner) return;
+        if (Player == null)
+        {
+            return;
+        }
+
+        if (!Player.AmOwner)
+        {
+            return;
+        }
 
         foreach (var player in GameData.Instance.AllPlayers.ToArray()
                      .Where(x => !x.Object.HasDied() && x.Object.HasModifier<DoomsayerObservedModifier>()))
@@ -168,9 +191,15 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                 doomableRole = role as IDoomable;
             }
 
-            if (doomableRole != null) hintType = doomableRole.DoomHintType;
+            if (doomableRole != null)
+            {
+                hintType = doomableRole.DoomHintType;
+            }
 
-            if (hintType == DoomableType.Default) continue;
+            if (hintType == DoomableType.Default)
+            {
+                continue;
+            }
 
             switch (hintType)
             {
@@ -217,7 +246,11 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             if (roles.Count != 0)
             {
                 reportBuilder.Append(TownOfUsPlugin.Culture, $"(");
-                foreach (var role2 in roles) reportBuilder.Append(TownOfUsPlugin.Culture, $"{role2.NiceName}, ");
+                foreach (var role2 in roles)
+                {
+                    reportBuilder.Append(TownOfUsPlugin.Culture, $"{role2.NiceName}, ");
+                }
+
                 reportBuilder = reportBuilder.Remove(reportBuilder.Length - 2, 2);
                 reportBuilder.Append(TownOfUsPlugin.Culture, $" or {lastRole.NiceName})");
             }
@@ -236,7 +269,11 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
     public override bool CanUse(IUsable usable)
     {
-        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player)) return false;
+        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player))
+        {
+            return false;
+        }
+
         var console = usable.TryCast<Console>()!;
         return console == null || console.AllowImpostor;
     }
@@ -248,7 +285,10 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
     public void ClickGuess(PlayerVoteArea voteArea, MeetingHud meetingHud)
     {
-        if (meetingHud.state == MeetingHud.VoteStates.Discussion) return;
+        if (meetingHud.state == MeetingHud.VoteStates.Discussion)
+        {
+            return;
+        }
 
         var player = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId).Object;
 
@@ -260,7 +300,10 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             var realRole = player.Data.Role;
 
             var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole) as ICachedRole;
-            if (cachedMod != null) realRole = cachedMod.CachedRole;
+            if (cachedMod != null)
+            {
+                realRole = cachedMod.CachedRole;
+            }
 
             var pickVictim = role.Role == realRole.Role;
             var victim = pickVictim ? player : Player;
@@ -272,7 +315,11 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         {
             var opts = OptionGroupSingleton<DoomsayerOptions>.Instance;
 
-            if (opts.DoomsayerGuessAllAtOnce) NumberOfGuesses++;
+            if (opts.DoomsayerGuessAllAtOnce)
+            {
+                NumberOfGuesses++;
+            }
+
             meetingMenu?.HideSingle(targetId);
 
             var playersAlive = PlayerControl.AllPlayerControls.ToArray()
@@ -323,10 +370,14 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             else if (opts.DoomsayerGuessAllAtOnce)
             {
                 if (opts.DoomsayerKillOnlyLast)
+                {
                     Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false);
+                }
                 else
+                {
                     AllVictims.Do(victim =>
                         Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false));
+                }
             }
             else
             {
@@ -335,7 +386,9 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             }
 
             if (opts.DoomsayerGuessAllAtOnce || NumberOfGuesses == (int)opts.DoomsayerGuessesToWin)
+            {
                 meetingMenu?.HideButtons();
+            }
 
             shapeMenu.Close();
         }
@@ -354,7 +407,9 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
     {
         var unguessableRole = role as IUnguessable;
         if (role.IsDead || role is IGhostRole || (unguessableRole != null && !unguessableRole.IsGuessable))
+        {
             return false;
+        }
 
         return true;
     }
@@ -371,6 +426,9 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         var doom = player.GetRole<DoomsayerRole>();
         doom!.AllGuessesCorrect = true;
 
-        if (GameHistory.PlayerStats.TryGetValue(player.PlayerId, out var stats)) stats.CorrectAssassinKills++;
+        if (GameHistory.PlayerStats.TryGetValue(player.PlayerId, out var stats))
+        {
+            stats.CorrectAssassinKills++;
+        }
     }
 }

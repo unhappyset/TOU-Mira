@@ -34,12 +34,18 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
         base.FixedUpdate();
 
         if (Lookout.AmOwner)
+        {
             Player?.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Lookout));
+        }
     }
 
     public override void OnMeetingStart()
     {
-        if (!Lookout.AmOwner) return;
+        if (!Lookout.AmOwner)
+        {
+            return;
+        }
+
         var title = $"<color=#{TownOfUsColors.Lookout.ToHtmlStringRGBA()}>Lookout Feedback</color>";
         var msg = $"No players interacted with {Player.Data.PlayerName}";
 
@@ -49,14 +55,19 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
 
             SeenPlayers.Shuffle();
 
-            foreach (var role in SeenPlayers) message.Append(TownOfUsPlugin.Culture, $"{role.NiceName}, ");
+            foreach (var role in SeenPlayers)
+            {
+                message.Append(TownOfUsPlugin.Culture, $"{role.NiceName}, ");
+            }
 
             message = message.Remove(message.Length - 2, 2);
 
             var final = message.ToString();
 
             if (string.IsNullOrWhiteSpace(final))
+            {
                 return;
+            }
 
             msg = final;
         }

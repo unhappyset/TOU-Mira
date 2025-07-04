@@ -41,13 +41,26 @@ public sealed class Bomb : IDisposable
         affected.Shuffle();
 
         while (affected.Count > OptionGroupSingleton<BomberOptions>.Instance.MaxKillsInDetonation)
+        {
             affected.Remove(affected[^1]);
+        }
 
         foreach (var player in affected)
         {
-            if (player.HasDied()) continue;
-            if (player.HasModifier<BaseShieldModifier>() && _bomber == player) continue;
-            if (player.HasModifier<FirstDeadShield>() && _bomber == player) continue;
+            if (player.HasDied())
+            {
+                continue;
+            }
+
+            if (player.HasModifier<BaseShieldModifier>() && _bomber == player)
+            {
+                continue;
+            }
+
+            if (player.HasModifier<FirstDeadShield>() && _bomber == player)
+            {
+                continue;
+            }
 
             _bomber?.RpcCustomMurder(player, teleportMurderer: false);
         }
@@ -90,6 +103,9 @@ public sealed class Bomb : IDisposable
 
     private void Dispose(bool disposing)
     {
-        if (disposing && _obj != null) _obj.Destroy();
+        if (disposing && _obj != null)
+        {
+            _obj.Destroy();
+        }
     }
 }

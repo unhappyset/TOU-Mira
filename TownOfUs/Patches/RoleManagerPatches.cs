@@ -46,8 +46,11 @@ public static class TouRoleManagerPatches
                     if (data.Count > 0)
                     {
                         if (role is ICustomRole { Team: ModdedRoleTeams.Custom })
+                        {
                             CustomGhostRolePool.Add(role.Role);
+                        }
                         else
+                        {
                             switch (role.TeamType)
                             {
                                 case RoleTeamTypes.Crewmate:
@@ -57,6 +60,7 @@ public static class TouRoleManagerPatches
                                     ImpostorGhostRolePool.Add(role.Role);
                                     break;
                             }
+                        }
                     }
 
                     break;
@@ -66,8 +70,11 @@ public static class TouRoleManagerPatches
                     if (data.Count > 0 && HashRandom.Next(101) < data.Chance)
                     {
                         if (role is ICustomRole { Team: ModdedRoleTeams.Custom })
+                        {
                             CustomGhostRolePool.Add(role.Role);
+                        }
                         else
+                        {
                             switch (role.TeamType)
                             {
                                 case RoleTeamTypes.Crewmate:
@@ -77,6 +84,7 @@ public static class TouRoleManagerPatches
                                     ImpostorGhostRolePool.Add(role.Role);
                                     break;
                             }
+                        }
                     }
 
                     break;
@@ -143,14 +151,25 @@ public static class TouRoleManagerPatches
                     goto default;
                 default:
                     if (nbCount > 0)
+                    {
                         nbCount -= 1;
+                    }
                     else if (neCount > 0)
+                    {
                         neCount -= 1;
-                    else if (nkCount > 0) nkCount -= 1;
+                    }
+                    else if (nkCount > 0)
+                    {
+                        nkCount -= 1;
+                    }
+
                     break;
             }
 
-            if (nbCount + neCount + nkCount == 0) break;
+            if (nbCount + neCount + nkCount == 0)
+            {
+                break;
+            }
         }
 
         var excluded = MiscUtils.AllRoles.Where(x => x is ISpawnChange { NoSpawn: true }).Select(x => x.Role);
@@ -164,7 +183,10 @@ public static class TouRoleManagerPatches
             impCount = 1;
             impRoles.RemoveAll(x => x != RoleId.Get(uniqueRole.GetType()));
 
-            while (impostors.Count > impCount) crewmates.Add(impostors.TakeFirst());
+            while (impostors.Count > impCount)
+            {
+                crewmates.Add(impostors.TakeFirst());
+            }
         }
 
         var nbRoles = MiscUtils.GetMaxRolesToAssign(RoleAlignment.NeutralBenign, nbCount);
@@ -176,7 +198,9 @@ public static class TouRoleManagerPatches
         Func<RoleBehaviour, bool>? crewFilter = null;
 
         if ((MapNames)GameOptionsManager.Instance.GameHostOptions.MapId == MapNames.Fungle)
+        {
             crewFilter = x => x.Role != (RoleTypes)RoleId.Get<SpyRole>();
+        }
 
         var crewRoles = MiscUtils.GetMaxRolesToAssign(ModdedRoleTeams.Crewmate, crewCount, crewFilter);
 
@@ -211,9 +235,15 @@ public static class TouRoleManagerPatches
             // Logger<TownOfUsPlugin>.Message($"SelectRoles - player: '{player.Data.PlayerName}', role: '{(RoleType)item}'");
         }
 
-        foreach (var player in crewmates) player.RpcSetRole(RoleTypes.Crewmate);
+        foreach (var player in crewmates)
+        {
+            player.RpcSetRole(RoleTypes.Crewmate);
+        }
 
-        foreach (var player in impostors) player.RpcSetRole(RoleTypes.Impostor);
+        foreach (var player in impostors)
+        {
+            player.RpcSetRole(RoleTypes.Impostor);
+        }
 
         static bool CanSubtract(int faction, int minFaction)
         {
@@ -253,40 +283,82 @@ public static class TouRoleManagerPatches
         var impCount = 0;
         var anySlots = 0;
 
-        if (players > 4) buckets.Add((RoleListOption)opts.Slot5.Value);
+        if (players > 4)
+        {
+            buckets.Add((RoleListOption)opts.Slot5.Value);
+        }
 
-        if (players > 5) buckets.Add((RoleListOption)opts.Slot6.Value);
+        if (players > 5)
+        {
+            buckets.Add((RoleListOption)opts.Slot6.Value);
+        }
 
-        if (players > 6) buckets.Add((RoleListOption)opts.Slot7.Value);
+        if (players > 6)
+        {
+            buckets.Add((RoleListOption)opts.Slot7.Value);
+        }
 
-        if (players > 7) buckets.Add((RoleListOption)opts.Slot8.Value);
+        if (players > 7)
+        {
+            buckets.Add((RoleListOption)opts.Slot8.Value);
+        }
 
-        if (players > 8) buckets.Add((RoleListOption)opts.Slot9.Value);
+        if (players > 8)
+        {
+            buckets.Add((RoleListOption)opts.Slot9.Value);
+        }
 
-        if (players > 9) buckets.Add((RoleListOption)opts.Slot10.Value);
+        if (players > 9)
+        {
+            buckets.Add((RoleListOption)opts.Slot10.Value);
+        }
 
-        if (players > 10) buckets.Add((RoleListOption)opts.Slot11.Value);
+        if (players > 10)
+        {
+            buckets.Add((RoleListOption)opts.Slot11.Value);
+        }
 
-        if (players > 11) buckets.Add((RoleListOption)opts.Slot12.Value);
+        if (players > 11)
+        {
+            buckets.Add((RoleListOption)opts.Slot12.Value);
+        }
 
-        if (players > 12) buckets.Add((RoleListOption)opts.Slot13.Value);
+        if (players > 12)
+        {
+            buckets.Add((RoleListOption)opts.Slot13.Value);
+        }
 
-        if (players > 13) buckets.Add((RoleListOption)opts.Slot14.Value);
+        if (players > 13)
+        {
+            buckets.Add((RoleListOption)opts.Slot14.Value);
+        }
 
-        if (players > 14) buckets.Add((RoleListOption)opts.Slot15.Value);
+        if (players > 14)
+        {
+            buckets.Add((RoleListOption)opts.Slot15.Value);
+        }
 
         if (players > 15)
+        {
             for (var i = 0; i < players - 15; i++)
             {
                 var random = Random.RandomRangeInt(0, 4);
                 buckets.Add(random == 0 ? RoleListOption.CrewRandom : RoleListOption.NonImp);
             }
+        }
 
         // imp issues
         foreach (var roleOption in buckets)
+        {
             if (impBuckets.Contains(roleOption))
+            {
                 impCount += 1;
-            else if (roleOption == RoleListOption.Any) anySlots += 1;
+            }
+            else if (roleOption == RoleListOption.Any)
+            {
+                anySlots += 1;
+            }
+        }
 
         while (impCount > impostors.Count)
         {
@@ -369,7 +441,9 @@ public static class TouRoleManagerPatches
 
         Func<RoleBehaviour, bool>? crewFilter = null;
         if ((MapNames)GameOptionsManager.Instance.GameHostOptions.MapId == MapNames.Fungle)
+        {
             crewFilter = x => x.Role != (RoleTypes)RoleId.Get<SpyRole>();
+        }
 
         var excluded = MiscUtils.AllRoles.Where(x => x is ISpawnChange { NoSpawn: true }).Select(x => x.Role).ToList();
 
@@ -490,7 +564,10 @@ public static class TouRoleManagerPatches
         {
             impCount = 1;
 
-            while (impostors.Count > impCount) crewmates.Add(impostors.TakeFirst());
+            while (impostors.Count > impCount)
+            {
+                crewmates.Add(impostors.TakeFirst());
+            }
 
             chosenImpRoles.RemoveAll(x => x != RoleId.Get(uniqueRole.GetType()));
         }
@@ -516,22 +593,36 @@ public static class TouRoleManagerPatches
         }
 
         // Assign vanilla roles to anyone who did not receive a role.
-        foreach (var player in crewmates) player.RpcSetRole(RoleTypes.Crewmate);
+        foreach (var player in crewmates)
+        {
+            player.RpcSetRole(RoleTypes.Crewmate);
+        }
 
-        foreach (var player in impostors) player.RpcSetRole(RoleTypes.Impostor);
+        foreach (var player in impostors)
+        {
+            player.RpcSetRole(RoleTypes.Impostor);
+        }
     }
 
     public static void AssignTargets()
     {
         foreach (var role in MiscUtils.AllRoles.Where(x => x is IAssignableTargets)
                      .OrderBy(x => (x as IAssignableTargets)!.Priority))
+        {
             if (role is IAssignableTargets assignRole)
+            {
                 assignRole.AssignTargets();
+            }
+        }
 
         foreach (var modifier in MiscUtils.AllModifiers.Where(x => x is IAssignableTargets)
                      .OrderBy(x => (x as IAssignableTargets)!.Priority))
+        {
             if (modifier is IAssignableTargets assignMod)
+            {
                 assignMod.AssignTargets();
+            }
+        }
 
         GhostRoleSetup();
     }
@@ -543,7 +634,10 @@ public static class TouRoleManagerPatches
     {
         //Logger<TownOfUsPlugin>.Error($"RoleManager.SelectRoles - ReplaceRoleManager: {ReplaceRoleManager}");
 
-        if (TutorialManager.InstanceExists || ReplaceRoleManager) return true;
+        if (TutorialManager.InstanceExists || ReplaceRoleManager)
+        {
+            return true;
+        }
 
         //Logger<TownOfUsPlugin>.Error($"RoleManager.SelectRoles 2");
 
@@ -564,7 +658,10 @@ public static class TouRoleManagerPatches
             {
                 var num = random.Next(players.Count);
                 var player = players[num];
-                if (LastImps.Contains(player.ClientId) && random.NextDouble() < biasPercent) continue;
+                if (LastImps.Contains(player.ClientId) && random.NextDouble() < biasPercent)
+                {
+                    continue;
+                }
 
                 infected.Add(player);
             }
@@ -576,9 +673,13 @@ public static class TouRoleManagerPatches
 
         LastImps = [.. infected.Select(x => x.ClientId)];
         if (OptionGroupSingleton<RoleOptions>.Instance.RoleListEnabled)
+        {
             AssignRolesFromRoleList(infected);
+        }
         else
+        {
             AssignRoles(infected);
+        }
 
         AssignTargets();
 
@@ -590,7 +691,10 @@ public static class TouRoleManagerPatches
     public static bool RpcSetRolePatch(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType,
         [HarmonyArgument(1)] bool canOverrideRole = false)
     {
-        if (AmongUsClient.Instance.AmClient) __instance.StartCoroutine(__instance.CoSetRole(roleType, canOverrideRole));
+        if (AmongUsClient.Instance.AmClient)
+        {
+            __instance.StartCoroutine(__instance.CoSetRole(roleType, canOverrideRole));
+        }
 
         var messageWriter =
             AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.SetRole, SendOption.Reliable);
@@ -614,15 +718,21 @@ public static class TouRoleManagerPatches
         // Logger<TownOfUsPlugin>.Message($"AssignRoleOnDeathPatch - Player: '{player.Data.PlayerName}', specialRolesAllowed: {specialRolesAllowed}");
         if (player == null || !player.Data.IsDead)
             // Logger<TownOfUsPlugin>.Message($"AssignRoleOnDeathPatch - !player.Data.IsDead: '{!player.Data.IsDead}'");
+        {
             return false;
+        }
 
         if (!player.Data.Role.IsImpostor && specialRolesAllowed)
             // Logger<TownOfUsPlugin>.Message($"AssignRoleOnDeathPatch - !player.Data.Role.IsImpostor: '{!player.Data.Role.IsImpostor}' specialRolesAllowed: {specialRolesAllowed}");
+        {
             RoleManager.TryAssignSpecialGhostRoles(player);
+        }
 
         if (!RoleManager.IsGhostRole(player.Data.Role.Role))
             // Logger<TownOfUsPlugin>.Message($"AssignRoleOnDeathPatch - !RoleManager.IsGhostRole(player.Data.Role.Role): '{!RoleManager.IsGhostRole(player.Data.Role.Role)}'");
+        {
             player.RpcSetRole(player.Data.Role.DefaultGhostRole);
+        }
 
         return false;
     }
@@ -635,16 +745,25 @@ public static class TouRoleManagerPatches
         var ghostRole = RoleTypes.CrewmateGhost;
 
         if (player.IsCrewmate() && CrewmateGhostRolePool.Count > 0)
+        {
             ghostRole = CrewmateGhostRolePool.TakeFirst();
+        }
         else if (player.IsImpostor() && ImpostorGhostRolePool.Count > 0)
+        {
             ghostRole = ImpostorGhostRolePool.TakeFirst();
-        else if (player.IsNeutral() && CustomGhostRolePool.Count > 0) ghostRole = CustomGhostRolePool.TakeFirst();
+        }
+        else if (player.IsNeutral() && CustomGhostRolePool.Count > 0)
+        {
+            ghostRole = CustomGhostRolePool.TakeFirst();
+        }
 
         if (ghostRole != RoleTypes.CrewmateGhost && ghostRole != RoleTypes.ImpostorGhost &&
             ghostRole != (RoleTypes)RoleId.Get<NeutralGhostRole>())
             // var newRole = RoleManager.Instance.GetRole(ghostRole);
             // Logger<TownOfUsPlugin>.Message($"TryAssignSpecialGhostRolesPatch - ghostRoles role: {newRole.NiceName}");
+        {
             player.RpcChangeRole((ushort)ghostRole);
+        }
 
         return false;
     }

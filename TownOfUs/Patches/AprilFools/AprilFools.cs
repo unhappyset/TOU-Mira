@@ -133,7 +133,11 @@ public static class AprilFoolsPatches
             if (GameManager.Instance.IsHideAndSeek() &&
                 AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started &&
                 __instance.myPlayerControl.Data.Role != null &&
-                __instance.myPlayerControl.Data.Role.TeamType == RoleTeamTypes.Impostor) return false;
+                __instance.myPlayerControl.Data.Role.TeamType == RoleTeamTypes.Impostor)
+            {
+                return false;
+            }
+
             __instance.targetHeight = __instance.heightsPerColor[0];
             if (LobbyBehaviour.Instance)
             {
@@ -153,16 +157,26 @@ public static class AprilFoolsPatches
     {
         __instance.ShouldLongAround = true;
         __instance.skipNeckAnim = true;
-        if (__instance.hideCosmeticsQC) __instance.cosmeticLayer.SetHatVisorVisible(false);
+        if (__instance.hideCosmeticsQC)
+        {
+            __instance.cosmeticLayer.SetHatVisorVisible(false);
+        }
+
         __instance.SetupNeckGrowth(true);
         if (__instance.isExiledPlayer)
         {
             var instance = ShipStatus.Instance;
             if (instance == null || instance.Type != ShipStatus.MapType.Fungle)
+            {
                 __instance.cosmeticLayer.AdjustCosmeticRotations(-17.75f);
+            }
         }
 
-        if (!__instance.isPoolablePlayer) __instance.cosmeticLayer.ValidateCosmetics();
+        if (!__instance.isPoolablePlayer)
+        {
+            __instance.cosmeticLayer.ValidateCosmetics();
+        }
+
         if (__instance.myPlayerControl)
         {
             __instance.StopAllCoroutines();

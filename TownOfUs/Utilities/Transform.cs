@@ -14,11 +14,17 @@ public static class TransformExtensions
         for (var i = 0; i < self.childCount; i++)
         {
             var child = self.GetChild(i);
-            if (selector(child)) return child;
+            if (selector(child))
+            {
+                return child;
+            }
 
             var finding = child.FindRecursive(selector);
 
-            if (finding != null) return finding;
+            if (finding != null)
+            {
+                return finding;
+            }
         }
 
         return null!;

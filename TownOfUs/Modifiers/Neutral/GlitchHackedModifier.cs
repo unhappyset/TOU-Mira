@@ -42,7 +42,11 @@ public sealed class GlitchHackedModifier(byte glitchId) : TimedModifier
 
             foreach (var button in CustomButtonManager.Buttons)
             {
-                if (button is FakeVentButton) continue;
+                if (button is FakeVentButton)
+                {
+                    continue;
+                }
+
                 CustomButtonHackedSprites.Add(button!.Button!.CreateHackedIcon());
             }
         }
@@ -55,7 +59,10 @@ public sealed class GlitchHackedModifier(byte glitchId) : TimedModifier
 
     public void ShowHacked()
     {
-        if (!ShouldHideHacked) return;
+        if (!ShouldHideHacked)
+        {
+            return;
+        }
 
         ShouldHideHacked = false;
         var glitch = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == GlitchId);

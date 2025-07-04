@@ -52,7 +52,9 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
     public override void OnActivate()
     {
         if (Player.AmOwner)
+        {
             TouAudio.PlaySound(TouAudio.SwooperActivateSound);
+        }
 
         Player.RawSetAppearance(this);
         Player.cosmetics.ToggleNameVisible(false);
@@ -87,10 +89,15 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
         button.OverrideName("Swoop");
 
         if (Player.AmOwner)
+        {
             TouAudio.PlaySound(TouAudio.SwooperDeactivateSound);
+        }
 
         var mushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
-        if (mushroom && mushroom.IsActive) MushroomMixUp(mushroom, Player);
+        if (mushroom && mushroom.IsActive)
+        {
+            MushroomMixUp(mushroom, Player);
+        }
 
         var touAbilityEvent = new TouAbilityEvent(AbilityType.SwooperUnswoop, Player);
         MiraEventManager.InvokeEvent(touAbilityEvent);

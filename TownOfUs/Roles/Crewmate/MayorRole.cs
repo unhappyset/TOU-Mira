@@ -50,9 +50,15 @@ public sealed class MayorRole(IntPtr cppPtr)
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
-        if (!Revealed) stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Reveal yourself whenever you wish.</b>");
+        if (!Revealed)
+        {
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Reveal yourself whenever you wish.</b>");
+        }
+
         if (PlayerControl.LocalPlayer.HasModifier<EgotistModifier>())
+        {
             stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>The Impostors know your true motives.</b>");
+        }
 
         return stringB;
     }
@@ -78,6 +84,7 @@ public sealed class MayorRole(IntPtr cppPtr)
         }
 
         if (Player.AmOwner)
+        {
             meetingMenu = new MeetingMenu(
                 this,
                 Click,
@@ -88,6 +95,7 @@ public sealed class MayorRole(IntPtr cppPtr)
             {
                 Position = new Vector3(-0.35f, 0f, -3f)
             };
+        }
     }
 
     public override void OnMeetingStart()
@@ -95,19 +103,27 @@ public sealed class MayorRole(IntPtr cppPtr)
         RoleBehaviourStubs.OnMeetingStart(this);
 
         var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == Player.PlayerId);
-        if (Revealed) Coroutines.Start(CoAnimatePostReveal(targetVoteArea));
+        if (Revealed)
+        {
+            Coroutines.Start(CoAnimatePostReveal(targetVoteArea));
+        }
 
         if (Player.AmOwner && !Revealed)
             // Logger<TownOfUsPlugin>.Message($"PoliticianRole.OnMeetingStart '{Player.Data.PlayerName}' {Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>()}");
+        {
             meetingMenu.GenButtons(MeetingHud.Instance,
                 Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
+        }
     }
 
     public override void OnVotingComplete()
     {
         RoleBehaviourStubs.OnVotingComplete(this);
 
-        if (Player.AmOwner) meetingMenu.HideButtons();
+        if (Player.AmOwner)
+        {
+            meetingMenu.HideButtons();
+        }
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -123,7 +139,10 @@ public sealed class MayorRole(IntPtr cppPtr)
 
     public void Click(PlayerVoteArea voteArea, MeetingHud __)
     {
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
 
         meetingMenu.HideButtons();
         RpcAnimateNewReveal(Player);
@@ -157,7 +176,9 @@ public sealed class MayorRole(IntPtr cppPtr)
 
         // hide meeting menu buttons (such as for guessers) for everyone but the mayor
         if (voteArea.TargetPlayerId != PlayerControl.LocalPlayer.PlayerId)
+        {
             MeetingMenu.Instances.Do(x => x.HideSingle(voteArea.TargetPlayerId));
+        }
 
         MayorPlayer = Instantiate(TouAssets.MayorRevealPrefab.LoadAsset(), voteArea.transform);
         MayorPlayer.transform.localPosition = new Vector3(-0.8f, 0, 0);
@@ -167,8 +188,15 @@ public sealed class MayorRole(IntPtr cppPtr)
         var animationRend = MayorPlayer.GetComponent<SpriteRenderer>();
         animationRend.material = voteArea.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
         var handRend = MayorPlayer.transform.FindRecursive("Hands").GetComponent<SpriteRenderer>();
-        if (!handRend) handRend = MayorPlayer.transform.FindRecursive("Hand").GetComponent<SpriteRenderer>();
-        if (handRend) handRend.material = voteArea.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
+        if (!handRend)
+        {
+            handRend = MayorPlayer.transform.FindRecursive("Hand").GetComponent<SpriteRenderer>();
+        }
+
+        if (handRend)
+        {
+            handRend.material = voteArea.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
+        }
 
         voteArea.PlayerIcon.gameObject.SetActive(false);
         MayorPlayer.gameObject.SetActive(true);
@@ -186,7 +214,10 @@ public sealed class MayorRole(IntPtr cppPtr)
         TouAudio.PlaySound(TouAudio.MayorRevealSound);
         yield return new WaitForSeconds(0.1f);
         var player = MiscUtils.PlayerById(voteArea.TargetPlayerId);
-        if (player!.Data.Role is MayorRole mayor) mayor.Revealed = true;
+        if (player!.Data.Role is MayorRole mayor)
+        {
+            mayor.Revealed = true;
+        }
 
         yield return new WaitForSeconds(bodysAnim.m_currAnim.length - 0.25f);
     }
@@ -201,8 +232,15 @@ public sealed class MayorRole(IntPtr cppPtr)
         var animationRend = MayorPlayer.GetComponent<SpriteRenderer>();
         animationRend.material = voteArea.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
         var handRend = MayorPlayer.transform.FindRecursive("Hands").GetComponent<SpriteRenderer>();
-        if (!handRend) handRend = MayorPlayer.transform.FindRecursive("Hand").GetComponent<SpriteRenderer>();
-        if (handRend) handRend.material = voteArea.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
+        if (!handRend)
+        {
+            handRend = MayorPlayer.transform.FindRecursive("Hand").GetComponent<SpriteRenderer>();
+        }
+
+        if (handRend)
+        {
+            handRend.material = voteArea.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
+        }
 
         voteArea.PlayerIcon.gameObject.SetActive(false);
         MayorPlayer.gameObject.SetActive(true);

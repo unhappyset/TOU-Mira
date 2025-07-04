@@ -19,7 +19,10 @@ public sealed class UndertakerDragDropButton : TownOfUsRoleButton<UndertakerRole
 
     public override void ClickHandler()
     {
-        if (!CanClick()) return;
+        if (!CanClick())
+        {
+            return;
+        }
 
         if (LimitedUses)
         {
@@ -38,7 +41,10 @@ public sealed class UndertakerDragDropButton : TownOfUsRoleButton<UndertakerRole
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
 
         if (PlayerControl.LocalPlayer.HasModifier<DragModifier>())
         {
@@ -59,7 +65,10 @@ public sealed class UndertakerDragDropButton : TownOfUsRoleButton<UndertakerRole
 
     private bool CanDrop()
     {
-        if (Target == null) return false;
+        if (Target == null)
+        {
+            return false;
+        }
 
         return !PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.Collider,
             PlayerControl.LocalPlayer.Collider.bounds.center, Target.TruePosition, Constants.ShipAndAllObjectsMask,

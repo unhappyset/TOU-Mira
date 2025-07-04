@@ -17,14 +17,23 @@ public static class DoomsayerEvents
     {
         if (@event.Source.Data.Role is DoomsayerRole doom && @event.Source.AmOwner &&
             (int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin == doom.NumberOfGuesses)
+        {
             DoomsayerRole.RpcDoomsayerWin(@event.Source);
+        }
     }
 
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return;
-        if (OptionGroupSingleton<DoomsayerOptions>.Instance.DoomWin is not DoomWinOptions.Leaves) return;
+        if (@event.TriggeredByIntro)
+        {
+            return;
+        }
+
+        if (OptionGroupSingleton<DoomsayerOptions>.Instance.DoomWin is not DoomWinOptions.Leaves)
+        {
+            return;
+        }
 
         var doom = CustomRoleUtils.GetActiveRolesOfType<DoomsayerRole>()
             .FirstOrDefault(x => x.AllGuessesCorrect && !x.Player.HasDied());

@@ -22,7 +22,10 @@ public sealed class TrapperTrapButton : TownOfUsRoleButton<TrapperRole>
     {
         var role = PlayerControl.LocalPlayer.GetRole<TrapperRole>();
 
-        if (role == null) return;
+        if (role == null)
+        {
+            return;
+        }
 
         var pos = PlayerControl.LocalPlayer.transform.position;
         pos.z += 0.001f;

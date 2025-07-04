@@ -20,7 +20,10 @@ public static class ChatPatches
         var text = __instance.freeChatField.Text.ToLower(CultureInfo.InvariantCulture);
         var textRegular = __instance.freeChatField.Text.WithoutRichText();
 
-        if (textRegular.Length < 1 || textRegular.Length > 100) return true;
+        if (textRegular.Length < 1 || textRegular.Length > 100)
+        {
+            return true;
+        }
 
         if (text.Replace(" ", string.Empty).StartsWith("/", StringComparison.OrdinalIgnoreCase)
             && text.Replace(" ", string.Empty).Contains("summary", StringComparison.OrdinalIgnoreCase))
@@ -31,7 +34,10 @@ public static class ChatPatches
             {
                 var factionText = string.Empty;
                 if (GameHistory.WinningFaction != string.Empty)
+                {
                     factionText = $"<size=80%>Winning Team: {GameHistory.WinningFaction}</size>\n";
+                }
+
                 title = $"<color=#8BFDFD>System</color>\n<size=62%>{factionText}{GameHistory.EndGameSummary}</size>";
                 msg = string.Empty;
             }
@@ -68,13 +74,22 @@ public static class ChatPatches
         {
             var title = "<color=#8BFDFD>System</color>";
             if (text.StartsWith("/setname ", StringComparison.OrdinalIgnoreCase))
+            {
                 textRegular = textRegular[9..];
+            }
             else if (text.StartsWith("/setname", StringComparison.OrdinalIgnoreCase))
+            {
                 textRegular = textRegular[8..];
+            }
             else if (text.StartsWith("/ setname ", StringComparison.OrdinalIgnoreCase))
+            {
                 textRegular = textRegular[10..];
+            }
             else if (text.StartsWith("/ setname", StringComparison.OrdinalIgnoreCase))
+            {
                 textRegular = textRegular[9..];
+            }
+
             var msg = "You cannot change your name outside of the lobby!";
             if (LobbyBehaviour.Instance)
             {

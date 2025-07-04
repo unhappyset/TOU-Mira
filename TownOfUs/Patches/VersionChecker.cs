@@ -63,9 +63,15 @@ public class ModUpdater
 
     public static void setPopupText(string message)
     {
-        if (InfoPopup == null) return;
+        if (InfoPopup == null)
+        {
+            return;
+        }
 
-        if (InfoPopup.TextAreaTMP != null) InfoPopup.TextAreaTMP.text = message;
+        if (InfoPopup.TextAreaTMP != null)
+        {
+            InfoPopup.TextAreaTMP.text = message;
+        }
     }
 
     public class UpdateData
@@ -82,8 +88,14 @@ public static class TextBoxPatch
     [HarmonyPostfix]
     public static void Postfix(GenericPopup __instance)
     {
-        if (__instance != ModUpdater.InfoPopup) return;
+        if (__instance != ModUpdater.InfoPopup)
+        {
+            return;
+        }
 
-        if (ModUpdater.InvalidAUVersion) Application.Quit();
+        if (ModUpdater.InvalidAUVersion)
+        {
+            Application.Quit();
+        }
     }
 }

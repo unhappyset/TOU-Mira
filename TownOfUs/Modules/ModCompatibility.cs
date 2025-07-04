@@ -71,7 +71,10 @@ public static class ModCompatibility
 
     public static void InitSubmerged()
     {
-        if (!IL2CPPChainloader.Instance.Plugins.TryGetValue(SubmergedGuid, out var plugin)) return;
+        if (!IL2CPPChainloader.Instance.Plugins.TryGetValue(SubmergedGuid, out var plugin))
+        {
+            return;
+        }
 
         SubPlugin = (plugin!.Instance as BasePlugin)!;
         SubVersion = plugin.Metadata.Version;
@@ -131,24 +134,45 @@ public static class ModCompatibility
 
     public static void CheckOutOfBoundsElevator(PlayerControl player)
     {
-        if (!SubLoaded) return;
-        if (!IsSubmerged()) return;
+        if (!SubLoaded)
+        {
+            return;
+        }
+
+        if (!IsSubmerged())
+        {
+            return;
+        }
 
         var elevator = GetPlayerElevator(player);
-        if (!elevator.Item1) return;
+        if (!elevator.Item1)
+        {
+            return;
+        }
+
         var currentFloor =
             (bool)upperDeckIsTargetFloor.GetValue(
                 getSubElevatorSystem.GetValue(elevator.Item2))!; // true is top, false is bottom
         var playerFloor = player.transform.position.y > -7f; // true is top, false is bottom
 
-        if (currentFloor != playerFloor) ChangeFloor(currentFloor);
+        if (currentFloor != playerFloor)
+        {
+            ChangeFloor(currentFloor);
+        }
     }
 
     public static void MoveDeadPlayerElevator(PlayerControl player)
     {
-        if (!IsSubmerged()) return;
+        if (!IsSubmerged())
+        {
+            return;
+        }
+
         var elevator = GetPlayerElevator(player);
-        if (!elevator.Item1) return;
+        if (!elevator.Item1)
+        {
+            return;
+        }
 
         var movementStage = (int)getMovementStageFromTime.Invoke(elevator.Item2, null)!;
         if (movementStage >= 5)
@@ -158,18 +182,28 @@ public static class ModCompatibility
                 (bool)upperDeckIsTargetFloor.GetValue(
                     getSubElevatorSystem.GetValue(elevator.Item2))!; // true is top, false is bottom
             var topIntendedTarget = player.transform.position.y > -7f; // true is top, false is bottom
-            if (topFloorTarget != topIntendedTarget) ChangeFloor(!topIntendedTarget);
+            if (topFloorTarget != topIntendedTarget)
+            {
+                ChangeFloor(!topIntendedTarget);
+            }
         }
     }
 
     public static Tuple<bool, object> GetPlayerElevator(PlayerControl player)
     {
-        if (!IsSubmerged()) return Tuple.Create(false, (object)null!);
+        if (!IsSubmerged())
+        {
+            return Tuple.Create(false, (object)null!);
+        }
 
         var elevatorList = (IList)submergedElevators.GetValue(submergedInstance.GetValue(null))!;
         foreach (var elevator in elevatorList)
+        {
             if ((bool)getInElevator.Invoke(elevator, [player])!)
+            {
                 return Tuple.Create(true, elevator);
+            }
+        }
 
         return Tuple.Create(false, (object)null!);
     }
@@ -185,7 +219,10 @@ public static class ModCompatibility
         var player = PlayerControl.LocalPlayer;
         var targetData = player.CachedPlayerData;
 
-        if (player.Data.Role is IGhostRole ghost && ghost.GhostActive && targetData.IsDead) targetData.IsDead = false;
+        if (player.Data.Role is IGhostRole ghost && ghost.GhostActive && targetData.IsDead)
+        {
+            targetData.IsDead = false;
+        }
     }
 
     public static void CanUsePostfix()
@@ -193,16 +230,25 @@ public static class ModCompatibility
         var player = PlayerControl.LocalPlayer;
         var targetData = player.CachedPlayerData;
 
-        if (player.Data.Role is IGhostRole && !targetData.IsDead) targetData.IsDead = true;
+        if (player.Data.Role is IGhostRole && !targetData.IsDead)
+        {
+            targetData.IsDead = true;
+        }
     }
 
     public static IEnumerator WaitMeeting(Action next)
     {
-        while (!PlayerControl.LocalPlayer.moveable) yield return null;
+        while (!PlayerControl.LocalPlayer.moveable)
+        {
+            yield return null;
+        }
 
         yield return new WaitForSeconds(0.5f);
 
-        while (HudManager.Instance.PlayerCam.transform.Find("SpawnInMinigame(Clone)") != null) yield return null;
+        while (HudManager.Instance.PlayerCam.transform.Find("SpawnInMinigame(Clone)") != null)
+        {
+            yield return null;
+        }
 
         next();
     }
@@ -214,7 +260,10 @@ public static class ModCompatibility
 
     public static void GhostRoleBegin()
     {
-        if (!PlayerControl.LocalPlayer.Data.IsDead) return;
+        if (!PlayerControl.LocalPlayer.Data.IsDead)
+        {
+            return;
+        }
 
         if (PlayerControl.LocalPlayer.Data.Role is IGhostRole ghost && !ghost.Caught)
         {
@@ -222,8 +271,10 @@ public static class ModCompatibility
                 ShipStatus.Instance.AllVents[Random.RandomRangeInt(0, ShipStatus.Instance.AllVents.Count)];
 
             while (startingVent == ShipStatus.Instance.AllVents[0] || startingVent == ShipStatus.Instance.AllVents[14])
+            {
                 startingVent =
                     ShipStatus.Instance.AllVents[Random.RandomRangeInt(0, ShipStatus.Instance.AllVents.Count)];
+            }
 
             ChangeFloor(startingVent.transform.position.y > -7f);
 
@@ -245,9 +296,13 @@ public static class ModCompatibility
             if (player.Data.Role is IGhostRole ghost && ghost.GhostActive)
             {
                 if (player.AmOwner)
+                {
                     MoveDeadPlayerElevator(player);
+                }
                 else
+                {
                     player.Collider.enabled = false;
+                }
 
                 var transform = __instance.transform;
                 var position = transform.position;
@@ -261,7 +316,11 @@ public static class ModCompatibility
 
     public static MonoBehaviour AddSubmergedComponent(this GameObject obj, string typeName)
     {
-        if (!SubLoaded) return obj.AddComponent<MissingBehaviour>();
+        if (!SubLoaded)
+        {
+            return obj.AddComponent<MissingBehaviour>();
+        }
+
         var validType = SubInjectedTypes.TryGetValue(typeName, out var type);
 
         return validType
@@ -271,7 +330,10 @@ public static class ModCompatibility
 
     public static void ChangeFloor(bool toUpper)
     {
-        if (!SubLoaded) return;
+        if (!SubLoaded)
+        {
+            return;
+        }
 
         var handler = getFloorHandler.Invoke(null, [PlayerControl.LocalPlayer])!;
         rpcRequestChangeFloor.Invoke(handler, [toUpper]);
@@ -280,14 +342,20 @@ public static class ModCompatibility
 
     public static bool GetInTransition()
     {
-        if (!SubLoaded) return false;
+        if (!SubLoaded)
+        {
+            return false;
+        }
 
         return (bool)inTransition.GetValue(null)!;
     }
 
     public static void RepairOxygen()
     {
-        if (!SubLoaded) return;
+        if (!SubLoaded)
+        {
+            return;
+        }
 
         try
         {
@@ -314,7 +382,9 @@ public static class ModCompatibility
     private static void InitLevelImpostor()
     {
         if (!IL2CPPChainloader.Instance.Plugins.TryGetValue(LevelImpostorGuid, out var value))
+        {
             return;
+        }
 
         LIPlugin = (value.Instance as BasePlugin)!;
         LIAssembly = LIPlugin.GetType().Assembly;
@@ -354,14 +424,18 @@ public static class ModCompatibility
     public static string GetLIVentType(Vent vent)
     {
         if (!IsLevelImpostor() || vent == null)
+        {
             return string.Empty;
+        }
 
         var map = currentMap.GetValue(null);
         var elems = (object[])elements.GetValue(map)!;
         var child = elems.FirstOrDefault(x => (string)liElementName.GetValue(x)! == vent.name);
 
         if (child == null)
+        {
             return string.Empty;
+        }
 
         return (string)liElementType.GetValue(child)!;
     }
@@ -371,7 +445,9 @@ public static class ModCompatibility
         var playerControl = playerInfo.Object;
 
         if (playerControl.Data.Role is not IGhostRole { GhostActive: true })
+        {
             return;
+        }
 
         playerInfo.IsDead = false;
         __state = true;
@@ -380,17 +456,23 @@ public static class ModCompatibility
     public static void TriggerPostfix(NetworkedPlayerInfo playerInfo, ref bool __state)
     {
         if (__state)
+        {
             playerInfo.IsDead = true;
+        }
     }
 
     public static void KillAllPlayersPrefix(dynamic __instance)
     {
         if (!AmongUsClient.Instance.AmHost)
+        {
             return;
+        }
 
         var playersToDie = __instance.CurrentPlayersIDs as List<byte>;
 
         if (playersToDie?.Count is null or 0)
+        {
             return;
+        }
     }
 }

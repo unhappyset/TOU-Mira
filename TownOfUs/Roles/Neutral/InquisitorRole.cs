@@ -68,9 +68,20 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
         List<PlayerControl> filtered = [];
 
-        if (evil != null) filtered.Add(evil);
-        if (crew != null) filtered.Add(crew);
-        if (random != null) filtered.Add(random);
+        if (evil != null)
+        {
+            filtered.Add(evil);
+        }
+
+        if (crew != null)
+        {
+            filtered.Add(crew);
+        }
+
+        if (random != null)
+        {
+            filtered.Add(random);
+        }
 
         var other = players.Random();
         if (required is 4 or 5 && players.Count >= 1 && other != null)
@@ -81,12 +92,18 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
         players.Shuffle();
         other = players.Random();
-        if (required is 5 && players.Count >= 1 && other != null) filtered.Add(other);
+        if (required is 5 && players.Count >= 1 && other != null)
+        {
+            filtered.Add(other);
+        }
 
         if (filtered.Count > 0)
         {
             filtered = filtered.OrderBy(x => x.Data.Role.NiceName).ToList();
-            foreach (var player in filtered) RpcAddInquisTarget(inquis, player);
+            foreach (var player in filtered)
+            {
+                RpcAddInquisTarget(inquis, player);
+            }
         }
     }
 
@@ -114,9 +131,20 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
     public bool WinConditionMet()
     {
-        if (Player.HasDied()) return false;
-        if (!OptionGroupSingleton<InquisitorOptions>.Instance.StallGame) return false;
-        if (!TargetsDead) return false;
+        if (Player.HasDied())
+        {
+            return false;
+        }
+
+        if (!OptionGroupSingleton<InquisitorOptions>.Instance.StallGame)
+        {
+            return false;
+        }
+
+        if (!TargetsDead)
+        {
+            return false;
+        }
 
         var result = Helpers.GetAlivePlayers().Count <= 2 && MiscUtils.KillersAliveCount == 1;
         return result;
@@ -169,7 +197,9 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
         if (TutorialManager.InstanceExists && Targets.Count == 0 && Player.AmOwner && Player.IsHost() &&
             AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
+        {
             Coroutines.Start(SetTutorialTargets(this));
+        }
     }
 
     private static IEnumerator SetTutorialTargets(InquisitorRole inquis)
@@ -192,7 +222,10 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     {
         RoleBehaviourStubs.OnMeetingStart(this);
 
-        if (Player.AmOwner) GenerateReport();
+        if (Player.AmOwner)
+        {
+            GenerateReport();
+        }
     }
 
     private void GenerateReport()
@@ -201,8 +234,15 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
         var reportBuilder = new StringBuilder();
 
-        if (Player == null) return;
-        if (!Player.AmOwner) return;
+        if (Player == null)
+        {
+            return;
+        }
+
+        if (!Player.AmOwner)
+        {
+            return;
+        }
 
         foreach (var player in GameData.Instance.AllPlayers.ToArray()
                      .Where(x => !x.Object.HasDied() && x.Object.HasModifier<InquisitorInquiredModifier>()))
@@ -218,7 +258,11 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
                 if (roles.Count != 0)
                 {
                     reportBuilder.Append(TownOfUsPlugin.Culture, $"(");
-                    foreach (var role2 in roles) reportBuilder.Append(TownOfUsPlugin.Culture, $"{role2.NiceName}, ");
+                    foreach (var role2 in roles)
+                    {
+                        reportBuilder.Append(TownOfUsPlugin.Culture, $"{role2.NiceName}, ");
+                    }
+
                     reportBuilder = reportBuilder.Remove(reportBuilder.Length - 2, 2);
                     reportBuilder.Append(TownOfUsPlugin.Culture, $" or {lastRole.NiceName})");
                 }
@@ -243,7 +287,11 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
     public override bool CanUse(IUsable usable)
     {
-        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player)) return false;
+        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player))
+        {
+            return false;
+        }
+
         var console = usable.TryCast<Console>()!;
         return console == null || console.AllowImpostor;
     }
@@ -255,12 +303,21 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
     public void CheckTargetDeath(PlayerControl exiled)
     {
-        if (Player.HasDied()) return;
-        if (Targets.Count == 0) return;
+        if (Player.HasDied())
+        {
+            return;
+        }
+
+        if (Targets.Count == 0)
+        {
+            return;
+        }
 
         if (Targets.All(x => x.HasDied()))
             // Logger<TownOfUsPlugin>.Error($"CheckTargetEjection - exiled: {exiled.Data.PlayerName}");
+        {
             RpcInquisitorWin(Player);
+        }
     }
 
     [MethodRpc((uint)TownOfUsRpc.AddInquisTarget, SendImmediately = true)]
@@ -272,11 +329,17 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
             return;
         }
 
-        if (target == null) return;
+        if (target == null)
+        {
+            return;
+        }
 
         var role = player.GetRole<InquisitorRole>();
 
-        if (role == null) return;
+        if (role == null)
+        {
+            return;
+        }
 
         role.Targets.Add(target);
         role.TargetRoles.Add(target.Data.Role);

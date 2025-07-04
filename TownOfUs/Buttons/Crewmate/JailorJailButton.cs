@@ -33,7 +33,10 @@ public sealed class JailorJailButton : TownOfUsRoleButton<JailorRole, PlayerCont
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
 
         ModifierUtils.GetPlayersWithModifier<JailedModifier>().Do(x => x.RpcRemoveModifier<JailedModifier>());
         Target?.RpcAddModifier<JailedModifier>(PlayerControl.LocalPlayer.PlayerId);

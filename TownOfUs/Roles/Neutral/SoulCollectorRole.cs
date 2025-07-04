@@ -38,7 +38,10 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
 
     public bool WinConditionMet()
     {
-        if (Player.HasDied()) return false;
+        if (Player.HasDied())
+        {
+            return false;
+        }
 
         var result = Helpers.GetAlivePlayers().Count <= 2 && MiscUtils.KillersAliveCount == 1;
 
@@ -93,7 +96,11 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
 
     public override bool CanUse(IUsable usable)
     {
-        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player)) return false;
+        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player))
+        {
+            return false;
+        }
+
         var console = usable.TryCast<Console>()!;
         return console == null || console.AllowImpostor;
     }

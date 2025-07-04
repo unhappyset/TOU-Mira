@@ -25,7 +25,10 @@ public class PrefabLoader
 
     public static IEnumerator LoadMaps()
     {
-        while (AmongUsClient.Instance == null) yield return null;
+        while (AmongUsClient.Instance == null)
+        {
+            yield return null;
+        }
 
         if (!Skeld)
         {

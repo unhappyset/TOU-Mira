@@ -38,7 +38,11 @@ public sealed class OperativeModifier : TouGameModifier, IWikiDiscoverable
     {
         base.OnActivate();
 
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
+
         CustomButtonSingleton<SecurityButton>.Instance.AvailableCharge =
             OptionGroupSingleton<OperativeOptions>.Instance.StartingCharge;
     }

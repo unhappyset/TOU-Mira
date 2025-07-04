@@ -32,7 +32,10 @@ public sealed class AltruistReviveButton : TownOfUsRoleButton<AltruistRole>
 
     public override bool CanUse()
     {
-        if (RevivedInRound) return false;
+        if (RevivedInRound)
+        {
+            return false;
+        }
 
         var bodiesInRange = Helpers.GetNearestDeadBodies(
             PlayerControl.LocalPlayer.transform.position,
@@ -60,7 +63,9 @@ public sealed class AltruistReviveButton : TownOfUsRoleButton<AltruistRole>
                 {
                     var other = player.GetModifier<LoverModifier>()!.GetOtherLover;
                     if (!playersToRevive.Contains(other()!.PlayerId) && other()!.Data.IsDead)
+                    {
                         AltruistRole.RpcRevive(PlayerControl.LocalPlayer, other()!);
+                    }
                 }
 
                 AltruistRole.RpcRevive(PlayerControl.LocalPlayer, player);

@@ -25,7 +25,10 @@ public sealed class ScientistButton : TownOfUsButton
     {
         get
         {
-            if (OptionGroupSingleton<ScientistOptions>.Instance.DisplayDuration == 0) return AvailableCharge;
+            if (OptionGroupSingleton<ScientistOptions>.Instance.DisplayDuration == 0)
+            {
+                return AvailableCharge;
+            }
 
             return AvailableCharge < OptionGroupSingleton<ScientistOptions>.Instance.DisplayDuration
                 ? AvailableCharge
@@ -62,7 +65,11 @@ public sealed class ScientistButton : TownOfUsButton
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
-        if (!playerControl.AmOwner || MeetingHud.Instance) return;
+        if (!playerControl.AmOwner || MeetingHud.Instance)
+        {
+            return;
+        }
+
         if (vitals != null)
         {
             AvailableCharge -= Time.deltaTime;
@@ -84,7 +91,10 @@ public sealed class ScientistButton : TownOfUsButton
         Button?.usesRemainingText.gameObject.SetActive(true);
         Button?.usesRemainingSprite.gameObject.SetActive(true);
         Button!.usesRemainingText.text = (int)AvailableCharge + "%";
-        if (vitals == null && EffectActive) ResetCooldownAndOrEffect();
+        if (vitals == null && EffectActive)
+        {
+            ResetCooldownAndOrEffect();
+        }
     }
 
     public override bool CanUse()
@@ -96,7 +106,10 @@ public sealed class ScientistButton : TownOfUsButton
 
     public override void ClickHandler()
     {
-        if (!CanUse() || Minigame.Instance != null) return;
+        if (!CanUse() || Minigame.Instance != null)
+        {
+            return;
+        }
 
         OnClick();
         Button?.SetDisabled();
@@ -119,7 +132,9 @@ public sealed class ScientistButton : TownOfUsButton
     protected override void OnClick()
     {
         if (!OptionGroupSingleton<ScientistOptions>.Instance.MoveWithMenu)
+        {
             PlayerControl.LocalPlayer.NetTransform.Halt();
+        }
 
         vitals = Object.Instantiate<VitalsMinigame>(RoleManager.Instance.GetRole(RoleTypes.Scientist)
             .Cast<ScientistRole>().VitalsPrefab);

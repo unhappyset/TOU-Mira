@@ -52,12 +52,17 @@ public sealed class ClericCleanseModifier(PlayerControl cleric) : BaseModifier
         {
             var text = new StringBuilder($"Cleansed effects on {Player.Data.PlayerName}:");
 
-            foreach (var effect in Effects) text.Append(TownOfUsPlugin.Culture, $" {effect.ToString()},");
+            foreach (var effect in Effects)
+            {
+                text.Append(TownOfUsPlugin.Culture, $" {effect.ToString()},");
+            }
 
             text = text.Remove(text.Length - 1, 1);
 
             if (Effects.Count == 0)
+            {
                 text = new StringBuilder($"No negative effects were found on {Player.Data.PlayerName}.");
+            }
 
             var title = $"<color=#{TownOfUsColors.Cleric.ToHtmlStringRGBA()}>Cleric Feedback</color>";
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, text.ToString(), false, true);
@@ -79,25 +84,39 @@ public sealed class ClericCleanseModifier(PlayerControl cleric) : BaseModifier
     {
         // Logger<TownOfUsPlugin>.Error($"ClericCleanseModifier.CleansePlayer");
         if (Effects.Contains(EffectType.Douse))
+        {
             Player.RemoveModifier<ArsonistDousedModifier>();
+        }
 
         if (Effects.Contains(EffectType.Hack))
+        {
             Player.RemoveModifier<GlitchHackedModifier>();
+        }
 
         if (Effects.Contains(EffectType.Infect))
+        {
             Player.RemoveModifier<PlaguebearerInfectedModifier>();
+        }
 
         if (Effects.Contains(EffectType.Blackmail))
+        {
             Player.RemoveModifier<BlackmailedModifier>();
+        }
 
         if (Effects.Contains(EffectType.Blind))
+        {
             Player.RpcRemoveModifier<EclipsalBlindModifier>();
+        }
 
         if (Effects.Contains(EffectType.Flash))
+        {
             Player.RemoveModifier<GrenadierFlashModifier>();
+        }
 
         if (Effects.Contains(EffectType.Hypnosis))
+        {
             Player.RemoveModifier<HypnotisedModifier>();
+        }
     }
 
     public static List<EffectType> FindNegativeEffects(PlayerControl player)
@@ -105,25 +124,39 @@ public sealed class ClericCleanseModifier(PlayerControl cleric) : BaseModifier
         var effects = new List<EffectType>();
 
         if (player.HasModifier<ArsonistDousedModifier>())
+        {
             effects.Add(EffectType.Douse);
+        }
 
         if (player.HasModifier<GlitchHackedModifier>())
+        {
             effects.Add(EffectType.Hack);
+        }
 
         if (player.HasModifier<PlaguebearerInfectedModifier>())
+        {
             effects.Add(EffectType.Infect);
+        }
 
         if (player.HasModifier<BlackmailedModifier>())
+        {
             effects.Add(EffectType.Blackmail);
+        }
 
         if (player.HasModifier<EclipsalBlindModifier>())
+        {
             effects.Add(EffectType.Blind);
+        }
 
         if (player.HasModifier<GrenadierFlashModifier>())
+        {
             effects.Add(EffectType.Flash);
+        }
 
         if (player.HasModifier<HypnotisedModifier>())
+        {
             effects.Add(EffectType.Hypnosis);
+        }
 
         return effects;
     }

@@ -27,7 +27,10 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
 {
     public void FixedUpdate()
     {
-        if (Player == null || Player.Data.Role is not PlaguebearerRole || Player.HasDied()) return;
+        if (Player == null || Player.Data.Role is not PlaguebearerRole || Player.HasDied())
+        {
+            return;
+        }
 
         var allInfected =
             ModifierUtils.GetPlayersWithModifier<PlaguebearerInfectedModifier>([HideFromIl2Cpp](x) =>
@@ -81,7 +84,9 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
         {
             stringB.Append("\n<b>Players Infected:</b>");
             foreach (var plr in allInfected)
+            {
                 stringB.Append(TownOfUsPlugin.Culture, $"\n{Color.white.ToTextColor()}{plr.Data.PlayerName}</color>");
+            }
         }
 
         var notInfected = PlayerControl.AllPlayerControls.ToArray().Where(x =>
@@ -93,7 +98,10 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
 
     public bool WinConditionMet()
     {
-        if (Player.HasDied()) return false;
+        if (Player.HasDied())
+        {
+            return false;
+        }
 
         var result = Helpers.GetAlivePlayers().Count <= 2 && MiscUtils.KillersAliveCount == 1;
 
@@ -119,7 +127,9 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
     {
         RoleBehaviourStubs.Initialize(this, player);
         if (Player.AmOwner && (int)OptionGroupSingleton<PlaguebearerOptions>.Instance.PestChance != 0)
+        {
             Coroutines.Start(CheckForPestChance(Player));
+        }
     }
 
     private static IEnumerator CheckForPestChance(PlayerControl player)
@@ -139,7 +149,11 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
 
     public override bool CanUse(IUsable usable)
     {
-        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player)) return false;
+        if (!GameManager.Instance.LogicUsables.CanUse(usable, Player))
+        {
+            return false;
+        }
+
         var console = usable.TryCast<Console>()!;
         return console == null || console.AllowImpostor;
     }
@@ -152,15 +166,23 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
     public static void CheckInfected(PlayerControl source, PlayerControl target)
     {
         if (source.Data.Role is PlaguebearerRole)
+        {
             target.AddModifier<PlaguebearerInfectedModifier>(source.PlayerId);
+        }
         else if (target.Data.Role is PlaguebearerRole)
+        {
             source.AddModifier<PlaguebearerInfectedModifier>(target.PlayerId);
+        }
         else if (source.TryGetModifier<PlaguebearerInfectedModifier>(out var mod) &&
                  !target.HasModifier<PlaguebearerInfectedModifier>())
+        {
             target.AddModifier<PlaguebearerInfectedModifier>(mod.PlagueBearerId);
+        }
         else if (target.TryGetModifier<PlaguebearerInfectedModifier>(out var mod2) &&
                  !source.HasModifier<PlaguebearerInfectedModifier>())
+        {
             source.AddModifier<PlaguebearerInfectedModifier>(mod2.PlagueBearerId);
+        }
     }
 
     [MethodRpc((uint)TownOfUsRpc.CheckInfected, SendImmediately = true)]

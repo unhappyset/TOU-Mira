@@ -61,26 +61,40 @@ public sealed class MediatedModifier(byte mediumId) : BaseModifier
         }
 
         if (_mediumPlayer.AmOwner && !OptionGroupSingleton<MediumOptions>.Instance.RevealMediateAppearance)
+        {
             Player.SetCamouflage();
+        }
 
         Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Medium, alpha: 0.5f));
     }
 
     public override void OnDeactivate()
     {
-        if (_mediumPlayer == null) return;
+        if (_mediumPlayer == null)
+        {
+            return;
+        }
 
-        if (_medium != null) _medium.MediatedPlayers.Remove(this);
+        if (_medium != null)
+        {
+            _medium.MediatedPlayers.Remove(this);
+        }
 
         if (_mediumPlayer.AmOwner)
         {
             CustomButtonSingleton<MediumMediateButton>.Instance.SetTimerPaused(false);
             CustomButtonSingleton<MediumMediateButton>.Instance.ResetCooldownAndOrEffect();
 
-            if (!OptionGroupSingleton<MediumOptions>.Instance.RevealMediateAppearance) Player.SetCamouflage(false);
+            if (!OptionGroupSingleton<MediumOptions>.Instance.RevealMediateAppearance)
+            {
+                Player.SetCamouflage(false);
+            }
         }
 
-        if (_arrow != null) _arrow.gameObject.Destroy();
+        if (_arrow != null)
+        {
+            _arrow.gameObject.Destroy();
+        }
     }
 
     public override void FixedUpdate()
@@ -91,9 +105,14 @@ public sealed class MediatedModifier(byte mediumId) : BaseModifier
             return;
         }
 
-        if (_mediumPlayer != null && _mediumPlayer.AmOwner) Player.Visible = true;
+        if (_mediumPlayer != null && _mediumPlayer.AmOwner)
+        {
+            Player.Visible = true;
+        }
 
         if (_arrow != null && _arrow.target != _arrow.transform.parent.position)
+        {
             _arrow.target = _arrow.transform.parent.position;
+        }
     }
 }

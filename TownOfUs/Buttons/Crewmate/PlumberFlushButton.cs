@@ -26,13 +26,31 @@ public sealed class PlumberFlushButton : TownOfUsRoleButton<PlumberRole, Vent>
     public override Vent? GetTarget()
     {
         var vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 4, Filter);
-        if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 3, Filter);
-        if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 2, Filter);
-        if (vent == null) vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
+        if (vent == null)
+        {
+            vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 3, Filter);
+        }
 
-        if (ModCompatibility.IsSubmerged() && vent != null && (vent.Id == 0 || vent.Id == 14)) vent = null;
+        if (vent == null)
+        {
+            vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 2, Filter);
+        }
 
-        if (vent != null && PlayerControl.LocalPlayer.CanUseVent(vent)) return vent;
+        if (vent == null)
+        {
+            vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
+        }
+
+        if (ModCompatibility.IsSubmerged() && vent != null && (vent.Id == 0 || vent.Id == 14))
+        {
+            vent = null;
+        }
+
+        if (vent != null && PlayerControl.LocalPlayer.CanUseVent(vent))
+        {
+            return vent;
+        }
+
         return null;
     }
 
@@ -54,7 +72,10 @@ public sealed class PlumberFlushButton : TownOfUsRoleButton<PlumberRole, Vent>
     public override bool CanUse()
     {
         var newTarget = GetTarget();
-        if (newTarget != Target) Target?.SetOutline(false, false);
+        if (newTarget != Target)
+        {
+            Target?.SetOutline(false, false);
+        }
 
         Target = IsTargetValid(newTarget) ? newTarget : null;
         SetOutline(true);

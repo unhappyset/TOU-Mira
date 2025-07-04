@@ -32,7 +32,11 @@ public sealed class DoomsayerObserveButton : TownOfUsRoleButton<DoomsayerRole, P
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
+
         ModifierUtils.GetPlayersWithModifier<DoomsayerObservedModifier>()
             .Do(x => x.RemoveModifier<DoomsayerObservedModifier>());
 

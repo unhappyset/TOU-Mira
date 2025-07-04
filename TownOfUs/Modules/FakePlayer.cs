@@ -64,7 +64,10 @@ public sealed class FakePlayer : IDisposable
         for (var i = 0; i < syncs.Length; ++i)
         {
             var sync = syncs[i];
-            if (sync != null) Object.Destroy(sync);
+            if (sync != null)
+            {
+                Object.Destroy(sync);
+            }
         }
 
         var vector = player.transform.position;
@@ -73,8 +76,13 @@ public sealed class FakePlayer : IDisposable
         body.transform.position = vector;
 
         if (player.HasModifier<GiantModifier>())
+        {
             body.transform.localScale /= 0.7f;
-        else if (player.HasModifier<MiniModifier>()) body.transform.localScale *= 0.7f;
+        }
+        else if (player.HasModifier<MiniModifier>())
+        {
+            body.transform.localScale *= 0.7f;
+        }
 
         if (player.HasModifier<ShyModifier>())
         {
@@ -87,22 +95,32 @@ public sealed class FakePlayer : IDisposable
             _cosmeticsLayer.nameText.color = _cosmeticsLayer.nameText.color.SetAlpha(transparency);
 
             if (DataManager.Settings.Accessibility.ColorBlindMode)
+            {
                 _cosmeticsLayer.colorBlindText.color = _cosmeticsLayer.colorBlindText.color.SetAlpha(transparency);
+            }
 
             //player.SetHatAndVisorAlpha(transparency);
             _cosmeticsLayer.skin.layer.color = _cosmeticsLayer.skin.layer.color.SetAlpha(transparency);
 
             foreach (var animation in _cosmeticsLayer.GetComponentsInParent<SpriteRenderer>())
+            {
                 animation.color = animation.color.SetAlpha(transparency);
+            }
 
             foreach (var animation in _cosmeticsLayer.GetComponentsInChildren<SpriteRenderer>())
+            {
                 animation.color = animation.color.SetAlpha(transparency);
+            }
 
             foreach (var animation in body.GetComponentsInParent<SpriteRenderer>())
+            {
                 animation.color = animation.color.SetAlpha(transparency);
+            }
 
             foreach (var animation in body.GetComponentsInChildren<SpriteRenderer>())
+            {
                 animation.color = animation.color.SetAlpha(transparency);
+            }
         }
 
         FakePlayers.Add(this);
@@ -200,7 +218,10 @@ public sealed class FakePlayer : IDisposable
         cosmetics.SetFlipX(flipX);
 
         var emptyPet = body!.transform.Find(DefaultPetName);
-        if (emptyPet != null) Object.Destroy(emptyPet.gameObject);
+        if (emptyPet != null)
+        {
+            Object.Destroy(emptyPet.gameObject);
+        }
 
         var petId = cosmicInfo.OutfitInfo.PetId;
 
@@ -238,10 +259,14 @@ public sealed class FakePlayer : IDisposable
                 var transparency = OptionGroupSingleton<ShyOptions>.Instance.FinalTransparency / 100;
 
                 foreach (var pet in petBehaviour.GetComponentsInParent<SpriteRenderer>())
+                {
                     pet.color = pet.color.SetAlpha(transparency);
+                }
 
                 foreach (var pet in petBehaviour.GetComponentsInChildren<SpriteRenderer>())
+                {
                     pet.color = pet.color.SetAlpha(transparency);
+                }
             }
         }
 
@@ -255,7 +280,10 @@ public sealed class FakePlayer : IDisposable
     private void CreateNameTextParentObj(PlayerControl player, GameObject parent, PlayerCosmicInfo info)
     {
         var baseParentTrans = player.gameObject.transform.FindChild("Names");
-        if (baseParentTrans == null) return;
+        if (baseParentTrans == null)
+        {
+            return;
+        }
 
         var baseObject = baseParentTrans.gameObject;
 
@@ -265,8 +293,13 @@ public sealed class FakePlayer : IDisposable
         nameObj.transform.localPosition -= new Vector3(0f, 0.247f, 0f);
 
         if (player.HasModifier<GiantModifier>())
+        {
             nameObj.transform.localScale *= 0.7f;
-        else if (player.HasModifier<MiniModifier>()) nameObj.transform.localScale /= 0.7f;
+        }
+        else if (player.HasModifier<MiniModifier>())
+        {
+            nameObj.transform.localScale /= 0.7f;
+        }
 
         var nameText = nameObj.transform.FindChild(NameTextObjName).GetComponent<TextMeshPro>();
         var baseNameText = baseObject.transform.FindChild(NameTextObjName).GetComponent<TextMeshPro>();
@@ -281,16 +314,20 @@ public sealed class FakePlayer : IDisposable
         {
             ChangeDummyName(nameText, baseNameText, info);
             if (player.HasModifier<ShyModifier>())
+            {
                 nameText.GetComponent<TextMeshPro>().color =
                     nameText.GetComponent<TextMeshPro>().color.SetAlpha(transparency);
+            }
         }
 
         if (_colorBindText != null && baseColorBindText != null)
         {
             UpdateColorName(_colorBindText, baseColorBindText, info.ColorInfo);
             if (player.HasModifier<ShyModifier>())
+            {
                 _colorBindText.GetComponent<TextMeshPro>().color =
                     _colorBindText.GetComponent<TextMeshPro>().color.SetAlpha(transparency);
+            }
         }
 
         RemoveRoleInfo(nameObj);
@@ -309,7 +346,10 @@ public sealed class FakePlayer : IDisposable
     private static void RemoveRoleInfo(GameObject nameTextObjct)
     {
         var info = nameTextObjct.transform.FindChild("Info");
-        if (info != null) Object.Destroy(info.gameObject);
+        if (info != null)
+        {
+            Object.Destroy(info.gameObject);
+        }
     }
 
     private static void UpdateColorName(TextMeshPro colorText, TextMeshPro baseColorText, int colorId)
@@ -320,7 +360,10 @@ public sealed class FakePlayer : IDisposable
         if (array.Length != 0)
         {
             array[0] = char.ToUpper(array[0], CultureInfo.InvariantCulture);
-            for (var i = 1; i < array.Length; i++) array[i] = char.ToLower(array[i], CultureInfo.InvariantCulture);
+            for (var i = 1; i < array.Length; i++)
+            {
+                array[i] = char.ToLower(array[i], CultureInfo.InvariantCulture);
+            }
         }
 
         FitTextMeshPro(colorText, baseColorText);
@@ -339,7 +382,10 @@ public sealed class FakePlayer : IDisposable
     private static void DestroyCollider<T>(GameObject obj) where T : Collider2D
     {
         var component = obj.GetComponent<T>();
-        if (component != null) Object.Destroy(component);
+        if (component != null)
+        {
+            Object.Destroy(component);
+        }
     }
 
     private static void FitTextMeshPro(TextMeshPro a, TextMeshPro b)
@@ -367,20 +413,33 @@ public sealed class FakePlayer : IDisposable
         if (disposing)
         {
             if (body != null)
+            {
                 Object.Destroy(body);
+            }
 
             if (_colorBindTextObj != null)
+            {
                 Object.Destroy(_colorBindTextObj);
+            }
 
             if (_rend != null)
+            {
                 Object.Destroy(_rend);
+            }
         }
     }
 
     public static void RemovePet(PlayerControl pc)
     {
-        if (pc == null || !pc.Data.IsDead) return;
-        if (pc.CurrentOutfit.PetId == "") return;
+        if (pc == null || !pc.Data.IsDead)
+        {
+            return;
+        }
+
+        if (pc.CurrentOutfit.PetId == "")
+        {
+            return;
+        }
 
         pc.SetPet("");
     }

@@ -51,10 +51,15 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
     private void Awake()
     {
-        if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(false));
+        if (MeetingHud.Instance)
+        {
+            MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(false));
+        }
 
         if (GameStartManager.InstanceExists && LobbyBehaviour.Instance)
+        {
             GameStartManager.Instance.HostInfoPanel.gameObject.SetActive(false);
+        }
 
         UpdatePage(WikiPage.Homepage);
 
@@ -90,7 +95,10 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
         SearchTextbox.Value.OnChange.AddListener((UnityAction)(() =>
         {
-            if (_currentPage != WikiPage.SearchScreen || _activeItems.Count == 0) return;
+            if (_currentPage != WikiPage.SearchScreen || _activeItems.Count == 0)
+            {
+                return;
+            }
 
             var text = SearchTextbox.Value.outputText.text;
             _activeItems = _activeItems
@@ -99,7 +107,11 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 .ThenBy(child => child.name.ToLowerInvariant())
                 .ToList();
 
-            for (var i = 0; i < _activeItems.Count; i++) _activeItems[i].SetSiblingIndex(i);
+            for (var i = 0; i < _activeItems.Count; i++)
+            {
+                _activeItems[i].SetSiblingIndex(i);
+            }
+
             SearchScroller.Value.ScrollToTop();
         }));
 
@@ -122,14 +134,19 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
         foreach (var text in GetComponentsInChildren<TextMeshPro>(true))
         {
-            if (text.color == Color.black) continue;
+            if (text.color == Color.black)
+            {
+                continue;
+            }
 
             text.font = HudManager.Instance.TaskPanel.taskText.font;
             text.fontMaterial = HudManager.Instance.TaskPanel.taskText.fontMaterial;
         }
 
         foreach (var btn in GetComponentsInChildren<PassiveButton>(true))
+        {
             btn.ClickSound = HudManager.Instance.MapButton.ClickSound;
+        }
     }
 
     private void UpdatePage(WikiPage newPage)
@@ -139,8 +156,15 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         Homepage.Value.gameObject.SetActive(false);
         SearchScreen.Value.gameObject.SetActive(false);
         DetailScreen.Value.gameObject.SetActive(false);
-        if (SearchIcon) SearchIcon.SetActive(false);
-        if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(false));
+        if (SearchIcon)
+        {
+            SearchIcon.SetActive(false);
+        }
+
+        if (MeetingHud.Instance)
+        {
+            MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(false));
+        }
 
         switch (newPage)
         {
@@ -263,13 +287,32 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 var newItem = CreateNewItem(modifier.ModifierName, modifier.ModifierIcon!.LoadAsset());
                 newItem.transform.GetChild(2).gameObject.SetActive(false);
                 var alignment = "External";
-                if (modifier is UniversalGameModifier uniMod) alignment = uniMod.FactionType.ToDisplayString();
-                if (modifier is TouGameModifier touMod) alignment = touMod.FactionType.ToDisplayString();
-                if (modifier is AllianceGameModifier allyMod) alignment = allyMod.FactionType.ToDisplayString();
+                if (modifier is UniversalGameModifier uniMod)
+                {
+                    alignment = uniMod.FactionType.ToDisplayString();
+                }
+
+                if (modifier is TouGameModifier touMod)
+                {
+                    alignment = touMod.FactionType.ToDisplayString();
+                }
+
+                if (modifier is AllianceGameModifier allyMod)
+                {
+                    alignment = allyMod.FactionType.ToDisplayString();
+                }
+
                 var wikiBg = newItem.transform.FindChild("WikiBg").gameObject.GetComponent<SpriteRenderer>();
                 wikiBg.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-                if (modifier is IColoredModifier colorMod) wikiBg.color = colorMod.ModifierColor;
-                if (alignment.Contains("Non ")) alignment = alignment.Replace("Non ", "Non-");
+                if (modifier is IColoredModifier colorMod)
+                {
+                    wikiBg.color = colorMod.ModifierColor;
+                }
+
+                if (alignment.Contains("Non "))
+                {
+                    alignment = alignment.Replace("Non ", "Non-");
+                }
 
                 var amount = modifier is GameModifier gameMod ? gameMod.GetAmountPerGame() : 0;
                 var chance = modifier is GameModifier gameMod2 ? gameMod2.GetAssignmentChance() : 0;
@@ -315,13 +358,19 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
             List<ushort> roleList = [(ushort)PlayerControl.LocalPlayer.Data.Role.Role];
             if (PlayerControl.LocalPlayer.Data.IsDead &&
                 !roleList.Contains((ushort)PlayerControl.LocalPlayer.GetRoleWhenAlive().Role))
+            {
                 roleList.Add((ushort)PlayerControl.LocalPlayer.GetRoleWhenAlive().Role);
+            }
+
             var comparer = new RoleComparer(roleList);
             var roles = MiscUtils.AllRoles.OrderBy(x => x, comparer).OfType<ITownOfUsRole>();
 
             foreach (var role in roles)
             {
-                if (role is not IWikiDiscoverable wikiDiscoverable) continue;
+                if (role is not IWikiDiscoverable wikiDiscoverable)
+                {
+                    continue;
+                }
 
                 var newItem = CreateNewItem(role.RoleName, role.Configuration.Icon?.LoadAsset());
                 var wikiBg = newItem.transform.FindChild("WikiBg").gameObject.GetComponent<SpriteRenderer>();
@@ -356,7 +405,10 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
         var max = Mathf.Max(0f, SearchScroller.Value.Inner.GetChildCount() * 0.725f);
         SearchScroller.Value.SetBounds(new FloatRange(-0.4f, max), null);
-        if (oldMax != max) SearchScroller.Value.ScrollToTop();
+        if (oldMax != max)
+        {
+            SearchScroller.Value.ScrollToTop();
+        }
     }
 
     [HideFromIl2Cpp]
@@ -410,9 +462,15 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         MinigameStubs.Close(this);
 
         if (GameStartManager.InstanceExists && LobbyBehaviour.Instance)
+        {
             GameStartManager.Instance.HostInfoPanel.gameObject.SetActive(true);
+        }
 
-        if (MeetingHud.Instance) MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(true));
+        if (MeetingHud.Instance)
+        {
+            MeetingHud.Instance.playerStates.Do(x => x.gameObject.SetActive(true));
+        }
+
         TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
     }
 }

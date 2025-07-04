@@ -11,7 +11,10 @@ public static class ImmovableEvents
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return;
+        if (@event.TriggeredByIntro)
+        {
+            return;
+        }
 
         ModifierUtils.GetActiveModifiers<ImmovableModifier>().Do(x => x.OnRoundStart());
     }

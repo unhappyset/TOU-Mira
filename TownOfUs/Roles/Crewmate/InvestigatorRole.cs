@@ -46,7 +46,10 @@ public sealed class InvestigatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
     {
         RoleBehaviourStubs.Initialize(this, player);
 
-        if (!player.AmOwner) return;
+        if (!player.AmOwner)
+        {
+            return;
+        }
 
         Helpers.GetAlivePlayers().Where(plr => !plr.HasModifier<FootstepsModifier>())
             .ToList().ForEach(plr => plr.GetModifierComponent().AddModifier<FootstepsModifier>());
@@ -56,7 +59,10 @@ public sealed class InvestigatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
-        if (!targetPlayer.AmOwner) return;
+        if (!targetPlayer.AmOwner)
+        {
+            return;
+        }
 
         PlayerControl.AllPlayerControls.ToArray().Where(plr => plr.HasModifier<FootstepsModifier>())
             .ToList().ForEach(plr => plr.GetModifierComponent().RemoveModifier<FootstepsModifier>());

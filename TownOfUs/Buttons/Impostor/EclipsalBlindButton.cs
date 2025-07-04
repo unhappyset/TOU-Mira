@@ -27,7 +27,9 @@ public sealed class EclipsalBlindButton : TownOfUsRoleButton<EclipsalRole>, IAft
             Helpers.GetClosestPlayers(PlayerControl.LocalPlayer, blindRadius * ShipStatus.Instance.MaxLightRadius);
 
         foreach (var player in blindedPlayers.Where(x => !x.HasDied() && !x.IsImpostor()))
+        {
             player.RpcAddModifier<EclipsalBlindModifier>(PlayerControl.LocalPlayer);
+        }
         // PlayerControl.LocalPlayer.RpcAddModifier<EclipsalBlindModifier>(PlayerControl.LocalPlayer);
     }
 

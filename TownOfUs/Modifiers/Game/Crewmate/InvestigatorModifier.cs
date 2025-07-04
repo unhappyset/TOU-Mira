@@ -51,7 +51,10 @@ public sealed class InvestigatorModifier : TouGameModifier, IWikiDiscoverable
 
     public override void OnActivate()
     {
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
 
         Helpers.GetAlivePlayers().Where(plr => !plr.HasModifier<FootstepsModifier>())
             .ToList().ForEach(plr => plr.GetModifierComponent().AddModifier<FootstepsModifier>());
@@ -59,7 +62,10 @@ public sealed class InvestigatorModifier : TouGameModifier, IWikiDiscoverable
 
     public override void OnDeactivate()
     {
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
 
         PlayerControl.AllPlayerControls.ToArray().Where(plr => plr.HasModifier<FootstepsModifier>())
             .ToList().ForEach(plr => plr.GetModifierComponent().RemoveModifier<FootstepsModifier>());

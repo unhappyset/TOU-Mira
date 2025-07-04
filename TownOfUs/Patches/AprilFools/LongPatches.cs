@@ -9,6 +9,9 @@ public static class LongBoiPatches
     [HarmonyPrefix]
     public static void LongBoy_ColorHeightPatch(LongBoiPlayerBody __instance, ref int colorIndex)
     {
-        while (colorIndex >= __instance.heightsPerColor.Count) colorIndex -= __instance.heightsPerColor.Count;
+        while (colorIndex >= __instance.heightsPerColor.Count)
+        {
+            colorIndex -= __instance.heightsPerColor.Count;
+        }
     }
 }

@@ -15,6 +15,7 @@ using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
 using UnityEngine.UI;
+
 // using Reactor.Utilities.Extensions;
 
 namespace TownOfUs.Roles.Crewmate;
@@ -36,11 +37,15 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
 
         if (options.HaunterCanBeClickedBy == HaunterRoleClickableType.ImpsOnly &&
             !PlayerControl.LocalPlayer.IsImpostor())
+        {
             return false;
+        }
 
         if (options.HaunterCanBeClickedBy == HaunterRoleClickableType.NonCrew &&
             !(PlayerControl.LocalPlayer.IsImpostor() || PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling)))
+        {
             return false;
+        }
 
         return true;
     }
@@ -95,7 +100,10 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         Caught = true;
         Player.Exiled();
 
-        if (Player.AmOwner) HudManager.Instance.AbilityButton.SetEnabled();
+        if (Player.AmOwner)
+        {
+            HudManager.Instance.AbilityButton.SetEnabled();
+        }
 
         Player.RemoveModifier<HaunterArrowModifier>();
     }
@@ -134,7 +142,10 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
 
     public override void UseAbility()
     {
-        if (GhostActive) return;
+        if (GhostActive)
+        {
+            return;
+        }
 
         base.UseAbility();
     }
@@ -239,7 +250,10 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
 
     public void CheckTaskRequirements()
     {
-        if (Caught) return;
+        if (Caught)
+        {
+            return;
+        }
 
         var completedTasks = Player.myTasks.ToArray().Count(t => t.IsComplete);
         var tasksRemaining = Player.myTasks.Count - completedTasks;
@@ -251,7 +265,9 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             CompletedAllTasks = true;
 
             if (Player.AmOwner || IsTargetOfHaunter(PlayerControl.LocalPlayer))
+            {
                 Coroutines.Start(MiscUtils.CoFlash(Color.white));
+            }
         }
 
         if (!Revealed && tasksRemaining == (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeAlerted)
@@ -283,7 +299,10 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
 
     public static bool IsTargetOfHaunter(PlayerControl player)
     {
-        if (player == null || player.Data == null || player.Data.Role == null) return false;
+        if (player == null || player.Data == null || player.Data.Role == null)
+        {
+            return false;
+        }
 
         return player.IsImpostor() || (player.Is(RoleAlignment.NeutralKilling) &&
                                        OptionGroupSingleton<HaunterOptions>.Instance.RevealNeutralRoles);
@@ -293,7 +312,10 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     {
         var haunter = MiscUtils.GetRole<HaunterRole>();
 
-        if (haunter == null) return false;
+        if (haunter == null)
+        {
+            return false;
+        }
 
         return IsTargetOfHaunter(player) && haunter.CompletedAllTasks && !player.AmOwner;
     }

@@ -26,7 +26,11 @@ public static class IntroScenePatches
     public static bool ImpostorBeginPatch(IntroCutscene __instance)
     {
         if ( /* OptionGroupSingleton<GeneralOptions>.Instance.ImpsKnowRoles &&  */
-            !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode) return true;
+            !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode)
+        {
+            return true;
+        }
+
         __instance.TeamTitle.text =
             DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Impostor, Array.Empty<Object>());
         __instance.TeamTitle.color = Palette.ImpostorRed;
@@ -46,30 +50,45 @@ public static class IntroScenePatches
 
         foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(PlayerControl.LocalPlayer.Data.Role)))
         {
-            if (button is FakeVentButton) continue;
+            if (button is FakeVentButton)
+            {
+                continue;
+            }
+
             button.SetTimer(OptionGroupSingleton<GeneralOptions>.Instance.GameStartCd);
         }
 
         if (PlayerControl.LocalPlayer.IsImpostor())
+        {
             PlayerControl.LocalPlayer.SetKillTimer(OptionGroupSingleton<GeneralOptions>.Instance.GameStartCd);
+        }
 
         var modsTab = ModifierDisplayComponent.Instance;
         if (modsTab != null && !modsTab.IsOpen && PlayerControl.LocalPlayer.GetModifiers<GameModifier>()
-                .Any(x => !x.HideOnUi && x.GetDescription() != string.Empty)) modsTab.ToggleTab();
+                .Any(x => !x.HideOnUi && x.GetDescription() != string.Empty))
+        {
+            modsTab.ToggleTab();
+        }
 
         var panelThing = HudManager.Instance.TaskStuff.transform.FindChild("RolePanel");
         if (panelThing != null)
         {
             var panel = panelThing.gameObject.GetComponent<TaskPanelBehaviour>();
             var role = PlayerControl.LocalPlayer.Data.Role as ICustomRole;
-            if (role == null) return;
+            if (role == null)
+            {
+                return;
+            }
 
             panel.open = true;
 
             var tabText = panel.tab.gameObject.GetComponentInChildren<TextMeshPro>();
             var ogPanel = HudManager.Instance.TaskStuff.transform.FindChild("TaskPanel").gameObject
                 .GetComponent<TaskPanelBehaviour>();
-            if (tabText.text != role.RoleName) tabText.text = role.RoleName;
+            if (tabText.text != role.RoleName)
+            {
+                tabText.text = role.RoleName;
+            }
 
             var y = ogPanel.taskText.textBounds.size.y + 1;
             panel.closedPosition = new Vector3(ogPanel.closedPosition.x, ogPanel.open ? y + 0.2f : 2f,
@@ -147,14 +166,20 @@ public static class ModifierIntroPatch
             ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
 
             ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-            if (modifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
+            if (modifier is IColoredModifier colorMod)
+            {
+                ModifierText.color = colorMod.ModifierColor;
+            }
         }
         else if (uniModifier != null && option is ModReveal.Universal)
         {
             ModifierText.text = $"<size=4><color=#FFFFFF>Modifier: </color>{uniModifier.ModifierName}</size>";
 
             ModifierText.color = MiscUtils.GetRoleColour(uniModifier.ModifierName.Replace(" ", string.Empty));
-            if (uniModifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
+            if (uniModifier is IColoredModifier colorMod)
+            {
+                ModifierText.color = colorMod.ModifierColor;
+            }
         }
         else
         {
@@ -169,11 +194,16 @@ public static class ModifierIntroPatch
         {
             var adjustedNumImpostors = Helpers.GetAlivePlayers().Count(x => x.IsImpostor());
             if (adjustedNumImpostors == 1)
+            {
                 __instance.ImpostorText.text =
                     TranslationController.Instance.GetString(StringNames.NumImpostorsS, Array.Empty<Object>());
+            }
             else
+            {
                 __instance.ImpostorText.text =
                     TranslationController.Instance.GetString(StringNames.NumImpostorsP, adjustedNumImpostors);
+            }
+
             //__instance.ImpostorText.text = __instance.ImpostorText.text.GetAdjustedString(adjustedNumImpostors);
             __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
             __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
@@ -211,7 +241,10 @@ public static class ModifierIntroPatch
                 __instance.__4__this.RoleBlurbText.text = custom.RoleDescription;
             }
 
-            if (ModifierText == null) return;
+            if (ModifierText == null)
+            {
+                return;
+            }
 
             RunModChecks();
 
@@ -240,7 +273,10 @@ public static class ModifierIntroPatch
                 __instance.__4__this.RoleBlurbText.text = custom.RoleDescription;
             }
 
-            if (ModifierText == null) return;
+            if (ModifierText == null)
+            {
+                return;
+            }
 
             RunModChecks();
 
@@ -268,12 +304,19 @@ public static class ModifierIntroPatch
             if (teamModifier != null && OptionGroupSingleton<GeneralOptions>.Instance.TeamModifierReveal)
             {
                 var color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
-                if (teamModifier is IColoredModifier colorMod) ModifierText.color = colorMod.ModifierColor;
+                if (teamModifier is IColoredModifier colorMod)
+                {
+                    ModifierText.color = colorMod.ModifierColor;
+                }
+
                 __instance.__4__this.RoleBlurbText.text =
                     $"<size={teamModifier.IntroSize}>\n</size>{__instance.__4__this.RoleBlurbText.text}\n<size={teamModifier.IntroSize}><color=#{color.ToHtmlStringRGBA()}>{teamModifier.IntroInfo}</color></size>";
             }
 
-            if (ModifierText == null) return;
+            if (ModifierText == null)
+            {
+                return;
+            }
 
             RunModChecks();
 

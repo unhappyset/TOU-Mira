@@ -11,18 +11,27 @@ public static class TeamChatEvents
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (TeamChatPatches.TeamChatActive) TeamChatPatches.ToggleTeamChat();
+        if (TeamChatPatches.TeamChatActive)
+        {
+            TeamChatPatches.ToggleTeamChat();
+        }
     }
 
     [RegisterEvent]
     public static void ReportBodyEventHandler(ReportBodyEvent @event)
     {
-        if (TeamChatPatches.TeamChatActive) TeamChatPatches.ToggleTeamChat();
+        if (TeamChatPatches.TeamChatActive)
+        {
+            TeamChatPatches.ToggleTeamChat();
+        }
     }
 
     [RegisterEvent]
     public static void EjectionEventHandler(EjectionEvent @event)
     {
-        if (TeamChatPatches.TeamChatActive) TeamChatPatches.ToggleTeamChat();
+        if (TeamChatPatches.TeamChatActive)
+        {
+            TeamChatPatches.ToggleTeamChat();
+        }
     }
 }

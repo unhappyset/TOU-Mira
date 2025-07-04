@@ -66,7 +66,11 @@ public static class LogicGameFlowPatches
     [HarmonyPrefix]
     private static bool RecomputeTasksPatch(GameData __instance)
     {
-        if (__instance == null) return false;
+        if (__instance == null)
+        {
+            return false;
+        }
+
         __instance.TotalTasks = 0;
         __instance.CompletedTasks = 0;
         for (var i = 0; i < __instance.AllPlayers.Count; i++)
@@ -79,16 +83,23 @@ public static class LogicGameFlowPatches
                     (playerInfo._object.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.DoesTasks)
                     || !playerInfo._object.Data.Role.TasksCountTowardProgress
                 ))
+            {
                 for (var j = 0; j < playerInfo.Tasks.Count; j++)
                 {
                     __instance.TotalTasks++;
-                    if (playerInfo.Tasks.ToArray()[j].Complete) __instance.CompletedTasks++;
+                    if (playerInfo.Tasks.ToArray()[j].Complete)
+                    {
+                        __instance.CompletedTasks++;
+                    }
                 }
+            }
         }
 
         if (__instance.TotalTasks == 0)
+        {
             __instance.TotalTasks =
                 1; // This results in avoiding unfair task wins by essentially defaulting to 0/1 which can never lead to a win
+        }
 
         return false;
     }
@@ -97,11 +108,20 @@ public static class LogicGameFlowPatches
     [HarmonyPrefix]
     public static bool CheckEndCriteriaPatch(LogicGameFlowNormal __instance)
     {
-        if (TutorialManager.InstanceExists) return true;
+        if (TutorialManager.InstanceExists)
+        {
+            return true;
+        }
 
-        if (!AmongUsClient.Instance.AmHost) return false;
+        if (!AmongUsClient.Instance.AmHost)
+        {
+            return false;
+        }
 
-        if (!GameData.Instance) return false;
+        if (!GameData.Instance)
+        {
+            return false;
+        }
 
         if (ShipStatus.Instance.Systems.ContainsKey(SystemTypes.LifeSupp))
         {
@@ -118,7 +138,11 @@ public static class LogicGameFlowPatches
         foreach (var systemType2 in ShipStatus.Instance.Systems.Values)
         {
             var sabo = systemType2.TryCast<ICriticalSabotage>();
-            if (sabo == null) continue;
+            if (sabo == null)
+            {
+                continue;
+            }
+
             var criticalSabotage = sabo;
             if (criticalSabotage != null && criticalSabotage.Countdown < 0f)
             {
@@ -127,9 +151,15 @@ public static class LogicGameFlowPatches
             }
         }
 
-        if (CheckEndGameViaTasks(__instance)) return false;
+        if (CheckEndGameViaTasks(__instance))
+        {
+            return false;
+        }
 
-        if (CheckEndGameViaTimeLimit(__instance)) return false;
+        if (CheckEndGameViaTimeLimit(__instance))
+        {
+            return false;
+        }
 
         // End game if there are 3 players alive and 2 are lovers.
         var activeLovers = ModifierUtils.GetActiveModifiers<LoverModifier>().ToArray();
@@ -153,13 +183,19 @@ public static class LogicGameFlowPatches
 
         // Prevents game end when all impostors are dead but there are neutral killers left alive
         if (MiscUtils.NKillersAliveCount > 0 ||
-            (MiscUtils.ImpAliveCount > 0 && MiscUtils.CrewKillersAliveCount > 0)) return false;
+            (MiscUtils.ImpAliveCount > 0 && MiscUtils.CrewKillersAliveCount > 0))
+        {
+            return false;
+        }
 
         // Prevents game end when all impostors are dead but there is a possibility for a traitor to spawn given the conditions
         var possibleTraitor = ModifierUtils.GetActiveModifiers<ToBecomeTraitorModifier>()
             .FirstOrDefault(x => !x.Player.HasDied() && x.Player.IsCrewmate());
         if (Helpers.GetAlivePlayers().Count > (int)OptionGroupSingleton<TraitorOptions>.Instance.LatestSpawn - 1 &&
-            possibleTraitor != null) return false;
+            possibleTraitor != null)
+        {
+            return false;
+        }
 
         // Causes the game to draw in extreme scenarios
         if (Helpers.GetAlivePlayers().Count <= 0)

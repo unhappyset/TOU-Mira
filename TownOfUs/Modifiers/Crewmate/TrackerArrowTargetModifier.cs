@@ -12,7 +12,9 @@ public sealed class TrackerArrowTargetModifier(PlayerControl owner, Color color,
     public override void OnDeath(DeathReason reason)
     {
         if (OptionGroupSingleton<TrackerOptions>.Instance.SoundOnDeactivate && Owner.AmOwner)
+        {
             TouAudio.PlaySound(TouAudio.TrackerDeactivateSound);
+        }
 
         base.OnDeath(reason);
     }

@@ -25,7 +25,11 @@ public static class ExecutionerEvents
         CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>().Do(x => x.CheckTargetDeath(@event.Target));
 
         var role = @event.Source.Data.Role;
-        if (@event.Source.HasDied()) role = @event.Source.GetRoleWhenAlive();
+        if (@event.Source.HasDied())
+        {
+            role = @event.Source.GetRoleWhenAlive();
+        }
+
         if (role is ExecutionerRole exe && exe.TargetVoted &&
             OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
         {
@@ -54,7 +58,10 @@ public static class ExecutionerEvents
     [RegisterEvent]
     public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
-        if (@event.DeathReason != DeathReason.Exile) return;
+        if (@event.DeathReason != DeathReason.Exile)
+        {
+            return;
+        }
 
         CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>().Do(x => x.CheckTargetEjection(@event.Player));
     }
@@ -62,8 +69,15 @@ public static class ExecutionerEvents
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return;
-        if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.EndsGame) return;
+        if (@event.TriggeredByIntro)
+        {
+            return;
+        }
+
+        if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.EndsGame)
+        {
+            return;
+        }
 
         var exe = CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>()
             .FirstOrDefault(x => x.TargetVoted && !x.Player.HasDied());
@@ -89,7 +103,10 @@ public static class ExecutionerEvents
                         {
                             killMenu.ForceClose();
 
-                            if (plr != null) PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
+                            if (plr != null)
+                            {
+                                PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
+                            }
                         });
                 }
                 else

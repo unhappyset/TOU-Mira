@@ -23,6 +23,7 @@ public static class ShowVentsPatch
     public static void Postfix(MapBehaviour __instance)
     {
         if (PlayerControl.LocalPlayer.HasModifier<SatelliteModifier>())
+        {
             foreach (var deadBody in ModifierUtils.GetActiveModifiers<SatelliteArrowModifier>()
                          .Select(bodyMod => bodyMod.DeadBody))
             {
@@ -41,16 +42,25 @@ public static class ShowVentsPatch
 
                 Icon.transform.localScale = Vector3.one;
             }
+        }
 
         if (!ModifierUtils.GetActiveModifiers<SatelliteArrowModifier>().Any())
         {
-            foreach (var icon in BodyIcons.Values.Where(x => x)) Object.Destroy(icon);
+            foreach (var icon in BodyIcons.Values.Where(x => x))
+            {
+                Object.Destroy(icon);
+            }
+
             BodyIcons.Clear();
         }
 
         if (!TownOfUsPlugin.ShowVents.Value)
         {
-            foreach (var icon in VentIcons.Values.Where(x => x)) Object.Destroy(icon);
+            foreach (var icon in VentIcons.Values.Where(x => x))
+            {
+                Object.Destroy(icon);
+            }
+
             VentIcons.Clear();
             VentNetworks.Clear();
             return;
@@ -61,7 +71,11 @@ public static class ShowVentsPatch
 
         foreach (var vent in ShipStatus.Instance.AllVents)
         {
-            if (vent.name.StartsWith("MinerVent-", StringComparison.Ordinal)) continue;
+            if (vent.name.StartsWith("MinerVent-", StringComparison.Ordinal))
+            {
+                continue;
+            }
+
             var location = vent.transform.position / ShipStatus.Instance.MapScale;
             location.z = -0.99f;
 
@@ -76,9 +90,13 @@ public static class ShowVentsPatch
             }
 
             if (task?.IsComplete == false && task.FindConsoles()[0].ConsoleId == vent.Id)
+            {
                 Icon.transform.localScale *= 0.6f;
+            }
             else
+            {
                 Icon.transform.localScale = Vector3.one;
+            }
 
             HandleMiraOrSub();
 
@@ -89,7 +107,10 @@ public static class ShowVentsPatch
             }
             else
             {
-                if (!network.Any(x => x == vent)) network.Add(vent);
+                if (!network.Any(x => x == vent))
+                {
+                    network.Add(vent);
+                }
             }
         }
 
@@ -124,10 +145,21 @@ public static class ShowVentsPatch
     {
         foreach (var vent in ShipStatus.Instance.AllVents)
         {
-            if (!vent.isActiveAndEnabled) continue;
-            if (vent.name.StartsWith("MinerVent-", StringComparison.Ordinal)) continue;
+            if (!vent.isActiveAndEnabled)
+            {
+                continue;
+            }
+
+            if (vent.name.StartsWith("MinerVent-", StringComparison.Ordinal))
+            {
+                continue;
+            }
+
             var network = GetNetworkFor(vent);
-            if (network == null || !network.Any(x => x == vent)) return false;
+            if (network == null || !network.Any(x => x == vent))
+            {
+                return false;
+            }
         }
 
         return true;
@@ -135,7 +167,10 @@ public static class ShowVentsPatch
 
     public static void HandleMiraOrSub()
     {
-        if (VentNetworks.Count != 0) return;
+        if (VentNetworks.Count != 0)
+        {
+            return;
+        }
 
         if (MiscUtils.IsMap(1))
         {

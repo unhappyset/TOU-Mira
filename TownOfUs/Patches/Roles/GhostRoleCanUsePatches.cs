@@ -44,6 +44,8 @@ public static class GhostRoleCanUsePatches
     {
         if (__state)
             // Logger<TownOfUsPlugin>.Message($"CanUsePostfixPatch IsDead");
+        {
             pc.IsDead = true;
+        }
     }
 }

@@ -28,7 +28,11 @@ public sealed class HypnotistRole(IntPtr cppPtr)
     {
         if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner ||
             MeetingHud.Instance || (!HudManager.Instance.UseButton.isActiveAndEnabled &&
-                                    !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
+                                    !HudManager.Instance.PetButton.isActiveAndEnabled))
+        {
+            return;
+        }
+
         HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<HypnotistOptions>.Instance.HypnoKill ||
                                                      (Player != null && Player.GetModifiers<BaseModifier>()
                                                          .Any(x => x is ICachedRole)) ||
@@ -79,6 +83,7 @@ public sealed class HypnotistRole(IntPtr cppPtr)
         RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.AmOwner)
+        {
             meetingMenu = new MeetingMenu(
                 this,
                 Click,
@@ -89,6 +94,7 @@ public sealed class HypnotistRole(IntPtr cppPtr)
             {
                 Position = new Vector3(-0.40f, 0f, -3f)
             };
+        }
     }
 
     public override void OnMeetingStart()
@@ -96,15 +102,20 @@ public sealed class HypnotistRole(IntPtr cppPtr)
         RoleBehaviourStubs.OnMeetingStart(this);
 
         if (Player.AmOwner)
+        {
             meetingMenu.GenButtons(MeetingHud.Instance,
                 Player.AmOwner && !Player.HasDied() && !HysteriaActive && !Player.HasModifier<JailedModifier>());
+        }
     }
 
     public override void OnVotingComplete()
     {
         RoleBehaviourStubs.OnVotingComplete(this);
 
-        if (Player.AmOwner) meetingMenu.HideButtons();
+        if (Player.AmOwner)
+        {
+            meetingMenu.HideButtons();
+        }
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -124,7 +135,10 @@ public sealed class HypnotistRole(IntPtr cppPtr)
     {
         RpcHysteria(Player);
 
-        if (Player.AmOwner) meetingMenu.HideButtons();
+        if (Player.AmOwner)
+        {
+            meetingMenu.HideButtons();
+        }
     }
 
     public bool IsExempt(PlayerVoteArea voteArea)

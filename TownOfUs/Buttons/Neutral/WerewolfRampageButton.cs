@@ -23,7 +23,10 @@ public sealed class WerewolfRampageButton : TownOfUsRoleButton<WerewolfRole>, IA
 
     protected override void OnClick()
     {
-        if (Role == null) return;
+        if (Role == null)
+        {
+            return;
+        }
 
         Role.Rampaging = true;
 
@@ -34,7 +37,10 @@ public sealed class WerewolfRampageButton : TownOfUsRoleButton<WerewolfRole>, IA
 
     public override void OnEffectEnd()
     {
-        if (Role == null) return;
+        if (Role == null)
+        {
+            return;
+        }
 
         Role.Rampaging = false;
 

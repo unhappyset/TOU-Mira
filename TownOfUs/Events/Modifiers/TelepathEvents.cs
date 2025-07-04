@@ -51,7 +51,9 @@ public static class TelepathEvents
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
                 if (options.KnowKillLocation)
+                {
                     victim?.AddModifier<TelepathDeathNotifierModifier>(PlayerControl.LocalPlayer);
+                }
             }
             else if (victim.IsImpostor() && options.KnowDeath)
             {
@@ -62,7 +64,9 @@ public static class TelepathEvents
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
                 if (options.KnowDeathLocation)
+                {
                     victim?.AddModifier<TelepathDeathNotifierModifier>(PlayerControl.LocalPlayer);
+                }
             }
         }
     }

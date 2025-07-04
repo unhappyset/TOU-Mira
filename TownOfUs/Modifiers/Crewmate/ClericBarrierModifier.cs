@@ -68,6 +68,9 @@ public sealed class ClericBarrierModifier(PlayerControl cleric) : BaseShieldModi
 
     public override void OnDeactivate()
     {
-        if (ClericBarrier?.gameObject != null) ClericBarrier.gameObject.Destroy();
+        if (ClericBarrier?.gameObject != null)
+        {
+            ClericBarrier.gameObject.Destroy();
+        }
     }
 }

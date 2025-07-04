@@ -31,13 +31,17 @@ public sealed class UE_SpriteFlipper : MonoBehaviour
     public void Update()
     {
         if (RenderersArray.Count != 0)
+        {
             foreach (var rend in RenderersArray)
             {
                 rend.flipX = reference.FlipX;
 
                 if (DoOffset)
+                {
                     transform.parent.localPosition = new Vector3(reference.FlipX ? UseNegative ? -Offset : Offset : 0,
                         transform.parent.localPosition.y, transform.parent.localPosition.z);
+                }
             }
+        }
     }
 }

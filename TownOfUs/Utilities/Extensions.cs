@@ -102,29 +102,52 @@ public static class Extensions
     public static bool Is(this PlayerControl player, RoleAlignment roleAlignment)
     {
         if (player.Data.Role is ITownOfUsRole role && role.RoleAlignment == roleAlignment)
+        {
             return true;
+        }
+
         if (player.Data.Role.Role is RoleTypes.Crewmate or RoleTypes.Scientist or RoleTypes.Noisemaker
                 or RoleTypes.Engineer &&
             roleAlignment == RoleAlignment.CrewmateSupport)
+        {
             return true;
+        }
+
         if (player.Data.Role.Role is RoleTypes.Tracker && roleAlignment == RoleAlignment.CrewmateInvestigative)
+        {
             return true;
+        }
+
         if (player.Data.Role.Role is RoleTypes.Impostor && roleAlignment == RoleAlignment.ImpostorSupport)
+        {
             return true;
+        }
+
         if (player.Data.Role.Role is RoleTypes.Shapeshifter or RoleTypes.Phantom &&
             roleAlignment == RoleAlignment.ImpostorConcealing)
+        {
             return true;
+        }
 
         return false;
     }
 
     public static bool Is(this PlayerControl player, ModdedRoleTeams team)
     {
-        if (player.Data.Role is ITownOfUsRole role && role.Team == team) return true;
+        if (player.Data.Role is ITownOfUsRole role && role.Team == team)
+        {
+            return true;
+        }
 
-        if (team == ModdedRoleTeams.Impostor) return player.IsImpostor();
+        if (team == ModdedRoleTeams.Impostor)
+        {
+            return player.IsImpostor();
+        }
 
-        if (team == ModdedRoleTeams.Crewmate) return player.IsCrewmate();
+        if (team == ModdedRoleTeams.Crewmate)
+        {
+            return player.IsCrewmate();
+        }
 
         return false;
     }
@@ -155,7 +178,10 @@ public static class Extensions
 
     public static void OverrideOnClickListeners(this PassiveButton passive, Action action, bool enabled = true)
     {
-        if (!passive) return;
+        if (!passive)
+        {
+            return;
+        }
 
         passive.OnClick?.RemoveAllListeners();
         passive.OnClick = new Button.ButtonClickedEvent();
@@ -165,7 +191,10 @@ public static class Extensions
 
     public static void OverrideOnMouseOverListeners(this PassiveButton passive, Action action, bool enabled = true)
     {
-        if (!passive) return;
+        if (!passive)
+        {
+            return;
+        }
 
         passive.OnMouseOver?.RemoveAllListeners();
         passive.OnMouseOver = new UnityEvent();
@@ -175,7 +204,10 @@ public static class Extensions
 
     public static void OverrideOnMouseOutListeners(this PassiveButton passive, Action action, bool enabled = true)
     {
-        if (!passive) return;
+        if (!passive)
+        {
+            return;
+        }
 
         passive.OnMouseOut?.RemoveAllListeners();
         passive.OnMouseOut = new UnityEvent();
@@ -187,11 +219,17 @@ public static class Extensions
     {
         foreach (var item in collection)
         {
-            if (item == null) continue;
+            if (item == null)
+            {
+                continue;
+            }
 
             Object.Destroy(item);
 
-            if (item.gameObject == null) return;
+            if (item.gameObject == null)
+            {
+                return;
+            }
 
             Object.Destroy(item.gameObject);
         }
@@ -207,7 +245,9 @@ public static class Extensions
         SpriteRenderer[] componentsInChildren = panel.GetComponentsInChildren<SpriteRenderer>();
 
         foreach (var spriteRend in componentsInChildren)
+        {
             spriteRend.material.SetInt(PlayerMaterial.MaskLayer, index + 2);
+        }
 
         panel.PlayerIcon.SetMaskLayer(index + 2);
         panel.PlayerIcon.cosmetics.SetMaskType(PlayerMaterial.MaskType.ComplexUI);
@@ -233,13 +273,23 @@ public static class Extensions
         var roleImg = TouRoleIcons.RandomImp.LoadAsset();
 
         if (roleBehaviour.IsCrewmate())
+        {
             roleImg = TouRoleIcons.RandomCrew.LoadAsset();
+        }
         else if (roleBehaviour.IsNeutral())
+        {
             roleImg = TouRoleIcons.RandomNeut.LoadAsset();
+        }
 
         if (roleBehaviour is ICustomRole customRole3 && customRole3.Configuration.Icon != null)
+        {
             roleImg = customRole3.Configuration.Icon.LoadAsset();
-        else if (roleBehaviour.RoleIconSolid != null) roleImg = roleBehaviour.RoleIconSolid;
+        }
+        else if (roleBehaviour.RoleIconSolid != null)
+        {
+            roleImg = roleBehaviour.RoleIconSolid;
+        }
+
         roleIcon.gameObject.GetComponent<SpriteRenderer>().sprite = roleImg;
         roleIcon.gameObject.SetActive(true);
 
@@ -266,11 +316,17 @@ public static class Extensions
             : roleBehaviour.TeamType.ToDisplayString();
 
         if (alignment.Contains("Crewmate"))
+        {
             alignment = alignment.Replace("Crewmate", "<color=#68ACF4FF>Crewmate</color>");
+        }
         else if (alignment.Contains("Impostor"))
+        {
             alignment = alignment.Replace("Impostor", "<color=#D63F42FF>Impostor</color>");
+        }
         else if (alignment.Contains("Neutral"))
+        {
             alignment = alignment.Replace("Neutral", "<color=#8A8A8AFF>Neutral</color>");
+        }
 
         var finalString =
             $"<size=88%>{roleBehaviour.NiceName}</size>\n<size=70%><color=white>{alignment}</color></size>";
@@ -296,7 +352,9 @@ public static class Extensions
         SpriteRenderer[] componentsInChildren = panel.GetComponentsInChildren<SpriteRenderer>();
 
         foreach (var spriteRend in componentsInChildren)
+        {
             spriteRend.material.SetInt(PlayerMaterial.MaskLayer, index + 2);
+        }
 
         panel.PlayerIcon.SetMaskLayer(index + 2);
         panel.PlayerIcon.cosmetics.SetMaskType(PlayerMaterial.MaskType.ComplexUI);
@@ -325,34 +383,59 @@ public static class Extensions
         if (modifier is TouGameModifier touModifier)
         {
             if (touModifier.FactionType.ToDisplayString().Contains("Crewmate"))
+            {
                 modImg = TouRoleIcons.RandomCrew.LoadAsset();
+            }
             else if (touModifier.FactionType.ToDisplayString().Contains("Neutral"))
+            {
                 modImg = TouRoleIcons.RandomNeut.LoadAsset();
+            }
             else if (touModifier.FactionType.ToDisplayString().Contains("Impostor"))
+            {
                 modImg = TouRoleIcons.RandomImp.LoadAsset();
+            }
+
             teamName = touModifier.FactionType.ToDisplayString();
         }
         else if (modifier is UniversalGameModifier uniMod)
         {
-            if (uniMod.FactionType.ToDisplayString().Contains("Crewmate")) modImg = TouRoleIcons.RandomCrew.LoadAsset();
+            if (uniMod.FactionType.ToDisplayString().Contains("Crewmate"))
+            {
+                modImg = TouRoleIcons.RandomCrew.LoadAsset();
+            }
             else if (uniMod.FactionType.ToDisplayString().Contains("Neutral"))
+            {
                 modImg = TouRoleIcons.RandomNeut.LoadAsset();
+            }
             else if (uniMod.FactionType.ToDisplayString().Contains("Impostor"))
+            {
                 modImg = TouRoleIcons.RandomImp.LoadAsset();
+            }
+
             teamName = uniMod.FactionType.ToDisplayString();
         }
         else if (modifier is AllianceGameModifier allyModifier)
         {
             if (allyModifier.FactionType.ToDisplayString().Contains("Crewmate"))
+            {
                 modImg = TouRoleIcons.RandomCrew.LoadAsset();
+            }
             else if (allyModifier.FactionType.ToDisplayString().Contains("Neutral"))
+            {
                 modImg = TouRoleIcons.RandomNeut.LoadAsset();
+            }
             else if (allyModifier.FactionType.ToDisplayString().Contains("Impostor"))
+            {
                 modImg = TouRoleIcons.RandomImp.LoadAsset();
+            }
+
             teamName = allyModifier.FactionType.ToDisplayString();
         }
 
-        if (modifier.ModifierIcon != null) modImg = modifier.ModifierIcon.LoadAsset();
+        if (modifier.ModifierIcon != null)
+        {
+            modImg = modifier.ModifierIcon.LoadAsset();
+        }
 
         roleIcon.gameObject.GetComponent<SpriteRenderer>().sprite = modImg;
         roleIcon.gameObject.SetActive(true);
@@ -360,16 +443,27 @@ public static class Extensions
         // var material = panel.PlayerIcon.cosmetics.currentBodySprite.BodySprite.material;
 
 
-        if (teamName.Contains("Crewmate")) teamName = teamName.Replace("Crewmate", "<color=#68ACF4FF>Crewmate</color>");
+        if (teamName.Contains("Crewmate"))
+        {
+            teamName = teamName.Replace("Crewmate", "<color=#68ACF4FF>Crewmate</color>");
+        }
         else if (teamName.Contains("Impostor"))
+        {
             teamName = teamName.Replace("Impostor", "<color=#D63F42FF>Impostor</color>");
-        else teamName = teamName.Replace("Neutral", "<color=#8A8A8AFF>Neutral</color>");
+        }
+        else
+        {
+            teamName = teamName.Replace("Neutral", "<color=#8A8A8AFF>Neutral</color>");
+        }
         //teamName += " Modifier";
 
         var finalString =
             $"<size=88%>{modifier.ModifierName}<color=white> (Modifier)</size>\n<size=70%>{teamName}</color></size>";
         var color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-        if (modifier is IColoredModifier colorMod) color = colorMod.ModifierColor;
+        if (modifier is IColoredModifier colorMod)
+        {
+            color = colorMod.ModifierColor;
+        }
 
         // material.SetColor(PlayerMaterial.BackColor, color.DarkenColor(0.35f));
         // material.SetColor(PlayerMaterial.BodyColor, color);
@@ -394,7 +488,11 @@ public static class Extensions
 
         var data = player.Data;
 
-        if (data.Role) data.Role.Deinitialize(player);
+        if (data.Role)
+        {
+            data.Role.Deinitialize(player);
+        }
+
         // Object.Destroy(data.Role.gameObject);
         var newRole = RoleManager.Instance.GetRole((RoleTypes)newRoleType);
         var roleBehaviour = Object.Instantiate(newRole, data.gameObject.transform);
@@ -407,15 +505,23 @@ public static class Extensions
             HudManager.Instance.SetHudActive(player, roleBehaviour, true);
 
             if (MeetingHud.Instance || ExileController.Instance)
+            {
                 HudManager.Instance.SetHudActive(player, roleBehaviour, false);
+            }
         }
 
         player.Data.Role = roleBehaviour;
         player.Data.RoleType = roleBehaviour.Role;
 
-        if (!roleBehaviour.IsDead) player.Data.RoleWhenAlive = new Il2CppSystem.Nullable<RoleTypes>(roleBehaviour.Role);
+        if (!roleBehaviour.IsDead)
+        {
+            player.Data.RoleWhenAlive = new Il2CppSystem.Nullable<RoleTypes>(roleBehaviour.Role);
+        }
 
-        if (recordRole) GameHistory.RegisterRole(player, roleBehaviour);
+        if (recordRole)
+        {
+            GameHistory.RegisterRole(player, roleBehaviour);
+        }
 
         roleBehaviour.AdjustTasks(player);
 
@@ -423,7 +529,10 @@ public static class Extensions
 
         player.Data.Role.SpawnTaskHeader(player);
 
-        if (TutorialManager.InstanceExists && HudManager.Instance) HudManagerPatches.ZoomButton.SetActive(true);
+        if (TutorialManager.InstanceExists && HudManager.Instance)
+        {
+            HudManagerPatches.ZoomButton.SetActive(true);
+        }
 
         var changeRoleEvent = new ChangeRoleEvent(player, oldRole, newRole);
         MiraEventManager.InvokeEvent(changeRoleEvent);
@@ -451,7 +560,9 @@ public static class Extensions
                           GameOptionsManager.Instance.currentNormalGameOptions.CrewLightMod;
 
         if (PlayerControl.LocalPlayer == null)
+        {
             return;
+        }
 
         var distance = (PlayerControl.LocalPlayer.GetTruePosition() - player.GetTruePosition()).magnitude;
 
@@ -529,7 +640,10 @@ public static class Extensions
         {
             var diff = max - list.Count;
 
-            for (var i = 0; i < diff; i++) list.Add(item);
+            for (var i = 0; i < diff; i++)
+            {
+                list.Add(item);
+            }
         }
 
         return list;
@@ -541,7 +655,10 @@ public static class Extensions
         if (player.Data.Role is IGhostRole ghost)
         {
             ghost.Clicked();
-            if (player.AmOwner) HudManagerPatches.ZoomButton.SetActive(true);
+            if (player.AmOwner)
+            {
+                HudManagerPatches.ZoomButton.SetActive(true);
+            }
         }
     }
 

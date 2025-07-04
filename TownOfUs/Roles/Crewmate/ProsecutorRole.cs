@@ -40,21 +40,34 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
 
     public void FixedUpdate()
     {
-        if (Player == null || Player.Data.Role is not ProsecutorRole) return;
+        if (Player == null || Player.Data.Role is not ProsecutorRole)
+        {
+            return;
+        }
 
         var meeting = MeetingHud.Instance;
 
-        if (!Player.AmOwner || meeting == null || ProsecuteButton == null) return;
+        if (!Player.AmOwner || meeting == null || ProsecuteButton == null)
+        {
+            return;
+        }
 
         ProsecuteButton.gameObject.SetActive(meeting.SkipVoteButton.gameObject.active && !SelectingProsecuteVictim);
 
-        if (!ProsecuteButton.gameObject.active) return;
+        if (!ProsecuteButton.gameObject.active)
+        {
+            return;
+        }
 
         if (meeting.state == MeetingHud.VoteStates.Discussion &&
             meeting.discussionTimer < GameOptionsManager.Instance.currentNormalGameOptions.DiscussionTime)
+        {
             ProsecuteButton.SetDisabled();
+        }
         else
+        {
             ProsecuteButton.SetEnabled();
+        }
 
         ProsecuteButton.voteComplete = meeting.SkipVoteButton.voteComplete;
     }
@@ -84,7 +97,10 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
     {
         var text = ITownOfUsRole.SetNewTabText(this);
         if (PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
+        {
             text.AppendLine(CultureInfo.InvariantCulture, $"<b>You may prosecute crew.</b>");
+        }
+
         var prosecutes = OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions - ProsecutionsCompleted;
         var newText = prosecutes == 1 ? "1 Prosecution Remaining." : $"\n{prosecutes} Prosecutions Remaining.";
         text.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
@@ -111,7 +127,9 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
         RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.HasModifier<ImitatorCacheModifier>())
+        {
             ProsecutionsCompleted = (int)OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions;
+        }
     }
 
     public override void OnMeetingStart()
@@ -120,7 +138,10 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
 
         var meeting = MeetingHud.Instance;
         if (!Player.AmOwner || meeting == null ||
-            ProsecutionsCompleted >= OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions) return;
+            ProsecutionsCompleted >= OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions)
+        {
+            return;
+        }
 
         var skip = meeting.SkipVoteButton;
         ProsecuteButton = Instantiate(skip, skip.transform.parent);
@@ -132,8 +153,10 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
         ProsecuteButton.gameObject.GetComponentInChildren<TextMeshPro>().text = "PROSECUTE";
 
         foreach (var plr in meeting.playerStates.AddItem(skip))
+        {
             plr.gameObject.GetComponentInChildren<PassiveButton>().OnClick
                 .AddListener((UnityAction)(() => ProsecuteButton.ClearButtons()));
+        }
 
         skip.transform.localPosition += new Vector3(0f, 0.20f, 0f);
     }
@@ -143,7 +166,10 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
         ProsecuteButton = null;
         SelectingProsecuteVictim = false;
 
-        if (HasProsecuted) ProsecutionsCompleted++;
+        if (HasProsecuted)
+        {
+            ProsecutionsCompleted++;
+        }
 
         HasProsecuted = false;
     }
@@ -151,10 +177,16 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
     [MethodRpc((uint)TownOfUsRpc.Prosecute, SendImmediately = true)]
     public static void RpcProsecute(PlayerControl plr)
     {
-        if (plr.Data.Role is not ProsecutorRole prosecutorRole) return;
+        if (plr.Data.Role is not ProsecutorRole prosecutorRole)
+        {
+            return;
+        }
 
         if (prosecutorRole.ProsecutionsCompleted >=
-            OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions) return;
+            OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions)
+        {
+            return;
+        }
 
         prosecutorRole.HasProsecuted = true;
     }

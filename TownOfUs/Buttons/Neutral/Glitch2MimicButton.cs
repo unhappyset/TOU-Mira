@@ -26,7 +26,10 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
 
     public override void ClickHandler()
     {
-        if (!CanUse()) return;
+        if (!CanUse())
+        {
+            return;
+        }
 
         OnClick();
         Button?.SetDisabled();
@@ -84,7 +87,10 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
                         Timer = 0.01f;
                     }
                 });
-            foreach (var panel in playerMenu.potentialVictims) panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);
+            foreach (var panel in playerMenu.potentialVictims)
+            {
+                panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);
+            }
         }
         else
         {

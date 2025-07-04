@@ -45,7 +45,10 @@ public sealed class JuggernautKillButton : TownOfUsRoleButton<JuggernautRole, Pl
     {
         var juggernaut = PlayerControl.LocalPlayer.Data.Role as JuggernautRole;
 
-        if (juggernaut == null) return BaseCooldown;
+        if (juggernaut == null)
+        {
+            return BaseCooldown;
+        }
 
         var options = OptionGroupSingleton<JuggernautOptions>.Instance;
 

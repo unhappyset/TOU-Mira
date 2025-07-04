@@ -73,7 +73,10 @@ public static class InquisitorEvents
     [RegisterEvent]
     public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
-        if (@event.DeathReason != DeathReason.Exile) return;
+        if (@event.DeathReason != DeathReason.Exile)
+        {
+            return;
+        }
 
         CustomRoleUtils.GetActiveRolesOfType<InquisitorRole>().Do(x => x.CheckTargetDeath(@event.Player));
     }
@@ -81,7 +84,11 @@ public static class InquisitorEvents
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return;
+        if (@event.TriggeredByIntro)
+        {
+            return;
+        }
+
         var inquis = CustomRoleUtils.GetActiveRolesOfType<InquisitorRole>().FirstOrDefault();
         if (inquis != null && inquis.TargetsDead && !inquis.Player.HasDied())
         {

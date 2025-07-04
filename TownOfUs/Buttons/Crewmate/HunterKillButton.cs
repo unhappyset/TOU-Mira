@@ -50,7 +50,9 @@ public sealed class HunterKillButton : TownOfUsRoleButton<HunterRole, PlayerCont
         PlayerControl.LocalPlayer.RpcCustomMurder(Target);
 
         if (!OptionGroupSingleton<HunterOptions>.Instance.HunterBodyReport)
+        {
             Coroutines.Start(CoSetBodyReportable(Target.PlayerId));
+        }
     }
 
     public override PlayerControl? GetTarget()
@@ -60,7 +62,10 @@ public sealed class HunterKillButton : TownOfUsRoleButton<HunterRole, PlayerCont
 
     public override bool IsTargetValid(PlayerControl? target)
     {
-        if (!Role.CaughtPlayers.Contains(target!)) return false;
+        if (!Role.CaughtPlayers.Contains(target!))
+        {
+            return false;
+        }
 
         return base.IsTargetValid(target);
     }

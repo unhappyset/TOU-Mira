@@ -19,9 +19,14 @@ public static class ArsonistEvents
         var target = button?.Target;
 
         if (target == null || button == null || !button.CanClick() || target.Data.Role is not ArsonistRole ||
-            !OptionGroupSingleton<ArsonistOptions>.Instance.DouseInteractions) return;
+            !OptionGroupSingleton<ArsonistOptions>.Instance.DouseInteractions)
+        {
+            return;
+        }
 
         if (!source.HasModifier<ArsonistDousedModifier>())
+        {
             source.RpcAddModifier<ArsonistDousedModifier>(target.PlayerId);
+        }
     }
 }

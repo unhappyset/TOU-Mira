@@ -40,16 +40,22 @@ public sealed class BodyReport
         var reportNameDuration = OptionGroupSingleton<MedicOptions>.Instance.MedicReportNameDuration;
 
         if (br.KillAge > reportColorDuration * 1000)
+        {
             return
                 $"Body Report: The corpse is too old to gain information from. (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
 
         if (br.Killer?.PlayerId == br.Body?.PlayerId)
+        {
             return
                 $"Body Report: The kill appears to have been a suicide! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
 
         if (br.KillAge < reportNameDuration * 1000)
+        {
             return
                 $"Body Report: The killer appears to be {br.Killer?.Data.PlayerName}! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
 
         var typeOfColor = MedicRole.GetColorTypeForPlayer(br.Killer!);
 
@@ -60,28 +66,47 @@ public sealed class BodyReport
     public static string ParseDetectiveReport(BodyReport br)
     {
         if (br.KillAge > OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveFactionDuration * 1000)
+        {
             return
                 $"Body Report: The corpse is too old to gain information from. (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
 
         if (br.Killer!.PlayerId == br.Body!.PlayerId)
+        {
             return
                 $"Body Report: The kill appears to have been a suicide! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
+
         // if the killer died, they would still appear correctly here
         var role = br.Killer.GetRoleWhenAlive();
         if (br.Killer.HasModifier<TraitorCacheModifier>())
+        {
             role = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TraitorRole>());
+        }
 
         var prefix = "a";
-        if (role.NiceName.StartsWithVowel()) prefix = "an";
+        if (role.NiceName.StartsWithVowel())
+        {
+            prefix = "an";
+        }
+
         if (br.KillAge < OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveRoleDuration * 1000)
+        {
             return
                 $"Body Report: The killer appears to be {prefix} {role.NiceName}! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
 
         if (br.Killer.IsNeutral())
+        {
             return
                 $"Body Report: The killer appears to be a Neutral Role! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
+
         if (br.Killer.IsCrewmate())
+        {
             return $"Body Report: The killer appears to be a Crewmate! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+        }
+
         return $"Body Report: The killer appears to be an Impostor! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
     }
 }
@@ -105,7 +130,10 @@ public static class GameHistory
     {
         //Logger<TownOfUsPlugin>.Message($"RegisterRole - player: '{player.Data.PlayerName}', role: '{role.NiceName}'");
 
-        if (clean) RoleHistory.RemoveAll(x => x.Key == player.PlayerId);
+        if (clean)
+        {
+            RoleHistory.RemoveAll(x => x.Key == player.PlayerId);
+        }
 
         RoleDictionary.Remove(player.PlayerId);
         RoleDictionary.Add(player.PlayerId, role);
@@ -113,7 +141,9 @@ public static class GameHistory
         RoleHistory.Add(KeyValuePair.Create(player.PlayerId, role));
 
         if (!PlayerStats.TryGetValue(player.PlayerId, out _))
+        {
             PlayerStats.Add(player.PlayerId, new PlayerStats(player.PlayerId));
+        }
 
         if (!role.IsDead)
         {
@@ -133,7 +163,10 @@ public static class GameHistory
     {
         var instance = KilledPlayers.FirstOrDefault(x => x.VictimId == player.PlayerId);
 
-        if (instance == null) return;
+        if (instance == null)
+        {
+            return;
+        }
 
         KilledPlayers.Remove(instance);
     }
@@ -143,7 +176,9 @@ public static class GameHistory
         RoleDictionary.Do(x =>
         {
             if (x.Value != null && x.Value.gameObject != null)
+            {
                 Object.Destroy(x.Value.gameObject);
+            }
         });
 
         RoleDictionary.Clear();
@@ -151,7 +186,9 @@ public static class GameHistory
         RoleHistory.Do(x =>
         {
             if (x.Value != null && x.Value.gameObject != null)
+            {
                 Object.Destroy(x.Value.gameObject);
+            }
         });
 
         RoleHistory.Clear();
@@ -159,7 +196,9 @@ public static class GameHistory
         RoleWhenAlive.Do(x =>
         {
             if (x.Value != null && x.Value.gameObject != null)
+            {
                 Object.Destroy(x.Value.gameObject);
+            }
         });
 
         RoleWhenAlive.Clear();
@@ -175,11 +214,17 @@ public static class GameHistory
         //var role = RoleHistory.LastOrDefault(x => x.Key == player.PlayerId && !x.Value.IsDead);
         //return role.Value != null ? role.Value : null;
 
-        if (RoleWhenAlive.TryGetValue(player.PlayerId, out var role)) return role;
+        if (RoleWhenAlive.TryGetValue(player.PlayerId, out var role))
+        {
+            return role;
+        }
 
         var role2 = player.Data.RoleWhenAlive;
 
-        if (role2.HasValue) return RoleManager.Instance.GetRole(role2.Value);
+        if (role2.HasValue)
+        {
+            return RoleManager.Instance.GetRole(role2.Value);
+        }
 
         return player.Data.Role;
     }

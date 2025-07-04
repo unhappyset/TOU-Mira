@@ -15,6 +15,9 @@ public static class BaitEvents
     {
         if (@event.Target.HasModifier<BaitModifier>() && @event.Target != @event.Source &&
             !@event.Source.IsRole<SoulCollectorRole>() &&
-            !MeetingHud.Instance) Coroutines.Start(BaitModifier.CoReportDelay(@event.Source, @event.Target));
+            !MeetingHud.Instance)
+        {
+            Coroutines.Start(BaitModifier.CoReportDelay(@event.Source, @event.Target));
+        }
     }
 }

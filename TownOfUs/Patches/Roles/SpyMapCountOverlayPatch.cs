@@ -21,8 +21,12 @@ public static class SpyMapCountOverlayPatch
         __instance.SabotageText.gameObject.SetActive(sabotaged);
 
         if (sabotaged)
+        {
             foreach (var area in __instance.CountAreas)
+            {
                 area.UpdateCount(0);
+            }
+        }
     }
 
     public static void UpdateBlips(CounterArea area, List<int> colorMapping, bool isSpy)
@@ -40,9 +44,13 @@ public static class SpyMapCountOverlayPatch
             if (sprite != null)
             {
                 if (isSpy)
+                {
                     PlayerMaterial.SetColors(colorMapping[i], sprite);
+                }
                 else
+                {
                     PlayerMaterial.SetColors(new Color(0.8793f, 1, 0, 1), sprite);
+                }
             }
         }
     }
@@ -54,10 +62,16 @@ public static class SpyMapCountOverlayPatch
 
         foreach (var area in __instance.CountAreas)
         {
-            if (!rooms.ContainsKey(area.RoomType)) continue;
+            if (!rooms.ContainsKey(area.RoomType))
+            {
+                continue;
+            }
 
             var room = rooms[area.RoomType];
-            if (room.roomArea == null) continue;
+            if (room.roomArea == null)
+            {
+                continue;
+            }
 
             var objectsInRoom = room.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
             var colorMap = new List<int>();
@@ -83,7 +97,10 @@ public static class SpyMapCountOverlayPatch
                     if (component == null || data == null || !component || component.Data == null ||
                         component.Data.Disconnected || component.Data.IsDead
                         || (!__instance.showLivePlayerPosition && component.AmOwner) ||
-                        colorMapDuplicate.Contains(data.DefaultOutfit.ColorId)) continue;
+                        colorMapDuplicate.Contains(data.DefaultOutfit.ColorId))
+                    {
+                        continue;
+                    }
 
                     colorMap.Add(data.DefaultOutfit.ColorId);
                     colorMapDuplicate.Add(data.DefaultOutfit.ColorId);
@@ -102,17 +119,24 @@ public static class SpyMapCountOverlayPatch
         var isSpy = localPlayer.IsRole<SpyRole>() || localPlayer.HasModifier<SpyModifier>();
 
         __instance.timer += Time.deltaTime;
-        if (__instance.timer < 0.1f) return false;
+        if (__instance.timer < 0.1f)
+        {
+            return false;
+        }
 
         __instance.timer = 0f;
 
         var sabotaged = PlayerTask.PlayerHasTaskOfType<IHudOverrideTask>(localPlayer);
 
         if (sabotaged != __instance.isSab)
+        {
             SetSabotaged(__instance, sabotaged);
+        }
 
         if (!sabotaged)
+        {
             UpdateBlips(__instance, isSpy);
+        }
 
         return false;
     }

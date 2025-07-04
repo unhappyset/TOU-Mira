@@ -16,7 +16,10 @@ public static class PlaguebearerEvents
     [RegisterEvent]
     public static void ReportBodyEventHandler(ReportBodyEvent @event)
     {
-        if (!@event.Target) return;
+        if (!@event.Target)
+        {
+            return;
+        }
 
         PlaguebearerRole.CheckInfected(@event.Target!.Object, @event.Reporter);
     }
@@ -34,8 +37,15 @@ public static class PlaguebearerEvents
         var source = PlayerControl.LocalPlayer;
         var target = button?.Target;
 
-        if (@event.Button is PlaguebearerInfectButton) return;
-        if (target == null || button == null || !button.CanClick()) return;
+        if (@event.Button is PlaguebearerInfectButton)
+        {
+            return;
+        }
+
+        if (target == null || button == null || !button.CanClick())
+        {
+            return;
+        }
 
         PlaguebearerRole.RpcCheckInfected(source, target);
     }

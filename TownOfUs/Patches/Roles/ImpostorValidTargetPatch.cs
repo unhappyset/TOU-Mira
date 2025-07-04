@@ -11,7 +11,10 @@ public static class ImpostorValidTargetPatch
         ref bool __result)
     {
         if (OptionGroupSingleton<GeneralOptions>.Instance.ImpsKnowRoles &&
-            !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode) return true;
+            !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode)
+        {
+            return true;
+        }
 
         __result = target is { Disconnected: false, IsDead: false } &&
                    target.PlayerId != __instance.Player.PlayerId && target.Role && target.Object &&

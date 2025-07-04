@@ -21,7 +21,10 @@ public sealed class BlackmailerBlackmailButton : TownOfUsRoleButton<BlackmailerR
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
 
         BlackmailerRole.RpcBlackmail(PlayerControl.LocalPlayer, Target);
     }

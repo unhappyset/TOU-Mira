@@ -17,7 +17,14 @@ public static class LogoPatch
 
         var newLogo = GameObject.Find("LOGO-AU");
         var sizer = GameObject.Find("Sizer");
-        if (newLogo != null) newLogo.GetComponent<SpriteRenderer>().sprite = TouAssets.Banner.LoadAsset();
-        if (sizer != null) sizer.GetComponent<AspectSize>().PercentWidth = 0.3f;
+        if (newLogo != null)
+        {
+            newLogo.GetComponent<SpriteRenderer>().sprite = TouAssets.Banner.LoadAsset();
+        }
+
+        if (sizer != null)
+        {
+            sizer.GetComponent<AspectSize>().PercentWidth = 0.3f;
+        }
     }
 }

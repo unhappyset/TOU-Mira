@@ -36,7 +36,10 @@ public sealed class InquisitorInquireButton : TownOfUsRoleButton<InquisitorRole,
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
 
         if (ModifierUtils.GetActiveModifiers<InquisitorInquiredModifier>().Any())
         {

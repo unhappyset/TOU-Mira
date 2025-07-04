@@ -39,11 +39,22 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
 
     public void Hysteria()
     {
-        if (Player.HasDied()) return;
+        if (Player.HasDied())
+        {
+            return;
+        }
+
         var touAbilityEvent = new TouAbilityEvent(AbilityType.HypnotistHysteria, Hypnotist, Player);
         MiraEventManager.InvokeEvent(touAbilityEvent);
-        if (!Player.AmOwner) return;
-        if (HysteriaActive) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
+
+        if (HysteriaActive)
+        {
+            return;
+        }
 
         // Logger<TownOfUsPlugin>.Message($"HypnotisedModifier.Hysteria - {Player.Data.PlayerName}");
         players = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.HasDied() && x != Player).ToList();
@@ -96,8 +107,15 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
 
     public void UnHysteria()
     {
-        if (!Player.AmOwner) return;
-        if (!HysteriaActive) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
+
+        if (!HysteriaActive)
+        {
+            return;
+        }
 
         // Logger<TownOfUsPlugin>.Message($"HypnotisedModifier.UnHysteria - {Player.Data.PlayerName}");
         foreach (var player in players)

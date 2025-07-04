@@ -65,6 +65,8 @@ public sealed class ClericRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         if (PlayerControl.LocalPlayer.PlayerId == source.PlayerId ||
             (PlayerControl.LocalPlayer.PlayerId == cleric.PlayerId &&
              OptionGroupSingleton<ClericOptions>.Instance.AttackNotif))
+        {
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Cleric));
+        }
     }
 }

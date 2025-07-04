@@ -24,7 +24,11 @@ public sealed class TransporterTransportButton : TownOfUsRoleButton<TransporterR
 
     public override void ClickHandler()
     {
-        if (!CanClick()) return;
+        if (!CanClick())
+        {
+            return;
+        }
+
         OnClick();
     }
 
@@ -43,7 +47,10 @@ public sealed class TransporterTransportButton : TownOfUsRoleButton<TransporterR
             {
                 player1Menu.ForceClose();
 
-                if (plr == null) return;
+                if (plr == null)
+                {
+                    return;
+                }
 
                 var player2Menu = CustomPlayerMenu.Create();
                 player2Menu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material =
@@ -62,9 +69,15 @@ public sealed class TransporterTransportButton : TownOfUsRoleButton<TransporterR
                         player2Menu.Close();
                     }
                 );
-                foreach (var panel in player2Menu.potentialVictims) panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);
+                foreach (var panel in player2Menu.potentialVictims)
+                {
+                    panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);
+                }
             }
         );
-        foreach (var panel in player1Menu.potentialVictims) panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);
+        foreach (var panel in player1Menu.potentialVictims)
+        {
+            panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);
+        }
     }
 }

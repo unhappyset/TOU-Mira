@@ -104,17 +104,24 @@ public sealed class DetectiveRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     {
         var areReportsEnabled = OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveReportOn;
 
-        if (!areReportsEnabled) return;
+        if (!areReportsEnabled)
+        {
+            return;
+        }
 
         var matches = GameHistory.KilledPlayers.Where(x => x.VictimId == deadPlayerId).ToArray();
 
         DeadPlayer? killer = null;
 
         if (matches.Length > 0)
+        {
             killer = matches[0];
+        }
 
         if (killer == null)
+        {
             return;
+        }
 
         var br = new BodyReport
         {
@@ -127,12 +134,18 @@ public sealed class DetectiveRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
         var reportMsg = BodyReport.ParseDetectiveReport(br);
 
         if (string.IsNullOrWhiteSpace(reportMsg))
+        {
             return;
+        }
 
         // Send the message through chat only visible to the detective
         var title = $"<color=#{TownOfUsColors.Detective.ToHtmlStringRGBA()}>Detective Report</color>";
         var reported = Player;
-        if (br.Body != null) reported = br.Body;
+        if (br.Body != null)
+        {
+            reported = br.Body;
+        }
+
         MiscUtils.AddFakeChat(reported.Data, title, reportMsg, false, true);
     }
 }

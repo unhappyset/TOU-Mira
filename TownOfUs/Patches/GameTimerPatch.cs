@@ -48,13 +48,25 @@ public static class GameTimerPatch
 
     public static void UpdateGameTimer(HudManager instance)
     {
-        if (GameTimerObj != null) GameTimerObj.SetActive(false);
+        if (GameTimerObj != null)
+        {
+            GameTimerObj.SetActive(false);
+        }
 
-        if (!OptionGroupSingleton<GameTimerOptions>.Instance.GameTimerEnabled) return;
+        if (!OptionGroupSingleton<GameTimerOptions>.Instance.GameTimerEnabled)
+        {
+            return;
+        }
 
-        if (GameTimerObj == null) CreateGameTimer(instance);
+        if (GameTimerObj == null)
+        {
+            CreateGameTimer(instance);
+        }
 
-        if (GameTimerObj == null) return;
+        if (GameTimerObj == null)
+        {
+            return;
+        }
 
         var inMeeting = MeetingHud.Instance || ExileController.Instance;
         if (Enabled && GameTimer > 0 && (!inMeeting || GameTimer > 240f))
@@ -62,7 +74,10 @@ public static class GameTimerPatch
             GameTimer -= Time.deltaTime;
             GameTimer = Math.Max(GameTimer, 0);
 
-            if (AmongUsClient.Instance.AmHost && GameTimer <= 0) EndGame();
+            if (AmongUsClient.Instance.AmHost && GameTimer <= 0)
+            {
+                EndGame();
+            }
         }
 
         var ts = TimeSpan.FromSeconds(GameTimer);
@@ -111,9 +126,13 @@ public static class GameTimerPatch
 
         if ((GameTimerType)OptionGroupSingleton<GameTimerOptions>.Instance.TimerEndOption.Value is GameTimerType
                 .Impostors)
+        {
             TimerSprite.sprite = TouAssets.TimerImpSprite.LoadAsset();
+        }
         else
+        {
             TimerSprite.sprite = TouAssets.TimerDrawSprite.LoadAsset();
+        }
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
@@ -126,7 +145,9 @@ public static class GameTimerPatch
             !ShipStatus.Instance ||
             TutorialManager.InstanceExists ||
             AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
+        {
             return;
+        }
 
         UpdateGameTimer(__instance);
     }

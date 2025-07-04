@@ -18,9 +18,14 @@ public static class UndertakerEvents
                      .Select(undertaker => undertaker.Player).ToList())
         {
             if (undertaker.HasModifier<DragModifier>())
+            {
                 undertaker.GetModifierComponent().RemoveModifier<DragModifier>();
+            }
 
-            if (undertaker.AmOwner) CustomButtonSingleton<UndertakerDragDropButton>.Instance.SetDrag();
+            if (undertaker.AmOwner)
+            {
+                CustomButtonSingleton<UndertakerDragDropButton>.Instance.SetDrag();
+            }
         }
     }
 }

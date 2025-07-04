@@ -13,7 +13,10 @@ public static class HypnotistEvents
     [RegisterEvent]
     private static void StartMeetingEventHandler(StartMeetingEvent @event)
     {
-        foreach (var mod in ModifierUtils.GetActiveModifiers<HypnotisedModifier>()) mod.UnHysteria();
+        foreach (var mod in ModifierUtils.GetActiveModifiers<HypnotisedModifier>())
+        {
+            mod.UnHysteria();
+        }
     }
 
     [RegisterEvent]
@@ -21,7 +24,11 @@ public static class HypnotistEvents
     {
         foreach (var hypnotist in CustomRoleUtils.GetActiveRolesOfType<HypnotistRole>())
         {
-            if (!hypnotist.HysteriaActive) continue;
+            if (!hypnotist.HysteriaActive)
+            {
+                continue;
+            }
+
             var mods = ModifierUtils.GetActiveModifiers<HypnotisedModifier>(x => x.Hypnotist == hypnotist.Player);
             mods.Do(x => x.Hysteria());
         }

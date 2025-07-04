@@ -17,12 +17,18 @@ public static class SixthSenseEvents
     public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
     {
         // Logger<TownOfUsPlugin>.Warning("SixthSense click event!");
-        if (MeetingHud.Instance || ExileController.Instance) return;
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
 
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var target = button?.Target;
 
-        if (target == null || button == null || !button.CanClick()) return;
+        if (target == null || button == null || !button.CanClick())
+        {
+            return;
+        }
 
         CheckForSixthSense(target);
     }
@@ -38,6 +44,8 @@ public static class SixthSenseEvents
     private static void CheckForSixthSense(PlayerControl target)
     {
         if (target.AmOwner && target.HasModifier<SixthSenseModifier>())
+        {
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.SixthSense));
+        }
     }
 }

@@ -42,7 +42,10 @@ public class ScatterModifier(float time) : TimedModifier
 
         //Logger<TownOfUsPlugin>.Error($"ScatterModifier.OnActivate");
 
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
 
         scatterUI = Object.Instantiate(TouAssets.ScatterUI.LoadAsset(), HudManager.Instance.transform);
         scatterUI.transform.localPosition = new Vector3(-3.22f, 2.26f, -10f);
@@ -94,7 +97,9 @@ public class ScatterModifier(float time) : TimedModifier
         };
 
         if (scatterText != null)
+        {
             scatterText.text = $"Scatter: {textColor.ToTextColor()}{roundedTime}s</color>";
+        }
 
         if (scatterBar != null)
         {
@@ -123,13 +128,19 @@ public class ScatterModifier(float time) : TimedModifier
         foreach (var location in _locations)
         {
             var magnitude = (location - Player.transform.localPosition).magnitude;
-            if (magnitude < 5f) return;
+            if (magnitude < 5f)
+            {
+                return;
+            }
         }
 
         TimeRemaining = Duration;
 
         _locations.Insert(0, Player.transform.localPosition);
-        if (_locations.Count > 3) _locations.RemoveAt(3);
+        if (_locations.Count > 3)
+        {
+            _locations.RemoveAt(3);
+        }
     }
 
     public override void OnDeactivate()
@@ -142,12 +153,18 @@ public class ScatterModifier(float time) : TimedModifier
         scatterUI!.SetActive(false);
         scatterText!.gameObject.SetActive(false);
 
-        if (scatterUI?.gameObject != null) scatterUI.gameObject.Destroy();
+        if (scatterUI?.gameObject != null)
+        {
+            scatterUI.gameObject.Destroy();
+        }
     }
 
     public override void OnTimerComplete()
     {
-        if (Player.AmOwner && !Player.HasDied()) Player.RpcCustomMurder(Player);
+        if (Player.AmOwner && !Player.HasDied())
+        {
+            Player.RpcCustomMurder(Player);
+        }
     }
 
     public void OnRoundStart()

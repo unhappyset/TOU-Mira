@@ -62,7 +62,9 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
                                  show is FortifyOptions.Warden or FortifyOptions.SelfAndWarden;
 
         if (showShieldedEveryone || showShieldedSelf || showShieldedWarden)
+        {
             Player?.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Warden));
+        }
     }
 
     public override void OnDeath(DeathReason reason)

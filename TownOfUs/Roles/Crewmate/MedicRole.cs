@@ -29,9 +29,15 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
 
     public void FixedUpdate()
     {
-        if (Player == null || Player.Data.Role is not MedicRole) return;
+        if (Player == null || Player.Data.Role is not MedicRole)
+        {
+            return;
+        }
+
         if (Shielded != null && Shielded.HasDied())
+        {
             Clear();
+        }
     }
 
     public DoomableType DoomHintType => DoomableType.Protective;
@@ -54,8 +60,10 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
         var stringB = ITownOfUsRole.SetNewTabText(this);
 
         if (Shielded != null)
+        {
             stringB.Append(CultureInfo.InvariantCulture,
                 $"\n<b>Shielded: </b>{Color.white.ToTextColor()}{Shielded.Data.PlayerName}</color>");
+        }
 
         return stringB;
     }
@@ -79,6 +87,7 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
         RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.AmOwner)
+        {
             meetingMenu = new MeetingMenu(
                 this,
                 (_, _) => { },
@@ -90,6 +99,7 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
             {
                 Position = new Vector3(1.1f, -0.18f, -3f)
             };
+        }
     }
 
     public override void OnMeetingStart()
@@ -103,19 +113,28 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
 
             foreach (var button in meetingMenu.Buttons)
             {
-                if (button.Value == null) continue;
+                if (button.Value == null)
+                {
+                    continue;
+                }
 
                 button.Value.transform.localScale *= 0.8f;
 
                 var player = MiscUtils.PlayerById(button.Key);
 
-                if (player == null) continue;
+                if (player == null)
+                {
+                    continue;
+                }
 
                 var colorType = GetColorTypeForPlayer(player);
 
                 var renderer = button.Value.GetComponent<SpriteRenderer>();
 
-                if (renderer == null) continue;
+                if (renderer == null)
+                {
+                    continue;
+                }
 
                 renderer.sprite = colorType switch
                 {
@@ -130,7 +149,10 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
     {
         RoleBehaviourStubs.OnVotingComplete(this);
 
-        if (Player.AmOwner) meetingMenu.HideButtons();
+        if (Player.AmOwner)
+        {
+            meetingMenu.HideButtons();
+        }
     }
 
     public void Clear()
@@ -171,17 +193,24 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
     {
         var areReportsEnabled = OptionGroupSingleton<MedicOptions>.Instance.ShowReports;
 
-        if (!areReportsEnabled) return;
+        if (!areReportsEnabled)
+        {
+            return;
+        }
 
         var matches = GameHistory.KilledPlayers.Where(x => x.VictimId == deadPlayerId).ToArray();
 
         DeadPlayer? killer = null;
 
         if (matches.Length > 0)
+        {
             killer = matches[0];
+        }
 
         if (killer == null)
+        {
             return;
+        }
 
         // Logger<TownOfUsPlugin>.Message($"CmdReportDeadBody");
         var br = new BodyReport
@@ -195,11 +224,17 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
         var reportMsg = BodyReport.ParseMedicReport(br);
 
         if (string.IsNullOrWhiteSpace(reportMsg))
+        {
             return;
+        }
 
         var title = $"<color=#{TownOfUsColors.Medic.ToHtmlStringRGBA()}>Medic Report</color>";
         var reported = Player;
-        if (br.Body != null) reported = br.Body;
+        if (br.Body != null)
+        {
+            reported = br.Body;
+        }
+
         MiscUtils.AddFakeChat(reported.Data, title, reportMsg, false, true);
     }
 
@@ -323,17 +358,31 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
         }
 
         if (PlayerControl.LocalPlayer.PlayerId == source.PlayerId)
+        {
             Coroutines.Start(MiscUtils.CoFlash(new Color(0f, 0.5f, 0f, 1f)));
+        }
 
         var shieldNotify = OptionGroupSingleton<MedicOptions>.Instance.WhoGetsNotification;
 
-        if (shielded.AmOwner && shieldNotify == MedicOption.Shielded) DangerAnim();
+        if (shielded.AmOwner && shieldNotify == MedicOption.Shielded)
+        {
+            DangerAnim();
+        }
 
-        if (medic.AmOwner && shieldNotify == MedicOption.Medic) DangerAnim();
+        if (medic.AmOwner && shieldNotify == MedicOption.Medic)
+        {
+            DangerAnim();
+        }
 
-        if (source.AmOwner) DangerAnim();
+        if (source.AmOwner)
+        {
+            DangerAnim();
+        }
 
-        if (shieldNotify == MedicOption.Everyone && !source.AmOwner) DangerAnim();
+        if (shieldNotify == MedicOption.Everyone && !source.AmOwner)
+        {
+            DangerAnim();
+        }
 
         var shieldBreaks = OptionGroupSingleton<MedicOptions>.Instance.ShieldBreaks;
 

@@ -39,7 +39,10 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
-        if (!@event.TriggeredByIntro) return; // Only run when game starts.
+        if (!@event.TriggeredByIntro)
+        {
+            return; // Only run when game starts.
+        }
 
         HudManager.Instance.SetHudActive(false);
         HudManager.Instance.SetHudActive(true);
@@ -98,7 +101,10 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void ChangeRoleHandler(ChangeRoleEvent @event)
     {
-        if (!PlayerControl.LocalPlayer) return;
+        if (!PlayerControl.LocalPlayer)
+        {
+            return;
+        }
 
         var player = @event.Player;
         if (!MeetingHud.Instance && player.AmOwner)
@@ -132,13 +138,19 @@ public static class TownOfUsEventHandlers
     public static void EjectionEventHandler(EjectionEvent @event)
     {
         var exiled = @event.ExileController?.initData?.networkedPlayer?.Object;
-        if (exiled == null) return;
+        if (exiled == null)
+        {
+            return;
+        }
 
         if (exiled.AmOwner)
         {
             HudManager.Instance.SetHudActive(false);
 
-            if (!MeetingHud.Instance) HudManager.Instance.SetHudActive(true);
+            if (!MeetingHud.Instance)
+            {
+                HudManager.Instance.SetHudActive(true);
+            }
         }
 
         if (exiled.Data.Role is IAnimated animated)
@@ -176,7 +188,10 @@ public static class TownOfUsEventHandlers
         {
             HudManager.Instance.SetHudActive(false);
 
-            if (!MeetingHud.Instance) HudManager.Instance.SetHudActive(true);
+            if (!MeetingHud.Instance)
+            {
+                HudManager.Instance.SetHudActive(true);
+            }
         }
 
         if (target.Data.Role is IAnimated animated)
@@ -202,6 +217,7 @@ public static class TownOfUsEventHandlers
         }
 
         if (source.IsImpostor() && source.AmOwner && source != target && !MeetingHud.Instance)
+        {
             switch (source.Data.Role)
             {
                 case BomberRole:
@@ -217,6 +233,7 @@ public static class TownOfUsEventHandlers
 
                     break;
             }
+        }
 
         // here we're adding support for kills during a meeting
         if (MeetingHud.Instance)
@@ -227,9 +244,15 @@ public static class TownOfUsEventHandlers
         {
             var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == target.PlayerId);
 
-            if (target.HasModifier<MiniModifier>() && body != null) body.transform.localScale *= 0.7f;
+            if (target.HasModifier<MiniModifier>() && body != null)
+            {
+                body.transform.localScale *= 0.7f;
+            }
 
-            if (target.HasModifier<GiantModifier>() && body != null) body.transform.localScale /= 0.7f;
+            if (target.HasModifier<GiantModifier>() && body != null)
+            {
+                body.transform.localScale /= 0.7f;
+            }
 
             if (target.AmOwner)
             {
@@ -252,7 +275,10 @@ public static class TownOfUsEventHandlers
     public static void PlayerCanUseEventHandler(PlayerCanUseEvent @event)
     {
         if (!PlayerControl.LocalPlayer || !PlayerControl.LocalPlayer.Data ||
-            !PlayerControl.LocalPlayer.Data.Role) return;
+            !PlayerControl.LocalPlayer.Data.Role)
+        {
+            return;
+        }
 
         // Prevent last 2 players from venting
         if (@event.IsVent)
@@ -266,22 +292,34 @@ public static class TownOfUsEventHandlers
                 PlayerControl.LocalPlayer.MyPhysics.ExitAllVents();
             }
 
-            if (aliveCount <= 2) @event.Cancel();
+            if (aliveCount <= 2)
+            {
+                @event.Cancel();
+            }
         }
     }
 
     [RegisterEvent]
     public static void PlayerLeaveEventHandler(PlayerLeaveEvent @event)
     {
-        if (!MeetingHud.Instance) return;
+        if (!MeetingHud.Instance)
+        {
+            return;
+        }
 
         var player = @event.ClientData.Character;
 
-        if (!player) return;
+        if (!player)
+        {
+            return;
+        }
 
         var pva = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == player.PlayerId);
 
-        if (!pva) return;
+        if (!pva)
+        {
+            return;
+        }
 
         pva.AmDead = true;
         pva.Overlay.gameObject.SetActive(true);
@@ -315,7 +353,11 @@ public static class TownOfUsEventHandlers
         Coroutines.Start(MiscUtils.CoFlash(Palette.ImpostorRed, 0.5f, 0.15f));
         var seconds = Random.RandomRange(0.4f, 1.1f);
         // if there's less than 6 players alive, animation will play instantly
-        if (Helpers.GetAlivePlayers().Count <= 5) seconds = 0.01f;
+        if (Helpers.GetAlivePlayers().Count <= 5)
+        {
+            seconds = 0.01f;
+        }
+
         yield return new WaitForSeconds(seconds);
 
         voteArea.PlayerIcon.gameObject.SetActive(false);
@@ -348,9 +390,15 @@ public static class TownOfUsEventHandlers
         // To handle murders during a meeting
         var targetVoteArea = instance.playerStates.First(x => x.TargetPlayerId == target.PlayerId);
 
-        if (!targetVoteArea) return;
+        if (!targetVoteArea)
+        {
+            return;
+        }
 
-        if (targetVoteArea.DidVote) targetVoteArea.UnsetVote();
+        if (targetVoteArea.DidVote)
+        {
+            targetVoteArea.UnsetVote();
+        }
 
         targetVoteArea.AmDead = true;
         targetVoteArea.Overlay.gameObject.SetActive(true);
@@ -365,38 +413,58 @@ public static class TownOfUsEventHandlers
         }
 
         targetVoteArea.Overlay.gameObject.SetActive(false);
-        if (target.Data.Role is MayorRole) MayorRole.DestroyReveal(targetVoteArea);
+        if (target.Data.Role is MayorRole)
+        {
+            MayorRole.DestroyReveal(targetVoteArea);
+        }
 
         Coroutines.Start(CoAnimateDeath(targetVoteArea));
 
         // hide meeting menu button for victim
         if (!source.AmOwner && !target.AmOwner)
+        {
             MeetingMenu.Instances.Do(x => x.HideSingle(target.PlayerId));
+        }
         // hide meeting menu buttons on the victim's screen
-        else if (target.AmOwner) MeetingMenu.Instances.Do(x => x.HideButtons());
+        else if (target.AmOwner)
+        {
+            MeetingMenu.Instances.Do(x => x.HideButtons());
+        }
 
         foreach (var pva in instance.playerStates)
         {
-            if (pva.VotedFor != target.PlayerId || pva.AmDead) continue;
+            if (pva.VotedFor != target.PlayerId || pva.AmDead)
+            {
+                continue;
+            }
 
             pva.UnsetVote();
 
             var voteAreaPlayer = MiscUtils.PlayerById(pva.TargetPlayerId);
 
-            if (voteAreaPlayer == null) continue;
+            if (voteAreaPlayer == null)
+            {
+                continue;
+            }
 
             var voteData = voteAreaPlayer.GetVoteData();
             var votes = voteData.Votes.RemoveAll(x => x.Suspect == target.PlayerId);
             voteData.VotesRemaining += votes;
 
-            if (!voteAreaPlayer.AmOwner) continue;
+            if (!voteAreaPlayer.AmOwner)
+            {
+                continue;
+            }
 
             instance.ClearVote();
         }
 
         instance.SetDirtyBit(1U);
 
-        if (AmongUsClient.Instance.AmHost) instance.CheckForEndVoting();
+        if (AmongUsClient.Instance.AmHost)
+        {
+            instance.CheckForEndVoting();
+        }
     }
 
     [RegisterEvent]

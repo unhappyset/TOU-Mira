@@ -52,7 +52,11 @@ public sealed class RottingModifier : TouGameModifier, IWikiDiscoverable
     {
         yield return new WaitForSeconds(OptionGroupSingleton<RottingOptions>.Instance.RotDelay);
         var rotting = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId);
-        if (rotting == null) yield break;
+        if (rotting == null)
+        {
+            yield break;
+        }
+
         Coroutines.Start(rotting.CoClean());
         Coroutines.Start(CrimeSceneComponent.CoClean(rotting));
     }

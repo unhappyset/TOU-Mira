@@ -29,12 +29,26 @@ public sealed class ScavengerRole(IntPtr cppPtr)
 
     public void FixedUpdate()
     {
-        if (Player == null || Player.Data.Role is not ScavengerRole) return;
-        if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started &&
-            !TutorialManager.InstanceExists) return;
-        if (!Player.AmOwner) return;
+        if (Player == null || Player.Data.Role is not ScavengerRole)
+        {
+            return;
+        }
 
-        if (!GameStarted && Player.killTimer > 0f) GameStarted = true;
+        if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started &&
+            !TutorialManager.InstanceExists)
+        {
+            return;
+        }
+
+        if (!Player.AmOwner)
+        {
+            return;
+        }
+
+        if (!GameStarted && Player.killTimer > 0f)
+        {
+            GameStarted = true;
+        }
 
         // scavenge mode starts once kill timer reaches 0
         if (Player.killTimer <= 0f && !Scavenging && GameStarted && !Player.HasDied())
@@ -50,7 +64,9 @@ public sealed class ScavengerRole(IntPtr cppPtr)
         }
 
         if (TimeRemaining > 0)
+        {
             TimeRemaining -= Time.deltaTime;
+        }
 
         if ((TimeRemaining <= 0 || MeetingHud.Instance || Player.HasDied()) && Scavenging)
         {
@@ -115,7 +131,9 @@ public sealed class ScavengerRole(IntPtr cppPtr)
     {
         RoleBehaviourStubs.Initialize(this, player);
         if (TutorialManager.InstanceExists && Target == null && Player.AmOwner)
+        {
             Coroutines.Start(SetTutorialTarget(this, Player));
+        }
     }
 
     private static IEnumerator SetTutorialTarget(ScavengerRole scav, PlayerControl player)
@@ -146,7 +164,10 @@ public sealed class ScavengerRole(IntPtr cppPtr)
     {
         var players = ModifierUtils.GetPlayersWithModifier<ScavengerArrowModifier>();
 
-        foreach (var player in players) player.RemoveModifier<ScavengerArrowModifier>();
+        foreach (var player in players)
+        {
+            player.RemoveModifier<ScavengerArrowModifier>();
+        }
 
         Scavenging = false;
         TimeRemaining = 0;
@@ -155,7 +176,10 @@ public sealed class ScavengerRole(IntPtr cppPtr)
 
     public void OnPlayerKilled(PlayerControl victim)
     {
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
 
         if (victim == Target)
         {

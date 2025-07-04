@@ -52,17 +52,35 @@ public sealed class OracleConfessButton : TownOfUsRoleButton<OracleRole, PlayerC
 
         if (num <= options.RevealAccuracyPercentage)
         {
-            if (target.IsCrewmate()) faction = 0;
-            else if (target.IsImpostor()) faction = 2;
+            if (target.IsCrewmate())
+            {
+                faction = 0;
+            }
+            else if (target.IsImpostor())
+            {
+                faction = 2;
+            }
         }
         else
         {
             var num2 = Random.RandomRangeInt(0, 2);
 
-            if (target.IsImpostor()) faction = num2;
-            else if (target.IsCrewmate()) faction = num2 + 1;
-            else if (num2 == 1) faction = 2;
-            else faction = 0;
+            if (target.IsImpostor())
+            {
+                faction = num2;
+            }
+            else if (target.IsCrewmate())
+            {
+                faction = num2 + 1;
+            }
+            else if (num2 == 1)
+            {
+                faction = 2;
+            }
+            else
+            {
+                faction = 0;
+            }
         }
 
         return faction;

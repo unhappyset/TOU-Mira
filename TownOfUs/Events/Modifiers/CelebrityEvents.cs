@@ -33,9 +33,15 @@ public static class CelebrityEvents
     [RegisterEvent]
     public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
-        if (@event.DeathReason != DeathReason.Exile) return;
+        if (@event.DeathReason != DeathReason.Exile)
+        {
+            return;
+        }
 
-        if (@event.Player.TryGetModifier<CelebrityModifier>(out var celeb)) celeb.Announced = true;
+        if (@event.Player.TryGetModifier<CelebrityModifier>(out var celeb))
+        {
+            celeb.Announced = true;
+        }
     }
 
     [RegisterEvent]
@@ -58,7 +64,14 @@ public static class CelebrityEvents
     public static void WrapUpEvent(EjectionEvent @event)
     {
         var player = @event.ExileController.initData.networkedPlayer?.Object;
-        if (player == null) return;
-        if (player.TryGetModifier<CelebrityModifier>(out var celeb)) celeb.Announced = true;
+        if (player == null)
+        {
+            return;
+        }
+
+        if (player.TryGetModifier<CelebrityModifier>(out var celeb))
+        {
+            celeb.Announced = true;
+        }
     }
 }

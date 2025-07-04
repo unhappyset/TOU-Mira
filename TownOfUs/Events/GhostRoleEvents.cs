@@ -18,10 +18,16 @@ public static class GhostRoleEvents
     public static void PlayerCanUseEventHandler(PlayerCanUseEvent @event)
     {
         if (!PlayerControl.LocalPlayer || !PlayerControl.LocalPlayer.Data ||
-            !PlayerControl.LocalPlayer.Data.Role) return;
+            !PlayerControl.LocalPlayer.Data.Role)
+        {
+            return;
+        }
 
         if (!@event.Usable.TryCast<Console>() ||
-            PlayerControl.LocalPlayer.Data.Role is not IGhostRole { GhostActive: false }) return;
+            PlayerControl.LocalPlayer.Data.Role is not IGhostRole { GhostActive: false })
+        {
+            return;
+        }
 
         @event.Cancel();
     }
@@ -29,7 +35,10 @@ public static class GhostRoleEvents
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return;
+        if (@event.TriggeredByIntro)
+        {
+            return;
+        }
 
         if (AmongUsClient.Instance.AmHost)
         {
@@ -52,7 +61,10 @@ public static class GhostRoleEvents
 
                         var player = deadCrew.TakeFirst();
 
-                        if (player != null) player.RpcChangeRole(RoleId.Get<HaunterRole>());
+                        if (player != null)
+                        {
+                            player.RpcChangeRole(RoleId.Get<HaunterRole>());
+                        }
                     }
                 }
             }
@@ -76,7 +88,10 @@ public static class GhostRoleEvents
 
                         var player = deadNeutral.TakeFirst();
 
-                        if (player != null) player.RpcChangeRole(RoleId.Get<PhantomTouRole>());
+                        if (player != null)
+                        {
+                            player.RpcChangeRole(RoleId.Get<PhantomTouRole>());
+                        }
                     }
                 }
             }
@@ -84,7 +99,11 @@ public static class GhostRoleEvents
 
         foreach (var ghost in CustomRoleUtils.GetActiveRoles().OfType<IGhostRole>())
         {
-            if (ghost.Caught) continue;
+            if (ghost.Caught)
+            {
+                continue;
+            }
+
             ghost.Spawn();
         }
     }

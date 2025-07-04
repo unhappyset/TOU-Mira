@@ -45,8 +45,10 @@ public sealed class SpyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole
     {
         RoleBehaviourStubs.Initialize(this, player);
         if (Player.AmOwner)
+        {
             CustomButtonSingleton<SpyAdminTableRoleButton>.Instance.AvailableCharge =
                 OptionGroupSingleton<SpyOptions>.Instance.StartingCharge.Value;
+        }
     }
 
     public static void OnRoundStart()

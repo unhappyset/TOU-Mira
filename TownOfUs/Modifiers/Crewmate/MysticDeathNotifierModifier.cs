@@ -24,7 +24,10 @@ public sealed class MysticDeathNotifierModifier(PlayerControl mystic) : TimedMod
 
         var deadPlayer = GameData.Instance.AllPlayers.ToArray()
             .FirstOrDefault(x => x.PlayerId == Player.PlayerId && x.IsDead);
-        if (deadPlayer == null) return;
+        if (deadPlayer == null)
+        {
+            return;
+        }
 
         _arrow = MiscUtils.CreateArrow(Mystic.transform, Color.white);
         _arrow.target = deadPlayer.Object.GetTruePosition();

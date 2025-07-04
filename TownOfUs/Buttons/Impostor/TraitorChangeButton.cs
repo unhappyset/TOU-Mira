@@ -24,7 +24,11 @@ public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
 
     public override void ClickHandler()
     {
-        if (!CanClick() || Minigame.Instance != null || PlayerControl.LocalPlayer.HasDied()) return;
+        if (!CanClick() || Minigame.Instance != null || PlayerControl.LocalPlayer.HasDied())
+        {
+            return;
+        }
+
         OnClick();
     }
 
@@ -45,13 +49,19 @@ public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
                 .ToList();
 
             if (OptionGroupSingleton<TraitorOptions>.Instance.RemoveExistingRoles)
+            {
                 foreach (var player in PlayerControl.AllPlayerControls)
+                {
                     if (player.IsImpostor() && !player.AmOwner)
                     {
                         var role = player.GetRoleWhenAlive();
                         if (role)
+                        {
                             impRoles.Remove((ushort)role!.Role);
+                        }
                     }
+                }
+            }
 
             roleList.Shuffle();
             roleList.Shuffle();
@@ -61,7 +71,11 @@ public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
             for (var i = 0; i < 3; i++)
             {
                 var selected = roleList.Random();
-                if (selected == null) continue;
+                if (selected == null)
+                {
+                    continue;
+                }
+
                 Role.ChosenRoles.Add(selected);
                 roleList.Remove(selected);
             }

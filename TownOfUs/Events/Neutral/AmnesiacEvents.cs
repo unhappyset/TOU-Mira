@@ -19,8 +19,15 @@ public static class AmnesiacEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (!CustomRoleUtils.GetActiveRolesOfType<AmnesiacRole>().Any()) return;
-        if (!OptionGroupSingleton<AmnesiacOptions>.Instance.RememberArrows) return;
+        if (!CustomRoleUtils.GetActiveRolesOfType<AmnesiacRole>().Any())
+        {
+            return;
+        }
+
+        if (!OptionGroupSingleton<AmnesiacOptions>.Instance.RememberArrows)
+        {
+            return;
+        }
 
         Coroutines.Start(CoCreateArrow(@event.Target));
     }
@@ -31,10 +38,17 @@ public static class AmnesiacEvents
 
         var deadBody = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == target.PlayerId);
 
-        if (deadBody == null) yield break;
+        if (deadBody == null)
+        {
+            yield break;
+        }
 
         foreach (var amne in CustomRoleUtils.GetActiveRolesOfType<AmnesiacRole>().Select(x => x.Player))
+        {
             if (amne.AmOwner)
+            {
                 amne.AddModifier<AmnesiacArrowModifier>(deadBody, Color.white);
+            }
+        }
     }
 }

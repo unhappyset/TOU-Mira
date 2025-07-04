@@ -45,7 +45,10 @@ public sealed class TraitorCacheModifier : BaseModifier, ICachedRole
 
     public override void OnDeactivate()
     {
-        if (Player.IsRole<TraitorRole>()) return;
+        if (Player.IsRole<TraitorRole>())
+        {
+            return;
+        }
 
         Player.RpcChangeRole(RoleId.Get<TraitorRole>(), false);
     }

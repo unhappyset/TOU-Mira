@@ -22,7 +22,10 @@ public static class HauntMenuMinigamePatch
 {
     public static void Postfix(HauntMenuMinigame __instance)
     {
-        if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return;
+        if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek)
+        {
+            return;
+        }
 
         var body = Object.FindObjectsOfType<DeadBody>()
             .FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
@@ -49,8 +52,16 @@ public static class HauntMenuMinigamePatch
             foreach (var modifier in modifiers)
             {
                 var color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-                if (modifier is IColoredModifier colorMod) color = colorMod.ModifierColor;
-                if (!first) modifierTextBuilder.Append(", ");
+                if (modifier is IColoredModifier colorMod)
+                {
+                    color = colorMod.ModifierColor;
+                }
+
+                if (!first)
+                {
+                    modifierTextBuilder.Append(", ");
+                }
+
                 modifierTextBuilder.Append(CultureInfo.InvariantCulture,
                     $"{color.ToTextColor()}{modifier.ModifierName}</color>");
                 first = false;
@@ -62,7 +73,10 @@ public static class HauntMenuMinigamePatch
 
         var role = target.Data.Role;
         if (target.Data.IsDead && role is not PhantomTouRole or GuardianAngelRole or HaunterRole)
+        {
             role = target.GetRoleWhenAlive();
+        }
+
         var name = role.NiceName;
 
         var rColor = role is ICustomRole custom ? custom.RoleColor : role.TeamColor;

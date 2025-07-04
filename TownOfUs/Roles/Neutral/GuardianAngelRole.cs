@@ -50,7 +50,9 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
                 var chance = rnd.Next(0, 100);
 
                 if (chance < evilTargetPercent)
+                {
                     filtered = [.. filtered.Where(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling))];
+                }
             }
             else
             {
@@ -93,7 +95,9 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
     {
         if (Player != PlayerControl.LocalPlayer)
+        {
             return true;
+        }
 
         var gaTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
 
@@ -125,7 +129,9 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         RoleBehaviourStubs.Initialize(this, player);
         if (TutorialManager.InstanceExists && Target == null && Player.AmOwner && Player.IsHost() &&
             AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
+        {
             Coroutines.Start(SetTutorialTargets(this));
+        }
     }
 
     private static IEnumerator SetTutorialTargets(GuardianAngelTouRole ga)
@@ -175,7 +181,10 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
 
     public void CheckTargetDeath(PlayerControl source, PlayerControl victim)
     {
-        if (Player.HasDied()) return;
+        if (Player.HasDied())
+        {
+            return;
+        }
 
         // Logger<TownOfUsPlugin>.Error($"OnPlayerDeath '{victim.Data.PlayerName}'");
         if (Target == null || victim == Target)
@@ -195,14 +204,19 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
 
             if ((roleType == RoleId.Get<JesterRole>() && OptionGroupSingleton<JesterOptions>.Instance.ScatterOn) ||
                 (roleType == RoleId.Get<SurvivorRole>() && OptionGroupSingleton<SurvivorOptions>.Instance.ScatterOn))
+            {
                 StartCoroutine(Effects.Lerp(0.2f,
                     new Action<float>(p => { Player.GetModifier<ScatterModifier>()?.OnRoundStart(); })));
+            }
         }
     }
 
     private string TargetString()
     {
-        if (!Target) return "Protect Your Target With Your Life!";
+        if (!Target)
+        {
+            return "Protect Your Target With Your Life!";
+        }
 
         return $"Protect {Target?.Data.PlayerName} With Your Life!";
     }
@@ -216,11 +230,17 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
             return;
         }
 
-        if (target == null) return;
+        if (target == null)
+        {
+            return;
+        }
 
         var role = player.GetRole<GuardianAngelTouRole>();
 
-        if (role == null) return;
+        if (role == null)
+        {
+            return;
+        }
 
         // Logger<TownOfUsPlugin>.Message($"RpcSetGATarget - Target: '{target.Data.PlayerName}'");
         role.Target = target;

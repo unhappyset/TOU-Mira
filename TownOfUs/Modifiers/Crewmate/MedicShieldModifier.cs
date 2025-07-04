@@ -59,17 +59,24 @@ public sealed class MedicShieldModifier(PlayerControl medic) : BaseShieldModifie
         if (showShieldedEveryone || showShieldedSelf || showShieldedMedic || (PlayerControl.LocalPlayer.HasDied() &&
                                                                               OptionGroupSingleton<GeneralOptions>
                                                                                   .Instance.TheDeadKnow))
+        {
             MedicShield = AnimStore.SpawnAnimBody(Player, TouAssets.MedicShield.LoadAsset(), false, -1.1f, -0.1f)!;
+        }
     }
 
     public override void OnDeactivate()
     {
-        if (MedicShield?.gameObject != null) MedicShield.gameObject.Destroy();
+        if (MedicShield?.gameObject != null)
+        {
+            MedicShield.gameObject.Destroy();
+        }
     }
 
     public override void Update()
     {
         if (!MeetingHud.Instance && MedicShield?.gameObject != null)
+        {
             MedicShield?.SetActive(!Player.IsConcealed() && IsVisible);
+        }
     }
 }

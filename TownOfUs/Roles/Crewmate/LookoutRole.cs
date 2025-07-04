@@ -61,8 +61,15 @@ public sealed class LookoutRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
         var role = source.Data.Role;
 
         var cachedMod = source.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole) as ICachedRole;
-        if (cachedMod != null) role = cachedMod.CachedRole;
+        if (cachedMod != null)
+        {
+            role = cachedMod.CachedRole;
+        }
+
         // Prevents duplicate role entries
-        if (!mod.SeenPlayers.Contains(role)) mod.SeenPlayers.Add(role);
+        if (!mod.SeenPlayers.Contains(role))
+        {
+            mod.SeenPlayers.Add(role);
+        }
     }
 }

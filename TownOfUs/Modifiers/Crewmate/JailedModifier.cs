@@ -30,7 +30,10 @@ public sealed class JailedModifier(byte jailorId) : BaseModifier
     {
         Clear();
         if (GameData.Instance.GetPlayerById(JailorId).Object.HasDied() || Player.HasDied() ||
-            !MeetingHud.Instance) return;
+            !MeetingHud.Instance)
+        {
+            return;
+        }
 
         if (Player.AmOwner)
         {
@@ -38,8 +41,11 @@ public sealed class JailedModifier(byte jailorId) : BaseModifier
             var text =
                 "You are jailed, convince the Jailor that you are Crew to avoid being executed in the private chatbox.";
             if (PlayerControl.LocalPlayer.Is(ModdedRoleTeams.Crewmate))
+            {
                 text =
                     "You are jailed, provide relevant information to the Jailor to prove you are Crew in the private chatbox.";
+            }
+
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, text, false, true);
 
             var notif1 = Helpers.CreateAndShowNotification(
@@ -51,8 +57,12 @@ public sealed class JailedModifier(byte jailorId) : BaseModifier
         }
 
         foreach (var voteArea in MeetingHud.Instance.playerStates)
+        {
             if (Player.PlayerId == voteArea.TargetPlayerId)
+            {
                 GenCell(voteArea);
+            }
+        }
     }
 
     public void Clear()

@@ -38,7 +38,10 @@ public static class LookoutEvents
         var source = PlayerControl.LocalPlayer;
         var target = button?.Target;
 
-        if (target == null || button == null || !button.CanClick()) return;
+        if (target == null || button == null || !button.CanClick())
+        {
+            return;
+        }
 
         CheckForLookoutWatched(source, target);
     }
@@ -55,7 +58,10 @@ public static class LookoutEvents
     [RegisterEvent]
     public static void EjectionEventEventHandler(EjectionEvent @event)
     {
-        if (!OptionGroupSingleton<LookoutOptions>.Instance.LoResetOnNewRound) return;
+        if (!OptionGroupSingleton<LookoutOptions>.Instance.LoResetOnNewRound)
+        {
+            return;
+        }
 
         ModifierUtils.GetPlayersWithModifier<LookoutWatchedModifier>()
             .Do(x => x.RemoveModifier<LookoutWatchedModifier>());
@@ -66,9 +72,16 @@ public static class LookoutEvents
 
     public static void CheckForLookoutWatched(PlayerControl source, PlayerControl target)
     {
-        if (MeetingHud.Instance || ExileController.Instance) return;
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
 
-        if (!target.HasModifier<LookoutWatchedModifier>() || !source.AmOwner) return;
+        if (!target.HasModifier<LookoutWatchedModifier>() || !source.AmOwner)
+        {
+            return;
+        }
+
         LookoutRole.RpcSeePlayer(target, source);
     }
 }

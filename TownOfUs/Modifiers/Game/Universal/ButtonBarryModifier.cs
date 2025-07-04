@@ -54,11 +54,20 @@ public sealed class ButtonBarryModifier : UniversalGameModifier, IWikiDiscoverab
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        if (role is SwapperRole && !OptionGroupSingleton<SwapperOptions>.Instance.CanButton) return false;
+        if (role is SwapperRole && !OptionGroupSingleton<SwapperOptions>.Instance.CanButton)
+        {
+            return false;
+        }
 
-        if (role is JesterRole && !OptionGroupSingleton<JesterOptions>.Instance.CanButton) return false;
+        if (role is JesterRole && !OptionGroupSingleton<JesterOptions>.Instance.CanButton)
+        {
+            return false;
+        }
 
-        if (role is ExecutionerRole && !OptionGroupSingleton<ExecutionerOptions>.Instance.CanButton) return false;
+        if (role is ExecutionerRole && !OptionGroupSingleton<ExecutionerOptions>.Instance.CanButton)
+        {
+            return false;
+        }
 
         return base.IsModifierValidOn(role);
     }

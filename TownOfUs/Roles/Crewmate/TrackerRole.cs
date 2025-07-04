@@ -38,9 +38,16 @@ public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
             ModifierUtils.GetPlayersWithModifier<TrackerArrowTargetModifier>([HideFromIl2Cpp](x) => x.Owner == Player);
 
         var playerControls = players as PlayerControl[] ?? players.ToArray();
-        if (playerControls.Length == 0) return stringB;
+        if (playerControls.Length == 0)
+        {
+            return stringB;
+        }
+
         stringB.Append("\n<b>Tracked Players:</b>");
-        foreach (var plr in playerControls) stringB.Append(CultureInfo.InvariantCulture, $"\n{plr.Data.PlayerName}");
+        foreach (var plr in playerControls)
+        {
+            stringB.Append(CultureInfo.InvariantCulture, $"\n{plr.Data.PlayerName}");
+        }
 
         return stringB;
     }
@@ -74,6 +81,9 @@ public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
         var players =
             ModifierUtils.GetPlayersWithModifier<TrackerArrowTargetModifier>([HideFromIl2Cpp](x) => x.Owner == Player);
 
-        foreach (var player in players) player.RemoveModifier<TrackerArrowTargetModifier>();
+        foreach (var player in players)
+        {
+            player.RemoveModifier<TrackerArrowTargetModifier>();
+        }
     }
 }

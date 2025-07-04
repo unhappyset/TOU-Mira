@@ -22,7 +22,10 @@ public static class GuardianAngelEvents
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var target = button?.Target;
 
-        if (target == null || button == null || !button.CanClick() || button is not IKillButton) return;
+        if (target == null || button == null || !button.CanClick() || button is not IKillButton)
+        {
+            return;
+        }
 
         CheckForGaProtection(@event, target);
     }
@@ -33,9 +36,15 @@ public static class GuardianAngelEvents
         var source = PlayerControl.LocalPlayer;
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var target = button?.Target;
-        if (target == null || button is not IKillButton) return;
+        if (target == null || button is not IKillButton)
+        {
+            return;
+        }
 
-        if (target && !target!.HasModifier<GuardianAngelProtectModifier>()) return;
+        if (target && !target!.HasModifier<GuardianAngelProtectModifier>())
+        {
+            return;
+        }
 
         ResetButtonTimer(source, button);
     }
@@ -46,7 +55,11 @@ public static class GuardianAngelEvents
         var source = @event.Source;
         var target = @event.Target;
 
-        if (!CheckForGaProtection(@event, target, source)) return;
+        if (!CheckForGaProtection(@event, target, source))
+        {
+            return;
+        }
+
         ResetButtonTimer(source);
     }
 
@@ -54,19 +67,26 @@ public static class GuardianAngelEvents
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         foreach (var ga in CustomRoleUtils.GetActiveRolesOfType<GuardianAngelTouRole>())
+        {
             ga.CheckTargetDeath(@event.Source, @event.Target);
+        }
     }
 
     private static bool CheckForGaProtection(MiraCancelableEvent @event, PlayerControl target,
         PlayerControl? source = null)
     {
-        if (MeetingHud.Instance || ExileController.Instance) return false;
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return false;
+        }
 
         if (!target.HasModifier<GuardianAngelProtectModifier>() ||
             source == null ||
             source.PlayerId == target.PlayerId ||
             (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield))
+        {
             return false;
+        }
 
         @event.Cancel();
 
@@ -80,7 +100,10 @@ public static class GuardianAngelEvents
         button?.SetTimer(reset);
 
         // Reset impostor kill cooldown if they attack a shielded player
-        if (!source.AmOwner || !source.IsImpostor()) return;
+        if (!source.AmOwner || !source.IsImpostor())
+        {
+            return;
+        }
 
         source.SetKillTimer(reset);
     }

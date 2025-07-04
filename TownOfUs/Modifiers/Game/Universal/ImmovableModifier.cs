@@ -49,14 +49,20 @@ public sealed class ImmovableModifier : UniversalGameModifier, IWikiDiscoverable
     {
         base.FixedUpdate();
 
-        if (Player.HasDied() || !Player.CanMove) return;
+        if (Player.HasDied() || !Player.CanMove)
+        {
+            return;
+        }
 
         Location = Player.transform.localPosition;
     }
 
     public void OnRoundStart()
     {
-        if (Player.HasDied()) return;
+        if (Player.HasDied())
+        {
+            return;
+        }
 
         Player.transform.localPosition = Location;
         Player.NetTransform.SnapTo(Location);

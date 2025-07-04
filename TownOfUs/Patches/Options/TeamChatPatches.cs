@@ -23,20 +23,28 @@ public static class TeamChatPatches
         // WIP
         TeamChatActive = !TeamChatActive;
         if (!TeamChatActive)
+        {
             HudManagerPatches.TeamChatButton.transform.Find("Inactive").gameObject.SetActive(true);
+        }
         else
+        {
             HudManager.Instance.Chat.Toggle();
+        }
     }
 
     [MethodRpc((uint)TownOfUsRpc.SendJailorChat, SendImmediately = true)]
     public static void RpcSendJailorChat(PlayerControl player, string text)
     {
         if (PlayerControl.LocalPlayer.IsJailed())
+        {
             MiscUtils.AddTeamChat(PlayerControl.LocalPlayer.Data,
                 $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailor</color>", text);
+        }
         else if (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow)
+        {
             MiscUtils.AddTeamChat(player.Data,
                 $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Jailor)</color>", text);
+        }
     }
 
     [MethodRpc((uint)TownOfUsRpc.SendJaileeChat, SendImmediately = true)]
@@ -45,8 +53,10 @@ public static class TeamChatPatches
         if (PlayerControl.LocalPlayer.Data.Role is JailorRole || (PlayerControl.LocalPlayer.HasDied() &&
                                                                   OptionGroupSingleton<GeneralOptions>.Instance
                                                                       .TheDeadKnow))
+        {
             MiscUtils.AddTeamChat(player.Data,
                 $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Jailed)</color>", text);
+        }
     }
 
     [MethodRpc((uint)TownOfUsRpc.SendVampTeamChat, SendImmediately = true)]
@@ -54,9 +64,11 @@ public static class TeamChatPatches
     {
         if ((PlayerControl.LocalPlayer.Data.Role is VampireRole && player != PlayerControl.LocalPlayer) ||
             (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        {
             MiscUtils.AddTeamChat(player.Data,
                 $"<color=#{TownOfUsColors.Vampire.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Vampire Chat)</color>",
                 text);
+        }
     }
 
     [MethodRpc((uint)TownOfUsRpc.SendImpTeamChat, SendImmediately = true)]
@@ -64,9 +76,11 @@ public static class TeamChatPatches
     {
         if ((PlayerControl.LocalPlayer.IsImpostor() && player != PlayerControl.LocalPlayer) ||
             (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        {
             MiscUtils.AddTeamChat(player.Data,
                 $"<color=#{TownOfUsColors.ImpSoft.ToHtmlStringRGBA()}>{player.Data.PlayerName} (Impostor Chat)</color>",
                 text);
+        }
     }
 
     /* [HarmonyPatch(typeof(ChatController), nameof(ChatController.LateUpdate))]
@@ -136,13 +150,17 @@ public static class TeamChatPatches
                         //typeBg.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.1f, 0.1f, 0.6f);
                         //typeText.GetComponent<TextMeshPro>().color = Color.white;
                         if (MeetingHud.Instance)
+                        {
                             ChatScreenContainer.transform.localPosition =
                                 HudManager.Instance.Chat.chatButton.transform.localPosition -
                                 new Vector3(3.5133f + 4.33f * (Camera.main.orthographicSize / 3f), 4.576f);
+                        }
                         else
+                        {
                             ChatScreenContainer.transform.localPosition =
                                 HudManager.Instance.Chat.chatButton.transform.localPosition -
                                 new Vector3(3.5133f + 3.49f * (Camera.main.orthographicSize / 3f), 4.576f);
+                        }
 
                         if ((PlayerControl.LocalPlayer.IsJailed() ||
                              PlayerControl.LocalPlayer.Data.Role is JailorRole) && _teamText != null)
@@ -303,7 +321,10 @@ public static class TeamChatPatches
     {
         public static void Postfix(ChatController __instance)
         {
-            if (TeamChatActive) ToggleTeamChat();
+            if (TeamChatActive)
+            {
+                ToggleTeamChat();
+            }
         }
     }
 }

@@ -22,7 +22,10 @@ public sealed class SwooperSwoopButton : TownOfUsRoleButton<SwooperRole>, IAfter
 
     public override void ClickHandler()
     {
-        if (!CanUse()) return;
+        if (!CanUse())
+        {
+            return;
+        }
 
         OnClick();
         Button?.SetDisabled();
@@ -55,7 +58,10 @@ public sealed class SwooperSwoopButton : TownOfUsRoleButton<SwooperRole>, IAfter
         {
             PlayerControl.LocalPlayer.RpcAddModifier<SwoopModifier>();
             UsesLeft--;
-            if (MaxUses != 0) Button?.SetUsesRemaining(UsesLeft);
+            if (MaxUses != 0)
+            {
+                Button?.SetUsesRemaining(UsesLeft);
+            }
         }
         else
         {
@@ -65,7 +71,10 @@ public sealed class SwooperSwoopButton : TownOfUsRoleButton<SwooperRole>, IAfter
 
     public override void OnEffectEnd()
     {
-        if (!PlayerControl.LocalPlayer.HasModifier<SwoopModifier>()) return;
+        if (!PlayerControl.LocalPlayer.HasModifier<SwoopModifier>())
+        {
+            return;
+        }
 
         PlayerControl.LocalPlayer.RpcRemoveModifier<SwoopModifier>();
     }

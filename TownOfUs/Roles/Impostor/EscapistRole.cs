@@ -27,7 +27,11 @@ public sealed class EscapistRole(IntPtr cppPtr)
 
     public void FixedUpdate()
     {
-        if (Player == null || Player.Data.Role is not EscapistRole || Player.HasDied()) return;
+        if (Player == null || Player.Data.Role is not EscapistRole || Player.HasDied())
+        {
+            return;
+        }
+
         if (EscapeMark != null)
         {
             EscapeMark.SetActive(PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.HasDied() &&

@@ -29,17 +29,31 @@ public static class PlumberEvents
     [RegisterEvent]
     public static void PlayerCanUseEventHandler(PlayerCanUseEvent @event)
     {
-        if (!@event.IsVent) return;
+        if (!@event.IsVent)
+        {
+            return;
+        }
+
         var vent = @event.Usable.TryCast<Vent>();
 
-        if (vent == null) return;
+        if (vent == null)
+        {
+            return;
+        }
+
         if (CustomRoleUtils.GetActiveRolesOfType<PlumberRole>()
-            .Any(plumber => plumber.VentsBlocked.Contains(vent.Id))) @event.Cancel();
+            .Any(plumber => plumber.VentsBlocked.Contains(vent.Id)))
+        {
+            @event.Cancel();
+        }
     }
 
     [RegisterEvent]
     public static void EjectionEventHandler(EjectionEvent @event)
     {
-        foreach (var plumber in CustomRoleUtils.GetActiveRolesOfType<PlumberRole>()) plumber.SetupBarricades();
+        foreach (var plumber in CustomRoleUtils.GetActiveRolesOfType<PlumberRole>())
+        {
+            plumber.SetupBarricades();
+        }
     }
 }

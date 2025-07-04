@@ -61,7 +61,10 @@ public sealed class AurialRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     [HideFromIl2Cpp]
     public IEnumerator Sense(PlayerControl player)
     {
-        if (!CheckRange(player, OptionGroupSingleton<AurialOptions>.Instance.AuraOuterRadius)) yield break;
+        if (!CheckRange(player, OptionGroupSingleton<AurialOptions>.Instance.AuraOuterRadius))
+        {
+            yield break;
+        }
 
         var position = player.transform.position;
         var colorID = player.Data.DefaultOutfit.ColorId;
@@ -69,7 +72,9 @@ public sealed class AurialRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
         if (CheckRange(player,
                 OptionGroupSingleton<AurialOptions>.Instance.AuraInnerRadius) /* && !CamouflageUnCamouflage.IsCamoed*/)
+        {
             color = Palette.PlayerColors[colorID];
+        }
 
         var arrow = MiscUtils.CreateArrow(Player.transform, color);
         arrow.target = position;
@@ -104,7 +109,10 @@ public sealed class AurialRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             player.GetTruePosition().y - Player.GetTruePosition().y);
         var magnitude = vector2.magnitude;
 
-        if (magnitude <= lightRadius) return true;
+        if (magnitude <= lightRadius)
+        {
+            return true;
+        }
 
         return false;
     }
@@ -114,10 +122,14 @@ public sealed class AurialRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         var arrow = _senseArrows.FirstOrDefault(x => x.Key == (targetArea, colourID));
 
         if (arrow.Value != null)
+        {
             Destroy(arrow.Value);
+        }
 
         if (arrow.Value?.gameObject != null)
+        {
             Destroy(arrow.Value.gameObject);
+        }
 
         _senseArrows.Remove(arrow.Key);
     }
@@ -131,6 +143,9 @@ public sealed class AurialRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             return;
         }
 
-        if (player.AmOwner) Coroutines.Start(aurial.Sense(source));
+        if (player.AmOwner)
+        {
+            Coroutines.Start(aurial.Sense(source));
+        }
     }
 }

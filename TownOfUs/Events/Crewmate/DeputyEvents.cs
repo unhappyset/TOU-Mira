@@ -17,7 +17,10 @@ public static class DeputyEvents
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
-        if (PlayerControl.LocalPlayer.Data.Role is DeputyRole) DeputyRole.OnRoundStart();
+        if (PlayerControl.LocalPlayer.Data.Role is DeputyRole)
+        {
+            DeputyRole.OnRoundStart();
+        }
     }
 
     [RegisterEvent]
@@ -28,30 +31,58 @@ public static class DeputyEvents
 
         CheckForDeputyCamped(source, target);
 
-        if (source.Data.Role is not DeputyRole) return;
+        if (source.Data.Role is not DeputyRole)
+        {
+            return;
+        }
 
-        if (source.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished) return;
+        if (source.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
+        {
+            return;
+        }
 
         if (GameHistory.PlayerStats.TryGetValue(source.PlayerId, out var stats))
         {
             if (!target.IsCrewmate() ||
                 (target.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
+            {
                 stats.CorrectKills += 1;
-            else if (source != target) stats.IncorrectKills += 1;
+            }
+            else if (source != target)
+            {
+                stats.IncorrectKills += 1;
+            }
         }
     }
 
     private static void CheckForDeputyCamped(PlayerControl source, PlayerControl target)
     {
-        if (MeetingHud.Instance || ExileController.Instance) return;
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
 
-        if (!target.HasModifier<DeputyCampedModifier>()) return;
+        if (!target.HasModifier<DeputyCampedModifier>())
+        {
+            return;
+        }
 
         var mod = target.GetModifier<DeputyCampedModifier>();
 
-        if (mod == null) return;
-        if (mod.Deputy.HasDied()) return;
-        if (mod.Deputy.Data.Role is not DeputyRole deputy) return;
+        if (mod == null)
+        {
+            return;
+        }
+
+        if (mod.Deputy.HasDied())
+        {
+            return;
+        }
+
+        if (mod.Deputy.Data.Role is not DeputyRole deputy)
+        {
+            return;
+        }
 
         deputy.Killer = source;
         if (mod.Deputy.AmOwner)

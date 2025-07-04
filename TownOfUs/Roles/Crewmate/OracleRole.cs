@@ -65,12 +65,18 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
     public void ReportOnConfession()
     {
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
 
         var confessing = ModifierUtils
             .GetPlayersWithModifier<OracleConfessModifier>([HideFromIl2Cpp](x) => x.Oracle == Player).FirstOrDefault();
 
-        if (confessing == null) return;
+        if (confessing == null)
+        {
+            return;
+        }
 
         var report = BuildReport(confessing);
 
@@ -81,12 +87,16 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public static string BuildReport(PlayerControl player)
     {
         if (player.HasDied())
+        {
             return "Your confessor failed to survive so you received no confession";
+        }
 
         var allPlayers = PlayerControl.AllPlayerControls.ToArray()
             .Where(x => !x.HasDied() && x != PlayerControl.LocalPlayer && x != player).ToList();
         if (allPlayers.Count < 2)
+        {
             return "Too few people alive to receive a confessional";
+        }
 
         var options = OptionGroupSingleton<OracleOptions>.Instance;
 
@@ -104,8 +114,10 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             .ToList();
 
         if (evilPlayers.Count == 0)
+        {
             return
                 $"{player.GetDefaultAppearance().PlayerName} confesses to knowing that there are no more evil players!";
+        }
 
         allPlayers.Shuffle();
         evilPlayers.Shuffle();
@@ -133,7 +145,10 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     {
         var mod = ModifierUtils.GetActiveModifiers<OracleConfessModifier>(x => x.Oracle == player).FirstOrDefault();
 
-        if (mod != null) mod.ConfessToAll = true;
+        if (mod != null)
+        {
+            mod.ConfessToAll = true;
+        }
     }
 
     [MethodRpc((uint)TownOfUsRpc.OracleBless, SendImmediately = true)]
@@ -144,6 +159,8 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
         if (mod != null)
             // Logger<TownOfUsPlugin>.Message($"RpcOracleBless exiled '{exiled.Data.PlayerName}' SavedFromExile");
+        {
             mod.SavedFromExile = true;
+        }
     }
 }

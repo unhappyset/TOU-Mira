@@ -74,9 +74,15 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
 
-        if (!Target.Data.IsDead) PlayerControl.LocalPlayer.RpcCustomMurder(Target);
+        if (!Target.Data.IsDead)
+        {
+            PlayerControl.LocalPlayer.RpcCustomMurder(Target);
+        }
 
         if (Target.Data.IsDead && Charge >= 100 && !BurstActive)
         {
@@ -91,11 +97,17 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
 
     public override void ClickHandler()
     {
-        if (!CanClick()) return;
+        if (!CanClick())
+        {
+            return;
+        }
 
         OnClick();
         Button?.SetDisabled();
-        if (!BurstActive) Timer = Cooldown;
+        if (!BurstActive)
+        {
+            Timer = Cooldown;
+        }
     }
 
     public override PlayerControl? GetTarget()

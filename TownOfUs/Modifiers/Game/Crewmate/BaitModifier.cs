@@ -54,7 +54,9 @@ public sealed class BaitModifier : TouGameModifier, IWikiDiscoverable
     public static IEnumerator CoReportDelay(PlayerControl killer, PlayerControl target)
     {
         if (!killer || !target || killer == target)
+        {
             yield break;
+        }
 
         yield return new WaitForSeconds(Random.RandomRange(MinDelay, MaxDelay));
 

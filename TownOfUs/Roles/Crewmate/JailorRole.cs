@@ -61,7 +61,9 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
         if (PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
+        {
             stringB.AppendLine(CultureInfo.InvariantCulture, $"You can execute crewmates.");
+        }
 
         return stringB;
     }
@@ -104,19 +106,27 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
         Clear();
 
-        if (Player.HasDied()) return;
+        if (Player.HasDied())
+        {
+            return;
+        }
 
         if (Player.AmOwner)
         {
             if (Jailed!.HasDied())
+            {
                 return;
+            }
+
             var title = $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailor Feedback</color>";
             MiscUtils.AddFakeChat(Jailed.Data, title, "Communicate with your jailee in the other chatbot.", false,
                 true);
         }
 
         if (MeetingHud.Instance)
+        {
             AddMeetingButtons(MeetingHud.Instance);
+        }
     }
 
     public override void OnVotingComplete()
@@ -135,18 +145,34 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
     private void AddMeetingButtons(MeetingHud __instance)
     {
-        if (Jailed == null || Jailed?.HasDied() == true) return;
+        if (Jailed == null || Jailed?.HasDied() == true)
+        {
+            return;
+        }
 
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
 
-        if (Executes <= 0 || Jailed?.HasDied() == true) return;
+        if (Executes <= 0 || Jailed?.HasDied() == true)
+        {
+            return;
+        }
 
-        if (Player.HasModifier<ImitatorCacheModifier>()) return;
+        if (Player.HasModifier<ImitatorCacheModifier>())
+        {
+            return;
+        }
 
         foreach (var voteArea in __instance.playerStates)
+        {
             if (Jailed?.PlayerId == voteArea.TargetPlayerId)
                 // if (!(jailorRole.Jailed.IsLover() && PlayerControl.LocalPlayer.IsLover()))
+            {
                 GenButton(voteArea);
+            }
+        }
     }
 
 
@@ -183,7 +209,10 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     {
         void Listener()
         {
-            if (Player.HasDied()) return;
+            if (Player.HasDied())
+            {
+                return;
+            }
 
             Clear();
 

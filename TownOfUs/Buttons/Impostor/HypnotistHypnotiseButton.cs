@@ -25,7 +25,10 @@ public sealed class HypnotistHypnotiseButton : TownOfUsRoleButton<HypnotistRole,
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
 
         Target.RpcAddModifier<HypnotisedModifier>(PlayerControl.LocalPlayer);
     }

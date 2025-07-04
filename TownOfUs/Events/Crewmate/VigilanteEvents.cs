@@ -12,7 +12,10 @@ public static class VigilanteEvents
     {
         var source = @event.Source;
 
-        if (source.Data.Role is not VigilanteRole vigi) return;
+        if (source.Data.Role is not VigilanteRole vigi)
+        {
+            return;
+        }
 
         vigi.MaxKills--;
 
@@ -21,9 +24,13 @@ public static class VigilanteEvents
         if (GameHistory.PlayerStats.TryGetValue(source.PlayerId, out var stats))
         {
             if (source != target)
+            {
                 stats.CorrectAssassinKills++;
+            }
             else
+            {
                 stats.CorrectAssassinKills--;
+            }
         }
     }
 }

@@ -42,9 +42,15 @@ public sealed class MultitaskerModifier : TouGameModifier, IWikiDiscoverable
 
     public override void Update()
     {
-        if (!Player || Player.Data.IsDead || !Player.AmOwner) return;
+        if (!Player || Player.Data.IsDead || !Player.AmOwner)
+        {
+            return;
+        }
 
-        if (Minigame.Instance == null || IsExemptTask()) return;
+        if (Minigame.Instance == null || IsExemptTask())
+        {
+            return;
+        }
 
         SpriteRenderer[] rends = Minigame.Instance.GetComponentsInChildren<SpriteRenderer>();
 

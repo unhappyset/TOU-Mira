@@ -71,6 +71,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.AmOwner)
+        {
             meetingMenu = new MeetingMenu(
                 this,
                 ClickGuess,
@@ -81,6 +82,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             {
                 Position = new Vector3(-0.40f, 0f, -3f)
             };
+        }
     }
 
     public override void OnMeetingStart()
@@ -88,15 +90,20 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         RoleBehaviourStubs.OnMeetingStart(this);
 
         if (Player.AmOwner)
+        {
             meetingMenu.GenButtons(MeetingHud.Instance,
                 Player.AmOwner && !Player.HasDied() && Killer != null && !Player.HasModifier<JailedModifier>());
+        }
     }
 
     public override void OnVotingComplete()
     {
         RoleBehaviourStubs.OnVotingComplete(this);
 
-        if (Player.AmOwner) meetingMenu.HideButtons();
+        if (Player.AmOwner)
+        {
+            meetingMenu.HideButtons();
+        }
 
         Clear();
     }
@@ -125,7 +132,10 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     {
         var player = ModifierUtils.GetPlayersWithModifier<DeputyCampedModifier>(x => x.Deputy.AmOwner).FirstOrDefault();
 
-        if (player != null && Player.AmOwner) player.RpcRemoveModifier<DeputyCampedModifier>();
+        if (player != null && Player.AmOwner)
+        {
+            player.RpcRemoveModifier<DeputyCampedModifier>();
+        }
     }
 
     public void ClickGuess(PlayerVoteArea voteArea, MeetingHud __)
@@ -148,7 +158,10 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             notif1.Text.SetOutlineThickness(0.35f);
         }
 
-        if (Player.AmOwner) meetingMenu?.HideButtons();
+        if (Player.AmOwner)
+        {
+            meetingMenu?.HideButtons();
+        }
 
         Clear();
     }

@@ -31,7 +31,10 @@ public sealed class FootstepsModifier : BaseModifier
 
     public override void OnDeactivate()
     {
-        if (_currentSteps == null) return;
+        if (_currentSteps == null)
+        {
+            return;
+        }
 
         _currentSteps.ToList().ForEach(step => Coroutines.Start(FootstepFadeout(step.Key, step.Value)));
         _currentSteps.Clear();
@@ -42,12 +45,17 @@ public sealed class FootstepsModifier : BaseModifier
         if (_currentSteps == null || Player.HasModifier<ConcealedModifier>() ||
             (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive) ||
             Vector3.Distance(_lastPos, Player.transform.position) <
-            OptionGroupSingleton<InvestigatorOptions>.Instance.FootprintInterval) return;
+            OptionGroupSingleton<InvestigatorOptions>.Instance.FootprintInterval)
+        {
+            return;
+        }
 
         if (!OptionGroupSingleton<InvestigatorOptions>.Instance.ShowFootprintVent && ShipStatus.Instance?.AllVents
                 .Any(vent => Vector2.Distance(vent.gameObject.transform.position, Player.GetTruePosition()) < 1f) ==
             true)
+        {
             return;
+        }
 
         var angle = Mathf.Atan2(Player.MyPhysics.Velocity.y, Player.MyPhysics.Velocity.x) * Mathf.Rad2Deg;
 
@@ -61,7 +69,10 @@ public sealed class FootstepsModifier : BaseModifier
             }
         };
 
-        if (ModCompatibility.IsSubmerged()) footstep.AddSubmergedComponent("ElevatorMover");
+        if (ModCompatibility.IsSubmerged())
+        {
+            footstep.AddSubmergedComponent("ElevatorMover");
+        }
 
         var sprite = footstep.AddComponent<SpriteRenderer>();
         sprite.sprite = TouAssets.FootprintSprite.LoadAsset();

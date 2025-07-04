@@ -27,7 +27,9 @@ public sealed class HunterStalkedModifier(PlayerControl hunter) : TimedModifier
         base.FixedUpdate();
 
         if (PlayerControl.LocalPlayer.Data.Role is HunterRole)
+        {
             Player?.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Hunter));
+        }
     }
 
     public override void OnDeactivate()

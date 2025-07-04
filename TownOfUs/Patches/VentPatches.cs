@@ -16,7 +16,9 @@ public static class VentPatches
         if (magnitude < PlayerControl.LocalPlayer.lightSource.viewDistance &&
             !PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude,
                 Constants.ShipAndObjectsMask))
+        {
             return true;
+        }
 
         return false;
     }
@@ -25,10 +27,20 @@ public static class VentPatches
     [HarmonyPrefix]
     public static bool EnterVentPatch(Vent __instance, PlayerControl pc)
     {
-        if (!__instance.EnterVentAnim) return true;
-        if (!OptionGroupSingleton<GeneralOptions>.Instance.HideVentAnimationNotInVision) return true;
+        if (!__instance.EnterVentAnim)
+        {
+            return true;
+        }
 
-        if (InVision(pc)) return true;
+        if (!OptionGroupSingleton<GeneralOptions>.Instance.HideVentAnimationNotInVision)
+        {
+            return true;
+        }
+
+        if (InVision(pc))
+        {
+            return true;
+        }
 
         return false;
     }
@@ -37,10 +49,20 @@ public static class VentPatches
     [HarmonyPrefix]
     public static bool ExitVentPatch(Vent __instance, PlayerControl pc)
     {
-        if (!__instance.ExitVentAnim) return true;
-        if (!OptionGroupSingleton<GeneralOptions>.Instance.HideVentAnimationNotInVision) return true;
+        if (!__instance.ExitVentAnim)
+        {
+            return true;
+        }
 
-        if (InVision(pc)) return true;
+        if (!OptionGroupSingleton<GeneralOptions>.Instance.HideVentAnimationNotInVision)
+        {
+            return true;
+        }
+
+        if (InVision(pc))
+        {
+            return true;
+        }
 
         return false;
     }

@@ -58,7 +58,9 @@ public abstract class TownOfUsButton : CustomActionButton
         if (Timer >= 0)
         {
             if (!TimerPaused && (!(ShouldPauseInVent && PlayerControl.LocalPlayer.inVent) || EffectActive))
+            {
                 Timer -= Time.deltaTime;
+            }
         }
         else if (HasEffect && EffectActive)
         {
@@ -70,9 +72,13 @@ public abstract class TownOfUsButton : CustomActionButton
         if (Button)
         {
             if (CanUse())
+            {
                 Button!.SetEnabled();
+            }
             else
+            {
                 Button!.SetDisabled();
+            }
 
             if (EffectActive)
             {
@@ -134,28 +140,43 @@ public abstract class TownOfUsButton : CustomActionButton
 
     public override bool CanUse()
     {
-        if (PlayerControl.LocalPlayer == null) return false;
-        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+        if (PlayerControl.LocalPlayer == null)
+        {
             return false;
+        }
+
+        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+        {
+            return false;
+        }
+
         return base.CanUse();
     }
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
-        if (MeetingHud.Instance) return;
+        if (MeetingHud.Instance)
+        {
+            return;
+        }
 
         Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled ||
                                      HudManager.Instance.PetButton.isActiveAndEnabled);
 
         if (CanUse() && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) ||
                                                     ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
+        {
             PassiveComp.OnClick.Invoke();
+        }
     }
 
     public override void ClickHandler()
     {
         if (!CanClick() || PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() ||
-            PlayerControl.LocalPlayer.HasModifier<DisabledModifier>()) return;
+            PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+        {
+            return;
+        }
 
         if (LimitedUses)
         {
@@ -165,7 +186,10 @@ public abstract class TownOfUsButton : CustomActionButton
             if (TextOutlineColor != Color.clear)
             {
                 SetTextOutline(TextOutlineColor);
-                if (Button != null) Button.usesRemainingSprite.color = TextOutlineColor;
+                if (Button != null)
+                {
+                    Button.usesRemainingSprite.color = TextOutlineColor;
+                }
             }
 
             TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
@@ -227,7 +251,9 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
         if (Timer >= 0)
         {
             if (!TimerPaused && (!(ShouldPauseInVent && PlayerControl.LocalPlayer.inVent) || EffectActive))
+            {
                 Timer -= Time.deltaTime;
+            }
         }
         else if (HasEffect && EffectActive)
         {
@@ -239,9 +265,13 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
         if (Button)
         {
             if (CanUse())
+            {
                 Button!.SetEnabled();
+            }
             else
+            {
                 Button!.SetDisabled();
+            }
 
             if (EffectActive)
             {
@@ -268,7 +298,10 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
     public override bool CanUse()
     {
         if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+        {
             return false;
+        }
+
         return base.CanUse();
     }
 
@@ -335,7 +368,10 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
                 if (TextOutlineColor != Color.clear)
                 {
                     SetTextOutline(TextOutlineColor);
-                    if (Button != null) Button.usesRemainingSprite.color = TextOutlineColor;
+                    if (Button != null)
+                    {
+                        Button.usesRemainingSprite.color = TextOutlineColor;
+                    }
                 }
 
                 TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
@@ -356,14 +392,19 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
-        if (MeetingHud.Instance) return;
+        if (MeetingHud.Instance)
+        {
+            return;
+        }
 
         Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled ||
                                      HudManager.Instance.PetButton.isActiveAndEnabled);
 
         if (CanUse() && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) ||
                                                     ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
+        {
             PassiveComp.OnClick.Invoke();
+        }
     }
 }
 
@@ -394,18 +435,27 @@ public abstract class TownOfUsRoleButton<TRole, TTarget> : TownOfUsTargetButton<
         if (Target != null && !PlayerControl.LocalPlayer.HasDied())
         {
             if (Target is PlayerControl target)
+            {
                 target.cosmetics.currentBodySprite.BodySprite.SetOutline(active ? Role.TeamColor : null);
+            }
             else if (Target is DeadBody body)
+            {
                 body.bodyRenderers.Do(x => x.SetOutline(active ? Role.TeamColor : null));
-            else if (Target is Vent vent) vent.SetOutline(active, true, Role.TeamColor);
+            }
+            else if (Target is Vent vent)
+            {
+                vent.SetOutline(active, true, Role.TeamColor);
+            }
         }
     }
 
     public override bool IsTargetValid(TTarget? target)
     {
         if (target is PlayerControl playerTarget)
+        {
             return base.IsTargetValid(target) && !playerTarget.inVent &&
                    !(playerTarget.TryGetModifier<DisabledModifier>(out var mod) && !mod.CanBeInteractedWith);
+        }
 
         return base.IsTargetValid(target);
     }

@@ -26,33 +26,53 @@ public static class SwapperEvents
     [RegisterEvent]
     public static void VotingCompleteEventHandler(VotingCompleteEvent @event)
     {
-        if (!CustomRoleUtils.GetActiveRolesOfType<SwapperRole>().Any()) return;
+        if (!CustomRoleUtils.GetActiveRolesOfType<SwapperRole>().Any())
+        {
+            return;
+        }
 
         Coroutines.Start(PerformSwaps());
     }
 
     private static void SwapVotes(ProcessVotesEvent @event, SwapperRole swapper)
     {
-        if (!swapper || swapper.Player.HasDied() || !swapper.Swap1 || !swapper.Swap2) return;
+        if (!swapper || swapper.Player.HasDied() || !swapper.Swap1 || !swapper.Swap2)
+        {
+            return;
+        }
 
         var swap1 = swapper.Swap1!.TargetPlayerId;
         var swap2 = swapper.Swap2!.TargetPlayerId;
 
         var originalVoteList = @event.Votes.ToList();
 
-        if (TiebreakerEvents.TiebreakingVote.HasValue) originalVoteList.Add(TiebreakerEvents.TiebreakingVote.Value);
+        if (TiebreakerEvents.TiebreakingVote.HasValue)
+        {
+            originalVoteList.Add(TiebreakerEvents.TiebreakingVote.Value);
+        }
 
         var voteList = new List<CustomVote>();
 
         foreach (var vote in originalVoteList)
+        {
             if (vote.Suspect == swap1)
+            {
                 voteList.Add(new CustomVote(vote.Voter, swap2));
+            }
             else if (vote.Suspect == swap2)
+            {
                 voteList.Add(new CustomVote(vote.Voter, swap1));
+            }
             else
+            {
                 voteList.Add(vote);
+            }
+        }
 
-        if (@event.ExiledPlayer != null) @event.ExiledPlayer = VotingUtils.GetExiled(voteList, out _);
+        if (@event.ExiledPlayer != null)
+        {
+            @event.ExiledPlayer = VotingUtils.GetExiled(voteList, out _);
+        }
     }
 
     private static IEnumerator PerformSwaps()
@@ -64,13 +84,17 @@ public static class SwapperEvents
         foreach (var role in swapperRoles)
         {
             if (role == null || role.Player.HasDied() || role.Swap1 == null || role.Swap2 == null)
+            {
                 yield break;
+            }
 
             var swapPlayer1 = role.Swap1.GetPlayer();
             var swapPlayer2 = role.Swap2.GetPlayer();
 
             if (swapPlayer1!.HasDied() || swapPlayer2!.HasDied())
+            {
                 yield break;
+            }
 
             var elements1 = GetUIElements(role.Swap1);
             var elements2 = GetUIElements(role.Swap2);
@@ -115,7 +139,10 @@ public static class SwapperEvents
         for (var i = 0; i < voteArea.transform.childCount; i++)
         {
             var child = voteArea.transform.GetChild(i);
-            if (child.name == "playerVote(Clone)") votes.Add(child);
+            if (child.name == "playerVote(Clone)")
+            {
+                votes.Add(child);
+            }
         }
 
         return votes;

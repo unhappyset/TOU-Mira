@@ -59,7 +59,10 @@ public sealed class TraitorRole(IntPtr cppPtr)
 
     public void UpdateRole()
     {
-        if (!SelectedRole) return;
+        if (!SelectedRole)
+        {
+            return;
+        }
 
         var roleType = RoleId.Get(SelectedRole!.GetType());
         Player.RpcChangeRole(roleType, false);

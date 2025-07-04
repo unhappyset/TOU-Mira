@@ -30,7 +30,10 @@ public sealed class EscapistRecallButton : TownOfUsRoleButton<EscapistRole>, IAf
 
     protected override void OnClick()
     {
-        if (Role.MarkedLocation != null) Coroutines.Start(CoRecall(Role.MarkedLocation.Value));
+        if (Role.MarkedLocation != null)
+        {
+            Coroutines.Start(CoRecall(Role.MarkedLocation.Value));
+        }
         // TouAudio.PlaySound(TouAudio.EscapistRecallSound);
     }
 

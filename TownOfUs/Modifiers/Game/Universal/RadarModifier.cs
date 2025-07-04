@@ -48,7 +48,10 @@ public sealed class RadarModifier : UniversalGameModifier, IWikiDiscoverable
 
     public override void OnDeactivate()
     {
-        if (_arrow) _arrow.gameObject.Destroy();
+        if (_arrow)
+        {
+            _arrow.gameObject.Destroy();
+        }
     }
 
     public override void FixedUpdate()
@@ -67,7 +70,10 @@ public sealed class RadarModifier : UniversalGameModifier, IWikiDiscoverable
                                           ((playerInfo.TryGetModifier<DisabledModifier>(out var mod) &&
                                             mod.IsConsideredAlive) || !playerInfo.HasModifier<DisabledModifier>()) &&
                                           !playerInfo.Data.IsDead);
-        if (!target) return;
+        if (!target)
+        {
+            return;
+        }
 
         _arrow.gameObject.SetActive(true);
         _arrow.target = target!.transform.localPosition;

@@ -63,7 +63,10 @@ public sealed class MediumRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     [MethodRpc((uint)TownOfUsRpc.Mediate, LocalHandling = RpcLocalHandling.Before, SendImmediately = true)]
     public static void RpcMediate(PlayerControl source, PlayerControl target)
     {
-        if ((!source.AmOwner && !target.AmOwner) || (source.Data.Role is not MediumRole && !target.Data.IsDead)) return;
+        if ((!source.AmOwner && !target.AmOwner) || (source.Data.Role is not MediumRole && !target.Data.IsDead))
+        {
+            return;
+        }
 
         var modifier = new MediatedModifier(source.PlayerId);
         target.GetModifierComponent()?.AddModifier(modifier);

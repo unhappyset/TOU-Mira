@@ -13,6 +13,9 @@ public static class NoisemakerEvents
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         if (@event.Target.TryGetModifier<NoisemakerModifier>(out var noise) &&
-            !@event.Source.IsRole<SoulCollectorRole>() && !MeetingHud.Instance) noise.NotifyOfDeath(@event.Target);
+            !@event.Source.IsRole<SoulCollectorRole>() && !MeetingHud.Instance)
+        {
+            noise.NotifyOfDeath(@event.Target);
+        }
     }
 }

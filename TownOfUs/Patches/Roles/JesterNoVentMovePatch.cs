@@ -10,10 +10,20 @@ public static class JesterNoVentMovePatch
     [HarmonyPrefix]
     public static bool JesterEnterVent()
     {
-        if (PlayerControl.LocalPlayer == null) return true;
-        if (PlayerControl.LocalPlayer.Data == null) return true;
+        if (PlayerControl.LocalPlayer == null)
+        {
+            return true;
+        }
 
-        if (PlayerControl.LocalPlayer.Data.Role is JesterRole) return false;
+        if (PlayerControl.LocalPlayer.Data == null)
+        {
+            return true;
+        }
+
+        if (PlayerControl.LocalPlayer.Data.Role is JesterRole)
+        {
+            return false;
+        }
 
         return true;
     }

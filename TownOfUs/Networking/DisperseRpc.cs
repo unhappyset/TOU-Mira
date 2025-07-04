@@ -47,7 +47,9 @@ public sealed class DisperseRpc(TownOfUsPlugin plugin, uint id)
     public override void Handle(PlayerControl innerNetObject, Dictionary<byte, Vector2>? data)
     {
         if (data == null || data.Count == 0)
+        {
             return;
+        }
 
         Coroutines.Start(DisperserModifier.CoDisperse(data));
     }

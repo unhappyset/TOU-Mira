@@ -83,7 +83,10 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 
     public void Clear()
     {
-        foreach (var barricade in Barricades) Destroy(barricade);
+        foreach (var barricade in Barricades)
+        {
+            Destroy(barricade);
+        }
 
         FutureBlocks.Clear();
         VentsBlocked.Clear();
@@ -100,7 +103,10 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 
             var trueVent = Helpers.GetVentById(ventId);
 
-            if (trueVent == null) continue;
+            if (trueVent == null)
+            {
+                continue;
+            }
 
             barricade.transform.SetParent(trueVent.transform);
             barricade.gameObject.layer = trueVent.gameObject.layer;
@@ -131,6 +137,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
             }
 
             if (ModCompatibility.IsLevelImpostor())
+            {
                 switch (ModCompatibility.GetLIVentType(trueVent))
                 {
                     case "util-vent3":
@@ -147,6 +154,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
                         barricade.transform.localPosition = new Vector3(0, 0, -0.001f);
                         break;
                 }
+            }
 
             Barricades.Add(barricade);
         }
@@ -158,12 +166,17 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     {
         var playersInVent = PlayerControl.AllPlayerControls.ToArray().Where(x => x.inVent);
 
-        foreach (var player in playersInVent) player.AddModifier<PlumberVenterModifier>(plumber, Color.white);
+        foreach (var player in playersInVent)
+        {
+            player.AddModifier<PlumberVenterModifier>(plumber, Color.white);
+        }
 
         yield return new WaitForSeconds(1f);
 
         foreach (var player in ModifierUtils.GetPlayersWithModifier<PlumberVenterModifier>(x => x.Owner == plumber))
+        {
             player.RemoveModifier<PlumberVenterModifier>();
+        }
     }
 
     [MethodRpc((uint)TownOfUsRpc.PlumberFlush, SendImmediately = true)]
@@ -186,9 +199,16 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Plumber));
         }
 
-        if (!player.AmOwner) return;
+        if (!player.AmOwner)
+        {
+            return;
+        }
+
         var someoneInVent = PlayerControl.AllPlayerControls.ToArray().Any(x => x.inVent);
-        if (!someoneInVent) return;
+        if (!someoneInVent)
+        {
+            return;
+        }
 
         Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Plumber));
         Coroutines.Start(SeeVenter(player));
@@ -204,7 +224,9 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
         }
 
         if (!plumber.FutureBlocks.Contains(ventId))
+        {
             plumber.FutureBlocks.Add(ventId);
+        }
 
         var touAbilityEvent = new TouAbilityEvent(AbilityType.PlumberBlock, player, Helpers.GetVentById(ventId));
         MiraEventManager.InvokeEvent(touAbilityEvent);

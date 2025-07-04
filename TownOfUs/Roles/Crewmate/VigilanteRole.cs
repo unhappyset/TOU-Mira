@@ -48,7 +48,10 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
         if (PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
+        {
             stringB.AppendLine(CultureInfo.InvariantCulture, $"You can also guess Crewmates.");
+        }
+
         if ((int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots > 0)
         {
             var newText = SafeShotsLeft == 0
@@ -74,9 +77,13 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
         MaxKills = (int)OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteKills;
         SafeShotsLeft = (int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots;
-        if (Player.HasModifier<ImitatorCacheModifier>()) SafeShotsLeft = 0;
+        if (Player.HasModifier<ImitatorCacheModifier>())
+        {
+            SafeShotsLeft = 0;
+        }
 
         if (Player.AmOwner)
+        {
             meetingMenu = new MeetingMenu(
                 this,
                 ClickGuess,
@@ -84,6 +91,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
                 TouAssets.Guess,
                 null!,
                 IsExempt);
+        }
     }
 
     public override void OnMeetingStart()
@@ -91,15 +99,20 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         RoleBehaviourStubs.OnMeetingStart(this);
 
         if (Player.AmOwner)
+        {
             meetingMenu.GenButtons(MeetingHud.Instance,
                 Player.AmOwner && !Player.HasDied() && MaxKills > 0 && !Player.HasModifier<JailedModifier>());
+        }
     }
 
     public override void OnVotingComplete()
     {
         RoleBehaviourStubs.OnVotingComplete(this);
 
-        if (Player.AmOwner) meetingMenu.HideButtons();
+        if (Player.AmOwner)
+        {
+            meetingMenu.HideButtons();
+        }
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -115,7 +128,10 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
     public void ClickGuess(PlayerVoteArea voteArea, MeetingHud meetingHud)
     {
-        if (meetingHud.state == MeetingHud.VoteStates.Discussion) return;
+        if (meetingHud.state == MeetingHud.VoteStates.Discussion)
+        {
+            return;
+        }
 
         var player = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId).Object;
 
@@ -129,11 +145,17 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             if (player.IsImpostor())
             {
                 if (role.Role == player.Data.Role.Role && !player.HasModifier<TraitorCacheModifier>())
+                {
                     pickVictim = true;
+                }
                 else if (role is TraitorRole && player.HasModifier<TraitorCacheModifier>())
+                {
                     pickVictim = true;
+                }
                 else
+                {
                     pickVictim = false;
+                }
             }
 
             var victim = pickVictim ? player : Player;
@@ -152,7 +174,10 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         void ClickHandler(PlayerControl victim)
         {
             if (!OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteMultiKill || MaxKills == 0 ||
-                victim == Player) meetingMenu?.HideButtons();
+                victim == Player)
+            {
+                meetingMenu?.HideButtons();
+            }
 
             if (victim == Player && SafeShotsLeft != 0)
             {
@@ -175,7 +200,9 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
                 playKillSound: false);
 
             if (victim != Player)
+            {
                 meetingMenu?.HideSingle(victim.PlayerId);
+            }
 
             MaxKills--;
 
@@ -194,26 +221,50 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
     private static bool IsRoleValid(RoleBehaviour role)
     {
-        if (role.IsDead) return false;
+        if (role.IsDead)
+        {
+            return false;
+        }
 
         var options = OptionGroupSingleton<VigilanteOptions>.Instance;
         var touRole = role as ITownOfUsRole;
         var unguessableRole = role as IUnguessable;
 
-        if (unguessableRole != null && !unguessableRole.IsGuessable) return false;
+        if (unguessableRole != null && !unguessableRole.IsGuessable)
+        {
+            return false;
+        }
 
         if (role.IsCrewmate() && !(PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) &&
-                                   !allyMod.GetsPunished)) return false;
+                                   !allyMod.GetsPunished))
+        {
+            return false;
+        }
 
-        if (role.IsCrewmate()) return true;
+        if (role.IsCrewmate())
+        {
+            return true;
+        }
 
-        if (role.IsImpostor()) return true;
+        if (role.IsImpostor())
+        {
+            return true;
+        }
 
-        if (touRole?.RoleAlignment == RoleAlignment.NeutralBenign) return options.VigilanteGuessNeutralBenign;
+        if (touRole?.RoleAlignment == RoleAlignment.NeutralBenign)
+        {
+            return options.VigilanteGuessNeutralBenign;
+        }
 
-        if (touRole?.RoleAlignment == RoleAlignment.NeutralEvil) return options.VigilanteGuessNeutralEvil;
+        if (touRole?.RoleAlignment == RoleAlignment.NeutralEvil)
+        {
+            return options.VigilanteGuessNeutralEvil;
+        }
 
-        if (touRole?.RoleAlignment == RoleAlignment.NeutralKilling) return options.VigilanteGuessNeutralKilling;
+        if (touRole?.RoleAlignment == RoleAlignment.NeutralKilling)
+        {
+            return options.VigilanteGuessNeutralKilling;
+        }
 
         return false;
     }
@@ -225,18 +276,29 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         if ((modifier is TouGameModifier touMod && (touMod.CustomAmount <= 0 || touMod.CustomChance <= 0)) ||
             (modifier is AllianceGameModifier allyMod && (allyMod.CustomAmount <= 0 || allyMod.CustomChance <= 0)) ||
             (modifier is UniversalGameModifier uniMod && (uniMod.CustomAmount <= 0 || uniMod.CustomChance <= 0)))
+        {
             isValid = false;
+        }
 
-        if (!isValid) return false;
+        if (!isValid)
+        {
+            return false;
+        }
 
         if (OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteGuessAlliances &&
-            modifier is AllianceGameModifier) return true;
+            modifier is AllianceGameModifier)
+        {
+            return true;
+        }
+
         var impMod = modifier as TouGameModifier;
         if (impMod != null &&
             (impMod.FactionType.ToDisplayString().Contains("Imp") ||
              impMod.FactionType.ToDisplayString().Contains("Killer")) &&
             !impMod.FactionType.ToDisplayString().Contains("Non"))
+        {
             return OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteGuessKillerMods;
+        }
 
         return false;
     }

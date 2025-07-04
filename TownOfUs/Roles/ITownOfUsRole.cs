@@ -19,9 +19,21 @@ public interface ITownOfUsRole : ICustomRole
         get
         {
             var prefix = " a";
-            if (RoleName.StartsWithVowel()) prefix = " an";
-            if (Configuration.MaxRoleCount is 0 or 1) prefix = " the";
-            if (RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase)) prefix = "";
+            if (RoleName.StartsWithVowel())
+            {
+                prefix = " an";
+            }
+
+            if (Configuration.MaxRoleCount is 0 or 1)
+            {
+                prefix = " the";
+            }
+
+            if (RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase))
+            {
+                prefix = "";
+            }
+
             return $"You are{prefix}";
         }
     }
@@ -30,21 +42,45 @@ public interface ITownOfUsRole : ICustomRole
     {
         get
         {
-            if (RoleAlignment == RoleAlignment.CrewmateInvestigative) return TouRoleGroups.CrewInvest;
+            if (RoleAlignment == RoleAlignment.CrewmateInvestigative)
+            {
+                return TouRoleGroups.CrewInvest;
+            }
 
-            if (RoleAlignment == RoleAlignment.CrewmateKilling) return TouRoleGroups.CrewKiller;
+            if (RoleAlignment == RoleAlignment.CrewmateKilling)
+            {
+                return TouRoleGroups.CrewKiller;
+            }
 
-            if (RoleAlignment == RoleAlignment.CrewmateProtective) return TouRoleGroups.CrewProc;
+            if (RoleAlignment == RoleAlignment.CrewmateProtective)
+            {
+                return TouRoleGroups.CrewProc;
+            }
 
-            if (RoleAlignment == RoleAlignment.CrewmatePower) return TouRoleGroups.CrewPower;
+            if (RoleAlignment == RoleAlignment.CrewmatePower)
+            {
+                return TouRoleGroups.CrewPower;
+            }
 
-            if (RoleAlignment == RoleAlignment.ImpostorConcealing) return TouRoleGroups.ImpConceal;
+            if (RoleAlignment == RoleAlignment.ImpostorConcealing)
+            {
+                return TouRoleGroups.ImpConceal;
+            }
 
-            if (RoleAlignment == RoleAlignment.ImpostorKilling) return TouRoleGroups.ImpKiller;
+            if (RoleAlignment == RoleAlignment.ImpostorKilling)
+            {
+                return TouRoleGroups.ImpKiller;
+            }
 
-            if (RoleAlignment == RoleAlignment.NeutralEvil) return TouRoleGroups.NeutralEvil;
+            if (RoleAlignment == RoleAlignment.NeutralEvil)
+            {
+                return TouRoleGroups.NeutralEvil;
+            }
 
-            if (RoleAlignment == RoleAlignment.NeutralKilling) return TouRoleGroups.NeutralKiller;
+            if (RoleAlignment == RoleAlignment.NeutralKilling)
+            {
+                return TouRoleGroups.NeutralKiller;
+            }
 
             return Team switch
             {
@@ -74,15 +110,33 @@ public interface ITownOfUsRole : ICustomRole
             : "Custom";
 
         if (alignment.Contains("Crewmate"))
+        {
             alignment = alignment.Replace("Crewmate", "<color=#68ACF4>Crewmate");
+        }
         else if (alignment.Contains("Impostor"))
+        {
             alignment = alignment.Replace("Impostor", "<color=#D63F42>Impostor");
-        else if (alignment.Contains("Neutral")) alignment = alignment.Replace("Neutral", "<color=#8A8A8A>Neutral");
+        }
+        else if (alignment.Contains("Neutral"))
+        {
+            alignment = alignment.Replace("Neutral", "<color=#8A8A8A>Neutral");
+        }
 
         var prefix = " a";
-        if (role.RoleName.StartsWithVowel()) prefix = " an";
-        if (role.Configuration.MaxRoleCount is 0 or 1) prefix = " the";
-        if (role.RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase)) prefix = "";
+        if (role.RoleName.StartsWithVowel())
+        {
+            prefix = " an";
+        }
+
+        if (role.Configuration.MaxRoleCount is 0 or 1)
+        {
+            prefix = " the";
+        }
+
+        if (role.RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase))
+        {
+            prefix = "";
+        }
 
         var stringB = new StringBuilder();
         stringB.AppendLine(CultureInfo.InvariantCulture,
@@ -101,15 +155,33 @@ public interface ITownOfUsRole : ICustomRole
             : "Custom";
 
         if (alignment.Contains("Crewmate"))
+        {
             alignment = alignment.Replace("Crewmate", "<color=#68ACF4>Crewmate");
+        }
         else if (alignment.Contains("Impostor"))
+        {
             alignment = alignment.Replace("Impostor", "<color=#D63F42>Impostor");
-        else if (alignment.Contains("Neutral")) alignment = alignment.Replace("Neutral", "<color=#8A8A8A>Neutral");
+        }
+        else if (alignment.Contains("Neutral"))
+        {
+            alignment = alignment.Replace("Neutral", "<color=#8A8A8A>Neutral");
+        }
 
         var prefix = " a";
-        if (role.RoleName.StartsWithVowel()) prefix = " an";
-        if (role.Configuration.MaxRoleCount is 0 or 1) prefix = " the";
-        if (role.RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase)) prefix = "";
+        if (role.RoleName.StartsWithVowel())
+        {
+            prefix = " an";
+        }
+
+        if (role.Configuration.MaxRoleCount is 0 or 1)
+        {
+            prefix = " the";
+        }
+
+        if (role.RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase))
+        {
+            prefix = "";
+        }
 
         var stringB = new StringBuilder();
         stringB.AppendLine(CultureInfo.InvariantCulture,

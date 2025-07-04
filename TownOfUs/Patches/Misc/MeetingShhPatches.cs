@@ -17,7 +17,10 @@ public static class MeetingShhPatches
     {
         if (PlayerControl.LocalPlayer != null && !PlayerControl.LocalPlayer.Data.IsDead &&
             (PlayerControl.LocalPlayer.HasModifier<BlackmailedModifier>() ||
-             PlayerControl.LocalPlayer.HasModifier<JailedModifier>())) Coroutines.Start(MeetingShhh());
+             PlayerControl.LocalPlayer.HasModifier<JailedModifier>()))
+        {
+            Coroutines.Start(MeetingShhh());
+        }
     }
 
     public static IEnumerator MeetingShhh()

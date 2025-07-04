@@ -116,7 +116,10 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
                 .OrderBy(x => x.NiceName).ToList();
         }
 
-        if (player.Data.Role is MayorRole mayor) mayor.Revealed = true;
+        if (player.Data.Role is MayorRole mayor)
+        {
+            mayor.Revealed = true;
+        }
 
         if (player.AmOwner)
         {
@@ -127,19 +130,28 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
         }
 
         if (target.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnImpAssassin)
+        {
             player.AddModifier<ImpostorAssassinModifier>();
+        }
         else if (target.IsNeutral() && target.Is(RoleAlignment.NeutralKilling) &&
                  OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnNeutAssassin)
+        {
             player.AddModifier<NeutralKillerAssassinModifier>();
+        }
 
         if (target.Data.Role is not VampireRole && target.Data.Role.MaxCount <= PlayerControl.AllPlayerControls
                 .ToArray().Count(x => x.Data.Role.Role == target.Data.Role.Role))
         {
             if (target.IsCrewmate())
+            {
                 target.ChangeRole((ushort)RoleTypes.Crewmate);
+            }
             else if (target.IsImpostor())
+            {
                 target.ChangeRole((ushort)RoleTypes.Impostor);
+            }
             else if (target.IsNeutral() && player.Data.Role is ITownOfUsRole touRole)
+            {
                 switch (touRole.RoleAlignment)
                 {
                     default:
@@ -153,8 +165,11 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
                         player.AddModifier<MercenaryBribedModifier>(target)!.alerted = true;
                         break;
                 }
+            }
             else
+            {
                 target.ChangeRole(RoleId.Get<SurvivorRole>());
+            }
         }
 
         // TODO: Fix Amnesiac breaking unique roles for Amne/Imitator

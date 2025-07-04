@@ -55,7 +55,9 @@ public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.AmOwner && OptionGroupSingleton<SurvivorOptions>.Instance.ScatterOn)
+        {
             Player.AddModifier<ScatterModifier>(OptionGroupSingleton<SurvivorOptions>.Instance.ScatterTimer);
+        }
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -63,7 +65,9 @@ public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         if (Player.AmOwner && OptionGroupSingleton<SurvivorOptions>.Instance.ScatterOn)
+        {
             Player.RemoveModifier<ScatterModifier>();
+        }
     }
 
     public override bool DidWin(GameOverReason gameOverReason)

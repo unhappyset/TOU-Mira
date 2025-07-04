@@ -19,8 +19,16 @@ public static class JesterEvents
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro) return;
-        if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.EndsGame) return;
+        if (@event.TriggeredByIntro)
+        {
+            return;
+        }
+
+        if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.EndsGame)
+        {
+            return;
+        }
+
         var jest = PlayerControl.AllPlayerControls.ToArray()
             .FirstOrDefault(plr =>
                 plr.Data.IsDead && !plr.Data.Disconnected && plr.GetRoleWhenAlive() is JesterRole jestRole &&
@@ -28,7 +36,11 @@ public static class JesterEvents
         if (jest != null)
         {
             var jestRole = jest.GetRoleWhenAlive() as JesterRole;
-            if (jestRole == null) return;
+            if (jestRole == null)
+            {
+                return;
+            }
+
             jestRole.SentWinMsg = true;
 
             if (jest.AmOwner)
@@ -50,8 +62,15 @@ public static class JesterEvents
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
             }
 
-            if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is not JestWinOptions.Haunts) return;
-            if (!jest.AmOwner) return;
+            if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is not JestWinOptions.Haunts)
+            {
+                return;
+            }
+
+            if (!jest.AmOwner)
+            {
+                return;
+            }
 
             var voters = jestRole.Voters.ToArray();
             Func<PlayerControl, bool> _playerMatch = plr =>
@@ -65,7 +84,10 @@ public static class JesterEvents
                 {
                     killMenu.ForceClose();
 
-                    if (plr != null) PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
+                    if (plr != null)
+                    {
+                        PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
+                    }
                 });
         }
     }

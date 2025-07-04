@@ -25,7 +25,10 @@ public sealed class SecurityButton : TownOfUsButton
     {
         get
         {
-            if (OptionGroupSingleton<OperativeOptions>.Instance.DisplayDuration == 0) return AvailableCharge;
+            if (OptionGroupSingleton<OperativeOptions>.Instance.DisplayDuration == 0)
+            {
+                return AvailableCharge;
+            }
 
             return AvailableCharge < OptionGroupSingleton<OperativeOptions>.Instance.DisplayDuration
                 ? AvailableCharge
@@ -66,7 +69,11 @@ public sealed class SecurityButton : TownOfUsButton
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
-        if (!playerControl.AmOwner || MeetingHud.Instance) return;
+        if (!playerControl.AmOwner || MeetingHud.Instance)
+        {
+            return;
+        }
+
         if (securityMinigame != null)
         {
             AvailableCharge -= Time.deltaTime;
@@ -87,7 +94,10 @@ public sealed class SecurityButton : TownOfUsButton
         Button?.usesRemainingText.gameObject.SetActive(true);
         Button?.usesRemainingSprite.gameObject.SetActive(true);
         Button!.usesRemainingText.text = (int)AvailableCharge + "%";
-        if (securityMinigame == null && EffectActive) ResetCooldownAndOrEffect();
+        if (securityMinigame == null && EffectActive)
+        {
+            ResetCooldownAndOrEffect();
+        }
     }
 
     public override bool CanUse()
@@ -99,7 +109,10 @@ public sealed class SecurityButton : TownOfUsButton
 
     public override void ClickHandler()
     {
-        if (!CanUse() || Minigame.Instance != null) return;
+        if (!CanUse() || Minigame.Instance != null)
+        {
+            return;
+        }
 
         OnClick();
         Button?.SetDisabled();
@@ -123,7 +136,11 @@ public sealed class SecurityButton : TownOfUsButton
     {
         // Logger<TownOfUsPlugin>.Warning($"Checking Base Conditions");
         var mapId = (MapNames)GameOptionsManager.Instance.currentNormalGameOptions.MapId;
-        if (TutorialManager.InstanceExists) mapId = (MapNames)AmongUsClient.Instance.TutorialMapId;
+        if (TutorialManager.InstanceExists)
+        {
+            mapId = (MapNames)AmongUsClient.Instance.TutorialMapId;
+        }
+
         canMoveWithMinigame = true;
         var basicCams = Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x =>
             x.gameObject.name.Contains("Surv_Panel") || x.name.Contains("Cam") ||

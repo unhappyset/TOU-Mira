@@ -43,7 +43,10 @@ public sealed class CampButton : TownOfUsRoleButton<DeputyRole, PlayerControl>
 
         var player = ModifierUtils.GetPlayersWithModifier<DeputyCampedModifier>(x => x.Deputy.AmOwner).FirstOrDefault();
 
-        if (player != null) player.RpcRemoveModifier<DeputyCampedModifier>();
+        if (player != null)
+        {
+            player.RpcRemoveModifier<DeputyCampedModifier>();
+        }
 
         Target.RpcAddModifier<DeputyCampedModifier>(PlayerControl.LocalPlayer);
         Usable = false;

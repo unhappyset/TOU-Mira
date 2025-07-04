@@ -44,8 +44,11 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
         var missType = OptionGroupSingleton<SheriffOptions>.Instance.MisfireType;
 
         if (CustomButtonSingleton<SheriffShootButton>.Instance.FailedShot)
+        {
             stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>You can no longer shoot.</b>");
+        }
         else
+        {
             switch (missType)
             {
                 case MisfireOptions.Both:
@@ -63,9 +66,12 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
                         $"<b>Misfiring will prevent you from shooting again.</b>");
                     break;
             }
+        }
 
         if (PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
+        {
             stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>You may shoot without repercussions.</b>");
+        }
 
         return stringB;
     }
@@ -101,6 +107,9 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
         role.HasMisfired = true;
 
-        if (GameHistory.PlayerStats.TryGetValue(sheriff.PlayerId, out var stats)) stats.IncorrectKills += 1;
+        if (GameHistory.PlayerStats.TryGetValue(sheriff.PlayerId, out var stats))
+        {
+            stats.IncorrectKills += 1;
+        }
     }
 }

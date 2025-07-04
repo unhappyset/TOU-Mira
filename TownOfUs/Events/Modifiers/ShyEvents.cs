@@ -16,6 +16,9 @@ public static class ShyEvents
 
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (@event.Target.HasModifier<ShyModifier>()) ShyModifier.SetVisibility(@event.Target, 1f);
+        if (@event.Target.HasModifier<ShyModifier>())
+        {
+            ShyModifier.SetVisibility(@event.Target, 1f);
+        }
     }
 }

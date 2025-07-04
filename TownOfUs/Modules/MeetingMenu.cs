@@ -73,7 +73,10 @@ public sealed class MeetingMenu : IDisposable
     {
         Actives[targetId] = false;
 
-        if (!Buttons.TryGetValue(targetId, out var button) || !button) return;
+        if (!Buttons.TryGetValue(targetId, out var button) || !button)
+        {
+            return;
+        }
 
         button.SetActive(false);
         button.Destroy();
@@ -119,7 +122,10 @@ public sealed class MeetingMenu : IDisposable
         HideButtons();
 
         // Logger<TownOfUsPlugin>.Message($"MeetingMenu.GenButtons '{Owner.Player.Data.PlayerName}' AmOwner: {Owner.Player.AmOwner}");
-        if (!usable || !Owner.Player.AmOwner) return;
+        if (!usable || !Owner.Player.AmOwner)
+        {
+            return;
+        }
 
         Actives.Clear();
         Buttons.Clear();
@@ -129,11 +135,17 @@ public sealed class MeetingMenu : IDisposable
 
     public void Update()
     {
-        if (!MeetingHud.Instance || Type != MeetingAbilityType.Toggle) return;
+        if (!MeetingHud.Instance || Type != MeetingAbilityType.Toggle)
+        {
+            return;
+        }
 
         foreach (var pair in ButtonSprites)
         {
-            if (!pair.Value) continue;
+            if (!pair.Value)
+            {
+                continue;
+            }
 
             pair.Value.sprite = (Actives[pair.Key] ? ActiveSprite : DisabledSprite).LoadAsset();
             pair.Value.color = Actives[pair.Key] ? ActiveColor : DisabledColor;

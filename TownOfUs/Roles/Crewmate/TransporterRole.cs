@@ -80,7 +80,11 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         //also check again incase they went on the usable while the transporter was picking but ignore vents
         if (t1 == null || t2 == null)
         {
-            if (transporter.AmOwner) Coroutines.Start(MiscUtils.CoFlash(Color.red));
+            if (transporter.AmOwner)
+            {
+                Coroutines.Start(MiscUtils.CoFlash(Color.red));
+            }
+
             return;
         }
 
@@ -90,28 +94,44 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         var warden = play1.GetModifier<WardenFortifiedModifier>()?.Warden.GetRole<WardenRole>();
         if (warden != null)
         {
-            if (transporter.AmOwner) WardenRole.RpcWardenNotify(warden.Player, transporter, play1);
+            if (transporter.AmOwner)
+            {
+                WardenRole.RpcWardenNotify(warden.Player, transporter, play1);
+            }
+
             return;
         }
 
         var warden2 = play2.GetModifier<WardenFortifiedModifier>()?.Warden.GetRole<WardenRole>();
         if (warden2 != null)
         {
-            if (transporter.AmOwner) WardenRole.RpcWardenNotify(warden2.Player, transporter, play2);
+            if (transporter.AmOwner)
+            {
+                WardenRole.RpcWardenNotify(warden2.Player, transporter, play2);
+            }
+
             return;
         }
 
         var cleric = play1.GetModifier<ClericBarrierModifier>()?.Cleric.GetRole<ClericRole>();
         if (cleric != null)
         {
-            if (transporter.AmOwner) ClericRole.RpcClericBarrierAttacked(cleric.Player, transporter, play1);
+            if (transporter.AmOwner)
+            {
+                ClericRole.RpcClericBarrierAttacked(cleric.Player, transporter, play1);
+            }
+
             return;
         }
 
         var cleric2 = play2.GetModifier<ClericBarrierModifier>()?.Cleric.GetRole<ClericRole>();
         if (cleric2 != null)
         {
-            if (transporter.AmOwner) ClericRole.RpcClericBarrierAttacked(cleric2.Player, transporter, play2);
+            if (transporter.AmOwner)
+            {
+                ClericRole.RpcClericBarrierAttacked(cleric2.Player, transporter, play2);
+            }
+
             return;
         }
 
@@ -120,8 +140,15 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         var infectedplayer2 = play2.GetModifier<PlaguebearerInfectedModifier>();
         if (infectedtrans != null)
         {
-            if (infectedplayer1 == null) play1.AddModifier<PlaguebearerInfectedModifier>(infectedtrans.PlagueBearerId);
-            if (infectedplayer2 == null) play2.AddModifier<PlaguebearerInfectedModifier>(infectedtrans.PlagueBearerId);
+            if (infectedplayer1 == null)
+            {
+                play1.AddModifier<PlaguebearerInfectedModifier>(infectedtrans.PlagueBearerId);
+            }
+
+            if (infectedplayer2 == null)
+            {
+                play2.AddModifier<PlaguebearerInfectedModifier>(infectedtrans.PlagueBearerId);
+            }
         }
         else if (infectedtrans == null && infectedplayer1 != null)
         {
@@ -137,38 +164,69 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 
         var mercenary = PlayerControl.LocalPlayer.Data.Role as MercenaryRole;
         if (play1.HasModifier<MercenaryGuardModifier>() || (play2.HasModifier<MercenaryGuardModifier>() && mercenary))
+        {
             mercenary!.AddPayment();
+        }
 
         if (play1.TryGetModifier<InvulnerabilityModifier>(out var invic) && invic.AttackAllInteractions)
         {
-            if (transporter.AmOwner) play1.RpcCustomMurder(transporter);
+            if (transporter.AmOwner)
+            {
+                play1.RpcCustomMurder(transporter);
+            }
+
             return;
         }
 
         if (play2.TryGetModifier<InvulnerabilityModifier>(out var invic2) && invic2.AttackAllInteractions)
         {
-            if (transporter.AmOwner) play2.RpcCustomMurder(transporter);
+            if (transporter.AmOwner)
+            {
+                play2.RpcCustomMurder(transporter);
+            }
+
             return;
         }
 
         if (play1.HasModifier<VeteranAlertModifier>())
         {
-            if (transporter.AmOwner) play1.RpcCustomMurder(transporter);
+            if (transporter.AmOwner)
+            {
+                play1.RpcCustomMurder(transporter);
+            }
+
             return;
         }
 
         if (play2.HasModifier<VeteranAlertModifier>())
         {
-            if (transporter.AmOwner) play2.RpcCustomMurder(transporter);
+            if (transporter.AmOwner)
+            {
+                play2.RpcCustomMurder(transporter);
+            }
+
             return;
         }
 
-        if (play1.TryGetModifier<ShyModifier>(out var shy)) shy.OnRoundStart();
+        if (play1.TryGetModifier<ShyModifier>(out var shy))
+        {
+            shy.OnRoundStart();
+        }
 
-        if (play2.TryGetModifier<ShyModifier>(out var shy2)) shy2.OnRoundStart();
+        if (play2.TryGetModifier<ShyModifier>(out var shy2))
+        {
+            shy2.OnRoundStart();
+        }
 
-        if (t1.TryCast<DeadBody>()) PreCheckUndertaker(t1.TryCast<DeadBody>()!);
-        if (t2.TryCast<DeadBody>()) PreCheckUndertaker(t2.TryCast<DeadBody>()!);
+        if (t1.TryCast<DeadBody>())
+        {
+            PreCheckUndertaker(t1.TryCast<DeadBody>()!);
+        }
+
+        if (t2.TryCast<DeadBody>())
+        {
+            PreCheckUndertaker(t2.TryCast<DeadBody>()!);
+        }
 
         var positions = GetAdjustedPositions(t1, t2);
 
@@ -187,7 +245,10 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             if (button.TextOutlineColor != Color.clear)
             {
                 button.SetTextOutline(button.TextOutlineColor);
-                if (button.Button != null) button.Button.usesRemainingSprite.color = button.TextOutlineColor;
+                if (button.Button != null)
+                {
+                    button.Button.usesRemainingSprite.color = button.TextOutlineColor;
+                }
             }
 
             TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
@@ -206,13 +267,22 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         MonoBehaviour? GetTarget(byte id)
         {
             var data = GameData.Instance.GetPlayerById(id);
-            if (!data) return null;
+            if (!data)
+            {
+                return null;
+            }
 
             var body = Helpers.GetBodyById(id);
-            if (data.IsDead && body) return body;
+            if (data.IsDead && body)
+            {
+                return body;
+            }
 
             var pc = data.Object;
-            if (!pc) return null;
+            if (!pc)
+            {
+                return null;
+            }
             // FAKE PLAYER MUST BE A MONO BEHAVIOUR FOR THIS TO WORK
             /*var fakePlayer = Utilities.MiscUtils.GetFakePlayer(pc)?.body;
 
@@ -224,7 +294,10 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             if (pc.moveable || pc.inVent || (pc.TryGetModifier<DisabledModifier>(out var mod) &&
                                              (!mod.IsConsideredAlive || !mod.CanBeInteractedWith)))
             {
-                if (pc.inVent) pc.MyPhysics.ExitAllVents();
+                if (pc.inVent)
+                {
+                    pc.MyPhysics.ExitAllVents();
+                }
 
                 return pc;
             }
@@ -234,13 +307,20 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 
         void PreCheckUndertaker(DeadBody body)
         {
-            if (PlayerControl.LocalPlayer.Data.Role is not TransporterRole) return;
+            if (PlayerControl.LocalPlayer.Data.Role is not TransporterRole)
+            {
+                return;
+            }
 
             var mods = ModifierUtils.GetActiveModifiers<DragModifier>();
 
             foreach (var mod in mods)
+            {
                 if (mod.BodyId == body.ParentId)
+                {
                     UndertakerRole.RpcStopDragging(mod.Player, body.transform.position);
+                }
+            }
         }
 
         (Vector2, Vector2) GetAdjustedPositions(MonoBehaviour transportable, MonoBehaviour transportable2)
@@ -314,10 +394,16 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 
     public static void Transport(MonoBehaviour mono, Vector3 position)
     {
-        if (mono.TryCast<PlayerControl>() is PlayerControl player && player.HasModifier<ImmovableModifier>()) return;
+        if (mono.TryCast<PlayerControl>() is PlayerControl player && player.HasModifier<ImmovableModifier>())
+        {
+            return;
+        }
 
         if (mono.TryCast<DeadBody>() is DeadBody deadBody &&
-            MiscUtils.PlayerById(deadBody.ParentId)?.HasModifier<ImmovableModifier>() == true) return;
+            MiscUtils.PlayerById(deadBody.ParentId)?.HasModifier<ImmovableModifier>() == true)
+        {
+            return;
+        }
 
         var cnt = mono.TryCast<CustomNetworkTransform>();
         if (cnt != null)
@@ -349,6 +435,8 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         }
 
         if (mono.TryCast<PlayerControl>() is PlayerControl player2 && player2.AmOwner)
+        {
             MiscUtils.SnapPlayerCamera(PlayerControl.LocalPlayer);
+        }
     }
 }

@@ -29,9 +29,15 @@ public static class TrackerEvents
     [RegisterEvent]
     public static void EjectionEventEventHandler(EjectionEvent @event)
     {
-        if (!OptionGroupSingleton<TrackerOptions>.Instance.ResetOnNewRound) return;
+        if (!OptionGroupSingleton<TrackerOptions>.Instance.ResetOnNewRound)
+        {
+            return;
+        }
 
-        foreach (var tracker in CustomRoleUtils.GetActiveRolesOfType<TrackerTouRole>()) tracker.Clear();
+        foreach (var tracker in CustomRoleUtils.GetActiveRolesOfType<TrackerTouRole>())
+        {
+            tracker.Clear();
+        }
 
         var button = CustomButtonSingleton<TrackerTrackButton>.Instance;
         button.SetUses((int)OptionGroupSingleton<TrackerOptions>.Instance.MaxTracks);

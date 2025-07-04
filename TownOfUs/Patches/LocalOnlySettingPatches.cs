@@ -93,19 +93,40 @@ public static class LocalSettings
             Hover = TownOfUsColors.Vampire,
             OnClick = () =>
             {
-                if (HudManager.InstanceExists) HudManagerPatches.ResizeUI(1f / TownOfUsPlugin.ButtonUIFactor.Value);
+                if (HudManager.InstanceExists)
+                {
+                    HudManagerPatches.ResizeUI(1f / TownOfUsPlugin.ButtonUIFactor.Value);
+                }
+
                 var newVal = TownOfUsPlugin.ButtonUIFactor.Value + 0.1f;
-                if (newVal >= 1.6f) newVal = 0.5f;
-                else if (newVal <= 0.5f) newVal = 0.5f;
+                if (newVal >= 1.6f)
+                {
+                    newVal = 0.5f;
+                }
+                else if (newVal <= 0.5f)
+                {
+                    newVal = 0.5f;
+                }
+
                 TownOfUsPlugin.ButtonUIFactor.Value = newVal;
-                if (HudManager.InstanceExists) HudManagerPatches.ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
+                if (HudManager.InstanceExists)
+                {
+                    HudManagerPatches.ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
+                }
+
                 var optionsMenu = GameObject.Find("Menu(Clone)");
-                if (optionsMenu == null) optionsMenu = GameObject.Find("OptionsMenu(Clone)");
+                if (optionsMenu == null)
+                {
+                    optionsMenu = GameObject.Find("OptionsMenu(Clone)");
+                }
+
                 if (optionsMenu != null)
                 {
                     var title = optionsMenu.transform.FindChild("ButtonScaleFloat");
                     if (title != null && title.transform.GetChild(2).TryGetComponent<TextMeshPro>(out var txt))
+                    {
                         txt.text = $"Button UI Scale Factor: {Math.Round(newVal, 2)}x";
+                    }
                 }
 
                 return TownOfUsPlugin.ButtonUIFactor.Value < 1f;
@@ -163,9 +184,16 @@ public static class LocalSettings
     [HarmonyPostfix]
     public static void OptionsMenuBehaviour_StartPostfix(OptionsMenuBehaviour __instance)
     {
-        if (!__instance.CensorChatButton) return;
+        if (!__instance.CensorChatButton)
+        {
+            return;
+        }
 
-        if (!popUp) CreateCustom(__instance);
+        if (!popUp)
+        {
+            CreateCustom(__instance);
+        }
+
         if (!buttonPrefab)
         {
             buttonPrefab = Object.Instantiate(__instance.CensorChatButton);
@@ -189,6 +217,7 @@ public static class LocalSettings
 
         Object.Destroy(popUp.GetComponent<OptionsMenuBehaviour>());
         foreach (var gObj in popUp.gameObject.GetAllChildren())
+        {
             if (gObj.name == "Background")
             {
                 var scale = gObj.transform.localScale;
@@ -202,6 +231,7 @@ public static class LocalSettings
             {
                 Object.Destroy(gObj);
             }
+        }
 
         popUp.SetActive(false);
     }
@@ -230,7 +260,10 @@ public static class LocalSettings
         moreOptionsButton.OnClick.AddListener((Action)(() =>
         {
             var closeUnderlying = false;
-            if (!popUp) return;
+            if (!popUp)
+            {
+                return;
+            }
 
             if (__instance.transform.parent && __instance.transform.parent == HudManager.Instance.transform)
             {
@@ -246,7 +279,10 @@ public static class LocalSettings
 
             CheckSetTitle();
             RefreshOpen();
-            if (closeUnderlying) __instance.Close();
+            if (closeUnderlying)
+            {
+                __instance.Close();
+            }
         }));
     }
 
@@ -259,7 +295,10 @@ public static class LocalSettings
 
     private static void CheckSetTitle()
     {
-        if (!popUp || popUp.GetComponentInChildren<TextMeshPro>() || !titleText) return;
+        if (!popUp || popUp.GetComponentInChildren<TextMeshPro>() || !titleText)
+        {
+            return;
+        }
 
         var title = Object.Instantiate(titleText, popUp.transform);
         title.GetComponent<RectTransform>().localPosition = Vector3.up * 2.3f;
@@ -271,7 +310,10 @@ public static class LocalSettings
 
     private static void SetUpOptions()
     {
-        if (popUp.transform.GetComponentInChildren<ToggleButtonBehaviour>()) return;
+        if (popUp.transform.GetComponentInChildren<ToggleButtonBehaviour>())
+        {
+            return;
+        }
 
         for (var i = 0; i < AllOptions.Length; i++)
         {
@@ -314,7 +356,9 @@ public static class LocalSettings
                 button.Background.color = button.onState ? info.Enabled : info.Disabled));
 
             foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
+            {
                 spr.size = new Vector2(2.2f, .7f);
+            }
         }
     }
 
@@ -322,15 +366,38 @@ public static class LocalSettings
     [HarmonyPostfix]
     public static void HideGhosts()
     {
-        if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
-        if (!PlayerControl.LocalPlayer.Data.IsDead) return;
-        if (MeetingHud.Instance) return;
-        if (!OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow) return;
+        if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
+        {
+            return;
+        }
+
+        if (!PlayerControl.LocalPlayer.Data.IsDead)
+        {
+            return;
+        }
+
+        if (MeetingHud.Instance)
+        {
+            return;
+        }
+
+        if (!OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow)
+        {
+            return;
+        }
 
         foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (player.AmOwner) continue;
-            if (!player.Data.IsDead) continue;
+            if (player.AmOwner)
+            {
+                continue;
+            }
+
+            if (!player.Data.IsDead)
+            {
+                continue;
+            }
+
             switch (player.Data.Role)
             {
                 case PhantomTouRole { Caught: false }:
@@ -342,10 +409,18 @@ public static class LocalSettings
             var bodyForms = player.gameObject.transform.GetChild(1).gameObject;
 
             foreach (var form in bodyForms.GetAllChildren())
+            {
                 if (form.activeSelf)
+                {
                     form.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, show ? 1f : 0f);
+                }
+            }
 
-            if (player.cosmetics.HasPetEquipped()) player.cosmetics.CurrentPet.Visible = show;
+            if (player.cosmetics.HasPetEquipped())
+            {
+                player.cosmetics.CurrentPet.Visible = show;
+            }
+
             player.cosmetics.gameObject.SetActive(show);
             player.gameObject.transform.GetChild(3).gameObject.SetActive(show);
         }
@@ -353,7 +428,10 @@ public static class LocalSettings
 
     public static IEnumerable<GameObject> GetAllChildren(this GameObject go)
     {
-        for (var i = 0; i < go.transform.childCount; i++) yield return go.transform.GetChild(i).gameObject;
+        for (var i = 0; i < go.transform.childCount; i++)
+        {
+            yield return go.transform.GetChild(i).gameObject;
+        }
     }
 
     public sealed class SelectionBehaviour

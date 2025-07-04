@@ -64,22 +64,26 @@ public sealed class GuardianAngelProtectModifier(PlayerControl guardianAngel) : 
     public override void OnDeactivate()
     {
         for (var i = Player.currentRoleAnimations.Count - 1; i >= 0; i--)
+        {
             if (Player.currentRoleAnimations[i] != null && Player.currentRoleAnimations[i].effectType ==
                 RoleEffectAnimation.EffectType.ProtectLoop)
             {
                 Object.Destroy(Player.currentRoleAnimations[i].gameObject);
                 Player.currentRoleAnimations.RemoveAt(i);
             }
+        }
     }
 
     public override void OnDeath(DeathReason reason)
     {
         for (var i = Player.currentRoleAnimations.Count - 1; i >= 0; i--)
+        {
             if (Player.currentRoleAnimations[i] != null && Player.currentRoleAnimations[i].effectType ==
                 RoleEffectAnimation.EffectType.ProtectLoop)
             {
                 Object.Destroy(Player.currentRoleAnimations[i].gameObject);
                 Player.currentRoleAnimations.RemoveAt(i);
             }
+        }
     }
 }

@@ -43,8 +43,10 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
         if (PlayerControl.LocalPlayer.HasModifier<EgotistModifier>())
+        {
             stringB.AppendLine(CultureInfo.InvariantCulture,
                 $"<b>The Impostors will know your true motives when revealed.</b>");
+        }
 
         return stringB;
     }
@@ -74,6 +76,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
         RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.AmOwner)
+        {
             meetingMenu = new MeetingMenu(
                 this,
                 Click,
@@ -84,6 +87,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
             {
                 Position = new Vector3(-0.35f, 0f, -3f)
             };
+        }
     }
 
     public override void OnMeetingStart()
@@ -94,15 +98,20 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
 
         if (Player.AmOwner)
             // Logger<TownOfUsPlugin>.Message($"PoliticianRole.OnMeetingStart '{Player.Data.PlayerName}' {Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>()}");
+        {
             meetingMenu.GenButtons(MeetingHud.Instance,
                 Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
+        }
     }
 
     public override void OnVotingComplete()
     {
         RoleBehaviourStubs.OnVotingComplete(this);
 
-        if (Player.AmOwner) meetingMenu.HideButtons();
+        if (Player.AmOwner)
+        {
+            meetingMenu.HideButtons();
+        }
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -118,7 +127,10 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
 
     public void Click(PlayerVoteArea voteArea, MeetingHud __)
     {
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
 
         meetingMenu.HideButtons();
 
@@ -129,12 +141,17 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
             Math.Max(aliveCrew.Count() / 2 - 1,
                 1); // minus one to account for politician, max of at least 1 crewmate campaigned
         if (!aliveCrew.Any(x => x.Data.Role is not PoliticianRole))
+        {
             hasMajority = true; // if all crew are dead, politician can reveal
+        }
 
         if (hasMajority)
         {
             Player.RpcChangeRole(RoleId.Get<MayorRole>());
-            if (Player.HasModifier<ToBecomeTraitorModifier>()) Player.GetModifier<ToBecomeTraitorModifier>()!.Clear();
+            if (Player.HasModifier<ToBecomeTraitorModifier>())
+            {
+                Player.GetModifier<ToBecomeTraitorModifier>()!.Clear();
+            }
         }
         else
         {

@@ -32,12 +32,17 @@ public sealed class ClericCleanseButton : TownOfUsRoleButton<ClericRole, PlayerC
             return;
         }
 
-        if (Target.HasModifier<ClericCleanseModifier>()) Target.RpcRemoveModifier<ClericCleanseModifier>();
+        if (Target.HasModifier<ClericCleanseModifier>())
+        {
+            Target.RpcRemoveModifier<ClericCleanseModifier>();
+        }
 
         Target.RpcAddModifier<ClericCleanseModifier>(PlayerControl.LocalPlayer);
 
         if (ClericCleanseModifier.FindNegativeEffects(Target).Count > 0)
+        {
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Cleric));
+        }
 
         CustomButtonSingleton<ClericBarrierButton>.Instance.ResetCooldownAndOrEffect();
     }

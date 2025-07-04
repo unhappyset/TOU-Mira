@@ -15,8 +15,16 @@ public static class MinigameCanMovePatch
     [HarmonyPrefix]
     public static bool PlayerControlCanMovePatch(PlayerControl __instance, ref bool __result)
     {
-        if (PlayerControl.LocalPlayer == null) return true;
-        if (MeetingHud.Instance) return true;
+        if (PlayerControl.LocalPlayer == null)
+        {
+            return true;
+        }
+
+        if (MeetingHud.Instance)
+        {
+            return true;
+        }
+
         // Only allows Scientist Vitals to allow you to move, not just vitals on the map
         if (PlayerControl.LocalPlayer.HasModifier<ScientistModifier>() &&
             CustomButtonSingleton<ScientistButton>.Instance.EffectActive &&

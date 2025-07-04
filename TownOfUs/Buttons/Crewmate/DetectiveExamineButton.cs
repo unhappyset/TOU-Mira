@@ -27,7 +27,10 @@ public sealed class DetectiveExamineButton : TownOfUsRoleButton<DetectiveRole, P
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
 
         Role.ExaminePlayer(Target);
     }

@@ -55,10 +55,14 @@ public sealed class GrenadierFlashModifier(PlayerControl grenadier) : DisabledMo
         if (!Player.IsImpostor() && PlayerControl.LocalPlayer.IsImpostor())
         {
             if (TimeRemaining <= Duration - 0.5f && TimeRemaining >= 0.5f)
+            {
                 Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Color.black);
+            }
             else
+            {
                 Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor,
                     Palette.VisorColor);
+            }
         }
 
         if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId)
@@ -68,31 +72,49 @@ public sealed class GrenadierFlashModifier(PlayerControl grenadier) : DisabledMo
                 var fade = (TimeRemaining - Duration) * -2.0f;
 
                 if (ShouldPlayerBeBlinded(Player))
+                {
                     SetFlash(Color.Lerp(normalVision, blindVision, fade));
+                }
                 else if (ShouldPlayerBeDimmed(Player))
+                {
                     SetFlash(Color.Lerp(normalVision, dimVision, fade));
+                }
                 else
+                {
                     SetFlash(normalVision);
+                }
             }
             else if (TimeRemaining <= Duration - 0.5f && TimeRemaining >= 0.5f)
             {
                 if (ShouldPlayerBeBlinded(Player))
+                {
                     SetFlash(blindVision);
+                }
                 else if (ShouldPlayerBeDimmed(Player))
+                {
                     SetFlash(dimVision);
+                }
                 else
+                {
                     SetFlash(normalVision);
+                }
             }
             else if (TimeRemaining < 0.5f)
             {
                 var fade2 = TimeRemaining * -2.0f + 1.0f;
 
                 if (ShouldPlayerBeBlinded(Player))
+                {
                     SetFlash(Color.Lerp(blindVision, normalVision, fade2));
+                }
                 else if (ShouldPlayerBeDimmed(Player))
+                {
                     SetFlash(Color.Lerp(dimVision, normalVision, fade2));
+                }
                 else
+                {
                     SetFlash(normalVision);
+                }
             }
             else
             {
@@ -120,7 +142,9 @@ public sealed class GrenadierFlashModifier(PlayerControl grenadier) : DisabledMo
         }
 
         if (!Player.IsImpostor() && PlayerControl.LocalPlayer.IsImpostor())
+        {
             Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
+        }
     }
 
     private void SetFlash(Color color)
@@ -130,7 +154,10 @@ public sealed class GrenadierFlashModifier(PlayerControl grenadier) : DisabledMo
             flash.SetColour(color);
             flash.SetActive(true);
 
-            if (color == normalVision) flash.SetActive(false);
+            if (color == normalVision)
+            {
+                flash.SetActive(false);
+            }
         }
     }
 

@@ -14,7 +14,10 @@ public static class PhantomEvents
     [RegisterEvent]
     public static void CompleteTaskEventHandler(CompleteTaskEvent @event)
     {
-        if (@event.Player.Data.Role is not PhantomTouRole phantom) return;
+        if (@event.Player.Data.Role is not PhantomTouRole phantom)
+        {
+            return;
+        }
 
         phantom.CheckTaskRequirements();
 

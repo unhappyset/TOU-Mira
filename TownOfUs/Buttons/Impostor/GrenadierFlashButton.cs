@@ -27,7 +27,11 @@ public sealed class GrenadierFlashButton : TownOfUsRoleButton<GrenadierRole>, IA
         var flashedPlayers =
             Helpers.GetClosestPlayers(PlayerControl.LocalPlayer, flashRadius * ShipStatus.Instance.MaxLightRadius);
 
-        foreach (var player in flashedPlayers) player.RpcAddModifier<GrenadierFlashModifier>(PlayerControl.LocalPlayer);
+        foreach (var player in flashedPlayers)
+        {
+            player.RpcAddModifier<GrenadierFlashModifier>(PlayerControl.LocalPlayer);
+        }
+
         PlayerControl.LocalPlayer.RpcAddModifier<GrenadierFlashModifier>(PlayerControl.LocalPlayer);
 
         Coroutines.Start(

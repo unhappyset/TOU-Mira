@@ -39,7 +39,10 @@ public static class VeteranEvents
         var source = PlayerControl.LocalPlayer;
         var target = button?.Target;
 
-        if (target == null || button == null || !button.CanClick()) return;
+        if (target == null || button == null || !button.CanClick())
+        {
+            return;
+        }
 
         CheckForVeteranAlert(@event, source, target);
     }
@@ -58,9 +61,15 @@ public static class VeteranEvents
     {
         var source = @event.Source;
 
-        if (source.Data.Role is not VeteranRole) return;
+        if (source.Data.Role is not VeteranRole)
+        {
+            return;
+        }
 
-        if (source.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished) return;
+        if (source.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
+        {
+            return;
+        }
 
         var target = @event.Target;
 
@@ -68,23 +77,37 @@ public static class VeteranEvents
         {
             if (!target.IsCrewmate() ||
                 (target.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
+            {
                 stats.CorrectKills += 1;
-            else if (source != target) stats.IncorrectKills += 1;
+            }
+            else if (source != target)
+            {
+                stats.IncorrectKills += 1;
+            }
         }
     }
 
     private static void CheckForVeteranAlert(MiraCancelableEvent miraEvent, PlayerControl source, PlayerControl target)
     {
-        if (MeetingHud.Instance || ExileController.Instance) return;
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
 
         var preventAttack = source.TryGetModifier<IndirectAttackerModifier>(out var indirectMod);
 
         if (target.HasModifier<VeteranAlertModifier>() && source != target)
         {
             if (!OptionGroupSingleton<VeteranOptions>.Instance.KilledOnAlert &&
-                (indirectMod == null || !indirectMod.IgnoreShield)) miraEvent.Cancel();
+                (indirectMod == null || !indirectMod.IgnoreShield))
+            {
+                miraEvent.Cancel();
+            }
 
-            if (source.AmOwner && !preventAttack) target.RpcCustomMurder(source);
+            if (source.AmOwner && !preventAttack)
+            {
+                target.RpcCustomMurder(source);
+            }
         }
     }
 }

@@ -28,7 +28,10 @@ public static class ChatControllerPatches
     [HarmonyPatch(nameof(ChatController.UpdateChatMode))]
     public static void UpdatePostfix(ChatController __instance)
     {
-        if (_noticeText == null || !MeetingHud.Instance) return;
+        if (_noticeText == null || !MeetingHud.Instance)
+        {
+            return;
+        }
 
         if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.HasModifier<BlackmailedModifier>() &&
             !PlayerControl.LocalPlayer.Data.IsDead)

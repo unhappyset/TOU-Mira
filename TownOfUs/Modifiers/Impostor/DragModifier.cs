@@ -31,9 +31,13 @@ public sealed class DragModifier(byte bodyId) : BaseModifier
             {
                 var dragged = MiscUtils.PlayerById(DeadBody!.ParentId)!;
                 if (dragged.HasModifier<GiantModifier>())
+                {
                     Player.MyPhysics.Speed *= OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed;
+                }
                 else if (dragged.HasModifier<MiniModifier>())
+                {
                     Player.MyPhysics.Speed *= OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed;
+                }
             }
         }
     }
@@ -47,16 +51,23 @@ public sealed class DragModifier(byte bodyId) : BaseModifier
             {
                 var dragged = MiscUtils.PlayerById(DeadBody!.ParentId)!;
                 if (dragged.HasModifier<GiantModifier>())
+                {
                     Player.MyPhysics.Speed /= OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed;
+                }
                 else if (dragged.HasModifier<MiniModifier>())
+                {
                     Player.MyPhysics.Speed /= OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed;
+                }
             }
         }
     }
 
     public override void Update()
     {
-        if (DeadBody == null) return;
+        if (DeadBody == null)
+        {
+            return;
+        }
 
         var targetPos = Player.transform.position;
         targetPos.z = targetPos.y / 1000f;

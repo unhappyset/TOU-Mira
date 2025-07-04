@@ -20,7 +20,10 @@ public static class CelebrityMeetingIntroPatch
         var celebrity = ModifierUtils.GetActiveModifiers<CelebrityModifier>(x => x.Player.HasDied() && !x.Announced)
             .FirstOrDefault();
 
-        if (celebrity == null) return;
+        if (celebrity == null)
+        {
+            return;
+        }
 
         __instance.ProtectedRecently.SetActive(true);
         var textObj = __instance.ProtectedRecently.transform.FindChild("ProtectedText_TMP");

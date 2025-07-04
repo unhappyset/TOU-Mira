@@ -27,7 +27,11 @@ public sealed class UndertakerRole(IntPtr cppPtr)
     {
         if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner ||
             MeetingHud.Instance || (!HudManager.Instance.UseButton.isActiveAndEnabled &&
-                                    !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
+                                    !HudManager.Instance.PetButton.isActiveAndEnabled))
+        {
+            return;
+        }
+
         HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<UndertakerOptions>.Instance.UndertakerKill ||
                                                      (Player != null && Player.GetModifiers<BaseModifier>()
                                                          .Any(x => x is ICachedRole)) ||
@@ -82,7 +86,10 @@ public sealed class UndertakerRole(IntPtr cppPtr)
             new TouAbilityEvent(AbilityType.UndertakerDrag, playerControl, Helpers.GetBodyById(bodyId));
         MiraEventManager.InvokeEvent(touAbilityEvent);
 
-        if (playerControl.AmOwner) CustomButtonSingleton<UndertakerDragDropButton>.Instance.SetDrop();
+        if (playerControl.AmOwner)
+        {
+            CustomButtonSingleton<UndertakerDragDropButton>.Instance.SetDrop();
+        }
     }
 
     [MethodRpc((uint)TownOfUsRpc.DropBody, LocalHandling = RpcLocalHandling.Before, SendImmediately = true)]
@@ -98,6 +105,9 @@ public sealed class UndertakerRole(IntPtr cppPtr)
 
         playerControl.GetModifierComponent()?.RemoveModifier(dragMod);
 
-        if (playerControl.AmOwner) CustomButtonSingleton<UndertakerDragDropButton>.Instance.SetDrag();
+        if (playerControl.AmOwner)
+        {
+            CustomButtonSingleton<UndertakerDragDropButton>.Instance.SetDrag();
+        }
     }
 }

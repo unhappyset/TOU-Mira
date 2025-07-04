@@ -87,7 +87,10 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
         Caught = true;
         Player.Exiled();
 
-        if (Player.AmOwner) HudManager.Instance.AbilityButton.SetEnabled();
+        if (Player.AmOwner)
+        {
+            HudManager.Instance.AbilityButton.SetEnabled();
+        }
     }
 
     public override string RoleName => "Phantom";
@@ -126,7 +129,10 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
 
     public override void UseAbility()
     {
-        if (GhostActive) return;
+        if (GhostActive)
+        {
+            return;
+        }
 
         base.UseAbility();
     }
@@ -201,7 +207,10 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
 
     public void CheckTaskRequirements()
     {
-        if (Caught) return;
+        if (Caught)
+        {
+            return;
+        }
 
         var completedTasks = Player.myTasks.ToArray().Count(t => t.IsComplete);
         var tasksRemaining = Player.myTasks.Count - completedTasks;
@@ -219,8 +228,15 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
         CompletedAllTasks = completedTasks == Player.myTasks.Count;
 
         if (OptionGroupSingleton<PhantomOptions>.Instance.PhantomWin is not PhantomWinOptions.Spooks ||
-            !CompletedAllTasks) return;
-        if (!Player.AmOwner) return;
+            !CompletedAllTasks)
+        {
+            return;
+        }
+
+        if (!Player.AmOwner)
+        {
+            return;
+        }
 
         Func<PlayerControl, bool> _playerMatch = plr =>
             !plr.HasDied() && !plr.HasModifier<InvulnerabilityModifier>() && plr != PlayerControl.LocalPlayer;
@@ -235,7 +251,10 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
             {
                 killMenu.ForceClose();
 
-                if (plr != null) PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
+                if (plr != null)
+                {
+                    PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
+                }
             });
     }
 }

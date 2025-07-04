@@ -70,8 +70,12 @@ public sealed class BomberRole(IntPtr cppPtr)
         MiraEventManager.InvokeEvent(touAbilityEvent);
 
         if (player.AmOwner)
+        {
             role.Bomb = Bomb.CreateBomb(player, position);
+        }
         else if (OptionGroupSingleton<BomberOptions>.Instance.AllImpsSeeBomb && PlayerControl.LocalPlayer.IsImpostor())
+        {
             Bomb.BombShowTeammate(player, position);
+        }
     }
 }

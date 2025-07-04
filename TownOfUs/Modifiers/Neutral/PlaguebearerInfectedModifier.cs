@@ -27,7 +27,9 @@ public sealed class PlaguebearerInfectedModifier(byte plaguebearerId) : BaseModi
     public override void FixedUpdate()
     {
         if (PlayerControl.LocalPlayer.IsRole<PlaguebearerRole>() && Player != PlayerControl.LocalPlayer)
+        {
             Player?.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(color));
+        }
     }
 
     public override void OnDeactivate()

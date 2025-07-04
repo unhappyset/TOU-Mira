@@ -77,7 +77,9 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
         {
             customMenu.currentPage++;
             if (customMenu.currentPage > Mathf.CeilToInt(customMenu.potentialVictims!.Count / 15f) - 1)
+            {
                 customMenu.currentPage = 0;
+            }
 
             customMenu.ShowPage();
         }));
@@ -91,7 +93,9 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
         {
             customMenu.currentPage--;
             if (customMenu.currentPage < 0)
+            {
                 customMenu.currentPage = Mathf.CeilToInt(customMenu.potentialVictims!.Count / 15f) - 1;
+            }
 
             customMenu.ShowPage();
         }));
@@ -105,7 +109,10 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
 
     public Il2CppSystem.Collections.Generic.List<UiElement> ShowPage()
     {
-        foreach (var panel in potentialVictims!) panel.gameObject.SetActive(false);
+        foreach (var panel in potentialVictims!)
+        {
+            panel.gameObject.SetActive(false);
+        }
 
         var list = potentialVictims.Skip(currentPage * 15).Take(15).ToList();
         var list2 = new Il2CppSystem.Collections.Generic.List<UiElement>();

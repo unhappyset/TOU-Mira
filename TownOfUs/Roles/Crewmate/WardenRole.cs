@@ -21,9 +21,15 @@ public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
     public void FixedUpdate()
     {
-        if (Player == null || Player.Data.Role is not WardenRole) return;
+        if (Player == null || Player.Data.Role is not WardenRole)
+        {
+            return;
+        }
+
         if (Fortified != null && Fortified.HasDied())
+        {
             Clear();
+        }
     }
 
     public DoomableType DoomHintType => DoomableType.Protective;
@@ -46,8 +52,10 @@ public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         var stringB = ITownOfUsRole.SetNewTabText(this);
 
         if (Fortified != null)
+        {
             stringB.Append(CultureInfo.InvariantCulture,
                 $"\n<b>Fortified: </b>{Color.white.ToTextColor()}{Fortified.Data.PlayerName}</color>");
+        }
 
         return stringB;
     }
@@ -132,9 +140,13 @@ public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
         // Logger<TownOfUsPlugin>.Error("RpcWardenNotify");
         if (player.AmOwner)
+        {
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Warden));
+        }
 
         if (source.AmOwner)
+        {
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Warden));
+        }
     }
 }

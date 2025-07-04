@@ -25,7 +25,10 @@ public sealed class MorphlingSampleButton : TownOfUsRoleButton<MorphlingRole, Pl
 
     protected override void OnClick()
     {
-        if (Target == null) return;
+        if (Target == null)
+        {
+            return;
+        }
 
         Role.Sampled = Target;
 

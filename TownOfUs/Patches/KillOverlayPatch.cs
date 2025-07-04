@@ -17,7 +17,9 @@ public static class KillOverlayPatch
         {
             flame.transform.localPosition = new Vector3(0f, 0f);
             if (flame.transform.FindChild("BackgroundFlame").TryGetComponent<SpriteRenderer>(out var flameSprite))
+            {
                 flameSprite.sprite = TouAssets.KillBG.LoadAsset();
+            }
             //flame.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
         }
 
@@ -29,7 +31,9 @@ public static class KillOverlayPatch
                 flame.transform.localPosition = new Vector3(0, -1.5f);
                 //flame.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, -45));
                 if (flame.transform.FindChild("BackgroundFlame").TryGetComponent<SpriteRenderer>(out var flameSprite))
+                {
                     flameSprite.sprite = TouAssets.RetributionBG.LoadAsset();
+                }
             }
 
             __instance.GetComponentsInChildren<SpriteRenderer>(true).ToList()

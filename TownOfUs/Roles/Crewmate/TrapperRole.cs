@@ -76,7 +76,10 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     public void Report()
     {
         // Logger<TownOfUsPlugin>.Error($"TrapperRole.Report");
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
 
         var minAmountOfPlayersInTrap = OptionGroupSingleton<TrapperOptions>.Instance.MinAmountOfPlayersInTrap;
         var msg = "No players entered any of your traps";
@@ -91,14 +94,19 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 
             TrappedPlayers.Shuffle();
 
-            foreach (var role in TrappedPlayers) message.Append(TownOfUsPlugin.Culture, $"{role.NiceName}, ");
+            foreach (var role in TrappedPlayers)
+            {
+                message.Append(TownOfUsPlugin.Culture, $"{role.NiceName}, ");
+            }
 
             message = message.Remove(message.Length - 2, 2);
 
             var finalMessage = message.ToString();
 
             if (string.IsNullOrWhiteSpace(finalMessage))
+            {
                 return;
+            }
 
             msg = finalMessage;
         }

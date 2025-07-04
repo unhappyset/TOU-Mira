@@ -20,11 +20,16 @@ public static class LoverChatPatches
     {
         if (MeetingHud.Instance || ExileController.Instance != null || PlayerControl.LocalPlayer.Data.IsDead ||
             overrideMessages)
+        {
             return true;
+        }
 
         var text = __instance.freeChatField.Text.WithoutRichText();
 
-        if (text.Length < 1 || text.Length > 100) return true;
+        if (text.Length < 1 || text.Length > 100)
+        {
+            return true;
+        }
 
         if (PlayerControl.LocalPlayer.HasModifier<LoverModifier>())
         {
@@ -50,7 +55,10 @@ public static class LoverChatPatches
             (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
         {
             LoverMessage = true;
-            if (player != PlayerControl.LocalPlayer) HudManager.Instance.Chat.AddChat(player, text);
+            if (player != PlayerControl.LocalPlayer)
+            {
+                HudManager.Instance.Chat.AddChat(player, text);
+            }
         }
     }
 

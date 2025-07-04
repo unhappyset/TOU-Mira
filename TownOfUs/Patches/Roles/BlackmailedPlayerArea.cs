@@ -21,7 +21,10 @@ public static class BlackmailedPlayerArea
     {
         var bmMod = playerInfo?.Object?.GetModifier<BlackmailedModifier>();
 
-        if (bmMod == null) return;
+        if (bmMod == null)
+        {
+            return;
+        }
 
         var amOwner = playerInfo?.Object?.AmOwner;
         var bmOwns = bmMod.BlackMailerId == PlayerControl.LocalPlayer.PlayerId;
@@ -48,8 +51,15 @@ public static class BlackmailedPlayerArea
         if (Helpers.GetAlivePlayers().Count > maxAliveNeeded)
         {
             __instance.SetVote(252);
-            if (targetSeeOnly) __instance.Flag.enabled = false;
-            if (amOwner == true) MeetingHud.Instance.Confirm(252);
+            if (targetSeeOnly)
+            {
+                __instance.Flag.enabled = false;
+            }
+
+            if (amOwner == true)
+            {
+                MeetingHud.Instance.Confirm(252);
+            }
         }
     }
 

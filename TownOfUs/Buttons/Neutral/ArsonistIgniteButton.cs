@@ -33,7 +33,10 @@ public sealed class ArsonistIgniteButton : TownOfUsRoleButton<ArsonistRole>
     public override bool CanUse()
     {
         if (OptionGroupSingleton<ArsonistOptions>.Instance.LegacyArsonist)
+        {
             return base.CanUse() && ClosestTarget != null;
+        }
+
         var count = PlayersInRange.Count(x => x.HasModifier<ArsonistDousedModifier>());
 
         if (count > 0 && !PlayerControl.LocalPlayer.HasDied() && Timer <= 0)
@@ -42,9 +45,13 @@ public sealed class ArsonistIgniteButton : TownOfUsRoleButton<ArsonistRole>
             pos.z += 0.001f;
 
             if (Ignite == null)
+            {
                 Ignite = Ignite.CreateIgnite(pos);
+            }
             else
+            {
                 Ignite.Transform.localPosition = pos;
+            }
         }
         else
         {
@@ -63,12 +70,22 @@ public sealed class ArsonistIgniteButton : TownOfUsRoleButton<ArsonistRole>
         PlayerControl.LocalPlayer.RpcAddModifier<IndirectAttackerModifier>(false);
         var dousedPlayers = PlayersInRange.Where(x => x.HasModifier<ArsonistDousedModifier>()).ToList();
         if (OptionGroupSingleton<ArsonistOptions>.Instance.LegacyArsonist)
+        {
             dousedPlayers = PlayerControl.AllPlayerControls.ToArray()
                 .Where(x => x.HasModifier<ArsonistDousedModifier>()).ToList();
+        }
+
         foreach (var doused in dousedPlayers)
         {
-            if (doused.HasModifier<FirstDeadShield>()) continue;
-            if (doused.HasModifier<BaseShieldModifier>()) continue;
+            if (doused.HasModifier<FirstDeadShield>())
+            {
+                continue;
+            }
+
+            if (doused.HasModifier<BaseShieldModifier>())
+            {
+                continue;
+            }
 
             PlayerControl.LocalPlayer.RpcCustomMurder(doused, resetKillTimer: false, teleportMurderer: false,
                 playKillSound: false);
@@ -85,7 +102,11 @@ public sealed class ArsonistIgniteButton : TownOfUsRoleButton<ArsonistRole>
     protected override void FixedUpdate(PlayerControl playerControl)
     {
         base.FixedUpdate(playerControl);
-        if (MeetingHud.Instance || !OptionGroupSingleton<ArsonistOptions>.Instance.LegacyArsonist) return;
+        if (MeetingHud.Instance || !OptionGroupSingleton<ArsonistOptions>.Instance.LegacyArsonist)
+        {
+            return;
+        }
+
         var killDistances =
             GameOptionsManager.Instance.currentNormalGameOptions.GetFloatArray(FloatArrayOptionNames.KillDistances);
         ClosestTarget = PlayerControl.LocalPlayer.GetClosestLivingPlayer(true,
@@ -96,6 +117,9 @@ public sealed class ArsonistIgniteButton : TownOfUsRoleButton<ArsonistRole>
     [MethodRpc((uint)TownOfUsRpc.IgniteSound, SendImmediately = true)]
     public static void RpcIgniteSound(PlayerControl player)
     {
-        if (player.AmOwner) TouAudio.PlaySound(TouAudio.ArsoIgniteSound);
+        if (player.AmOwner)
+        {
+            TouAudio.PlaySound(TouAudio.ArsoIgniteSound);
+        }
     }
 }

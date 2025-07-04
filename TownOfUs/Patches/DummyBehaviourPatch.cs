@@ -25,9 +25,21 @@ public static class DummyBehaviourPatches
 
     private static IEnumerator TouDummyMode(PlayerControl dummy)
     {
-        while (PlayerControl.LocalPlayer == null) yield return null;
-        while (PlayerControl.LocalPlayer.Data == null) yield return null;
-        while (PlayerControl.LocalPlayer.Data.Role == null) yield return null;
+        while (PlayerControl.LocalPlayer == null)
+        {
+            yield return null;
+        }
+
+        while (PlayerControl.LocalPlayer.Data == null)
+        {
+            yield return null;
+        }
+
+        while (PlayerControl.LocalPlayer.Data.Role == null)
+        {
+            yield return null;
+        }
+
         yield return new WaitForSeconds(0.01f + 0.01f * dummy.PlayerId);
         var roleList = MiscUtils.AllRoles
             .Where(role => role is ICustomRole)
@@ -64,10 +76,16 @@ public static class DummyBehaviourPatches
 
         var randomUniMod = MiscUtils.AllModifiers.Where(x =>
             x is UniversalGameModifier touGameMod && touGameMod.IsModifierValidOn(dummy.Data.Role)).Random();
-        if (randomUniMod != null) dummy.RpcAddModifier(randomUniMod.GetType());
+        if (randomUniMod != null)
+        {
+            dummy.RpcAddModifier(randomUniMod.GetType());
+        }
 
         var randomTeamMod = MiscUtils.AllModifiers
             .Where(x => x is TouGameModifier touGameMod && touGameMod.IsModifierValidOn(dummy.Data.Role)).Random();
-        if (randomTeamMod != null) dummy.RpcAddModifier(randomTeamMod.GetType());
+        if (randomTeamMod != null)
+        {
+            dummy.RpcAddModifier(randomTeamMod.GetType());
+        }
     }
 }

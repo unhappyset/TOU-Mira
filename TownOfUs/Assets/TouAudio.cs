@@ -111,6 +111,9 @@ public static class TouAudio
 
     public static void PlaySound(LoadableAsset<AudioClip> clip, float vol = 1f)
     {
-        if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(clip.LoadAsset(), false, vol);
+        if (Constants.ShouldPlaySfx())
+        {
+            SoundManager.Instance.PlaySound(clip.LoadAsset(), false, vol);
+        }
     }
 }
