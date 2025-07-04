@@ -6,8 +6,11 @@ using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using Reactor.Networking.Attributes;
+using Reactor.Utilities;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modifiers.Game;
+using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -24,8 +27,9 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public bool IsPowerCrew => true; // Always disable end game checks with a sheriff around
+    public bool IsPowerCrew => !HasMisfired; // Always disable end game checks if the sheriff hasn't misfired
     public override bool IsAffectedByComms => false;
+    public bool HasMisfired { get; set; }
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Sheriff,
@@ -69,6 +73,24 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
         return stringB;
     }
+
+    [MethodRpc((uint)TownOfUsRpc.SheriffMisfire, SendImmediately = true)]
+    public static void RpcSheriffMisfire(PlayerControl sheriff)
+    {
+        if (sheriff.Data.Role is not SheriffRole role)
+        {
+            Logger<TownOfUsPlugin>.Error("RpcSheriffMisfire - Invalid sheriff");
+            return;
+        }
+
+        role.HasMisfired = true;
+
+        if (GameHistory.PlayerStats.TryGetValue(sheriff.PlayerId, out var stats))
+        {
+            stats.IncorrectKills += 1;
+        }
+    }
+
     public string GetAdvancedDescription()
     {
         return $"The Sheriff is a Crewmate Killing that can shoot a player to attempt to kill them. If Sheriff doesn't die to misfire, they will lose the ability to shoot." + MiscUtils.AppendOptionsText(GetType());

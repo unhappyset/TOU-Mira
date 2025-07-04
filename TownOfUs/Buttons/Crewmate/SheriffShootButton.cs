@@ -39,6 +39,7 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
             return;
         }
         var missType = OptionGroupSingleton<SheriffOptions>.Instance.MisfireType;
+        SheriffRole.RpcSheriffMisfire(PlayerControl.LocalPlayer);
 
         if (missType is MisfireOptions.Target or MisfireOptions.Both)
         {
@@ -55,7 +56,7 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
         var notif1 = Helpers.CreateAndShowNotification("<b>You have lost the ability to shoot!</b>", Color.white, spr: TouRoleIcons.Sheriff.LoadAsset());
 
         notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
 
         Coroutines.Start(MiscUtils.CoFlash(Color.red));
     }
@@ -85,7 +86,7 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
         {
             return;
         }
-        
+
         if (Target.HasModifier<BaseShieldModifier>())
         {
             return;

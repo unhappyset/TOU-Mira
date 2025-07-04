@@ -57,6 +57,11 @@ public static class VeteranEvents
         var source = @event.Source;
 
         if (source.Data.Role is not VeteranRole) return;
+        
+        if (source.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
+        {
+            return;
+        }
 
         var target = @event.Target;
 

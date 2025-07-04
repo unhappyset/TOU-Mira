@@ -135,7 +135,12 @@ public sealed class ImitatorCacheModifier() : BaseModifier, ICachedRole
             return true;
         }
 
-        if (player != null && player.Object.GetRoleWhenAlive() is MayorRole or PoliticianRole)
+        if (player != null && player.Object.GetRoleWhenAlive() is MayorRole)
+        {
+            return true;
+        }
+        
+        if (player != null && player.Object.GetRoleWhenAlive() is PoliticianRole)
         {
             return true;
         }

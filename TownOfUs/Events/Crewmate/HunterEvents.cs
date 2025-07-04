@@ -57,6 +57,11 @@ public static class HunterEvents
         CheckForHunterStalked(source);
 
         if (source.Data.Role is not HunterRole) return;
+        
+        if (source.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
+        {
+            return;
+        }
 
         var target = @event.Target;
 

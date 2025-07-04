@@ -41,6 +41,11 @@ public static class JailorEvents
 
         jailor.Executes--;
 
+        if (source.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
+        {
+            return;
+        }
+        
         var target = @event.Target;
 
         if (GameHistory.PlayerStats.TryGetValue(source.PlayerId, out var stats))

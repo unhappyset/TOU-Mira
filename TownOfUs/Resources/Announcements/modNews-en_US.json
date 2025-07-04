@@ -82,11 +82,14 @@
         "\n\n\r<size=105%>Crewmate Role Bugfixes:</size>",
         "\n- Investigator footprints hide in comms properly and no longer error out",
         "\n- Deputy camped notification should be sent to the correct player now",
+        "\n- Sheriff correct kills are checked correctly",
+        "\n- Sheriff no longer continues the game on misfire",
         "\n- <b>Jailee Can't Use Public Chat</b> option has been fixed",
         "\n- Prosecutor continues game",
         "\n- Infinite Engineer vent uses no longer shows uses as <b>0</b>",
         "\n- Imitator should no longer be able to change roles if they have turned vamp or traitor",
         "\n- Engineer/Plumber can no longer access vents through walls",
+        "\n- Amnesiac and Imitator no longer interfere when selecting roles",
         "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
         "\n- Pestilence has impostor vision now",
         "\n- Hacking a player should no longer affect meeting or ejection screen kills",
@@ -97,6 +100,7 @@
         "\n- Shy no longer applies onto Phantom/Haunter",
         "\n- Egotist can no longer be traitor",
         "\n- Egotist cannot leave the game if lovers are alive",
+        "\n- Egotists no longer show correct or incorrect kills",
         "\n\n\r<size=105%>Other Bugfixes:</size>",
         "\n- Vent offset no longer shows a timer",
         "\n- If impostors cannot see each others' roles but know who they are, they can see each other in the team reveal properly",
@@ -117,7 +121,8 @@
         "\n\n\r<size=105%>Changes:</size>",
         "\n- Inquisitor's <b>Stall Game</b> option is now only applicable in 1v1s or 2v1s",
         "\n- Assassin's <b>Guess Spy / Investigator Modifier</b> options are now merged into one option that includes all Crewmate Utility Modifiers in general",
-        "\n- Just like in TOUR, all button timers will now pause in vents (besides Glitch's buttons)"
+        "\n- Just like in TOUR, all button timers will now pause in vents (besides Glitch's buttons)",
+        "\n- Imitator can no longer pick up Politician or Mayor (because they can stay as those roles forever)"
         ]
     }
   ]
