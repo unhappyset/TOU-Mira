@@ -67,23 +67,13 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
             return;
         }
 
-        if (target.Data == null)
-        {
-            if (player.AmOwner)
-            {
-                var notif1 = Helpers.CreateAndShowNotification($"<b>{target.CachedPlayerData.PlayerName} was disconnected, so their role is not valid.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Amnesiac.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-            }
-            return;
-        }
-
         var roleWhenAlive = target.GetRoleWhenAlive();
 
         if (roleWhenAlive is AmnesiacRole)
         {
             if (player.AmOwner)
             {
-                var notif1 = Helpers.CreateAndShowNotification($"<b>{target.CachedPlayerData.PlayerName} was an{TownOfUsColors.Amnesiac.ToTextColor()}Amnesiac</color>, so their role cannot be picked up.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Amnesiac.LoadAsset());
+                var notif1 = Helpers.CreateAndShowNotification($"<b>{target.CachedPlayerData.PlayerName} was an {TownOfUsColors.Amnesiac.ToTextColor()}Amnesiac</color>, so their role cannot be picked up.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Amnesiac.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
             }
             return;
@@ -99,9 +89,9 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
             inquis.TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select(x => x.TargetRole).OrderBy(x => x.NiceName).ToList();
         }
         if (player.Data.Role is MayorRole mayor)
-            {
-                mayor.Revealed = true;
-            }
+        {
+            mayor.Revealed = true;
+        }
 
         if (target.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnImpAssassin)
         {
@@ -143,6 +133,44 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                 target.ChangeRole(RoleId.Get<SurvivorRole>());
             }
         }
+
+        // TODO: Fix Amnesiac breaking unique roles for Amne/Imitator
+        /* if (target.Data.Role is not VampireRole && target.Data.Role.MaxCount <= PlayerControl.AllPlayerControls.ToArray().Count(x => x.Data.Role.Role == target.Data.Role.Role))
+        {
+            var newRole = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SurvivorRole>());
+            if (target.IsCrewmate())
+            {
+                newRole = RoleManager.Instance.GetRole(RoleTypes.Crewmate);
+            }
+            else if (target.IsImpostor())
+            {
+                newRole = RoleManager.Instance.GetRole(RoleTypes.Impostor);
+            }
+            else if (target.IsNeutral() && player.Data.Role is ITownOfUsRole touRole)
+            {
+                switch (touRole.RoleAlignment)
+                {
+                    default:
+                        newRole = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SurvivorRole>());
+                        break;
+                    case RoleAlignment.NeutralEvil:
+                        newRole = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<JesterRole>());
+                        break;
+                    case RoleAlignment.NeutralKilling:
+                        newRole = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MercenaryRole>());
+
+                        player.AddModifier<MercenaryBribedModifier>(target)!.alerted = true;
+                        break;
+                }
+            }
+
+            var roleBehaviour = UnityEngine.Object.Instantiate(newRole, target.Data.gameObject.transform);
+            GameHistory.RegisterRole(target, roleBehaviour);
+            target.Data.RoleWhenAlive = new Il2CppSystem.Nullable<RoleTypes>(roleBehaviour.Role);
+
+            if (target.Data.Role is NeutralGhostRole) target.ChangeRole(RoleId.Get<NeutralGhostRole>(), false);
+        } */
+        
         var touAbilityEvent2 = new TouAbilityEvent(AbilityType.AmnesiacPostRemember, player, target);
         MiraEventManager.InvokeEvent(touAbilityEvent2);
     }
