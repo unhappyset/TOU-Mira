@@ -11,7 +11,7 @@ public static class AirshipDoors
     [HarmonyPostfix]
     public static void Postfix(AirshipStatus __instance)
     {
-        if (!OptionGroupSingleton<BetterMapOptions>.Instance.AirshipPolusDoors)
+        if (!OptionGroupSingleton<AirshipOptions>.Instance.AirshipPolusDoors)
         {
             return;
         }

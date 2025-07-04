@@ -24,7 +24,4 @@ public sealed class BetterMapOptions : AbstractOptionGroup
 
     [ModdedToggleOption("Polus: Reboot Wifi And Chart Course Swapped")]
     public bool BPSwapWifiAndChart { get; set; } = false;
-
-    [ModdedToggleOption("Airship: Airship Doors Are Polus Doors")]
-    public bool AirshipPolusDoors { get; set; } = false;
 }
