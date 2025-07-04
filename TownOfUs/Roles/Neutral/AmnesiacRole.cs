@@ -95,7 +95,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
 
         if (player.AmOwner)
         {
-            var notif1 = Helpers.CreateAndShowNotification($"<b>You remembered that you were the {player.Data.Role.TeamColor.ToTextColor()}{player.Data.Role.NiceName}</color>, like {target.Data.PlayerName}.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Amnesiac.LoadAsset());
+            var notif1 = Helpers.CreateAndShowNotification($"<b>You remembered that you were like {target.Data.PlayerName}, the {player.Data.Role.TeamColor.ToTextColor()}{player.Data.Role.NiceName}</color>.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Amnesiac.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
         }
 

@@ -7,6 +7,7 @@ using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
+using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
@@ -39,6 +40,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     public bool Revealed { get; private set; }
     public bool CompletedAllTasks { get; private set; }
     public bool GhostActive => Setup && !Caught;
+    // public DangerMeter ImpostorMeter { get; set; }
 
     public override void UseAbility()
     {
@@ -64,6 +66,8 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 HudManager.Instance.SetHudActive(true);
                 HudManager.Instance.AbilityButton.SetDisabled();
                 Patches.HudManagerPatches.ResetZoom();
+                // var dangerMeter = GameManagerCreator.Instance.HideAndSeekManagerPrefab.LogicDangerLevel.dangerMeter;
+                // ImpostorMeter = UnityEngine.Object.Instantiate(dangerMeter, HudManager.Instance.transform.parent);
             }
         }
         MiscUtils.AdjustGhostTasks(player);
@@ -73,6 +77,30 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
 
         CanBeClicked = tasksRemaining <= (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeClickable;
     }
+    /* public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not HaunterRole || !Player.AmOwner) return;
+
+        float num = float.MaxValue;
+        var dangerLevel1 = 0f;
+		var dangerLevel2 = 0f;
+		var scaryMusicDistance = 55f * GameOptionsManager.Instance.currentNormalGameOptions.PlayerSpeedMod;
+		var veryScaryMusicDistance = 15f * GameOptionsManager.Instance.currentNormalGameOptions.PlayerSpeedMod;
+        foreach (var player in PlayerControl.AllPlayerControls.ToArray().Where(x => x.IsImpostor() || x.IsNeutral()))
+        {
+            if (player != null)
+            {
+                float sqrMagnitude = (player.transform.position - Player.transform.position).sqrMagnitude;
+                if (sqrMagnitude < scaryMusicDistance && num > sqrMagnitude)
+                {
+                    num = sqrMagnitude;
+                }
+            }
+        }
+		dangerLevel1 = Mathf.Clamp01((scaryMusicDistance - num) / (scaryMusicDistance - veryScaryMusicDistance));
+		dangerLevel2 = Mathf.Clamp01((veryScaryMusicDistance - num) / veryScaryMusicDistance);
+        ImpostorMeter.SetDangerValue(dangerLevel1, dangerLevel2);
+    } */
     private static IEnumerator SetTutorialCollider(PlayerControl player)
     {
         yield return new WaitForSeconds(0.01f);
@@ -96,6 +124,10 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
 
             Faded = false;
         }
+        /* if (Player.AmOwner)
+        {
+            ImpostorMeter.DestroyImmediate();
+        } */
     }
 
 
