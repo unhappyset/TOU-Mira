@@ -22,6 +22,7 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
     public override float EffectDuration => OptionGroupSingleton<GlitchOptions>.Instance.MimicDuration;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.MimicSprite;
     public override ButtonLocation Location => ButtonLocation.BottomRight;
+    public override bool ShouldPauseInVent => false;
     public override bool Enabled(RoleBehaviour? role) => role is GlitchRole;
 
     protected override void OnClick()

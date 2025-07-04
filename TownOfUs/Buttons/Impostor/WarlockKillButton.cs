@@ -42,7 +42,7 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
         }
         else
         {
-            if (Timer <= 0 && Charge < 100)
+            if (Timer <= 0 && Charge < 100 && !PlayerControl.LocalPlayer.inVent)
             {
                 var duration = OptionGroupSingleton<WarlockOptions>.Instance.ChargeTimeDuration * (1f + Kills * OptionGroupSingleton<WarlockOptions>.Instance.AddedTimeDuration);
                 var delta = Time.fixedDeltaTime;

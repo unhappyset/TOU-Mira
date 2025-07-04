@@ -20,6 +20,7 @@ public sealed class GlitchHackButton : TownOfUsRoleButton<GlitchRole, PlayerCont
     public override float Cooldown => OptionGroupSingleton<GlitchOptions>.Instance.HackCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.HackSprite;
     public override ButtonLocation Location => ButtonLocation.BottomRight;
+    public override bool ShouldPauseInVent => false;
 
     public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
 

@@ -16,6 +16,7 @@ public sealed class GlitchKillButton : TownOfUsRoleButton<GlitchRole, PlayerCont
     public override Color TextOutlineColor => TownOfUsColors.Glitch;
     public override float Cooldown => OptionGroupSingleton<GlitchOptions>.Instance.KillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.GlitchKillSprite;
+    public override bool ShouldPauseInVent => false;
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);

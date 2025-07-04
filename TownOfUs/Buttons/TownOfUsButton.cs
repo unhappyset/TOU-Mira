@@ -1,8 +1,10 @@
-﻿using HarmonyLib;
+﻿using System.Globalization;
+using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.PluginLoading;
+using MiraAPI.Utilities;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using Rewired;
@@ -22,6 +24,7 @@ public abstract class TownOfUsButton : CustomActionButton
     public override float InitialCooldown => 10;
     public override ButtonLocation Location => ButtonLocation.BottomRight;
     public override string CooldownTimerFormatString => Timer <= 10f && TownOfUsPlugin.PreciseCooldowns.Value ? "0.0" : "0";
+    public virtual bool ShouldPauseInVent => true;
 
     /// <summary>
     /// Gets the keybind used for the button.<br/>
@@ -39,6 +42,48 @@ public abstract class TownOfUsButton : CustomActionButton
             Keybinds.VentAction => Keybinds.VentConsole,
             _ => -1,
         };
+    }
+    public override void FixedUpdateHandler(PlayerControl playerControl)
+    {
+        if (Timer >= 0)
+        {
+            if (!TimerPaused && (!(ShouldPauseInVent && PlayerControl.LocalPlayer.inVent) || EffectActive))
+            {
+                Timer -= Time.deltaTime;
+            }
+        }
+        else if (HasEffect && EffectActive)
+        {
+            EffectActive = false;
+            Timer = Cooldown;
+            OnEffectEnd();
+        }
+
+        if (Button)
+        {
+            if (CanUse())
+            {
+                Button!.SetEnabled();
+            }
+            else
+            {
+                Button!.SetDisabled();
+            }
+
+            if (EffectActive)
+            {
+                Button.SetFillUp(Timer, EffectDuration);
+
+                Button.cooldownTimerText.text = Timer.ToString(CooldownTimerFormatString, NumberFormatInfo.InvariantInfo);
+                Button.cooldownTimerText.gameObject.SetActive(true);
+            }
+            else
+            {
+                Button.SetCooldownFormat(Timer, Cooldown, CooldownTimerFormatString);
+            }
+        }
+
+        FixedUpdate(playerControl);
     }
 
     private PassiveButton PassiveComp { get; set; }
@@ -145,6 +190,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
     public override float InitialCooldown => 10;
     public override ButtonLocation Location => ButtonLocation.BottomRight;
     public override string CooldownTimerFormatString => Timer <= 10f && TownOfUsPlugin.PreciseCooldowns.Value ? "0.0" : "0";
+    public virtual bool ShouldPauseInVent => true;
 
     /// <summary>
     /// Gets the keybind used for the button.
@@ -162,6 +208,48 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
             Keybinds.VentAction => Keybinds.VentConsole,
             _ => -1,
         };
+    }
+    public override void FixedUpdateHandler(PlayerControl playerControl)
+    {
+        if (Timer >= 0)
+        {
+            if (!TimerPaused && (!(ShouldPauseInVent && PlayerControl.LocalPlayer.inVent) || EffectActive))
+            {
+                Timer -= Time.deltaTime;
+            }
+        }
+        else if (HasEffect && EffectActive)
+        {
+            EffectActive = false;
+            Timer = Cooldown;
+            OnEffectEnd();
+        }
+
+        if (Button)
+        {
+            if (CanUse())
+            {
+                Button!.SetEnabled();
+            }
+            else
+            {
+                Button!.SetDisabled();
+            }
+
+            if (EffectActive)
+            {
+                Button.SetFillUp(Timer, EffectDuration);
+
+                Button.cooldownTimerText.text = Timer.ToString(CooldownTimerFormatString, NumberFormatInfo.InvariantInfo);
+                Button.cooldownTimerText.gameObject.SetActive(true);
+            }
+            else
+            {
+                Button.SetCooldownFormat(Timer, Cooldown, CooldownTimerFormatString);
+            }
+        }
+
+        FixedUpdate(playerControl);
     }
 
     private PassiveButton PassiveComp { get; set; }

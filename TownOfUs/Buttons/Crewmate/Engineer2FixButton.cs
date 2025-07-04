@@ -16,6 +16,7 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
     public override float EffectDuration => OptionGroupSingleton<EngineerOptions>.Instance.FixDelay + 0.01f;
     public override int MaxUses => (int)OptionGroupSingleton<EngineerOptions>.Instance.MaxFixes;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.FixButtonSprite;
+    public override bool ShouldPauseInVent => false;
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
