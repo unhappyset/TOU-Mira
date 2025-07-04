@@ -20,8 +20,8 @@ public static class ImitatorEvents
             return;
         }
 
-        foreach (var mod in imitators.Where(x => x.Player.Data.Role.Role != x.OldRole.Role))
-            // This makes converted imitators not be imitators anymore
+        // This makes converted imitators not be imitators anymore
+        foreach (var mod in imitators.Where(x => !x.Player.IsCrewmate()))
         {
             mod.ModifierComponent?.RemoveModifier(mod);
         }
