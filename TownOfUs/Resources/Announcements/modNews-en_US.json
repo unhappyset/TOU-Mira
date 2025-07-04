@@ -116,7 +116,8 @@
         "\n- Amnesiac gives feedback and will notify you when trying to remember Amnesiac",
         "\n\n\r<size=105%>Changes:</size>",
         "\n- Inquisitor's <b>Stall Game</b> option is now only applicable in 1v1s or 2v1s",
-        "\n- Assassin's <b>Guess Spy / Investigator Modifier</b> options are now merged into one option that includes all Crewmate Utility Modifiers in general"
+        "\n- Assassin's <b>Guess Spy / Investigator Modifier</b> options are now merged into one option that includes all Crewmate Utility Modifiers in general",
+        "\n- Just like in TOUR, all button timers will now pause in vents (besides Glitch's buttons)"
         ]
     }
   ]
