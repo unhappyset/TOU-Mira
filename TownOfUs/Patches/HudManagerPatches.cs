@@ -291,8 +291,11 @@ public static class HudManagerPatches
             {
                 var player = MiscUtils.PlayerById(playerVA.TargetPlayerId);
                 playerVA.ColorBlindName.transform.localPosition = new Vector3(-0.93f, -0.2f, -0.1f);
-
-                if (player == null) continue;
+                
+                if (player == null || player.Data == null || player.Data.Role == null)
+                {
+                    continue;
+                }
 
                 var playerName = player.GetDefaultAppearance().PlayerName ?? "Unknown";
                 var playerColor = Color.white;
@@ -413,9 +416,14 @@ public static class HudManagerPatches
 
             foreach (var player in PlayerControl.AllPlayerControls)
             {
+                if (player == null || player.Data == null || player.Data.Role == null)
+                {
+                    continue;
+                }
+                
                 var playerName = player.GetAppearance().PlayerName ?? "Unknown";
                 var playerColor = Color.white;
-
+                
                 if (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && PlayerControl.LocalPlayer != player && !genOpt.FFAImpostorMode)
                     playerColor = Color.red;
 
