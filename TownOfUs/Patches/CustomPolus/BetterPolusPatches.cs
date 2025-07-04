@@ -314,9 +314,9 @@ public static class TaskTextUpdates
 
             foreach (var task in PlayerControl.LocalPlayer.myTasks)
             {
-                if (task.TaskType == TaskTypes.RecordTemperature && task.StartAt is not (SystemTypes.Outside or SystemTypes.Laboratory))
+                if (task.TaskType == TaskTypes.RecordTemperature && task.StartAt == SystemTypes.Laboratory && opts.BPTempInDeathValley)
                 {
-                    task.StartAt = opts.BPTempInDeathValley ? TaskProvider.DeathValleySystemType : SystemTypes.Laboratory;
+                    task.StartAt = TaskProvider.DeathValleySystemType;
                 }
 
                 if (opts.BPSwapWifiAndChart)
