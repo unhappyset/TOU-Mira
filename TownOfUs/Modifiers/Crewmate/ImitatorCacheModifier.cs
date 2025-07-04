@@ -51,7 +51,6 @@ public sealed class ImitatorCacheModifier() : BaseModifier, ICachedRole
             ModifierComponent?.RemoveModifier(this);
             return;
         }
-        
         if (Player.AmOwner)
         {
             // _selectedPlr = null;
@@ -126,21 +125,21 @@ public sealed class ImitatorCacheModifier() : BaseModifier, ICachedRole
             return true;
         }
 
-        if (player != null && player.Object.GetRoleWhenAlive() is MayorRole && PlayerControl.AllPlayerControls.ToArray().Any(x => x.HasModifier<ImitatorCacheModifier>() && !x.Data.IsDead && !x != Player))
+        if (player != null && player.Object.GetRoleWhenAlive() is JailorRole && !CustomRoleUtils.GetActiveRolesOfType<JailorRole>().Any() && PlayerControl.AllPlayerControls.ToArray().Any(x => x.HasModifier<ImitatorCacheModifier>() && !x.Data.IsDead && !x != Player))
         {
             return true;
         }
 
-        if (player != null && player.Object.GetRoleWhenAlive() is JailorRole && PlayerControl.AllPlayerControls.ToArray().Any(x => x.HasModifier<ImitatorCacheModifier>() && !x.Data.IsDead && !x != Player))
+        if (player != null && player.Object.GetRoleWhenAlive() is ProsecutorRole && !CustomRoleUtils.GetActiveRolesOfType<ProsecutorRole>().Any() && PlayerControl.AllPlayerControls.ToArray().Any(x => x.HasModifier<ImitatorCacheModifier>() && !x.Data.IsDead && !x != Player))
         {
             return true;
         }
 
-        if (player != null && player.Object.GetRoleWhenAlive() is ProsecutorRole && PlayerControl.AllPlayerControls.ToArray().Any(x => x.HasModifier<ImitatorCacheModifier>() && !x.Data.IsDead && !x != Player))
+        if (player != null && player.Object.GetRoleWhenAlive() is MayorRole or PoliticianRole)
         {
             return true;
         }
-
+        
         if (player != null && player.Object.GetRoleWhenAlive() is ImitatorRole)
         {
             return true;
