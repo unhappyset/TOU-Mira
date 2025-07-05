@@ -74,6 +74,8 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
         IL2CPPChainloader.Instance.Finished +=
             ModCompatibility
                 .Initialize; // Initialise AFTER the mods are loaded to ensure maximum parity (no need for the soft dependency either then)
+        IL2CPPChainloader.Instance.Finished +=
+            ModNewsFetcher.CheckForNews; // Checks for mod announcements after everything is loaded to avoid Epic Games crashing
 
         var path = Path.GetDirectoryName(Assembly.GetAssembly(typeof(TownOfUsPlugin))!.Location) + "\\touhats.catalog";
         AddressablesLoader.RegisterCatalog(path);
@@ -105,7 +107,5 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
             "How role arrows appear. 0 is the basic arrow, 1 is the arrow with a dark glow, 2 is the arrow with a light glow, and 3 is the legacy arrow / task arrow.");
 
         Harmony.PatchAll();
-
-        Coroutines.Start(ModNewsFetcher.FetchNews());
     }
 }

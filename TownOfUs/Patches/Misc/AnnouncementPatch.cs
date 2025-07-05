@@ -65,6 +65,10 @@ public static class ModNewsFetcher
 
     private static bool downloaded;
 
+    public static void CheckForNews()
+    {
+        Coroutines.Start(ModNewsFetcher.FetchNews());
+    }
     public static IEnumerator FetchNews()
     {
         if (downloaded)
