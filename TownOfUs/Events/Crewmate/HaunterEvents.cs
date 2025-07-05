@@ -16,29 +16,4 @@ public static class HaunterEvents
 
         haunter.CheckTaskRequirements();
     }
-    // Ideally, haunter shouldn't stay around and should keep the impostor revealed. It also shouldn't show the arrow at all
-    /* public static void OnRoundStart(RoundStartEvent @event)
-    {
-        var haunterList = CustomRoleUtils.GetActiveRolesOfType<HaunterRole>();
-        if (!haunterList.Any()) return;
-
-        foreach (var haunter2 in haunterList)
-        {
-            if (!haunter2.CompletedAllTasks || haunter2.Caught)
-            {
-                continue;
-            }
-            var player = haunter2.Player;
-            if (player.AmOwner) Patches.HudManagerPatches.ZoomButton.SetActive(true);
-            haunter2.Caught = true;
-            player.Exiled();
-
-            if (player.AmOwner)
-            {
-                HudManager.Instance.AbilityButton.SetEnabled();
-            }
-
-            if (player.HasModifier<HaunterArrowModifier>()) player.RemoveModifier<HaunterArrowModifier>();
-        }
-    } */
 }
