@@ -17,6 +17,7 @@ using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Roles.Neutral;
@@ -29,7 +30,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => "Transporter";
+    public string RoleName => TouLocale.Get(TouNames.Transporter, "Transporter");
     public string RoleDescription => "Choose Two Players To Swap Locations";
     public string RoleLongDescription => "Choose two players to swap locations with one another";
     public Color RoleColor => TownOfUsColors.Transporter;
@@ -51,7 +52,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     public string GetAdvancedDescription()
     {
         return
-            "The Transporter is a Crewmate Support role that can transport two players, dead or alive, to swap their locations."
+            $"The {RoleName} is a Crewmate Support role that can transport two players, dead or alive, to swap their locations."
             + MiscUtils.AppendOptionsText(GetType());
     }
 
