@@ -382,6 +382,13 @@ public static class EndGamePatches
 
                 var roleType = realPlayer.RoleWhenAlive;
                 var role = RoleManager.Instance.GetRole(roleType);
+
+                if (role is JesterRole)
+                {
+                    player.UpdateFromPlayerOutfit(realPlayer.Outfit, PlayerMaterial.MaskType.None,
+                        false, true);
+                }
+
                 var nameTxt = player.cosmetics.nameText;
                 nameTxt.gameObject.SetActive(true);
                 player.SetName(

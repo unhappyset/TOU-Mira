@@ -148,10 +148,6 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
         if (hasMajority)
         {
             Player.RpcChangeRole(RoleId.Get<MayorRole>());
-            if (Player.HasModifier<ToBecomeTraitorModifier>())
-            {
-                Player.GetModifier<ToBecomeTraitorModifier>()!.Clear();
-            }
         }
         else
         {
