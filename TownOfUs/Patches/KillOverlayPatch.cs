@@ -6,11 +6,10 @@ using UnityEngine;
 
 namespace TownOfUs.Patches;
 
+[HarmonyPatch(typeof(OverlayKillAnimation), nameof(OverlayKillAnimation.CoShow), typeof(KillOverlay))]
 public static class KillOverlayPatch
 {
-    [HarmonyPatch(typeof(OverlayKillAnimation), nameof(OverlayKillAnimation.CoShow), typeof(KillOverlay))]
-    [HarmonyPrefix]
-    public static void SetKillAnimationMaskInteraction(OverlayKillAnimation __instance)
+    public static void Prefix(OverlayKillAnimation __instance)
     {
         var flame = GameObject.Find("KillOverlay").transform.FindChild("QuadParent");
         if (flame != null)
@@ -43,9 +42,14 @@ public static class KillOverlayPatch
 
         Coroutines.Start(CoKillDestroy());
     }
+    public static void Postfix(OverlayKillAnimation __instance)
+    {
+        Coroutines.Start(CoKillDestroy());
+    }
 
     private static IEnumerator CoKillDestroy()
     {
+        // after 5 seconds, if a kill animation exists, then it will be destroyed
         var obj = GameObject.Find("KillOverlay").transform.GetChild(2).gameObject;
         yield return new WaitForSeconds(5f);
 
