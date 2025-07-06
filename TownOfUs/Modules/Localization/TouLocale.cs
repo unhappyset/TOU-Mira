@@ -13,7 +13,11 @@ public static class TouLocale
 
     public static string Get(TouNames name, string? defaultValue = null)
     {
-        var currentLanguage = TranslationController.Instance.currentLanguage.languageID;
+        var currentLanguage = 
+            TranslationController.InstanceExists ? 
+                TranslationController.Instance.currentLanguage.languageID : 
+                SupportedLangs.English;
+
         if (!TouLocalization.TryGetValue(currentLanguage, out var translations) ||
             !translations.TryGetValue(name, out var translation))
         {
