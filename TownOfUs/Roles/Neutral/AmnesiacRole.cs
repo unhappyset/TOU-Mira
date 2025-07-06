@@ -11,11 +11,11 @@ using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Events.TouEvents;
-using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modifiers.Game.Neutral;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
@@ -29,7 +29,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MysticRole>());
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => "Amnesiac";
+    public string RoleName => TouLocale.Get(TouNames.Amnesiac, "Amnesiac");
     public string RoleDescription => "Remember A Role Of A Deceased Player";
     public string RoleLongDescription => "Find a dead body to remember and become their role";
     public Color RoleColor => TownOfUsColors.Amnesiac;
@@ -52,7 +52,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            "The Amnesiac is a Neutral Benign role that gains access to a new role from remembering a dead body’s role. Use the role you remember to win the game." +
+            $"The {RoleName} is a Neutral Benign role that gains access to a new role from remembering a dead body’s role. Use the role you remember to win the game." +
             MiscUtils.AppendOptionsText(GetType());
     }
 
