@@ -49,6 +49,7 @@ public static class TouLocale
                 continue;
             }
 
+            TouLocalization.TryAdd(language, []);
             ParseFile(file, language);
         }
     }
