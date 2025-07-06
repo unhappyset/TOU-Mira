@@ -21,11 +21,17 @@ public sealed class OracleConfessModifier(PlayerControl oracle, int faction) : B
         MiraEventManager.InvokeEvent(touAbilityEvent);
 
         if (faction == 0)
+        {
             RevealedFaction = ModdedRoleTeams.Crewmate;
+        }
         else if (faction == 1)
+        {
             RevealedFaction = ModdedRoleTeams.Custom;
+        }
         else
+        {
             RevealedFaction = ModdedRoleTeams.Impostor;
+        }
     }
 
     public override void OnDeath(DeathReason reason)

@@ -27,6 +27,11 @@ public sealed class MorphlingMorphModifier(PlayerControl target) : ConcealedModi
         MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 
+    public override void OnDeath(DeathReason reason)
+    {
+        ModifierComponent!.RemoveModifier(this);
+    }
+
     public override void OnDeactivate()
     {
         Player.ResetAppearance();

@@ -18,19 +18,31 @@ public static class TiebreakerEvents
         // Logger<TownOfUsPlugin>.Error($"TiebreakerEvents.ProcessVotesEventHandler");
 
         TiebreakingVote = null;
-        if (@event.ExiledPlayer != null) return;
+        if (@event.ExiledPlayer != null)
+        {
+            return;
+        }
 
         VotingUtils.GetExiled(@event.Votes, out var isTie);
-        if (!isTie) return;
+        if (!isTie)
+        {
+            return;
+        }
 
         var tieBreakers = ModifierUtils.GetPlayersWithModifier<TiebreakerModifier>();
-        if (!tieBreakers.Any()) return; // Skip everything if not a single person is tiebreaker
+        if (!tieBreakers.Any())
+        {
+            return; // Skip everything if not a single person is tiebreaker
+        }
 
         var votes = @event.Votes.ToList();
         var player = tieBreakers.Random();
         var vote = votes.FirstOrDefault(x => x.Voter == player!.PlayerId);
 
-        if (vote == default) return;
+        if (vote == default)
+        {
+            return;
+        }
 
         var extraVote = new CustomVote(vote.Voter, vote.Suspect);
 

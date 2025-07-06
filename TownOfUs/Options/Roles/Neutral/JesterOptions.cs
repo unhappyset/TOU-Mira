@@ -1,6 +1,5 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
-using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Roles.Neutral;
@@ -28,7 +27,6 @@ public sealed class JesterOptions : AbstractOptionGroup<JesterRole>
 
     [ModdedEnumOption("After Win Type", typeof(JestWinOptions), ["Ends Game", "Haunts", "Nothing"])]
     public JestWinOptions JestWin { get; set; } = JestWinOptions.EndsGame;
-
 }
 
 public enum JestWinOptions

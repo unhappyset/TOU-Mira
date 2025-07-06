@@ -1,5 +1,6 @@
 using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
 using TownOfUs.Roles.Crewmate;
 
@@ -18,6 +19,8 @@ public sealed class LookoutOptions : AbstractOptionGroup<LookoutRole>
     [ModdedToggleOption("Lookout Watches Reset After Each Round")]
     public bool LoResetOnNewRound { get; set; } = true;
 
-    [ModdedToggleOption("Get More Uses From Completing Tasks")]
-    public bool TaskUses { get; set; } = false;
+    public ModdedToggleOption TaskUses { get; } = new("Get More Uses From Completing Tasks", false)
+    {
+        Visible = () => !OptionGroupSingleton<LookoutOptions>.Instance.LoResetOnNewRound
+    };
 }

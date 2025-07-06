@@ -14,7 +14,10 @@ public sealed class AmnesiacRememberButton : TownOfUsRoleButton<AmnesiacRole, De
     public override float Cooldown => 0.001f + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.RememberButtonSprite;
 
-    public override DeadBody? GetTarget() => PlayerControl.LocalPlayer.GetNearestDeadBody(Distance);
+    public override DeadBody? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetNearestDeadBody(Distance);
+    }
 
     protected override void OnClick()
     {
@@ -26,7 +29,10 @@ public sealed class AmnesiacRememberButton : TownOfUsRoleButton<AmnesiacRole, De
         var targetId = Target.ParentId;
         var targetPlayer = MiscUtils.PlayerById(targetId);
 
-        if (targetPlayer == null) return; // Someone may have left mid game or something and gc just vacuumed, but idk. better safe than sorry ig.
+        if (targetPlayer == null)
+        {
+            return; // Someone may have left mid game or something and gc just vacuumed, but idk. better safe than sorry ig.
+        }
 
         AmnesiacRole.RpcRemember(PlayerControl.LocalPlayer, targetPlayer);
     }

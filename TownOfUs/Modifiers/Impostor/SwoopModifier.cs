@@ -8,6 +8,7 @@ using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TownOfUs.Modifiers.Impostor;
 
@@ -18,16 +19,6 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
     public override bool HideOnUi => true;
     public override bool AutoStart => true;
     public bool VisualPriority => true;
-
-    public override void OnDeath(DeathReason reason)
-    {
-        Player.RemoveModifier(this);
-    }
-
-    public override void OnMeetingStart()
-    {
-        Player.RemoveModifier(this);
-    }
 
     public VisualAppearance GetVisualAppearance()
     {
@@ -44,14 +35,26 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
             PetId = string.Empty,
             RendererColor = playerColor,
             NameColor = Color.clear,
-            ColorBlindTextColor = Color.clear,
+            ColorBlindTextColor = Color.clear
         };
+    }
+
+    public override void OnDeath(DeathReason reason)
+    {
+        Player.RemoveModifier(this);
+    }
+
+    public override void OnMeetingStart()
+    {
+        Player.RemoveModifier(this);
     }
 
     public override void OnActivate()
     {
-        if (Player.AmOwner) 
+        if (Player.AmOwner)
+        {
             TouAudio.PlaySound(TouAudio.SwooperActivateSound);
+        }
 
         Player.RawSetAppearance(this);
         Player.cosmetics.ToggleNameVisible(false);
@@ -68,7 +71,7 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
     {
         base.FixedUpdate();
 
-        var mushroom = UnityEngine.Object.FindObjectOfType<MushroomMixupSabotageSystem>();
+        var mushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
         if (mushroom && mushroom.IsActive)
         {
             Player.RawSetAppearance(this);
@@ -85,10 +88,12 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
         button.OverrideSprite(TouImpAssets.SwoopSprite.LoadAsset());
         button.OverrideName("Swoop");
 
-        if (Player.AmOwner) 
+        if (Player.AmOwner)
+        {
             TouAudio.PlaySound(TouAudio.SwooperDeactivateSound);
+        }
 
-        var mushroom = UnityEngine.Object.FindObjectOfType<MushroomMixupSabotageSystem>();
+        var mushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
         if (mushroom && mushroom.IsActive)
         {
             MushroomMixUp(mushroom, Player);

@@ -18,7 +18,11 @@ public sealed class PlaguebearerInfectButton : TownOfUsRoleButton<PlaguebearerRo
     public override float Cooldown => OptionGroupSingleton<PlaguebearerOptions>.Instance.InfectCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.InfectSprite;
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: plr => !plr.HasModifier<PlaguebearerInfectedModifier>());
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance,
+            predicate: plr => !plr.HasModifier<PlaguebearerInfectedModifier>());
+    }
 
     protected override void OnClick()
     {

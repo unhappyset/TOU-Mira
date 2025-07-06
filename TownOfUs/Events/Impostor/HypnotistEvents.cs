@@ -24,7 +24,11 @@ public static class HypnotistEvents
     {
         foreach (var hypnotist in CustomRoleUtils.GetActiveRolesOfType<HypnotistRole>())
         {
-            if (!hypnotist.HysteriaActive) continue;
+            if (!hypnotist.HysteriaActive)
+            {
+                continue;
+            }
+
             var mods = ModifierUtils.GetActiveModifiers<HypnotisedModifier>(x => x.Hypnotist == hypnotist.Player);
             mods.Do(x => x.Hysteria());
         }

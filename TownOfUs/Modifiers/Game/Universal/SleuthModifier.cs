@@ -11,12 +11,32 @@ public sealed class SleuthModifier : UniversalGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Sleuth";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Sleuth;
-    public override string GetDescription() => "Know the roles of bodies you report.";
+
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
     public List<byte> Reported { get; set; } = [];
 
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SleuthChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SleuthAmount;
+    public string GetAdvancedDescription()
+    {
+        return
+            "You will see the roles of bodies you report.";
+    }
+
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "Know the roles of bodies you report.";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SleuthChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SleuthAmount;
+    }
 
     public static bool SleuthVisibilityFlag(PlayerControl player)
     {
@@ -28,11 +48,4 @@ public sealed class SleuthModifier : UniversalGameModifier, IWikiDiscoverable
 
         return false;
     }
-    public string GetAdvancedDescription()
-    {
-        return
-            "You will see the roles of bodies you report.";
-    }
-
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
 }

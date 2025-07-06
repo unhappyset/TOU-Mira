@@ -13,8 +13,10 @@ public sealed class AmnesiacOptions : AbstractOptionGroup<AmnesiacRole>
 
     [ModdedToggleOption("Show Arrows Pointing To Dead Bodies")]
     public bool RememberArrows { get; set; } = true;
-    public ModdedNumberOption RememberArrowDelay { get; } = new ModdedNumberOption("Time After Death Arrow Appears", 5f, 0f, 15f, 1f, MiraNumberSuffixes.Seconds, "0")
+
+    public ModdedNumberOption RememberArrowDelay { get; } = new("Time After Death Arrow Appears", 5f, 0f, 15f, 1f,
+        MiraNumberSuffixes.Seconds, "0")
     {
-        Visible = () => OptionGroupSingleton<AmnesiacOptions>.Instance.RememberArrows,
+        Visible = () => OptionGroupSingleton<AmnesiacOptions>.Instance.RememberArrows
     };
 }

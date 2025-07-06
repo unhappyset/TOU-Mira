@@ -21,6 +21,7 @@ public static class LogoPatch
         {
             newLogo.GetComponent<SpriteRenderer>().sprite = TouAssets.Banner.LoadAsset();
         }
+
         if (sizer != null)
         {
             sizer.GetComponent<AspectSize>().PercentWidth = 0.3f;

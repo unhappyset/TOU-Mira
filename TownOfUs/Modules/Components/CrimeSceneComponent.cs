@@ -35,27 +35,41 @@ public sealed class CrimeSceneComponent(nint cppPtr) : MonoBehaviour(cppPtr)
 
     public void FixedUpdate()
     {
-        var killDistances = GameOptionsManager.Instance.currentNormalGameOptions.GetFloatArray(FloatArrayOptionNames.KillDistances);
+        var killDistances =
+            GameOptionsManager.Instance.currentNormalGameOptions.GetFloatArray(FloatArrayOptionNames.KillDistances);
 
         foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (player.Data.IsDead) continue;
-            if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
+            if (player.Data.IsDead)
+            {
+                continue;
+            }
+
+            if (player.AmOwner)
+            {
+                continue;
+            }
 
             // Debug.Log(GetComponent<BoxCollider2D>().IsTouching(player.Collider));
             if (Vector2.Distance(player.GetTruePosition(), gameObject.transform.position) >
-                killDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance]) continue;
+                killDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance])
+            {
+                continue;
+            }
 
             if (!_scenePlayers.Contains(player.PlayerId))
-            {
                 // Debug.Log(player.name + " contaminated the crime scene");
+            {
                 _scenePlayers.Add(player.PlayerId);
             }
         }
     }
 
     [HideFromIl2Cpp]
-    public List<byte> GetScenePlayers() => _scenePlayers;
+    public List<byte> GetScenePlayers()
+    {
+        return _scenePlayers;
+    }
 
     public static void CreateCrimeScene(PlayerControl victim, Vector3 location)
     {
@@ -69,14 +83,20 @@ public sealed class CrimeSceneComponent(nint cppPtr) : MonoBehaviour(cppPtr)
         _crimeScenes.Add(scene);
 
         scene.gameObject.SetActive(false);
-        if (PlayerControl.LocalPlayer.Data.Role is DetectiveRole) scene.gameObject.SetActive(true);
+        if (PlayerControl.LocalPlayer.Data.Role is DetectiveRole)
+        {
+            scene.gameObject.SetActive(true);
+        }
     }
 
     public static IEnumerator CoClean(DeadBody body)
     {
         var crimeScene = _crimeScenes.FirstOrDefault(x => x.DeadPlayer == MiscUtils.PlayerById(body.ParentId));
 
-        if (crimeScene == null) yield break;
+        if (crimeScene == null)
+        {
+            yield break;
+        }
 
         var renderer = crimeScene.gameObject.GetComponent<SpriteRenderer>();
 
@@ -91,7 +111,9 @@ public sealed class CrimeSceneComponent(nint cppPtr) : MonoBehaviour(cppPtr)
         _crimeScenes.Do(x =>
         {
             if (x != null && x.gameObject != null)
+            {
                 Destroy(x.gameObject);
+            }
         });
 
         _crimeScenes.Clear();

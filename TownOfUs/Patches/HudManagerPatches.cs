@@ -1,19 +1,23 @@
-﻿using HarmonyLib;
+﻿using System.Collections;
+using System.Globalization;
+using System.Text;
+using HarmonyLib;
+using InnerNet;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using Reactor.Utilities;
+using TMPro;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Universal;
-using TownOfUs.Modifiers.Game.Alliance;
-using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modifiers.Impostor.Venerer;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Crewmate;
-using TownOfUs.Options.Roles.Neutral;
+using TownOfUs.Patches.Options;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
@@ -21,12 +25,9 @@ using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using Color = UnityEngine.Color;
-using TMPro;
-using System.Text;
-using TownOfUs.Patches.Options;
-using TownOfUs.Roles.Impostor;
-using Reactor.Utilities.Extensions;
+using Object = UnityEngine.Object;
 
 namespace TownOfUs.Patches;
 
@@ -39,211 +40,304 @@ public static class HudManagerPatches
     public static GameObject TeamChatButton;
 
     public static bool Zooming;
+    public static bool CamouflageCommsEnabled;
+    public static bool CamouflageFootsteps;
+
+    public static IEnumerator CoResizeUI()
+    {
+        while (!HudManager.Instance)
+        {
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.01f);
+        ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
+    }
 
     public static void ResizeUI(float scaleFactor)
     {
-        foreach (AspectPosition aspect in HudManager.Instance.transform.FindChild("Buttons").GetComponentsInChildren<AspectPosition>(true))
+        foreach (var aspect in HudManager.Instance.transform.FindChild("Buttons")
+                     .GetComponentsInChildren<AspectPosition>(true))
         {
-            if (aspect.gameObject.transform.parent.name == "TopRight") continue;
-            if (aspect.gameObject.transform.parent.transform.parent.name == "TopRight") continue;
+            if (aspect.gameObject == null)
+            {
+                continue;
+            }
+
+            if (aspect.gameObject.transform.parent.name == "TopRight")
+            {
+                continue;
+            }
+
+            if (aspect.gameObject.transform.parent.transform.parent.name == "TopRight")
+            {
+                continue;
+            }
+
             aspect.gameObject.SetActive(!aspect.isActiveAndEnabled);
             aspect.DistanceFromEdge *= new Vector2(scaleFactor, scaleFactor);
             aspect.gameObject.SetActive(!aspect.isActiveAndEnabled);
         }
-        
-        foreach (ActionButton button in HudManager.Instance.GetComponentsInChildren<ActionButton>(true))
+
+        foreach (var button in HudManager.Instance.GetComponentsInChildren<ActionButton>(true))
         {
+            if (button.gameObject == null)
+            {
+                continue;
+            }
+
             button.gameObject.SetActive(!button.isActiveAndEnabled);
             button.gameObject.transform.localScale *= scaleFactor;
             button.gameObject.SetActive(!button.isActiveAndEnabled);
         }
-        foreach (GridArrange arrange in HudManager.Instance.transform.FindChild("Buttons").GetComponentsInChildren<GridArrange>(true))
+
+        foreach (var arrange in HudManager.Instance.transform.FindChild("Buttons")
+                     .GetComponentsInChildren<GridArrange>(true))
         {
+            if (!arrange.gameObject || !arrange.transform)
+            {
+                continue;
+            }
+
             arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
             arrange.CellSize = new Vector2(scaleFactor, scaleFactor);
             arrange.gameObject.SetActive(!arrange.isActiveAndEnabled);
-            arrange.ArrangeChilds();
+            if (arrange.isActiveAndEnabled && arrange.gameObject.transform.childCount != 0)
+            {
+                try
+                {
+                    arrange.ArrangeChilds();
+                }
+                catch (Exception e)
+                {
+                    Logger<TownOfUsPlugin>.Error($"Error arranging child objects in GridArrange: {e}");
+                }
+            }
         }
     }
 
-    public static void Zoom()
+    public static void AdjustCameraSize(float size)
     {
-        if (MeetingHud.Instance)
+        Camera.main!.orthographicSize = size;
+        foreach (var cam in Camera.allCameras)
+        {
+            cam.orthographicSize = Camera.main!.orthographicSize;
+        }
+
+        ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height,
+            Screen.fullScreen);
+
+        if (size <= 3f)
+        {
+            Zooming = false;
+            HudManager.Instance.ShadowQuad.gameObject.SetActive(!PlayerControl.LocalPlayer.Data.IsDead);
+        }
+        else
+        {
+            Zooming = true;
+            HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
+        }
+
+        ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite =
+            Zooming ? TouAssets.ZoomPlus.LoadAsset() : TouAssets.ZoomMinus.LoadAsset();
+        ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite =
+            Zooming ? TouAssets.ZoomPlusActive.LoadAsset() : TouAssets.ZoomMinusActive.LoadAsset();
+    }
+
+    public static void ButtonClickZoom()
+    {
+        if (MeetingHud.Instance || ExileController.Instance)
         {
             ZoomButton.SetActive(false);
             return;
         }
-        Zooming = !Zooming;
-        var size = Zooming ? 12f : 3f;
-        ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlus.LoadAsset() : TouAssets.ZoomMinus.LoadAsset();
-        ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlusActive.LoadAsset() : TouAssets.ZoomMinusActive.LoadAsset();
 
-        Camera.main.orthographicSize = size;
-        HudManager.Instance.UICamera.orthographicSize = size;
-        // apparently, zooming does NOT work when the window size is 16:9
-        // TODO: Improve shadow quad scaling for abnormal resolutions (and do it on the other functions)
-        /* var fakeWidth = (int)(Math.Round(Screen.width / 10.0));
-        var fakeHeight = (int)(Math.Round(Screen.height / 10.0));
-        int gcd = (int)System.Numerics.BigInteger.GreatestCommonDivisor(fakeWidth, fakeHeight);
-        var ratioWidth = fakeWidth / gcd;
-        var ratioHeight = fakeHeight / gcd;
-        HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(ratioWidth / 1.5f, ratioHeight / 1.5f) * (size / 3f); */
-        // HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f) * (size / 3f);
-        if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
-        ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
+        AdjustCameraSize(!Zooming ? 12f : 3f);
     }
 
     public static void ScrollZoom(bool zoomOut = false)
     {
-        if (MeetingHud.Instance)
+        if (MeetingHud.Instance || ExileController.Instance)
         {
             ZoomButton.SetActive(false);
             return;
         }
-        var size = Camera.main.orthographicSize;
-        if (zoomOut) size *= 1.25f;
-        else size /= 1.25f;
-        if (size != 3f) Zooming = true;
-        if (size <= 3f)
-        {
-            Zooming = false;
-            size = 3f;
-        }
-        else if (size >= 12f)
-        {
-            Zooming = true;
-        }
-        if (size >= 15f) size = 15f;
-        ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlus.LoadAsset() : TouAssets.ZoomMinus.LoadAsset();
-        ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = Zooming ? TouAssets.ZoomPlusActive.LoadAsset() : TouAssets.ZoomMinusActive.LoadAsset();
 
-        Camera.main.orthographicSize = size;
-        HudManager.Instance.UICamera.orthographicSize = size;
-        // HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f) * (size / 3f);
-        if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
-        ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
+        var size = Camera.main!.orthographicSize;
+        size = zoomOut ? size * 1.25f : size / 1.25f;
+        size = Mathf.Clamp(size, 3, 15);
+
+        AdjustCameraSize(size);
     }
 
     public static void ResetZoom()
     {
-        Zooming = false;
-        var size = 3f;
-        ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = TouAssets.ZoomMinus.LoadAsset();
-        ZoomButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = TouAssets.ZoomMinusActive.LoadAsset();
         ZoomButton.SetActive(false);
 
-        Camera.main.orthographicSize = size;
-        HudManager.Instance.UICamera.orthographicSize = size;
-        // HudManager.Instance.ShadowQuad.transform.localScale = new Vector3(10.6667f, 6f, 0f);
-        if (GameObject.Find("ShadowCamera").TryGetComponent<Camera>(out var shadowCam)) shadowCam.orthographicSize = size;
-        ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
+        AdjustCameraSize(3f);
     }
 
-    private static void CheckForScrollZoom()
+    public static void CheckForScrollZoom()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") > 0 || ConsoleJoystick.player.GetAxisRaw(55) > 0)
+        var scrollWheel = Input.GetAxis("Mouse ScrollWheel");
+        var axisRaw = ConsoleJoystick.player.GetAxisRaw(55);
+
+        if (scrollWheel > 0 || axisRaw > 0)
         {
             ScrollZoom();
         }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0 || ConsoleJoystick.player.GetAxisRaw(55) < 0)
+        else if (scrollWheel < 0 || axisRaw < 0)
         {
             ScrollZoom(true);
         }
     }
 
-    private static void UpdateTeamChat(HudManager instance)
+    public static void UpdateTeamChat()
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 
         var isValid = MeetingHud.Instance &&
-            (PlayerControl.LocalPlayer.IsJailed() || PlayerControl.LocalPlayer.Data.Role is JailorRole ||
-            (PlayerControl.LocalPlayer.IsImpostor() && genOpt is { FFAImpostorMode: false, ImpostorChat.Value: true }) ||
-            (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat));
+                      (PlayerControl.LocalPlayer.IsJailed() || PlayerControl.LocalPlayer.Data.Role is JailorRole ||
+                       (PlayerControl.LocalPlayer.IsImpostor() && genOpt is
+                           { FFAImpostorMode: false, ImpostorChat.Value: true }) ||
+                       (PlayerControl.LocalPlayer.Data.Role is VampireRole && genOpt.VampireChat));
 
-        if (TeamChatButton)
+        if (!TeamChatButton)
         {
-            TeamChatButton.SetActive(isValid);
-            var aspectPosition = TeamChatButton.GetComponentInChildren<AspectPosition>();
-            var distanceFromEdge = aspectPosition.DistanceFromEdge;
-            distanceFromEdge.x = HudManager.Instance.Chat.isActiveAndEnabled ? 2.73f : 2.15f;
-            distanceFromEdge.y = 0.485f;
-            aspectPosition.DistanceFromEdge = distanceFromEdge;
-            aspectPosition.AdjustPosition();
-            TeamChatButton.transform.Find("Selected").gameObject.SetActive(false);
-            if (TeamChatPatches.TeamChatActive)
-            {
-                TeamChatButton.transform.Find("Inactive").gameObject.SetActive(false);
-                TeamChatButton.transform.Find("Active").gameObject.SetActive(false);
-                TeamChatButton.transform.Find("Selected").gameObject.SetActive(true);
-            }
+            return;
         }
+
+        TeamChatButton.SetActive(isValid);
+        var aspectPosition = TeamChatButton.GetComponentInChildren<AspectPosition>();
+        var distanceFromEdge = aspectPosition.DistanceFromEdge;
+        distanceFromEdge.x = HudManager.Instance.Chat.isActiveAndEnabled ? 2.73f : 2.15f;
+        distanceFromEdge.y = 0.485f;
+        aspectPosition.DistanceFromEdge = distanceFromEdge;
+        aspectPosition.AdjustPosition();
+        TeamChatButton.transform.Find("Selected").gameObject.SetActive(false);
+
+        if (!TeamChatPatches.TeamChatActive)
+        {
+            return;
+        }
+
+        TeamChatButton.transform.Find("Inactive").gameObject.SetActive(false);
+        TeamChatButton.transform.Find("Active").gameObject.SetActive(false);
+        TeamChatButton.transform.Find("Selected").gameObject.SetActive(true);
     }
 
-    private static void UpdateCamouflageComms(HudManager instance)
+    public static bool CommsSaboActive()
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
 
         // Camo comms
-        if (genOpt.CamouflageComms)
+        if (!genOpt.CamouflageComms)
         {
-            if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Comms, out var commsSystem) || commsSystem == null)
-                return;
-
-            var isActive = false;
-            if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq || ShipStatus.Instance.Type == ShipStatus.MapType.Fungle)
-            {
-                var hqSystem = commsSystem.Cast<HqHudSystemType>();
-                if (hqSystem != null) isActive = hqSystem.IsActive;
-            }
-            else
-            {
-                var hudSystem = commsSystem.Cast<HudOverrideSystemType>();
-                if (hudSystem != null) isActive = hudSystem.IsActive;
-            }
-
-            foreach (var player in PlayerControl.AllPlayerControls)
-            {
-                var appearanceType = player.GetAppearanceType();
-                if (isActive)
-                {
-                    if (appearanceType != TownOfUsAppearances.Swooper)
-                    {
-                        player.SetCamouflage(true);
-                    }
-                }
-                else
-                {
-                    if (appearanceType == TownOfUsAppearances.Camouflage && !player.HasModifier<VenererCamouflageModifier>() && !PlayerControl.LocalPlayer.IsHysteria())
-                    {
-                        player.SetCamouflage(false);
-                    }
-                }
-            }
+            return false;
         }
-    }
 
-    private static void UpdateColorNameText(HudManager instance)
-    {
-        if (MeetingHud.Instance)
+        if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Comms, out var commsSystem) ||
+            commsSystem == null)
         {
-            foreach (var colorBlindName in MeetingHud.Instance.playerStates.Select(playerVA => playerVA.ColorBlindName))
+            return false;
+        }
+
+        var isActive = false;
+
+        if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq || ShipStatus.Instance.Type == ShipStatus.MapType.Fungle)
+        {
+            var hqSystem = commsSystem.Cast<HqHudSystemType>();
+            if (hqSystem != null)
             {
-                colorBlindName.text = colorBlindName.text.ToTitleCase();
+                isActive = hqSystem.IsActive;
             }
         }
         else
         {
-            foreach (var player in PlayerControl.AllPlayerControls)
+            var hudSystem = commsSystem.Cast<HudOverrideSystemType>();
+            if (hudSystem != null)
             {
-                player.cosmetics.colorBlindText.text = player.cosmetics.colorBlindText.text.ToTitleCase();
+                isActive = hudSystem.IsActive;
             }
+        }
+
+        return isActive;
+    }
+
+    public static void UpdateCamouflageComms()
+    {
+        var isActive = CommsSaboActive();
+
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            var appearanceType = player.GetAppearanceType();
+            if (isActive)
+            {
+                if (appearanceType != TownOfUsAppearances.Swooper)
+                {
+                    player.SetCamouflage();
+                }
+            }
+            else
+            {
+                if (appearanceType == TownOfUsAppearances.Camouflage &&
+                    !player.HasModifier<VenererCamouflageModifier>() &&
+                    !PlayerControl.LocalPlayer.IsHysteria())
+                {
+                    player.SetCamouflage(false);
+                }
+            }
+        }
+
+        if (isActive)
+        {
+            if (!CamouflageFootsteps)
+            {
+                foreach (var steps in ModifierUtils.GetActiveModifiers<FootstepsModifier>()
+                             .Select(mod => mod._currentSteps))
+                {
+                    if (steps != null && steps.Count > 0)
+                    {
+                        steps.DoIf(x => x.Key, x => x.Value.color = new Color(0.2f, 0.2f, 0.2f, x.Value.color.a));
+                    }
+                }
+            }
+
+            CamouflageCommsEnabled = true;
+            CamouflageFootsteps = true;
+
+            FakePlayer.FakePlayers.Do(x => x.Camo());
+
+            return;
+        }
+
+        if (CamouflageFootsteps)
+        {
+            CamouflageFootsteps = false;
+
+            foreach (var mod in ModifierUtils.GetActiveModifiers<FootstepsModifier>())
+            {
+                if (mod._currentSteps != null && mod._currentSteps.Count > 0)
+                {
+                    mod._currentSteps.DoIf(x => x.Key,
+                        x => x.Value.color = new Color(mod._footstepColor.r, mod._footstepColor.g, mod._footstepColor.b,
+                            x.Value.color.a));
+                }
+            }
+        }
+
+        if (CamouflageCommsEnabled)
+        {
+            CamouflageCommsEnabled = false;
+
+            FakePlayer.FakePlayers.Do(x => x.UnCamo());
         }
     }
 
-    private static void UpdateRoleNameText(HudManager instance)
+    public static void UpdateRoleNameText()
     {
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-        var taskopt = OptionGroupSingleton<TaskTrackingOptions>.Instance;
+        var taskOpt = OptionGroupSingleton<TaskTrackingOptions>.Instance;
 
         if (MeetingHud.Instance)
         {
@@ -252,104 +346,48 @@ public static class HudManagerPatches
                 var player = MiscUtils.PlayerById(playerVA.TargetPlayerId);
                 playerVA.ColorBlindName.transform.localPosition = new Vector3(-0.93f, -0.2f, -0.1f);
 
-                if (player == null) continue;
+                if (player == null || player.Data == null || player.Data.Role == null)
+                {
+                    continue;
+                }
 
                 var playerName = player.GetDefaultAppearance().PlayerName ?? "Unknown";
                 var playerColor = Color.white;
 
-                if (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && PlayerControl.LocalPlayer != player && !genOpt.FFAImpostorMode)
+                if (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() &&
+                    PlayerControl.LocalPlayer != player && !genOpt.FFAImpostorMode)
+                {
                     playerColor = Color.red;
-
-                if (player.HasModifier<SeerGoodRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
-                    playerColor = Color.green;
-                else if (player.HasModifier<SeerEvilRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
-                    playerColor = Color.red;
-
-                if (player.HasModifier<PoliticianCampaignedModifier>(x => x.Politician == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<PoliticianRole>())
-                    playerColor = Color.cyan;
-
-                if ((player.HasModifier<ExecutionerTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ExecutionerRole>())
-                || (player.HasModifier<ExecutionerTargetModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
-                    playerName += "<color=#643B1F> X</color>";
-
-                if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole))
-                    playerName += "<color=#D94291> $</color>";
-
-                if (player.HasModifier<MercenaryBribedModifier>(x => x.Mercenary == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MercenaryRole>())
-                {
-                    playerColor = Color.green;
-
-                    if (player.Is(RoleAlignment.NeutralEvil) || player.IsRole<AmnesiacRole>() || player.IsRole<MercenaryRole>())
-                        playerColor = Color.red;
                 }
 
-                if ((player.HasModifier<GuardianAngelTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<GuardianAngelTouRole>())
-                    || (player.HasModifier<GuardianAngelTargetModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)
-                    || (player.AmOwner && OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows))))
-                {
-                    playerName += "<color=#B3FFFF> ★</color>";
-                }
-
-                if ((player.HasModifier<MedicShieldModifier>(x => x.Medic == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MedicRole>())
-                    || (player.HasModifier<MedicShieldModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)
-                    || (player.AmOwner && player.TryGetModifier<MedicShieldModifier>(out var med) && med.VisibleSymbol))))
-                {
-                    playerName += "<color=#006600> +</color>";
-                }
-
-                if ((player.HasModifier<ClericBarrierModifier>(x => x.Cleric == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<ClericRole>())
-                    || (player.HasModifier<ClericBarrierModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)
-                    || (player.AmOwner && player.TryGetModifier<ClericBarrierModifier>(out var cleric) && cleric.VisibleSymbol))))
-                {
-                    playerName += "<color=#00FFB3> Ω</color>";
-                }
-
-                if ((player.HasModifier<WardenFortifiedModifier>(x => x.Warden == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<WardenRole>())
-                    || (player.HasModifier<WardenFortifiedModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)
-                    || (player.AmOwner && player.TryGetModifier<WardenFortifiedModifier>(out var warden) && warden.VisibleSymbol))))
-                {
-                    playerName += "<color=#9900FF> π</color>";
-                }
-
-                if (player.HasModifier<LoverModifier>() && (PlayerControl.LocalPlayer.HasModifier<LoverModifier>() || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)))
-                    playerName += "<color=#FF66CC> ♥</color>";
-                if (player.HasModifier<EgotistModifier>() && (player.AmOwner || EgotistModifier.EgoVisibilityFlag(player) && (SnitchRole.SnitchVisibilityFlag(player, true) || MayorRole.MayorVisibilityFlag(player)) || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow)))
-                    playerName += "<color=#FFFFFF> (<color=#669966>Egotist</color>)</color>";
-
-                if ((player.HasModifier<PlaguebearerInfectedModifier>(x => x.PlagueBearerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<PlaguebearerRole>())
-                || (player.HasModifier<PlaguebearerInfectedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
-                    playerName += "<color=#E6FFB3> ¥</color>";
-
-                if ((player.HasModifier<ArsonistDousedModifier>(x => x.ArsonistId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ArsonistRole>())
-                || (player.HasModifier<ArsonistDousedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
-                    playerName += "<color=#FF4D00> Δ</color>";
-
-                if ((player.HasModifier<BlackmailedModifier>(x => x.BlackMailerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<BlackmailerRole>())
-                || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.IsImpostor() && genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
-                || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
-                    playerName += "<color=#2A1119> M</color>";
-
-                if ((player.HasModifier<HypnotisedModifier>(x => x.Hypnotist == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<HypnotistRole>())
-                || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.IsImpostor() && genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
-                || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow))
-                    playerName += "<color=#D53F42> @</color>";
+                playerColor = playerColor.UpdateTargetColor(player);
+                playerName = playerName.UpdateTargetSymbols(player);
+                playerName = playerName.UpdateProtectionSymbols(player);
+                playerName = playerName.UpdateAllianceSymbols(player);
+                playerName = playerName.UpdateStatusSymbols(player);
 
                 var role = player.Data.Role;
 
-                if (role == null) continue;
+                if (role == null)
+                {
+                    continue;
+                }
 
                 var color = role.TeamColor;
 
                 if (HaunterRole.HaunterVisibilityFlag(player))
+                {
                     playerColor = color;
+                }
 
                 color = Color.white;
 
                 var roleName = "";
 
                 if (player.AmOwner ||
-                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
-                    (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
+                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is
+                        { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
+                    (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
                     SnitchRole.SnitchVisibilityFlag(player, true) ||
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
@@ -358,31 +396,51 @@ public static class HudManagerPatches
                 {
                     color = role.TeamColor;
                     roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color></size>";
-                    if (!player.HasModifier<VampireBittenModifier>() && player.Data.Role is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
+                    if (!player.HasModifier<VampireBittenModifier>() && role is VampireRole)
+                    {
+                        roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
+                    }
 
                     var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole);
-                    if (cachedMod is ICachedRole cache && player.Data.Role.GetType() != cache.CachedRole.GetType())
+                    if (cachedMod is ICachedRole cache && cache.Visible &&
+                        player.Data.Role.GetType() != cache.CachedRole.GetType())
                     {
-                        if (cache.ShowCurrentRoleFirst) roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color> ({cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color>)</size>";
-                        else roleName = $"<size=80%>{cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
+                        roleName = cache.ShowCurrentRoleFirst
+                            ? $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color> ({cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color>)</size>"
+                            : $"<size=80%>{cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
                     }
+
                     // Guardian Angel here is vanilla's GA, NOT Town of Us GA
-                    if (player.Data.IsDead && role is GuardianAngelRole gaRole) roleName = $"<size=80%>{gaRole.TeamColor.ToTextColor()}{gaRole?.NiceName}</color></size>";
-                    if (SleuthModifier.SleuthVisibilityFlag(player) || (player.Data.IsDead && role is not PhantomTouRole or GuardianAngelRole or HaunterRole))
+                    if (player.Data.IsDead && role is GuardianAngelRole gaRole)
+                    {
+                        roleName = $"<size=80%>{gaRole.TeamColor.ToTextColor()}{gaRole?.NiceName}</color></size>";
+                    }
+
+                    if (SleuthModifier.SleuthVisibilityFlag(player) || (player.Data.IsDead &&
+                                                                        role is not PhantomTouRole &&
+                                                                        role is not GuardianAngelRole &&
+                                                                        role is not HaunterRole))
                     {
                         var roleWhenAlive = player.GetRoleWhenAlive();
                         color = roleWhenAlive.TeamColor;
 
                         roleName = $"<size=80%>{color.ToTextColor()}{roleWhenAlive.NiceName}</color></size>";
-                        if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
+                        if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole)
+                        {
+                            roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
+                        }
                     }
                 }
 
-                if (((taskopt.ShowTaskInMeetings && player.AmOwner) || (PlayerControl.LocalPlayer.HasDied() && taskopt.ShowTaskDead)) && (player.IsCrewmate() || player.Data.Role is PhantomTouRole))
+                if (((taskOpt.ShowTaskInMeetings && player.AmOwner) ||
+                     (PlayerControl.LocalPlayer.HasDied() && taskOpt.ShowTaskDead)) &&
+                    (player.IsCrewmate() || player.Data.Role is PhantomTouRole))
                 {
-                    var completed = player.myTasks.ToArray().Count(x => x.IsComplete);
-                    var totaltasks = player.myTasks.ToArray().Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
-                    roleName += $" <size=80%>{Color.yellow.ToTextColor()}({completed}/{totaltasks})</color></size>";
+                    if (roleName != string.Empty)
+                    {
+                        roleName += " ";
+                    }
+                    roleName += $"<size=80%>{player.TaskInfo()}</size>";
                 }
 
                 if (player.TryGetModifier<OracleConfessModifier>(out var confess, x => x.ConfessToAll))
@@ -390,25 +448,34 @@ public static class HudManagerPatches
                     var accuracy = OptionGroupSingleton<OracleOptions>.Instance.RevealAccuracyPercentage;
                     var revealText = confess.RevealedFaction switch
                     {
-                        ModdedRoleTeams.Crewmate => $"\n<size=75%>{Palette.CrewmateBlue.ToTextColor()}({accuracy}% Crew) </color></size>",
-                        ModdedRoleTeams.Custom => $"\n<size=75%>{TownOfUsColors.Neutral.ToTextColor()}({accuracy}% Neut) </color></size>",
-                        ModdedRoleTeams.Impostor => $"\n<size=75%>{TownOfUsColors.ImpSoft.ToTextColor()}({accuracy}% Imp) </color></size>",
-                        _ => string.Empty,
+                        ModdedRoleTeams.Crewmate =>
+                            $"\n<size=75%>{Palette.CrewmateBlue.ToTextColor()}({accuracy}% Crew) </color></size>",
+                        ModdedRoleTeams.Custom =>
+                            $"\n<size=75%>{TownOfUsColors.Neutral.ToTextColor()}({accuracy}% Neut) </color></size>",
+                        ModdedRoleTeams.Impostor =>
+                            $"\n<size=75%>{TownOfUsColors.ImpSoft.ToTextColor()}({accuracy}% Imp) </color></size>",
+                        _ => string.Empty
                     };
 
                     playerName += revealText;
                 }
-                if (SnitchRole.SnitchVisibilityFlag(player)) playerColor = TownOfUsColors.Impostor;
+
+                if (SnitchRole.SnitchVisibilityFlag(player))
+                {
+                    playerColor = TownOfUsColors.Impostor;
+                }
 
                 if (player?.Data?.Disconnected == true)
                 {
-                    if (!((PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
-                    (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
-                    SnitchRole.SnitchVisibilityFlag(player, true) ||
-                    !TutorialManager.InstanceExists && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
-                    GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
-                    SleuthModifier.SleuthVisibilityFlag(player) ||
-                    MayorRole.MayorVisibilityFlag(player))))
+                    if (!((PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is
+                              { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
+                          (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
+                          SnitchRole.SnitchVisibilityFlag(player, true) ||
+                          (!TutorialManager.InstanceExists &&
+                           ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
+                            GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
+                            SleuthModifier.SleuthVisibilityFlag(player) ||
+                            MayorRole.MayorVisibilityFlag(player)))))
                     {
                         roleName = "";
                         color = Color.white;
@@ -426,8 +493,14 @@ public static class HudManagerPatches
 
                 if (!string.IsNullOrEmpty(roleName))
                 {
-                    if (TownOfUsPlugin.ColorPlayerName.Value) playerName = $"{roleName}\n{color.ToTextColor()}{playerName}</color>";
-                    else playerName = $"{roleName}\n{playerName}";
+                    if (TownOfUsPlugin.ColorPlayerName.Value)
+                    {
+                        playerName = $"{roleName}\n{color.ToTextColor()}{playerName}</color>";
+                    }
+                    else
+                    {
+                        playerName = $"{roleName}\n{playerName}";
+                    }
                 }
 
                 playerVA.NameText.text = playerName;
@@ -436,108 +509,47 @@ public static class HudManagerPatches
         }
         else
         {
-            var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
-            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+            var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x =>
+                x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x =>
+                x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
 
             foreach (var player in PlayerControl.AllPlayerControls)
             {
+                if (player == null || player.Data == null || player.Data.Role == null)
+                {
+                    continue;
+                }
+
                 var playerName = player.GetAppearance().PlayerName ?? "Unknown";
                 var playerColor = Color.white;
 
-                if (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && PlayerControl.LocalPlayer != player && !genOpt.FFAImpostorMode)
+                if (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() &&
+                    PlayerControl.LocalPlayer != player && !genOpt.FFAImpostorMode)
+                {
                     playerColor = Color.red;
-
-                if (player.HasModifier<EclipsalBlindModifier>() && PlayerControl.LocalPlayer.IsImpostor())
-                    playerColor = Color.black;
-
-                if (player.HasModifier<GrenadierFlashModifier>() && !player.IsImpostor() && PlayerControl.LocalPlayer.IsImpostor())
-                    playerColor = Color.black;
-
-                if (player.HasModifier<SeerGoodRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
-                    playerColor = Color.green;
-                else if (player.HasModifier<SeerEvilRevealModifier>() && PlayerControl.LocalPlayer.IsRole<SeerRole>())
-                    playerColor = Color.red;
-
-                if (player.HasModifier<PoliticianCampaignedModifier>(x => x.Politician == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<PoliticianRole>())
-                    playerColor = Color.cyan;
-
-                if ((player.HasModifier<ExecutionerTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ExecutionerRole>())
-                    || (player.HasModifier<ExecutionerTargetModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
-                    playerName += "<color=#643B1F> X</color>";
-
-                if (player.HasModifier<InquisitorHereticModifier>() && PlayerControl.LocalPlayer.HasDied() && (genOpt.TheDeadKnow || PlayerControl.LocalPlayer.GetRoleWhenAlive() is InquisitorRole) && !body && !fakePlayer?.body)
-                    playerName += "<color=#D94291> $</color>";
-
-                if (player.HasModifier<MercenaryBribedModifier>(x => x.Mercenary == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MercenaryRole>())
-                {
-                    playerColor = Color.green;
-
-                    if (player.Is(RoleAlignment.NeutralEvil) || player.IsRole<AmnesiacRole>() || player.IsRole<MercenaryRole>())
-                        playerColor = Color.red;
                 }
 
-                if ((player.HasModifier<GuardianAngelTargetModifier>(x => x.OwnerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<GuardianAngelTouRole>())
-                    || (player.HasModifier<GuardianAngelTargetModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body)
-                    || (player.AmOwner && OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows))))
-                {
-                    playerName += player.HasModifier<GuardianAngelProtectModifier>() ? "<color=#FFD900> ★</color>" : "<color=#B3FFFF> ★</color>";
-                }
-
-                if ((player.HasModifier<MedicShieldModifier>(x => x.Medic == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<MedicRole>())
-                    || (player.HasModifier<MedicShieldModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body)
-                    || (player.AmOwner && player.TryGetModifier<MedicShieldModifier>(out var med) && med.VisibleSymbol))))
-                {
-                    playerName += "<color=#006600> +</color>";
-                }
-
-                if ((player.HasModifier<ClericBarrierModifier>(x => x.Cleric == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<ClericRole>())
-                    || (player.HasModifier<ClericBarrierModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body)
-                    || (player.AmOwner && player.TryGetModifier<ClericBarrierModifier>(out var cleric) && cleric.VisibleSymbol))))
-                {
-                    playerName += "<color=#00FFB3> Ω</color>";
-                }
-
-                if ((player.HasModifier<WardenFortifiedModifier>(x => x.Warden == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<WardenRole>())
-                    || (player.HasModifier<WardenFortifiedModifier>() && ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body)
-                    || (player.AmOwner && player.TryGetModifier<WardenFortifiedModifier>(out var warden) && warden.VisibleSymbol))))
-                {
-                    playerName += "<color=#9900FF> π</color>";
-                }
-
-                if (player.HasModifier<LoverModifier>() && (PlayerControl.LocalPlayer.HasModifier<LoverModifier>() || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body)))
-                    playerName += "<color=#FF66CC> ♥</color>";
-
-                if (player.HasModifier<EgotistModifier>() && (player.AmOwner || EgotistModifier.EgoVisibilityFlag(player) && (SnitchRole.SnitchVisibilityFlag(player, true) || MayorRole.MayorVisibilityFlag(player)) || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body)))
-                    playerName += "<color=#FFFFFF> (<color=#669966>Egotist</color>)</color>";
-
-                if ((player.HasModifier<PlaguebearerInfectedModifier>(x => x.PlagueBearerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<PlaguebearerRole>())
-                || (player.HasModifier<PlaguebearerInfectedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
-                    playerName += "<color=#E6FFB3> ¥</color>";
-
-                if ((player.HasModifier<ArsonistDousedModifier>(x => x.ArsonistId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<ArsonistRole>())
-                || (player.HasModifier<ArsonistDousedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
-                    playerName += "<color=#FF4D00> Δ</color>";
-
-                if ((player.HasModifier<BlackmailedModifier>(x => x.BlackMailerId == PlayerControl.LocalPlayer.PlayerId) && PlayerControl.LocalPlayer.IsRole<BlackmailerRole>())
-                || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.IsImpostor() && genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
-                || (player.HasModifier<BlackmailedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
-                    playerName += "<color=#2A1119> M</color>";
-
-                if ((player.HasModifier<HypnotisedModifier>(x => x.Hypnotist == PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole<HypnotistRole>())
-                || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.IsImpostor() && genOpt.ImpsKnowRoles && !genOpt.FFAImpostorMode)
-                || (player.HasModifier<HypnotisedModifier>() && PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
-                    playerName += "<color=#D53F42> @</color>";
+                playerColor = playerColor.UpdateTargetColor(player, body || fakePlayer?.body);
+                playerName = playerName.UpdateTargetSymbols(player, body || fakePlayer?.body);
+                playerName = playerName.UpdateProtectionSymbols(player, body || fakePlayer?.body);
+                playerName = playerName.UpdateAllianceSymbols(player, body || fakePlayer?.body);
+                playerName = playerName.UpdateStatusSymbols(player, body || fakePlayer?.body);
 
                 var role = player.Data.Role;
                 var color = Color.white;
 
-                if (role == null) continue;
+                if (role == null)
+                {
+                    continue;
+                }
 
                 var roleName = "";
 
                 if (player.AmOwner ||
-                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
-                    (PlayerControl.LocalPlayer.Data.Role is VampireRole && role is VampireRole) ||
+                    (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is
+                        { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
+                    (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
                     SnitchRole.SnitchVisibilityFlag(player, true) ||
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
@@ -545,32 +557,52 @@ public static class HudManagerPatches
                 {
                     color = role.TeamColor;
                     roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color></size>";
-                    if (!player.HasModifier<VampireBittenModifier>() && player.Data.Role is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
+                    if (!player.HasModifier<VampireBittenModifier>() && player.Data.Role is VampireRole)
+                    {
+                        roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
+                    }
 
                     var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole);
-                    if (cachedMod is ICachedRole cache && player.Data.Role.GetType() != cache.CachedRole.GetType())
+                    if (cachedMod is ICachedRole cache && cache.Visible &&
+                        player.Data.Role.GetType() != cache.CachedRole.GetType())
                     {
-                        if (cache.ShowCurrentRoleFirst) roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color> ({cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color>)</size>";
-                        else roleName = $"<size=80%>{cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
+                        roleName = cache.ShowCurrentRoleFirst
+                            ? $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color> ({cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color>)</size>"
+                            : $"<size=80%>{cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
                     }
+
                     // Guardian Angel here is vanilla's GA, NOT Town of Us GA
-                    if (player.Data.IsDead && role is GuardianAngelRole gaRole) roleName = $"<size=80%>{gaRole.TeamColor.ToTextColor()}{gaRole.NiceName}</color></size>";
-                    if (SleuthModifier.SleuthVisibilityFlag(player) || (player.Data.IsDead && role is not PhantomTouRole or GuardianAngelRole or HaunterRole))
+                    if (player.Data.IsDead && role is GuardianAngelRole gaRole)
+                    {
+                        roleName = $"<size=80%>{gaRole.TeamColor.ToTextColor()}{gaRole.NiceName}</color></size>";
+                    }
+
+                    if (SleuthModifier.SleuthVisibilityFlag(player) || (player.Data.IsDead &&
+                                                                        role is not PhantomTouRole &&
+                                                                        role is not GuardianAngelRole &&
+                                                                        role is not HaunterRole))
                     {
                         var roleWhenAlive = player.GetRoleWhenAlive();
                         color = roleWhenAlive.TeamColor;
 
                         roleName = $"<size=80%>{color.ToTextColor()}{roleWhenAlive.NiceName}</color></size>";
-                        if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole) roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
+                        if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole)
+                        {
+                            roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
+                        }
                     }
                 }
 
-                if (((taskopt.ShowTaskRound && player.AmOwner) || (PlayerControl.LocalPlayer.HasDied() && taskopt.ShowTaskDead && !body && !fakePlayer?.body)) && (player.IsCrewmate() || player.Data.Role is PhantomTouRole))
+                if (((taskOpt.ShowTaskRound && player.AmOwner) || (PlayerControl.LocalPlayer.HasDied() &&
+                                                                   taskOpt.ShowTaskDead && !body &&
+                                                                   !fakePlayer?.body)) && (player.IsCrewmate() ||
+                        player.Data.Role is PhantomTouRole))
                 {
-                    var completed = player.myTasks.ToArray().Count(x => x.IsComplete);
-                    var totaltasks = player.myTasks.ToArray().Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
-
-                    roleName += $" <size=80%>{Color.yellow.ToTextColor()}({completed}/{totaltasks})</color></size>";
+                    if (roleName != string.Empty)
+                    {
+                        roleName += " ";
+                    }
+                    roleName += $"<size=80%>{player.TaskInfo()}</size>";
                 }
 
                 if (player.AmOwner && player.TryGetModifier<ScatterModifier>(out var scatter) && !player.HasDied())
@@ -582,12 +614,17 @@ public static class HudManagerPatches
                 {
                     playerColor = Color.clear;
                 }
-                if (SnitchRole.SnitchVisibilityFlag(player)) playerColor = TownOfUsColors.Impostor;
+
+                if (SnitchRole.SnitchVisibilityFlag(player))
+                {
+                    playerColor = TownOfUsColors.Impostor;
+                }
 
                 if (!string.IsNullOrEmpty(roleName))
                 {
-                    if (TownOfUsPlugin.ColorPlayerName.Value) playerName = $"{roleName}\n{color.ToTextColor()}{playerName}</color>";
-                    else playerName = $"{roleName}\n{playerName}";
+                    playerName = TownOfUsPlugin.ColorPlayerName.Value
+                        ? $"{roleName}\n{color.ToTextColor()}{playerName}</color>"
+                        : $"{roleName}\n{playerName}";
                 }
 
                 player.cosmetics.nameText.text = playerName;
@@ -595,51 +632,71 @@ public static class HudManagerPatches
                 player.cosmetics.nameText.transform.localPosition = new Vector3(0f, 0.15f, -0.5f);
             }
         }
+
+        if (HudManager.Instance.TaskPanel != null)
+        {
+            var tabText = HudManager.Instance.TaskPanel.tab.transform.FindChild("TabText_TMP")
+                .GetComponent<TextMeshPro>();
+            tabText.SetText($"Tasks {PlayerControl.LocalPlayer.TaskInfo()}");
+        }
     }
 
-    private static void UpdateGhostRoles(HudManager instance)
+    public static void UpdateGhostRoles(HudManager instance)
     {
         foreach (var phantom in CustomRoleUtils.GetActiveRolesOfType<PhantomTouRole>())
         {
-            if (phantom.Player.Data != null && phantom.Player.Data.Disconnected) continue;
+            if (phantom.Player.Data != null && phantom.Player.Data.Disconnected)
+            {
+                continue;
+            }
+
             phantom.FadeUpdate(instance);
         }
 
         foreach (var haunter in CustomRoleUtils.GetActiveRolesOfType<HaunterRole>())
         {
-            if (haunter.Player.Data != null && haunter.Player.Data.Disconnected) continue;
+            if (haunter.Player.Data != null && haunter.Player.Data.Disconnected)
+            {
+                continue;
+            }
+
             haunter.FadeUpdate(instance);
         }
     }
 
-    private static string GetRoleForSlot(int slotValue)
+    public static string GetRoleForSlot(int slotValue)
     {
         var roleListText = RoleOptions.OptionStrings.ToList();
         if (slotValue >= 0 && slotValue < roleListText.Count)
         {
             return roleListText[slotValue];
         }
-        else
-        {
-            return "<color=#696969>Unknown</color>";
-        }
+
+        return "<color=#696969>Unknown</color>";
     }
 
-    private static void UpdateRoleList(HudManager instance)
+    public static void UpdateRoleList(HudManager instance)
     {
         if (!LobbyBehaviour.Instance)
         {
-            if (RoleList != null) RoleList.Destroy();
+            if (RoleList)
+            {
+                RoleList.SetActive(false);
+            }
+
             return;
         }
 
-        if (RoleList == null)
+        if (!RoleList)
         {
-            var pingTracker = UnityEngine.Object.FindObjectOfType<PingTracker>(true);
-            RoleList = UnityEngine.Object.Instantiate(pingTracker.gameObject, instance.transform);
+            var pingTracker = Object.FindObjectOfType<PingTracker>(true);
+            RoleList = Object.Instantiate(pingTracker.gameObject, instance.transform);
             RoleList.name = "RoleListText";
-            RoleList.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(-4.9f, 5.9f);
+            //RoleList.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(-4.9f, 5.9f);
             RoleList.SetActive(false);
+            var pos = RoleList.gameObject.GetComponent<AspectPosition>();
+            pos.Alignment = AspectPosition.EdgeAlignments.LeftTop;
+            pos.DistanceFromEdge = new Vector3(0.43f, 0.1f, 1f);
         }
         else
         {
@@ -648,14 +705,14 @@ public static class HudManagerPatches
             var rolelistBuilder = new StringBuilder();
 
             var players = GameData.Instance.PlayerCount;
-            int maxSlots = players < 15 ? players : 15;
+            var maxSlots = players < 15 ? players : 15;
 
             var list = OptionGroupSingleton<RoleOptions>.Instance;
             if (list.RoleListEnabled)
             {
-                for (int i = 0; i < maxSlots; i++)
+                for (var i = 0; i < maxSlots; i++)
                 {
-                    int slotValue = i switch
+                    var slotValue = i switch
                     {
                         0 => list.Slot1,
                         1 => list.Slot2,
@@ -681,9 +738,12 @@ public static class HudManagerPatches
             }
             else
             {
-                rolelistBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"<color=#999999>Neutral</color> Benigns: {list.MinNeutralBenign.Value} Min, {list.MaxNeutralBenign.Value} Max");
-                rolelistBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"<color=#999999>Neutral</color> Evils: {list.MinNeutralEvil.Value} Min, {list.MaxNeutralEvil.Value} Max");
-                rolelistBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"<color=#999999>Neutral</color> Killers: {list.MinNeutralKiller.Value} Min, {list.MaxNeutralKiller.Value} Max");
+                rolelistBuilder.AppendLine(CultureInfo.InvariantCulture,
+                    $"<color=#999999>Neutral</color> Benigns: {list.MinNeutralBenign.Value} Min, {list.MaxNeutralBenign.Value} Max");
+                rolelistBuilder.AppendLine(CultureInfo.InvariantCulture,
+                    $"<color=#999999>Neutral</color> Evils: {list.MinNeutralEvil.Value} Min, {list.MaxNeutralEvil.Value} Max");
+                rolelistBuilder.AppendLine(CultureInfo.InvariantCulture,
+                    $"<color=#999999>Neutral</color> Killers: {list.MinNeutralKiller.Value} Min, {list.MaxNeutralKiller.Value} Max");
                 objText.text = $"<color=#FFD700>Neutral Faction List:</color>\n{rolelistBuilder}";
             }
 
@@ -695,16 +755,15 @@ public static class HudManagerPatches
         }
     }
 
-    private static void CreateZoomButton(HudManager instance)
+    public static void CreateZoomButton(HudManager instance)
     {
         var isChatButtonVisible = HudManager.Instance.Chat.isActiveAndEnabled;
 
         if (!ZoomButton)
         {
-            ZoomButton =
-                UnityEngine.Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
-            ZoomButton.GetComponent<PassiveButton>().OnClick = new();
-            ZoomButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(Zoom));
+            ZoomButton = Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
+            ZoomButton.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
+            ZoomButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(ButtonClickZoom));
             ZoomButton.name = "Zoom";
             ZoomButton.transform.Find("Background").localPosition = Vector3.zero;
             ZoomButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite =
@@ -724,30 +783,34 @@ public static class HudManagerPatches
         }
     }
 
-    private static void CreateTeamChatButton(HudManager instance)
+    public static void CreateTeamChatButton(HudManager instance)
     {
-        if (!TeamChatButton)
+        if (TeamChatButton)
         {
-            TeamChatButton =
-                UnityEngine.Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
-            TeamChatButton.GetComponent<PassiveButton>().OnClick = new();
-            TeamChatButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(TeamChatPatches.ToggleTeamChat));
-            TeamChatButton.name = "FactionChat";
-            TeamChatButton.transform.Find("Background").localPosition = Vector3.zero;
-            TeamChatButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatInactive.LoadAsset();
-            TeamChatButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatActive.LoadAsset();
-            TeamChatButton.transform.Find("Selected").GetComponent<SpriteRenderer>().sprite = TouAssets.TeamChatSelected.LoadAsset();
+            return;
         }
+
+        TeamChatButton = Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
+        TeamChatButton.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
+        TeamChatButton.GetComponent<PassiveButton>().OnClick.AddListener(new Action(TeamChatPatches.ToggleTeamChat));
+        TeamChatButton.name = "FactionChat";
+        TeamChatButton.transform.Find("Background").localPosition = Vector3.zero;
+        TeamChatButton.transform.Find("Inactive").GetComponent<SpriteRenderer>().sprite =
+            TouAssets.TeamChatInactive.LoadAsset();
+        TeamChatButton.transform.Find("Active").GetComponent<SpriteRenderer>().sprite =
+            TouAssets.TeamChatActive.LoadAsset();
+        TeamChatButton.transform.Find("Selected").GetComponent<SpriteRenderer>().sprite =
+            TouAssets.TeamChatSelected.LoadAsset();
     }
 
-    private static void CreateWikiButton(HudManager instance)
+    public static void CreateWikiButton(HudManager instance)
     {
         var isChatButtonVisible = HudManager.Instance.Chat.isActiveAndEnabled;
 
         if (!WikiButton)
         {
-            WikiButton = UnityEngine.Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
-            WikiButton.GetComponent<PassiveButton>().OnClick = new();
+            WikiButton = Object.Instantiate(instance.MapButton.gameObject, instance.MapButton.transform.parent);
+            WikiButton.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
             WikiButton.GetComponent<PassiveButton>().OnClick.AddListener((UnityAction)(() =>
             {
                 if (Minigame.Instance)
@@ -770,10 +833,18 @@ public static class HudManagerPatches
             var aspectPosition = WikiButton.GetComponentInChildren<AspectPosition>();
             var distanceFromEdge = aspectPosition.DistanceFromEdge;
             distanceFromEdge.x = isChatButtonVisible ? 2.73f : 2.15f;
-            
-            if (((ModCompatibility.IsWikiButtonOffset && !ZoomButton.active) || ZoomButton.active) && (!MeetingHud.Instance) && Minigame.Instance == null && (PlayerJoinPatch.SentOnce || TutorialManager.InstanceExists)) distanceFromEdge.x += 0.84f;
-            
-            if (TeamChatButton.active) distanceFromEdge.x += 0.84f;
+
+            if ((ModCompatibility.IsWikiButtonOffset || ZoomButton.active) &&
+                !MeetingHud.Instance /*  && Minigame.Instance == null */ &&
+                (PlayerJoinPatch.SentOnce || TutorialManager.InstanceExists))
+            {
+                distanceFromEdge.x += 0.84f;
+            }
+
+            if (TeamChatButton.active)
+            {
+                distanceFromEdge.x += 0.84f;
+            }
 
             distanceFromEdge.y = 0.485f;
             WikiButton.SetActive(true);
@@ -792,40 +863,41 @@ public static class HudManagerPatches
 
         UpdateRoleList(__instance);
 
-        if (PlayerControl.LocalPlayer != null)
-        {
-            UpdateColorNameText(__instance);
-        }
-
         if (PlayerControl.LocalPlayer == null ||
             PlayerControl.LocalPlayer.Data == null ||
             PlayerControl.LocalPlayer.Data.Role == null ||
             !ShipStatus.Instance ||
-            (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started &&
+            (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started &&
              !TutorialManager.InstanceExists))
         {
             return;
         }
-            
-        var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
-        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x?.PlayerId == PlayerControl.LocalPlayer.PlayerId);
 
-        if (((PlayerControl.LocalPlayer.Data.IsDead && !body && !fakePlayer?.body && (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } || PlayerControl.LocalPlayer.Data.Role is not IGhostRole)) || TutorialManager.InstanceExists)
-            && Input.GetAxis("Mouse ScrollWheel") != 0 && !MeetingHud.Instance && Minigame.Instance == null && !HudManager.Instance.Chat.IsOpenOrOpening)
+        // TERRIBLE FOR PERFORMANCE (FindObjectsOfType is very costly)
+        var body = Object.FindObjectsOfType<DeadBody>()
+            .FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
+        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x.PlayerId == PlayerControl.LocalPlayer.PlayerId);
+
+        if (((PlayerControl.LocalPlayer.Data.IsDead && !body && !fakePlayer?.body &&
+              (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } ||
+               PlayerControl.LocalPlayer.Data.Role is not IGhostRole)) || TutorialManager.InstanceExists)
+            && Input.GetAxis("Mouse ScrollWheel") != 0 && !MeetingHud.Instance && Minigame.Instance == null &&
+            !HudManager.Instance.Chat.IsOpenOrOpening)
         {
             CheckForScrollZoom();
         }
 
-        UpdateTeamChat(__instance);
-        UpdateCamouflageComms(__instance);
-        UpdateRoleNameText(__instance);
+        UpdateTeamChat();
+        UpdateCamouflageComms();
+        UpdateRoleNameText();
         UpdateGhostRoles(__instance);
     }
 
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
     [HarmonyPostfix]
+    [HarmonyPriority(Priority.Last)]
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
     public static void HudManagerStartPatch(HudManager __instance)
     {
-        ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
+        Coroutines.Start(CoResizeUI());
     }
 }

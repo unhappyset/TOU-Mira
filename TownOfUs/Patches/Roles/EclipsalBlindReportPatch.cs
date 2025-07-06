@@ -1,4 +1,5 @@
 using HarmonyLib;
+using InnerNet;
 using MiraAPI.Modifiers;
 using TownOfUs.Modifiers.Impostor;
 
@@ -14,7 +15,7 @@ public static class EclipsalBlindReportPatch
         if (PlayerControl.LocalPlayer == null ||
             PlayerControl.LocalPlayer.Data == null ||
             !ShipStatus.Instance ||
-            (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started && !TutorialManager.InstanceExists))
+            (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started && !TutorialManager.InstanceExists))
         {
             return;
         }

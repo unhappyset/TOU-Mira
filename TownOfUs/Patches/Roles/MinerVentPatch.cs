@@ -12,15 +12,38 @@ public static class MinerVentPatch
     [HarmonyPostfix]
     public static void VentSetButtonsPatch(Vent __instance, [HarmonyArgument(0)] bool enabled)
     {
-        if (OptionGroupSingleton<MinerOptions>.Instance.MineVisibility == MineVisiblityOptions.Immediate) return;
-        if (PlayerControl.LocalPlayer == null) return;
-        if (PlayerControl.LocalPlayer.Data == null) return;
-        if (!enabled) return;
-        if (PlayerControl.LocalPlayer.Data.Role is MinerRole) return;
-        if (!__instance.name.Contains($"MinerVent")) return;
+        if (OptionGroupSingleton<MinerOptions>.Instance.MineVisibility == MineVisiblityOptions.Immediate)
+        {
+            return;
+        }
+
+        if (PlayerControl.LocalPlayer == null)
+        {
+            return;
+        }
+
+        if (PlayerControl.LocalPlayer.Data == null)
+        {
+            return;
+        }
+
+        if (!enabled)
+        {
+            return;
+        }
+
+        if (PlayerControl.LocalPlayer.Data.Role is MinerRole)
+        {
+            return;
+        }
+
+        if (!__instance.name.Contains("MinerVent"))
+        {
+            return;
+        }
 
         Vent[] nearbyVents = __instance.NearbyVents;
-        for (int i = 0; i < __instance.Buttons.Length; i++)
+        for (var i = 0; i < __instance.Buttons.Length; i++)
         {
             var buttonBehavior = __instance.Buttons[i];
             var vent = nearbyVents[i];

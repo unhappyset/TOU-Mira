@@ -17,7 +17,9 @@ public static class TrapperEvents
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
-        if (@event.Player.AmOwner && @event.Player.Data.Role is TrapperRole && OptionGroupSingleton<TrapperOptions>.Instance.TaskUses)
+        if (@event.Player.AmOwner && @event.Player.Data.Role is TrapperRole &&
+            OptionGroupSingleton<TrapperOptions>.Instance.TaskUses &&
+            !OptionGroupSingleton<TrapperOptions>.Instance.TrapsRemoveOnNewRound)
         {
             var button = CustomButtonSingleton<TrapperTrapButton>.Instance;
             ++button.UsesLeft;
@@ -25,14 +27,19 @@ public static class TrapperEvents
             button.SetUses(button.UsesLeft);
         }
     }
+
     [RegisterEvent]
     public static void StartMeetingEventHandler(StartMeetingEvent @event)
     {
         CustomRoleUtils.GetActiveRolesOfType<TrapperRole>().Do(x => x.Report());
     }
+
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (OptionGroupSingleton<TrapperOptions>.Instance.TrapsRemoveOnNewRound) CustomRoleUtils.GetActiveRolesOfType<TrapperRole>().Do(x => x.Clear());
+        if (OptionGroupSingleton<TrapperOptions>.Instance.TrapsRemoveOnNewRound)
+        {
+            CustomRoleUtils.GetActiveRolesOfType<TrapperRole>().Do(x => x.Clear());
+        }
     }
 }

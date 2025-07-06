@@ -11,15 +11,9 @@ public sealed class SixthSenseModifier : UniversalGameModifier, IWikiDiscoverabl
 {
     public override string ModifierName => "Sixth Sense";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.SixthSense;
-    public override string GetDescription() => "Know when someone interacts with you.";
+
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
 
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SixthSenseChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SixthSenseAmount;
-    public override bool IsModifierValidOn(RoleBehaviour role)
-    {
-        return base.IsModifierValidOn(role) && role is not AurialRole;
-    }
     public string GetAdvancedDescription()
     {
         return
@@ -27,4 +21,24 @@ public sealed class SixthSenseModifier : UniversalGameModifier, IWikiDiscoverabl
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "Know when someone interacts with you.";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SixthSenseChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SixthSenseAmount;
+    }
+
+    public override bool IsModifierValidOn(RoleBehaviour role)
+    {
+        return base.IsModifierValidOn(role) && role is not AurialRole;
+    }
 }

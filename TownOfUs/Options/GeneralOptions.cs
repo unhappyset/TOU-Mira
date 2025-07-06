@@ -11,7 +11,10 @@ public sealed class GeneralOptions : AbstractOptionGroup
     public override uint GroupPriority => 1;
 
     [ModdedEnumOption("Modifier Type To Show In Role Intro", typeof(ModReveal))]
-    public ModReveal ModifierReveal { get; set; } = ModReveal.Faction;
+    public ModReveal ModifierReveal { get; set; } = ModReveal.Universal;
+
+    [ModdedToggleOption("Show Faction Modifier On Role Reveal")]
+    public bool TeamModifierReveal { get; set; } = true;
 
     [ModdedToggleOption("Camouflage Comms")]
     public bool CamouflageComms { get; set; } = true;
@@ -21,10 +24,12 @@ public sealed class GeneralOptions : AbstractOptionGroup
 
     [ModdedToggleOption("Impostors Don't Know Each Other")]
     public bool FFAImpostorMode { get; set; } = false;
+
     public ModdedToggleOption ImpsKnowRoles { get; set; } = new("Impostors Know Each Other's Roles", true)
     {
         Visible = () => !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode
     };
+
     public ModdedToggleOption ImpostorChat { get; set; } = new("Impostors Get A Private Meeting Chat", true)
     {
         Visible = () => !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode
@@ -62,22 +67,12 @@ public enum ModReveal
 {
     Alliance,
     Universal,
-    Faction,
-    None,
+    Neither
 }
 
 public enum SkipState
 {
     No,
     Emergency,
-    Always,
-}
-
-public enum OnTaskComplete
-{
-    Off,
-    Sheriff,
-    Veteran,
-    Vigilante,
-    Random,
+    Always
 }

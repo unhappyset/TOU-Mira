@@ -29,7 +29,7 @@ public static class BlackmailedPlayerArea
         var amOwner = playerInfo?.Object?.AmOwner;
         var bmOwns = bmMod.BlackMailerId == PlayerControl.LocalPlayer.PlayerId;
         var targetSeeOnly = OptionGroupSingleton<BlackmailerOptions>.Instance.OnlyTargetSeesBlackmail;
-        var maxaliveneeded = OptionGroupSingleton<BlackmailerOptions>.Instance.MaxAliveForVoting;
+        var maxAliveNeeded = OptionGroupSingleton<BlackmailerOptions>.Instance.MaxAliveForVoting;
 
         if (amOwner == true || bmOwns || !targetSeeOnly)
         {
@@ -48,13 +48,19 @@ public static class BlackmailedPlayerArea
             __instance.ColorBlindName.gameObject.SetActive(false);
         }
 
-        if (Helpers.GetAlivePlayers().Count > maxaliveneeded)
+        if (Helpers.GetAlivePlayers().Count > maxAliveNeeded)
         {
             __instance.SetVote(252);
-            if (targetSeeOnly) __instance.Flag.enabled = false;
-            if (amOwner == true) MeetingHud.Instance.Confirm(252);
-        }
+            if (targetSeeOnly)
+            {
+                __instance.Flag.enabled = false;
+            }
 
+            if (amOwner == true)
+            {
+                MeetingHud.Instance.Confirm(252);
+            }
+        }
     }
 
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]

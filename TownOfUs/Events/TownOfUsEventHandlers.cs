@@ -2,36 +2,35 @@
 using HarmonyLib;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events.Vanilla.Meeting.Voting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Events.Vanilla.Usables;
+using MiraAPI.GameOptions;
+using MiraAPI.Hud;
+using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
 using MiraAPI.Utilities;
-using TownOfUs.Modules;
-using TownOfUs.Patches;
-using TownOfUs.Roles;
-using TownOfUs.Roles.Crewmate;
-using TownOfUs.Utilities;
-using UnityEngine;
-using Reactor.Utilities.Extensions;
 using PowerTools;
 using Reactor.Utilities;
-using Object = UnityEngine.Object;
-using MiraAPI.Modifiers;
-using TownOfUs.Modifiers.Game.Universal;
-using TownOfUs.Modules.Anims;
-using MiraAPI.Hud;
-using MiraAPI.Modifiers.Types;
-using TownOfUs.Modifiers.Crewmate;
+using Reactor.Utilities.Extensions;
 using TownOfUs.Buttons.Crewmate;
-using MiraAPI.Events.Vanilla.Meeting;
-using MiraAPI.GameOptions;
-using TownOfUs.Options.Modifiers.Universal;
-using TownOfUs.Buttons.Modifiers;
-using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Buttons.Impostor;
+using TownOfUs.Buttons.Modifiers;
 using TownOfUs.Events.TouEvents;
-using MiraAPI.Events.Vanilla.Meeting.Voting;
-using TownOfUs.Roles.Impostor;
+using TownOfUs.Modifiers.Game.Universal;
+using TownOfUs.Modules;
+using TownOfUs.Modules.Anims;
+using TownOfUs.Options.Modifiers.Universal;
+using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Options.Roles.Impostor;
+using TownOfUs.Roles;
+using TownOfUs.Roles.Crewmate;
+using TownOfUs.Roles.Impostor;
+using TownOfUs.Utilities;
+using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace TownOfUs.Events;
 
@@ -40,42 +39,75 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
-        if (!@event.TriggeredByIntro) return; // Only run when round starts.
+        if (!@event.TriggeredByIntro)
+        {
+            return; // Only run when game starts.
+        }
+
         HudManager.Instance.SetHudActive(false);
         HudManager.Instance.SetHudActive(true);
 
         CustomButtonSingleton<WatchButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<WatchButton>.Instance.SetUses((int)OptionGroupSingleton<LookoutOptions>.Instance.MaxWatches);
+        CustomButtonSingleton<WatchButton>.Instance.SetUses((int)OptionGroupSingleton<LookoutOptions>.Instance
+            .MaxWatches);
         CustomButtonSingleton<TrackerTrackButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<TrackerTrackButton>.Instance.SetUses((int)OptionGroupSingleton<TrackerOptions>.Instance.MaxTracks);
+        CustomButtonSingleton<TrackerTrackButton>.Instance.SetUses((int)OptionGroupSingleton<TrackerOptions>.Instance
+            .MaxTracks);
         CustomButtonSingleton<TrapperTrapButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<TrapperTrapButton>.Instance.SetUses((int)OptionGroupSingleton<TrapperOptions>.Instance.MaxTraps);
+        CustomButtonSingleton<TrapperTrapButton>.Instance.SetUses((int)OptionGroupSingleton<TrapperOptions>.Instance
+            .MaxTraps);
 
         CustomButtonSingleton<HunterStalkButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<HunterStalkButton>.Instance.SetUses((int)OptionGroupSingleton<HunterOptions>.Instance.StalkUses);
-        CustomButtonSingleton<SheriffShootButton>.Instance.Usable = OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse;
+        CustomButtonSingleton<HunterStalkButton>.Instance.SetUses((int)OptionGroupSingleton<HunterOptions>.Instance
+            .StalkUses);
+        CustomButtonSingleton<SheriffShootButton>.Instance.Usable =
+            OptionGroupSingleton<SheriffOptions>.Instance.FirstRoundUse;
         CustomButtonSingleton<VeteranAlertButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<VeteranAlertButton>.Instance.SetUses((int)OptionGroupSingleton<VeteranOptions>.Instance.MaxNumAlerts);
+        CustomButtonSingleton<VeteranAlertButton>.Instance.SetUses((int)OptionGroupSingleton<VeteranOptions>.Instance
+            .MaxNumAlerts);
 
         CustomButtonSingleton<JailorJailButton>.Instance.ExecutedACrew = false;
 
-        CustomButtonSingleton<EngineerVentButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<EngineerVentButton>.Instance.SetUses((int)OptionGroupSingleton<EngineerOptions>.Instance.MaxVents);
+        var engiVent = CustomButtonSingleton<EngineerVentButton>.Instance;
+        engiVent.ExtraUses = 0;
+        engiVent.SetUses((int)OptionGroupSingleton<EngineerOptions>.Instance.MaxVents);
+        if ((int)OptionGroupSingleton<EngineerOptions>.Instance.MaxVents == 0)
+        {
+            engiVent.Button?.usesRemainingText.gameObject.SetActive(false);
+            engiVent.Button?.usesRemainingSprite.gameObject.SetActive(false);
+        }
+        else
+        {
+            engiVent.Button?.usesRemainingText.gameObject.SetActive(true);
+            engiVent.Button?.usesRemainingSprite.gameObject.SetActive(true);
+        }
+
         CustomButtonSingleton<PlumberBlockButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<PlumberBlockButton>.Instance.SetUses((int)OptionGroupSingleton<PlumberOptions>.Instance.MaxBarricades);
+        CustomButtonSingleton<PlumberBlockButton>.Instance.SetUses((int)OptionGroupSingleton<PlumberOptions>.Instance
+            .MaxBarricades);
         CustomButtonSingleton<TransporterTransportButton>.Instance.ExtraUses = 0;
-        CustomButtonSingleton<TransporterTransportButton>.Instance.SetUses((int)OptionGroupSingleton<TransporterOptions>.Instance.MaxNumTransports);
+        CustomButtonSingleton<TransporterTransportButton>.Instance.SetUses((int)OptionGroupSingleton<TransporterOptions>
+            .Instance.MaxNumTransports);
 
         CustomButtonSingleton<WarlockKillButton>.Instance.Charge = 0f;
+        CustomButtonSingleton<WarlockKillButton>.Instance.BurstActive = false;
 
-        CustomButtonSingleton<BarryButton>.Instance.Usable = OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
-        CustomButtonSingleton<SatelliteButton>.Instance.Usable = OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;
+        CustomButtonSingleton<BarryButton>.Instance.Usable =
+            OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
+        CustomButtonSingleton<SatelliteButton>.Instance.Usable =
+            OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;
     }
 
     [RegisterEvent]
     public static void ChangeRoleHandler(ChangeRoleEvent @event)
     {
-        if (!MeetingHud.Instance && @event.Player.AmOwner)
+        if (!PlayerControl.LocalPlayer)
+        {
+            return;
+        }
+
+        var player = @event.Player;
+        if (!MeetingHud.Instance && player.AmOwner)
         {
             HudManager.Instance.SetHudActive(false);
             HudManager.Instance.SetHudActive(true);
@@ -91,37 +123,48 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void ClearBodiesAndResetPlayersEventHandler(RoundStartEvent @event)
     {
-        GameObject.FindObjectsOfType<DeadBody>().ToList().ForEach(x => x.gameObject.Destroy());
+        Object.FindObjectsOfType<DeadBody>().ToList().ForEach(x => x.gameObject.Destroy());
 
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             player.MyPhysics.ResetAnimState();
             player.MyPhysics.ResetMoveState();
         }
+
+        FakePlayer.ClearAll();
     }
 
     [RegisterEvent]
     public static void EjectionEventHandler(EjectionEvent @event)
     {
         var exiled = @event.ExileController?.initData?.networkedPlayer?.Object;
-        if (exiled == null) return;
+        if (exiled == null)
+        {
+            return;
+        }
 
         if (exiled.AmOwner)
         {
             HudManager.Instance.SetHudActive(false);
-            if (!MeetingHud.Instance) HudManager.Instance.SetHudActive(true);
+
+            if (!MeetingHud.Instance)
+            {
+                HudManager.Instance.SetHudActive(true);
+            }
         }
 
         if (exiled.Data.Role is IAnimated animated)
-            {
-                animated.IsVisible = false;
-                animated.SetVisible();
-            }
+        {
+            animated.IsVisible = false;
+            animated.SetVisible();
+        }
+
         foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(exiled.Data.Role)).OfType<IAnimated>())
         {
             button.IsVisible = false;
             button.SetVisible();
         }
+
         foreach (var modifier in exiled.GetModifiers<GameModifier>().Where(x => x is IAnimated))
         {
             var animatedMod = modifier as IAnimated;
@@ -131,10 +174,6 @@ public static class TownOfUsEventHandlers
                 animatedMod.SetVisible();
             }
         }
-        if (@exiled.TryGetModifier<MedicShieldModifier>(out var medMod)
-        && PlayerControl.LocalPlayer.Data.Role is MedicRole
-        && medMod.Medic == PlayerControl.LocalPlayer)
-            CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
     }
 
     [RegisterEvent]
@@ -148,19 +187,25 @@ public static class TownOfUsEventHandlers
         if (target.AmOwner)
         {
             HudManager.Instance.SetHudActive(false);
-            if (!MeetingHud.Instance) HudManager.Instance.SetHudActive(true);
+
+            if (!MeetingHud.Instance)
+            {
+                HudManager.Instance.SetHudActive(true);
+            }
         }
 
         if (target.Data.Role is IAnimated animated)
-            {
-                animated.IsVisible = false;
-                animated.SetVisible();
-            }
+        {
+            animated.IsVisible = false;
+            animated.SetVisible();
+        }
+
         foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(target.Data.Role)).OfType<IAnimated>())
         {
             button.IsVisible = false;
             button.SetVisible();
         }
+
         foreach (var modifier in target.GetModifiers<GameModifier>().Where(x => x is IAnimated))
         {
             var animatedMod = modifier as IAnimated;
@@ -170,6 +215,7 @@ public static class TownOfUsEventHandlers
                 animatedMod.SetVisible();
             }
         }
+
         if (source.IsImpostor() && source.AmOwner && source != target && !MeetingHud.Instance)
         {
             switch (source.Data.Role)
@@ -180,17 +226,14 @@ public static class TownOfUsEventHandlers
                     break;
                 case JanitorRole:
                     if (OptionGroupSingleton<JanitorOptions>.Instance.ResetCooldowns)
-                    { 
+                    {
                         var cleanButton = CustomButtonSingleton<JanitorCleanButton>.Instance;
                         cleanButton.ResetCooldownAndOrEffect();
                     }
+
                     break;
             }
         }
-        if (@target.TryGetModifier<MedicShieldModifier>(out var medMod)
-            && PlayerControl.LocalPlayer.Data.Role is MedicRole
-            && medMod.Medic == PlayerControl.LocalPlayer)
-                CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
 
         // here we're adding support for kills during a meeting
         if (MeetingHud.Instance)
@@ -199,7 +242,7 @@ public static class TownOfUsEventHandlers
         }
         else
         {
-            var body = GameObject.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == target.PlayerId);
+            var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == target.PlayerId);
 
             if (target.HasModifier<MiniModifier>() && body != null)
             {
@@ -231,7 +274,8 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void PlayerCanUseEventHandler(PlayerCanUseEvent @event)
     {
-        if (!PlayerControl.LocalPlayer || !PlayerControl.LocalPlayer.Data || !PlayerControl.LocalPlayer.Data.Role)
+        if (!PlayerControl.LocalPlayer || !PlayerControl.LocalPlayer.Data ||
+            !PlayerControl.LocalPlayer.Data.Role)
         {
             return;
         }
@@ -241,40 +285,41 @@ public static class TownOfUsEventHandlers
         {
             var aliveCount = PlayerControl.AllPlayerControls.ToArray().Count(x => !x.HasDied());
 
-            if (PlayerControl.LocalPlayer.inVent && aliveCount <= 2 && PlayerControl.LocalPlayer.Data.Role is not IGhostRole)
+            if (PlayerControl.LocalPlayer.inVent && aliveCount <= 2 &&
+                PlayerControl.LocalPlayer.Data.Role is not IGhostRole)
             {
                 PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
                 PlayerControl.LocalPlayer.MyPhysics.ExitAllVents();
             }
 
             if (aliveCount <= 2)
+            {
                 @event.Cancel();
+            }
         }
     }
 
     [RegisterEvent]
-    public static void GameEndEventHandler(GameEndEvent @event)
-    {
-        EndGamePatches.BuildEndGameSummary(@event.EndGameManager);
-    }
-    
-    [RegisterEvent]
     public static void PlayerLeaveEventHandler(PlayerLeaveEvent @event)
     {
-        if (@event.ClientData.Character.TryGetModifier<MedicShieldModifier>(out var medMod)
-        && PlayerControl.LocalPlayer.Data.Role is MedicRole
-        && medMod.Medic == PlayerControl.LocalPlayer)
-            CustomButtonSingleton<MedicShieldButton>.Instance.CanChangeTarget = true;
-
-        if (!MeetingHud.Instance) return;
+        if (!MeetingHud.Instance)
+        {
+            return;
+        }
 
         var player = @event.ClientData.Character;
 
-        if (!player) return;
+        if (!player)
+        {
+            return;
+        }
 
         var pva = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == player.PlayerId);
-        
-        if (!pva) return;
+
+        if (!pva)
+        {
+            return;
+        }
 
         pva.AmDead = true;
         pva.Overlay.gameObject.SetActive(true);
@@ -289,9 +334,9 @@ public static class TownOfUsEventHandlers
     {
         var animDic = new Dictionary<AnimationClip, AnimationClip>
         {
-            {TouAssets.MeetingDeathBloodAnim1.LoadAsset(), TouAssets.MeetingDeathAnim1.LoadAsset()},
-            {TouAssets.MeetingDeathBloodAnim2.LoadAsset(), TouAssets.MeetingDeathAnim2.LoadAsset()},
-            {TouAssets.MeetingDeathBloodAnim3.LoadAsset(), TouAssets.MeetingDeathAnim3.LoadAsset()}
+            { TouAssets.MeetingDeathBloodAnim1.LoadAsset(), TouAssets.MeetingDeathAnim1.LoadAsset() },
+            { TouAssets.MeetingDeathBloodAnim2.LoadAsset(), TouAssets.MeetingDeathAnim2.LoadAsset() },
+            { TouAssets.MeetingDeathBloodAnim3.LoadAsset(), TouAssets.MeetingDeathAnim3.LoadAsset() }
         };
         var trueAnim = animDic.Random();
         var animation = Object.Instantiate(TouAssets.MeetingDeathPrefab.LoadAsset(), voteArea.transform);
@@ -306,20 +351,27 @@ public static class TownOfUsEventHandlers
         animation.gameObject.SetActive(false);
 
         Coroutines.Start(MiscUtils.CoFlash(Palette.ImpostorRed, 0.5f, 0.15f));
-        yield return new WaitForSeconds(UnityEngine.Random.RandomRange(0.4f, 1.1f));
+        var seconds = Random.RandomRange(0.4f, 1.1f);
+        // if there's less than 6 players alive, animation will play instantly
+        if (Helpers.GetAlivePlayers().Count <= 5)
+        {
+            seconds = 0.01f;
+        }
+
+        yield return new WaitForSeconds(seconds);
 
         voteArea.PlayerIcon.gameObject.SetActive(false);
         animation.gameObject.SetActive(true);
         var bodysAnim = animation.GetComponent<SpriteAnim>();
-        
-        var bloodAnim = animation.transform.GetChild(0).GetComponent<SpriteAnim>();
-        
-            bloodAnim.Play(trueAnim.Key);
-            bodysAnim.Play(trueAnim.Value);
 
-            bodysAnim.SetSpeed(1.05f);
-            bloodAnim.SetSpeed(1.05f);
-            var bodyAnimLength = bodysAnim.m_currAnim.length;
+        var bloodAnim = animation.transform.GetChild(0).GetComponent<SpriteAnim>();
+
+        bloodAnim.Play(trueAnim.Key);
+        bodysAnim.Play(trueAnim.Value);
+
+        bodysAnim.SetSpeed(1.05f);
+        bloodAnim.SetSpeed(1.05f);
+        var bodyAnimLength = bodysAnim.m_currAnim.length;
 
         yield return new WaitForSeconds(0.1f);
         SoundManager.Instance.PlaySound(voteArea.GetPlayer()!.KillSfx, false);
@@ -359,9 +411,13 @@ public static class TownOfUsEventHandlers
             Minigame.Instance.Close();
             Minigame.Instance.Close();
         }
-        
+
         targetVoteArea.Overlay.gameObject.SetActive(false);
-        if (target.Data.Role is MayorRole) MayorRole.DestroyReveal(targetVoteArea);
+        if (target.Data.Role is MayorRole)
+        {
+            MayorRole.DestroyReveal(targetVoteArea);
+        }
+
         Coroutines.Start(CoAnimateDeath(targetVoteArea));
 
         // hide meeting menu button for victim
@@ -377,19 +433,28 @@ public static class TownOfUsEventHandlers
 
         foreach (var pva in instance.playerStates)
         {
-            if (pva.VotedFor != target.PlayerId || pva.AmDead) continue;
+            if (pva.VotedFor != target.PlayerId || pva.AmDead)
+            {
+                continue;
+            }
 
             pva.UnsetVote();
 
             var voteAreaPlayer = MiscUtils.PlayerById(pva.TargetPlayerId);
 
-            if (voteAreaPlayer == null) continue;
+            if (voteAreaPlayer == null)
+            {
+                continue;
+            }
 
             var voteData = voteAreaPlayer.GetVoteData();
             var votes = voteData.Votes.RemoveAll(x => x.Suspect == target.PlayerId);
             voteData.VotesRemaining += votes;
 
-            if (!voteAreaPlayer.AmOwner) continue;
+            if (!voteAreaPlayer.AmOwner)
+            {
+                continue;
+            }
 
             instance.ClearVote();
         }
@@ -397,7 +462,7 @@ public static class TownOfUsEventHandlers
         instance.SetDirtyBit(1U);
 
         if (AmongUsClient.Instance.AmHost)
-        { 
+        {
             instance.CheckForEndVoting();
         }
     }

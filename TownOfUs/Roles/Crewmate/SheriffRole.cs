@@ -6,9 +6,11 @@ using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using Reactor.Networking.Attributes;
+using Reactor.Utilities;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modifiers.Game;
-using TownOfUs.Modules.Localization;
+using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -18,26 +20,22 @@ namespace TownOfUs.Roles.Crewmate;
 
 public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
-    public string RoleName => TouLocale.Get(TouNames.Sheriff, "Sheriff");
+    public override bool IsAffectedByComms => false;
+    public bool HasMisfired { get; set; }
+    public DoomableType DoomHintType => DoomableType.Relentless;
+    public string RoleName => "Sheriff";
     public string RoleDescription => "Shoot The <color=#FF0000FF>Impostor</color>";
     public string RoleLongDescription => "Kill off the impostors but don't kill crewmates";
     public Color RoleColor => TownOfUsColors.Sheriff;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
-    public DoomableType DoomHintType => DoomableType.Relentless;
-    public bool IsPowerCrew => true; // Always disable end game checks with a sheriff around
-    public override bool IsAffectedByComms => false;
+    public bool IsPowerCrew => !HasMisfired; // Always disable end game checks if the sheriff hasn't misfired
 
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Sheriff,
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Impostor),
+        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Impostor)
     };
-
-    public static void OnRoundStart()
-    {
-        CustomButtonSingleton<SheriffShootButton>.Instance.Usable = true;
-    }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
@@ -50,6 +48,7 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
             stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>You can no longer shoot.</b>");
         }
         else
+        {
             switch (missType)
             {
                 case MisfireOptions.Both:
@@ -67,6 +66,7 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
                         $"<b>Misfiring will prevent you from shooting again.</b>");
                     break;
             }
+        }
 
         if (PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
         {
@@ -79,7 +79,7 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public string GetAdvancedDescription()
     {
         return
-            $"The {RoleName} is a Crewmate Killing that can shoot a player to attempt to kill them. If {RoleName} doesn't die to misfire, they will lose the ability to shoot." +
+            "The Sheriff is a Crewmate Killing that can shoot a player to attempt to kill them. If Sheriff doesn't die to misfire, they will lose the ability to shoot." +
             MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -87,7 +87,29 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public List<CustomButtonWikiDescription> Abilities { get; } =
     [
         new("Shoot",
-            $"Shoot a player to kill them, misfiring if they aren't a Impostor or one of the other selected shootable factions",
+            "Shoot a player to kill them, misfiring if they aren't a Impostor or one of the other selected shootable factions",
             TouCrewAssets.SheriffShootSprite)
     ];
+
+    public static void OnRoundStart()
+    {
+        CustomButtonSingleton<SheriffShootButton>.Instance.Usable = true;
+    }
+
+    [MethodRpc((uint)TownOfUsRpc.SheriffMisfire, SendImmediately = true)]
+    public static void RpcSheriffMisfire(PlayerControl sheriff)
+    {
+        if (sheriff.Data.Role is not SheriffRole role)
+        {
+            Logger<TownOfUsPlugin>.Error("RpcSheriffMisfire - Invalid sheriff");
+            return;
+        }
+
+        role.HasMisfired = true;
+
+        if (GameHistory.PlayerStats.TryGetValue(sheriff.PlayerId, out var stats))
+        {
+            stats.IncorrectKills += 1;
+        }
+    }
 }

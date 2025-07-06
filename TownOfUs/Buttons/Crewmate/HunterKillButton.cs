@@ -12,13 +12,14 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Crewmate;
 
-public sealed class HunterKillButton : TownOfUsRoleButton<HunterRole, PlayerControl>, IDiseaseableButton
+public sealed class HunterKillButton : TownOfUsRoleButton<HunterRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     public override string Name => "Kill";
     public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Hunter;
     public override float Cooldown => OptionGroupSingleton<HunterOptions>.Instance.HunterKillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.HunterKillSprite;
+
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
@@ -26,7 +27,8 @@ public sealed class HunterKillButton : TownOfUsRoleButton<HunterRole, PlayerCont
 
     private static IEnumerator CoSetBodyReportable(byte bodyId)
     {
-        var waitDelegate = DelegateSupport.ConvertDelegate<Il2CppSystem.Func<bool>>(() => Helpers.GetBodyById(bodyId) != null);
+        var waitDelegate =
+            DelegateSupport.ConvertDelegate<Il2CppSystem.Func<bool>>(() => Helpers.GetBodyById(bodyId) != null);
         yield return new WaitUntil(waitDelegate);
         var body = Helpers.GetBodyById(bodyId);
 
@@ -60,7 +62,10 @@ public sealed class HunterKillButton : TownOfUsRoleButton<HunterRole, PlayerCont
 
     public override bool IsTargetValid(PlayerControl? target)
     {
-        if (!Role.CaughtPlayers.Contains(target!)) return false;
+        if (!Role.CaughtPlayers.Contains(target!))
+        {
+            return false;
+        }
 
         return base.IsTargetValid(target);
     }

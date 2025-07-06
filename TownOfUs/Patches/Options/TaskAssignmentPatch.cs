@@ -6,12 +6,10 @@ using TaskLength = NormalPlayerTask.TaskLength;
 namespace TownOfUs.Patches.Options;
 
 [HarmonyPatch]
-
 public static class TaskAssignmentPatch
 {
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.AddTasksFromList))]
     [HarmonyPrefix]
-
     public static void Prefix(ref int count, ref Il2CppSystem.Collections.Generic.List<NormalPlayerTask> unusedTasks)
     {
         var type = unusedTasks[0].Length;
@@ -30,7 +28,6 @@ public static class TaskAssignmentPatch
 
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
     [HarmonyPrefix]
-    
     public static void Prefix()
     {
         var options = GameOptionsManager.Instance.currentNormalGameOptions;

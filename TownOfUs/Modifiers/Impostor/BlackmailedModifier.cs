@@ -8,4 +8,9 @@ public sealed class BlackmailedModifier(byte blackMailerId) : BaseModifier
     public override bool HideOnUi => true;
 
     public byte BlackMailerId { get; } = blackMailerId;
+
+    public override void OnDeath(DeathReason reason)
+    {
+        ModifierComponent!.RemoveModifier(this);
+    }
 }

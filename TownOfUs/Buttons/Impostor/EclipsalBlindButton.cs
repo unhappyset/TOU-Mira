@@ -23,12 +23,12 @@ public sealed class EclipsalBlindButton : TownOfUsRoleButton<EclipsalRole>, IAft
     {
         OverrideName("Unblinding");
         var blindRadius = OptionGroupSingleton<EclipsalOptions>.Instance.BlindRadius;
-        var blindedPlayers = Helpers.GetClosestPlayers(PlayerControl.LocalPlayer, blindRadius * ShipStatus.Instance.MaxLightRadius);
+        var blindedPlayers =
+            Helpers.GetClosestPlayers(PlayerControl.LocalPlayer, blindRadius * ShipStatus.Instance.MaxLightRadius);
 
-        foreach (var player in blindedPlayers)
+        foreach (var player in blindedPlayers.Where(x => !x.HasDied() && !x.IsImpostor()))
         {
-            if (!player.HasDied() && !player.IsImpostor())
-                player.RpcAddModifier<EclipsalBlindModifier>(PlayerControl.LocalPlayer);
+            player.RpcAddModifier<EclipsalBlindModifier>(PlayerControl.LocalPlayer);
         }
         // PlayerControl.LocalPlayer.RpcAddModifier<EclipsalBlindModifier>(PlayerControl.LocalPlayer);
     }

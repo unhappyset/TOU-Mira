@@ -18,6 +18,7 @@ public sealed class DoomsayerOptions : AbstractOptionGroup<DoomsayerRole>
 
     [ModdedToggleOption("Doomsayer Guesses All Roles At Once")]
     public bool DoomsayerGuessAllAtOnce { get; set; } = false;
+
     public ModdedToggleOption DoomsayerKillOnlyLast { get; set; } = new("Kill Only The Last Victim", false)
     {
         Visible = () => OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessAllAtOnce
@@ -28,8 +29,8 @@ public sealed class DoomsayerOptions : AbstractOptionGroup<DoomsayerRole>
 
     [ModdedEnumOption("Doomsayer Win", typeof(DoomWinOptions), ["Ends Game", "Leaves In Victory", "Nothing"])]
     public DoomWinOptions DoomWin { get; set; } = DoomWinOptions.Leaves;
-
 }
+
 public enum DoomWinOptions
 {
     EndsGame,

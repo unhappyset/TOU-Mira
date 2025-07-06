@@ -15,10 +15,12 @@ public sealed class MediumOptions : AbstractOptionGroup<MediumRole>
     [ModdedToggleOption("Reveal Appearance of Mediate Target")]
     public bool RevealMediateAppearance { get; set; } = true;
 
-    [ModdedEnumOption("Arrow Visibility", typeof(MediumVisibility), ["Medium", "Mediated", "Medium + Mediated", "Neither"])]
+    [ModdedEnumOption("Arrow Visibility", typeof(MediumVisibility),
+        ["Medium", "Mediated", "Medium + Mediated", "Neither"])]
     public MediumVisibility ArrowVisibility { get; set; } = MediumVisibility.Both;
 
-    [ModdedEnumOption("Who is Revealed", typeof(MediateRevealedTargets), ["Oldest Dead", "Newest Dead", "Random Dead", "All Dead"])]
+    [ModdedEnumOption("Who is Revealed", typeof(MediateRevealedTargets),
+        ["Oldest Dead", "Newest Dead", "Random Dead", "All Dead"])]
     public MediateRevealedTargets WhoIsRevealed { get; set; } = MediateRevealedTargets.OldestDead;
 }
 
@@ -27,7 +29,7 @@ public enum MediateRevealedTargets
     OldestDead,
     NewestDead,
     RandomDead,
-    AllDead,
+    AllDead
 }
 
 public enum MediumVisibility
@@ -35,5 +37,5 @@ public enum MediumVisibility
     ShowMedium,
     ShowMediate,
     Both,
-    None,
+    None
 }

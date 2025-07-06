@@ -11,17 +11,16 @@ namespace TownOfUs.Modifiers;
 
 public class ScatterModifier(float time) : TimedModifier
 {
+    private readonly List<Vector3> _locations = [];
+    private Image? scatterBar;
+    private TextMeshProUGUI? scatterText;
+    private GameObject? scatterUI;
+    private float soundTimer = 1f;
     public override string ModifierName => "Scatter";
     public override float Duration => time;
     public override bool AutoStart => false;
     public override bool HideOnUi => true;
     public override bool RemoveOnComplete => true;
-
-    private readonly List<Vector3> _locations = [];
-    private float soundTimer = 1f;
-    private GameObject? scatterUI;
-    private TextMeshProUGUI? scatterText;
-    private Image? scatterBar;
 
     public override string GetDescription()
     {
@@ -31,7 +30,7 @@ public class ScatterModifier(float time) : TimedModifier
         {
             > 10 => Color.green,
             > 5 => Color.yellow,
-            _ => Color.red,
+            _ => Color.red
         };
 
         return $"{textColor.ToTextColor()}<size=80%>{roundedTime}s</size></color>";
@@ -43,20 +42,26 @@ public class ScatterModifier(float time) : TimedModifier
 
         //Logger<TownOfUsPlugin>.Error($"ScatterModifier.OnActivate");
 
-        if (!Player.AmOwner) return;
+        if (!Player.AmOwner)
+        {
+            return;
+        }
 
         scatterUI = Object.Instantiate(TouAssets.ScatterUI.LoadAsset(), HudManager.Instance.transform);
         scatterUI.transform.localPosition = new Vector3(-3.22f, 2.26f, -10f);
         scatterUI!.SetActive(false);
 
-        scatterText = scatterUI.transform.FindChild("ScatterCanvas").FindChild("ScatterText").gameObject.GetComponent<TextMeshProUGUI>();
+        scatterText = scatterUI.transform.FindChild("ScatterCanvas").FindChild("ScatterText").gameObject
+            .GetComponent<TextMeshProUGUI>();
         scatterText.text = $"Scatter: {Duration}s";
         scatterText!.gameObject.SetActive(false);
 
-        scatterBar = scatterUI.transform.FindChild("ScatterCanvas").FindChild("ScatterBar").gameObject.GetComponent<Image>();
+        scatterBar = scatterUI.transform.FindChild("ScatterCanvas").FindChild("ScatterBar").gameObject
+            .GetComponent<Image>();
         scatterBar.fillAmount = 1f;
 
-        var scatterIcon = scatterUI.transform.FindChild("ScatterCanvas").FindChild("ScatterIcon").gameObject.GetComponent<Image>();
+        var scatterIcon = scatterUI.transform.FindChild("ScatterCanvas").FindChild("ScatterIcon").gameObject
+            .GetComponent<Image>();
         scatterIcon.sprite = Player.Data.Role.RoleIconSolid;
     }
 
@@ -88,11 +93,13 @@ public class ScatterModifier(float time) : TimedModifier
         {
             > 10 => Color.green,
             > 5 => Color.yellow,
-            _ => Color.red,
+            _ => Color.red
         };
 
         if (scatterText != null)
+        {
             scatterText.text = $"Scatter: {textColor.ToTextColor()}{roundedTime}s</color>";
+        }
 
         if (scatterBar != null)
         {
@@ -108,7 +115,9 @@ public class ScatterModifier(float time) : TimedModifier
             {
                 var num = roundedTime / 10f;
                 var pitch = 1.5f - num / 2f;
-                SoundManager.Instance.PlaySoundImmediate(GameManagerCreator.Instance.HideAndSeekManagerPrefab.FinalHideCountdownSFX, false, 1f, pitch, SoundManager.Instance.SfxChannel);
+                SoundManager.Instance.PlaySoundImmediate(
+                    GameManagerCreator.Instance.HideAndSeekManagerPrefab.FinalHideCountdownSFX, false, 1f, pitch,
+                    SoundManager.Instance.SfxChannel);
                 soundTimer = 1f;
             }
         }
@@ -119,7 +128,10 @@ public class ScatterModifier(float time) : TimedModifier
         foreach (var location in _locations)
         {
             var magnitude = (location - Player.transform.localPosition).magnitude;
-            if (magnitude < 5f) return;
+            if (magnitude < 5f)
+            {
+                return;
+            }
         }
 
         TimeRemaining = Duration;
@@ -130,6 +142,7 @@ public class ScatterModifier(float time) : TimedModifier
             _locations.RemoveAt(3);
         }
     }
+
     public override void OnDeactivate()
     {
         base.OnDeactivate();
@@ -144,7 +157,6 @@ public class ScatterModifier(float time) : TimedModifier
         {
             scatterUI.gameObject.Destroy();
         }
-
     }
 
     public override void OnTimerComplete()

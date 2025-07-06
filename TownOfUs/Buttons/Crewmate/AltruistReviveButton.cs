@@ -22,15 +22,20 @@ public sealed class AltruistReviveButton : TownOfUsRoleButton<AltruistRole>
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.ReviveSprite;
 
     public bool RevivedInRound { get; set; }
+
     public override void CreateButton(Transform parent)
     {
         base.CreateButton(parent);
 
         Button!.usesRemainingSprite.sprite = TouAssets.AbilityCounterBodySprite.LoadAsset();
     }
+
     public override bool CanUse()
     {
-        if (RevivedInRound) return false;
+        if (RevivedInRound)
+        {
+            return false;
+        }
 
         var bodiesInRange = Helpers.GetNearestDeadBodies(
             PlayerControl.LocalPlayer.transform.position,
@@ -57,11 +62,12 @@ public sealed class AltruistReviveButton : TownOfUsRoleButton<AltruistRole>
                 if (player.IsLover() && OptionGroupSingleton<LoversOptions>.Instance.BothLoversDie)
                 {
                     var other = player.GetModifier<LoverModifier>()!.GetOtherLover;
-                    if (playersToRevive.Contains(other()!.PlayerId) && other()!.Data.IsDead)
+                    if (!playersToRevive.Contains(other()!.PlayerId) && other()!.Data.IsDead)
                     {
                         AltruistRole.RpcRevive(PlayerControl.LocalPlayer, other()!);
                     }
                 }
+
                 AltruistRole.RpcRevive(PlayerControl.LocalPlayer, player);
             }
         }

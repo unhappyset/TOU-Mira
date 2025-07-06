@@ -15,6 +15,7 @@ public sealed class SheriffOptions : AbstractOptionGroup<SheriffRole>
 
     [ModdedToggleOption("Can Self Report")]
     public bool SheriffBodyReport { get; set; } = false;
+
     [ModdedToggleOption("Allow Shooting in First Round")]
     public bool FirstRoundUse { get; set; } = false;
 

@@ -18,6 +18,23 @@ public static class WarlockEvents
         }
 
         var button = CustomButtonSingleton<WarlockKillButton>.Instance;
-        if (button.BurstActive) ++button.Kills;
+        if (button.BurstActive)
+        {
+            ++button.Kills;
+        }
+    }
+
+    [RegisterEvent]
+    public static void RoundStartHandler(RoundStartEvent @event)
+    {
+        if (@event.TriggeredByIntro)
+        {
+            return; // Only run when round starts.
+        }
+
+        var button = CustomButtonSingleton<WarlockKillButton>.Instance;
+        button.Charge = 0f;
+        button.BurstActive = false;
+        button.ResetCooldownAndOrEffect();
     }
 }

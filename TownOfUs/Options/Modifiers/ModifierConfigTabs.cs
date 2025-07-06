@@ -17,6 +17,7 @@ public sealed class UniversalOptions : AbstractOptionGroup
     public override bool ShowInModifiersMenu => true;
     public override uint GroupPriority => 20;
 }
+
 public sealed class CrewOptions : AbstractOptionGroup
 {
     public override string GroupName => "Crewmate Modifier Configs";

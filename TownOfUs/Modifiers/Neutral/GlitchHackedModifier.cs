@@ -25,7 +25,7 @@ public sealed class GlitchHackedModifier(byte glitchId) : TimedModifier
     private GameObject? VentButtonHackedSprite { get; set; }
     private GameObject? UseButtonHackedSprite { get; set; }
     private GameObject? SabotageButtonHackedSprite { get; set; }
-    private List<GameObject> CustomButtonHackedSprites { get; set; } = [];
+    private List<GameObject> CustomButtonHackedSprites { get; } = [];
 
     public override void OnActivate()
     {
@@ -42,15 +42,27 @@ public sealed class GlitchHackedModifier(byte glitchId) : TimedModifier
 
             foreach (var button in CustomButtonManager.Buttons)
             {
-                if (button is FakeVentButton) continue;
+                if (button is FakeVentButton)
+                {
+                    continue;
+                }
+
                 CustomButtonHackedSprites.Add(button!.Button!.CreateHackedIcon());
             }
         }
     }
 
+    public override void OnDeath(DeathReason reason)
+    {
+        ModifierComponent!.RemoveModifier(this);
+    }
+
     public void ShowHacked()
     {
-        if (!ShouldHideHacked) return;
+        if (!ShouldHideHacked)
+        {
+            return;
+        }
 
         ShouldHideHacked = false;
         var glitch = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.PlayerId == GlitchId);

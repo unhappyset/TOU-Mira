@@ -1,57 +1,86 @@
-using AmongUs.GameOptions;
+using System.Globalization;
 using System.Text;
+using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Components;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
-using TownOfUs.Modifiers.Game;
-using Reactor.Utilities;
-using System.Globalization;
-using TownOfUs.Modules.Localization;
 
 namespace TownOfUs.Roles.Crewmate;
 
 public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
-    public string RoleName => TouLocale.Get(TouNames.Vigilante, "Vigilante");
+    private MeetingMenu meetingMenu;
+
+    public int MaxKills { get; set; }
+    public int SafeShotsLeft { get; set; }
+    public DoomableType DoomHintType => DoomableType.Relentless;
+    public string RoleName => "Vigilante";
     public string RoleDescription => "Kill Impostors If You Can Guess Their Roles";
     public string RoleLongDescription => "Guess the roles of impostors mid-meeting to kill them!";
     public Color RoleColor => TownOfUsColors.Vigilante;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
-    public DoomableType DoomHintType => DoomableType.Relentless;
     public bool IsPowerCrew => MaxKills > 0; // Always disable end game checks with a vigi running around
 
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Vigilante,
-        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Impostor),
+        IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Impostor)
     };
 
-    public int MaxKills { get; set; }
-    public int SafeShotsLeft { get; set; }
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        var stringB = ITownOfUsRole.SetNewTabText(this);
+        if (PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
+        {
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"You can also guess Crewmates.");
+        }
 
-    private MeetingMenu meetingMenu;
+        if ((int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots > 0)
+        {
+            var newText = SafeShotsLeft == 0
+                ? "You have no more safe shots left."
+                : $"{SafeShotsLeft} safe shot(s) left.";
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
+        }
+
+        return stringB;
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return
+            "The Vigilante is a Crewmate Killing role that can guess players roles in meetings. " +
+            "If they guess correctly, the other player will die. If not, they will die. "
+            + MiscUtils.AppendOptionsText(GetType());
+    }
 
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
 
         MaxKills = (int)OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteKills;
         SafeShotsLeft = (int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots;
-        if (Player.HasModifier<ImitatorCacheModifier>()) SafeShotsLeft = 0;
+        if (Player.HasModifier<ImitatorCacheModifier>())
+        {
+            SafeShotsLeft = 0;
+        }
 
         if (Player.AmOwner)
         {
@@ -67,7 +96,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
     public override void OnMeetingStart()
     {
-        RoleStubs.RoleBehaviourOnMeetingStart(this);
+        RoleBehaviourStubs.OnMeetingStart(this);
 
         if (Player.AmOwner)
         {
@@ -78,7 +107,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
     public override void OnVotingComplete()
     {
-        RoleStubs.RoleBehaviourOnVotingComplete(this);
+        RoleBehaviourStubs.OnVotingComplete(this);
 
         if (Player.AmOwner)
         {
@@ -88,7 +117,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         if (Player.AmOwner)
         {
@@ -116,11 +145,17 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             if (player.IsImpostor())
             {
                 if (role.Role == player.Data.Role.Role && !player.HasModifier<TraitorCacheModifier>())
+                {
                     pickVictim = true;
+                }
                 else if (role is TraitorRole && player.HasModifier<TraitorCacheModifier>())
+                {
                     pickVictim = true;
+                }
                 else
+                {
                     pickVictim = false;
+                }
             }
 
             var victim = pickVictim ? player : Player;
@@ -160,16 +195,16 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
                 return;
             }
-            else
+
+            Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false,
+                playKillSound: false);
+
+            if (victim != Player)
             {
-                Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false,
-                    playKillSound: false);
-
-                if (victim != Player)
-                    meetingMenu?.HideSingle(victim.PlayerId);
-
-                MaxKills--;
+                meetingMenu?.HideSingle(victim.PlayerId);
             }
+
+            MaxKills--;
 
             shapeMenu.Close();
         }
@@ -177,8 +212,11 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
     public bool IsExempt(PlayerVoteArea voteArea)
     {
-        return voteArea?.TargetPlayerId == Player.PlayerId || Player.Data.IsDead || voteArea!.AmDead ||
-               voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true;
+        return voteArea?.TargetPlayerId == Player.PlayerId ||
+               Player.Data.IsDead || voteArea!.AmDead ||
+               voteArea.GetPlayer()?.HasModifier<JailedModifier>() == true ||
+               (voteArea.GetPlayer()?.Data.Role is MayorRole mayor && mayor.Revealed) ||
+               (Player.IsLover() && voteArea.GetPlayer()?.IsLover() == true);
     }
 
     private static bool IsRoleValid(RoleBehaviour role)
@@ -202,7 +240,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         {
             return false;
         }
-        else if (role.IsCrewmate())
+
+        if (role.IsCrewmate())
         {
             return true;
         }
@@ -232,22 +271,28 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
     private static bool IsModifierValid(BaseModifier modifier)
     {
+        var isValid = true;
         // This will remove modifiers that alter their chance/amount
-        var isValid = !((modifier is TouGameModifier touMod && (touMod.CustomAmount <= 0 || touMod.CustomChance <= 0)) ||
-                        (modifier is AllianceGameModifier allyMod && (allyMod.CustomAmount <= 0 || allyMod.CustomChance <= 0)) ||
-                        (modifier is UniversalGameModifier uniMod && (uniMod.CustomAmount <= 0 || uniMod.CustomChance <= 0)));
+        if ((modifier is TouGameModifier touMod && (touMod.CustomAmount <= 0 || touMod.CustomChance <= 0)) ||
+            (modifier is AllianceGameModifier allyMod && (allyMod.CustomAmount <= 0 || allyMod.CustomChance <= 0)) ||
+            (modifier is UniversalGameModifier uniMod && (uniMod.CustomAmount <= 0 || uniMod.CustomChance <= 0)))
+        {
+            isValid = false;
+        }
 
         if (!isValid)
         {
             return false;
         }
 
-        if (OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteGuessAlliances && modifier is AllianceGameModifier)
+        if (OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteGuessAlliances &&
+            modifier is AllianceGameModifier)
         {
             return true;
         }
 
-        if (modifier is TouGameModifier impMod &&
+        var impMod = modifier as TouGameModifier;
+        if (impMod != null &&
             (impMod.FactionType.ToDisplayString().Contains("Imp") ||
              impMod.FactionType.ToDisplayString().Contains("Killer")) &&
             !impMod.FactionType.ToDisplayString().Contains("Non"))
@@ -256,33 +301,5 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         }
 
         return false;
-    }
-
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        var stringB = ITownOfUsRole.SetNewTabText(this);
-        if (PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
-        {
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"You can also guess Crewmates.");
-        }
-
-        if ((int)OptionGroupSingleton<VigilanteOptions>.Instance.MultiShots > 0)
-        {
-            var newText = SafeShotsLeft == 0
-                ? "You have no more safe shots left."
-                : $"{SafeShotsLeft} safe shot(s) left.";
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"{newText}");
-        }
-
-        return stringB;
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Crewmate Killing role that can guess players roles in meetings. " +
-            "If they guess correctly, the other player will die. If not, they will die. "
-            + MiscUtils.AppendOptionsText(GetType());
     }
 }

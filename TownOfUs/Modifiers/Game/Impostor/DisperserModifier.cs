@@ -11,22 +11,52 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Utilities;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TownOfUs.Modifiers.Game.Impostor;
 
 public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Disperser";
-    public override string GetDescription() => "Separate the Crew.";
+    public override string IntroInfo => "You can also disperse players to vents around the map.";
+
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Disperser;
     public override ModifierFaction FactionType => ModifierFaction.ImpostorUtility;
 
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.DisperserChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.DisperserAmount;
+    public string GetAdvancedDescription()
+    {
+        return
+            "Disperse everyone on the map to a random vent, given that they are not Immovable. You cannot have any other button modifiers with Disperser.";
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Disperse",
+            "You can disperse players on the map to any vents, which you can do once per game.",
+            TouAssets.DisperseSprite)
+    ];
+
+    public override string GetDescription()
+    {
+        return "Separate the Crew.";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.DisperserChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.DisperserAmount;
+    }
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        return base.IsModifierValidOn(role) && role.IsImpostor() && !role.Player.GetModifierComponent().HasModifier<SatelliteModifier>(true) && !role.Player.GetModifierComponent().HasModifier<ButtonBarryModifier>(true);
+        return base.IsModifierValidOn(role) && role.IsImpostor() &&
+               !role.Player.GetModifierComponent().HasModifier<SatelliteModifier>(true) &&
+               !role.Player.GetModifierComponent().HasModifier<ButtonBarryModifier>(true);
     }
 
     public static IEnumerator CoDisperse(Dictionary<byte, Vector2> coordinates)
@@ -37,7 +67,8 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
         DispersePlayersToCoordinates(coordinates);
 
         var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}Everyone has been dispersed to a vent!</color></b>", Color.white, spr: TouModifierIcons.Disperser.LoadAsset());
+            $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}Everyone has been dispersed to a vent!</color></b>", Color.white,
+            spr: TouModifierIcons.Disperser.LoadAsset());
 
         notif1.Text.SetOutlineThickness(0.35f);
         notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
@@ -49,8 +80,14 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
         {
             if (Minigame.Instance)
             {
-                try { Minigame.Instance.Close(); }
-                catch { /* ignored */ }
+                try
+                {
+                    Minigame.Instance.Close();
+                }
+                catch
+                {
+                    /* ignored */
+                }
             }
 
             if (PlayerControl.LocalPlayer.inVent)
@@ -60,9 +97,9 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
             }
         }
 
-        foreach ((byte key, Vector2 value) in coordinates)
+        foreach (var (key, value) in coordinates)
         {
-            PlayerControl player = MiscUtils.PlayerById(key)!;
+            var player = MiscUtils.PlayerById(key)!;
             player.transform.position = value;
 
             if (PlayerControl.LocalPlayer == player)
@@ -79,38 +116,30 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
             PlayerControl.LocalPlayer.MyPhysics.StopAllCoroutines();
         }
 
-        if (ModCompatibility.SubLoaded) ModCompatibility.ChangeFloor(PlayerControl.LocalPlayer.transform.position.y > -7f);
+        if (ModCompatibility.SubLoaded)
+        {
+            ModCompatibility.ChangeFloor(PlayerControl.LocalPlayer.transform.position.y > -7f);
+        }
     }
 
     public static Dictionary<byte, Vector2> GenerateDisperseCoordinates()
     {
-        var targets = PlayerControl.AllPlayerControls.ToArray().Where(player => !player.Data.IsDead && !player.Data.Disconnected).ToList();
+        var targets = PlayerControl.AllPlayerControls.ToArray()
+            .Where(player => !player.Data.IsDead && !player.Data.Disconnected).ToList();
 
         // players with the ImmovableModifier can't be dispersed
         targets.RemoveAll(x => x.HasModifier<ImmovableModifier>());
 
-        var vents = UnityEngine.Object.FindObjectsOfType<Vent>();
+        var vents = Object.FindObjectsOfType<Vent>();
 
         var coordinates = new Dictionary<byte, Vector2>(targets.Count);
 
-        foreach (PlayerControl target in targets)
+        foreach (var target in targets)
         {
-            Vector3 destination = vents.Random()!.transform.position + new Vector3(0f, 0.3636f, 0f);
+            var destination = vents.Random()!.transform.position + new Vector3(0f, 0.3636f, 0f);
             coordinates.Add(target.PlayerId, destination);
         }
 
         return coordinates;
     }
-    public string GetAdvancedDescription()
-    {
-        return
-            "Disperse everyone on the map to a random vent, given that they are not Immovable. You cannot have any other button modifiers with Disperser.";
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Disperse",
-            $"You can disperse players on the map to any vents, which you can do once per game.",
-            TouAssets.DisperseSprite),
-    ];
 }

@@ -15,17 +15,21 @@ public sealed class TelepathOptions : AbstractOptionGroup<TelepathModifier>
 
     [ModdedToggleOption("Know Where Teammate Kills")]
     public bool KnowKillLocation { get; set; } = true;
+
     [ModdedToggleOption("Know When Teammate Dies")]
     public bool KnowDeath { get; set; } = true;
 
-    public ModdedToggleOption KnowDeathLocation { get; } = new ModdedToggleOption("Know Where Teammate Dies", true)
+    public ModdedToggleOption KnowDeathLocation { get; } = new("Know Where Teammate Dies", true)
     {
-        Visible = () => OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath,
+        Visible = () => OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath
     };
 
-    public ModdedNumberOption TelepathArrowDuration { get; } = new ModdedNumberOption("Dead Body Arrow Duration", 2.5f, 0f, 5f, 0.5f, MiraNumberSuffixes.Seconds, "0.00")
+    public ModdedNumberOption TelepathArrowDuration { get; } = new("Dead Body Arrow Duration", 2.5f, 0f, 5f, 0.5f,
+        MiraNumberSuffixes.Seconds, "0.00")
     {
-        Visible = () => OptionGroupSingleton<TelepathOptions>.Instance.KnowKillLocation || (OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath && OptionGroupSingleton<TelepathOptions>.Instance.KnowDeathLocation),
+        Visible = () => OptionGroupSingleton<TelepathOptions>.Instance.KnowKillLocation ||
+                        (OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath &&
+                         OptionGroupSingleton<TelepathOptions>.Instance.KnowDeathLocation)
     };
 
     [ModdedToggleOption("Know When Teammate Guesses Successfully")]

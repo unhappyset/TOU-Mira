@@ -9,7 +9,8 @@ using UnityEngine;
 namespace TownOfUs.Networking;
 
 [RegisterCustomRpc((uint)TownOfUsRpc.Disperse)]
-public sealed class DisperseRpc(TownOfUsPlugin plugin, uint id) : PlayerCustomRpc<TownOfUsPlugin, Dictionary<byte, Vector2>>(plugin, id)
+public sealed class DisperseRpc(TownOfUsPlugin plugin, uint id)
+    : PlayerCustomRpc<TownOfUsPlugin, Dictionary<byte, Vector2>>(plugin, id)
 {
     public override RpcLocalHandling LocalHandling => RpcLocalHandling.Before;
 
@@ -39,13 +40,16 @@ public sealed class DisperseRpc(TownOfUsPlugin plugin, uint id) : PlayerCustomRp
             var value = reader.ReadVector2();
             data[key] = value;
         }
+
         return data;
     }
 
     public override void Handle(PlayerControl innerNetObject, Dictionary<byte, Vector2>? data)
     {
         if (data == null || data.Count == 0)
+        {
             return;
+        }
 
         Coroutines.Start(DisperserModifier.CoDisperse(data));
     }

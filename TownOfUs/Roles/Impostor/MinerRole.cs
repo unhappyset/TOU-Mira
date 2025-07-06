@@ -18,53 +18,69 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Impostor;
 
-public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
+public sealed class MinerRole(IntPtr cppPtr)
+    : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
+    [HideFromIl2Cpp] public List<Vent> Vents { get; set; } = [];
+
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner ||
+            MeetingHud.Instance || (!HudManager.Instance.UseButton.isActiveAndEnabled &&
+                                    !HudManager.Instance.PetButton.isActiveAndEnabled))
+        {
+            return;
+        }
+
+        HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<MinerOptions>.Instance.MinerKill ||
+                                                     (Player != null && Player.GetModifiers<BaseModifier>()
+                                                         .Any(x => x is ICachedRole)) ||
+                                                     (Player != null && MiscUtils.ImpAliveCount == 1));
+    }
+
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<EngineerTouRole>());
+    public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string RoleName => "Miner";
     public string RoleDescription => "From The Top, Make It Drop, That's A Vent";
     public string RoleLongDescription => "Place interconnected vents around the map";
-    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<EngineerTouRole>());
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
-    public DoomableType DoomHintType => DoomableType.Fearmonger;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         UseVanillaKillButton = true,
         Icon = TouRoleIcons.Miner,
         OptionsScreenshot = TouImpAssets.MinerRoleBanner,
-        IntroSound = TouAudio.MineSound,
+        IntroSound = TouAudio.MineSound
     };
-    public void FixedUpdate()
-    {
-        if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner || MeetingHud.Instance || (!HudManager.Instance.UseButton.isActiveAndEnabled && !HudManager.Instance.PetButton.isActiveAndEnabled)) return;
-        HudManager.Instance.KillButton.ToggleVisible(OptionGroupSingleton<MinerOptions>.Instance.MinerKill || (Player != null && Player.GetModifiers<BaseModifier>().Any(x => x is ICachedRole)) || (Player != null && MiscUtils.ImpAliveCount == 1));
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Mine",
-            "Place a vent where you are standing. These vents won't connect to already existing vents on the map but with each other.",
-            TouImpAssets.MineSprite)
-    ];
-
-    [HideFromIl2Cpp]
-    public List<Vent> Vents { get; set; } = [];
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
-        if (OptionGroupSingleton<MinerOptions>.Instance.MineVisibility is MineVisiblityOptions.AfterUse) stringB.Append(CultureInfo.InvariantCulture, $"Vents will only be visible once used");
+        if (OptionGroupSingleton<MinerOptions>.Instance.MineVisibility is MineVisiblityOptions.AfterUse)
+        {
+            stringB.Append(CultureInfo.InvariantCulture, $"Vents will only be visible once used");
+        }
+
         return stringB;
     }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Mine",
+            "Place a vent where you are standing. These vents won't connect to already existing vents on the map but with each other.",
+            TouImpAssets.MineSprite)
+    ];
 
     public string GetAdvancedDescription()
     {
         return "The Miner is an Impostor Support role that can create vents." + MiscUtils.AppendOptionsText(GetType());
     }
 
-    [MethodRpc((uint)TownOfUsRpc.PlaceVent)]
+    [MethodRpc((uint)TownOfUsRpc.PlaceVent, SendImmediately = true)]
     public static void RpcPlaceVent(PlayerControl player, int ventId, Vector2 position, float zAxis, bool immediate)
     {
         if (player.Data.Role is not MinerRole miner)
@@ -75,7 +91,7 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
 
         //Logger<TownOfUsPlugin>.Error("RpcPlaceVent");
 
-        var ventPrefab = FindObjectOfType<Vent>();
+        var ventPrefab = ShipStatus.Instance.AllVents[0];
         var vent = Instantiate(ventPrefab, ventPrefab.transform.parent);
         vent.name = $"MinerVent-{player.PlayerId}-{ventId}";
 
@@ -90,7 +106,10 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         vent.Id = ventId;
         vent.transform.position = new Vector3(position.x, position.y, zAxis);
 
-        if (miner == null) return;
+        if (miner == null)
+        {
+            return;
+        }
 
         if (miner.Vents.Count > 0)
         {
@@ -118,14 +137,18 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
             vent.gameObject.AddSubmergedComponent("ElevatorMover"); // just in case elevator vent is not blocked
             if (vent.gameObject.transform.position.y > -7)
             {
-                vent.gameObject.transform.position = new Vector3(vent.gameObject.transform.position.x, vent.gameObject.transform.position.y, 0.03f);
+                vent.gameObject.transform.position = new Vector3(vent.gameObject.transform.position.x,
+                    vent.gameObject.transform.position.y, 0.03f);
             }
             else
             {
-                vent.gameObject.transform.position = new Vector3(vent.gameObject.transform.position.x, vent.gameObject.transform.position.y, 0.0009f);
-                vent.gameObject.transform.localPosition = new Vector3(vent.gameObject.transform.localPosition.x, vent.gameObject.transform.localPosition.y, -0.003f);
+                vent.gameObject.transform.position = new Vector3(vent.gameObject.transform.position.x,
+                    vent.gameObject.transform.position.y, 0.0009f);
+                vent.gameObject.transform.localPosition = new Vector3(vent.gameObject.transform.localPosition.x,
+                    vent.gameObject.transform.localPosition.y, -0.003f);
             }
         }
+
         var touAbilityEvent = new TouAbilityEvent(AbilityType.MinerPlaceVent, player, vent);
         MiraEventManager.InvokeEvent(touAbilityEvent);
         if (immediate)
@@ -135,7 +158,7 @@ public sealed class MinerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         }
     }
 
-    [MethodRpc((uint)TownOfUsRpc.ShowVent)]
+    [MethodRpc((uint)TownOfUsRpc.ShowVent, SendImmediately = true)]
     public static void RpcShowVent(PlayerControl player, int ventId)
     {
         if (player.Data.Role is not MinerRole miner)

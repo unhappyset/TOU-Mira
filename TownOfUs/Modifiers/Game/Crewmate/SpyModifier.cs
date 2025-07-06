@@ -16,32 +16,11 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class SpyModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Spy";
+    public override string IntroInfo => "You can also gain extra information on the Admin Table";
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Spy;
-    public override string GetDescription() => "Gain extra information on the Admin Table.";
+
     public override ModifierFaction FactionType => ModifierFaction.CrewmateUtility;
-    public override void OnActivate()
-    {
-        base.OnActivate();
 
-        if (!Player.AmOwner) return;
-        CustomButtonSingleton<SpyAdminTableModifierButton>.Instance.AvailableCharge = OptionGroupSingleton<SpyOptions>.Instance.StartingCharge.Value;
-    }
-    public static void OnRoundStart()
-    {
-        CustomButtonSingleton<SpyAdminTableModifierButton>.Instance.AvailableCharge += OptionGroupSingleton<SpyOptions>.Instance.RoundCharge.Value;
-    }
-    public static void OnTaskComplete()
-    {
-        CustomButtonSingleton<SpyAdminTableModifierButton>.Instance.AvailableCharge += OptionGroupSingleton<SpyOptions>.Instance.TaskCharge.Value;
-    }
-
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.SpyChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.SpyAmount;
-
-    public override bool IsModifierValidOn(RoleBehaviour role)
-    {
-        return base.IsModifierValidOn(role) && role is not SpyRole && role.IsCrewmate() && Instance.Type != MapType.Fungle;
-    }
     public string GetAdvancedDescription()
     {
         return
@@ -50,4 +29,50 @@ public sealed class SpyModifier : TouGameModifier, IWikiDiscoverable
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "Gain extra information on the Admin Table.";
+    }
+
+    public override void OnActivate()
+    {
+        base.OnActivate();
+
+        if (!Player.AmOwner)
+        {
+            return;
+        }
+
+        CustomButtonSingleton<SpyAdminTableModifierButton>.Instance.AvailableCharge =
+            OptionGroupSingleton<SpyOptions>.Instance.StartingCharge.Value;
+    }
+
+    public static void OnRoundStart()
+    {
+        CustomButtonSingleton<SpyAdminTableModifierButton>.Instance.AvailableCharge +=
+            OptionGroupSingleton<SpyOptions>.Instance.RoundCharge.Value;
+    }
+
+    public static void OnTaskComplete()
+    {
+        CustomButtonSingleton<SpyAdminTableModifierButton>.Instance.AvailableCharge +=
+            OptionGroupSingleton<SpyOptions>.Instance.TaskCharge.Value;
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.SpyChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.SpyAmount;
+    }
+
+    public override bool IsModifierValidOn(RoleBehaviour role)
+    {
+        return base.IsModifierValidOn(role) && role is not SpyRole && role.IsCrewmate() &&
+               Instance.Type != MapType.Fungle;
+    }
 }

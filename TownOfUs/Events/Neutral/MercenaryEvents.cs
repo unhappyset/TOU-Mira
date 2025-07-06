@@ -19,7 +19,10 @@ public static class MercenaryEvents
         var source = PlayerControl.LocalPlayer;
         var target = button?.Target;
 
-        if (target == null || button == null || !button.CanClick()) return;
+        if (target == null || button == null || !button.CanClick())
+        {
+            return;
+        }
 
         // only check if this interaction was via a custom button
         CheckForMercenaryGuard(source, target);
@@ -41,7 +44,16 @@ public static class MercenaryEvents
 
     private static void CheckForMercenaryGuard(PlayerControl source, PlayerControl target)
     {
-        if (!target.HasModifier<MercenaryGuardModifier>()) return;
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return;
+        }
+
+        if (!target.HasModifier<MercenaryGuardModifier>())
+        {
+            return;
+        }
+
         var mercenary = target.GetModifier<MercenaryGuardModifier>()?.Mercenary;
 
         if (mercenary && source.AmOwner)

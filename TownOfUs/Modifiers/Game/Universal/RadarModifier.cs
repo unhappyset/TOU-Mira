@@ -12,18 +12,38 @@ namespace TownOfUs.Modifiers.Game.Universal;
 
 public sealed class RadarModifier : UniversalGameModifier, IWikiDiscoverable
 {
+    private ArrowBehaviour _arrow;
     public override string ModifierName => "Radar";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Radar;
-    public override string GetDescription() => "You have an arrow pointing\n to the closest player.";
-    public override ModifierFaction FactionType => ModifierFaction.UniversalUtility;
-    private ArrowBehaviour _arrow;
 
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.RadarChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.RadarAmount;
+    public override ModifierFaction FactionType => ModifierFaction.UniversalUtility;
+
+    public string GetAdvancedDescription()
+    {
+        return
+            "Get an arrow to the closest player.";
+    }
+
+    public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
+    public override string GetDescription()
+    {
+        return "You have an arrow pointing\n to the closest player.";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.RadarChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.RadarAmount;
+    }
 
     public override void OnActivate()
     {
-        _arrow = MiscUtils.CreateArrow(Player.gameObject.transform, new(1f, 0f, 0.5f, 1f));
+        _arrow = MiscUtils.CreateArrow(Player.gameObject.transform, new Color(1f, 0f, 0.5f, 1f));
     }
 
     public override void OnDeactivate()
@@ -44,12 +64,12 @@ public sealed class RadarModifier : UniversalGameModifier, IWikiDiscoverable
             return;
         }
 
-        var target = Helpers.GetClosestPlayers(Player, float.MaxValue, true)
-            .FirstOrDefault(
-                playerInfo => !playerInfo.Data.Disconnected &&
-                              playerInfo.PlayerId != Player.PlayerId &&
-                              ((playerInfo.TryGetModifier<DisabledModifier>(out var mod) && mod.IsConsideredAlive) || !playerInfo.HasModifier<DisabledModifier>()) &&
-                              !playerInfo.Data.IsDead);
+        var target = Helpers.GetClosestPlayers(Player, float.MaxValue)
+            .FirstOrDefault(playerInfo => !playerInfo.Data.Disconnected &&
+                                          playerInfo.PlayerId != Player.PlayerId &&
+                                          ((playerInfo.TryGetModifier<DisabledModifier>(out var mod) &&
+                                            mod.IsConsideredAlive) || !playerInfo.HasModifier<DisabledModifier>()) &&
+                                          !playerInfo.Data.IsDead);
         if (!target)
         {
             return;
@@ -58,11 +78,4 @@ public sealed class RadarModifier : UniversalGameModifier, IWikiDiscoverable
         _arrow.gameObject.SetActive(true);
         _arrow.target = target!.transform.localPosition;
     }
-    public string GetAdvancedDescription()
-    {
-        return
-            "Get an arrow to the closest player.";
-    }
-
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
 }

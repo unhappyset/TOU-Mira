@@ -4,6 +4,7 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
+using TownOfUs.Buttons;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options;
 using TownOfUs.Utilities;
@@ -18,7 +19,10 @@ public static class SurvivorEvents
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var target = button?.Target;
 
-        if (target == null || button == null || !button.CanClick()) return;
+        if (target == null || button == null || !button.CanClick())
+        {
+            return;
+        }
 
         CheckForSurvivorVest(@event, target);
     }
@@ -30,7 +34,15 @@ public static class SurvivorEvents
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var target = button?.Target;
 
-        if (target && !target!.HasModifier<SurvivorVestModifier>()) return;
+        if (target == null || button is not IKillButton)
+        {
+            return;
+        }
+
+        if (target && !target!.HasModifier<SurvivorVestModifier>())
+        {
+            return;
+        }
 
         ResetButtonTimer(source, button);
     }
@@ -49,7 +61,15 @@ public static class SurvivorEvents
 
     private static bool CheckForSurvivorVest(MiraCancelableEvent @event, PlayerControl target)
     {
-        if (!target.HasModifier<SurvivorVestModifier>()) return false;
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            return false;
+        }
+
+        if (!target.HasModifier<SurvivorVestModifier>())
+        {
+            return false;
+        }
 
         @event.Cancel();
 
@@ -63,7 +83,10 @@ public static class SurvivorEvents
         button?.SetTimer(reset);
 
         // Reset impostor kill cooldown if they attack a shielded player
-        if (!source.AmOwner || !source.IsImpostor()) return;
+        if (!source.AmOwner || !source.IsImpostor())
+        {
+            return;
+        }
 
         source.SetKillTimer(reset);
     }

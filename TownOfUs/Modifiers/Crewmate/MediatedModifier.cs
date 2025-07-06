@@ -15,17 +15,21 @@ namespace TownOfUs.Modifiers.Crewmate;
 
 public sealed class MediatedModifier(byte mediumId) : BaseModifier
 {
+    private ArrowBehaviour? _arrow;
+
+    private MediumRole? _medium;
+    private PlayerControl? _mediumPlayer;
     public override string ModifierName => "Mediated";
     public override bool HideOnUi => true;
     public byte MediumId { get; } = mediumId;
 
-    private MediumRole? _medium;
-    private PlayerControl? _mediumPlayer;
-    private ArrowBehaviour? _arrow;
+    public override void OnMeetingStart()
+    {
+        ModifierComponent?.RemoveModifier(this);
+    }
 
     public override void OnActivate()
     {
-
         _medium = GameData.Instance.GetPlayerById(MediumId).Role as MediumRole;
         _mediumPlayer = _medium?.Player;
 

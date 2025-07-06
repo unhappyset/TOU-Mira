@@ -11,25 +11,54 @@ using TownOfUs.Options.Modifiers.Universal;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TownOfUs.Modifiers.Game.Universal;
 
 public sealed class SatelliteModifier : UniversalGameModifier, IWikiDiscoverable
 {
+    private readonly List<SpriteRenderer> CastedIcons = [];
+    private readonly List<PlayerControl> CastedPlayers = [];
     public override string ModifierName => "Satellite";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Satellite;
-    public override string GetDescription() => "You can broadcast a signal to detect all dead bodies on the map.";
-    public override int GetAssignmentChance() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SatelliteChance;
-    public override int GetAmountPerGame() => (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SatelliteAmount;
+
     public override ModifierFaction FactionType => ModifierFaction.UniversalUtility;
-    private readonly List<PlayerControl> CastedPlayers = [];
-    private readonly List<SpriteRenderer> CastedIcons = [];
     public int Priority { get; set; } = 5;
+
+    public string GetAdvancedDescription()
+    {
+        return "You can broadcast a signal to know where dead bodies are."
+               + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Broadcast",
+            $"You can check for bodies on the map, which you can do {OptionGroupSingleton<SatelliteOptions>.Instance.MaxNumCast} time(s) per game.",
+            TouAssets.BroadcastSprite)
+    ];
+
+    public override string GetDescription()
+    {
+        return "You can broadcast a signal to detect all dead bodies on the map.";
+    }
+
+    public override int GetAssignmentChance()
+    {
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SatelliteChance;
+    }
+
+    public override int GetAmountPerGame()
+    {
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.SatelliteAmount;
+    }
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
         return base.IsModifierValidOn(role) && role is not MysticRole;
     }
+
     public void OnRoundStart()
     {
         CustomButtonSingleton<SatelliteButton>.Instance.Usable = true;
@@ -40,10 +69,10 @@ public sealed class SatelliteModifier : UniversalGameModifier, IWikiDiscoverable
     {
         if (!CastedPlayers.Contains(player))
         {
-            var newIcon = UnityEngine.Object.Instantiate(MapBehaviour.Instance.TrackedHerePoint);
+            var newIcon = Object.Instantiate(MapBehaviour.Instance.TrackedHerePoint);
             newIcon.material = AnimStore.SetSpriteColourMatch(player, newIcon.material);
 
-            Vector3 vector = player.transform.position;
+            var vector = player.transform.position;
             vector /= ShipStatus.Instance.MapScale;
             vector.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
             vector.z = -1f;
@@ -61,18 +90,7 @@ public sealed class SatelliteModifier : UniversalGameModifier, IWikiDiscoverable
         {
             gameObject.Destroy();
         }
+
         CastedIcons.Clear();
     }
-    public string GetAdvancedDescription()
-    {
-        return "You can broadcast a signal to know where dead bodies are."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Broadcast",
-            $"You can check for bodies on the map, which you can do {OptionGroupSingleton<SatelliteOptions>.Instance.MaxNumCast} time(s) per game.",
-            TouAssets.BroadcastSprite),
-    ];
 }

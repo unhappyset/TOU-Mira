@@ -1,27 +1,32 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Networking;
-using TownOfUs.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Buttons.Neutral;
 
-public sealed class PestilenceKillButton : TownOfUsRoleButton<PestilenceRole, PlayerControl>, IDiseaseableButton
+public sealed class PestilenceKillButton : TownOfUsRoleButton<PestilenceRole, PlayerControl>, IDiseaseableButton,
+    IKillButton
 {
     public override string Name => "Kill";
     public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Pestilence;
     public override float Cooldown => OptionGroupSingleton<PlaguebearerOptions>.Instance.PestKillCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.PestKillSprite;
+
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
     }
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
 
     protected override void OnClick()
     {

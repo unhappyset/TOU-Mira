@@ -19,9 +19,6 @@ public sealed class VeteranOptions : AbstractOptionGroup<VeteranRole>
     [ModdedNumberOption("Max Number of Alerts", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxNumAlerts { get; set; } = 5f;
 
-    [ModdedToggleOption("Indirect Impostor Attacks Kill Veteran")]
-    public bool IndirectKills { get; set; } = false;
-
     [ModdedToggleOption("Can Be Killed On Alert")]
     public bool KilledOnAlert { get; set; } = false;
 

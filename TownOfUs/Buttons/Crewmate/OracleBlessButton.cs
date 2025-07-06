@@ -19,7 +19,11 @@ public sealed class OracleBlessButton : TownOfUsRoleButton<OracleRole, PlayerCon
     public override float Cooldown => OptionGroupSingleton<OracleOptions>.Instance.BlessCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.BlessSprite;
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: x => !x.HasModifier<OracleBlessedModifier>());
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance,
+            predicate: x => !x.HasModifier<OracleBlessedModifier>());
+    }
 
     protected override void OnClick()
     {
@@ -29,7 +33,7 @@ public sealed class OracleBlessButton : TownOfUsRoleButton<OracleRole, PlayerCon
             return;
         }
 
-        var players = ModifierUtils.GetPlayersWithModifier<OracleBlessedModifier>(x => x.Oracle == PlayerControl.LocalPlayer);
+        var players = ModifierUtils.GetPlayersWithModifier<OracleBlessedModifier>(x => x.Oracle.AmOwner);
         players.Do(x => x.RpcRemoveModifier<OracleBlessedModifier>());
 
         Target.RpcAddModifier<OracleBlessedModifier>(PlayerControl.LocalPlayer);

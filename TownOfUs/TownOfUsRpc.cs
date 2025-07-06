@@ -2,8 +2,7 @@
 
 public enum TownOfUsRpc : uint
 {
-
-    ChangeHost,
+    RemoveSpawns,
 
     SetMap,
     ChangeRole,
@@ -66,4 +65,5 @@ public enum TownOfUsRpc : uint
     ButtonBarry,
     LookoutSeePlayer,
     AnimateNewReveal,
+    SheriffMisfire
 }

@@ -4,7 +4,10 @@ namespace TownOfUs.Utilities;
 
 public static class TransformExtensions
 {
-    public static Transform FindRecursive(this Transform self, string exactName) => self.FindRecursive(child => child.name == exactName);
+    public static Transform FindRecursive(this Transform self, string exactName)
+    {
+        return self.FindRecursive(child => child.name == exactName);
+    }
 
     public static Transform FindRecursive(this Transform self, Func<Transform, bool> selector)
     {

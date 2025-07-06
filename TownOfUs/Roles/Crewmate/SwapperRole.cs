@@ -2,14 +2,13 @@ using System.Text;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
-using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -17,35 +16,59 @@ namespace TownOfUs.Roles.Crewmate;
 
 public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
-    public string RoleName => TouLocale.Get(TouNames.Swapper, "Swapper");
+    private MeetingMenu meetingMenu;
+
+    public PlayerVoteArea? Swap1 { get; set; }
+    public PlayerVoteArea? Swap2 { get; set; }
+    public DoomableType DoomHintType => DoomableType.Trickster;
+    public string RoleName => "Swapper";
     public string RoleDescription => "Swap Votes To Save The Crew!";
     public string RoleLongDescription => "Swap votes from one player to another during a meeting";
     public Color RoleColor => TownOfUsColors.Swapper;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
-    public DoomableType DoomHintType => DoomableType.Trickster;
     public bool IsPowerCrew => true; // Always disable end game checks because a swapper can still screw people over
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Swapper,
         MaxRoleCount = 1,
-        IntroSound = TouAudio.TimeLordIntroSound,
+        IntroSound = TouAudio.TimeLordIntroSound
     };
 
-    public PlayerVoteArea? Swap1 { get; set; }
-    public PlayerVoteArea? Swap2 { get; set; }
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        return ITownOfUsRole.SetNewTabText(this);
+    }
 
-    private MeetingMenu meetingMenu;
+    public string GetAdvancedDescription()
+    {
+        return
+            "The Swapper is a Crewmate Power that can swap the votes of two players in a meeting. " +
+            "Their meeting vote areas will be swapped visually, and the votes will be swapped. " +
+            "If player 1 recieved the most votes, and you swap them with player 2, player 2 will now be ejected instead. "
+            + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new("Swap (Meeting)",
+            "Select two players to swap votes for, and at the end of the meeting, they will swap spots!",
+            TouAssets.SwapActive)
+    ];
 
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
 
         if (Player.AmOwner)
         {
-            meetingMenu = new MeetingMenu(this, SetActive, MeetingAbilityType.Toggle, TouAssets.SwapActive, TouAssets.SwapInactive, IsExempt)
+            meetingMenu = new MeetingMenu(this, SetActive, MeetingAbilityType.Toggle, TouAssets.SwapActive,
+                TouAssets.SwapInactive, IsExempt)
             {
-                Position = new Vector3(-0.40f, 0f, -3f),
+                Position = new Vector3(-0.40f, 0f, -3f)
             };
         }
 
@@ -57,17 +80,18 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
     public override void OnMeetingStart()
     {
-        RoleStubs.RoleBehaviourOnMeetingStart(this);
+        RoleBehaviourStubs.OnMeetingStart(this);
 
         if (Player.AmOwner)
         {
-            meetingMenu.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
+            meetingMenu.GenButtons(MeetingHud.Instance,
+                Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
         }
     }
 
     public override void OnVotingComplete()
     {
-        RoleStubs.RoleBehaviourOnVotingComplete(this);
+        RoleBehaviourStubs.OnVotingComplete(this);
 
         if (Player.AmOwner)
         {
@@ -77,7 +101,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         if (Player.AmOwner)
         {
@@ -90,7 +114,8 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     {
         var player = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId)?.Object;
 
-        return !player || !player?.Data || player!.Data.Disconnected || player.Data.IsDead || player.HasModifier<JailedModifier>();
+        return !player || !player?.Data || player!.Data.Disconnected || player.Data.IsDead ||
+               player.HasModifier<JailedModifier>();
     }
 
     private void SetActive(PlayerVoteArea voteArea, MeetingHud __instance)
@@ -131,7 +156,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
         RpcSyncSwaps(Player, Swap1?.TargetPlayerId ?? 255, Swap2?.TargetPlayerId ?? 255);
     }
 
-    [MethodRpc((uint)TownOfUsRpc.SetSwaps)]
+    [MethodRpc((uint)TownOfUsRpc.SetSwaps, SendImmediately = true)]
     public static void RpcSyncSwaps(PlayerControl swapper, byte swap1, byte swap2)
     {
         var swapperRole = swapper.Data?.Role as SwapperRole;
@@ -139,25 +164,4 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
         swapperRole!.Swap1 = areas.Find(x => x.TargetPlayerId == swap1);
         swapperRole.Swap2 = areas.Find(x => x.TargetPlayerId == swap2);
     }
-
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        return ITownOfUsRole.SetNewTabText(this);
-    }
-    
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Crewmate Power that can swap the votes of two players in a meeting. " +
-            "Their meeting vote areas will be swapped visually, and the votes will be swapped. " +
-            "If player 1 recieved the most votes, and you swap them with player 2, player 2 will now be ejected instead. "
-            + MiscUtils.AppendOptionsText(GetType());
-    }
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } = [
-        new("Swap (Meeting)",
-            $"Select two players to swap votes for, and at the end of the meeting, they will swap spots!",
-            TouAssets.SwapActive),
-    ];
 }

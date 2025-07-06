@@ -2,7 +2,6 @@ using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using Reactor.Networking.Attributes;
-using Reactor.Networking.Rpc;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Options;
 using TownOfUs.Utilities;
@@ -15,25 +14,22 @@ public static class LoverChatPatches
     private static bool LoverMessage;
     public static bool overrideMessages;
 
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    [HarmonyPostfix]
-    public static void UpdatePatch(HudManager __instance)
-    {
-        if (PlayerControl.LocalPlayer == null) return;
-        if (PlayerControl.LocalPlayer.Data == null) return;
-
-        if (PlayerControl.LocalPlayer.HasModifier<LoverModifier>() && !__instance.Chat.isActiveAndEnabled)
-            __instance.Chat.SetVisible(true);
-    }
-
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
     [HarmonyPrefix]
     public static bool SendChatPatch(ChatController __instance)
     {
-        if (MeetingHud.Instance || ExileController.Instance != null || PlayerControl.LocalPlayer.Data.IsDead || overrideMessages)
+        if (MeetingHud.Instance || ExileController.Instance != null || PlayerControl.LocalPlayer.Data.IsDead ||
+            overrideMessages)
+        {
             return true;
+        }
 
-        var text = __instance.freeChatField.Text;
+        var text = __instance.freeChatField.Text.WithoutRichText();
+
+        if (text.Length < 1 || text.Length > 100)
+        {
+            return true;
+        }
 
         if (PlayerControl.LocalPlayer.HasModifier<LoverModifier>())
         {
@@ -55,10 +51,14 @@ public static class LoverChatPatches
     [MethodRpc((uint)TownOfUsRpc.SendLoveChat, SendImmediately = true)]
     public static void RpcSendLoveChat(PlayerControl player, string text)
     {
-        if ((PlayerControl.LocalPlayer.IsLover() && player != PlayerControl.LocalPlayer) || (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
+        if ((PlayerControl.LocalPlayer.IsLover() && player != PlayerControl.LocalPlayer) ||
+            (PlayerControl.LocalPlayer.HasDied() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
         {
             LoverMessage = true;
-            if (player != PlayerControl.LocalPlayer) HudManager.Instance.Chat.AddChat(player, text);
+            if (player != PlayerControl.LocalPlayer)
+            {
+                HudManager.Instance.Chat.AddChat(player, text);
+            }
         }
     }
 
@@ -66,11 +66,11 @@ public static class LoverChatPatches
     [HarmonyPostfix]
     public static void SetNamePatch(ChatBubble __instance, [HarmonyArgument(0)] string playerName)
     {
-       if (LoverMessage && !overrideMessages)
-       {
-           __instance.NameText.color = TownOfUsColors.Lover;
-           __instance.NameText.text = playerName + " (Lover)";
-           LoverMessage = false;
-       }
+        if (LoverMessage && !overrideMessages)
+        {
+            __instance.NameText.color = TownOfUsColors.Lover;
+            __instance.NameText.text = playerName + " (Lover)";
+            LoverMessage = false;
+        }
     }
 }

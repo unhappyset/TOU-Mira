@@ -4,7 +4,6 @@ using HarmonyLib;
 namespace TownOfUs.Patches.Misc;
 
 [HarmonyPatch(typeof(PlayerBanData), nameof(PlayerBanData.IsBanned), MethodType.Getter)]
-
 public static class BanPatch
 {
     [HarmonyPrefix]

@@ -19,6 +19,7 @@ public sealed class ArsonistDousedModifier(byte arsonistId) : BaseModifier
         var touAbilityEvent = new TouAbilityEvent(AbilityType.ArsonistDouse, arso!, Player);
         MiraEventManager.InvokeEvent(touAbilityEvent);
     }
+
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent!.RemoveModifier(this);
@@ -27,7 +28,9 @@ public sealed class ArsonistDousedModifier(byte arsonistId) : BaseModifier
     public override void FixedUpdate()
     {
         if (PlayerControl.LocalPlayer.IsRole<ArsonistRole>())
+        {
             Player?.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(Color.yellow));
+        }
     }
 
     public override void OnDeactivate()

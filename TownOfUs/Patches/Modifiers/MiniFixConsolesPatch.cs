@@ -15,7 +15,10 @@ public static class MiniFixConsolesPatch
     public static void UsableDistancePatch(Console __instance)
     {
         var player = PlayerControl.LocalPlayer;
-        if (!player || !player.HasModifier<MiniModifier>()) return;
+        if (!player || !player.HasModifier<MiniModifier>())
+        {
+            return;
+        }
 
         if (!originalDistances.TryGetValue(__instance, out var value))
         {

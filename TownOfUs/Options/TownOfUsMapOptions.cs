@@ -13,43 +13,46 @@ public sealed class TownOfUsMapOptions : AbstractOptionGroup
     [ModdedToggleOption("Enable Random Maps")]
     public bool RandomMaps { get; set; } = false;
 
-    public ModdedNumberOption SkeldChance { get; } = new ModdedNumberOption("Skeld Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    public ModdedNumberOption SkeldChance { get; } = new("Skeld Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
     {
-        Visible = () => OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps,
+        Visible = () => OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps
     };
 
-    public ModdedNumberOption MiraChance { get; } = new ModdedNumberOption("Mira Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    public ModdedNumberOption MiraChance { get; } = new("Mira Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
     {
-        Visible = () => OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps,
+        Visible = () => OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps
     };
 
-    public ModdedNumberOption PolusChance { get; } = new ModdedNumberOption("Polus Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    public ModdedNumberOption PolusChance { get; } = new("Polus Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
     {
-        Visible = () => OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps,
+        Visible = () => OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps
     };
 
-    public ModdedNumberOption AirshipChance { get; } = new ModdedNumberOption("Airship Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
-    {
-        Visible = () => OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps,
-    };
+    public ModdedNumberOption AirshipChance { get; } =
+        new("Airship Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+        {
+            Visible = () => OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps
+        };
 
-    public ModdedNumberOption FungleChance { get; } = new ModdedNumberOption("Fungle Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    public ModdedNumberOption FungleChance { get; } = new("Fungle Chance", 0, 0, 100f, 10f, MiraNumberSuffixes.Percent)
     {
-        Visible = () => OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps,
+        Visible = () => OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps
     };
 
     // [ModdedNumberOption("dlekS Chance", 0f, 100f, 10f, MiraNumberSuffixes.Percent)]
     // public float dlekSChance { get; set; }
 
-    public ModdedNumberOption SubmergedChance { get; } = new ModdedNumberOption("Submerged Chance", 0, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-    {
-        Visible = () => OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps,
-    };
+    public ModdedNumberOption SubmergedChance { get; } =
+        new("Submerged Chance", 0, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
+        {
+            Visible = () => OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps
+        };
 
-    public ModdedNumberOption LevelImpostorChance { get; } = new ModdedNumberOption("Level Impostor Chance", 0, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-    {
-        Visible = () => OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps,
-    };
+    public ModdedNumberOption LevelImpostorChance { get; } =
+        new("Level Impostor Chance", 0, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
+        {
+            Visible = () => OptionGroupSingleton<TownOfUsMapOptions>.Instance.RandomMaps
+        };
 
     [ModdedToggleOption("Half Vision On Skeld/Mira")]
     public bool SmallMapHalfVision { get; set; } = false;
@@ -79,7 +82,7 @@ public sealed class TownOfUsMapOptions : AbstractOptionGroup
         {
             MapNames.MiraHQ => -SmallMapDecreasedCooldown,
             MapNames.Airship or (MapNames)6 => LargeMapIncreasedCooldown,
-            _ => 0,
+            _ => 0
         };
     }
 
@@ -89,7 +92,7 @@ public sealed class TownOfUsMapOptions : AbstractOptionGroup
         {
             MapNames.MiraHQ or MapNames.Skeld or MapNames.Dleks => (int)SmallMapIncreasedShortTasks,
             MapNames.Airship or (MapNames)6 => -(int)LargeMapDecreasedShortTasks,
-            _ => 0,
+            _ => 0
         };
     }
 
@@ -99,7 +102,7 @@ public sealed class TownOfUsMapOptions : AbstractOptionGroup
         {
             MapNames.MiraHQ or MapNames.Skeld or MapNames.Dleks => (int)SmallMapIncreasedLongTasks,
             MapNames.Airship or (MapNames)6 => -(int)LargeMapDecreasedLongTasks,
-            _ => 0,
+            _ => 0
         };
     }
 }

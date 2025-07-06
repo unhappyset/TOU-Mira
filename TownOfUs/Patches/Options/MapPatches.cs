@@ -133,12 +133,16 @@ public static class MapPatches
         // randomNumber -= OptionGroupSingleton<Options.MapOptions>.Instance.dlekSChance;
 
         if (ModCompatibility.SubLoaded && randomNumber < submergedChance)
+        {
             return 6;
+        }
 
         randomNumber -= submergedChance;
 
         if (ModCompatibility.LILoaded && randomNumber < liChance)
+        {
             return 7;
+        }
 
         return GameOptionsManager.Instance.currentNormalGameOptions.MapId;
     }

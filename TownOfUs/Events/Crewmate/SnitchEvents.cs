@@ -12,7 +12,8 @@ public static class SnitchEvents
     {
         if (SnitchRole.IsTargetOfSnitch(@event.Player))
         {
-            CustomRoleUtils.GetActiveRolesOfType<SnitchRole>().ToList().ForEach(snitch => snitch.RemoveArrowForPlayer(@event.Player.PlayerId));
+            CustomRoleUtils.GetActiveRolesOfType<SnitchRole>().ToList()
+                .ForEach(snitch => snitch.RemoveArrowForPlayer(@event.Player.PlayerId));
         }
     }
 

@@ -2,6 +2,6 @@
 
 public interface IVisualAppearance
 {
-    VisualAppearance? GetVisualAppearance();
     bool VisualPriority => false;
+    VisualAppearance? GetVisualAppearance();
 }

@@ -1,13 +1,13 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using TownOfUs.Utilities;
+using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Utilities;
 using UnityEngine;
-using MiraAPI.Utilities;
 
 namespace TownOfUs.Buttons.Crewmate;
 
@@ -23,10 +23,13 @@ public sealed class WatchButton : TownOfUsRoleButton<LookoutRole, PlayerControl>
 
     public override bool IsTargetValid(PlayerControl? target)
     {
-        return base.IsTargetValid(target) && !target!.HasModifier<LookoutWatchedModifier>(x => x.Lookout == PlayerControl.LocalPlayer);
+        return base.IsTargetValid(target) && !target!.HasModifier<LookoutWatchedModifier>(x => x.Lookout.AmOwner);
     }
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
 
     protected override void OnClick()
     {
@@ -36,9 +39,11 @@ public sealed class WatchButton : TownOfUsRoleButton<LookoutRole, PlayerControl>
             return;
         }
 
-        Target.RpcAddModifier<LookoutWatchedModifier>(PlayerControl.LocalPlayer);  
-        
-        var notif1 = Helpers.CreateAndShowNotification($"<b>You will know what roles interact with {Target.Data.PlayerName} if they are not dead by next meeting.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Lookout.LoadAsset());
+        Target.RpcAddModifier<LookoutWatchedModifier>(PlayerControl.LocalPlayer);
+
+        var notif1 = Helpers.CreateAndShowNotification(
+            $"<b>You will know what roles interact with {Target.Data.PlayerName} if they are not dead by next meeting.</b>",
+            Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Lookout.LoadAsset());
         notif1.Text.SetOutlineThickness(0.35f);
     }
 }

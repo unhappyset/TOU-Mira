@@ -6,6 +6,7 @@ using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TownOfUs.Buttons.Crewmate;
 
@@ -21,8 +22,8 @@ public sealed class MediumMediateButton : TownOfUsRoleButton<MediumRole>
     {
         var deadPlayers = PlayerControl.AllPlayerControls.ToArray()
             .Where(plr => plr.Data.IsDead && !plr.Data.Disconnected &&
-            UnityEngine.Object.FindObjectsOfType<DeadBody>().Any(x => x.ParentId == plr.PlayerId)
-            && !plr.HasModifier<MediatedModifier>()).ToList();
+                          Object.FindObjectsOfType<DeadBody>().Any(x => x.ParentId == plr.PlayerId)
+                          && !plr.HasModifier<MediatedModifier>()).ToList();
 
         if (deadPlayers.Count == 0)
         {
@@ -35,7 +36,7 @@ public sealed class MediumMediateButton : TownOfUsRoleButton<MediumRole>
             MediateRevealedTargets.AllDead => deadPlayers,
             MediateRevealedTargets.OldestDead => [deadPlayers[^1]],
             MediateRevealedTargets.RandomDead => deadPlayers.Randomize(),
-            _ => [],
+            _ => []
         };
 
         foreach (var plr in targets)

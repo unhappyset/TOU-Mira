@@ -17,9 +17,16 @@ public static class ProsecutorEvents
     [RegisterEvent]
     public static void VoteEvent(HandleVoteEvent @event)
     {
-        if (@event.VoteData.Owner.Data.Role is not ProsecutorRole { HasProsecuted: true } prosecutorRole) return;
+        if (@event.VoteData.Owner.Data.Role is not ProsecutorRole { HasProsecuted: true } prosecutorRole)
+        {
+            return;
+        }
+
         if (prosecutorRole.ProsecutionsCompleted >=
-            OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions) return;
+            OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions)
+        {
+            return;
+        }
 
         @event.VoteData.SetRemainingVotes(0);
 
@@ -41,13 +48,25 @@ public static class ProsecutorEvents
     public static void WrapUpEvent(EjectionEvent @event)
     {
         var player = @event.ExileController.initData.networkedPlayer?.Object;
-        if (player == null) return;
+        if (player == null)
+        {
+            return;
+        }
 
         foreach (var pros in CustomRoleUtils.GetActiveRolesOfType<ProsecutorRole>())
         {
-            if (pros.HasProsecuted && OptionGroupSingleton<ProsecutorOptions>.Instance.ExileOnCrewmate && player.IsCrewmate() && !(pros.Player.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished) && !(player.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
+            if (pros.HasProsecuted && player.IsCrewmate() &&
+                !(pros.Player.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished) &&
+                !(player.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished))
             {
-                pros.Player.Exiled();
+                if (OptionGroupSingleton<ProsecutorOptions>.Instance.ExileOnCrewmate)
+                {
+                    pros.Player.Exiled();
+                }
+                else
+                {
+                    pros.ProsecutionsCompleted = (int)OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions;
+                }
             }
 
             pros.Cleanup();

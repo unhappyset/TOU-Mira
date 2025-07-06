@@ -3,46 +3,47 @@ using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules;
-using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Patches;
-using TownOfUs.Patches.Stubs;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
+public sealed class JesterRole(IntPtr cppPtr)
+    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
-    public string RoleName => TouLocale.Get(TouNames.Jester, "Jester");
+    public bool Voted { get; set; }
+    public bool SentWinMsg { get; set; }
+
+    [HideFromIl2Cpp] public List<byte> Voters { get; } = [];
+
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SwapperRole>());
+    public DoomableType DoomHintType => DoomableType.Trickster;
+    public string RoleName => "Jester";
     public string RoleDescription => "Get voted out!";
     public string RoleLongDescription => "Be as suspicious as possible, and get voted out!";
-    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SwapperRole>());
     public Color RoleColor => TownOfUsColors.Jester;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
-    public DoomableType DoomHintType => DoomableType.Trickster;
+
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<JesterOptions>.Instance.CanVent,
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Noisemaker),
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
-        Icon = TouRoleIcons.Jester,
+        Icon = TouRoleIcons.Jester
     };
 
-    public bool Voted { get; set; }
-    public bool SentWinMsg { get; set; }
     public bool MetWinCon => Voted;
-
-    [HideFromIl2Cpp]
-    public List<byte> Voters { get; } = [];
 
     public bool HasImpostorVision => OptionGroupSingleton<JesterOptions>.Instance.ImpostorVision;
 
@@ -52,14 +53,26 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         return ITownOfUsRole.SetNewTabText(this);
     }
 
+    public bool WinConditionMet()
+    {
+        if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is not JestWinOptions.EndsGame)
+        {
+            return false;
+        }
+
+        return Voted ||
+               GameHistory.DeathHistory.Exists(x => x.Item1 == Player.PlayerId && x.Item2 == DeathReason.Exile);
+    }
+
     public string GetAdvancedDescription()
     {
-        return $"The {RoleName} is a Neutral Evil role that wins by getting themselves ejected." + MiscUtils.AppendOptionsText(GetType());
+        return "The Jester is a Neutral Evil role that wins by getting themselves ejected." +
+               MiscUtils.AppendOptionsText(GetType());
     }
 
     public override void Initialize(PlayerControl player)
     {
-        RoleStubs.RoleBehaviourInitialize(this, player);
+        RoleBehaviourStubs.Initialize(this, player);
 
         if (!OptionGroupSingleton<JesterOptions>.Instance.CanButton)
         {
@@ -68,8 +81,10 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
         if (Player.AmOwner)
         {
-            if (OptionGroupSingleton<JesterOptions>.Instance.ScatterOn) 
+            if (OptionGroupSingleton<JesterOptions>.Instance.ScatterOn)
+            {
                 Player.AddModifier<ScatterModifier>(OptionGroupSingleton<JesterOptions>.Instance.ScatterTimer);
+            }
 
             HudManager.Instance.ImpostorVentButton.graphic.sprite = TouNeutAssets.JesterVentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Jester);
@@ -78,12 +93,14 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
-        RoleStubs.RoleBehaviourDeinitialize(this, targetPlayer);
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
         if (Player.AmOwner)
         {
-            if (OptionGroupSingleton<JesterOptions>.Instance.ScatterOn) 
+            if (OptionGroupSingleton<JesterOptions>.Instance.ScatterOn)
+            {
                 Player.RemoveModifier<ScatterModifier>();
+            }
 
             HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
@@ -92,17 +109,19 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public override void OnDeath(DeathReason reason)
     {
-        RoleStubs.RoleBehaviourOnDeath(this, reason);
+        RoleBehaviourStubs.OnDeath(this, reason);
 
         if (reason == DeathReason.Exile)
+        {
             RpcJesterWin(Player);
+        }
 
         //Logger<TownOfUsPlugin>.Error($"JesterRole.OnDeath - Voted: {Voted}");
     }
 
     public override void OnVotingComplete()
     {
-        RoleStubs.RoleBehaviourOnVotingComplete(this);
+        RoleBehaviourStubs.OnVotingComplete(this);
 
         Voters.Clear();
 
@@ -121,6 +140,7 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         {
             return false;
         }
+
         var console = usable.TryCast<Console>()!;
         return console == null || console.AllowImpostor;
     }
@@ -129,14 +149,8 @@ public sealed class JesterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     {
         //Logger<TownOfUsPlugin>.Message($"JesterRole.DidWin - Voted: '{Voted}', Exists: '{GameHistory.DeathHistory.Exists(x => x.Item1 == Player.PlayerId && x.Item2 == DeathReason.Exile)}'");
 
-        return Voted || GameHistory.DeathHistory.Exists(x => x.Item1 == Player.PlayerId && x.Item2 == DeathReason.Exile);
-    }
-
-    public bool WinConditionMet()
-    {
-        if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is not JestWinOptions.EndsGame) return false;
-
-        return Voted || GameHistory.DeathHistory.Exists(x => x.Item1 == Player.PlayerId && x.Item2 == DeathReason.Exile);
+        return Voted ||
+               GameHistory.DeathHistory.Exists(x => x.Item1 == Player.PlayerId && x.Item2 == DeathReason.Exile);
     }
 
     [MethodRpc((uint)TownOfUsRpc.JesterWin, SendImmediately = true)]
