@@ -27,6 +27,11 @@ public static class PlaguebearerEvents
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
+        if (MeetingHud.Instance)
+        {
+            return;
+        }
+
         PlaguebearerRole.CheckInfected(@event.Source, @event.Target);
     }
 
