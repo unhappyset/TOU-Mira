@@ -77,6 +77,10 @@ public sealed class MayorRole(IntPtr cppPtr)
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
+        if (Player.HasModifier<ToBecomeTraitorModifier>())
+        {
+            Player.GetModifier<ToBecomeTraitorModifier>()!.Clear();
+        }
         if (MeetingHud.Instance)
         {
             var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == player.PlayerId);

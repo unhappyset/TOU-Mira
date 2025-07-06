@@ -118,7 +118,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
 
         if (player.Data.Role is MayorRole mayor)
         {
-            mayor.Revealed = true;
+            mayor.Revealed = false;
         }
 
         if (player.AmOwner)
@@ -127,16 +127,6 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
                 $"<b>You remembered that you were like {target.Data.PlayerName}, the {player.Data.Role.TeamColor.ToTextColor()}{player.Data.Role.NiceName}</color>.</b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Amnesiac.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
-        }
-
-        if (target.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnImpAssassin)
-        {
-            player.AddModifier<ImpostorAssassinModifier>();
-        }
-        else if (target.IsNeutral() && target.Is(RoleAlignment.NeutralKilling) &&
-                 OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnNeutAssassin)
-        {
-            player.AddModifier<NeutralKillerAssassinModifier>();
         }
 
         if (target.Data.Role is not VampireRole && target.Data.Role.MaxCount <= PlayerControl.AllPlayerControls
@@ -209,6 +199,16 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             if (target.Data.Role is NeutralGhostRole) target.ChangeRole(RoleId.Get<NeutralGhostRole>(), false);
         } */
 
+        if (player.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnImpAssassin)
+        {
+            player.AddModifier<ImpostorAssassinModifier>();
+        }
+        else if (player.IsNeutral() && player.Is(RoleAlignment.NeutralKilling) &&
+                 OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnNeutAssassin)
+        {
+            player.AddModifier<NeutralKillerAssassinModifier>();
+        }
+        
         var touAbilityEvent2 = new TouAbilityEvent(AbilityType.AmnesiacPostRemember, player, target);
         MiraEventManager.InvokeEvent(touAbilityEvent2);
     }
