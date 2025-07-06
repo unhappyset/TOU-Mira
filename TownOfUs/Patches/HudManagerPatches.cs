@@ -436,10 +436,11 @@ public static class HudManagerPatches
                      (PlayerControl.LocalPlayer.HasDied() && taskOpt.ShowTaskDead)) &&
                     (player.IsCrewmate() || player.Data.Role is PhantomTouRole))
                 {
-                    var completed = player.myTasks.ToArray().Count(x => x.IsComplete);
-                    var totalTasks = player.myTasks.ToArray()
-                        .Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
-                    roleName += $" <size=80%>{Color.yellow.ToTextColor()}({completed}/{totalTasks})</color></size>";
+                    if (roleName != string.Empty)
+                    {
+                        roleName += " ";
+                    }
+                    roleName += $"<size=80%>{player.TaskInfo()}</size>";
                 }
 
                 if (player.TryGetModifier<OracleConfessModifier>(out var confess, x => x.ConfessToAll))
@@ -597,11 +598,11 @@ public static class HudManagerPatches
                                                                    !fakePlayer?.body)) && (player.IsCrewmate() ||
                         player.Data.Role is PhantomTouRole))
                 {
-                    var completed = player.myTasks.ToArray().Count(x => x.IsComplete);
-                    var totalTasks = player.myTasks.ToArray()
-                        .Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
-
-                    roleName += $" <size=80%>{Color.yellow.ToTextColor()}({completed}/{totalTasks})</color></size>";
+                    if (roleName != string.Empty)
+                    {
+                        roleName += " ";
+                    }
+                    roleName += $"<size=80%>{player.TaskInfo()}</size>";
                 }
 
                 if (player.AmOwner && player.TryGetModifier<ScatterModifier>(out var scatter) && !player.HasDied())
@@ -634,13 +635,9 @@ public static class HudManagerPatches
 
         if (HudManager.Instance.TaskPanel != null)
         {
-            var completed = PlayerControl.LocalPlayer.myTasks.ToArray().Count(x => x.IsComplete);
-            var totalTasks = PlayerControl.LocalPlayer.myTasks.ToArray()
-                .Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
-
             var tabText = HudManager.Instance.TaskPanel.tab.transform.FindChild("TabText_TMP")
                 .GetComponent<TextMeshPro>();
-            tabText.SetText($"Tasks {Color.yellow.ToTextColor()}({completed}/{totalTasks})</color>");
+            tabText.SetText($"Tasks {PlayerControl.LocalPlayer.TaskInfo()}");
         }
     }
 

@@ -841,6 +841,23 @@ public static class MiscUtils
         return wrapper.array;
     }
 
+    public static string TaskInfo(this PlayerControl player)
+    {
+        var completed = player.myTasks.ToArray().Count(x => x.IsComplete);
+        var totalTasks = player.myTasks.ToArray()
+            .Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
+        var color = Color.yellow;
+        if (completed <= 0)
+        {
+            color = TownOfUsColors.ImpSoft;
+        }
+        else if (completed >= totalTasks)
+        {
+            color = TownOfUsColors.Doomsayer;
+        }
+
+        return $"{color.ToTextColor()}({completed}/{totalTasks})</color>";
+    }
     /// <summary>
     ///     Gets a FakePlayer by comparing PlayerControl.
     /// </summary>
