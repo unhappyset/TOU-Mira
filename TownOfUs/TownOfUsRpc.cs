@@ -57,7 +57,6 @@ public enum TownOfUsRpc : uint
     OracleConfess,
     UpdateImitation,
     OracleBless,
-    ExecutionerWin,
     InquisitorWin,
     TriggerSixthSense,
     AurialSense,

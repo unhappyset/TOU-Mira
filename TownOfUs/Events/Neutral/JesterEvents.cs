@@ -57,6 +57,10 @@ public static class JesterEvents
                         plr != PlayerControl.LocalPlayer;
 
                     var killMenu = CustomPlayerMenu.Create();
+                    killMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material =
+                        PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+                    killMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material =
+                        PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
                     killMenu.Begin(
                         _playerMatch,
                         plr =>
