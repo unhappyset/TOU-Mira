@@ -157,13 +157,12 @@ public sealed class JesterRole(IntPtr cppPtr)
     [MethodRpc((uint)TownOfUsRpc.JesterWin, SendImmediately = true)]
     public static void RpcJesterWin(PlayerControl player)
     {
-        if (player.GetRoleWhenAlive() is not JesterRole)
+        if (player.GetRoleWhenAlive() is not JesterRole jester)
         {
             Logger<TownOfUsPlugin>.Error("RpcJesterWin - Invalid Jester");
             return;
         }
 
-        var jester = player.GetRole<JesterRole>();
-        jester!.Voted = true;
+        jester.Voted = true;
     }
 }
