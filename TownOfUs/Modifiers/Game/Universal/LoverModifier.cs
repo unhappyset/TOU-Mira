@@ -53,7 +53,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
         }
 
         Random rnd = new();
-        var chance = rnd.Next(0, 100);
+        var chance = rnd.Next(1, 101);
 
         if (chance <= (int)OptionGroupSingleton<AllianceModifierOptions>.Instance.LoversChance)
         {
@@ -197,9 +197,9 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
         if (impTargetPercent > 0f && impostors.Count != 0)
         {
             Random rnd = new();
-            var chance2 = rnd.Next(0, 100);
+            var chance2 = rnd.Next(1, 101);
 
-            if (chance2 < impTargetPercent)
+            if (chance2 <= impTargetPercent)
             {
                 players = impostors;
             }

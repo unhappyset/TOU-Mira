@@ -23,7 +23,7 @@ public sealed class ToBecomeTraitorModifier : ExcludedGameModifier, IAssignableT
     public void AssignTargets()
     {
         Random rnd = new();
-        var chance = rnd.Next(0, 100);
+        var chance = rnd.Next(1, 101);
 
         if (chance <=
             GameOptionsManager.Instance.CurrentGameOptions.RoleOptions.GetChancePerGame(

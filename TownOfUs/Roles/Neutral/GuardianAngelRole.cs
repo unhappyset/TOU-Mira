@@ -47,9 +47,9 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
             if (evilTargetPercent > 0f)
             {
                 Random rnd = new();
-                var chance = rnd.Next(0, 100);
+                var chance = rnd.Next(1, 101);
 
-                if (chance < evilTargetPercent)
+                if (chance <= evilTargetPercent)
                 {
                     filtered = [.. filtered.Where(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling))];
                 }
