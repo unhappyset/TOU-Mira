@@ -61,6 +61,11 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
         return Config;
     }
 
+    public TownOfUsPlugin()
+    {
+        TouLocale.Initialize();
+    }
+
     /// <summary>
     ///     The Load method for the plugin.
     /// </summary>

@@ -1,12 +1,17 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events.Vanilla.Meeting.Voting;
+using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
+using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -17,78 +22,108 @@ namespace TownOfUs.Events.Neutral;
 public static class JesterEvents
 {
     [RegisterEvent]
-    public static void RoundStartEventHandler(RoundStartEvent @event)
+    public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
-        if (@event.TriggeredByIntro)
+        if (@event.DeathReason != DeathReason.Exile)
         {
             return;
         }
 
-        if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.EndsGame)
+        if (@event.Player.GetRoleWhenAlive() is JesterRole jester && jester.AboutToWin)
         {
-            return;
-        }
+            jester.Voted = true;
 
-        var jest = PlayerControl.AllPlayerControls.ToArray()
-            .FirstOrDefault(plr =>
-                plr.Data.IsDead && !plr.Data.Disconnected && plr.GetRoleWhenAlive() is JesterRole jestRole &&
-                jestRole.Voted && !jestRole.SentWinMsg);
-        if (jest != null)
-        {
-            var jestRole = jest.GetRoleWhenAlive() as JesterRole;
-            if (jestRole == null)
+            if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.EndsGame)
             {
                 return;
             }
 
-            jestRole.SentWinMsg = true;
+            jester.SentWinMsg = true;
 
-            if (jest.AmOwner)
+            if (jester.Player.AmOwner)
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>You have successfully won as the {TownOfUsColors.Jester.ToTextColor()}Jester</color>, by getting voted out!</b>",
+                    $"<b>You have successfully won as the {TownOfUsColors.Jester.ToTextColor()}{TouLocale.Get(TouNames.Jester, "Jester")}</color>, by getting voted out!</b>",
                     Color.white, spr: TouRoleIcons.Jester.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.Haunts)
+                {
+                    var voters = jester.Voters.ToArray();
+                    Func<PlayerControl, bool> _playerMatch = plr =>
+                        voters.Contains(plr.PlayerId) && !plr.HasDied() &&
+                        !plr.HasModifier<InvulnerabilityModifier>() &&
+                        plr != PlayerControl.LocalPlayer;
+
+                    var killMenu = CustomPlayerMenu.Create();
+                    killMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material =
+                        PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+                    killMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material =
+                        PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
+                    killMenu.Begin(
+                        _playerMatch,
+                        plr =>
+                        {
+                            killMenu.ForceClose();
+
+                            if (plr != null)
+                            {
+                                PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
+                            }
+                        });
+                }
             }
             else
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>The {TownOfUsColors.Jester.ToTextColor()}Jester</color>, {jest.Data.PlayerName}, has successfully won, as they were voted out!</b>",
+                    $"<b>The {TownOfUsColors.Jester.ToTextColor()}{TouLocale.Get(TouNames.Jester, "Jester")}</color>, {jester.Player.Data.PlayerName}, has successfully won, as they were voted out!</b>",
                     Color.white, spr: TouRoleIcons.Jester.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
             }
+        }
+    }
 
-            if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is not JestWinOptions.Haunts)
-            {
-                return;
-            }
+    [RegisterEvent]
+    public static void RoundStartEventHandler(RoundStartEvent @event)
+    {
+        foreach (var jester in CustomRoleUtils.GetActiveRolesOfType<JesterRole>())
+        {
+            if (!jester.AboutToWin) jester.Voters.Clear();
+        }
+    }
+    
+    [RegisterEvent]
+    public static void HandleVoteEventHandler(HandleVoteEvent @event)
+    {
+        var votingPlayer = @event.Player;
+        var suspectPlayer = @event.TargetPlayerInfo;
 
-            if (!jest.AmOwner)
-            {
-                return;
-            }
+        if (suspectPlayer?.Role is not JesterRole jester)
+        {
+            return;
+        }
 
-            var voters = jestRole.Voters.ToArray();
-            Func<PlayerControl, bool> _playerMatch = plr =>
-                voters.Contains(plr.PlayerId) && !plr.HasDied() && !plr.HasModifier<InvulnerabilityModifier>() &&
-                plr != PlayerControl.LocalPlayer;
+        jester.Voters.Add(votingPlayer.PlayerId);
+    }
+ 
+    [RegisterEvent]
+    public static void EjectionEventHandler(EjectionEvent @event)
+    {
+        var exiled = @event.ExileController?.initData?.networkedPlayer?.Object;
 
-            var killMenu = CustomPlayerMenu.Create();
-            killMenu.Begin(
-                _playerMatch,
-                plr =>
-                {
-                    killMenu.ForceClose();
-
-                    if (plr != null)
-                    {
-                        PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
-                    }
-                });
+        if (exiled == null || exiled.Data.Role is not JesterRole jest)
+        {
+            return;
+        }
+        
+        jest.SentWinMsg = false;
+        jest.AboutToWin = true;
+        if (!PlayerControl.LocalPlayer.IsHost())
+        {
+            jest.Voted = true;
         }
     }
 }

@@ -11,6 +11,7 @@ using Reactor.Utilities;
 using TownOfUs.Buttons;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -22,7 +23,7 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => "Engineer";
+    public string RoleName => TouLocale.Get(TouNames.Engineer, "Engineer");
     public string RoleDescription => "Maintain Important Systems On The Ship";
     public string RoleLongDescription => "Vent around and fix sabotages remotely";
     public Color RoleColor => TownOfUsColors.Engineer;
@@ -45,7 +46,7 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 
     public string GetAdvancedDescription()
     {
-        return "The Engineer is a Crewmate Support role that can vent and fix sabotages remotely."
+        return $"The {RoleName} is a Crewmate Support role that can vent and fix sabotages remotely."
                + MiscUtils.AppendOptionsText(GetType());
     }
 

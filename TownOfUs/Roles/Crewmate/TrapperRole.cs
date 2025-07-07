@@ -6,6 +6,7 @@ using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -20,7 +21,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     [HideFromIl2Cpp] public List<RoleBehaviour> TrappedPlayers { get; set; } = new();
 
     public DoomableType DoomHintType => DoomableType.Insight;
-    public string RoleName => "Trapper";
+    public string RoleName => TouLocale.Get(TouNames.Trapper, "Trapper");
     public string RoleDescription => "Catch Killers In The Act";
     public string RoleLongDescription => "Place traps around the map, revealing roles within them";
     public Color RoleColor => TownOfUsColors.Trapper;
@@ -46,7 +47,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 
     public string GetAdvancedDescription()
     {
-        return "The Trapper is a Crewmate Investigative role that can place traps around the map. " +
+        return $"The {RoleName} is a Crewmate Investigative role that can place traps around the map. " +
                "If someone stays in it for enough time and enough players go through, " +
                "they will get a list of their roles in the next meeting in random order." +
                MiscUtils.AppendOptionsText(GetType());
@@ -111,7 +112,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
             msg = finalMessage;
         }
 
-        var title = $"<color=#{TownOfUsColors.Trapper.ToHtmlStringRGBA()}>Trapper Report</color>";
+        var title = $"<color=#{TownOfUsColors.Trapper.ToHtmlStringRGBA()}>{RoleName} Report</color>";
         MiscUtils.AddFakeChat(Player.Data, title, msg, false, true);
     }
 }

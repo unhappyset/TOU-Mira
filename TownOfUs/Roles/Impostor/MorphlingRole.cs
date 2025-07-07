@@ -9,6 +9,7 @@ using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using TownOfUs.Buttons.Impostor;
 using TownOfUs.Modifiers.Impostor;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
@@ -20,7 +21,7 @@ public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 {
     public PlayerControl? Sampled { get; set; }
     public DoomableType DoomHintType => DoomableType.Perception;
-    public string RoleName => "Morphling";
+    public string RoleName => TouLocale.Get(TouNames.Morphling, "Morphling");
     public string RoleDescription => "Transform Into Crewmates";
 
     public string RoleLongDescription =>
@@ -58,7 +59,7 @@ public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
     public string GetAdvancedDescription()
     {
-        return "The Morphling is an Impostor Concealing role that can Sample a player and Morph into it's appearance."
+        return $"The {RoleName} is an Impostor Concealing role that can Sample a player and Morph into it's appearance."
                + MiscUtils.AppendOptionsText(GetType());
     }
 

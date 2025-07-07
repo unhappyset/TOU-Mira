@@ -5,7 +5,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using Reactor.Utilities;
-using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
 using UnityEngine;

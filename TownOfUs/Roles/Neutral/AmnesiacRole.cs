@@ -11,11 +11,11 @@ using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Events.TouEvents;
-using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modifiers.Game.Neutral;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
@@ -29,7 +29,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MysticRole>());
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => "Amnesiac";
+    public string RoleName => TouLocale.Get(TouNames.Amnesiac, "Amnesiac");
     public string RoleDescription => "Remember A Role Of A Deceased Player";
     public string RoleLongDescription => "Find a dead body to remember and become their role";
     public Color RoleColor => TownOfUsColors.Amnesiac;
@@ -52,7 +52,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            "The Amnesiac is a Neutral Benign role that gains access to a new role from remembering a dead body’s role. Use the role you remember to win the game." +
+            $"The {RoleName} is a Neutral Benign role that gains access to a new role from remembering a dead body’s role. Use the role you remember to win the game." +
             MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -118,7 +118,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
 
         if (player.Data.Role is MayorRole mayor)
         {
-            mayor.Revealed = true;
+            mayor.Revealed = false;
         }
 
         if (player.AmOwner)
@@ -127,16 +127,6 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
                 $"<b>You remembered that you were like {target.Data.PlayerName}, the {player.Data.Role.TeamColor.ToTextColor()}{player.Data.Role.NiceName}</color>.</b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Amnesiac.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
-        }
-
-        if (target.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnImpAssassin)
-        {
-            player.AddModifier<ImpostorAssassinModifier>();
-        }
-        else if (target.IsNeutral() && target.Is(RoleAlignment.NeutralKilling) &&
-                 OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnNeutAssassin)
-        {
-            player.AddModifier<NeutralKillerAssassinModifier>();
         }
 
         if (target.Data.Role is not VampireRole && target.Data.Role.MaxCount <= PlayerControl.AllPlayerControls
@@ -209,6 +199,16 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             if (target.Data.Role is NeutralGhostRole) target.ChangeRole(RoleId.Get<NeutralGhostRole>(), false);
         } */
 
+        if (player.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnImpAssassin)
+        {
+            player.AddModifier<ImpostorAssassinModifier>();
+        }
+        else if (player.IsNeutral() && player.Is(RoleAlignment.NeutralKilling) &&
+                 OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnNeutAssassin)
+        {
+            player.AddModifier<NeutralKillerAssassinModifier>();
+        }
+        
         var touAbilityEvent2 = new TouAbilityEvent(AbilityType.AmnesiacPostRemember, player, target);
         MiraEventManager.InvokeEvent(touAbilityEvent2);
     }
