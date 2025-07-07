@@ -95,25 +95,12 @@ public static class RainbowLobbyInfoPanePatch
             }
             if (AmongUsClient.Instance.AmHost)
             {
-                __instance.playerName.text = (string.IsNullOrEmpty(host.PlayerName) ? "..." : string.Concat(new string[]
-                {
-                    "<color=#",
-                    text,
-                    ">",
-                    host.PlayerName,
-                    "</color>"
-                })) + "  <size=90%><b><font=\"Barlow-BoldItalic SDF\" material=\"Barlow-BoldItalic SDF Outline\">" + DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.HostYouLabel, Array.Empty<Object>());
+                __instance.playerName.text = (string.IsNullOrEmpty(host.PlayerName) ? "..." : $"<color=#{text}>{host.PlayerName}</color>")
+                    + "  <size=90%><b><font=\"Barlow-BoldItalic SDF\" material=\"Barlow-BoldItalic SDF Outline\">" + DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.HostYouLabel, Array.Empty<Object>());
             }
             else
             {
-                __instance.playerName.text = (string.IsNullOrEmpty(host.PlayerName) ? "..." : string.Concat(new string[]
-                {
-                    "<color=#",
-                    text,
-                    ">",
-                    host.PlayerName,
-                    "</color>"
-                })) + " (" + __instance.player.ColorBlindName + ")";
+                __instance.playerName.text = (string.IsNullOrEmpty(host.PlayerName) ? "..." : $"<color=#{text}>{host.PlayerName}</color>") + " (" + __instance.player.ColorBlindName + ")";
             }
         }
     }
@@ -131,25 +118,12 @@ public static class RainbowLobbyInfoPanePatch
             }
             if (AmongUsClient.Instance.AmHost)
             {
-                __instance.playerName.text = (string.IsNullOrEmpty(host.PlayerName) ? "..." : string.Concat(new string[]
-                {
-                    "<color=#",
-                    text,
-                    ">",
-                    host.PlayerName,
-                    "</color>"
-                })) + "  <size=90%><b><font=\"Barlow-BoldItalic SDF\" material=\"Barlow-BoldItalic SDF Outline\">" + DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.HostYouLabel, Array.Empty<Object>());
+                __instance.playerName.text = (string.IsNullOrEmpty(host.PlayerName) ? "..." : $"<color=#{text}>{host.PlayerName}</color>")
+                                             + "  <size=90%><b><font=\"Barlow-BoldItalic SDF\" material=\"Barlow-BoldItalic SDF Outline\">" + DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.HostYouLabel, Array.Empty<Object>());
             }
             else
             {
-                __instance.playerName.text = (string.IsNullOrEmpty(host.PlayerName) ? "..." : string.Concat(new string[]
-                {
-                    "<color=#",
-                    text,
-                    ">",
-                    host.PlayerName,
-                    "</color>"
-                })) + " (" + __instance.player.ColorBlindName + ")";
+                __instance.playerName.text = (string.IsNullOrEmpty(host.PlayerName) ? "..." : $"<color=#{text}>{host.PlayerName}</color>") + " (" + __instance.player.ColorBlindName + ")";
             }
         }
     }
