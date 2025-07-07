@@ -5,6 +5,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Modifiers;
@@ -23,6 +24,7 @@ public sealed class JesterRole(IntPtr cppPtr)
     : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public bool Voted { get; set; }
+    public bool AboutToWin { get; set; }
     public bool SentWinMsg { get; set; }
 
     [HideFromIl2Cpp] public List<byte> Voters { get; } = [];
@@ -108,33 +110,6 @@ public sealed class JesterRole(IntPtr cppPtr)
         }
     }
 
-    public override void OnDeath(DeathReason reason)
-    {
-        RoleBehaviourStubs.OnDeath(this, reason);
-
-        if (reason == DeathReason.Exile)
-        {
-            RpcJesterWin(Player);
-        }
-
-        //Logger<TownOfUsPlugin>.Error($"JesterRole.OnDeath - Voted: {Voted}");
-    }
-
-    public override void OnVotingComplete()
-    {
-        RoleBehaviourStubs.OnVotingComplete(this);
-
-        Voters.Clear();
-
-        foreach (var state in MeetingHudGetVotesPatch.States)
-        {
-            if (state.VotedForId == Player.PlayerId)
-            {
-                Voters.Add(state.VoterId);
-            }
-        }
-    }
-
     public override bool CanUse(IUsable usable)
     {
         if (!GameManager.Instance.LogicUsables.CanUse(usable, Player))
@@ -152,17 +127,5 @@ public sealed class JesterRole(IntPtr cppPtr)
 
         return Voted ||
                GameHistory.DeathHistory.Exists(x => x.Item1 == Player.PlayerId && x.Item2 == DeathReason.Exile);
-    }
-
-    [MethodRpc((uint)TownOfUsRpc.JesterWin, SendImmediately = true)]
-    public static void RpcJesterWin(PlayerControl player)
-    {
-        if (player.GetRoleWhenAlive() is not JesterRole jester)
-        {
-            Logger<TownOfUsPlugin>.Error("RpcJesterWin - Invalid Jester");
-            return;
-        }
-
-        jester.Voted = true;
     }
 }
