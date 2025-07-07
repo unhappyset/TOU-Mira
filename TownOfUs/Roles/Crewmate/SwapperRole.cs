@@ -7,6 +7,7 @@ using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -21,7 +22,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public PlayerVoteArea? Swap1 { get; set; }
     public PlayerVoteArea? Swap2 { get; set; }
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => "Swapper";
+    public string RoleName => TouLocale.Get(TouNames.Swapper, "Swapper");
     public string RoleDescription => "Swap Votes To Save The Crew!";
     public string RoleLongDescription => "Swap votes from one player to another during a meeting";
     public Color RoleColor => TownOfUsColors.Swapper;
@@ -45,7 +46,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public string GetAdvancedDescription()
     {
         return
-            "The Swapper is a Crewmate Power that can swap the votes of two players in a meeting. " +
+            $"The {RoleName} is a Crewmate Power that can swap the votes of two players in a meeting. " +
             "Their meeting vote areas will be swapped visually, and the votes will be swapped. " +
             "If player 1 recieved the most votes, and you swap them with player 2, player 2 will now be ejected instead. "
             + MiscUtils.AppendOptionsText(GetType());

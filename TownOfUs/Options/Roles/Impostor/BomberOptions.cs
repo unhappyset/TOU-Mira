@@ -1,13 +1,15 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Roles.Impostor;
 
 namespace TownOfUs.Options.Roles.Impostor;
 
 public sealed class BomberOptions : AbstractOptionGroup<BomberRole>
 {
-    public override string GroupName => "Bomber";
+    public override string GroupName => TouLocale.Get(TouNames.Bomber, "Bomber");
 
     [ModdedNumberOption("Bomb Uses Per Game", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float MaxBombs { get; set; } = 3f;
@@ -24,6 +26,6 @@ public sealed class BomberOptions : AbstractOptionGroup<BomberRole>
     [ModdedToggleOption("All Impostors See Bomb")]
     public bool AllImpsSeeBomb { get; set; } = true;
 
-    [ModdedToggleOption("Bomber Can Vent")]
+    [ModdedToggleOption("Can Vent")]
     public bool BomberVent { get; set; } = true;
 }

@@ -9,6 +9,7 @@ using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Patches;
@@ -28,7 +29,7 @@ public sealed class JesterRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SwapperRole>());
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => "Jester";
+    public string RoleName => TouLocale.Get(TouNames.Jester, "Jester");
     public string RoleDescription => "Get voted out!";
     public string RoleLongDescription => "Be as suspicious as possible, and get voted out!";
     public Color RoleColor => TownOfUsColors.Jester;
@@ -66,7 +67,7 @@ public sealed class JesterRole(IntPtr cppPtr)
 
     public string GetAdvancedDescription()
     {
-        return "The Jester is a Neutral Evil role that wins by getting themselves ejected." +
+        return $"The {RoleName} is a Neutral Evil role that wins by getting themselves ejected." +
                MiscUtils.AppendOptionsText(GetType());
     }
 
