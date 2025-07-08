@@ -219,6 +219,11 @@ public static class GameHistory
             return role;
         }
 
+        if (!player.Data.IsDead)
+        {
+            return player.Data.Role;
+        }
+
         var role2 = player.Data.RoleWhenAlive;
 
         if (role2.HasValue)
