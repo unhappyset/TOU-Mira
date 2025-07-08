@@ -846,6 +846,7 @@ public static class MiscUtils
         var completed = player.myTasks.ToArray().Count(x => x.IsComplete);
         var totalTasks = player.myTasks.ToArray()
             .Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
+        var colorbase = Color.yellow;
         var color = Color.yellow;
         if (completed <= 0)
         {
@@ -854,6 +855,24 @@ public static class MiscUtils
         else if (completed >= totalTasks)
         {
             color = TownOfUsColors.Doomsayer;
+        }
+        else if (completed > totalTasks / 2)
+        {
+            var fraction = ((completed * 0.4f) / totalTasks);
+            Color color2 = TownOfUsColors.Doomsayer;
+            color = new
+                ((color2.r * fraction + colorbase.r * (1 - fraction)),
+                (color2.g * fraction + colorbase.g * (1 - fraction)),
+                (color2.b * fraction + colorbase.b * (1 - fraction)));
+        }
+        else if (completed < totalTasks / 2)
+        {
+            var fraction = ((completed * 0.9f) / totalTasks);
+            Color color2 = TownOfUsColors.ImpSoft;
+            color = new
+            ((colorbase.r * fraction + color2.r * (1 - fraction)),
+                (colorbase.g * fraction + color2.g * (1 - fraction)),
+                (colorbase.b * fraction + color2.b * (1 - fraction)));
         }
 
         return $"{color.ToTextColor()}({completed}/{totalTasks})</color>";

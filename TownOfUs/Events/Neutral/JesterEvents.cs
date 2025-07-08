@@ -4,17 +4,14 @@ using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.GameOptions;
-using MiraAPI.Hud;
 using MiraAPI.Modifiers;
-using MiraAPI.Networking;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
-using TownOfUs.Modifiers;
+using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
-using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Events.Neutral;
@@ -48,31 +45,6 @@ public static class JesterEvents
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-                if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.Haunts)
-                {
-                    var voters = jester.Voters.ToArray();
-                    Func<PlayerControl, bool> _playerMatch = plr =>
-                        voters.Contains(plr.PlayerId) && !plr.HasDied() &&
-                        !plr.HasModifier<InvulnerabilityModifier>() &&
-                        plr != PlayerControl.LocalPlayer;
-
-                    var killMenu = CustomPlayerMenu.Create();
-                    killMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material =
-                        PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
-                    killMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material =
-                        PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
-                    killMenu.Begin(
-                        _playerMatch,
-                        plr =>
-                        {
-                            killMenu.ForceClose();
-
-                            if (plr != null)
-                            {
-                                PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
-                            }
-                        });
-                }
             }
             else
             {
@@ -124,6 +96,21 @@ public static class JesterEvents
         if (!PlayerControl.LocalPlayer.IsHost())
         {
             jest.Voted = true;
+        }
+
+        if (jest.Player.AmOwner && OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.Haunts)
+        {
+            var allVoters = PlayerControl.AllPlayerControls.ToArray()
+                .Where(x => jest.Voters.Contains(x.PlayerId) && !x.AmOwner);
+            if (!allVoters.Any())
+            {
+                return;
+            }
+
+            foreach (var player in allVoters)
+            {
+                player.AddModifier<MisfortuneTargetModifier>();
+            }
         }
     }
 }
