@@ -98,6 +98,10 @@ public static class ChatPatches
                     msg =
                         "The player name must be at least 1 character long, and cannot be more than 12 characters long!";
                 }
+                else if (PlayerControl.AllPlayerControls.ToArray().Any(x => x.Data.PlayerName.ToLower(CultureInfo.InvariantCulture).Trim() == textRegular.ToLower(CultureInfo.InvariantCulture).Trim() && x.Data.PlayerId != PlayerControl.LocalPlayer.PlayerId))
+                {
+                    msg = $"Another player has a name too similar to {textRegular}! Please try a different name.";
+                }
                 else
                 {
                     PlayerControl.LocalPlayer.CmdCheckName(textRegular);
