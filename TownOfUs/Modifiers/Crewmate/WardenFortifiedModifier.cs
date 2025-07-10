@@ -4,7 +4,9 @@ using MiraAPI.Utilities.Assets;
 using PowerTools;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Events.TouEvents;
+using TownOfUs.Modules;
 using TownOfUs.Modules.Anims;
+using TownOfUs.Options;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -17,6 +19,7 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Warden;
     public override string ShieldDescription => "You are fortified by a Warden!\nNo one can interact with you.";
     public GameObject? WardenFort { get; set; }
+    public bool ShowFort { get; set; }
 
     public override bool HideOnUi
     {
@@ -47,6 +50,7 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
         var touAbilityEvent = new TouAbilityEvent(AbilityType.WardenFortify, Warden, Player);
         MiraEventManager.InvokeEvent(touAbilityEvent);
         
+        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
         var show = OptionGroupSingleton<WardenOptions>.Instance.ShowFortified;
 
         var showShieldedEveryone = show == FortifyOptions.Everyone;
@@ -55,12 +59,16 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
         var showShieldedWarden = PlayerControl.LocalPlayer.PlayerId == Warden.PlayerId &&
                                  show is FortifyOptions.Warden or FortifyOptions.SelfAndWarden;
 
-        if (showShieldedEveryone || showShieldedSelf || showShieldedWarden)
-        {
-            WardenFort = AnimStore.SpawnAnimBody(Player, TouAssets.WardenFort.LoadAsset(), false, -1.1f, -0.35f, 1.5f)!;
-            WardenFort.GetComponent<SpriteAnim>().SetSpeed(0.75f);
-            WardenFort.GetComponentsInChildren<SpriteAnim>().FirstOrDefault()?.SetSpeed(0.75f);
-        }
+        var body = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x =>
+            x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x =>
+            x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+        
+        ShowFort = showShieldedEveryone || showShieldedSelf || showShieldedWarden || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body);
+        
+        WardenFort = AnimStore.SpawnAnimBody(Player, TouAssets.WardenFort.LoadAsset(), false, -1.1f, -0.35f, 1.5f)!;
+        WardenFort.GetComponent<SpriteAnim>().SetSpeed(0.75f);
+        WardenFort.GetComponentsInChildren<SpriteAnim>().FirstOrDefault()?.SetSpeed(0.75f);
     }
 
     public override void OnDeactivate()
@@ -75,7 +83,7 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
     {
         if (!MeetingHud.Instance && WardenFort?.gameObject != null)
         {
-            WardenFort?.SetActive(!Player.IsConcealed() && IsVisible);
+            WardenFort?.SetActive(!Player.IsConcealed() && IsVisible && ShowFort);
         }
     }
 }

@@ -3,6 +3,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Events.TouEvents;
+using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
@@ -35,6 +36,7 @@ public sealed class GuardianAngelProtectModifier(PlayerControl guardianAngel) : 
         var touAbilityEvent = new TouAbilityEvent(AbilityType.GuardianAngelProtect, Guardian, Player);
         MiraEventManager.InvokeEvent(touAbilityEvent);
 
+        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
         var showProtect = OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect;
         var ga = CustomRoleUtils.GetActiveRolesOfType<GuardianAngelTouRole>().FirstOrDefault(x => x.Target == Player);
 
@@ -44,9 +46,12 @@ public sealed class GuardianAngelProtectModifier(PlayerControl guardianAngel) : 
         var showProtectGA = PlayerControl.LocalPlayer.PlayerId == ga?.Player.PlayerId &&
                             showProtect is ProtectOptions.GA or ProtectOptions.SelfAndGA;
 
-        if (showProtectEveryone || showProtectSelf || showProtectGA || (PlayerControl.LocalPlayer.HasDied() &&
-                                                                        OptionGroupSingleton<GeneralOptions>.Instance
-                                                                            .TheDeadKnow))
+        var body = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x =>
+            x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x =>
+            x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+        
+        if (showProtectEveryone || showProtectSelf || showProtectGA || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
         {
             var roleEffectAnimation = Object.Instantiate(DestroyableSingleton<RoleManager>.Instance.protectLoopAnim,
                 Player.gameObject.transform);
