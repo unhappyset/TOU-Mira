@@ -39,10 +39,12 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
         }
 
         CleaningBody = Target;
+        OverrideName("Cleaning");
     }
 
     public override void OnEffectEnd()
     {
+        OverrideName("Clean");
         if (CleaningBody == Target && CleaningBody != null)
         {
             JanitorRole.RpcCleanBody(PlayerControl.LocalPlayer, CleaningBody.ParentId);

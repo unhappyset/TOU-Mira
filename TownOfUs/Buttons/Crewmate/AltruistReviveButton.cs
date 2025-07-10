@@ -71,10 +71,12 @@ public sealed class AltruistReviveButton : TownOfUsRoleButton<AltruistRole>
                 AltruistRole.RpcRevive(PlayerControl.LocalPlayer, player);
             }
         }
+        OverrideName("Reviving");
     }
 
     public override void OnEffectEnd()
     {
         RevivedInRound = true;
+        OverrideName("Revive");
     }
 }
