@@ -44,7 +44,7 @@ public sealed class GrenadierFlashModifier(PlayerControl grenadier) : DisabledMo
                 spr: TouRoleIcons.Grenadier.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -150f);
         }
     }
 
