@@ -2,7 +2,6 @@ using AmongUs.GameOptions;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
-using Reactor.Networking.Attributes;
 using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
@@ -19,7 +18,6 @@ public sealed class ImitatorCacheModifier : BaseModifier, ICachedRole
     private NetworkedPlayerInfo? _selectedPlr;
     public override string ModifierName => "Imitator";
     public override bool HideOnUi => true;
-    public RoleBehaviour OldRole { get; set; }
     public bool ChangedSelectedPlayer { get; set; } = true;
     public bool ShowCurrentRoleFirst => true;
 
@@ -85,10 +83,6 @@ public sealed class ImitatorCacheModifier : BaseModifier, ICachedRole
             _meetingMenu?.Dispose();
             _meetingMenu = null!;
         }
-
-        // if (Player == null || Player.IsRole<ImitatorRole>()) return;
-
-        // Player.ChangeRole(RoleId.Get<ImitatorRole>(), false);
     }
 
     public void Click(PlayerVoteArea voteArea, MeetingHud __)
@@ -205,17 +199,6 @@ public sealed class ImitatorCacheModifier : BaseModifier, ICachedRole
             Player.RpcChangeRole((ushort)roleWhenAlive.Role, false);
         }
 
-        RpcUpdateImitation(Player, (ushort)roleWhenAlive.Role);
-
         _prevSelectedPlr = _selectedPlr;
-    }
-
-    [MethodRpc((uint)TownOfUsRpc.UpdateImitation, SendImmediately = true)]
-    public static void RpcUpdateImitation(PlayerControl player, ushort role)
-    {
-        if (player.TryGetModifier<ImitatorCacheModifier>(out var mod))
-        {
-            mod.OldRole = RoleManager.Instance.GetRole((RoleTypes)role);
-        }
     }
 }
