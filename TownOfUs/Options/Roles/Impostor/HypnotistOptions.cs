@@ -9,7 +9,7 @@ public sealed class HypnotistOptions : AbstractOptionGroup<HypnotistRole>
 {
     public override string GroupName => "Hypnotist";
 
-    [ModdedNumberOption("Hypnotise Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
+    [ModdedNumberOption("Hypnotize Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float HypnotiseCooldown { get; set; } = 25f;
 
     [ModdedToggleOption("Hypnotist Can Kill With Teammate")]

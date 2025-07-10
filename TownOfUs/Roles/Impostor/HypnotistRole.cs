@@ -26,7 +26,7 @@ public sealed class HypnotistRole(IntPtr cppPtr)
 
     public void FixedUpdate()
     {
-        if (Player == null || Player.Data.Role is not JanitorRole || Player.HasDied() || !Player.AmOwner ||
+        if (Player == null || Player.Data.Role is not HypnotistRole || Player.HasDied() || !Player.AmOwner ||
             MeetingHud.Instance || (!HudManager.Instance.UseButton.isActiveAndEnabled &&
                                     !HudManager.Instance.PetButton.isActiveAndEnabled))
         {
@@ -63,15 +63,15 @@ public sealed class HypnotistRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            "The Hypnotist is an Impostor Support role that can hypnotize players. During a meeting they can release Mass Hysteria, which makes all hypnotised players (marked with <color=#D53F42>@</color>) have different visuals applied to players the following round."
+            "The Hypnotist is an Impostor Support role that can hypnotize players. During a meeting they can release Mass Hysteria, which makes all hypnotized players (marked with <color=#D53F42>@</color>) have different visuals applied to players the following round."
             + MiscUtils.AppendOptionsText(GetType());
     }
 
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities { get; } =
     [
-        new("Hypnotise",
-            "Hypnotise a player, causing them to see the game differently than non-hypnotised players if mass hysteria is active.",
+        new("Hypnotize",
+            "Hypnotize a player, causing them to see the game differently than non-hypnotized players if mass hysteria is active.",
             TouImpAssets.HypnotiseButtonSprite),
         new("Mass Hysteria (Meeting)",
             "Cause all hypnotised players to have different visuals applied to players on their screen the following round.",
