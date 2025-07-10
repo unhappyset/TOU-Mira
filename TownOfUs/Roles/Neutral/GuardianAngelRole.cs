@@ -179,7 +179,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         return gaTargetKnows || gaKnowsTargetRole;
     }
 
-    public void CheckTargetDeath(PlayerControl source, PlayerControl victim)
+    public void CheckTargetDeath(PlayerControl victim)
     {
         if (Player.HasDied())
         {
