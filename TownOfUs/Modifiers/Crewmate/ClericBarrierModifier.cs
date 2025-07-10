@@ -59,7 +59,7 @@ public sealed class ClericBarrierModifier(PlayerControl cleric) : BaseShieldModi
         if (showBarrierSelf || showBarrierCleric || (PlayerControl.LocalPlayer.HasDied() &&
                                                      OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
         {
-            ClericBarrier = AnimStore.SpawnAnimBody(Player, TouAssets.ClericBarrier.LoadAsset(), false, -1.1f, -0.35f)!;
+            ClericBarrier = AnimStore.SpawnAnimBody(Player, TouAssets.ClericBarrier.LoadAsset(), false, -1.1f, -0.35f, 1.5f)!;
             ClericBarrier.GetComponent<SpriteAnim>().SetSpeed(2f);
         }
     }

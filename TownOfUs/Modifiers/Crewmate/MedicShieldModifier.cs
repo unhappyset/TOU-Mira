@@ -58,7 +58,7 @@ public sealed class MedicShieldModifier(PlayerControl medic) : BaseShieldModifie
                                                                               OptionGroupSingleton<GeneralOptions>
                                                                                   .Instance.TheDeadKnow))
         {
-            MedicShield = AnimStore.SpawnAnimBody(Player, TouAssets.MedicShield.LoadAsset(), false, -1.1f, -0.1f)!;
+            MedicShield = AnimStore.SpawnAnimBody(Player, TouAssets.MedicShield.LoadAsset(), false, -1.1f, -0.1f, 1.5f)!;
         }
     }
 

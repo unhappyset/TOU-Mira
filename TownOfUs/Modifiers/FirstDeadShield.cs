@@ -51,7 +51,7 @@ public sealed class FirstDeadShield : ExcludedGameModifier, IAnimated
     {
         FirstDeadPatch.PlayerName = null!;
         FirstRoundShield =
-            AnimStore.SpawnAnimBody(Player, TouAssets.FirstRoundShield.LoadAsset(), false, -1.1f, -0.225f)!;
+            AnimStore.SpawnAnimBody(Player, TouAssets.FirstRoundShield.LoadAsset(), false, -1.1f, -0.225f, 1.5f)!;
     }
 
     public override void OnDeath(DeathReason reason)

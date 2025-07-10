@@ -1,8 +1,12 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
+using PowerTools;
+using Reactor.Utilities.Extensions;
 using TownOfUs.Events.TouEvents;
+using TownOfUs.Modules.Anims;
 using TownOfUs.Options.Roles.Crewmate;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Modifiers.Crewmate;
@@ -12,6 +16,7 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
     public override string ModifierName => "Fortified";
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Warden;
     public override string ShieldDescription => "You are fortified by a Warden!\nNo one can interact with you.";
+    public GameObject? WardenFort { get; set; }
 
     public override bool HideOnUi
     {
@@ -41,15 +46,7 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
         base.OnActivate();
         var touAbilityEvent = new TouAbilityEvent(AbilityType.WardenFortify, Warden, Player);
         MiraEventManager.InvokeEvent(touAbilityEvent);
-    }
-
-    public override void OnDeactivate()
-    {
-        Player.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Warden));
-    }
-
-    public override void Update()
-    {
+        
         var show = OptionGroupSingleton<WardenOptions>.Instance.ShowFortified;
 
         var showShieldedEveryone = show == FortifyOptions.Everyone;
@@ -60,12 +57,25 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
 
         if (showShieldedEveryone || showShieldedSelf || showShieldedWarden)
         {
-            Player?.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Warden));
+            WardenFort = AnimStore.SpawnAnimBody(Player, TouAssets.WardenFort.LoadAsset(), false, -1.1f, -0.35f, 1.5f)!;
+            WardenFort.GetComponent<SpriteAnim>().SetSpeed(0.75f);
+            WardenFort.GetComponentsInChildren<SpriteAnim>().FirstOrDefault()?.SetSpeed(0.75f);
         }
     }
 
-    public override void OnDeath(DeathReason reason)
+    public override void OnDeactivate()
     {
-        Player.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>(TownOfUsColors.Warden));
+        if (WardenFort?.gameObject != null)
+        {
+            WardenFort.gameObject.Destroy();
+        }
+    }
+    
+    public override void Update()
+    {
+        if (!MeetingHud.Instance && WardenFort?.gameObject != null)
+        {
+            WardenFort?.SetActive(!Player.IsConcealed() && IsVisible);
+        }
     }
 }

@@ -25,6 +25,9 @@ public static class TouAssets
 
     public static LoadableAsset<GameObject> MedicShield { get; } =
         new LoadableBundleAsset<GameObject>("MedicShield", MainBundle);
+    
+    public static LoadableAsset<GameObject> WardenFort { get; } =
+        new LoadableBundleAsset<GameObject>("WardenFort", MainBundle);
 
     public static LoadableAsset<GameObject> EclipsedPrefab { get; } =
         new LoadableBundleAsset<GameObject>("Eclipsed", MainBundle);
