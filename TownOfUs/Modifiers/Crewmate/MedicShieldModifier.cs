@@ -25,10 +25,7 @@ public sealed class MedicShieldModifier(PlayerControl medic) : BaseShieldModifie
         get
         {
             var showShielded = OptionGroupSingleton<MedicOptions>.Instance.ShowShielded;
-            var showShieldedEveryone = showShielded == MedicOption.Everyone;
-            var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-                                   showShielded is MedicOption.Shielded or MedicOption.ShieldedAndMedic;
-            return !TownOfUsPlugin.ShowShieldHud.Value && (!showShieldedSelf || !showShieldedEveryone);
+            return !TownOfUsPlugin.ShowShieldHud.Value || (showShielded is MedicOption.Medic or MedicOption.Nobody);
         }
     }
 

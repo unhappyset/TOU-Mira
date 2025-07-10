@@ -26,10 +26,7 @@ public sealed class GuardianAngelProtectModifier(PlayerControl guardianAngel) : 
         get
         {
             var showProtect = OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect;
-            var showProtectEveryone = showProtect == ProtectOptions.Everyone;
-            var showProtectSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-                                  showProtect is ProtectOptions.SelfAndGA;
-            return !TownOfUsPlugin.ShowShieldHud.Value && (!showProtectEveryone || !showProtectSelf);
+            return !TownOfUsPlugin.ShowShieldHud.Value || showProtect is ProtectOptions.GA;
         }
     }
 

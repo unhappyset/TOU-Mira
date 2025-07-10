@@ -17,11 +17,8 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
     {
         get
         {
-            var show = OptionGroupSingleton<WardenOptions>.Instance.ShowFortified;
-            var showShieldedEveryone = show == FortifyOptions.Everyone;
-            var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-                                   show is FortifyOptions.Self or FortifyOptions.SelfAndWarden;
-            return !TownOfUsPlugin.ShowShieldHud.Value && (!showShieldedSelf || !showShieldedEveryone);
+            var showFort = OptionGroupSingleton<WardenOptions>.Instance.ShowFortified;
+            return !TownOfUsPlugin.ShowShieldHud.Value || showFort is FortifyOptions.Warden;
         }
     }
 
