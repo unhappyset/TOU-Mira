@@ -1,6 +1,7 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Mira;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
@@ -64,11 +65,11 @@ public static class GuardianAngelEvents
     }
 
     [RegisterEvent]
-    public static void AfterMurderEventHandler(AfterMurderEvent @event)
+    public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
         foreach (var ga in CustomRoleUtils.GetActiveRolesOfType<GuardianAngelTouRole>())
         {
-            ga.CheckTargetDeath(@event.Source, @event.Target);
+            ga.CheckTargetDeath(@event.Player);
         }
     }
 

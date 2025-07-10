@@ -25,6 +25,8 @@ public static class ExecutionerEvents
     [RegisterEvent]
     public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
+        CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>().Do(x => x.CheckTargetDeath(@event.Player));
+
         if (@event.DeathReason != DeathReason.Exile)
         {
             return;
@@ -41,7 +43,6 @@ public static class ExecutionerEvents
             exeRole.TargetVoted = true;
         }
     }
-
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {

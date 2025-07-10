@@ -2,6 +2,7 @@
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
@@ -44,6 +45,30 @@ public static class LoverEvents
             !loveMod.OtherLover.HasDied() && !loveMod.OtherLover.HasModifier<InvulnerabilityModifier>())
         {
             loveMod.OtherLover.Exiled();
+        }
+    }
+
+    [RegisterEvent]
+    public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
+    {
+        if (!PlayerControl.LocalPlayer.IsHost())
+        {
+            return;
+        }
+        if (@event.Player == null || !@event.Player.TryGetModifier<LoverModifier>(out var loveMod)
+            || !OptionGroupSingleton<LoversOptions>.Instance.BothLoversDie || loveMod.OtherLover == null
+            || loveMod.OtherLover.HasDied() || loveMod.OtherLover.HasModifier<InvulnerabilityModifier>())
+        {
+            return;
+        }
+        switch (@event.DeathReason)
+        {
+            case DeathReason.Exile:
+                loveMod.OtherLover.RpcPlayerExile();
+                break;
+            case DeathReason.Kill:
+                loveMod.OtherLover.RpcCustomMurder(loveMod.OtherLover);
+                break;
         }
     }
 
