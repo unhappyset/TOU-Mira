@@ -7,7 +7,6 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
-using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Components;
 using TownOfUs.Options;

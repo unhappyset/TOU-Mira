@@ -1,20 +1,18 @@
-﻿using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
+﻿using MiraAPI.PluginLoading;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Modules.Wiki;
-using TownOfUs.Options.Modifiers;
-using TownOfUs.Utilities;
 using UnityEngine;
 
-namespace TownOfUs.Modifiers.Game.Impostor;
+namespace TownOfUs.Modifiers.Game;
 
-public sealed class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
+[MiraIgnore]
+public abstract class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Double Shot";
     public override string IntroInfo => "You also get a second chance when guessing.";
 
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.DoubleShot;
-    public override ModifierFaction FactionType => ModifierFaction.KillerUtility;
+    public override ModifierFaction FactionType => ModifierFaction.AssailantUtility;
 
     public bool Used { get; set; }
 
@@ -33,25 +31,16 @@ public sealed class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
 
     public override int GetAssignmentChance()
     {
-        return (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.DoubleShotChance;
+        return 100;
     }
 
     public override int GetAmountPerGame()
     {
-        return (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.DoubleShotAmount;
+        return 0;
     }
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        if (
-            role.Player.IsImpostor()
-            && role.Player.GetModifierComponent().HasModifier<ImpostorAssassinModifier>(true)
-            && base.IsModifierValidOn(role)
-        )
-        {
-            return true;
-        }
-
         return false;
     }
 }
