@@ -67,4 +67,15 @@ public sealed class InvestigatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
         PlayerControl.AllPlayerControls.ToArray().Where(plr => plr.HasModifier<FootstepsModifier>())
             .ToList().ForEach(plr => plr.GetModifierComponent().RemoveModifier<FootstepsModifier>());
     }
+
+    public override void OnDeath(DeathReason reason)
+    {
+        if (!Player.AmOwner)
+        {
+            return;
+        }
+
+        PlayerControl.AllPlayerControls.ToArray().Where(plr => plr.HasModifier<FootstepsModifier>())
+            .ToList().ForEach(plr => plr.GetModifierComponent().RemoveModifier<FootstepsModifier>());
+    }
 }
