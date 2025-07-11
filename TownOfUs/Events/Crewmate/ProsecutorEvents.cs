@@ -15,33 +15,39 @@ namespace TownOfUs.Events.Crewmate;
 public static class ProsecutorEvents
 {
     [RegisterEvent]
-    public static void VoteEvent(HandleVoteEvent @event)
+    public static void VoteEvent(CheckForEndVotingEvent @event)
     {
-        if (@event.VoteData.Owner.Data.Role is not ProsecutorRole { HasProsecuted: true } prosecutorRole)
+        if (!@event.IsVotingComplete)
         {
             return;
         }
 
-        if (prosecutorRole.ProsecutionsCompleted >=
+        var prosecutor = CustomRoleUtils.GetActiveRolesOfType<ProsecutorRole>()
+                            .FirstOrDefault(x => !x.Player.HasDied() && x.HasProsecuted && x.ProsecuteVictim != byte.MaxValue);
+
+        if (prosecutor == null)
+        {
+            return;
+        }
+
+        if (prosecutor.ProsecutionsCompleted >=
             OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions)
         {
             return;
         }
 
-        @event.VoteData.SetRemainingVotes(0);
-
-        for (var i = 0; i < 5; i++)
-        {
-            @event.VoteData.VoteForPlayer(@event.TargetId);
-        }
-
-        foreach (var plr in PlayerControl.AllPlayerControls.ToArray().Where(player => player != @event.VoteData.Owner))
+        foreach (var plr in PlayerControl.AllPlayerControls.ToArray())
         {
             plr.GetVoteData().Votes.Clear();
             plr.GetVoteData().VotesRemaining = 0;
         }
 
-        @event.Cancel();
+        var prosdata = prosecutor.Player.GetVoteData();
+
+        for (var i = 0; i < 5; i++)
+        {
+            prosdata.VoteForPlayer(prosecutor.ProsecuteVictim);
+        }
     }
 
     [RegisterEvent]

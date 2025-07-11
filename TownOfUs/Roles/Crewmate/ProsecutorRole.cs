@@ -23,19 +23,12 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
 {
     public PlayerVoteArea? ProsecuteButton { get; private set; }
 
-    /// <summary>
-    ///     Gets a value indicating whether the Prosecutor has selected a victim.
-    /// </summary>
     public bool HasProsecuted { get; private set; }
 
-    /// <summary>
-    ///     Gets or sets a value indicating whether the Prosecutor has pressed the Prosecute button and is selecting a victim.
-    /// </summary>
+    public byte ProsecuteVictim { get; set; } = byte.MaxValue;
+
     public bool SelectingProsecuteVictim { get; set; }
 
-    /// <summary>
-    ///     Gets or sets a value indicating how many prosecutions have been completed.
-    /// </summary>
     public int ProsecutionsCompleted { get; set; }
 
     public void FixedUpdate()
@@ -165,6 +158,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
     {
         ProsecuteButton = null;
         SelectingProsecuteVictim = false;
+        ProsecuteVictim = byte.MaxValue;
 
         if (HasProsecuted)
         {
@@ -175,7 +169,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
     }
 
     [MethodRpc((uint)TownOfUsRpc.Prosecute, SendImmediately = true)]
-    public static void RpcProsecute(PlayerControl plr)
+    public static void RpcProsecute(PlayerControl plr, byte Victim)
     {
         if (plr.Data.Role is not ProsecutorRole prosecutorRole)
         {
@@ -189,5 +183,6 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
         }
 
         prosecutorRole.HasProsecuted = true;
+        prosecutorRole.ProsecuteVictim = Victim;
     }
 }
