@@ -16,6 +16,7 @@ public sealed class FootstepsModifier : BaseModifier
     public Dictionary<GameObject, SpriteRenderer>? _currentSteps;
     public Color _footstepColor;
     private Vector3 _lastPos;
+    private float _footstepInterval;
     public override string ModifierName => "Footsteps";
     public override bool HideOnUi => true;
 
@@ -44,9 +45,10 @@ public sealed class FootstepsModifier : BaseModifier
     {
         if (_currentSteps == null || Player.HasModifier<ConcealedModifier>() ||
             (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive) ||
-            Vector3.Distance(_lastPos, Player.transform.position) <
+            _footstepInterval <
             OptionGroupSingleton<InvestigatorOptions>.Instance.FootprintInterval)
         {
+            _footstepInterval += Time.fixedDeltaTime;
             return;
         }
 
@@ -85,6 +87,8 @@ public sealed class FootstepsModifier : BaseModifier
         _currentSteps.Add(footstep, sprite);
         _lastPos = Player.transform.position;
         Coroutines.Start(FootstepDisappear(footstep, sprite));
+
+        _footstepInterval = 0;
     }
 
     public override void OnDeath(DeathReason reason)
