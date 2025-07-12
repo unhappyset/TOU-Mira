@@ -17,6 +17,7 @@ public sealed class NoisemakerModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Noisemaker";
     public override string IntroInfo => "You will also alert all players to your body upon death.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Noisemaker;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
 

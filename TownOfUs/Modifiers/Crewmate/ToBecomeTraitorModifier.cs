@@ -10,6 +10,8 @@ using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities;
+using UnityEngine;
+using Random = System.Random;
 
 namespace TownOfUs.Modifiers.Crewmate;
 
@@ -19,6 +21,7 @@ public sealed class ToBecomeTraitorModifier : ExcludedGameModifier, IAssignableT
     public override bool HideOnUi => true;
 
     public int Priority { get; set; } = 3;
+    public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
 
     public void AssignTargets()
     {

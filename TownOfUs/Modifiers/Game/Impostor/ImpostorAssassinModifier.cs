@@ -1,11 +1,13 @@
 ﻿using MiraAPI.GameOptions;
 using TownOfUs.Options;
+using UnityEngine;
 
 namespace TownOfUs.Modifiers.Game.Impostor;
 
 public sealed class ImpostorAssassinModifier : AssassinModifier
 {
-    public override string ModifierName => "Assassin (Impostor)";
+    public override string ModifierName => "Assassin";
+    public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
 
     public override int GetAmountPerGame()
     {

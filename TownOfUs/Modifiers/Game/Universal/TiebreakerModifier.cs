@@ -12,6 +12,7 @@ public sealed class TiebreakerModifier : UniversalGameModifier, IWikiDiscoverabl
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Tiebreaker;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
+    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
 
     public string GetAdvancedDescription()
     {

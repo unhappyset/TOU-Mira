@@ -14,6 +14,7 @@ public sealed class UnderdogModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Underdog";
     public override string IntroInfo => "Your kill cooldown is also faster when you're on your own.";
+    public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
 
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Underdog;
     public override ModifierFaction FactionType => ModifierFaction.ImpostorPassive;

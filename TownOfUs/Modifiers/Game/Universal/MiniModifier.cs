@@ -14,6 +14,7 @@ public sealed class MiniModifier : UniversalGameModifier, IWikiDiscoverable, IVi
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Mini;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalVisibility;
+    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
 
     public VisualAppearance GetVisualAppearance()
     {

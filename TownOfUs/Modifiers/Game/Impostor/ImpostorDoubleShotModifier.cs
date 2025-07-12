@@ -2,12 +2,14 @@
 using MiraAPI.Modifiers;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TownOfUs.Modifiers.Game.Impostor;
 
 public sealed class ImpostorDoubleShotModifier : DoubleShotModifier
 {
-    public override string ModifierName => "Double Shot (Impostor)";
+    public override string ModifierName => "Double Shot";
+    public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
 
     public override int GetAssignmentChance()
     {

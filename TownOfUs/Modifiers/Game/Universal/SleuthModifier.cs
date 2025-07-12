@@ -13,6 +13,7 @@ public sealed class SleuthModifier : UniversalGameModifier, IWikiDiscoverable
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Sleuth;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
+    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
     public List<byte> Reported { get; set; } = [];
 
     public string GetAdvancedDescription()

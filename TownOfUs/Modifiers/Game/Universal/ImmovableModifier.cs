@@ -14,6 +14,7 @@ public sealed class ImmovableModifier : UniversalGameModifier, IWikiDiscoverable
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Immovable;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
+    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
 
     public Vector3 Location { get; set; } = Vector3.zero;
 

@@ -13,6 +13,7 @@ public sealed class DiseasedModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Diseased";
     public override string IntroInfo => "You will also extend your killer's cooldown upon death.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Diseased;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
 

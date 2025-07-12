@@ -19,6 +19,7 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Shy;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalVisibility;
+    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
 
     private static float FinalTransparency => OptionGroupSingleton<ShyOptions>.Instance.FinalTransparency;
     private static float InvisDelay => OptionGroupSingleton<ShyOptions>.Instance.InvisDelay + 0.01f;

@@ -14,6 +14,7 @@ public sealed class AftermathModifier : TouGameModifier, IWikiDiscoverable
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Aftermath;
 
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 
     public string GetAdvancedDescription()
     {

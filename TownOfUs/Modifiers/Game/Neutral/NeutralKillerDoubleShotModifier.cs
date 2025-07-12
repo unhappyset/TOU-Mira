@@ -7,7 +7,7 @@ namespace TownOfUs.Modifiers.Game.Neutral;
 
 public sealed class NeutralKillerDoubleShotModifier : DoubleShotModifier
 {
-    public override string ModifierName => "Double Shot (Neutral)";
+    public override string ModifierName => "Double Shot";
 
     public override int GetAssignmentChance()
     {

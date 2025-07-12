@@ -15,6 +15,7 @@ public sealed class TaskmasterModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Taskmaster";
     public override string IntroInfo => "You also finish random tasks each round.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Taskmaster;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePassive;
 

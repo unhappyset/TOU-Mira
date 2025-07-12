@@ -19,6 +19,7 @@ public sealed class ScientistModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Scientist";
     public override string IntroInfo => "You can also use vitals on-the-go.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Scientist;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 
     public override ModifierFaction FactionType => ModifierFaction.CrewmateUtility;
 

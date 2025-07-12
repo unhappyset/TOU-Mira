@@ -23,6 +23,7 @@ public sealed class EgotistModifier : AllianceGameModifier, IWikiDiscoverable
     public override bool GetsPunished => false;
     public override bool CrewContinuesGame => false;
     public override ModifierFaction FactionType => ModifierFaction.CrewmateAlliance;
+    public override Color FreeplayFileColor => new Color32(220, 220, 220, 255);
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Egotist;
 
     public int Priority { get; set; } = 5;

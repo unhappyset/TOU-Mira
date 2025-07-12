@@ -28,6 +28,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
     public override string Symbol => "♥";
     public override string IntroInfo => LoverString();
     public override float IntroSize => 3f;
+    public override Color FreeplayFileColor => new Color32(220, 220, 220, 255);
 
     public override bool DoesTasks =>
         (OtherLover == null || OtherLover.IsCrewmate()) &&
