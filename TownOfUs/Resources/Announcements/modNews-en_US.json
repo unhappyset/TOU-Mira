@@ -123,6 +123,51 @@
         "\n- Just like in TOUR, all button timers will now pause in vents (besides Glitch's buttons)",
         "\n- Imitator can no longer pick up Politician or Mayor (because they can stay as those roles forever)"
       ]
+    },
+    {
+      "Date": "2025-07-12T12:50:00Z",
+      "Number": "100004",
+      "ShortTitle": "TOU: Mira v1.0.3 DEV",
+      "SubTitle": "Current changelog as of this build",
+      "Title": "Town of Us: Mira v1.0.3 PROGRESS",
+      "Text": [
+        "\r<b> This developer build has a handful of changes compared to the public v1.0.2 release. Changelog is subject to change, and we are aware of bugs regarding Mini, Phantom/Haunter, Amnesiac, and a few others.</b>",
+        "\n\nThe Mira team really appreciates all of your support, thank you so much for playing the mod!",
+        "\n\n\r<size=105%>Crewmate Role Bugfixes:</size>",
+        "\n- Investigator footprints hide in comms properly and no longer error out.",
+        "\n\n\r<size=105%>Crewmate Role Bugfixes:</size>",
+        "\n- Rainbow Tracker arrows will be rainbow instead of black.",
+        "\n- Mayor is no longer able to become Traitor.",
+        "\n- Prosecutor no longer ends meetings instantly.",
+        "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
+        "\n- Plaguebearer infections do not spread from meeting kills.",
+        "\n- Executioner and GA have better checks for their targets dying.",
+        "\n- If an Amnesiac was a target for an Inquisitor, and they pick up the role of said Inquisitor, their role will be removed from the list of heretics.",
+        "\n\n\r<size=105%>Impostor Role Bugfixes:</size>",
+        "\n- Hypnotist can no longer hypnotize once Mass Hysteria is in action.",
+        "\n- Egotist and Executioner Target should no longer be able to become Traitor.",
+        "\n\n\r<size=105%>Modifier Bugfixes:</size>",
+        "\n- Lover death checks run on the host, removing the need for two separate death checks.",
+        "\n- If a Scavenger has a lover, they will no longer target them.",
+        "\n- It is no longer possible to have a neutral lover if the setting is disabled.",
+        "\n\n\r<size=105%>Other Bugfixes:</size>",
+        "\n- Rainbow text color in the host panel and the chat pop-ups are rainbow instead of black now.",
+        "\n- Death Valley task is now accounted for correctly, fixes red map and the task being inaccessible.",
+        "\n- It is no longer possible to get Traitor, Lovers, Pestilence, or a killing target as GA when the respective options are set to 0%.",
+        "\n- Hidden shields should no longer appear in the modifiers hud.",
+        "\n- The offset button no longer shows a comms symbol when comms are off.",
+        "\n- Setting the amount of impostors via role list overrides vanilla settings now.",
+        "\n\n\r<size=105%>Improvements:</size>",
+        "\n- Task progress now shifts from red, to yellow, to green.",
+        "\n- Modifier assignment is now shuffled instead of being alphabetical.",
+        "\n- There is now a tally for the amount of tabs in the cosmetics menu.",
+        "\n\n\r<size=105%>Additions:</size>",
+        "\n- Lovers can still kill each other by default, but this can be changed via a toggle.",
+        "\n\n\r<size=105%>Changes:</size>",
+        "\n- Jester Haunt no longer appears on round start; instead, a new button will appear to haunt a player of your choice.",
+        "\n\n\r<size=105%>Removals:</size>",
+        "\n- Impostors both being lovers can no longer happen as it simply life-links impostors to no benefit."
+      ]
     }
   ]
 }

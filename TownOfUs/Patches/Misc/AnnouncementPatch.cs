@@ -77,6 +77,12 @@ public static class ModNewsFetcher
         }
 
         downloaded = true;
+        if (TownOfUsPlugin.IsDevBuild)
+        {
+            Logger<TownOfUsPlugin>.Error($"Loading News Locally, as this is a DEVELOPER BUILD");
+            LoadTouMiraModNewsFromResources();
+            yield break;
+        }
         /* TouMiraModNewsURL += TranslationController.Instance.currentLanguage.languageID switch
         {
             SupportedLangs.German => "de_DE.json",

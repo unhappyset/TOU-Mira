@@ -52,6 +52,11 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
     public static ConfigEntry<bool> PreciseCooldowns { get; set; }
     public static ConfigEntry<int> ArrowStyle { get; set; }
 
+    /// <summary>
+    ///     Determines if the current build is a dev build or not. This will change certain visuals as well as always grab news locally to be up to date.
+    /// </summary>
+    public static bool IsDevBuild => true;
+    
     /// <inheritdoc />
     public string OptionsTitleText => "TOU Mira";
 
@@ -71,7 +76,7 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
     /// </summary>
     public override void Load()
     {
-        ReactorCredits.Register<TownOfUsPlugin>(ReactorCredits.AlwaysShow);
+        ReactorCredits.Register("Town Of Us: Mira", Version, IsDevBuild, ReactorCredits.AlwaysShow);
         LocalizationManager.Register(new TaskProvider());
 
         TouAssets.Initialize();
