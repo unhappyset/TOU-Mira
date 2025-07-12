@@ -138,6 +138,38 @@ public abstract class AssassinModifier : ExcludedGameModifier
 
         void ClickHandler(PlayerControl victim)
         {
+            if (victim.TryGetModifier<OracleBlessedModifier>(out var _))
+            {
+                Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Oracle));
+
+                LobbyNotificationMessage notif1;
+                if (victim.AmOwner)
+                {
+                    notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You Survived Due To Being Blessed By an Oracle!</color></b>",
+                    Color.white, spr: TouRoleIcons.Oracle.LoadAsset());
+
+                    meetingMenu?.HideButtons();
+                }
+                else
+                {
+                    notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}{victim.Data.PlayerName} Survived Due To Being Blessed By an Oracle!</color></b>",
+                    Color.white, spr: TouModifierIcons.DoubleShot.LoadAsset());
+
+                    MeetingMenu.Instances.Do(x => x.HideSingle(victim.PlayerId));
+                }
+
+                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+
+                shapeMenu.Close();
+                LastGuessedItem = string.Empty;
+                LastAttemptedVictim = null;
+
+                return;
+            }
+
             if (victim == Player && Player.TryGetModifier<DoubleShotModifier>(out var modifier) && !modifier.Used)
             {
                 modifier!.Used = true;
