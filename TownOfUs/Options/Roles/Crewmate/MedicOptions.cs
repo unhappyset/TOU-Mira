@@ -12,11 +12,11 @@ public sealed class MedicOptions : AbstractOptionGroup<MedicRole>
     public override string GroupName => TouLocale.Get(TouNames.Medic, "Medic");
 
     [ModdedEnumOption("Show Shielded Player", typeof(MedicOption),
-        ["Self", "Shielded", "Shielded + Self", "Everyone", "No One"])]
+        ["Medic", "Shielded", "Shielded + Medic", "Everyone", "No One"])]
     public MedicOption ShowShielded { get; set; } = MedicOption.ShieldedAndMedic;
 
     [ModdedEnumOption("Who Gets Murder Attempt Indicator", typeof(MedicOption),
-        ["Self", "Shielded", "Shielded + Self", "Everyone", "No One"])]
+        ["Medic", "Shielded", "Shielded + Medic", "Everyone", "No One"])]
     public MedicOption WhoGetsNotification { get; set; } = MedicOption.Medic;
 
     [ModdedToggleOption("Can Give Shield Away Next Round")]
