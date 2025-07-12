@@ -15,7 +15,6 @@ public sealed class FootstepsModifier : BaseModifier
 {
     public Dictionary<GameObject, SpriteRenderer>? _currentSteps;
     public Color _footstepColor;
-    private Vector3 _lastPos;
     private float _footstepInterval;
     public override string ModifierName => "Footsteps";
     public override bool HideOnUi => true;
@@ -23,7 +22,6 @@ public sealed class FootstepsModifier : BaseModifier
     public override void OnActivate()
     {
         _currentSteps = [];
-        _lastPos = Player.transform.position;
 
         _footstepColor = OptionGroupSingleton<InvestigatorOptions>.Instance.ShowAnonymousFootprints
             ? new Color(0.2f, 0.2f, 0.2f, 1f)
@@ -85,7 +83,6 @@ public sealed class FootstepsModifier : BaseModifier
                                          (OptionGroupSingleton<InvestigatorOptions>.Instance.FootprintSize / 10);
 
         _currentSteps.Add(footstep, sprite);
-        _lastPos = Player.transform.position;
         Coroutines.Start(FootstepDisappear(footstep, sprite));
 
         _footstepInterval = 0;
