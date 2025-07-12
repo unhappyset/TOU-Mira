@@ -65,9 +65,13 @@ public sealed class TraitorRole(IntPtr cppPtr)
             return;
         }
 
+        var currenttime = Player.killTimer;
+
         var roleType = RoleId.Get(SelectedRole!.GetType());
         Player.RpcChangeRole(roleType, false);
         Player.RpcAddModifier<TraitorCacheModifier>();
         SelectedRole = null;
+
+        Player.SetKillTimer(currenttime);
     }
 }
