@@ -111,6 +111,10 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
         player.ChangeRole((ushort)roleWhenAlive.Role);
         if (player.Data.Role is InquisitorRole inquis)
         {
+            if (player.HasModifier<InquisitorHereticModifier>())
+            {
+                player.RemoveModifier<InquisitorHereticModifier>();
+            }
             inquis.Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().ToList();
             inquis.TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select(x => x.TargetRole)
                 .OrderBy(x => x.NiceName).ToList();
