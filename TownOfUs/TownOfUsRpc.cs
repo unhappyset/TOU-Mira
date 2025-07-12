@@ -50,6 +50,7 @@ public enum TownOfUsRpc : uint
     WardenFortify,
     ClearWardenFortify,
     WardenNotify,
+    OracleBlessNotify,
     CatchGhost,
     Guarded,
     PlumberFlush,

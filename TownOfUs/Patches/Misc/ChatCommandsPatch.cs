@@ -124,9 +124,9 @@ public static class ChatPatches
 
             List<string> randomNames =
             [
-                "Atony", "Alchlc", "angxlwtf", "Digi", "donners", "K3ndo", "DragonBreath", "Pietro",
-                "twix", "xerm", "XtraCube", "Zeo", "Slushie", "Chloe", "moon", "decii", "Northie", "GD", "Chilled",
-                "Himi", "Riki"
+                "Atony", "Alchlc", "angxlwtf", "Digi", "Donners", "K3ndo", "DragonBreath", "Pietro",
+                "twix", "xerm", "XtraCube", "Zeo", "Slushie", "chloe", "moon", "decii", "Northie", "GD", "Chilled",
+                "Himi", "Riki", "Leafly", "miniduikboot"
             ];
 
             var msg = "<size=75%>Chat Commands:\n" +

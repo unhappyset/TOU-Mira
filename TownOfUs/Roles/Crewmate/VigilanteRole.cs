@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text;
 using AmongUs.GameOptions;
+using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
@@ -177,6 +178,17 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
                 victim == Player)
             {
                 meetingMenu?.HideButtons();
+            }
+            
+            if (victim.TryGetModifier<OracleBlessedModifier>(out var oracleMod))
+            {
+                OracleRole.RpcOracleBlessNotify(oracleMod.Oracle, PlayerControl.LocalPlayer, victim);
+
+                MeetingMenu.Instances.Do(x => x.HideSingle(victim.PlayerId));
+
+                shapeMenu.Close();
+
+                return;
             }
 
             if (victim == Player && SafeShotsLeft != 0)
