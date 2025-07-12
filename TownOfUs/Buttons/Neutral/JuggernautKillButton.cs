@@ -2,6 +2,7 @@
 using MiraAPI.Networking;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
+using TownOfUs.Options.Modifiers.Alliance;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -38,6 +39,10 @@ public sealed class JuggernautKillButton : TownOfUsRoleButton<JuggernautRole, Pl
 
     public override PlayerControl? GetTarget()
     {
+        if (!OptionGroupSingleton<LoversOptions>.Instance.LoversKillEachOther && PlayerControl.LocalPlayer.IsLover())
+        {
+            return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover());
+        }
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 

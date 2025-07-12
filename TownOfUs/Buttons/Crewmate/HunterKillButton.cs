@@ -5,6 +5,7 @@ using MiraAPI.Networking;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
+using TownOfUs.Options.Modifiers.Alliance;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -57,6 +58,10 @@ public sealed class HunterKillButton : TownOfUsRoleButton<HunterRole, PlayerCont
 
     public override PlayerControl? GetTarget()
     {
+        if (!OptionGroupSingleton<LoversOptions>.Instance.LoversKillEachOther && PlayerControl.LocalPlayer.IsLover())
+        {
+            return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover());
+        }
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 

@@ -133,6 +133,10 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
                               OptionGroupSingleton<LoversOptions>.Instance.LoverKillTeammates) ||
                              (genOpt.KillDuringCamoComms &&
                               closePlayer?.GetAppearanceType() == TownOfUsAppearances.Camouflage);
+        if (!OptionGroupSingleton<LoversOptions>.Instance.LoversKillEachOther && PlayerControl.LocalPlayer.IsLover())
+        {
+            return PlayerControl.LocalPlayer.GetClosestLivingPlayer(includePostors, Distance, false, x => !x.IsLover());
+        }
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(includePostors, Distance);
     }
 }
