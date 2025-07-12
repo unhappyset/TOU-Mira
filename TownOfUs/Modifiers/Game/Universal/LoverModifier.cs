@@ -58,11 +58,12 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
 
         if (chance <= (int)OptionGroupSingleton<AllianceModifierOptions>.Instance.LoversChance)
         {
-            var impTargetPercent = (int)OptionGroupSingleton<LoversOptions>.Instance.LovingImpPercent;
+            var loveOpt = OptionGroupSingleton<LoversOptions>.Instance;
+            var impTargetPercent = (int)loveOpt.LovingImpPercent;
 
             var players = PlayerControl.AllPlayerControls.ToArray()
                 .Where(x => !x.HasDied() && !x.HasModifier<ExecutionerTargetModifier>() &&
-                            x.Data.Role is not InquisitorRole).ToList();
+                            x.Data.Role is not InquisitorRole && (loveOpt.NeutralLovers || !x.IsNeutral())).ToList();
             players.Shuffle();
 
             Random rndIndex1 = new();
@@ -75,13 +76,13 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
             foreach (var player in players.SelectMany(_ => players))
             {
                 if (player.IsImpostor() || (player.Is(RoleAlignment.NeutralKilling) &&
-                                            OptionGroupSingleton<LoversOptions>.Instance.NeutralLovers))
+                                            loveOpt.NeutralLovers))
                 {
                     impostors.Add(player);
                 }
                 else if (player.Is(ModdedRoleTeams.Crewmate) ||
                          ((player.Is(RoleAlignment.NeutralBenign) || player.Is(RoleAlignment.NeutralEvil)) &&
-                          OptionGroupSingleton<LoversOptions>.Instance.NeutralLovers))
+                          loveOpt.NeutralLovers))
                 {
                     crewmates.Add(player);
                 }
@@ -93,7 +94,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
                 return;
             }
 
-            if (randomLover.IsImpostor() && !OptionGroupSingleton<LoversOptions>.Instance.ImpLovers)
+            if (randomLover.IsImpostor())
             {
                 impostors = impostors.Where(player => !player.IsImpostor()).ToList();
                 players = players.Where(player => !player.IsImpostor()).ToList();
@@ -189,7 +190,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
             }
         }
 
-        if (localPlr.IsImpostor() && !OptionGroupSingleton<LoversOptions>.Instance.ImpLovers)
+        if (localPlr.IsImpostor())
         {
             impostors = impostors.Where(player => !player.IsImpostor()).ToList();
             players = players.Where(player => !player.IsImpostor()).ToList();
