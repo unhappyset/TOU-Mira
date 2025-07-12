@@ -420,15 +420,16 @@ public static class TownOfUsEventHandlers
 
         Coroutines.Start(CoAnimateDeath(targetVoteArea));
 
-        // hide meeting menu button for victim
-        if (!source.AmOwner && !target.AmOwner)
-        {
-            MeetingMenu.Instances.Do(x => x.HideSingle(target.PlayerId));
-        }
         // hide meeting menu buttons on the victim's screen
-        else if (target.AmOwner)
+        if (target.AmOwner)
         {
             MeetingMenu.Instances.Do(x => x.HideButtons());
+            HudManager.Instance.SetHudActive(false);
+        }
+        // hide meeting menu button for victim
+        else if (!source.AmOwner && !target.AmOwner)
+        {
+            MeetingMenu.Instances.Do(x => x.HideSingle(target.PlayerId));
         }
 
         foreach (var pva in instance.playerStates)
