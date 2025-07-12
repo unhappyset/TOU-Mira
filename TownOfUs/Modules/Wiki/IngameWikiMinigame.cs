@@ -273,12 +273,12 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         {
             var activeModifiers = PlayerControl.LocalPlayer.GetModifiers<GameModifier>()
                 .Where(x => x is IWikiDiscoverable)
-                .Select(x => x.TypeId);
+                .Select(x => MiscUtils.GetModifierTypeId(x));
 
             var comparer = new ModifierComparer(activeModifiers);
 
             var modifiers = MiscUtils.AllModifiers
-                .Where(x => x is IWikiDiscoverable)
+                .Where(x => x is IWikiDiscoverable wikiMod && !wikiMod.IsHiddenFromList)
                 .OrderBy(x => x, comparer)
                 .ToList();
 

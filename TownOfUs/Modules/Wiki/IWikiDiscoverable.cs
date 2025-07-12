@@ -1,4 +1,5 @@
 ﻿using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -10,6 +11,8 @@ public interface IWikiDiscoverable
     [HideFromIl2Cpp] public List<CustomButtonWikiDescription> Abilities => [];
 
     public string SecondTabName => "Abilities";
+    public bool IsHiddenFromList => false;
+    public uint FakeTypeId => ModifierManager.GetModifierTypeId(GetType()) ?? throw new InvalidOperationException("Modifier is not registered.");
 
     public string GetAdvancedDescription()
     {

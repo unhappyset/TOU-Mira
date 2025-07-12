@@ -14,6 +14,7 @@ using MiraAPI.Utilities;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Wiki;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles;
@@ -977,5 +978,13 @@ public static class MiscUtils
     public class Wrapper<T>
     {
         public T[] array;
+    }
+    public static uint GetModifierTypeId(BaseModifier mod)
+    {
+        if (mod is IWikiDiscoverable wikiMod)
+        {
+            return wikiMod.FakeTypeId;
+        }
+        return ModifierManager.GetModifierTypeId(mod.GetType()) ?? throw new InvalidOperationException("Modifier is not registered.");
     }
 }
