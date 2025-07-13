@@ -425,10 +425,17 @@ public static class HudManagerPatches
                         color = roleWhenAlive.TeamColor;
 
                         roleName = $"<size=80%>{color.ToTextColor()}{roleWhenAlive.NiceName}</color></size>";
-                        if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole)
+                        if (PlayerControl.LocalPlayer.HasDied() && !player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole)
                         {
                             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
                         }
+                    }
+                    if (PlayerControl.LocalPlayer.HasDied() && player.TryGetModifier<DeathHandlerModifier>(out var deathMod))
+                    {
+                        var deathReason =
+                            $"<size=60%>『{Color.yellow.ToTextColor()}{deathMod.CauseOfDeath}</color>』</size>\n";
+
+                        roleName = $"{deathReason}{roleName}";
                     }
                 }
 
@@ -495,11 +502,11 @@ public static class HudManagerPatches
                 {
                     if (TownOfUsPlugin.ColorPlayerName.Value)
                     {
-                        playerName = $"{roleName}\n{color.ToTextColor()}{playerName}</color>";
+                        playerName = $"{roleName}\n{color.ToTextColor()}<size=92%>{playerName}</size></color>";
                     }
                     else
                     {
-                        playerName = $"{roleName}\n{playerName}";
+                        playerName = $"{roleName}\n<size=92%>{playerName}</size>";
                     }
                 }
 
@@ -543,7 +550,7 @@ public static class HudManagerPatches
                 }
 
                 var roleName = "";
-
+                var canSeeDeathReason = false;
                 if (player.AmOwner ||
                     (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is
                         { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
@@ -589,6 +596,14 @@ public static class HudManagerPatches
                             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
                         }
                     }
+                    if (PlayerControl.LocalPlayer.HasDied() && isVisible && player.TryGetModifier<DeathHandlerModifier>(out var deathMod))
+                    {
+                        var deathReason =
+                            $"<size=75%>『{Color.yellow.ToTextColor()}{deathMod.CauseOfDeath}</color>』</size>\n";
+
+                        roleName = $"{deathReason}{roleName}";
+                        canSeeDeathReason = true;
+                    }
                 }
 
                 if (((taskOpt.ShowTaskRound && player.AmOwner) || (PlayerControl.LocalPlayer.HasDied() &&
@@ -605,6 +620,11 @@ public static class HudManagerPatches
                 if (player.AmOwner && player.TryGetModifier<ScatterModifier>(out var scatter) && !player.HasDied())
                 {
                     roleName += $" - {scatter.GetDescription()}";
+                }
+                
+                if (canSeeDeathReason)
+                {
+                    playerName += $"\n<size=75%> </size>";
                 }
 
                 if (player.AmOwner && player.Data.Role is IGhostRole { GhostActive: true })

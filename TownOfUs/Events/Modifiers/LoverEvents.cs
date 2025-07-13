@@ -32,7 +32,7 @@ public static class LoverEvents
         {
             case DeathReason.Exile:
                 loveMod.OtherLover.RpcPlayerExile();
-                if (loveMod.OtherLover.TryGetModifier<DeathHandlerModifier>(out var deathHandler) && !deathHandler.LockInfo)
+                if (loveMod.OtherLover.TryGetModifier<DeathHandlerModifier>(out var deathHandler))
                 {
                     deathHandler.CauseOfDeath = "Heartbreak";
                     deathHandler.DiedThisRound = false;
@@ -42,7 +42,7 @@ public static class LoverEvents
                 break;
             case DeathReason.Kill:
                 loveMod.OtherLover.RpcCustomMurder(loveMod.OtherLover);
-                if (loveMod.OtherLover.TryGetModifier<DeathHandlerModifier>(out var deathHandler2) && !deathHandler2.LockInfo)
+                if (loveMod.OtherLover.TryGetModifier<DeathHandlerModifier>(out var deathHandler2))
                 {
                     deathHandler2.CauseOfDeath = "Heartbreak";
                     deathHandler2.DiedThisRound = !MeetingHud.Instance;
