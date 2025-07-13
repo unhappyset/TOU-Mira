@@ -5,6 +5,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.ModifierDisplay;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Buttons;
@@ -270,6 +271,11 @@ public static class ModifierIntroPatch
 
     public static void SetHiddenImpostors(IntroCutscene __instance)
     {
+        __instance.ImpostorText.text =
+            DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NumImpostorsP, Helpers.GetAlivePlayers().Count(x => x.IsImpostor()));
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
+        
         if (!OptionGroupSingleton<RoleOptions>.Instance.RoleListEnabled) return;
 
         var players = GameData.Instance.PlayerCount;

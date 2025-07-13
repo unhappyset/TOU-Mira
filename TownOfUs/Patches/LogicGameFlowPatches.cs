@@ -122,6 +122,12 @@ public static class LogicGameFlowPatches
         {
             return false;
         }
+        
+        // Prevents game end on exile screen
+        if (ExileController.Instance)
+        {
+            return false;
+        }
 
         if (ShipStatus.Instance.Systems.ContainsKey(SystemTypes.LifeSupp))
         {
