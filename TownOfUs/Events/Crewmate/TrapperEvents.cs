@@ -40,6 +40,12 @@ public static class TrapperEvents
         if (OptionGroupSingleton<TrapperOptions>.Instance.TrapsRemoveOnNewRound)
         {
             CustomRoleUtils.GetActiveRolesOfType<TrapperRole>().Do(x => x.Clear());
+
+            if (PlayerControl.LocalPlayer.Data.Role is TrapperRole)
+            {
+                var uses = OptionGroupSingleton<TrapperOptions>.Instance.MaxTraps;
+                CustomButtonSingleton<TrapperTrapButton>.Instance.SetUses((int)uses);
+            }
         }
     }
 }
