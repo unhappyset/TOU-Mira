@@ -21,7 +21,7 @@ namespace TownOfUs.Modifiers.Game;
 [MiraIgnore]
 public abstract class AssassinModifier : ExcludedGameModifier
 {
-    private int maxKills;
+    public int maxKills;
     private MeetingMenu meetingMenu;
     public override string ModifierName => "Assassin";
     public string LastGuessedItem { get; set; }
