@@ -4,6 +4,7 @@ public enum TownOfUsRpc : uint
 {
     RemoveSpawns,
 
+    UpdateDeathHandler,
     SetMap,
     ChangeRole,
     PlayerExile,

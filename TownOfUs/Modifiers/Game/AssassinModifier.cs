@@ -6,6 +6,7 @@ using MiraAPI.PluginLoading;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
+using TownOfUs.Events;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Components;
@@ -179,6 +180,11 @@ public abstract class AssassinModifier : ExcludedGameModifier
                 LastGuessedItem = string.Empty;
                 LastAttemptedVictim = null;
                 MeetingMenu.Instances.Do(x => x.HideSingle(victim.PlayerId));
+                DeathHandlerModifier.RpcUpdateDeathHandler(victim, "Guessed", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {Player.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
+            }
+            else
+            {
+                DeathHandlerModifier.RpcUpdateDeathHandler(victim, "Misguessed", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
             }
 
             maxKills--;

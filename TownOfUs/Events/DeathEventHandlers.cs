@@ -40,17 +40,18 @@ public static class DeathEventHandlers
             var deathHandler = new DeathHandlerModifier();
             victim.AddModifier(deathHandler);
             var cod = "Disconnected";
+            deathHandler.DiedThisRound = !MeetingHud.Instance && !ExileController.Instance;
             switch (@event.DeathReason)
             {
                 case DeathReason.Exile:
                     cod = "Ejected";
+                    deathHandler.DiedThisRound = false;
                     break;
                 case DeathReason.Kill:
                     cod = "Killed";
                     break;
             }
             deathHandler.CauseOfDeath = cod;
-            deathHandler.DiedThisRound = !MeetingHud.Instance;
             deathHandler.RoundOfDeath = CurrentRound;
         }
     }
@@ -90,7 +91,7 @@ public static class DeathEventHandlers
         if (target == source && target.TryGetModifier<DeathHandlerModifier>(out var deathHandler) && !deathHandler.LockInfo)
         {
             deathHandler.CauseOfDeath = "Suicide";
-            deathHandler.DiedThisRound = !MeetingHud.Instance;
+            deathHandler.DiedThisRound = !MeetingHud.Instance && !ExileController.Instance;
             deathHandler.RoundOfDeath = CurrentRound;
             deathHandler.LockInfo = true;
         }
@@ -99,7 +100,7 @@ public static class DeathEventHandlers
             var cod = "Killed";
             switch (source.GetRoleWhenAlive())
             {
-                case SheriffRole or VeteranRole or VigilanteRole:
+                case SheriffRole or VeteranRole:
                     cod = "Shot";
                     break;
                 case JailorRole:
@@ -147,7 +148,7 @@ public static class DeathEventHandlers
             
             deathHandler2.CauseOfDeath = cod;
             deathHandler2.KilledBy = $"By {source.Data.PlayerName}";
-            deathHandler2.DiedThisRound = !MeetingHud.Instance;
+            deathHandler2.DiedThisRound = !MeetingHud.Instance && !ExileController.Instance;
             deathHandler2.RoundOfDeath = CurrentRound;
             deathHandler2.LockInfo = true;
         }

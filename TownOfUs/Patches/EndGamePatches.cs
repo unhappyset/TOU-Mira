@@ -108,17 +108,8 @@ public static class EndGamePatches
 
             if (playerControl.IsRole<PhantomTouRole>() || playerTeam == ModdedRoleTeams.Crewmate)
             {
-                if ((playerControl.Data.Tasks.Count - playerControl.GetTasksLeft()) / playerControl.Data.Tasks.Count ==
-                    1)
-                {
                     playerRoleString.Append(TownOfUsPlugin.Culture,
-                        $" | Tasks: {Color.green.ToTextColor()}{playerControl.Data.Tasks.Count - playerControl.GetTasksLeft()}/{playerControl.Data.Tasks.Count}</color>");
-                }
-                else
-                {
-                    playerRoleString.Append(TownOfUsPlugin.Culture,
-                        $" | Tasks: {playerControl.Data.Tasks.Count - playerControl.GetTasksLeft()}/{playerControl.Data.Tasks.Count}");
-                }
+                        $" {playerControl.TaskInfo()}");
             }
 
             var killedPlayers = GameHistory.KilledPlayers.Count(x =>
@@ -142,25 +133,25 @@ public static class EndGamePatches
                 if (stats.CorrectKills > 0)
                 {
                     playerRoleString.Append(TownOfUsPlugin.Culture,
-                        $" | {Color.green.ToTextColor()}Correct Kills: {stats.CorrectKills}</color>");
+                        $" | {Color.green.ToTextColor()}Kills: {stats.CorrectKills}</color>");
                 }
 
                 if (stats.IncorrectKills > 0)
                 {
                     playerRoleString.Append(TownOfUsPlugin.Culture,
-                        $" | {TownOfUsColors.Impostor.ToTextColor()}Incorrect Kills: {stats.IncorrectKills}</color>");
+                        $" | {TownOfUsColors.Impostor.ToTextColor()}Mis-kills: {stats.IncorrectKills}</color>");
                 }
 
                 if (stats.CorrectAssassinKills > 0)
                 {
                     playerRoleString.Append(TownOfUsPlugin.Culture,
-                        $" | {Color.green.ToTextColor()}Correct Guesses: {stats.CorrectAssassinKills}</color>");
+                        $" | {Color.green.ToTextColor()}Guesses: {stats.CorrectAssassinKills}</color>");
                 }
 
                 if (stats.IncorrectAssassinKills > 0)
                 {
                     playerRoleString.Append(TownOfUsPlugin.Culture,
-                        $" | {TownOfUsColors.Impostor.ToTextColor()}Incorrect Guesses: {stats.IncorrectAssassinKills}</color>");
+                        $" | {TownOfUsColors.Impostor.ToTextColor()}Misguesses: {stats.IncorrectAssassinKills}</color>");
                 }
             }
             if (playerControl.TryGetModifier<DeathHandlerModifier>(out var deathHandler))
