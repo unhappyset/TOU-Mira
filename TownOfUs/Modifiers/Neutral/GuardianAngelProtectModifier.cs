@@ -27,7 +27,7 @@ public sealed class GuardianAngelProtectModifier(PlayerControl guardianAngel) : 
         get
         {
             var showProtect = OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect;
-            return !TownOfUsPlugin.ShowShieldHud.Value || showProtect is ProtectOptions.GA;
+            return !TownOfUsPlugin.ShowShieldHud.Value || !OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows || showProtect is ProtectOptions.GA;
         }
     }
 
@@ -42,7 +42,7 @@ public sealed class GuardianAngelProtectModifier(PlayerControl guardianAngel) : 
 
         var showProtectEveryone = showProtect == ProtectOptions.Everyone;
         var showProtectSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-                              showProtect is ProtectOptions.SelfAndGA;
+                              showProtect is ProtectOptions.SelfAndGA && OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows;
         var showProtectGA = PlayerControl.LocalPlayer.PlayerId == ga?.Player.PlayerId &&
                             showProtect is ProtectOptions.GA or ProtectOptions.SelfAndGA;
 
