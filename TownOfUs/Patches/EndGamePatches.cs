@@ -8,6 +8,7 @@ using MiraAPI.Utilities;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Events;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
@@ -161,6 +162,20 @@ public static class EndGamePatches
                     playerRoleString.Append(TownOfUsPlugin.Culture,
                         $" | {TownOfUsColors.Impostor.ToTextColor()}Incorrect Guesses: {stats.IncorrectAssassinKills}</color>");
                 }
+            }
+            if (playerControl.TryGetModifier<DeathHandlerModifier>(out var deathHandler))
+            {
+                playerRoleString.Append(TownOfUsPlugin.Culture,
+                    $" | {Color.yellow.ToTextColor()}{deathHandler.CauseOfDeath}</color>");
+                if (deathHandler.KilledBy != string.Empty) playerRoleString.Append(TownOfUsPlugin.Culture,
+                    $" {deathHandler.KilledBy}");
+                playerRoleString.Append(TownOfUsPlugin.Culture,
+                    $" (R{deathHandler.RoundOfDeath})");
+            }
+            else
+            {
+                playerRoleString.Append(TownOfUsPlugin.Culture,
+                    $" | {Color.yellow.ToTextColor()}Alive</color>");
             }
 
             var playerName = new StringBuilder();

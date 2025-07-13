@@ -509,10 +509,8 @@ public static class HudManagerPatches
         }
         else
         {
-            var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x =>
-                x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
-            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x =>
-                x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+            var isVisible = (PlayerControl.LocalPlayer.TryGetModifier<DeathHandlerModifier>(out var deathHandler) &&
+                            !deathHandler.DiedThisRound) || TutorialManager.InstanceExists;
 
             foreach (var player in PlayerControl.AllPlayerControls)
             {
@@ -530,11 +528,11 @@ public static class HudManagerPatches
                     playerColor = Color.red;
                 }
 
-                playerColor = playerColor.UpdateTargetColor(player, body || fakePlayer?.body);
-                playerName = playerName.UpdateTargetSymbols(player, body || fakePlayer?.body);
-                playerName = playerName.UpdateProtectionSymbols(player, body || fakePlayer?.body);
-                playerName = playerName.UpdateAllianceSymbols(player, body || fakePlayer?.body);
-                playerName = playerName.UpdateStatusSymbols(player, body || fakePlayer?.body);
+                playerColor = playerColor.UpdateTargetColor(player, !isVisible);
+                playerName = playerName.UpdateTargetSymbols(player, !isVisible);
+                playerName = playerName.UpdateProtectionSymbols(player, !isVisible);
+                playerName = playerName.UpdateAllianceSymbols(player, !isVisible);
+                playerName = playerName.UpdateStatusSymbols(player, !isVisible);
 
                 var role = player.Data.Role;
                 var color = Color.white;
@@ -551,7 +549,7 @@ public static class HudManagerPatches
                         { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
                     (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
                     SnitchRole.SnitchVisibilityFlag(player, true) ||
-                    (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body) ||
+                    (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && isVisible) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
                     MayorRole.MayorVisibilityFlag(player))
                 {
@@ -594,8 +592,7 @@ public static class HudManagerPatches
                 }
 
                 if (((taskOpt.ShowTaskRound && player.AmOwner) || (PlayerControl.LocalPlayer.HasDied() &&
-                                                                   taskOpt.ShowTaskDead && !body &&
-                                                                   !fakePlayer?.body)) && (player.IsCrewmate() ||
+                                                                   taskOpt.ShowTaskDead && isVisible)) && (player.IsCrewmate() ||
                         player.Data.Role is PhantomTouRole))
                 {
                     if (roleName != string.Empty)

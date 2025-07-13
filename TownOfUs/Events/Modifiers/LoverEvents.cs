@@ -15,7 +15,7 @@ namespace TownOfUs.Events.Modifiers;
 
 public static class LoverEvents
 {
-    [RegisterEvent]
+    [RegisterEvent(400)]
     public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
         if (!PlayerControl.LocalPlayer.IsHost())
@@ -32,9 +32,23 @@ public static class LoverEvents
         {
             case DeathReason.Exile:
                 loveMod.OtherLover.RpcPlayerExile();
+                if (loveMod.OtherLover.TryGetModifier<DeathHandlerModifier>(out var deathHandler) && !deathHandler.LockInfo)
+                {
+                    deathHandler.CauseOfDeath = "Heartbreak";
+                    deathHandler.DiedThisRound = false;
+                    deathHandler.RoundOfDeath = DeathEventHandlers.CurrentRound;
+                    deathHandler.LockInfo = true;
+                }
                 break;
             case DeathReason.Kill:
                 loveMod.OtherLover.RpcCustomMurder(loveMod.OtherLover);
+                if (loveMod.OtherLover.TryGetModifier<DeathHandlerModifier>(out var deathHandler2) && !deathHandler2.LockInfo)
+                {
+                    deathHandler2.CauseOfDeath = "Heartbreak";
+                    deathHandler2.DiedThisRound = !MeetingHud.Instance;
+                    deathHandler2.RoundOfDeath = DeathEventHandlers.CurrentRound;
+                    deathHandler2.LockInfo = true;
+                }
                 break;
         }
     }
