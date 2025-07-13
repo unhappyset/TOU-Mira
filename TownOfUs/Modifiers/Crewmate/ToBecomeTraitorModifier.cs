@@ -46,13 +46,12 @@ public sealed class ToBecomeTraitorModifier : ExcludedGameModifier, IAssignableT
                             !x.HasModifier<EgotistModifier>() &&
                             x.Data.Role is not MayorRole).ToList();
 
-            Random rndIndex = new();
             if (filtered.Count == 0)
             {
                 return;
             }
 
-            var randomTarget = filtered[rndIndex.Next(0, filtered.Count)];
+            var randomTarget = filtered[rnd.Next(0, filtered.Count)];
 
             randomTarget.RpcAddModifier<ToBecomeTraitorModifier>();
         }
