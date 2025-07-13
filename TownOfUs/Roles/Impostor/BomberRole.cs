@@ -76,7 +76,7 @@ public sealed class BomberRole(IntPtr cppPtr)
         }
         else if (OptionGroupSingleton<BomberOptions>.Instance.AllImpsSeeBomb && PlayerControl.LocalPlayer.IsImpostor())
         {
-            Bomb.BombShowTeammate(player, position);
+            Coroutines.Start(Bomb.BombShowTeammate(player, position));
         }
     }
 }
