@@ -45,6 +45,14 @@ public sealed class Bomb : IDisposable
             affected.Remove(affected[^1]);
         }
 
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            _bomber?.RpcRemoveModifier<IndirectAttackerModifier>();
+
+            _obj.Destroy();
+            yield break;
+        }
+
         foreach (var player in affected)
         {
             if (player.HasDied())
