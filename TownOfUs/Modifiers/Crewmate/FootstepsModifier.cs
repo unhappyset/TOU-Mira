@@ -64,7 +64,7 @@ public sealed class FootstepsModifier : BaseModifier
             transform =
             {
                 parent = ShipStatus.Instance?.transform,
-                position = new Vector3(Player.transform.position.x, Player.transform.position.y, 2.5708f),
+                position = Player.transform.position,
                 rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward)
             }
         };
