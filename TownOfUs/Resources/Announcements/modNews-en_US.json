@@ -125,7 +125,7 @@
       ]
     },
     {
-      "Date": "2025-07-12T12:50:00Z",
+      "Date": "2025-07-13T12:50:00Z",
       "Number": "100004",
       "ShortTitle": "TOU: Mira DEV",
       "SubTitle": "Current changelog as of this build",
@@ -153,6 +153,7 @@
         "\n- Traitor's cooldown no longer drops down to 10 seconds when changing their role",
         "\n- Bombs no longer trigger within meetings",
         "\n- Bombs will appear for teammates correctly",
+        "\n- Miner vents are fixed in Weapons (Polus) and can no longer be placed inside of doors",
         "\n\n\r<size=105%>Modifier Bugfixes:</size>",
         "\n- Lover death checks run on the host, removing the need for two separate death checks.",
         "\n- If a Scavenger has a lover, they will no longer target them.",
