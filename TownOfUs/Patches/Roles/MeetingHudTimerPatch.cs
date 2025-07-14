@@ -52,6 +52,6 @@ public static class MeetingHudTimerPatch
             }
         }
 
-        if (newText != string.Empty) __instance.TimerText.text += newText;
+        if (newText != string.Empty) __instance.TimerText.text += $"<color=#FFFFFF>{newText}</color>";
     }
 }
