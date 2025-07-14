@@ -21,6 +21,7 @@ public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifi
     public PlayerControl Eclipsal => player;
     public GameObject? EclipseBack { get; set; }
     public override bool CanUseAbilities => true;
+    public override bool CanReport => true;
 
     public float VisionPerc { get; set; } = 1f;
 
