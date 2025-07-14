@@ -14,6 +14,7 @@ using MiraAPI.Utilities;
 using PowerTools;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Buttons;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Buttons.Impostor;
 using TownOfUs.Buttons.Modifiers;
@@ -109,6 +110,21 @@ public static class TownOfUsEventHandlers
         var player = @event.Player;
         if (!MeetingHud.Instance && player.AmOwner)
         {
+            foreach (var button in CustomButtonManager.Buttons)
+            {
+                if (button is TownOfUsTargetButton<PlayerControl> touPlayerButton && touPlayerButton.Target != null)
+                {
+                    touPlayerButton.Target.cosmetics.currentBodySprite.BodySprite.SetOutline(null);
+                }
+                else if (button is TownOfUsTargetButton<DeadBody> touBodyButton && touBodyButton.Target != null)
+                {
+                    touBodyButton.Target.bodyRenderers.Do(x => x.SetOutline(null));
+                }
+                else if (button is TownOfUsTargetButton<Vent> touVentButton && touVentButton.Target != null)
+                {
+                    touVentButton.Target.SetOutline(false, true, player.Data.Role.TeamColor);
+                }
+            }
             HudManager.Instance.SetHudActive(false);
             HudManager.Instance.SetHudActive(true);
         }
