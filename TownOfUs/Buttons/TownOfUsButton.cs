@@ -30,6 +30,7 @@ public abstract class TownOfUsButton : CustomActionButton
     public override string CooldownTimerFormatString =>
         Timer <= 10f && TownOfUsPlugin.PreciseCooldowns.Value ? "0.0" : "0";
 
+    public virtual bool UsableInDeath => false;
     public virtual bool ShouldPauseInVent => true;
 
     /// <summary>
@@ -144,6 +145,11 @@ public abstract class TownOfUsButton : CustomActionButton
         {
             return false;
         }
+        
+        if (PlayerControl.LocalPlayer.HasDied() && !UsableInDeath)
+        {
+            return false;
+        }
 
         if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
         {
@@ -224,6 +230,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
         Timer <= 10f && TownOfUsPlugin.PreciseCooldowns.Value ? "0.0" : "0";
 
     public virtual bool ShouldPauseInVent => true;
+    public virtual bool UsableInDeath => false;
 
     /// <summary>
     ///     Gets the keybind used for the button.
@@ -297,6 +304,11 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
 
     public override bool CanUse()
     {
+        if (PlayerControl.LocalPlayer.HasDied() && !UsableInDeath)
+        {
+            return false;
+        }
+        
         if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
         {
             return false;

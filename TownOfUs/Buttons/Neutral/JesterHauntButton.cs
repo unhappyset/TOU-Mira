@@ -20,6 +20,7 @@ public sealed class JesterHauntButton : TownOfUsRoleButton<GlitchRole>, IAfterma
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.JesterHauntSprite;
     public override ButtonLocation Location => ButtonLocation.BottomRight;
     public override bool ShouldPauseInVent => false;
+    public override bool UsableInDeath => true;
 
     public override bool Enabled(RoleBehaviour? role)
     {
