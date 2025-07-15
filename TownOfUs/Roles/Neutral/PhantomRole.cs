@@ -40,7 +40,7 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
     {
         Setup = true;
 
-        // Logger<TownOfUsPlugin>.Error($"Setup PhantomTouRole '{Player.Data.PlayerName}'");
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Setup PhantomTouRole '{Player.Data.PlayerName}'");
         Player.gameObject.layer = LayerMask.NameToLayer("Players");
 
         Player.gameObject.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
@@ -77,13 +77,13 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
 
             Faded = false;
 
-            // Logger<TownOfUsPlugin>.Message($"PhantomTouRole.FadeUpdate UnFaded");
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Message($"PhantomTouRole.FadeUpdate UnFaded");
         }
     }
 
     public void Clicked()
     {
-        // Logger<TownOfUsPlugin>.Message($"PhantomTouRole.Clicked");
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Message($"PhantomTouRole.Clicked");
         Caught = true;
         Player.Exiled();
 

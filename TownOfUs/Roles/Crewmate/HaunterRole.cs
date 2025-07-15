@@ -56,7 +56,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     {
         Setup = true;
 
-        // Logger<TownOfUsPlugin>.Error($"Setup HaunterRole '{Player.Data.PlayerName}'");
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Setup HaunterRole '{Player.Data.PlayerName}'");
         Player.gameObject.layer = LayerMask.NameToLayer("Players");
 
         Player.gameObject.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
@@ -98,7 +98,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
 
     public void Clicked()
     {
-        // Logger<TownOfUsPlugin>.Message($"HaunterRole.Clicked");
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Message($"HaunterRole.Clicked");
         Caught = true;
         Player.Exiled();
 

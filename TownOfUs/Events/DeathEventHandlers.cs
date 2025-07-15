@@ -4,6 +4,7 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Modifiers;
+using Reactor.Utilities;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules;
@@ -23,11 +24,13 @@ public static class DeathEventHandlers
         if (@event.TriggeredByIntro)
         {
             CurrentRound = 1;
+            Logger<TownOfUsPlugin>.Warning("Game Has Started");
         }
         else
         {
             ++CurrentRound;
             ModifierUtils.GetActiveModifiers<DeathHandlerModifier>().Do(x => x.DiedThisRound = false);
+            Logger<TownOfUsPlugin>.Warning($"New Round Started: {CurrentRound}");
         }
     }
 
