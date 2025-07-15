@@ -17,6 +17,7 @@ public sealed class JailedModifier(byte jailorId) : BaseModifier
     public override string ModifierName => "Jailed";
     public override bool HideOnUi => true;
     public byte JailorId { get; } = jailorId;
+    public bool HasOpenedQuickChat { get; set; }
 
     public override void OnActivate()
     {
@@ -39,11 +40,11 @@ public sealed class JailedModifier(byte jailorId) : BaseModifier
         {
             var title = $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailee Feedback</color>";
             var text =
-                "You are jailed, convince the Jailor that you are Crew to avoid being executed in the private chatbox.";
+                "You are jailed, convince the Jailor that you are Crew to avoid being executed in the <b>RED</b> private chatbox next to the <b>REGULAR</b> chatbox.";
             if (PlayerControl.LocalPlayer.Is(ModdedRoleTeams.Crewmate))
             {
                 text =
-                    "You are jailed, provide relevant information to the Jailor to prove you are Crew in the private chatbox.";
+                    "You are jailed, provide relevant information to the Jailor to prove you are Crew in the <b>RED</b> private chatbox next to the <b>REGULAR</b> chatbox.";
             }
 
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, text, false, true);

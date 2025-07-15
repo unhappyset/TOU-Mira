@@ -1,10 +1,12 @@
 ﻿using HarmonyLib;
 using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities.Extensions;
 using TMPro;
+using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
@@ -166,6 +168,12 @@ public static class TeamChatPatches
 
                     if (TeamChatActive)
                     {
+                        if (PlayerControl.LocalPlayer.TryGetModifier<JailedModifier>(out var jailMod) && !jailMod.HasOpenedQuickChat)
+                        {
+                            if (!__instance.quickChatMenu.IsOpen) __instance.OpenQuickChat();
+                            __instance.quickChatMenu.Close();
+                            jailMod.HasOpenedQuickChat = true;
+                        }
                         var ogChat = HudManager.Instance.Chat.chatButton;
                         ogChat.transform.Find("Inactive").gameObject.SetActive(true);
                         ogChat.transform.Find("Active").gameObject.SetActive(false);
