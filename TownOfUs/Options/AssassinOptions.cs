@@ -46,7 +46,7 @@ public sealed class AssassinOptions : AbstractOptionGroup
     public bool AssassinCrewmateGuess { get; set; } = false;
 
     [ModdedToggleOption("Assassin Can Guess Crew Investigative Roles")]
-    public bool AssassinGuessInvest { get; set; } = true;
+    public bool AssassinGuessInvest { get; set; } = false;
 
     [ModdedToggleOption("Assassin Can Guess Neutral Benign Roles")]
     public bool AssassinGuessNeutralBenign { get; set; } = true;

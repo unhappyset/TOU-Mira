@@ -7,6 +7,7 @@ using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Utilities;
 
 namespace TownOfUs.Patches.Roles;
 
@@ -18,11 +19,15 @@ public static class MeetingHudTimerPatch
     public static void TimerUpdatePostfix(MeetingHud __instance)
     {
         var newText = string.Empty;
-        switch (PlayerControl.LocalPlayer?.Data?.Role)
+        if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null || PlayerControl.LocalPlayer.HasDied()) return;
+        switch (PlayerControl.LocalPlayer.Data.Role)
         {
             case ProsecutorRole pros:
                 var prosecutes = OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions - pros.ProsecutionsCompleted;
                 newText = $"\n{prosecutes} / {OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions} Prosecutions Remaining";
+                break;
+            case DeputyRole dep:
+                if (dep.Killer) newText = "\nShoot a player successfully if they were the killer!";
                 break;
             case PoliticianRole:
                 newText = "\nReveal successfully if half the crewmates are campaigned!";
@@ -42,8 +47,8 @@ public static class MeetingHudTimerPatch
                 }
                 break;
         }
-
-        if (PlayerControl.LocalPlayer?.TryGetModifier<AssassinModifier>(out var assassinMod) == true)
+        
+        if (PlayerControl.LocalPlayer.TryGetModifier<AssassinModifier>(out var assassinMod))
         {
             newText += $"\n{assassinMod.maxKills} / {(int)OptionGroupSingleton<AssassinOptions>.Instance.AssassinKills} Guesses Remaining";
             if ((PlayerControl.LocalPlayer.TryGetModifier<DoubleShotModifier>(out var doubleShotMod)))

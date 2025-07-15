@@ -441,9 +441,15 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
     private static bool IsRoleValid(RoleBehaviour role)
     {
         var unguessableRole = role as IUnguessable;
+        var touRole = role as ITownOfUsRole;
         if (role.IsDead || role is IGhostRole || (unguessableRole != null && !unguessableRole.IsGuessable))
         {
             return false;
+        }
+        
+        if (touRole?.RoleAlignment == RoleAlignment.CrewmateInvestigative)
+        {
+            return OptionGroupSingleton<DoomsayerOptions>.Instance.DoomGuessInvest;
         }
 
         return true;

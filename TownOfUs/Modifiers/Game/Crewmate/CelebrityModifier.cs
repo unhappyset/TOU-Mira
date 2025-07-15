@@ -90,8 +90,11 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
         var cod = "killed";
         switch (source.Data.Role)
         {
-            case SheriffRole or VeteranRole:
+            case SheriffRole:
                 cod = "shot";
+                break;
+            case VeteranRole:
+                cod = "blasted";
                 break;
             case InquisitorRole:
                 cod = "vanquished";

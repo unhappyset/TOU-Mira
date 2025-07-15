@@ -100,8 +100,11 @@ public static class DeathEventHandlers
             var cod = "Killed";
             switch (source.GetRoleWhenAlive())
             {
-                case SheriffRole or VeteranRole:
+                case SheriffRole or DeputyRole:
                     cod = "Shot";
+                    break;
+                case VeteranRole:
+                    cod = "Blasted";
                     break;
                 case JailorRole:
                     cod = "Executed";

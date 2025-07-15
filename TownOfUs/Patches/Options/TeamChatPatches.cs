@@ -1,9 +1,11 @@
 ﻿using HarmonyLib;
 using MiraAPI.GameOptions;
+using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities.Extensions;
 using TMPro;
+using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
@@ -105,6 +107,29 @@ public static class TeamChatPatches
             }
         }
     } */
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(ChatBubble), nameof(ChatBubble.SetName))]
+    public static void SetNamePostfix(ChatBubble __instance, [HarmonyArgument(0)] string playerName, [HarmonyArgument(3)] Color color)
+    {
+        var player = PlayerControl.AllPlayerControls.ToArray()
+            .FirstOrDefault(x => x.Data.PlayerName == playerName);
+        if (player == null) return;
+        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
+        if (genOpt.FFAImpostorMode && PlayerControl.LocalPlayer.IsImpostor() && !PlayerControl.LocalPlayer.HasDied() &&
+            !player.AmOwner && player.IsImpostor() && MeetingHud.Instance)
+        {
+            __instance.NameText.color = Color.white;
+        }
+        else if (color == Color.white &&
+                 (player.AmOwner || player.Data.Role is MayorRole mayor && mayor.Revealed ||
+                  PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) && PlayerControl.AllPlayerControls
+                     .ToArray()
+                     .FirstOrDefault(x => x.Data.PlayerName == playerName) && MeetingHud.Instance)
+        {
+            __instance.NameText.color = (player.GetRoleWhenAlive() is ICustomRole custom) ? custom.RoleColor : player.GetRoleWhenAlive().TeamColor;
+        }
+    }
+
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.Toggle))]
     public static class TogglePatch
     {
