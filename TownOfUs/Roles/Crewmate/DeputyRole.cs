@@ -31,7 +31,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     public Color RoleColor => TownOfUsColors.Deputy;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
-    public bool IsPowerCrew => Killer; // Only stop end game checks if the deputy can actually kill someone
+    public bool IsPowerCrew => Killer || ModifierUtils.GetActiveModifiers<DeputyCampedModifier>().Any(); // Only stop end game checks if the deputy can actually kill someone
 
     public CustomRoleConfiguration Configuration => new(this)
     {

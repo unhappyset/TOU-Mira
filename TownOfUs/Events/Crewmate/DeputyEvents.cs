@@ -1,6 +1,7 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Modifiers;
+using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
@@ -20,6 +21,10 @@ public static class DeputyEvents
         if (PlayerControl.LocalPlayer.Data.Role is DeputyRole)
         {
             DeputyRole.OnRoundStart();
+        }
+        foreach (var dep in CustomRoleUtils.GetActiveRolesOfType<DeputyRole>())
+        {
+            dep.Killer = null;
         }
     }
 

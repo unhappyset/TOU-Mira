@@ -126,7 +126,7 @@
     },
     {
       "Date": "2025-07-15T12:50:00Z",
-      "Number": "100004",
+      "Number": "100005",
       "ShortTitle": "TOU: Mira DEV",
       "SubTitle": "Current changelog as of this build",
       "Title": "Town of Us: Mira v1.1.0 PROGRESS",
@@ -142,6 +142,8 @@
         "\n- Footprints are layered correctly",
         "\n- If specified, trapper uses are reset properly after each round",
         "\n- If the \"Jailee Can Use Public Chat\" option is disabled, the Jailee can speak properly in the private chatbox",
+        "\n- If a Deputy camps a player in a 1v2, and the camped player dies, Deputy continues the game correctly",
+        "\n- Deputies no longer hold onto the killer information from the previous round.",
         "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
         "\n- Amnesiac takes away unique roles correctly again",
         "\n- Plaguebearer infections do not spread from meeting kills.",
