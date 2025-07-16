@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using System.Globalization;
 using HarmonyLib;
 using MiraAPI.Events;
+using System.Text;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
@@ -25,6 +27,7 @@ using TownOfUs.Modules.Anims;
 using TownOfUs.Options.Modifiers.Universal;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Options.Roles.Impostor;
+using TownOfUs.Patches;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Impostor;
@@ -44,6 +47,21 @@ public static class TownOfUsEventHandlers
         {
             return; // Only run when game starts.
         }
+
+        if (FirstDeadPatch.PlayerNames.Count > 0)
+        {
+            var stringB = new StringBuilder();
+            stringB.Append(CultureInfo.InvariantCulture, $"List Of Players That Died In Order: ");
+            foreach (var playername in FirstDeadPatch.PlayerNames)
+            {
+                stringB.Append(CultureInfo.InvariantCulture, $"{playername}, ");
+            }
+            
+            stringB = stringB.Remove(stringB.Length - 2, 2);
+            
+            Logger<TownOfUsPlugin>.Warning(stringB.ToString());
+        }
+        FirstDeadPatch.PlayerNames = [];
 
         HudManager.Instance.SetHudActive(false);
         HudManager.Instance.SetHudActive(true);

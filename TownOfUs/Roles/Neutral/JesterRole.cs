@@ -25,7 +25,7 @@ public sealed class JesterRole(IntPtr cppPtr)
 
     [HideFromIl2Cpp] public List<byte> Voters { get; } = [];
 
-    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SwapperRole>());
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<PlumberRole>());
     public DoomableType DoomHintType => DoomableType.Trickster;
     public string RoleName => TouLocale.Get(TouNames.Jester, "Jester");
     public string RoleDescription => "Get voted out!";
