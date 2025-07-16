@@ -108,7 +108,7 @@ public static class HudManagerPatches
                 {
                     arrange.ArrangeChilds();
                 }
-                catch (Exception)
+                catch
                 {
                     // Logger<TownOfUsPlugin>.Error($"Error arranging child objects in GridArrange: {e}");
                 }

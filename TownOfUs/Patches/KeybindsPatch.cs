@@ -20,7 +20,7 @@ public static class Keybinds
             __instance.userData.RegisterBind("tou.ActionCustom", "Tertiary Ability (Hack Ability)");
             __instance.userData.RegisterBind("tou.ActionCustom2", "Modifier Ability");
         }
-        catch (Exception)
+        catch
         {
             // Logger<TownOfUsPlugin>.Error($"Error applying names for custom keybinds: {e}");
         }

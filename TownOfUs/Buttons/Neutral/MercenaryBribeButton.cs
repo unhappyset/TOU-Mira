@@ -19,7 +19,7 @@ public sealed class MercenaryBribeButton : TownOfUsRoleButton<MercenaryRole, Pla
 
     public override bool Enabled(RoleBehaviour? role)
     {
-        return base.Enabled(role) && Role.CanBribe;
+        return base.Enabled(role) && role is MercenaryRole && !PlayerControl.LocalPlayer.Data.IsDead && Role.CanBribe;
     }
 
     protected override void OnClick()

@@ -255,7 +255,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
         }
 
-        if (play1.AmOwner || play2.AmOwner)
+        if (play1.AmOwner && t1 is PlayerControl || play2.AmOwner && t2 is PlayerControl)
         {
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.Transporter.ToTextColor()}You were transported!</color></b>", Color.white,
@@ -263,6 +263,12 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            if (Minigame.Instance != null)
+            {
+                Minigame.Instance.Close();
+                Minigame.Instance.Close();
+            }
         }
 
         MonoBehaviour? GetTarget(byte id)
@@ -411,23 +417,10 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         {
             cnt.SnapTo(position, (ushort)(cnt.lastSequenceId + 1));
 
-            if (cnt.AmOwner)
+            if (cnt.AmOwner && ModCompatibility.IsSubmerged())
             {
-                try
-                {
-                    Minigame.Instance.Close();
-                    Minigame.Instance.Close();
-                }
-                catch
-                {
-                    //ignore
-                }
-
-                if (ModCompatibility.IsSubmerged())
-                {
-                    ModCompatibility.ChangeFloor(cnt.myPlayer.GetTruePosition().y > -7);
-                    ModCompatibility.CheckOutOfBoundsElevator(cnt.myPlayer);
-                }
+                ModCompatibility.ChangeFloor(cnt.myPlayer.GetTruePosition().y > -7);
+                ModCompatibility.CheckOutOfBoundsElevator(cnt.myPlayer);
             }
         }
         else
