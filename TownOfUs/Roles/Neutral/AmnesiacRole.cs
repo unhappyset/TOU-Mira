@@ -133,8 +133,8 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             notif1.Text.SetOutlineThickness(0.35f);
         }
 
-        if (target.Data.Role is not VampireRole && target.Data.Role.MaxCount <= PlayerControl.AllPlayerControls
-                .ToArray().Count(x => x.Data.Role.Role == target.Data.Role.Role))
+        if (roleWhenAlive is not VampireRole && (roleWhenAlive.MaxCount <= 1 || (roleWhenAlive.MaxCount <= PlayerControl.AllPlayerControls
+                .ToArray().Count(x => x.Data.Role.Role == roleWhenAlive.Role))))
         {
             if (target.IsCrewmate())
             {
@@ -144,7 +144,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             {
                 target.ChangeRole((ushort)RoleTypes.Impostor);
             }
-            else if (target.IsNeutral() && player.Data.Role is ITownOfUsRole touRole)
+            /*else if (target.IsNeutral() && player.Data.Role is ITownOfUsRole touRole)
             {
                 switch (touRole.RoleAlignment)
                 {
@@ -159,49 +159,13 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
                         player.AddModifier<MercenaryBribedModifier>(target)!.alerted = true;
                         break;
                 }
-            }
+            }*/
             else
             {
-                target.ChangeRole(RoleId.Get<SurvivorRole>());
+                target.ChangeRole(RoleId.Get<MercenaryRole>());
+                player.AddModifier<MercenaryBribedModifier>(target)!.alerted = true;
             }
         }
-
-        // TODO: Fix Amnesiac breaking unique roles for Amne/Imitator
-        /* if (target.Data.Role is not VampireRole && target.Data.Role.MaxCount <= PlayerControl.AllPlayerControls.ToArray().Count(x => x.Data.Role.Role == target.Data.Role.Role))
-        {
-            var newRole = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SurvivorRole>());
-            if (target.IsCrewmate())
-            {
-                newRole = RoleManager.Instance.GetRole(RoleTypes.Crewmate);
-            }
-            else if (target.IsImpostor())
-            {
-                newRole = RoleManager.Instance.GetRole(RoleTypes.Impostor);
-            }
-            else if (target.IsNeutral() && player.Data.Role is ITownOfUsRole touRole)
-            {
-                switch (touRole.RoleAlignment)
-                {
-                    default:
-                        newRole = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SurvivorRole>());
-                        break;
-                    case RoleAlignment.NeutralEvil:
-                        newRole = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<JesterRole>());
-                        break;
-                    case RoleAlignment.NeutralKilling:
-                        newRole = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MercenaryRole>());
-
-                        player.AddModifier<MercenaryBribedModifier>(target)!.alerted = true;
-                        break;
-                }
-            }
-
-            var roleBehaviour = UnityEngine.Object.Instantiate(newRole, target.Data.gameObject.transform);
-            GameHistory.RegisterRole(target, roleBehaviour);
-            target.Data.RoleWhenAlive = new Il2CppSystem.Nullable<RoleTypes>(roleBehaviour.Role);
-
-            if (target.Data.Role is NeutralGhostRole) target.ChangeRole(RoleId.Get<NeutralGhostRole>(), false);
-        } */
 
         if (player.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnImpAssassin)
         {
