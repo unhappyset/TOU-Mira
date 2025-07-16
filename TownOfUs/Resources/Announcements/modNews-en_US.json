@@ -143,6 +143,7 @@
         "\n- If specified, trapper uses are reset properly after each round",
         "\n- If the \"Jailee Can Use Public Chat\" option is disabled, the Jailee can speak properly in the private chatbox",
         "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
+        "\n- Amnesiac takes away unique roles correctly again",
         "\n- Plaguebearer infections do not spread from meeting kills.",
         "\n- Executioner and GA have better checks for their targets dying.",
         "\n- If an Amnesiac was a target for an Inquisitor, and they pick up the role of said Inquisitor, their role will be removed from the list of heretics.",
