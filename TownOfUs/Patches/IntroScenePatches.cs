@@ -271,8 +271,9 @@ public static class ModifierIntroPatch
 
     public static void SetHiddenImpostors(IntroCutscene __instance)
     {
+        var amount = Helpers.GetAlivePlayers().Count(x => x.IsImpostor());
         __instance.ImpostorText.text =
-            DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NumImpostorsP, Helpers.GetAlivePlayers().Count(x => x.IsImpostor()));
+            DestroyableSingleton<TranslationController>.Instance.GetString(amount == 1 ? StringNames.NumImpostorsS : StringNames.NumImpostorsP, amount);
         __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
         __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
         
