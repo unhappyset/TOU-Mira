@@ -27,7 +27,7 @@ public static class ImitatorEvents
         }
     }
 
-    [RegisterEvent]
+    [RegisterEvent(1001)]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (@event.TriggeredByIntro)
@@ -61,7 +61,6 @@ public static class ImitatorEvents
 
         var player = @event.Player;
 
-        // Should make a converted imitator into whatever role they become after the next meeting starts
         if (player.HasModifier<ImitatorCacheModifier>() && !@event.NewRole.IsCrewmate())
         {
             player.RemoveModifier<ImitatorCacheModifier>();

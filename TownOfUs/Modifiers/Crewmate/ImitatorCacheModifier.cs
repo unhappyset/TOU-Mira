@@ -48,7 +48,7 @@ public sealed class ImitatorCacheModifier : BaseModifier, ICachedRole
 
     public override void OnMeetingStart()
     {
-        if (!Player.Data.Role.IsCrewmate())
+        if (!Player.IsCrewmate())
         {
             ModifierComponent?.RemoveModifier(this);
             return;
@@ -165,6 +165,12 @@ public sealed class ImitatorCacheModifier : BaseModifier, ICachedRole
 
     public void UpdateRole()
     {
+        if (!Player.IsCrewmate())
+        {
+            ModifierComponent?.RemoveModifier(this);
+            return;
+        }
+        
         if (!ChangedSelectedPlayer)
         {
             return;
