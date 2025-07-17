@@ -470,6 +470,7 @@ public static class HudManagerPatches
                 if (SnitchRole.SnitchVisibilityFlag(player))
                 {
                     playerColor = TownOfUsColors.Impostor;
+                    playerName = $"{playerColor.ToTextColor()}{playerName}</color>";
                 }
 
                 if (player?.Data?.Disconnected == true)
@@ -635,6 +636,7 @@ public static class HudManagerPatches
                 if (SnitchRole.SnitchVisibilityFlag(player))
                 {
                     playerColor = TownOfUsColors.Impostor;
+                    playerName = $"{playerColor.ToTextColor()}{playerName}</color>";
                 }
 
                 if (!string.IsNullOrEmpty(roleName))

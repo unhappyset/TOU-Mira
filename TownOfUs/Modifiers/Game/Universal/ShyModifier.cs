@@ -132,7 +132,7 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
         {
             SetVisibility(Player, 1f, true);
         }
-        else if (Player.HasDied() || Player.GetAppearanceType() == TownOfUsAppearances.Morph)
+        else if (Player.HasDied() || Player.GetAppearanceType() == TownOfUsAppearances.Morph || Player.GetAppearanceType() == TownOfUsAppearances.Mimic)
         {
             SetVisibility(Player, 1f);
         }
