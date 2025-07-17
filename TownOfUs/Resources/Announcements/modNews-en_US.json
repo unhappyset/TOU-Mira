@@ -158,6 +158,7 @@
         "\n- Bombs no longer trigger within meetings",
         "\n- Bombs will appear for teammates correctly",
         "\n- Miner vents are fixed in Weapons (Polus) and can no longer be placed inside of doors",
+        "\n- Morphling Sample has no cooldown anymore",
         "\n\n\r<size=105%>Modifier Bugfixes:</size>",
         "\n- Lover death checks run on the host, removing the need for two separate death checks.",
         "\n- If a Scavenger has a lover, they will no longer target them.",

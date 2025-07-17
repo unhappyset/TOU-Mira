@@ -80,7 +80,7 @@ public sealed class TransporterTransportButton : TownOfUsRoleButton<TransporterR
                         {
                             return;
                         }
-                        TransporterRole.RpcTransport(PlayerControl.LocalPlayer, plr.PlayerId, plr2!.PlayerId);
+                        TransporterRole.RpcTransport(PlayerControl.LocalPlayer, plr.PlayerId, plr2.PlayerId);
                     }
                 );
                 foreach (var panel in player2Menu.potentialVictims)
