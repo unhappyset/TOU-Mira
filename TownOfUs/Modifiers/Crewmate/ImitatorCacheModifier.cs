@@ -2,6 +2,7 @@ using AmongUs.GameOptions;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using Reactor.Utilities;
 using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
@@ -50,6 +51,7 @@ public sealed class ImitatorCacheModifier : BaseModifier, ICachedRole
     {
         if (!Player.IsCrewmate())
         {
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Removed Imitator Cache Modifier On Meeting Start");
             ModifierComponent?.RemoveModifier(this);
             return;
         }
@@ -167,6 +169,7 @@ public sealed class ImitatorCacheModifier : BaseModifier, ICachedRole
     {
         if (!Player.IsCrewmate())
         {
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Removed Imitator Cache Modifier On Attempt To Update Role");
             ModifierComponent?.RemoveModifier(this);
             return;
         }

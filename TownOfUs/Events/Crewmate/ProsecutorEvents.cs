@@ -62,31 +62,30 @@ public static class ProsecutorEvents
 
         foreach (var pros in CustomRoleUtils.GetActiveRolesOfType<ProsecutorRole>())
         {
-            pros.Cleanup();
-            if (pros.HasProsecuted && player.TryGetModifier<DeathHandlerModifier>(out var deathHandler) && !deathHandler.LockInfo)
+            if (PlayerControl.LocalPlayer.IsHost() && pros.HasProsecuted && player.TryGetModifier<DeathHandlerModifier>(out var deathHandler) && !deathHandler.LockInfo)
             {
-                deathHandler.CauseOfDeath = "Prosecuted";
-                deathHandler.KilledBy = $"By {pros.Player.Data.PlayerName}";
-                deathHandler.DiedThisRound = false;
-                deathHandler.RoundOfDeath = DeathEventHandlers.CurrentRound;
-                deathHandler.LockInfo = true;
+                DeathHandlerModifier.RpcUpdateDeathHandler(player, "Prosecuted", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {pros.Player.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
             }
 
             if (pros.Player.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
             {
+                pros.Cleanup();
                 return;
             }
 
             if (player.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished)
             {
+                pros.Cleanup();
                 return;
             }
 
             if (pros.HasProsecuted && player.IsCrewmate())
             {
+                pros.Cleanup();
                 if (OptionGroupSingleton<ProsecutorOptions>.Instance.ExileOnCrewmate)
                 {
                     pros.Player.Exiled();
+                    if (PlayerControl.LocalPlayer.IsHost()) DeathHandlerModifier.RpcUpdateDeathHandler(pros.Player, "Punished", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
                 }
                 else
                 {
