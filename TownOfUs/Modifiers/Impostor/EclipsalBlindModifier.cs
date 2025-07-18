@@ -90,7 +90,7 @@ public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifi
         {
             var visible = true;
 
-            if (Player.HasModifier<ConcealedModifier>() || !Player.Visible ||
+            if (Player.GetModifiers<ConcealedModifier>().Any(x => !x.VisibleToOthers) || !Player.Visible ||
                 (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive) ||
                 Player.inVent)
             {

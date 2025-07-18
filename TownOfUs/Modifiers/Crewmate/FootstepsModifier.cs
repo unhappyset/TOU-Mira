@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Utilities;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Patches;
@@ -14,7 +16,7 @@ namespace TownOfUs.Modifiers.Crewmate;
 public sealed class FootstepsModifier : BaseModifier
 {
     public Dictionary<GameObject, SpriteRenderer>? _currentSteps;
-    public Color _footstepColor;
+    public bool AnonymousPrints;
     private float _footstepInterval;
     public override string ModifierName => "Footsteps";
     public override bool HideOnUi => true;
@@ -23,9 +25,7 @@ public sealed class FootstepsModifier : BaseModifier
     {
         _currentSteps = [];
 
-        _footstepColor = OptionGroupSingleton<InvestigatorOptions>.Instance.ShowAnonymousFootprints
-            ? new Color(0.2f, 0.2f, 0.2f, 1f)
-            : Palette.PlayerColors[Player.CurrentOutfit.ColorId];
+        AnonymousPrints = OptionGroupSingleton<InvestigatorOptions>.Instance.ShowAnonymousFootprints;
     }
 
     public override void OnDeactivate()
@@ -41,9 +41,10 @@ public sealed class FootstepsModifier : BaseModifier
 
     public override void FixedUpdate()
     {
-        if (_currentSteps == null || Player.HasModifier<ConcealedModifier>() ||
-            (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive) ||
-            _footstepInterval <
+        if (_currentSteps == null || Player.AmOwner ||
+            PlayerControl.LocalPlayer.GetModifiers<HypnotisedModifier>().Any(x => x.HysteriaActive) ||
+            Player.GetModifiers<ConcealedModifier>().Any(x => !x.VisibleToOthers) ||
+            (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive) || _footstepInterval <
             OptionGroupSingleton<InvestigatorOptions>.Instance.FootprintInterval)
         {
             _footstepInterval += Time.fixedDeltaTime;
@@ -76,7 +77,9 @@ public sealed class FootstepsModifier : BaseModifier
 
         var sprite = footstep.AddComponent<SpriteRenderer>();
         sprite.sprite = TouAssets.FootprintSprite.LoadAsset();
-        sprite.color = HudManagerPatches.CommsSaboActive() ? new Color(0.2f, 0.2f, 0.2f, 1f) : _footstepColor;
+        sprite.color = (AnonymousPrints || HudManagerPatches.CommsSaboActive())
+            ? new Color(0.2f, 0.2f, 0.2f, 1f)
+            : Player.cosmetics.currentBodySprite.BodySprite.material.GetColor(ShaderID.BodyColor);
         footstep.layer = LayerMask.NameToLayer("Players");
 
         footstep.transform.localScale *= new Vector2(1.2f, 1f) *

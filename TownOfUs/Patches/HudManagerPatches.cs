@@ -291,7 +291,7 @@ public static class HudManagerPatches
 
         if (isActive)
         {
-            if (!CamouflageFootsteps)
+            /*if (!CamouflageFootsteps)
             {
                 foreach (var steps in ModifierUtils.GetActiveModifiers<FootstepsModifier>()
                              .Select(mod => mod._currentSteps))
@@ -303,15 +303,15 @@ public static class HudManagerPatches
                 }
             }
 
+            CamouflageFootsteps = true;*/
             CamouflageCommsEnabled = true;
-            CamouflageFootsteps = true;
 
             FakePlayer.FakePlayers.Do(x => x.Camo());
 
             return;
         }
 
-        if (CamouflageFootsteps)
+        /*if (CamouflageFootsteps)
         {
             CamouflageFootsteps = false;
 
@@ -324,7 +324,7 @@ public static class HudManagerPatches
                             x.Value.color.a));
                 }
             }
-        }
+        }*/
 
         if (CamouflageCommsEnabled)
         {

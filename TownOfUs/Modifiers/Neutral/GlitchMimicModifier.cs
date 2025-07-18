@@ -14,6 +14,7 @@ public sealed class GlitchMimicModifier(PlayerControl target) : ConcealedModifie
     public override string ModifierName => "Mimic";
     public override bool HideOnUi => true;
     public override bool AutoStart => true;
+    public override bool VisibleToOthers => true;
     public bool VisualPriority => true;
 
     public VisualAppearance GetVisualAppearance()
