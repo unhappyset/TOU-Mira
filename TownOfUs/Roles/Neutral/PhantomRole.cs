@@ -77,7 +77,7 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
 
             Faded = false;
 
-            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Message($"PhantomTouRole.FadeUpdate UnFaded");
+            // if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Message($"PhantomTouRole.FadeUpdate UnFaded");
         }
     }
 

@@ -1,14 +1,17 @@
-﻿using AmongUs.GameOptions;
+﻿using System.Collections;
+using AmongUs.GameOptions;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Usables;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using Reactor.Utilities;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TownOfUs.Events;
 
@@ -97,6 +100,12 @@ public static class GhostRoleEvents
             }
         }
 
+        Coroutines.Start(SpawnCoroutine());
+    }
+
+    private static IEnumerator SpawnCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
         foreach (var ghost in CustomRoleUtils.GetActiveRoles().OfType<IGhostRole>())
         {
             if (ghost.Caught)
