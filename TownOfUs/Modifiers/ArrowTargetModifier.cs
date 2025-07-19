@@ -56,5 +56,11 @@ public abstract class ArrowTargetModifier(PlayerControl owner, Color color, floa
 
             _time = DateTime.UtcNow;
         }
+
+        if (Player == null)
+        {
+            ModifierComponent!.RemoveModifier(this);
+            return;       
+        }
     }
 }
