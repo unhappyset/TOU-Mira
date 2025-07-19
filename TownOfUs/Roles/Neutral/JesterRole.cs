@@ -5,13 +5,11 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
-using Reactor.Networking.Attributes;
-using Reactor.Utilities;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
-using TownOfUs.Patches;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -22,13 +20,14 @@ public sealed class JesterRole(IntPtr cppPtr)
     : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public bool Voted { get; set; }
+    public bool AboutToWin { get; set; }
     public bool SentWinMsg { get; set; }
 
     [HideFromIl2Cpp] public List<byte> Voters { get; } = [];
 
-    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SwapperRole>());
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<PlumberRole>());
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => "Jester";
+    public string RoleName => TouLocale.Get(TouNames.Jester, "Jester");
     public string RoleDescription => "Get voted out!";
     public string RoleLongDescription => "Be as suspicious as possible, and get voted out!";
     public Color RoleColor => TownOfUsColors.Jester;
@@ -66,7 +65,7 @@ public sealed class JesterRole(IntPtr cppPtr)
 
     public string GetAdvancedDescription()
     {
-        return "The Jester is a Neutral Evil role that wins by getting themselves ejected." +
+        return $"The {RoleName} is a Neutral Evil role that wins by getting themselves ejected." +
                MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -107,33 +106,6 @@ public sealed class JesterRole(IntPtr cppPtr)
         }
     }
 
-    public override void OnDeath(DeathReason reason)
-    {
-        RoleBehaviourStubs.OnDeath(this, reason);
-
-        if (reason == DeathReason.Exile)
-        {
-            RpcJesterWin(Player);
-        }
-
-        //Logger<TownOfUsPlugin>.Error($"JesterRole.OnDeath - Voted: {Voted}");
-    }
-
-    public override void OnVotingComplete()
-    {
-        RoleBehaviourStubs.OnVotingComplete(this);
-
-        Voters.Clear();
-
-        foreach (var state in MeetingHudGetVotesPatch.States)
-        {
-            if (state.VotedForId == Player.PlayerId)
-            {
-                Voters.Add(state.VoterId);
-            }
-        }
-    }
-
     public override bool CanUse(IUsable usable)
     {
         if (!GameManager.Instance.LogicUsables.CanUse(usable, Player))
@@ -151,18 +123,5 @@ public sealed class JesterRole(IntPtr cppPtr)
 
         return Voted ||
                GameHistory.DeathHistory.Exists(x => x.Item1 == Player.PlayerId && x.Item2 == DeathReason.Exile);
-    }
-
-    [MethodRpc((uint)TownOfUsRpc.JesterWin, SendImmediately = true)]
-    public static void RpcJesterWin(PlayerControl player)
-    {
-        if (player.Data.Role is not JesterRole)
-        {
-            Logger<TownOfUsPlugin>.Error("RpcJesterWin - Invalid Jester");
-            return;
-        }
-
-        var jester = player.GetRole<JesterRole>();
-        jester!.Voted = true;
     }
 }

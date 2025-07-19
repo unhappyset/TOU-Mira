@@ -10,7 +10,8 @@ public sealed class EscapistMarkButton : TownOfUsRoleButton<EscapistRole>, IAfte
     public override string Name => "Mark Location";
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
-    public override float Cooldown => 0;
+    public override float Cooldown => 0.001f;
+    public override float InitialCooldown => 0.001f;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.MarkSprite;
 
     public override bool Enabled(RoleBehaviour? role)
@@ -29,6 +30,7 @@ public sealed class EscapistMarkButton : TownOfUsRoleButton<EscapistRole>, IAfte
 
         // TouAudio.PlaySound(TouAudio.EscapistMarkSound);
         CustomButtonSingleton<EscapistRecallButton>.Instance.SetActive(true, Role);
+        CustomButtonSingleton<EscapistRecallButton>.Instance.ResetCooldownAndOrEffect();
         SetActive(false, Role);
     }
 }

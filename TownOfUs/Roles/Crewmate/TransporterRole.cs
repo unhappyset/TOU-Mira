@@ -17,6 +17,7 @@ using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Roles.Neutral;
@@ -29,7 +30,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => "Transporter";
+    public string RoleName => TouLocale.Get(TouNames.Transporter, "Transporter");
     public string RoleDescription => "Choose Two Players To Swap Locations";
     public string RoleLongDescription => "Choose two players to swap locations with one another";
     public Color RoleColor => TownOfUsColors.Transporter;
@@ -51,7 +52,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     public string GetAdvancedDescription()
     {
         return
-            "The Transporter is a Crewmate Support role that can transport two players, dead or alive, to swap their locations."
+            $"The {RoleName} is a Crewmate Support role that can transport two players, dead or alive, to swap their locations."
             + MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -254,7 +255,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
         }
 
-        if (play1.AmOwner || play2.AmOwner)
+        if (play1.AmOwner && t1 is PlayerControl || play2.AmOwner && t2 is PlayerControl)
         {
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.Transporter.ToTextColor()}You were transported!</color></b>", Color.white,
@@ -262,6 +263,12 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 
             notif1.Text.SetOutlineThickness(0.35f);
             notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            
+            if (Minigame.Instance != null)
+            {
+                Minigame.Instance.Close();
+                Minigame.Instance.Close();
+            }
         }
 
         MonoBehaviour? GetTarget(byte id)
@@ -410,23 +417,10 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         {
             cnt.SnapTo(position, (ushort)(cnt.lastSequenceId + 1));
 
-            if (cnt.AmOwner)
+            if (cnt.AmOwner && ModCompatibility.IsSubmerged())
             {
-                try
-                {
-                    Minigame.Instance.Close();
-                    Minigame.Instance.Close();
-                }
-                catch
-                {
-                    //ignore
-                }
-
-                if (ModCompatibility.IsSubmerged())
-                {
-                    ModCompatibility.ChangeFloor(cnt.myPlayer.GetTruePosition().y > -7);
-                    ModCompatibility.CheckOutOfBoundsElevator(cnt.myPlayer);
-                }
+                ModCompatibility.ChangeFloor(cnt.myPlayer.GetTruePosition().y > -7);
+                ModCompatibility.CheckOutOfBoundsElevator(cnt.myPlayer);
             }
         }
         else

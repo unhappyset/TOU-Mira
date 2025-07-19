@@ -1,6 +1,5 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using MiraAPI.Utilities.Assets;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Utilities;
@@ -8,29 +7,15 @@ using UnityEngine;
 
 namespace TownOfUs.Modifiers.Game.Impostor;
 
-public sealed class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
+public sealed class ImpostorDoubleShotModifier : DoubleShotModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Double Shot";
-    public override string IntroInfo => "You also get a second chance when guessing.";
-
-    public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.DoubleShot;
-    public override ModifierFaction FactionType => ModifierFaction.KillerUtility;
-
-    public bool Used { get; set; }
-
-    public string GetAdvancedDescription()
-    {
-        return
-            "You get a second chance when you fail to shoot.";
-    }
-
-    public List<CustomButtonWikiDescription> Abilities { get; } = [];
-
-    public override string GetDescription()
-    {
-        return "You have an extra chance when assassinating";
-    }
-
+    public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
+    
+    public override bool ShowInFreeplay => true;
+    public bool IsHiddenFromList => true;
+    // YES this is scuffed, a better solution will be used at a later time
+    public uint FakeTypeId => ModifierManager.GetModifierTypeId(ModifierManager.Modifiers.FirstOrDefault(x => x.ModifierName == "Double Shot")!.GetType()) ?? throw new InvalidOperationException("Modifier is not registered.");
     public override int GetAssignmentChance()
     {
         return (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.DoubleShotChance;

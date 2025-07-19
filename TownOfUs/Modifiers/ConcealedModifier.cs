@@ -12,6 +12,7 @@ public abstract class ConcealedModifier : TimedModifier
     public override float Duration => 1f;
     public override bool AutoStart => false;
     public override bool HideOnUi => true;
+    public virtual bool VisibleToOthers { get; set; }
 
     public override string GetDescription()
     {

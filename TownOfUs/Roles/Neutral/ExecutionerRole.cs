@@ -28,6 +28,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
 {
     public PlayerControl? Target { get; set; }
     public bool TargetVoted { get; set; }
+    public bool AboutToWin { get; set; }
 
     [HideFromIl2Cpp] public List<byte> Voters { get; set; } = [];
 
@@ -174,22 +175,6 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
         return TargetVoted;
     }
 
-    public override void OnVotingComplete()
-    {
-        RoleBehaviourStubs.OnVotingComplete(this);
-
-        Voters.Clear();
-
-        // BUG: The host vote isn't included if they vote for the target
-        foreach (var voteArea in MeetingHud.Instance.playerStates)
-        {
-            if (voteArea.VotedFor == Target?.PlayerId)
-            {
-                Voters.Add(voteArea.TargetPlayerId);
-            }
-        }
-    }
-
     private string TargetString()
     {
         if (!Target)
@@ -200,23 +185,9 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
         return $"Get {Target?.Data.PlayerName} voted out to win.";
     }
 
-    public void CheckTargetEjection(PlayerControl exiled)
-    {
-        if (Player.HasDied())
-        {
-            return;
-        }
-
-        if (Player.AmOwner && Target != null && exiled == Target)
-            // Logger<TownOfUsPlugin>.Error($"CheckTargetEjection - exiled: {exiled.Data.PlayerName}");
-        {
-            RpcExecutionerWin(Player);
-        }
-    }
-
     public void CheckTargetDeath(PlayerControl? victim)
     {
-        if (Player.HasDied())
+        if (Player.HasDied() || AboutToWin || TargetVoted)
         {
             return;
         }
@@ -271,18 +242,5 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
         role.Target = target;
 
         target.AddModifier<ExecutionerTargetModifier>(player.PlayerId);
-    }
-
-    [MethodRpc((uint)TownOfUsRpc.ExecutionerWin, SendImmediately = true)]
-    public static void RpcExecutionerWin(PlayerControl player)
-    {
-        if (player.Data.Role is not ExecutionerRole)
-        {
-            Logger<TownOfUsPlugin>.Error("RpcExecutionerWin - Invalid Executioner");
-            return;
-        }
-
-        var exe = player.GetRole<ExecutionerRole>();
-        exe!.TargetVoted = true;
     }
 }

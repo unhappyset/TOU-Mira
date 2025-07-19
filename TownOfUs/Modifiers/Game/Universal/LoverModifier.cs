@@ -28,6 +28,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
     public override string Symbol => "♥";
     public override string IntroInfo => LoverString();
     public override float IntroSize => 3f;
+    public override Color FreeplayFileColor => new Color32(220, 220, 220, 255);
 
     public override bool DoesTasks =>
         (OtherLover == null || OtherLover.IsCrewmate()) &&
@@ -53,15 +54,16 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
         }
 
         Random rnd = new();
-        var chance = rnd.Next(0, 100);
+        var chance = rnd.Next(1, 101);
 
         if (chance <= (int)OptionGroupSingleton<AllianceModifierOptions>.Instance.LoversChance)
         {
-            var impTargetPercent = (int)OptionGroupSingleton<LoversOptions>.Instance.LovingImpPercent;
+            var loveOpt = OptionGroupSingleton<LoversOptions>.Instance;
+            var impTargetPercent = (int)loveOpt.LovingImpPercent;
 
             var players = PlayerControl.AllPlayerControls.ToArray()
                 .Where(x => !x.HasDied() && !x.HasModifier<ExecutionerTargetModifier>() &&
-                            x.Data.Role is not InquisitorRole).ToList();
+                            x.Data.Role is not InquisitorRole && (loveOpt.NeutralLovers || !x.IsNeutral())).ToList();
             players.Shuffle();
 
             Random rndIndex1 = new();
@@ -74,13 +76,13 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
             foreach (var player in players.SelectMany(_ => players))
             {
                 if (player.IsImpostor() || (player.Is(RoleAlignment.NeutralKilling) &&
-                                            OptionGroupSingleton<LoversOptions>.Instance.NeutralLovers))
+                                            loveOpt.NeutralLovers))
                 {
                     impostors.Add(player);
                 }
                 else if (player.Is(ModdedRoleTeams.Crewmate) ||
                          ((player.Is(RoleAlignment.NeutralBenign) || player.Is(RoleAlignment.NeutralEvil)) &&
-                          OptionGroupSingleton<LoversOptions>.Instance.NeutralLovers))
+                          loveOpt.NeutralLovers))
                 {
                     crewmates.Add(player);
                 }
@@ -92,7 +94,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
                 return;
             }
 
-            if (randomLover.IsImpostor() && !OptionGroupSingleton<LoversOptions>.Instance.ImpLovers)
+            if (randomLover.IsImpostor())
             {
                 impostors = impostors.Where(player => !player.IsImpostor()).ToList();
                 players = players.Where(player => !player.IsImpostor()).ToList();
@@ -188,7 +190,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
             }
         }
 
-        if (localPlr.IsImpostor() && !OptionGroupSingleton<LoversOptions>.Instance.ImpLovers)
+        if (localPlr.IsImpostor())
         {
             impostors = impostors.Where(player => !player.IsImpostor()).ToList();
             players = players.Where(player => !player.IsImpostor()).ToList();
@@ -197,9 +199,9 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
         if (impTargetPercent > 0f && impostors.Count != 0)
         {
             Random rnd = new();
-            var chance2 = rnd.Next(0, 100);
+            var chance2 = rnd.Next(1, 101);
 
-            if (chance2 < impTargetPercent)
+            if (chance2 <= impTargetPercent)
             {
                 players = impostors;
             }

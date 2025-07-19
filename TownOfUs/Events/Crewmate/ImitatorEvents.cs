@@ -1,7 +1,7 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
-using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Modifiers;
+using Reactor.Utilities;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Utilities;
@@ -10,24 +10,7 @@ namespace TownOfUs.Events.Crewmate;
 
 public static class ImitatorEvents
 {
-    [RegisterEvent]
-    public static void MeetingHandler(StartMeetingEvent @event)
-    {
-        var imitators = ModifierUtils.GetActiveModifiers<ImitatorCacheModifier>().ToArray();
-
-        if (imitators.Length == 0)
-        {
-            return;
-        }
-
-        // This makes converted imitators not be imitators anymore
-        foreach (var mod in imitators.Where(x => !x.Player.IsCrewmate()))
-        {
-            mod.ModifierComponent?.RemoveModifier(mod);
-        }
-    }
-
-    [RegisterEvent]
+    [RegisterEvent(1001)]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (@event.TriggeredByIntro)
@@ -61,17 +44,10 @@ public static class ImitatorEvents
 
         var player = @event.Player;
 
-        // Should make a converted imitator into whatever role they become after the next meeting starts
-        if (player.TryGetModifier<ImitatorCacheModifier>(out var imi))
+        if (player.HasModifier<ImitatorCacheModifier>() && !@event.NewRole.IsCrewmate())
         {
-            if (!@event.NewRole.IsCrewmate())
-            {
-                player.RemoveModifier<ImitatorCacheModifier>();
-            }
-            else
-            {
-                imi.OldRole = @event.NewRole;
-            }
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Removed Imitator Cache Modifier On Role Change");
+            player.RemoveModifier<ImitatorCacheModifier>();
         }
     }
 }

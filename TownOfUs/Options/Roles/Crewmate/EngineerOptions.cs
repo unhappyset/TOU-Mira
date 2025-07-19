@@ -2,13 +2,14 @@
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Roles.Crewmate;
 
 namespace TownOfUs.Options.Roles.Crewmate;
 
 public sealed class EngineerOptions : AbstractOptionGroup<EngineerTouRole>
 {
-    public override string GroupName => "Engineer";
+    public override string GroupName => TouLocale.Get(TouNames.Engineer, "Engineer");
 
     [ModdedNumberOption("Vent Uses Per Game", 0f, 30f, 5f, MiraNumberSuffixes.None, "0", true)]
     public float MaxVents { get; set; } = 0f;

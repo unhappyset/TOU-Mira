@@ -23,6 +23,7 @@ public sealed class SatelliteModifier : UniversalGameModifier, IWikiDiscoverable
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Satellite;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalUtility;
+    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
     public int Priority { get; set; } = 5;
 
     public string GetAdvancedDescription()

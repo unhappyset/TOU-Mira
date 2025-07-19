@@ -17,6 +17,7 @@ public sealed class InvestigatorModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Investigator";
     public override string IntroInfo => "You will also see everyone's footprints for some time.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Investigator;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 
     public override ModifierFaction FactionType => ModifierFaction.CrewmateUtility;
 
@@ -61,6 +62,17 @@ public sealed class InvestigatorModifier : TouGameModifier, IWikiDiscoverable
     }
 
     public override void OnDeactivate()
+    {
+        if (!Player.AmOwner)
+        {
+            return;
+        }
+
+        PlayerControl.AllPlayerControls.ToArray().Where(plr => plr.HasModifier<FootstepsModifier>())
+            .ToList().ForEach(plr => plr.GetModifierComponent().RemoveModifier<FootstepsModifier>());
+    }
+
+    public override void OnDeath(DeathReason reason)
     {
         if (!Player.AmOwner)
         {

@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
-using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
@@ -15,35 +15,30 @@ namespace TownOfUs.Events.Modifiers;
 
 public static class LoverEvents
 {
-    [RegisterEvent]
-    public static void AfterMurderEventHandler(AfterMurderEvent @event)
+    [RegisterEvent(400)]
+    public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
-        if (!@event.Target.TryGetModifier<LoverModifier>(out var loveMod) || !PlayerControl.LocalPlayer.IsHost() ||
-            loveMod.OtherLover == null || loveMod.OtherLover.HasDied() ||
-            loveMod.OtherLover.HasModifier<InvulnerabilityModifier>())
+        if (!PlayerControl.LocalPlayer.IsHost())
         {
             return;
         }
-
-        if (OptionGroupSingleton<LoversOptions>.Instance.BothLoversDie)
-        {
-            loveMod.OtherLover.RpcCustomMurder(loveMod.OtherLover);
-        }
-    }
-
-    [RegisterEvent]
-    public static void EjectionEventHandler(EjectionEvent @event)
-    {
-        var exiled = @event.ExileController?.initData?.networkedPlayer?.Object;
-        if (exiled == null || !exiled.TryGetModifier<LoverModifier>(out var loveMod))
+        if (@event.Player == null || !@event.Player.TryGetModifier<LoverModifier>(out var loveMod)
+            || !OptionGroupSingleton<LoversOptions>.Instance.BothLoversDie || loveMod.OtherLover == null
+            || loveMod.OtherLover.HasDied() || loveMod.OtherLover.HasModifier<InvulnerabilityModifier>())
         {
             return;
         }
-
-        if (OptionGroupSingleton<LoversOptions>.Instance.BothLoversDie && loveMod.OtherLover != null &&
-            !loveMod.OtherLover.HasDied() && !loveMod.OtherLover.HasModifier<InvulnerabilityModifier>())
+        switch (@event.DeathReason)
         {
-            loveMod.OtherLover.Exiled();
+            case DeathReason.Exile:
+                loveMod.OtherLover.RpcPlayerExile();
+                DeathHandlerModifier.RpcUpdateDeathHandler(loveMod.OtherLover, "Heartbroken", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+                break;
+            case DeathReason.Kill:
+                loveMod.OtherLover.RpcCustomMurder(loveMod.OtherLover);
+                DeathHandlerModifier.RpcUpdateDeathHandler(loveMod.OtherLover, "Heartbroken", DeathEventHandlers.CurrentRound,
+                    (!MeetingHud.Instance && !ExileController.Instance) ? DeathHandlerOverride.SetTrue : DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+                break;
         }
     }
 

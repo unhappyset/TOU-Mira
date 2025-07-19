@@ -1,5 +1,6 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Utilities;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Options;
 using UnityEngine;
@@ -104,6 +105,12 @@ public static class AppearanceExtensions
         {
             PlayerMaterial.SetColors((Color)appearance.PlayerMaterialColor,
                 player.cosmetics.currentBodySprite.BodySprite);
+        }
+        
+        if (appearance.PlayerMaterialVisorColor != null)
+        {
+            player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, 
+                (Color)appearance.PlayerMaterialVisorColor);
         }
 
         if (appearance.NameColor != null)

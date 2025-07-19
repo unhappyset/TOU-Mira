@@ -11,6 +11,8 @@ using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Events;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
@@ -371,18 +373,51 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             {
                 if (opts.DoomsayerKillOnlyLast)
                 {
-                    Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false);
+                    if (victim.TryGetModifier<OracleBlessedModifier>(out var oracleMod))
+                    {
+                        OracleRole.RpcOracleBlessNotify(oracleMod.Oracle, PlayerControl.LocalPlayer, victim);
+                    }
+                    else
+                    {
+                        Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false,
+                            playKillSound: false);
+                        DeathHandlerModifier.RpcUpdateDeathHandler(victim, "Doomed", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {Player.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
+                    }
+
                 }
                 else
                 {
-                    AllVictims.Do(victim =>
-                        Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false));
+                    foreach (var victim2 in AllVictims)
+                    {
+                        if (victim2.TryGetModifier<OracleBlessedModifier>(out var oracleMod))
+                        {
+                            OracleRole.RpcOracleBlessNotify(oracleMod.Oracle, PlayerControl.LocalPlayer, victim2);
+                        }
+                        else
+                        {
+                            Player.RpcCustomMurder(victim2, createDeadBody: false, teleportMurderer: false,
+                                showKillAnim: false,
+                                playKillSound: false);
+                            DeathHandlerModifier.RpcUpdateDeathHandler(victim2, "Doomed", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {Player.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
+                        }
+                    }
                 }
             }
             else
             {
+                if (victim.TryGetModifier<OracleBlessedModifier>(out var oracleMod))
+                {
+                    OracleRole.RpcOracleBlessNotify(oracleMod.Oracle, PlayerControl.LocalPlayer, victim);
+
+                    MeetingMenu.Instances.Do(x => x.HideSingle(victim.PlayerId));
+
+                    shapeMenu.Close();
+
+                    return;
+                }
                 // no incorrect guesses so this should be the target not the Doomsayer
-                Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false);
+                Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false,
+                    playKillSound: false);
             }
 
             if (opts.DoomsayerGuessAllAtOnce || NumberOfGuesses == (int)opts.DoomsayerGuessesToWin)
@@ -406,9 +441,15 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
     private static bool IsRoleValid(RoleBehaviour role)
     {
         var unguessableRole = role as IUnguessable;
+        var touRole = role as ITownOfUsRole;
         if (role.IsDead || role is IGhostRole || (unguessableRole != null && !unguessableRole.IsGuessable))
         {
             return false;
+        }
+        
+        if (touRole?.RoleAlignment == RoleAlignment.CrewmateInvestigative)
+        {
+            return OptionGroupSingleton<DoomsayerOptions>.Instance.DoomGuessInvest;
         }
 
         return true;

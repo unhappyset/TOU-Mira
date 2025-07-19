@@ -22,6 +22,7 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
 
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Disperser;
     public override ModifierFaction FactionType => ModifierFaction.ImpostorUtility;
+    public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
 
     public string GetAdvancedDescription()
     {

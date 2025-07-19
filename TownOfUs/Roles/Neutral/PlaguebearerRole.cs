@@ -137,7 +137,7 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
         yield return new WaitForSeconds(0.01f);
 
         Random rnd = new();
-        var chance = rnd.Next(0, 100);
+        var chance = rnd.Next(1, 101);
 
         if (chance <= OptionGroupSingleton<PlaguebearerOptions>.Instance.PestChance)
         {

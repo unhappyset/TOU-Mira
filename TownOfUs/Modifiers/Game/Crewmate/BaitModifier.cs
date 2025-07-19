@@ -16,6 +16,7 @@ public sealed class BaitModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Bait";
     public override string IntroInfo => "You will also force your killer to report your body.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Bait;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
 

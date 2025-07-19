@@ -20,6 +20,8 @@ public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifi
     public override bool AutoStart => true;
     public PlayerControl Eclipsal => player;
     public GameObject? EclipseBack { get; set; }
+    public override bool CanUseAbilities => true;
+    public override bool CanReport => true;
 
     public float VisionPerc { get; set; } = 1f;
 
@@ -88,7 +90,7 @@ public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifi
         {
             var visible = true;
 
-            if (Player.HasModifier<ConcealedModifier>() || !Player.Visible ||
+            if (Player.GetModifiers<ConcealedModifier>().Any(x => !x.VisibleToOthers) || !Player.Visible ||
                 (Player.TryGetModifier<DisabledModifier>(out var mod) && !mod.IsConsideredAlive) ||
                 Player.inVent)
             {

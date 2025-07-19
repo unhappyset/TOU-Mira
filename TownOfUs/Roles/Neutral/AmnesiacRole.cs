@@ -11,11 +11,11 @@ using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Events.TouEvents;
-using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modifiers.Game.Neutral;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
@@ -29,7 +29,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MysticRole>());
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => "Amnesiac";
+    public string RoleName => TouLocale.Get(TouNames.Amnesiac, "Amnesiac");
     public string RoleDescription => "Remember A Role Of A Deceased Player";
     public string RoleLongDescription => "Find a dead body to remember and become their role";
     public Color RoleColor => TownOfUsColors.Amnesiac;
@@ -52,7 +52,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            "The Amnesiac is a Neutral Benign role that gains access to a new role from remembering a dead body’s role. Use the role you remember to win the game." +
+            $"The {RoleName} is a Neutral Benign role that gains access to a new role from remembering a dead body’s role. Use the role you remember to win the game." +
             MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -111,6 +111,10 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
         player.ChangeRole((ushort)roleWhenAlive.Role);
         if (player.Data.Role is InquisitorRole inquis)
         {
+            if (player.HasModifier<InquisitorHereticModifier>())
+            {
+                player.RemoveModifier<InquisitorHereticModifier>();
+            }
             inquis.Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().ToList();
             inquis.TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select(x => x.TargetRole)
                 .OrderBy(x => x.NiceName).ToList();
@@ -118,7 +122,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
 
         if (player.Data.Role is MayorRole mayor)
         {
-            mayor.Revealed = true;
+            mayor.Revealed = false;
         }
 
         if (player.AmOwner)
@@ -129,18 +133,8 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             notif1.Text.SetOutlineThickness(0.35f);
         }
 
-        if (target.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnImpAssassin)
-        {
-            player.AddModifier<ImpostorAssassinModifier>();
-        }
-        else if (target.IsNeutral() && target.Is(RoleAlignment.NeutralKilling) &&
-                 OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnNeutAssassin)
-        {
-            player.AddModifier<NeutralKillerAssassinModifier>();
-        }
-
-        if (target.Data.Role is not VampireRole && target.Data.Role.MaxCount <= PlayerControl.AllPlayerControls
-                .ToArray().Count(x => x.Data.Role.Role == target.Data.Role.Role))
+        if (roleWhenAlive is not VampireRole && (roleWhenAlive.MaxCount <= 1 || (roleWhenAlive.MaxCount <= PlayerControl.AllPlayerControls
+                .ToArray().Count(x => x.Data.Role.Role == roleWhenAlive.Role))))
         {
             if (target.IsCrewmate())
             {
@@ -150,7 +144,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             {
                 target.ChangeRole((ushort)RoleTypes.Impostor);
             }
-            else if (target.IsNeutral() && player.Data.Role is ITownOfUsRole touRole)
+            /*else if (target.IsNeutral() && player.Data.Role is ITownOfUsRole touRole)
             {
                 switch (touRole.RoleAlignment)
                 {
@@ -165,50 +159,24 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
                         player.AddModifier<MercenaryBribedModifier>(target)!.alerted = true;
                         break;
                 }
-            }
+            }*/
             else
             {
-                target.ChangeRole(RoleId.Get<SurvivorRole>());
+                target.ChangeRole(RoleId.Get<MercenaryRole>());
+                player.AddModifier<MercenaryBribedModifier>(target)!.alerted = true;
             }
         }
 
-        // TODO: Fix Amnesiac breaking unique roles for Amne/Imitator
-        /* if (target.Data.Role is not VampireRole && target.Data.Role.MaxCount <= PlayerControl.AllPlayerControls.ToArray().Count(x => x.Data.Role.Role == target.Data.Role.Role))
+        if (player.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnImpAssassin)
         {
-            var newRole = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SurvivorRole>());
-            if (target.IsCrewmate())
-            {
-                newRole = RoleManager.Instance.GetRole(RoleTypes.Crewmate);
-            }
-            else if (target.IsImpostor())
-            {
-                newRole = RoleManager.Instance.GetRole(RoleTypes.Impostor);
-            }
-            else if (target.IsNeutral() && player.Data.Role is ITownOfUsRole touRole)
-            {
-                switch (touRole.RoleAlignment)
-                {
-                    default:
-                        newRole = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SurvivorRole>());
-                        break;
-                    case RoleAlignment.NeutralEvil:
-                        newRole = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<JesterRole>());
-                        break;
-                    case RoleAlignment.NeutralKilling:
-                        newRole = RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MercenaryRole>());
-
-                        player.AddModifier<MercenaryBribedModifier>(target)!.alerted = true;
-                        break;
-                }
-            }
-
-            var roleBehaviour = UnityEngine.Object.Instantiate(newRole, target.Data.gameObject.transform);
-            GameHistory.RegisterRole(target, roleBehaviour);
-            target.Data.RoleWhenAlive = new Il2CppSystem.Nullable<RoleTypes>(roleBehaviour.Role);
-
-            if (target.Data.Role is NeutralGhostRole) target.ChangeRole(RoleId.Get<NeutralGhostRole>(), false);
-        } */
-
+            player.AddModifier<ImpostorAssassinModifier>();
+        }
+        else if (player.IsNeutral() && player.Is(RoleAlignment.NeutralKilling) &&
+                 OptionGroupSingleton<AssassinOptions>.Instance.AmneTurnNeutAssassin)
+        {
+            player.AddModifier<NeutralKillerAssassinModifier>();
+        }
+        
         var touAbilityEvent2 = new TouAbilityEvent(AbilityType.AmnesiacPostRemember, player, target);
         MiraEventManager.InvokeEvent(touAbilityEvent2);
     }

@@ -10,6 +10,8 @@ using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities;
+using UnityEngine;
+using Random = System.Random;
 
 namespace TownOfUs.Modifiers.Crewmate;
 
@@ -19,11 +21,18 @@ public sealed class ToBecomeTraitorModifier : ExcludedGameModifier, IAssignableT
     public override bool HideOnUi => true;
 
     public int Priority { get; set; } = 3;
+    public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
 
     public void AssignTargets()
     {
+        if (GameOptionsManager.Instance.CurrentGameOptions.RoleOptions
+            .GetNumPerGame((RoleTypes)RoleId.Get<TraitorRole>()) == 0)
+        {
+            return;
+        }
+
         Random rnd = new();
-        var chance = rnd.Next(0, 100);
+        var chance = rnd.Next(1, 101);
 
         if (chance <=
             GameOptionsManager.Instance.CurrentGameOptions.RoleOptions.GetChancePerGame(
@@ -37,13 +46,12 @@ public sealed class ToBecomeTraitorModifier : ExcludedGameModifier, IAssignableT
                             !x.HasModifier<EgotistModifier>() &&
                             x.Data.Role is not MayorRole).ToList();
 
-            Random rndIndex = new();
             if (filtered.Count == 0)
             {
                 return;
             }
 
-            var randomTarget = filtered[rndIndex.Next(0, filtered.Count)];
+            var randomTarget = filtered[rnd.Next(0, filtered.Count)];
 
             randomTarget.RpcAddModifier<ToBecomeTraitorModifier>();
         }

@@ -22,6 +22,7 @@ public sealed class GrenadierFlashModifier(PlayerControl grenadier) : DisabledMo
     public override bool HideOnUi => true;
     public override float Duration => OptionGroupSingleton<GrenadierOptions>.Instance.GrenadeDuration + 0.5f;
     public override bool AutoStart => true;
+    public override bool CanUseAbilities => true;
     public PlayerControl Grenadier => grenadier;
 
     public void Dispose()
@@ -44,7 +45,7 @@ public sealed class GrenadierFlashModifier(PlayerControl grenadier) : DisabledMo
                 spr: TouRoleIcons.Grenadier.LoadAsset());
 
             notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -150f);
         }
     }
 

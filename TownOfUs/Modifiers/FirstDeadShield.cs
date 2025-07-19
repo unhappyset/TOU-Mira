@@ -15,6 +15,7 @@ public sealed class FirstDeadShield : ExcludedGameModifier, IAnimated
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.FirstRoundShield;
 
     public override bool HideOnUi => !TownOfUsPlugin.ShowShieldHud.Value;
+    public override Color FreeplayFileColor => new Color32(100, 220, 100, 255);
 
     public GameObject? FirstRoundShield { get; set; }
     public bool IsVisible { get; set; } = true;
@@ -25,21 +26,48 @@ public sealed class FirstDeadShield : ExcludedGameModifier, IAnimated
 
     public override int GetAmountPerGame()
     {
-        return FirstDeadPatch.PlayerName != null && OptionGroupSingleton<GeneralOptions>.Instance.FirstDeathShield
+        if (FirstDeadPatch.PlayerNames.Count == 0)
+        {
+            return 0;
+        }
+
+        var validPlayer = PlayerControl.AllPlayerControls.ToArray()
+            .Where(x => FirstDeadPatch.PlayerNames.Contains(x.name)).AsEnumerable()
+            .OrderBy(obj => FirstDeadPatch.PlayerNames.IndexOf(obj.name)).FirstOrDefault();
+
+        return validPlayer != null && OptionGroupSingleton<GeneralOptions>.Instance.FirstDeathShield
             ? 1
             : 0;
     }
 
     public override int GetAssignmentChance()
     {
-        return FirstDeadPatch.PlayerName != null && OptionGroupSingleton<GeneralOptions>.Instance.FirstDeathShield
+        if (FirstDeadPatch.PlayerNames.Count == 0)
+        {
+            return 0;
+        }
+
+        var validPlayer = PlayerControl.AllPlayerControls.ToArray()
+            .Where(x => FirstDeadPatch.PlayerNames.Contains(x.name)).AsEnumerable()
+            .OrderBy(obj => FirstDeadPatch.PlayerNames.IndexOf(obj.name)).FirstOrDefault();
+
+        return validPlayer != null && OptionGroupSingleton<GeneralOptions>.Instance.FirstDeathShield
             ? 100
             : 0;
     }
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        return role.Player.name == FirstDeadPatch.PlayerName;
+        if (FirstDeadPatch.PlayerNames.Count == 0)
+        {
+            return false;
+        }
+
+        var validPlayer = PlayerControl.AllPlayerControls.ToArray()
+            .Where(x => FirstDeadPatch.PlayerNames.Contains(x.name)).AsEnumerable()
+            .OrderBy(obj => FirstDeadPatch.PlayerNames.IndexOf(obj.name)).FirstOrDefault();
+
+        return role.Player == validPlayer;
     }
 
     public override string GetDescription()
@@ -49,9 +77,8 @@ public sealed class FirstDeadShield : ExcludedGameModifier, IAnimated
 
     public override void OnActivate()
     {
-        FirstDeadPatch.PlayerName = null!;
         FirstRoundShield =
-            AnimStore.SpawnAnimBody(Player, TouAssets.FirstRoundShield.LoadAsset(), false, -1.1f, -0.225f)!;
+            AnimStore.SpawnAnimBody(Player, TouAssets.FirstRoundShield.LoadAsset(), false, -1.1f, -0.225f, 1.5f)!;
     }
 
     public override void OnDeath(DeathReason reason)

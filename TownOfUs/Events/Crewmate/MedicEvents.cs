@@ -11,7 +11,9 @@ using TownOfUs.Buttons;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modules;
 using TownOfUs.Options;
+using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 
@@ -20,11 +22,36 @@ namespace TownOfUs.Events.Crewmate;
 public static class MedicEvents
 {
     [RegisterEvent]
-    public static void RoundStartHandler(RoundStartEvent @event)
+    public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         if (PlayerControl.LocalPlayer.Data.Role is MedicRole)
         {
             MedicRole.OnRoundStart();
+        }
+        var medicShields = ModifierUtils.GetActiveModifiers<MedicShieldModifier>();
+
+        if (!medicShields.Any())
+        {
+            return;
+        }
+
+        foreach (var mod in medicShields)
+        {
+            var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
+            var showShielded = OptionGroupSingleton<MedicOptions>.Instance.ShowShielded;
+
+            var showShieldedEveryone = showShielded == MedicOption.Everyone;
+            var showShieldedSelf = PlayerControl.LocalPlayer.PlayerId == mod.Player.PlayerId &&
+                                   showShielded is MedicOption.Shielded or MedicOption.ShieldedAndMedic;
+            var showShieldedMedic = PlayerControl.LocalPlayer.PlayerId == mod.Medic.PlayerId &&
+                                    showShielded is MedicOption.Medic or MedicOption.ShieldedAndMedic;
+
+            var body = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x =>
+                x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+            var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x =>
+                x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+        
+            mod.ShowShield = showShieldedEveryone || showShieldedSelf || showShieldedMedic || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body);
         }
     }
 

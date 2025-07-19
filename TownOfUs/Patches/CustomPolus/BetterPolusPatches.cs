@@ -339,6 +339,7 @@ public static class TaskTextUpdates
                     opts.BPTempInDeathValley)
                 {
                     task.StartAt = TaskProvider.DeathValleySystemType;
+                    BetterPolusPatches.TempCold.Room = TaskProvider.DeathValleySystemType;
                 }
 
                 if (opts.BPSwapWifiAndChart)

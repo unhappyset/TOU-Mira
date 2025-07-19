@@ -2,6 +2,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
+using TownOfUs.Modules.Localization;
 
 namespace TownOfUs.Options;
 
@@ -28,11 +29,9 @@ public sealed class AssassinOptions : AbstractOptionGroup
             Visible = () => OptionGroupSingleton<AssassinOptions>.Instance.NumberOfNeutralAssassins > 0
         };
 
-    [ModdedToggleOption("Amnesiac Turned Impostor Gets Ability")]
-    public bool AmneTurnImpAssassin { get; set; } = true;
+    public ModdedToggleOption AmneTurnImpAssassin { get; } = new($"{TouLocale.Get(TouNames.Amnesiac, "Amnesiac")} Turned Impostor Gets Ability", true);
 
-    [ModdedToggleOption("Amnesiac Turned Neutral Killing Gets Ability")]
-    public bool AmneTurnNeutAssassin { get; set; } = true;
+    public ModdedToggleOption AmneTurnNeutAssassin { get; } = new($"{TouLocale.Get(TouNames.Amnesiac, "Amnesiac")} Turned Neutral Killing Gets Ability", true);
 
     [ModdedToggleOption("Traitor Gets Ability")]
     public bool TraitorCanAssassin { get; set; } = true;
@@ -47,7 +46,7 @@ public sealed class AssassinOptions : AbstractOptionGroup
     public bool AssassinCrewmateGuess { get; set; } = false;
 
     [ModdedToggleOption("Assassin Can Guess Crew Investigative Roles")]
-    public bool AssassinGuessInvest { get; set; } = true;
+    public bool AssassinGuessInvest { get; set; } = false;
 
     [ModdedToggleOption("Assassin Can Guess Neutral Benign Roles")]
     public bool AssassinGuessNeutralBenign { get; set; } = true;

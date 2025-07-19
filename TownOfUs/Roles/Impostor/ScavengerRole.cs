@@ -10,6 +10,7 @@ using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Utilities;
 using TownOfUs.Modifiers;
+using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
@@ -59,6 +60,12 @@ public sealed class ScavengerRole(IntPtr cppPtr)
 
             Target = Player.GetClosestLivingPlayer(false, float.MaxValue, true,
                 x => !x.HasModifier<FirstDeadShield>())!;
+
+            if (Player.HasModifier<LoverModifier>())
+            {
+                Target = Player.GetClosestLivingPlayer(false, float.MaxValue, true,
+                    x => !x.HasModifier<FirstDeadShield>() && !x.HasModifier<LoverModifier>())!;
+            }
 
             Target.AddModifier<ScavengerArrowModifier>(Player, TownOfUsColors.Impostor);
         }
@@ -149,6 +156,12 @@ public sealed class ScavengerRole(IntPtr cppPtr)
 
             scav.Target =
                 player.GetClosestLivingPlayer(false, float.MaxValue, true, x => !x.HasModifier<FirstDeadShield>())!;
+            
+            if (player.HasModifier<LoverModifier>())
+            {
+                scav.Target = player.GetClosestLivingPlayer(false, float.MaxValue, true,
+                    x => !x.HasModifier<FirstDeadShield>() && !x.HasModifier<LoverModifier>())!;
+            }
 
             scav.Target.AddModifier<ScavengerArrowModifier>(player, TownOfUsColors.Impostor);
         }
@@ -191,6 +204,12 @@ public sealed class ScavengerRole(IntPtr cppPtr)
 
             // get new target
             Target = Player.GetClosestLivingPlayer(false, float.MaxValue, true)!;
+            
+            if (Player.HasModifier<LoverModifier>())
+            {
+                Target = Player.GetClosestLivingPlayer(false, float.MaxValue, true,
+                    x => !x.HasModifier<FirstDeadShield>() && !x.HasModifier<LoverModifier>())!;
+            }
 
             // update arrow to point to new target
             Target.AddModifier<ScavengerArrowModifier>(Player, TownOfUsColors.Impostor);

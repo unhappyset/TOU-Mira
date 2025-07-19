@@ -130,6 +130,29 @@ public sealed class MinerRole(IntPtr cppPtr)
         ShipStatus.Instance.AllVents = allVents.ToArray();
 
         miner.Vents.Add(vent);
+        
+        PlainShipRoom? plainShipRoom = null;
+
+        var allRooms2 = ShipStatus.Instance.FastRooms;
+        foreach (var plainShipRoom2 in allRooms2.Values)
+        {
+            if (plainShipRoom2.roomArea && plainShipRoom2.roomArea.OverlapPoint(vent.transform.position))
+            {
+                plainShipRoom = plainShipRoom2;
+            }
+        }
+        
+        var mapId = (MapNames)GameOptionsManager.Instance.currentNormalGameOptions.MapId;
+        if (TutorialManager.InstanceExists)
+        {
+            mapId = (MapNames)AmongUsClient.Instance.TutorialMapId;
+        }
+
+        if (mapId is MapNames.Polus && plainShipRoom?.RoomId is SystemTypes.Weapons)
+        {
+            vent.gameObject.transform.position = new Vector3(vent.gameObject.transform.position.x,
+                vent.gameObject.transform.position.y, -0.0209f);
+        }
 
         if (ModCompatibility.SubLoaded)
         {

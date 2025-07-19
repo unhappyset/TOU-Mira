@@ -1,10 +1,13 @@
 using System.Text;
+using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
+using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules.Wiki;
@@ -161,6 +164,34 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             // Logger<TownOfUsPlugin>.Message($"RpcOracleBless exiled '{exiled.Data.PlayerName}' SavedFromExile");
         {
             mod.SavedFromExile = true;
+        }
+    }
+    [MethodRpc((uint)TownOfUsRpc.OracleBlessNotify, SendImmediately = true)]
+    public static void RpcOracleBlessNotify(PlayerControl oracle, PlayerControl source, PlayerControl target)
+    {
+        if (oracle.Data.Role is not OracleRole || !source.AmOwner && !oracle.AmOwner)
+        {
+            Logger<TownOfUsPlugin>.Error("RpcOracleBlessNotify - Invalid oracle");
+            return;
+        }
+
+        if (oracle.AmOwner)
+        {
+            Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Oracle));
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>Your blessing has saved {TownOfUsColors.Oracle.ToTextColor()}{target.Data.PlayerName}</color> from getting guessed!</b>",
+                Color.white, spr: TouRoleIcons.Oracle.LoadAsset());
+            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        }
+        else if (source.AmOwner)
+        {
+            Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Oracle));
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}{target.Data.PlayerName}</color> survived due to being blessed by an {TownOfUsColors.Oracle.ToTextColor()}Oracle</color>!</b>",
+                Color.white, spr: TouRoleIcons.Oracle.LoadAsset());
+            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
         }
     }
 }

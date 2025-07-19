@@ -9,14 +9,19 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Impostor;
 
-public sealed class HypnotistHypnotiseButton : TownOfUsRoleButton<HypnotistRole, PlayerControl>,
+public sealed class HypnotistHypnotizeButton : TownOfUsRoleButton<HypnotistRole, PlayerControl>,
     IAftermathablePlayerButton
 {
-    public override string Name => "Hypnotise";
+    public override string Name => "Hypnotize";
     public override string Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<HypnotistOptions>.Instance.HypnotiseCooldown;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.HypnotiseButtonSprite;
+
+    public override bool Enabled(RoleBehaviour? role)
+    {
+        return base.Enabled(role) && role is HypnotistRole hypno && !hypno.HysteriaActive;
+    }
 
     public override bool CanUse()
     {

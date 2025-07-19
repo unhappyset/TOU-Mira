@@ -87,7 +87,7 @@ public static class VisionPatch
 
                 if (player._object.HasModifier<ScoutModifier>())
                 {
-                    __result = t == 1 ? __result * 1.5f : __result / 2;
+                    __result = t == 1 ? __result * 2f : __result / 2;
                 }
             }
         }

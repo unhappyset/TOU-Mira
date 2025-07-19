@@ -21,12 +21,6 @@ public sealed class MercenaryBribedModifier(PlayerControl mercenary) : BaseModif
         MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 
-
-    public override void OnDeath(DeathReason reason)
-    {
-        ModifierComponent!.RemoveModifier(this);
-    }
-
     public override void OnMeetingStart()
     {
         if (!Player.AmOwner)

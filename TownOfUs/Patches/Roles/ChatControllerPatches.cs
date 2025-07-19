@@ -28,25 +28,31 @@ public static class ChatControllerPatches
     [HarmonyPatch(nameof(ChatController.UpdateChatMode))]
     public static void UpdatePostfix(ChatController __instance)
     {
-        if (_noticeText == null || !MeetingHud.Instance)
+        if (_noticeText == null || !PlayerControl.LocalPlayer)
         {
             return;
         }
 
-        if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.HasModifier<BlackmailedModifier>() &&
+        if (!MeetingHud.Instance)
+        {
+            if (_noticeText.text != string.Empty) _noticeText.text = string.Empty;
+            return;
+        }
+
+        if (PlayerControl.LocalPlayer.HasModifier<BlackmailedModifier>() &&
             !PlayerControl.LocalPlayer.Data.IsDead)
         {
             _noticeText.text = "You have been blackmailed.";
             __instance.freeChatField.SetVisible(false);
             __instance.quickChatField.SetVisible(false);
         }
-        else if (TeamChatPatches.TeamChatActive)
+        else if (TeamChatPatches.TeamChatActive && !PlayerControl.LocalPlayer.Data.IsDead)
         {
             _noticeText.text = string.Empty;
             __instance.freeChatField.SetVisible(true);
             __instance.quickChatField.SetVisible(false);
         }
-        else if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.HasModifier<JailedModifier>() &&
+        else if (PlayerControl.LocalPlayer.HasModifier<JailedModifier>() &&
                  !PlayerControl.LocalPlayer.Data.IsDead && !TeamChatPatches.TeamChatActive)
         {
             var canChat = OptionGroupSingleton<JailorOptions>.Instance.JaileePublicChat;
@@ -54,7 +60,6 @@ public static class ChatControllerPatches
             {
                 _noticeText.text = "You are jailed. You can use public chat.";
                 __instance.freeChatField.SetVisible(true);
-                __instance.quickChatField.SetVisible(false);
             }
             else
             {

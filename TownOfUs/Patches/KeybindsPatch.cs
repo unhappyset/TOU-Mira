@@ -13,10 +13,17 @@ public static class Keybinds
     private static void Prefix(InputManager_Base __instance)
     {
         // change the text shown on the screen for the keybinds menu
-        __instance.userData.GetAction("ActionSecondary").descriptiveName = "Kill / Secondary Ability";
-        __instance.userData.GetAction("ActionQuaternary").descriptiveName = "Primary Ability";
-        __instance.userData.RegisterBind("tou.ActionCustom", "Tertiary Ability (Hack Ability)");
-        __instance.userData.RegisterBind("tou.ActionCustom2", "Modifier Ability");
+        try
+        {
+            __instance.userData.GetAction("ActionSecondary").descriptiveName = "Kill / Secondary Ability";
+            __instance.userData.GetAction("ActionQuaternary").descriptiveName = "Primary Ability";
+            __instance.userData.RegisterBind("tou.ActionCustom", "Tertiary Ability (Hack Ability)");
+            __instance.userData.RegisterBind("tou.ActionCustom2", "Modifier Ability");
+        }
+        catch
+        {
+            // Logger<TownOfUsPlugin>.Error($"Error applying names for custom keybinds: {e}");
+        }
     }
 
     private static int RegisterBind(this UserData self, string name, string description, int elementIdentifierId = -1,

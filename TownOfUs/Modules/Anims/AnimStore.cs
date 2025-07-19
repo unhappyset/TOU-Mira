@@ -89,14 +89,15 @@ public static class AnimStore
         GameObject prefab,
         bool shouldOffset = true,
         float offsetAmount = 0.8f,
-        float yOffset = -0.575f)
+        float yOffset = -0.575f,
+        float zOffset = 0f)
     {
         var cosmeticsLayer = player.transform.GetChild(2);
         var animation = SpawnAnimPlayer(player, prefab);
         var animationBounceHolder = new GameObject($"A_{prefab.name}");
         animationBounceHolder.transform.SetParent(cosmeticsLayer, false);
         animationBounceHolder.transform.localPosition =
-            new Vector3(0, yOffset + 0.05f, 0f); // -0.04f, 0.575 (but we flip to reverse this)
+            new Vector3(0, yOffset + 0.05f, zOffset); // -0.04f, 0.575 (but we flip to reverse this)
 
         animation.transform.SetParent(animationBounceHolder.transform, true);
         var bounceSync = animation.AddComponent<SpriteAnimNodeSync>();

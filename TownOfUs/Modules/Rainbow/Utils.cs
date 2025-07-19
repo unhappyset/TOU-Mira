@@ -24,6 +24,10 @@ public static class RainbowUtils
         rend.material.SetColor(ShaderID.BodyColor, Rainbow);
         rend.material.SetColor(ShaderID.VisorColor, Palette.VisorColor);
     }
+    public static Color SetBasicRainbow()
+    {
+        return Rainbow;
+    }
 
     public static bool IsRainbow(int id)
     {

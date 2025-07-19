@@ -32,6 +32,7 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
 
     protected override void OnClick()
     {
+        OverrideName("Fixing");
         var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
 
         if (system is not { AnyActive: true })
@@ -42,6 +43,7 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
 
     public override void OnEffectEnd()
     {
+        OverrideName("Fix");
         var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
 
         if (system is { AnyActive: true })

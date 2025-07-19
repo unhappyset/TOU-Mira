@@ -31,7 +31,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
 
     public void AssignTargets()
     {
-        // Logger<TownOfUsPlugin>.Error($"SelectGATargets");
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"SelectGATargets");
         var evilTargetPercent = (int)OptionGroupSingleton<GuardianAngelOptions>.Instance.EvilTargetPercent;
 
         var gas = PlayerControl.AllPlayerControls.ToArray()
@@ -47,9 +47,9 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
             if (evilTargetPercent > 0f)
             {
                 Random rnd = new();
-                var chance = rnd.Next(0, 100);
+                var chance = rnd.Next(1, 101);
 
-                if (chance < evilTargetPercent)
+                if (chance <= evilTargetPercent)
                 {
                     filtered = [.. filtered.Where(x => x.IsImpostor() || x.Is(RoleAlignment.NeutralKilling))];
                 }
@@ -64,7 +64,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
             Random rndIndex = new();
             var randomTarget = filtered[rndIndex.Next(0, filtered.Count)];
 
-            // Logger<TownOfUsPlugin>.Info($"Setting GA Target: {randomTarget.Data.PlayerName}");
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Info($"Setting GA Target: {randomTarget.Data.PlayerName}");
             RpcSetGATarget(ga, randomTarget);
         }
     }
@@ -179,14 +179,14 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         return gaTargetKnows || gaKnowsTargetRole;
     }
 
-    public void CheckTargetDeath(PlayerControl source, PlayerControl victim)
+    public void CheckTargetDeath(PlayerControl victim)
     {
         if (Player.HasDied())
         {
             return;
         }
 
-        // Logger<TownOfUsPlugin>.Error($"OnPlayerDeath '{victim.Data.PlayerName}'");
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"OnPlayerDeath '{victim.Data.PlayerName}'");
         if (Target == null || victim == Target)
         {
             var roleType = OptionGroupSingleton<GuardianAngelOptions>.Instance.OnTargetDeath switch
@@ -199,7 +199,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
                 _ => (ushort)RoleTypes.Crewmate
             };
 
-            // Logger<TownOfUsPlugin>.Error($"OnPlayerDeath - ChangeRole: '{roleType}'");
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"OnPlayerDeath - ChangeRole: '{roleType}'");
             Player.ChangeRole(roleType);
 
             if ((roleType == RoleId.Get<JesterRole>() && OptionGroupSingleton<JesterOptions>.Instance.ScatterOn) ||

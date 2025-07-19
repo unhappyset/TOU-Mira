@@ -1,4 +1,5 @@
 ﻿using MiraAPI.GameOptions;
+using TownOfUs.Modules.RainbowMod;
 using TownOfUs.Options.Roles.Crewmate;
 using UnityEngine;
 
@@ -8,6 +9,21 @@ public sealed class TrackerArrowTargetModifier(PlayerControl owner, Color color,
     : ArrowTargetModifier(owner, color, update)
 {
     public override string ModifierName => "Tracker Arrow";
+
+    public override void OnActivate()
+    {
+        base.OnActivate();
+
+        if (Arrow == null)
+        {
+            return;
+        }
+
+        var spr = Arrow.gameObject.GetComponent<SpriteRenderer>();
+        var r = Arrow.gameObject.AddComponent<BasicRainbowBehaviour>();
+
+        r.AddRend(spr, Player.cosmetics.ColorId);
+    }
 
     public override void OnDeath(DeathReason reason)
     {

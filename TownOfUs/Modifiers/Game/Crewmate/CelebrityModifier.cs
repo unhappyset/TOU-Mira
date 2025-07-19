@@ -18,6 +18,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Celebrity";
     public override string IntroInfo => "You will also reveal info about your death in the meeting.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Celebrity;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePostmortem;
 
@@ -89,8 +90,11 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
         var cod = "killed";
         switch (source.Data.Role)
         {
-            case SheriffRole or HunterRole or VeteranRole:
+            case SheriffRole:
                 cod = "shot";
+                break;
+            case VeteranRole:
+                cod = "blasted";
                 break;
             case InquisitorRole:
                 cod = "vanquished";

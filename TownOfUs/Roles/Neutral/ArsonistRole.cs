@@ -10,6 +10,7 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TownOfUs.Buttons.Neutral;
 using TownOfUs.Modifiers.Neutral;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -20,7 +21,7 @@ namespace TownOfUs.Roles.Neutral;
 public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => "Arsonist";
+    public string RoleName => TouLocale.Get(TouNames.Arsonist, "Arsonist");
     public string RoleDescription => "Douse Players And Ignite The Light";
 
     public string RoleLongDescription => OptionGroupSingleton<ArsonistOptions>.Instance.LegacyArsonist
@@ -37,7 +38,7 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         IntroSound = TouAudio.ArsoIgniteSound,
         MaxRoleCount = 1,
         Icon = TouRoleIcons.Arsonist,
-        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
+        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
     };
 
     [HideFromIl2Cpp]
@@ -75,7 +76,7 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
 
     public string GetAdvancedDescription()
     {
-        return "The Arsonist is a Neutral Killing role that wins by being the last killer alive. " +
+        return $"The {RoleName} is a Neutral Killing role that wins by being the last killer alive. " +
                (OptionGroupSingleton<ArsonistOptions>.Instance.LegacyArsonist
                    ? "They can douse players and ignite one of them to ignite all doused players on the map."
                    : "They can douse players and ignite them when close.") + MiscUtils.AppendOptionsText(GetType());

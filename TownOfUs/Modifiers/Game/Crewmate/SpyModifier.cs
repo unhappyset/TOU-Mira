@@ -18,6 +18,7 @@ public sealed class SpyModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Spy";
     public override string IntroInfo => "You can also gain extra information on the Admin Table";
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Spy;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 
     public override ModifierFaction FactionType => ModifierFaction.CrewmateUtility;
 

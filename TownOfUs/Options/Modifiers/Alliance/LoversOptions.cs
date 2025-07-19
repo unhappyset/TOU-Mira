@@ -15,15 +15,15 @@ public sealed class LoversOptions : AbstractOptionGroup<LoverModifier>
     [ModdedToggleOption("Both Lovers Die And Revive Together")]
     public bool BothLoversDie { get; set; } = true;
 
-    [ModdedNumberOption("Loving Impostor Probability", 0, 100, 10f, MiraNumberSuffixes.Percent)]
+    [ModdedNumberOption("Loving Another Killer Probability", 0, 100, 10f, MiraNumberSuffixes.Percent)]
     public float LovingImpPercent { get; set; } = 20;
-
-    [ModdedToggleOption("Impostors Can Be Lovers Together")]
-    public bool ImpLovers { get; set; } = false;
 
     [ModdedToggleOption("Neutral Roles Can Be Lovers")]
     public bool NeutralLovers { get; set; } = true;
 
     [ModdedToggleOption("Lover Can Kill Faction Teammates")]
     public bool LoverKillTeammates { get; set; } = false;
+
+    [ModdedToggleOption("Lovers Can Kill One Another")]
+    public bool LoversKillEachOther { get; set; } = true;
 }

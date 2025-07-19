@@ -3,6 +3,7 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using TownOfUs.Modifiers.Impostor;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -39,7 +40,7 @@ public sealed class TraitorRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            "The Traitor is an Impostor Killing role that spawns after a meeting, in which the spawn conditions are suitable. The Traitor will never be a Mayor, and must be a crewmate. The Traitor sets out to win the game for the fallen Impostors, and kill off the crew. They are also able to change to a better role."
+            $"The Traitor is an Impostor Killing role that spawns after a meeting, in which the spawn conditions are suitable. The Traitor will never be a {TouLocale.Get(TouNames.Mayor, "Mayor")}, and must be a crewmate. The Traitor sets out to win the game for the fallen Impostors, and kill off the crew. They are also able to change to a better role."
             + MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -64,9 +65,13 @@ public sealed class TraitorRole(IntPtr cppPtr)
             return;
         }
 
+        var currenttime = Player.killTimer;
+
         var roleType = RoleId.Get(SelectedRole!.GetType());
         Player.RpcChangeRole(roleType, false);
         Player.RpcAddModifier<TraitorCacheModifier>();
         SelectedRole = null;
+
+        Player.SetKillTimer(currenttime);
     }
 }

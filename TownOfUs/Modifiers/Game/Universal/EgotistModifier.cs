@@ -4,6 +4,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.GameOver;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Roles;
@@ -22,10 +23,19 @@ public sealed class EgotistModifier : AllianceGameModifier, IWikiDiscoverable
     public override bool GetsPunished => false;
     public override bool CrewContinuesGame => false;
     public override ModifierFaction FactionType => ModifierFaction.CrewmateAlliance;
+    public override Color FreeplayFileColor => new Color32(220, 220, 220, 255);
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Egotist;
 
     public int Priority { get; set; } = 5;
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
+    public override void OnActivate()
+    {
+        base.OnActivate();
+        if (Player.HasModifier<TraitorCacheModifier>())
+        {
+            Player.RemoveModifier<TraitorCacheModifier>();
+        }
+    }
 
     public string GetAdvancedDescription()
     {

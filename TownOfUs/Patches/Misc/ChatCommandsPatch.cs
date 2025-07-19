@@ -98,6 +98,10 @@ public static class ChatPatches
                     msg =
                         "The player name must be at least 1 character long, and cannot be more than 12 characters long!";
                 }
+                else if (PlayerControl.AllPlayerControls.ToArray().Any(x => x.Data.PlayerName.ToLower(CultureInfo.InvariantCulture).Trim() == textRegular.ToLower(CultureInfo.InvariantCulture).Trim() && x.Data.PlayerId != PlayerControl.LocalPlayer.PlayerId))
+                {
+                    msg = $"Another player has a name too similar to {textRegular}! Please try a different name.";
+                }
                 else
                 {
                     PlayerControl.LocalPlayer.CmdCheckName(textRegular);
@@ -120,9 +124,9 @@ public static class ChatPatches
 
             List<string> randomNames =
             [
-                "Atony", "Alchlc", "angxlwtf", "Digi", "donners", "K3ndo", "DragonBreath", "Pietro",
-                "twix", "xerm", "XtraCube", "Zeo", "Slushie", "Chloe", "moon", "decii", "Northie", "GD", "Chilled",
-                "Himi", "Riki"
+                "Atony", "Alchlc", "angxlwtf", "Digi", "Donners", "K3ndo", "DragonBreath", "Pietro",
+                "twix", "xerm", "XtraCube", "Zeo", "Slushie", "chloe", "moon", "decii", "Northie", "GD", "Chilled",
+                "Himi", "Riki", "Leafly", "miniduikboot"
             ];
 
             var msg = "<size=75%>Chat Commands:\n" +

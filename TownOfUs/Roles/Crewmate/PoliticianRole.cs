@@ -9,6 +9,7 @@ using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -23,9 +24,9 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
 
     public bool CanCampaign { get; set; } = true;
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => "Politician";
-    public string RoleDescription => "Campaign To Become The Mayor!";
-    public string RoleLongDescription => "Spread your campaign to become the Mayor!";
+    public string RoleName => TouLocale.Get(TouNames.Politician, "Politician");
+    public string RoleDescription => $"Campaign To Become The {TouLocale.Get(TouNames.Mayor, "Mayor")}!";
+    public string RoleLongDescription => $"Spread your campaign to become the {TouLocale.Get(TouNames.Mayor, "Mayor")}!";
     public Color RoleColor => TownOfUsColors.Politician;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
@@ -54,7 +55,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
     public string GetAdvancedDescription()
     {
         return
-            "The Politician is a Crewmate Power role that can reveal themselves to the crew as the Mayor, given that they have campaigned at least half of the crewmates."
+            $"The {RoleName} is a Crewmate Power role that can reveal themselves to the crew as the {TouLocale.Get(TouNames.Mayor, "Mayor")}, given that they have campaigned at least half of the crewmates."
             + MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -65,7 +66,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
             "Give a player a ballot, which will only be useful to you if they are a Crewmate.",
             TouCrewAssets.CampaignButtonSprite),
         new("Reveal (Meeting)",
-            "If you reveal and you have more than half of the crewmates campaigned (or no other crewmates remain), you will become the Mayor! Otherwise, your ability will fail and you " +
+            $"If you reveal and you have more than half of the crewmates campaigned (or no other crewmates remain), you will become the {TouLocale.Get(TouNames.Mayor, "Mayor")}! Otherwise, your ability will fail and you " +
             (OptionGroupSingleton<PoliticianOptions>.Instance.PreventCampaign ? "cannot" : "can") +
             " campaign the following round.",
             TouAssets.RevealCleanSprite)
@@ -138,9 +139,9 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
         var aliveCampaigned = aliveCrew.Count(x => x.HasModifier<PoliticianCampaignedModifier>());
         var hasMajority =
             aliveCampaigned >=
-            Math.Max(aliveCrew.Count() / 2 - 1,
+            Math.Max((aliveCrew.Count() - 1) / 2,
                 1); // minus one to account for politician, max of at least 1 crewmate campaigned
-        if (!aliveCrew.Any(x => x.Data.Role is not PoliticianRole))
+        if (aliveCrew.Count() == 1)
         {
             hasMajority = true; // if all crew are dead, politician can reveal
         }
@@ -148,10 +149,6 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
         if (hasMajority)
         {
             Player.RpcChangeRole(RoleId.Get<MayorRole>());
-            if (Player.HasModifier<ToBecomeTraitorModifier>())
-            {
-                Player.GetModifier<ToBecomeTraitorModifier>()!.Clear();
-            }
         }
         else
         {
@@ -162,7 +159,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
                 text = "You need to campaign more Crewmates! However, you may not campaign next round.";
             }
 
-            var title = $"<color=#{TownOfUsColors.Mayor.ToHtmlStringRGBA()}>Politician Feedback</color>";
+            var title = $"<color=#{TownOfUsColors.Mayor.ToHtmlStringRGBA()}>{RoleName} Feedback</color>";
             MiscUtils.AddFakeChat(Player.Data, title, text, false, true);
         }
     }

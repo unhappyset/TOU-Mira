@@ -1,15 +1,17 @@
 ﻿using HarmonyLib;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events.Vanilla.Meeting.Voting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
-using MiraAPI.Networking;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using TownOfUs.Buttons.Neutral;
 using TownOfUs.Modifiers;
-using TownOfUs.Modules;
+using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -20,28 +22,76 @@ namespace TownOfUs.Events.Neutral;
 public static class ExecutionerEvents
 {
     [RegisterEvent]
-    public static void AfterMurderEventHandler(AfterMurderEvent @event)
+    public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
-        CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>().Do(x => x.CheckTargetDeath(@event.Target));
-
-        var role = @event.Source.Data.Role;
-        if (@event.Source.HasDied())
+        if (@event.DeathReason is DeathReason.Exile)
         {
-            role = @event.Source.GetRoleWhenAlive();
+            if (!@event.Player.TryGetModifier<ExecutionerTargetModifier>(out var exeMod))
+            {
+                return;
+            }
+
+            var exe = GameData.Instance.GetPlayerById(exeMod.OwnerId).Object;
+            if (exe != null && !exe.HasDied() && exe.Data.Role is ExecutionerRole exeRole)
+            {
+                exeRole.TargetVoted = true;
+            }
+        }
+        else
+        {
+            CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>().Do(x => x.CheckTargetDeath(@event.Player));
+        }
+    }
+
+    [RegisterEvent]
+    public static void RoundStartEventHandler(RoundStartEvent @event)
+    {
+        foreach (var executioner in CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>())
+        {
+            if (!executioner.AboutToWin) executioner.Voters.Clear();
+        }
+        
+        if (@event.TriggeredByIntro)
+        {
+            return;
         }
 
-        if (role is ExecutionerRole exe && exe.TargetVoted &&
-            OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
+        if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.EndsGame)
         {
+            return;
+        }
+
+        var exe = CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>()
+            .FirstOrDefault(x => x.AboutToWin && !x.Player.HasDied());
+        if (exe != null)
+        {
+            exe.TargetVoted = true;
             if (exe.Player.AmOwner)
             {
-                PlayerControl.LocalPlayer.RpcPlayerExile();
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>You have successfully won as the {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, as your target was exiled!</b>",
                     Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+
+                PlayerControl.LocalPlayer.RpcPlayerExile();
+                
+                if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
+                {
+                    CustomButtonSingleton<ExeTormentButton>.Instance.SetActive(true, exe);
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Victorious", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
+                    var notif2 = Helpers.CreateAndShowNotification(
+                        $"<b>You have one round to torment a player of your choice to death, choose wisely.</b>",
+                        Color.white);
+
+                    notif2.Text.SetOutlineThickness(0.35f);
+                    notif2.transform.localPosition = new Vector3(0f, 0.85f, -20f);
+                }
+                else
+                {
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Victorious", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+                }
             }
             else
             {
@@ -54,81 +104,60 @@ public static class ExecutionerEvents
             }
         }
     }
-
+    
     [RegisterEvent]
-    public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
+    public static void HandleVoteEventHandler(HandleVoteEvent @event)
     {
-        if (@event.DeathReason != DeathReason.Exile)
+        var votingPlayer = @event.Player;
+        var suspectPlayer = @event.TargetPlayerInfo;
+        
+        if (suspectPlayer == null || !suspectPlayer._object.TryGetModifier<ExecutionerTargetModifier>(out var exeMod))
         {
             return;
         }
 
-        CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>().Do(x => x.CheckTargetEjection(@event.Player));
+        var exe = GameData.Instance.GetPlayerById(exeMod.OwnerId).Object;
+        if (exe != null && !exe.HasDied() && exe.Data.Role is ExecutionerRole exeRole)
+        {
+            exeRole.Voters.Add(votingPlayer.PlayerId);
+        }
     }
-
+ 
     [RegisterEvent]
-    public static void RoundStartEventHandler(RoundStartEvent @event)
+    public static void EjectionEventHandler(EjectionEvent @event)
     {
-        if (@event.TriggeredByIntro)
+        var exiled = @event.ExileController?.initData?.networkedPlayer?.Object;
+
+        if (exiled == null || !exiled.TryGetModifier<ExecutionerTargetModifier>(out var exeMod))
         {
             return;
         }
-
-        if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.EndsGame)
+        
+        var exe = GameData.Instance.GetPlayerById(exeMod.OwnerId).Object;
+        if (exe != null && !exe.HasDied() && exe.Data.Role is ExecutionerRole exeRole)
         {
-            return;
-        }
-
-        var exe = CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>()
-            .FirstOrDefault(x => x.TargetVoted && !x.Player.HasDied());
-        if (exe != null)
-        {
-            if (exe.Player.AmOwner)
+            exeRole.AboutToWin = true;
+            if (!PlayerControl.LocalPlayer.IsHost())
             {
-                if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
-                {
-                    var voters = exe.Voters.ToArray();
-                    Func<PlayerControl, bool> _playerMatch = plr =>
-                        plr != exe.Target && plr != exe.Player && voters.Contains(plr.PlayerId) && !plr.HasDied() &&
-                        !plr.HasModifier<InvulnerabilityModifier>();
-
-                    var killMenu = CustomPlayerMenu.Create();
-                    killMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material =
-                        PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
-                    killMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material =
-                        PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
-                    killMenu.Begin(
-                        _playerMatch,
-                        plr =>
-                        {
-                            killMenu.ForceClose();
-
-                            if (plr != null)
-                            {
-                                PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
-                            }
-                        });
-                }
-                else
-                {
-                    var notif1 = Helpers.CreateAndShowNotification(
-                        $"<b>You have successfully won as the {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, as your target was exiled!</b>",
-                        Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
-
-                    notif1.Text.SetOutlineThickness(0.35f);
-                    notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-                }
-
-                PlayerControl.LocalPlayer.RpcPlayerExile();
+                exeRole.TargetVoted = true;
             }
-            else if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Nothing)
+            
+            if (exe.AmOwner && OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
             {
-                var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>The {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, {exe.Player.Data.PlayerName}, has successfully won, as their target was exiled!</b>",
-                    Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
+                var allVoters = PlayerControl.AllPlayerControls.ToArray()
+                    .Where(x => exeRole.Voters.Contains(x.PlayerId) && !x.AmOwner);
+                
+                if (!allVoters.Any())
+                {
+                    return;
+                }
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                foreach (var player in allVoters)
+                {
+                    player.AddModifier<MisfortuneTargetModifier>();
+                }
+
+                CustomButtonSingleton<ExeTormentButton>.Instance.Show = true;
             }
         }
     }

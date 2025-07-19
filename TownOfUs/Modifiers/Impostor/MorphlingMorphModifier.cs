@@ -12,6 +12,7 @@ public sealed class MorphlingMorphModifier(PlayerControl target) : ConcealedModi
     public override string ModifierName => "Morph";
     public override bool HideOnUi => true;
     public override bool AutoStart => true;
+    public override bool VisibleToOthers => true;
     public bool VisualPriority => true;
 
     public VisualAppearance GetVisualAppearance()

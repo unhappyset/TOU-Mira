@@ -22,5 +22,11 @@ public sealed class VeteranAlertButton : TownOfUsRoleButton<VeteranRole>
     protected override void OnClick()
     {
         PlayerControl.LocalPlayer.RpcAddModifier<VeteranAlertModifier>();
+        OverrideName("Alerting");
+    }
+
+    public override void OnEffectEnd()
+    {
+        OverrideName("Alert");
     }
 }

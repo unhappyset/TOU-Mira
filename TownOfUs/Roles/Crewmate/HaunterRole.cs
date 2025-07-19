@@ -56,11 +56,12 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     {
         Setup = true;
 
-        // Logger<TownOfUsPlugin>.Error($"Setup HaunterRole '{Player.Data.PlayerName}'");
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Setup HaunterRole '{Player.Data.PlayerName}'");
         Player.gameObject.layer = LayerMask.NameToLayer("Players");
 
         Player.gameObject.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
         Player.gameObject.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => Player.OnClick()));
+        Player.gameObject.GetComponent<BoxCollider2D>().enabled = true;
 
         if (Player.AmOwner)
         {
@@ -98,7 +99,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
 
     public void Clicked()
     {
-        // Logger<TownOfUsPlugin>.Message($"HaunterRole.Clicked");
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Message($"HaunterRole.Clicked");
         Caught = true;
         Player.Exiled();
 
@@ -258,7 +259,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         }
 
         var completedTasks = Player.myTasks.ToArray().Count(t => t.IsComplete);
-        var tasksRemaining = Player.myTasks.Count - completedTasks;
+        var tasksRemaining = Player.myTasks.Count - completedTasks - 1;
 
         CanBeClicked = tasksRemaining <= (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeClickable;
 

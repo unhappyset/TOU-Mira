@@ -6,8 +6,8 @@ using MiraAPI.PluginLoading;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
+using TownOfUs.Events;
 using TownOfUs.Modifiers.Crewmate;
-using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Components;
 using TownOfUs.Options;
@@ -22,7 +22,7 @@ namespace TownOfUs.Modifiers.Game;
 [MiraIgnore]
 public abstract class AssassinModifier : ExcludedGameModifier
 {
-    private int maxKills;
+    public int maxKills;
     private MeetingMenu meetingMenu;
     public override string ModifierName => "Assassin";
     public string LastGuessedItem { get; set; }
@@ -139,6 +139,19 @@ public abstract class AssassinModifier : ExcludedGameModifier
 
         void ClickHandler(PlayerControl victim)
         {
+            if (victim.TryGetModifier<OracleBlessedModifier>(out var oracleMod))
+            {
+                OracleRole.RpcOracleBlessNotify(oracleMod.Oracle, PlayerControl.LocalPlayer, victim);
+
+                MeetingMenu.Instances.Do(x => x.HideSingle(victim.PlayerId));
+
+                shapeMenu.Close();
+                LastGuessedItem = string.Empty;
+                LastAttemptedVictim = null;
+
+                return;
+            }
+
             if (victim == Player && Player.TryGetModifier<DoubleShotModifier>(out var modifier) && !modifier.Used)
             {
                 modifier!.Used = true;
@@ -167,6 +180,11 @@ public abstract class AssassinModifier : ExcludedGameModifier
                 LastGuessedItem = string.Empty;
                 LastAttemptedVictim = null;
                 MeetingMenu.Instances.Do(x => x.HideSingle(victim.PlayerId));
+                DeathHandlerModifier.RpcUpdateDeathHandler(victim, "Guessed", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {Player.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
+            }
+            else
+            {
+                DeathHandlerModifier.RpcUpdateDeathHandler(victim, "Misguessed", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
             }
 
             maxKills--;

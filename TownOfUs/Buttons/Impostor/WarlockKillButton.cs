@@ -59,6 +59,19 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
         Button?.usesRemainingSprite.gameObject.SetActive(Timer <= 0);
         Button!.usesRemainingText.text = (int)Charge + "%";
 
+        if (BurstActive)
+        {
+            OverrideName("Burst Active");
+        }
+        else if (Charge >= 100 && Timer <= 0)
+        {
+            OverrideName("Burst Kill");
+        }
+        else
+        {
+            OverrideName("Kill");
+        }
+
         base.FixedUpdate(playerControl);
     }
 
@@ -120,6 +133,10 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
                               OptionGroupSingleton<LoversOptions>.Instance.LoverKillTeammates) ||
                              (genOpt.KillDuringCamoComms &&
                               closePlayer?.GetAppearanceType() == TownOfUsAppearances.Camouflage);
+        if (!OptionGroupSingleton<LoversOptions>.Instance.LoversKillEachOther && PlayerControl.LocalPlayer.IsLover())
+        {
+            return PlayerControl.LocalPlayer.GetClosestLivingPlayer(includePostors, Distance, false, x => !x.IsLover());
+        }
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(includePostors, Distance);
     }
 }

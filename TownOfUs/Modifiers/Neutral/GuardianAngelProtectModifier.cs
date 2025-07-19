@@ -3,6 +3,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Events.TouEvents;
+using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
@@ -26,10 +27,7 @@ public sealed class GuardianAngelProtectModifier(PlayerControl guardianAngel) : 
         get
         {
             var showProtect = OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect;
-            var showProtectEveryone = showProtect == ProtectOptions.Everyone;
-            var showProtectSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-                                  showProtect is ProtectOptions.SelfAndGA;
-            return !TownOfUsPlugin.ShowShieldHud.Value && (!showProtectEveryone || !showProtectSelf);
+            return !TownOfUsPlugin.ShowShieldHud.Value || !OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows || showProtect is ProtectOptions.GA;
         }
     }
 
@@ -38,18 +36,22 @@ public sealed class GuardianAngelProtectModifier(PlayerControl guardianAngel) : 
         var touAbilityEvent = new TouAbilityEvent(AbilityType.GuardianAngelProtect, Guardian, Player);
         MiraEventManager.InvokeEvent(touAbilityEvent);
 
+        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
         var showProtect = OptionGroupSingleton<GuardianAngelOptions>.Instance.ShowProtect;
         var ga = CustomRoleUtils.GetActiveRolesOfType<GuardianAngelTouRole>().FirstOrDefault(x => x.Target == Player);
 
         var showProtectEveryone = showProtect == ProtectOptions.Everyone;
         var showProtectSelf = PlayerControl.LocalPlayer.PlayerId == Player.PlayerId &&
-                              showProtect is ProtectOptions.SelfAndGA;
+                              showProtect is ProtectOptions.SelfAndGA && OptionGroupSingleton<GuardianAngelOptions>.Instance.GATargetKnows;
         var showProtectGA = PlayerControl.LocalPlayer.PlayerId == ga?.Player.PlayerId &&
                             showProtect is ProtectOptions.GA or ProtectOptions.SelfAndGA;
 
-        if (showProtectEveryone || showProtectSelf || showProtectGA || (PlayerControl.LocalPlayer.HasDied() &&
-                                                                        OptionGroupSingleton<GeneralOptions>.Instance
-                                                                            .TheDeadKnow))
+        var body = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x =>
+            x.ParentId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x =>
+            x.PlayerId == PlayerControl.LocalPlayer.PlayerId && !TutorialManager.InstanceExists);
+        
+        if (showProtectEveryone || showProtectSelf || showProtectGA || (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !body && !fakePlayer?.body))
         {
             var roleEffectAnimation = Object.Instantiate(DestroyableSingleton<RoleManager>.Instance.protectLoopAnim,
                 Player.gameObject.transform);

@@ -4,6 +4,7 @@ using Hazel;
 using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
+using Reactor.Utilities;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Options;
 using TownOfUs.Roles;
@@ -29,14 +30,14 @@ public static class TouRoleManagerPatches
         // var ghostRoles = RoleManager.Instance.AllRoles.Where(x => x.IsDead);
         var ghostRoles = MiscUtils.GetRegisteredGhostRoles();
 
-        // Logger<TownOfUsPlugin>.Message($"GhostRoleSetup - ghostRoles Count: {ghostRoles.Count()}");
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"GhostRoleSetup - ghostRoles Count: {ghostRoles.Count()}");
         CrewmateGhostRolePool.Clear();
         ImpostorGhostRolePool.Clear();
         CustomGhostRolePool.Clear();
 
         foreach (var role in ghostRoles)
         {
-            // Logger<TownOfUsPlugin>.Message($"GhostRoleSetup - ghostRoles role NiceName: {role.NiceName}");
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"GhostRoleSetup - ghostRoles role NiceName: {role.NiceName}");
             var data = MiscUtils.GetAssignData(role.Role);
 
             switch (data.Chance)
@@ -220,7 +221,7 @@ public static class TouRoleManagerPatches
 
             crewmates.RemoveAt(num);
 
-            // Logger<TownOfUsPlugin>.Message($"SelectRoles - player: '{player.Data.PlayerName}', role: '{(RoleType)item}'");
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).NiceName}'");
         }
 
         foreach (var role in impRoles)
@@ -232,7 +233,7 @@ public static class TouRoleManagerPatches
 
             impostors.RemoveAt(num);
 
-            // Logger<TownOfUsPlugin>.Message($"SelectRoles - player: '{player.Data.PlayerName}', role: '{(RoleType)item}'");
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).NiceName}'");
         }
 
         foreach (var player in crewmates)
@@ -632,7 +633,7 @@ public static class TouRoleManagerPatches
     [HarmonyPriority(Priority.Last)]
     public static bool SelectRolesPatch(RoleManager __instance)
     {
-        //Logger<TownOfUsPlugin>.Error($"RoleManager.SelectRoles - ReplaceRoleManager: {ReplaceRoleManager}");
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"RoleManager.SelectRoles - ReplaceRoleManager: {ReplaceRoleManager}");
 
         if (TutorialManager.InstanceExists || ReplaceRoleManager)
         {
@@ -715,7 +716,7 @@ public static class TouRoleManagerPatches
         // Note: I know this is a like for like recreation of the AssignRoleOnDeath function but for some reason
         // the original won't spawn the Phantom and just spawns Neutral Ghost instead
 
-        // Logger<TownOfUsPlugin>.Message($"AssignRoleOnDeathPatch - Player: '{player.Data.PlayerName}', specialRolesAllowed: {specialRolesAllowed}");
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"AssignRoleOnDeathPatch - Player: '{player.Data.PlayerName}', specialRolesAllowed: {specialRolesAllowed}");
         if (player == null || !player.Data.IsDead)
             // Logger<TownOfUsPlugin>.Message($"AssignRoleOnDeathPatch - !player.Data.IsDead: '{!player.Data.IsDead}'");
         {
@@ -741,7 +742,7 @@ public static class TouRoleManagerPatches
     [HarmonyPrefix]
     public static bool TryAssignSpecialGhostRolesPatch(RoleManager __instance, PlayerControl player)
     {
-        // Logger<TownOfUsPlugin>.Message($"TryAssignSpecialGhostRolesPatch - Player: '{player.Data.PlayerName}'");
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"TryAssignSpecialGhostRolesPatch - Player: '{player.Data.PlayerName}'");
         var ghostRole = RoleTypes.CrewmateGhost;
 
         if (player.IsCrewmate() && CrewmateGhostRolePool.Count > 0)
@@ -774,4 +775,70 @@ public static class TouRoleManagerPatches
     //{
     //    GameHistory.RegisterRole(targetPlayer, targetPlayer.Data.Role);
     //}
+    [HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.GetAdjustedNumImpostors))]
+    [HarmonyPrefix]
+    public static bool GetAdjustedImposters(IGameOptions __instance, ref int __result)
+    {
+        if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return true;
+        if (!OptionGroupSingleton<RoleOptions>.Instance.RoleListEnabled) return true;
+
+        var players = GameData.Instance.PlayerCount;
+        var impostors = 0;
+        var list = OptionGroupSingleton<RoleOptions>.Instance;
+        var maxSlots = players < 15 ? players : 15;
+        List<RoleListOption> impBuckets =
+        [
+            RoleListOption.ImpConceal, RoleListOption.ImpKilling, RoleListOption.ImpSupport, RoleListOption.ImpCommon,
+            RoleListOption.ImpRandom
+        ];
+        List<RoleListOption> buckets = [];
+        var anySlots = 0;
+
+        for (var i = 0; i < maxSlots; i++)
+        {
+            var slotValue = i switch
+            {
+                0 => list.Slot1,
+                1 => list.Slot2,
+                2 => list.Slot3,
+                3 => list.Slot4,
+                4 => list.Slot5,
+                5 => list.Slot6,
+                6 => list.Slot7,
+                7 => list.Slot8,
+                8 => list.Slot9,
+                9 => list.Slot10,
+                10 => list.Slot11,
+                11 => list.Slot12,
+                12 => list.Slot13,
+                13 => list.Slot14,
+                14 => list.Slot15,
+                _ => -1
+            };
+            buckets.Add((RoleListOption)slotValue);
+        }
+
+
+        foreach (var roleOption in buckets)
+        {
+            if (impBuckets.Contains(roleOption)) impostors += 1;
+            else if (roleOption == RoleListOption.Any) anySlots += 1;
+        }
+
+        int impProbability = (int)Math.Floor((double)players / anySlots * 5 / 3);
+        for (int i = 0; i < anySlots; i++)
+        {
+            var random = Random.RandomRangeInt(0, 100);
+            if (random < impProbability) impostors += 1;
+            impProbability += 3;
+        }
+
+        if (players < 7 || impostors == 0) impostors = 1;
+        else if (players < 10 && impostors > 2) impostors = 2;
+        else if (players < 14 && impostors > 3) impostors = 3;
+        else if (players < 19 && impostors > 4) impostors = 4;
+        else if (impostors > 5) impostors = 5;
+        __result = impostors;
+        return false;
+    }
 }

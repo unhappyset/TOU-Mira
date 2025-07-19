@@ -13,6 +13,7 @@ public abstract class ArrowTargetModifier(PlayerControl owner, Color color, floa
 
     private ArrowBehaviour? _arrow;
     private DateTime _time = DateTime.UnixEpoch;
+    public ArrowBehaviour? Arrow => _arrow;
     public override string ModifierName => "Arrow Target";
     public override bool Unique => false;
     public override bool HideOnUi => true;
@@ -54,6 +55,12 @@ public abstract class ArrowTargetModifier(PlayerControl owner, Color color, floa
             }
 
             _time = DateTime.UtcNow;
+        }
+
+        if (Player == null)
+        {
+            ModifierComponent!.RemoveModifier(this);
+            return;       
         }
     }
 }

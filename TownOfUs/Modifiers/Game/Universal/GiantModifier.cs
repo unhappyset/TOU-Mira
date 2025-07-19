@@ -14,6 +14,7 @@ public sealed class GiantModifier : UniversalGameModifier, IWikiDiscoverable, IV
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Giant;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalVisibility;
+    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
 
     public VisualAppearance GetVisualAppearance()
     {

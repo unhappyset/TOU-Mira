@@ -110,50 +110,6 @@ public static class IntroScenePatches
 public static class ModifierIntroPatch
 {
     private static TextMeshPro ModifierText;
-    /* public static string GetAdjustedString(this string text, int impCount)
-    {
-        var list = OptionGroupSingleton<RoleOptions>.Instance;
-        var players = GameData.Instance.PlayerCount;
-        if (players > 6 && list.RoleListEnabled)
-        {
-            bool isAny = false;
-
-            int maxSlots = players < 15 ? players : 15;
-
-            List<RoleListOption> buckets = [];
-            if (list.RoleListEnabled)
-            {
-                for (int i = 0; i < maxSlots; i++)
-                {
-                    int slotValue = i switch
-                    {
-                        0 => list.Slot1,
-                        1 => list.Slot2,
-                        2 => list.Slot3,
-                        3 => list.Slot4,
-                        4 => list.Slot5,
-                        5 => list.Slot6,
-                        6 => list.Slot7,
-                        7 => list.Slot8,
-                        8 => list.Slot9,
-                        9 => list.Slot10,
-                        10 => list.Slot11,
-                        11 => list.Slot12,
-                        12 => list.Slot13,
-                        13 => list.Slot14,
-                        14 => list.Slot15,
-                        _ => -1
-                    };
-
-                    buckets.Add((RoleListOption)slotValue);
-                }
-            }
-            if (buckets.Any(x => x is RoleListOption.Any)) isAny = true;
-
-            if (isAny) text = text.Replace($"] {impCount}", "] ???");
-        }
-        return text;
-    } */
 
     public static void RunModChecks()
     {
@@ -192,23 +148,9 @@ public static class ModifierIntroPatch
     {
         public static void Postfix(IntroCutscene __instance)
         {
-            var adjustedNumImpostors = Helpers.GetAlivePlayers().Count(x => x.IsImpostor());
-            if (adjustedNumImpostors == 1)
-            {
-                __instance.ImpostorText.text =
-                    TranslationController.Instance.GetString(StringNames.NumImpostorsS, Array.Empty<Object>());
-            }
-            else
-            {
-                __instance.ImpostorText.text =
-                    TranslationController.Instance.GetString(StringNames.NumImpostorsP, adjustedNumImpostors);
-            }
-
-            //__instance.ImpostorText.text = __instance.ImpostorText.text.GetAdjustedString(adjustedNumImpostors);
-            __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
-            __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
             ModifierText =
                 UnityEngine.Object.Instantiate(__instance.RoleText, __instance.RoleText.transform.parent, false);
+            SetHiddenImpostors(__instance);
         }
     }
 
@@ -325,5 +267,65 @@ public static class ModifierIntroPatch
             ModifierText.gameObject.SetActive(true);
             ModifierText.color.SetAlpha(0.8f);
         }
+    }
+
+    public static void SetHiddenImpostors(IntroCutscene __instance)
+    {
+        var amount = Helpers.GetAlivePlayers().Count(x => x.IsImpostor());
+        __instance.ImpostorText.text =
+            DestroyableSingleton<TranslationController>.Instance.GetString(amount == 1 ? StringNames.NumImpostorsS : StringNames.NumImpostorsP, amount);
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
+        
+        if (!OptionGroupSingleton<RoleOptions>.Instance.RoleListEnabled) return;
+
+        var players = GameData.Instance.PlayerCount;
+
+        if (players < 7)
+        {
+            return;
+        }
+
+        var list = OptionGroupSingleton<RoleOptions>.Instance;
+
+        int maxSlots = players < 15 ? players : 15;
+
+        List<RoleListOption> buckets = [];
+        if (list.RoleListEnabled)
+        {
+            for (int i = 0; i < maxSlots; i++)
+            {
+                int slotValue = i switch
+                {
+                    0 => list.Slot1,
+                    1 => list.Slot2,
+                    2 => list.Slot3,
+                    3 => list.Slot4,
+                    4 => list.Slot5,
+                    5 => list.Slot6,
+                    6 => list.Slot7,
+                    7 => list.Slot8,
+                    8 => list.Slot9,
+                    9 => list.Slot10,
+                    10 => list.Slot11,
+                    11 => list.Slot12,
+                    12 => list.Slot13,
+                    13 => list.Slot14,
+                    14 => list.Slot15,
+                    _ => -1
+                };
+
+                buckets.Add((RoleListOption)slotValue);
+            }
+        }
+
+        if (!buckets.Any(x => x is RoleListOption.Any)) return;
+
+
+        __instance.ImpostorText.text =
+            DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NumImpostorsP, 256);
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("256", "???");
     }
 }

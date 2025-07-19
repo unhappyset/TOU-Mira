@@ -13,6 +13,7 @@ public sealed class SixthSenseModifier : UniversalGameModifier, IWikiDiscoverabl
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.SixthSense;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
+    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
 
     public string GetAdvancedDescription()
     {

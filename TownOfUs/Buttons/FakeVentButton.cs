@@ -27,6 +27,11 @@ public sealed class FakeVentButton : CustomActionButton
             pb.OnClick = new Button.ButtonClickedEvent();
         }
 
+        Button!.TryCast<AbilityButton>()!
+                .commsDown
+                .GetComponent<SpriteRenderer>()
+                .sprite = Sprite.LoadAsset();
+
         SetButtonLocation(ButtonLocation.BottomLeft);
         SetButtonLocation(ButtonLocation.BottomRight);
     }

@@ -19,6 +19,7 @@ public sealed class ButtonBarryModifier : UniversalGameModifier, IWikiDiscoverab
 {
     public override string ModifierName => "Button Barry";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.ButtonBarry;
+    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
 
     public int Priority { get; set; } = 5;
     public override ModifierFaction FactionType => ModifierFaction.UniversalUtility;

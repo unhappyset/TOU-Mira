@@ -13,6 +13,7 @@ public sealed class TorchModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => "Torch";
     public override string IntroInfo => "You can also see without lights on.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Torch;
+    public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 
     public override ModifierFaction FactionType => ModifierFaction.CrewmateVisibility;
 

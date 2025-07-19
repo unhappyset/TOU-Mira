@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using System.Globalization;
 using HarmonyLib;
 using MiraAPI.Events;
+using System.Text;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
@@ -14,16 +16,21 @@ using MiraAPI.Utilities;
 using PowerTools;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Buttons;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Buttons.Impostor;
 using TownOfUs.Buttons.Modifiers;
+using TownOfUs.Buttons.Neutral;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Game.Universal;
+using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Anims;
+using TownOfUs.Options;
 using TownOfUs.Options.Modifiers.Universal;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Options.Roles.Impostor;
+using TownOfUs.Patches;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Impostor;
@@ -37,12 +44,39 @@ namespace TownOfUs.Events;
 public static class TownOfUsEventHandlers
 {
     [RegisterEvent]
+    public static void StartMeetingEventHandler(StartMeetingEvent @event)
+    {
+        foreach (var mod in ModifierUtils.GetActiveModifiers<MisfortuneTargetModifier>())
+        {
+            mod.ModifierComponent?.RemoveModifier(mod);
+        }
+
+        CustomButtonSingleton<ExeTormentButton>.Instance.Show = false;
+        CustomButtonSingleton<JesterHauntButton>.Instance.Show = false;
+        CustomButtonSingleton<PhantomSpookButton>.Instance.Show = false;
+    }
+    [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
         if (!@event.TriggeredByIntro)
         {
             return; // Only run when game starts.
         }
+
+        if (FirstDeadPatch.PlayerNames.Count > 0)
+        {
+            var stringB = new StringBuilder();
+            stringB.Append(CultureInfo.InvariantCulture, $"List Of Players That Died In Order: ");
+            foreach (var playername in FirstDeadPatch.PlayerNames)
+            {
+                stringB.Append(CultureInfo.InvariantCulture, $"{playername}, ");
+            }
+            
+            stringB = stringB.Remove(stringB.Length - 2, 2);
+            
+            Logger<TownOfUsPlugin>.Warning(stringB.ToString());
+        }
+        FirstDeadPatch.PlayerNames = [];
 
         HudManager.Instance.SetHudActive(false);
         HudManager.Instance.SetHudActive(true);
@@ -109,6 +143,21 @@ public static class TownOfUsEventHandlers
         var player = @event.Player;
         if (!MeetingHud.Instance && player.AmOwner)
         {
+            foreach (var button in CustomButtonManager.Buttons)
+            {
+                if (button is TownOfUsTargetButton<PlayerControl> touPlayerButton && touPlayerButton.Target != null)
+                {
+                    touPlayerButton.Target.cosmetics.currentBodySprite.BodySprite.SetOutline(null);
+                }
+                else if (button is TownOfUsTargetButton<DeadBody> touBodyButton && touBodyButton.Target != null)
+                {
+                    touBodyButton.Target.bodyRenderers.Do(x => x.SetOutline(null));
+                }
+                else if (button is TownOfUsTargetButton<Vent> touVentButton && touVentButton.Target != null)
+                {
+                    touVentButton.Target.SetOutline(false, true, player.Data.Role.TeamColor);
+                }
+            }
             HudManager.Instance.SetHudActive(false);
             HudManager.Instance.SetHudActive(true);
         }
@@ -387,6 +436,11 @@ public static class TownOfUsEventHandlers
 
     private static void HandleMeetingMurder(MeetingHud instance, PlayerControl source, PlayerControl target)
     {
+        var timer = (int)OptionGroupSingleton<GeneralOptions>.Instance.AddedMeetingDeathTimer;
+        if (timer > 0 && timer <= 15)
+        {
+            instance.discussionTimer -= timer;
+        }
         // To handle murders during a meeting
         var targetVoteArea = instance.playerStates.First(x => x.TargetPlayerId == target.PlayerId);
 
@@ -420,15 +474,27 @@ public static class TownOfUsEventHandlers
 
         Coroutines.Start(CoAnimateDeath(targetVoteArea));
 
-        // hide meeting menu button for victim
-        if (!source.AmOwner && !target.AmOwner)
-        {
-            MeetingMenu.Instances.Do(x => x.HideSingle(target.PlayerId));
-        }
         // hide meeting menu buttons on the victim's screen
-        else if (target.AmOwner)
+        if (target.AmOwner)
         {
             MeetingMenu.Instances.Do(x => x.HideButtons());
+            HudManager.Instance.SetHudActive(false);
+        }
+        // hide meeting menu button for victim
+        else if (!source.AmOwner && !target.AmOwner)
+        {
+            MeetingMenu.Instances.Do(x => x.HideSingle(target.PlayerId));
+            if (PlayerControl.LocalPlayer.Data.Role is SwapperRole swapperRole)
+            {
+                if (swapperRole.Swap1 == targetVoteArea)
+                {
+                    swapperRole.Swap1 = null;
+                }
+                else if (swapperRole.Swap2 == targetVoteArea)
+                {
+                    swapperRole.Swap2 = null;
+                }
+            }
         }
 
         foreach (var pva in instance.playerStates)

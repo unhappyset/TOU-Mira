@@ -15,6 +15,8 @@ public sealed class DoomsayerOptions : AbstractOptionGroup<DoomsayerRole>
 
     [ModdedNumberOption("Number Of Guesses Needed To Win", 2f, 5f, 1f, MiraNumberSuffixes.None, "0")]
     public float DoomsayerGuessesToWin { get; set; } = 3f;
+    [ModdedToggleOption("Doomsayer Can Guess Crew Investigative Roles")]
+    public bool DoomGuessInvest { get; set; } = false;
 
     [ModdedToggleOption("Doomsayer Guesses All Roles At Once")]
     public bool DoomsayerGuessAllAtOnce { get; set; } = false;

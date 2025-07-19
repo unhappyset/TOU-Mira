@@ -8,6 +8,7 @@ using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles.Crewmate;
@@ -20,10 +21,10 @@ public sealed class BomberRole(IntPtr cppPtr)
     : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     [HideFromIl2Cpp] public Bomb? Bomb { get; set; }
-
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TrapperRole>());
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public string RoleName => "Bomber";
+
+    public string RoleName => TouLocale.Get(TouNames.Bomber, "Bomber");
     public string RoleDescription => "Plant Bombs To Kill Multiple Crewmates At Once";
     public string RoleLongDescription => "Plant bombs to kill several crewmates at once";
     public Color RoleColor => TownOfUsColors.Impostor;
@@ -45,7 +46,7 @@ public sealed class BomberRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            $"The Bomber is an Impostor Killing role that can drop a bomb on the map, which detonates after {OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay} second(s)" +
+            $"The {RoleName} is an Impostor Killing role that can drop a bomb on the map, which detonates after {OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay} second(s)" +
             MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -75,7 +76,7 @@ public sealed class BomberRole(IntPtr cppPtr)
         }
         else if (OptionGroupSingleton<BomberOptions>.Instance.AllImpsSeeBomb && PlayerControl.LocalPlayer.IsImpostor())
         {
-            Bomb.BombShowTeammate(player, position);
+            Coroutines.Start(Bomb.BombShowTeammate(player, position));
         }
     }
 }
