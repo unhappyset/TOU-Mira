@@ -103,11 +103,14 @@ public static class DeathEventHandlers
             var cod = "Killed";
             switch (source.GetRoleWhenAlive())
             {
-                case SheriffRole or DeputyRole:
+                case SheriffRole:
                     cod = "Shot";
                     break;
-                case VeteranRole:
+                case DeputyRole:
                     cod = "Blasted";
+                    break;
+                case VeteranRole:
+                    cod = "Attacked";
                     break;
                 case JailorRole:
                     cod = "Executed";
@@ -128,16 +131,13 @@ public static class DeathEventHandlers
                     cod = "Reaped";
                     break;
                 case VampireRole:
-                    cod = "Bit";
+                    cod = "Bitten";
                     break;
                 case WerewolfRole:
                     cod = "Rampaged";
                     break;
                 case DoomsayerRole:
                     cod = "Doomed";
-                    break;
-                case JesterRole:
-                    cod = "Haunted";
                     break;
                 case ExecutionerRole:
                     cod = "Tormented";

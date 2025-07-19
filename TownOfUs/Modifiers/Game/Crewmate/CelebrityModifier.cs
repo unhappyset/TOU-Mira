@@ -3,8 +3,10 @@ using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
+using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
+using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -88,13 +90,18 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
             $"<size=90%>The Celebrity, {player.GetDefaultAppearance().PlayerName}, has died!</size>\n<size=70%>(Details in chat)</size>";
 
         var cod = "killed";
-        switch (source.Data.Role)
+        var role = source.GetRoleWhenAlive();
+        if (source.Data.Role is IGhostRole)
+        {
+            role = source.Data.Role;
+        }
+        switch (role)
         {
             case SheriffRole:
                 cod = "shot";
                 break;
             case VeteranRole:
-                cod = "blasted";
+                cod = "attacked";
                 break;
             case InquisitorRole:
                 cod = "vanquished";
@@ -115,10 +122,19 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
                 cod = "reaped";
                 break;
             case VampireRole:
-                cod = "bit";
+                cod = "bitten";
                 break;
             case WerewolfRole:
                 cod = "rampaged";
+                break;
+            case JesterRole:
+                cod = "haunted";
+                break;
+            case ExecutionerRole:
+                cod = "tormented";
+                break;
+            case PhantomRole:
+                cod = "spooked";
                 break;
         }
 
@@ -140,7 +156,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
         else
         {
             celeb.DeathMessage =
-                $"The Celebrity, {player.GetDefaultAppearance().PlayerName}, was {cod}! Location: {celeb.StoredRoom}, Death: By the {source.Data.Role.NiceName}, Time: ";
+                $"The Celebrity, {player.GetDefaultAppearance().PlayerName}, was {cod}! Location: {celeb.StoredRoom}, Death: By the {role.NiceName}, Time: ";
         }
     }
 
