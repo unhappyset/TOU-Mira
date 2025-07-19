@@ -22,6 +22,7 @@ using TownOfUs.Buttons.Impostor;
 using TownOfUs.Buttons.Modifiers;
 using TownOfUs.Buttons.Neutral;
 using TownOfUs.Events.TouEvents;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
@@ -51,9 +52,16 @@ public static class TownOfUsEventHandlers
             mod.ModifierComponent?.RemoveModifier(mod);
         }
 
-        CustomButtonSingleton<ExeTormentButton>.Instance.Show = false;
-        CustomButtonSingleton<JesterHauntButton>.Instance.Show = false;
-        CustomButtonSingleton<PhantomSpookButton>.Instance.Show = false;
+        var exeButton = CustomButtonSingleton<ExeTormentButton>.Instance;
+        var jestButton = CustomButtonSingleton<JesterHauntButton>.Instance;
+        var phantomButton = CustomButtonSingleton<PhantomSpookButton>.Instance;
+        if (exeButton.Show || jestButton.Show || phantomButton.Show)
+        {
+            PlayerControl.LocalPlayer.RpcRemoveModifier<IndirectAttackerModifier>();
+        }
+        exeButton.Show = false;
+        jestButton.Show = false;
+        phantomButton.Show = false;
     }
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
