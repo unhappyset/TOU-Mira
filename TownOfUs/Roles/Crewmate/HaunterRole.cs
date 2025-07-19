@@ -61,6 +61,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
 
         Player.gameObject.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
         Player.gameObject.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => Player.OnClick()));
+        Player.gameObject.GetComponent<BoxCollider2D>().enabled = true;
 
         if (Player.AmOwner)
         {
