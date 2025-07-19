@@ -258,7 +258,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         }
 
         var completedTasks = Player.myTasks.ToArray().Count(t => t.IsComplete);
-        var tasksRemaining = Player.myTasks.Count - completedTasks;
+        var tasksRemaining = Player.myTasks.Count - completedTasks - 1;
 
         CanBeClicked = tasksRemaining <= (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeClickable;
 
