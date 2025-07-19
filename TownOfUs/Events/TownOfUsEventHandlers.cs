@@ -26,6 +26,7 @@ using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Anims;
+using TownOfUs.Options;
 using TownOfUs.Options.Modifiers.Universal;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Options.Roles.Impostor;
@@ -435,6 +436,11 @@ public static class TownOfUsEventHandlers
 
     private static void HandleMeetingMurder(MeetingHud instance, PlayerControl source, PlayerControl target)
     {
+        var timer = (int)OptionGroupSingleton<GeneralOptions>.Instance.AddedMeetingDeathTimer;
+        if (timer > 0 && timer <= 15)
+        {
+            instance.discussionTimer -= timer;
+        }
         // To handle murders during a meeting
         var targetVoteArea = instance.playerStates.First(x => x.TargetPlayerId == target.PlayerId);
 

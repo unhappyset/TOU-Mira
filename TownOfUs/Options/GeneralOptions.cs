@@ -52,6 +52,8 @@ public sealed class GeneralOptions : AbstractOptionGroup
 
     [ModdedEnumOption("Disable Meeting Skip Button", typeof(SkipState))]
     public SkipState SkipButtonDisable { get; set; } = SkipState.No;
+    [ModdedNumberOption("Voting Time Added After Meeting Death", 0f, 15f, 1f, MiraNumberSuffixes.Seconds, "0.#")]
+    public float AddedMeetingDeathTimer { get; set; } = 5f;
 
     [ModdedToggleOption("First Death Shield Next Game")]
     public bool FirstDeathShield { get; set; } = true;
