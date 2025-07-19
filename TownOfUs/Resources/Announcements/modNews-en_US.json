@@ -182,7 +182,7 @@
         "\n\n\r<size=105%>Additions:</size>",
         "\n- Lovers can still kill each other by default, but this can be changed via a toggle.",
         "\n- Cause of death is shown on the endscreen and in-game",
-        "\n- Added an option for meeting eaths to add a certain amount of time to the vote timer",
+        "\n- Added an option for meeting deaths to add a certain amount of time to the vote timer",
         "\n- Added back \"GA Target Knows\" option",
         "\n\n\r<size=105%>Changes:</size>",
         "\n- Jester Haunt, Executioner Torment, and Phantom Spook no longer appear on round start; instead, a new button will appear to haunt/torment/spook a player of your choice.",
