@@ -54,10 +54,10 @@ public static class JesterEvents
                     DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Ejected", -1, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
                     var notif2 = Helpers.CreateAndShowNotification(
                         $"<b>You have one round to haunt a player of your choice to death, choose wisely.</b>",
-                        Color.white, spr: TouRoleIcons.Jester.LoadAsset());
+                        Color.white);
 
                     notif2.Text.SetOutlineThickness(0.35f);
-                    notif2.transform.localPosition = new Vector3(0f, 1.15f, -20f);
+                    notif2.transform.localPosition = new Vector3(0f, 0.85f, -20f);
                 }
                 else
                 {

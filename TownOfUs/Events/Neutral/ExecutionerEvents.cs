@@ -83,10 +83,10 @@ public static class ExecutionerEvents
                     DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Victorious", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
                     var notif2 = Helpers.CreateAndShowNotification(
                         $"<b>You have one round to torment a player of your choice to death, choose wisely.</b>",
-                        Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
+                        Color.white);
 
                     notif2.Text.SetOutlineThickness(0.35f);
-                    notif2.transform.localPosition = new Vector3(0f, 1.15f, -20f);
+                    notif2.transform.localPosition = new Vector3(0f, 0.85f, -20f);
                 }
                 else
                 {
