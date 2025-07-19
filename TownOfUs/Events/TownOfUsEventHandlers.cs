@@ -464,6 +464,17 @@ public static class TownOfUsEventHandlers
         else if (!source.AmOwner && !target.AmOwner)
         {
             MeetingMenu.Instances.Do(x => x.HideSingle(target.PlayerId));
+            if (PlayerControl.LocalPlayer.Data.Role is SwapperRole swapperRole)
+            {
+                if (swapperRole.Swap1 == targetVoteArea)
+                {
+                    swapperRole.Swap1 = null;
+                }
+                else if (swapperRole.Swap2 == targetVoteArea)
+                {
+                    swapperRole.Swap2 = null;
+                }
+            }
         }
 
         foreach (var pva in instance.playerStates)
