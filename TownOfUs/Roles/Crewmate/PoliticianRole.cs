@@ -139,9 +139,9 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
         var aliveCampaigned = aliveCrew.Count(x => x.HasModifier<PoliticianCampaignedModifier>());
         var hasMajority =
             aliveCampaigned >=
-            Math.Max(aliveCrew.Count() / 2 - 1,
+            Math.Max((aliveCrew.Count() - 1) / 2,
                 1); // minus one to account for politician, max of at least 1 crewmate campaigned
-        if (!aliveCrew.Any(x => x.Data.Role is not PoliticianRole))
+        if (aliveCrew.Count() == 1)
         {
             hasMajority = true; // if all crew are dead, politician can reveal
         }
