@@ -181,7 +181,7 @@
         "\n- Cause of death is shown on the endscreen and in-game",
         "\n- Added back \"GA Target Knows\" option",
         "\n\n\r<size=105%>Changes:</size>",
-        "\n- Jester Haunt no longer appears on round start; instead, a new button will appear to haunt a player of your choice.",
+        "\n- Jester Haunt, Executioner Torment, and Phantom Spook no longer appear on round start; instead, a new button will appear to haunt/torment/spook a player of your choice.",
         "\n- Morphling Sample has no cooldown anymore",
         "\n- Escapist Mark has no cooldown anymore",
         "\n- Investigator Footprints are now closer to how TOUR Footprints appear and act",

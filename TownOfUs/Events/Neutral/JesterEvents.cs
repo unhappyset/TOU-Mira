@@ -4,9 +4,11 @@ using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.GameOptions;
+using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using TownOfUs.Buttons.Neutral;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Localization;
@@ -45,6 +47,7 @@ public static class JesterEvents
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.Haunts) CustomButtonSingleton<JesterHauntButton>.Instance.SetActive(true, jester);
             }
             else
             {
@@ -111,6 +114,8 @@ public static class JesterEvents
             {
                 player.AddModifier<MisfortuneTargetModifier>();
             }
+            
+            CustomButtonSingleton<JesterHauntButton>.Instance.Show = true;
         }
     }
 }

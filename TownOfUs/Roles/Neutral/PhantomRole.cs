@@ -4,12 +4,12 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
-using MiraAPI.Networking;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
-using TownOfUs.Modifiers;
+using TownOfUs.Buttons.Neutral;
+using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Patches;
@@ -238,23 +238,21 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
             return;
         }
 
-        Func<PlayerControl, bool> _playerMatch = plr =>
-            !plr.HasDied() && !plr.HasModifier<InvulnerabilityModifier>() && plr != PlayerControl.LocalPlayer;
-        var killMenu = CustomPlayerMenu.Create();
-        killMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material =
-            PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
-        killMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material =
-            PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
-        killMenu.Begin(
-            _playerMatch,
-            plr =>
-            {
-                killMenu.ForceClose();
+        var allVictims = PlayerControl.AllPlayerControls.ToArray()
+            .Where(x => !x.AmOwner);
+                
+        if (!allVictims.Any())
+        {
+            return;
+        }
 
-                if (plr != null)
-                {
-                    PlayerControl.LocalPlayer.RpcCustomMurder(plr, teleportMurderer: false);
-                }
-            });
+        foreach (var player in allVictims)
+        {
+            player.AddModifier<MisfortuneTargetModifier>();
+        }
+
+        var spookButton = CustomButtonSingleton<PhantomSpookButton>.Instance;
+        spookButton.Show = true;
+        spookButton.SetActive(true, this);
     }
 }

@@ -187,7 +187,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
 
     public void CheckTargetDeath(PlayerControl? victim)
     {
-        if (Player.HasDied())
+        if (Player.HasDied() || AboutToWin || TargetVoted)
         {
             return;
         }
