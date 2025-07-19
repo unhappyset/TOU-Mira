@@ -75,9 +75,23 @@ public static class ExecutionerEvents
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
 
-                CustomButtonSingleton<ExeTormentButton>.Instance.SetActive(true, exe);
                 PlayerControl.LocalPlayer.RpcPlayerExile();
-                DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Victorious", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+                
+                if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
+                {
+                    CustomButtonSingleton<ExeTormentButton>.Instance.SetActive(true, exe);
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Victorious", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
+                    var notif2 = Helpers.CreateAndShowNotification(
+                        $"<b>You have one round to torment a player of your choice to death, choose wisely.</b>",
+                        Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
+
+                    notif2.Text.SetOutlineThickness(0.35f);
+                    notif2.transform.localPosition = new Vector3(0f, 1.15f, -20f);
+                }
+                else
+                {
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Victorious", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+                }
             }
             else
             {

@@ -49,6 +49,7 @@ public sealed class JesterHauntButton : TownOfUsButton
                     {
                         mod.ModifierComponent?.RemoveModifier(mod);
                     }
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Ejected", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
 
                     Show = false;
                 }

@@ -9,6 +9,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TownOfUs.Buttons.Neutral;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Localization;
@@ -47,7 +48,21 @@ public static class JesterEvents
 
                 notif1.Text.SetOutlineThickness(0.35f);
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-                if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.Haunts) CustomButtonSingleton<JesterHauntButton>.Instance.SetActive(true, jester);
+                if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.Haunts)
+                {
+                    CustomButtonSingleton<JesterHauntButton>.Instance.SetActive(true, jester);
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Ejected", -1, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
+                    var notif2 = Helpers.CreateAndShowNotification(
+                        $"<b>You have one round to haunt a player of your choice to death, choose wisely.</b>",
+                        Color.white, spr: TouRoleIcons.Jester.LoadAsset());
+
+                    notif2.Text.SetOutlineThickness(0.35f);
+                    notif2.transform.localPosition = new Vector3(0f, 1.15f, -20f);
+                }
+                else
+                {
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Ejected", -1, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+                }
             }
             else
             {

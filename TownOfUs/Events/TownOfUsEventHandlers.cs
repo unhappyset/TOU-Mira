@@ -20,8 +20,10 @@ using TownOfUs.Buttons;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Buttons.Impostor;
 using TownOfUs.Buttons.Modifiers;
+using TownOfUs.Buttons.Neutral;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Game.Universal;
+using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Anims;
 using TownOfUs.Options.Modifiers.Universal;
@@ -40,6 +42,18 @@ namespace TownOfUs.Events;
 
 public static class TownOfUsEventHandlers
 {
+    [RegisterEvent]
+    public static void StartMeetingEventHandler(StartMeetingEvent @event)
+    {
+        foreach (var mod in ModifierUtils.GetActiveModifiers<MisfortuneTargetModifier>())
+        {
+            mod.ModifierComponent?.RemoveModifier(mod);
+        }
+
+        CustomButtonSingleton<ExeTormentButton>.Instance.Show = false;
+        CustomButtonSingleton<JesterHauntButton>.Instance.Show = false;
+        CustomButtonSingleton<PhantomSpookButton>.Instance.Show = false;
+    }
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {

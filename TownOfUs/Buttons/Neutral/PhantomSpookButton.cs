@@ -49,6 +49,7 @@ public sealed class PhantomSpookButton : TownOfUsButton
                     {
                         mod.ModifierComponent?.RemoveModifier(mod);
                     }
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "null", -1, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
 
                     Show = false;
                 }
