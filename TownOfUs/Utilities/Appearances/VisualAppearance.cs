@@ -32,6 +32,7 @@ public sealed class VisualAppearance : NetworkedPlayerInfo.PlayerOutfit
 
         RendererColor = outfit.RendererColor;
         PlayerMaterialColor = outfit.PlayerMaterialColor;
+        PlayerMaterialBackColor = outfit.PlayerMaterialBackColor;
         PlayerMaterialVisorColor = outfit.PlayerMaterialVisorColor;
         NameColor = outfit.NameColor;
         ColorBlindTextColor = outfit.ColorBlindTextColor;
@@ -45,6 +46,7 @@ public sealed class VisualAppearance : NetworkedPlayerInfo.PlayerOutfit
 
     public Color RendererColor { get; set; } = Color.white;
     public Color? PlayerMaterialColor { get; set; }
+    public Color? PlayerMaterialBackColor { get; set; }
     public Color? PlayerMaterialVisorColor { get; set; }
     public Color? NameColor { get; set; }
     public Color ColorBlindTextColor { get; set; } = Color.white;

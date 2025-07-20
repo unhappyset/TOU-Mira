@@ -106,7 +106,13 @@ public static class AppearanceExtensions
             PlayerMaterial.SetColors((Color)appearance.PlayerMaterialColor,
                 player.cosmetics.currentBodySprite.BodySprite);
         }
-        
+
+        if (appearance.PlayerMaterialBackColor != null)
+        {
+            player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.BackColor,
+                (Color)appearance.PlayerMaterialBackColor);
+        }
+
         if (appearance.PlayerMaterialVisorColor != null)
         {
             player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, 
