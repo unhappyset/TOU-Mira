@@ -24,11 +24,6 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
         MiraEventManager.InvokeEvent(touAbilityEvent);
     }
 
-    public override void OnDeath(DeathReason reason)
-    {
-        ModifierComponent!.RemoveModifier(this);
-    }
-
     public override void FixedUpdate()
     {
         base.FixedUpdate();

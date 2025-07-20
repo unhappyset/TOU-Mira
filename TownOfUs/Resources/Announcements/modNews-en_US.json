@@ -207,6 +207,7 @@
         "\n\nThe Mira team really appreciates all of your support, thank you so much for playing the mod!",
         "\n\n\r<size=105%>Crewmate Role Bugfixes:</size>",
         "\n- Imitator checks should no longer prevent them from selecting a new role",
+        "\n- Lookout can see the roles that interacted with their dead targets again",
         "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
         "\n- Jester Haunt, Phantom Spook, and Executioner Torment ignore shields correctly now",
         "\n\n\r<size=105%>Impostor Role Bugfixes:</size>",
