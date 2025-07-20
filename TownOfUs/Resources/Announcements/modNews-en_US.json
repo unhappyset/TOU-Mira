@@ -195,6 +195,27 @@
         "\n\n\r<size=105%>Removals:</size>",
         "\n- Impostors both being lovers can no longer happen as it simply life-links impostors to no benefit."
       ]
+    },
+    {
+      "Date": "2025-07-20T12:50:00Z",
+      "Number": "100007",
+      "ShortTitle": "TOU: Mira DEV",
+      "SubTitle": "Current changelog as of this build",
+      "Title": "Town of Us: Mira v1.1.0 PROGRESS",
+      "Text": [
+        "\r<b> This developer build has a handful of changes compared to the public v1.0.5 release. Changelog is subject to change.</b>",
+        "\n\nThe Mira team really appreciates all of your support, thank you so much for playing the mod!",
+        "\n\n\r<size=105%>Crewmate Role Bugfixes:</size>",
+        "\n- Imitator checks should no longer prevent them from selecting a new role",
+        "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
+        "\n- Jester Haunt, Phantom Spook, and Executioner Torment ignore shields correctly now",
+        "\n\n\r<size=105%>Impostor Role Bugfixes:</size>",
+        "\n- If an Undertaker dies while dragging a body, the body will be let go automatically",
+        "\n\n\r<size=105%>Modifier Bugfixes:</size>",
+        "\n- Shy ghosts are no longer invisible, but their hat stays translucent",
+        "\n\n\r<size=105%>Improvements:</size>",
+        "\n- Dying to Veteran now says \"Attacked\", dying to Deputy says \"Blasted\", and dying to Vampire says \"Bitten\""
+      ]
     }
   ]
 }

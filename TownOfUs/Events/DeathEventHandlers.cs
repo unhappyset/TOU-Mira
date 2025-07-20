@@ -139,6 +139,9 @@ public static class DeathEventHandlers
                 case DoomsayerRole:
                     cod = "Doomed";
                     break;
+                case JesterRole:
+                    cod = "Haunted";
+                    break;
                 case ExecutionerRole:
                     cod = "Tormented";
                     break;
