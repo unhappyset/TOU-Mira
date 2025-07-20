@@ -18,6 +18,7 @@ public class PrefabLoader
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
     [HarmonyPostfix]
+    [HarmonyPriority(Priority.Last)]
     public static void Postfix()
     {
         Coroutines.Start(LoadMaps());
@@ -65,6 +66,7 @@ public class PrefabLoader
 
         if (reference.IsValid())
         {
+            // TODO: find out why this errors
             shipStatus.Value = reference.OperationHandle.Result.Cast<GameObject>().GetComponent<T>();
         }
         else

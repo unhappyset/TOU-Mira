@@ -30,6 +30,11 @@ namespace TownOfUs.Utilities;
 
 public static class Extensions
 {
+    public static bool IsGhostDead(this NetworkedPlayerInfo data)
+    {
+        return data.Role is IGhostRole ghostRole ? !ghostRole.GhostActive : data.IsDead;
+    }
+
     public static ITownOfUsRole? GetTownOfUsRole(this PlayerControl player)
     {
         var role = player.Data?.Role as ITownOfUsRole;

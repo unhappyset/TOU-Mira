@@ -30,7 +30,7 @@ public static class GhostRoleCanUsePatches
         if (playerControl.Data.Role is IGhostRole ghost && ghost.GhostActive && pc.IsDead)
         {
             // Logger<TownOfUsPlugin>.Message($"CanUsePrefixPatch IsDead");
-            pc.IsDead = false;
+            pc.IsDead = false; // TODO: find a better way
             __state = true;
         }
 

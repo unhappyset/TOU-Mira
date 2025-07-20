@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Reflection;
+using System.Reflection.Emit;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Il2CppInterop.Runtime;
@@ -125,11 +126,32 @@ public static class ModCompatibility
 
         harmony.Patch(submergedExileWrapUp, null,
             new HarmonyMethod(AccessTools.Method(compatType, nameof(ExileRoleChangePostfix))));
-        harmony.Patch(canUse, new HarmonyMethod(AccessTools.Method(compatType, nameof(CanUsePrefix))),
-            new HarmonyMethod(AccessTools.Method(compatType, nameof(CanUsePostfix))));
+        harmony.Patch(canUse, null, null, new HarmonyMethod(typeof(ModCompatibility), nameof(SubmergedElevatorTranspilerPatch)));
 
         SubLoaded = true;
         Logger<TownOfUsPlugin>.Message("Submerged was detected");
+    }
+
+    public static IEnumerable<CodeInstruction> SubmergedElevatorTranspilerPatch(IEnumerable<CodeInstruction> instructions)
+    {
+        var found = false;
+        foreach (var instruction in instructions)
+        {
+            if (instruction.opcode == OpCodes.Callvirt &&
+                instruction.operand is MethodInfo { Name: "get_IsDead", DeclaringType.Name: "NetworkedPlayerInfo" })
+            {
+                found = true;
+                yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Utilities.Extensions), nameof(Utilities.Extensions.IsGhostDead)));
+            }
+            else
+            {
+                yield return instruction;
+            }
+        }
+        if (!found)
+        {
+            Logger<TownOfUsPlugin>.Error("Failed to find the IsDead call in SubmergedElevator transpiler");
+        }
     }
 
     public static void CheckOutOfBoundsElevator(PlayerControl player)
@@ -212,28 +234,6 @@ public static class ModCompatibility
     {
         Coroutines.Start(WaitMeeting(ResetTimers));
         Coroutines.Start(WaitMeeting(GhostRoleBegin));
-    }
-
-    public static void CanUsePrefix()
-    {
-        var player = PlayerControl.LocalPlayer;
-        var targetData = player.CachedPlayerData;
-
-        if (player.Data.Role is IGhostRole ghost && ghost.GhostActive && targetData.IsDead)
-        {
-            targetData.IsDead = false;
-        }
-    }
-
-    public static void CanUsePostfix()
-    {
-        var player = PlayerControl.LocalPlayer;
-        var targetData = player.CachedPlayerData;
-
-        if (player.Data.Role is IGhostRole && !targetData.IsDead)
-        {
-            targetData.IsDead = true;
-        }
     }
 
     public static IEnumerator WaitMeeting(Action next)

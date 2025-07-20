@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using TownOfUs.Roles;
+using TownOfUs.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -33,38 +33,29 @@ public static class GhostRoleUsePatches
     [HarmonyPatch(typeof(MovingPlatformBehaviour))]
     [HarmonyPatch(nameof(MovingPlatformBehaviour.Use), typeof(PlayerControl))]
     [HarmonyPrefix]
-    public static bool MovingPlatformBehaviourUsePrefixPatch(Il2CppSystem.Object __instance,
-        [HarmonyArgument(0)] PlayerControl player, ref bool __state)
+    public static bool MovingPlatformBehaviourUsePrefixPatch(MovingPlatformBehaviour __instance, PlayerControl player)
     {
-        __state = false;
-
-        if (player.Data.Role is IGhostRole { GhostActive: true } && player.Data.IsDead)
+        var vector = __instance.transform.position - player.transform.position;
+        if (player.Data.IsGhostDead() || player.Data.Disconnected)
         {
-            // Logger<TownOfUsPlugin>.Message($"CanUsePrefixPatch IsDead");
-            player.Data.IsDead = false;
-            __state = true;
+            return false;
         }
 
-        return true;
-    }
-
-    [HarmonyPatch(typeof(MovingPlatformBehaviour), nameof(MovingPlatformBehaviour.Use), typeof(PlayerControl))]
-    [HarmonyPostfix]
-    public static void MovingPlatformBehaviourUsePostfixPatch([HarmonyArgument(0)] PlayerControl player, ref bool __state)
-    {
-        if (__state)
-            // Logger<TownOfUsPlugin>.Message($"CanUsePostfixPatch IsDead");
+        if (__instance.Target || vector.magnitude > 3f)
         {
-            player.Data.IsDead = true;
+            return false;
         }
+
+        __instance.IsDirty = true;
+        __instance.StartCoroutine(__instance.UsePlatform(player));
+        return false;
     }
 
     [HarmonyPatch(typeof(ZiplineBehaviour), nameof(ZiplineBehaviour.Use), typeof(PlayerControl), typeof(bool))]
     [HarmonyPrefix]
     public static bool ZiplineBehaviourUsePrefixPatch(ZiplineBehaviour __instance, PlayerControl player, bool fromTop)
     {
-        var isDead = player.Data.Role is IGhostRole ghostRole ? !ghostRole.GhostActive : player.Data.IsDead;
-        if (isDead || player.Data.Disconnected)
+        if (player.Data.IsGhostDead() || player.Data.Disconnected)
         {
             return false;
         }
@@ -109,9 +100,7 @@ public static class GhostRoleUsePatches
         }
 
         var data = target.Data;
-        var isDead = data.Role is IGhostRole ghostRole ? !ghostRole.GhostActive : data.IsDead;
-
-        if (data == null || isDead || target.inMovingPlat)
+        if (data == null || data.IsGhostDead() || target.inMovingPlat)
         {
             __instance.logger.Warning($"Invalid zipline use from {target.PlayerId}");
             return false;
