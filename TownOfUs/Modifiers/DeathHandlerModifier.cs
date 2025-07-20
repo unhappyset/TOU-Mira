@@ -37,7 +37,7 @@ public sealed class DeathHandlerModifier : BaseModifier
     public static IEnumerator CoWriteDeathHandler(PlayerControl player, string causeOfDeath, int roundOfDeath,
         DeathHandlerOverride diedThisRound, string killedBy, DeathHandlerOverride lockInfo)
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.01f);
         var deathHandler = player.GetModifier<DeathHandlerModifier>()!;
         if (causeOfDeath != "null") deathHandler.CauseOfDeath = causeOfDeath;
         if (roundOfDeath != -1) deathHandler.RoundOfDeath = roundOfDeath;
