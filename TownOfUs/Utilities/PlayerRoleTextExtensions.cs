@@ -113,6 +113,15 @@ public static class PlayerRoleTextExtensions
         {
             name += "<color=#006600> +</color>";
         }
+        
+        if ((player.HasModifier<MagicMirrorModifier>(x => x.Mirrorcaster.AmOwner) &&
+             PlayerControl.LocalPlayer.IsRole<MirrorcasterRole>())
+            || (player.HasModifier<MagicMirrorModifier>() &&
+                ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
+                 || (player.AmOwner && player.TryGetModifier<MagicMirrorModifier>(out var mm) && mm.VisibleSymbol))))
+        {
+            name += "<color=#90A2C3>〚〛</color>";
+        }
 
         if ((player.HasModifier<ClericBarrierModifier>(x => x.Cleric.AmOwner) &&
              PlayerControl.LocalPlayer.IsRole<ClericRole>())

@@ -145,6 +145,11 @@ public static class DeathEventHandlers
                 case ExecutionerRole:
                     cod = "Tormented";
                     break;
+                case MirrorcasterRole mirror:
+                    cod = mirror.UnleashString != string.Empty ? mirror.UnleashString : "Killed";
+                    mirror.UnleashString = string.Empty;
+                    mirror.ContainedRole = null;
+                    break;
                 case InquisitorRole:
                     cod = "Vanquished";
                     break;

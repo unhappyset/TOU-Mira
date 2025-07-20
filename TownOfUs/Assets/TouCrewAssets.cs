@@ -61,6 +61,11 @@ public static class TouCrewAssets
     public static LoadableAsset<Sprite> MedicSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.MedicButton.png");
 
+    public static LoadableAsset<Sprite> MagicMirrorSprite { get; } =
+        new LoadableResourceAsset($"{ButtonPath}.MagicMirrorButton.png");
+    
+    public static LoadableAsset<Sprite> UnleashSprite { get; } =
+        new LoadableResourceAsset($"{ButtonPath}.UnleashButton.png");
     public static LoadableAsset<Sprite> FortifySprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.FortifyButton.png");
 
