@@ -17,6 +17,7 @@ using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Components;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Crewmate;
@@ -33,7 +34,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     public int MaxKills { get; set; }
     public int SafeShotsLeft { get; set; }
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public string RoleName => "Vigilante";
+    public string RoleName => TouLocale.Get(TouNames.Vigilante, "Vigilante");
     public string RoleDescription => "Kill Impostors If You Can Guess Their Roles";
     public string RoleLongDescription => "Guess the roles of impostors mid-meeting to kill them!";
     public Color RoleColor => TownOfUsColors.Vigilante;
@@ -70,7 +71,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     public string GetAdvancedDescription()
     {
         return
-            "The Vigilante is a Crewmate Killing role that can guess players roles in meetings. " +
+            $"The {TouLocale.Get(TouNames.Vigilante, "Vigilante")} is a Crewmate Killing role that can guess players roles in meetings. " +
             "If they guess correctly, the other player will die. If not, they will die. "
             + MiscUtils.AppendOptionsText(GetType());
     }
