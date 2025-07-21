@@ -207,6 +207,7 @@
         "\n\nThe Mira team really appreciates all of your support, thank you so much for playing the mod!",
         "\n\n\r<size=105%>Crewmate Role Bugfixes:</size>",
         "\n- Imitator checks should no longer prevent them from selecting a new role",
+        "\n- Warden will add a second to the cooldown of whatever ability is used on a fortified player to prevent brute force attempts",
         "\n- Lookout can see the roles that interacted with their dead targets again",
         "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
         "\n- Jester Haunt, Phantom Spook, and Executioner Torment ignore shields correctly now",
