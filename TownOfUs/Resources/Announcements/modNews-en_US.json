@@ -209,6 +209,7 @@
         "\n- Imitator checks should no longer prevent them from selecting a new role",
         "\n- Warden will add a second to the cooldown of whatever ability is used on a fortified player to prevent brute force attempts",
         "\n- Lookout can see the roles that interacted with their dead targets again",
+        "\n- Prosecutor uses are used correctly and no longer force a prosecution twice in a row",
         "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
         "\n- Jester Haunt, Phantom Spook, and Executioner Torment ignore shields correctly now",
         "\n\n\r<size=105%>Impostor Role Bugfixes:</size>",
