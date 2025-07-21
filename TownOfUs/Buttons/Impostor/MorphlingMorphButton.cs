@@ -52,9 +52,12 @@ public sealed class MorphlingMorphButton : TownOfUsRoleButton<MorphlingRole>, IA
 
     public override bool CanUse()
     {
-        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= EffectDuration - 2f)) &&
-               !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() &&
-               !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
+        if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        {
+            return false;
+        }
+
+        return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= EffectDuration - 2f));
     }
 
     protected override void OnClick()

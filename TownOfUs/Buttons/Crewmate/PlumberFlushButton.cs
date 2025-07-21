@@ -80,8 +80,11 @@ public sealed class PlumberFlushButton : TownOfUsRoleButton<PlumberRole, Vent>
         Target = IsTargetValid(newTarget) ? newTarget : null;
         SetOutline(true);
 
-        return Timer <= 0 && Target != null
-                          && !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>()
-                          && !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>();
+        if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        {
+            return false;
+        }
+
+        return Timer <= 0 && Target != null;
     }
 }
