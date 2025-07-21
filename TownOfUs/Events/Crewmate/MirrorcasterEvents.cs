@@ -4,11 +4,13 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using TownOfUs.Buttons;
+using TownOfUs.Buttons.Neutral;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 
 namespace TownOfUs.Events.Crewmate;
@@ -107,6 +109,11 @@ public static class MirrorcasterEvents
     private static void ResetButtonTimer(PlayerControl source, CustomActionButton<PlayerControl>? button = null)
     {
         button?.ResetCooldownAndOrEffect();
+
+        if (source.Data.Role is WerewolfRole)
+        {
+            CustomButtonSingleton<WerewolfRampageButton>.Instance.ResetCooldownAndOrEffect();
+        }
 
         // Reset impostor kill cooldown if they attack a shielded player
         if (!source.AmOwner || !source.IsImpostor())
