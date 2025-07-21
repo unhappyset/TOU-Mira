@@ -7,6 +7,7 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Events;
 using TownOfUs.GameOver;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
@@ -130,7 +131,7 @@ public static class LogicGameFlowPatches
             return false;
         }
 
-        if (DeathHandlerModifier.IsCoroutineRunning)
+        if (DeathHandlerModifier.IsCoroutineRunning || DeathEventHandlers.IsDeathRecent)
         {
             return false;
         }
