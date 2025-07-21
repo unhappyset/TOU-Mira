@@ -62,10 +62,7 @@ public static class ProsecutorEvents
 
         foreach (var pros in CustomRoleUtils.GetActiveRolesOfType<ProsecutorRole>())
         {
-            if (PlayerControl.LocalPlayer.IsHost() && pros.HasProsecuted && player.TryGetModifier<DeathHandlerModifier>(out var deathHandler) && !deathHandler.LockInfo)
-            {
-                DeathHandlerModifier.RpcUpdateDeathHandler(player, "Prosecuted", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {pros.Player.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
-            }
+            DeathHandlerModifier.UpdateDeathHandler(player, "Prosecuted", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {pros.Player.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
 
             if (pros.Player.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
             {
@@ -85,7 +82,7 @@ public static class ProsecutorEvents
                 if (OptionGroupSingleton<ProsecutorOptions>.Instance.ExileOnCrewmate)
                 {
                     pros.Player.Exiled();
-                    if (PlayerControl.LocalPlayer.IsHost()) DeathHandlerModifier.RpcUpdateDeathHandler(pros.Player, "Punished", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+                    DeathHandlerModifier.UpdateDeathHandler(pros.Player, "Punished", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
                 }
                 else
                 {
