@@ -76,10 +76,11 @@ public static class DeathEventHandlers
         {
             return;
         }
-        if (!(exiled.TryGetModifier<DeathHandlerModifier>(out var deathHandler) && deathHandler.LockInfo))
+        if (exiled.TryGetModifier<DeathHandlerModifier>(out var deathHandler) && !deathHandler.LockInfo)
         {
-            DeathHandlerModifier.UpdateDeathHandler(exiled, "Ejected", CurrentRound,
-                DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+            deathHandler.CauseOfDeath = "Ejected";
+            deathHandler.DiedThisRound = false;
+            deathHandler.RoundOfDeath = CurrentRound;
         }
     }
 
@@ -98,15 +99,14 @@ public static class DeathEventHandlers
         var source = murderEvent.Source;
         var target = murderEvent.Target;
         
-        if (target == source &&
-            !(target.TryGetModifier<DeathHandlerModifier>(out var deathHandler) && deathHandler.LockInfo))
+        if (target == source && target.TryGetModifier<DeathHandlerModifier>(out var deathHandler) && !deathHandler.LockInfo)
         {
-            DeathHandlerModifier.UpdateDeathHandler(target, "Suicide", CurrentRound,
-                (MeetingHud.Instance || ExileController.Instance)
-                    ? DeathHandlerOverride.SetFalse
-                    : DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
+            deathHandler.CauseOfDeath = "Ejected";
+            deathHandler.DiedThisRound = false;
+            deathHandler.RoundOfDeath = CurrentRound;
+            deathHandler.LockInfo = true;
         }
-        else if (!(target.TryGetModifier<DeathHandlerModifier>(out var deathHandler2) && deathHandler2.LockInfo))
+        else if (target.TryGetModifier<DeathHandlerModifier>(out var deathHandler2) && !deathHandler2.LockInfo)
         {
             var cod = "Killed";
             switch (source.GetRoleWhenAlive())
@@ -167,10 +167,11 @@ public static class DeathEventHandlers
             {
                 cod = "Spooked";
             }
-            DeathHandlerModifier.UpdateDeathHandler(target, cod, CurrentRound,
-                (MeetingHud.Instance || ExileController.Instance)
-                    ? DeathHandlerOverride.SetFalse
-                    : DeathHandlerOverride.SetTrue, $"By {source.Data.PlayerName}", DeathHandlerOverride.SetTrue);
+            
+            deathHandler2.CauseOfDeath = cod;
+            deathHandler2.KilledBy = $"By {source.Data.PlayerName}";
+            deathHandler2.DiedThisRound = !MeetingHud.Instance && !ExileController.Instance;
+            deathHandler2.RoundOfDeath = CurrentRound;
         }
     }
 

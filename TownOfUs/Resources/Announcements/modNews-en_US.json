@@ -217,6 +217,7 @@
         "\n- Amnesiac will remove douses/infection when picking up Arsonist/Plaguebearer",
         "\n\n\r<size=105%>Impostor Role Bugfixes:</size>",
         "\n- If an Undertaker dies while dragging a body, the body will be let go automatically",
+        "\n- Abilities can be used in Eclipse and while flashed now (bodies are not reportable in grenade flash though, only eclipse)",
         "\n\n\r<size=105%>Modifier Bugfixes:</size>",
         "\n- Shy ghosts are no longer invisible, but their hat stays translucent",
         "\n\n\r<size=105%>Additions:</size>",
