@@ -46,7 +46,7 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
     public DoomableType DoomHintType => DoomableType.Protective;
     public string RoleName => "Mirrorcaster";
     public string RoleDescription => "Reflect Attacks Onto Others";
-    public string RoleLongDescription => "Protect a player with a Magic Mirror, then\nUnleash onto another player to kill them";
+    public string RoleLongDescription => "Protect a player with a Magic Mirror.\nIf they are directly attacked, then\nunleash the attack onto another player!";
     public Color RoleColor => TownOfUsColors.Mirrorcaster;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
