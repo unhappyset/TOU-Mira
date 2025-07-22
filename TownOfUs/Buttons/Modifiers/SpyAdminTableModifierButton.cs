@@ -100,9 +100,12 @@ public sealed class SpyAdminTableModifierButton : TownOfUsButton
 
     public override bool CanUse()
     {
-        return Timer <= 0 && !EffectActive && AvailableCharge > 0f &&
-               !PlayerControl.LocalPlayer.HasModifier<DisabledModifier>() &&
-               !PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>();
+        if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        {
+            return false;
+        }
+
+        return Timer <= 0 && !EffectActive && AvailableCharge > 0f;
     }
 
     public override void CreateButton(Transform parent)

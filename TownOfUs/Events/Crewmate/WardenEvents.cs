@@ -100,6 +100,20 @@ public static class WardenEvents
         }
 
         @event.Cancel();
+        
+        // The reason this exists is that otherwise, players can brute force through the warden fort if they spam fast enough
+        if (@event is MiraButtonClickEvent buttonClick)
+        {
+            var button = buttonClick.Button as CustomActionButton<PlayerControl>;
+            if (button != null)
+            {
+                button.Timer += 1f;
+            }
+        }
+        if (@event is BeforeMurderEvent && source.IsImpostor())
+        {
+            source.SetKillTimer(source.killTimer + 1f);
+        }
 
         // Find the warden which fortified the target
         var warden = target.GetModifier<WardenFortifiedModifier>()?.Warden.GetRole<WardenRole>();

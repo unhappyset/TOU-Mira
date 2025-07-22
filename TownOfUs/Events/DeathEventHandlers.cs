@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using System.Collections;
+using HarmonyLib;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
@@ -16,6 +17,13 @@ namespace TownOfUs.Events;
 
 public static class DeathEventHandlers
 {
+    public static bool IsDeathRecent { get; set; }
+    public static IEnumerator CoWaitDeathHandler()
+    {
+        IsDeathRecent = true;
+        yield return new WaitForSeconds(0.15f);
+        IsDeathRecent = false;
+    }
     public static int CurrentRound { get; set; } = 1;
 
     [RegisterEvent(-1)]
@@ -56,6 +64,7 @@ public static class DeathEventHandlers
             }
             deathHandler.CauseOfDeath = cod;
             deathHandler.RoundOfDeath = CurrentRound;
+            Coroutines.Start(CoWaitDeathHandler());
         }
     }
     
@@ -72,7 +81,6 @@ public static class DeathEventHandlers
             deathHandler.CauseOfDeath = "Ejected";
             deathHandler.DiedThisRound = false;
             deathHandler.RoundOfDeath = CurrentRound;
-            deathHandler.LockInfo = true;
         }
     }
 
@@ -93,8 +101,8 @@ public static class DeathEventHandlers
         
         if (target == source && target.TryGetModifier<DeathHandlerModifier>(out var deathHandler) && !deathHandler.LockInfo)
         {
-            deathHandler.CauseOfDeath = "Suicide";
-            deathHandler.DiedThisRound = !MeetingHud.Instance && !ExileController.Instance;
+            deathHandler.CauseOfDeath = "Ejected";
+            deathHandler.DiedThisRound = false;
             deathHandler.RoundOfDeath = CurrentRound;
             deathHandler.LockInfo = true;
         }
@@ -139,8 +147,16 @@ public static class DeathEventHandlers
                 case DoomsayerRole:
                     cod = "Doomed";
                     break;
+                case JesterRole:
+                    cod = "Haunted";
+                    break;
                 case ExecutionerRole:
                     cod = "Tormented";
+                    break;
+                case MirrorcasterRole mirror:
+                    cod = mirror.UnleashString != string.Empty ? mirror.UnleashString : "Killed";
+                    mirror.UnleashString = string.Empty;
+                    mirror.ContainedRole = null;
                     break;
                 case InquisitorRole:
                     cod = "Vanquished";
@@ -156,7 +172,6 @@ public static class DeathEventHandlers
             deathHandler2.KilledBy = $"By {source.Data.PlayerName}";
             deathHandler2.DiedThisRound = !MeetingHud.Instance && !ExileController.Instance;
             deathHandler2.RoundOfDeath = CurrentRound;
-            deathHandler2.LockInfo = true;
         }
     }
 

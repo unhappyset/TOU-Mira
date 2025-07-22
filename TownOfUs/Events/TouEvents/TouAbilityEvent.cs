@@ -61,6 +61,7 @@ public enum AbilityType
     JailorJail,
     LookoutWatch,
     MedicShield,
+    MagicMirror,
     MediumMediate,
     OracleBless,
     OracleConfess,

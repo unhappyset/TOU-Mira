@@ -22,13 +22,17 @@ public static class VeteranEvents
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
-        if (@event.Player.AmOwner && @event.Player.Data.Role is VeteranRole &&
+        if (@event.Player.Data.Role is VeteranRole vetRole &&
             OptionGroupSingleton<VeteranOptions>.Instance.TaskUses)
         {
-            var button = CustomButtonSingleton<VeteranAlertButton>.Instance;
-            ++button.UsesLeft;
-            ++button.ExtraUses;
-            button.SetUses(button.UsesLeft);
+            if (@event.Player.AmOwner)
+            {
+                var button = CustomButtonSingleton<VeteranAlertButton>.Instance;
+                ++button.UsesLeft;
+                ++button.ExtraUses;
+                button.SetUses(button.UsesLeft);
+            }
+            ++vetRole.Alerts;
         }
     }
 

@@ -387,6 +387,12 @@ public static class TownOfUsEventHandlers
         MeetingMenu.Instances.Do(x => x.HideSingle(player.PlayerId));
     }
 
+    private static IEnumerator CoHideHud()
+    {
+        yield return new WaitForSeconds(0.01f);
+        HudManager.Instance.SetHudActive(false);
+    }
+
     private static IEnumerator CoAnimateDeath(PlayerVoteArea voteArea)
     {
         var animDic = new Dictionary<AnimationClip, AnimationClip>
@@ -449,6 +455,10 @@ public static class TownOfUsEventHandlers
         {
             instance.discussionTimer -= timer;
         }
+        else if (timer >= 15)
+        {
+            instance.discussionTimer -= 15f;
+        }
         // To handle murders during a meeting
         var targetVoteArea = instance.playerStates.First(x => x.TargetPlayerId == target.PlayerId);
 
@@ -475,7 +485,7 @@ public static class TownOfUsEventHandlers
         }
 
         targetVoteArea.Overlay.gameObject.SetActive(false);
-        if (target.Data.Role is MayorRole)
+        if (target.GetRoleWhenAlive() is MayorRole mayor && mayor.Revealed)
         {
             MayorRole.DestroyReveal(targetVoteArea);
         }
@@ -486,7 +496,7 @@ public static class TownOfUsEventHandlers
         if (target.AmOwner)
         {
             MeetingMenu.Instances.Do(x => x.HideButtons());
-            HudManager.Instance.SetHudActive(false);
+            Coroutines.Start(CoHideHud());
         }
         // hide meeting menu button for victim
         else if (!source.AmOwner && !target.AmOwner)

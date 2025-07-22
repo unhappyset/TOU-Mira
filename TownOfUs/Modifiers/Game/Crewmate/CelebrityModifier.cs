@@ -1,4 +1,5 @@
-﻿using MiraAPI.GameOptions;
+﻿using System.Globalization;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using Reactor.Networking.Attributes;
@@ -135,6 +136,10 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
                 break;
             case PhantomRole:
                 cod = "spooked";
+                break;
+            case MirrorcasterRole mirror:
+                cod = mirror.UnleashString != string.Empty ? mirror.UnleashString.ToLower(CultureInfo.InvariantCulture) : "killed";
+                if (mirror.ContainedRole != null) role = mirror.ContainedRole;
                 break;
         }
 
