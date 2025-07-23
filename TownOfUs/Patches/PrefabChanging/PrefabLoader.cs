@@ -66,7 +66,7 @@ public class PrefabLoader
 
         if (reference.IsValid())
         {
-            // TODO: find out why this errors
+            // TODO: find out why this errors if asset is already loaded by another mod
             shipStatus.Value = reference.OperationHandle.Result.Cast<GameObject>().GetComponent<T>();
         }
         else
