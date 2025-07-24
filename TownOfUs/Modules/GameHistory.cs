@@ -39,7 +39,7 @@ public sealed class BodyReport
         var reportColorDuration = OptionGroupSingleton<MedicOptions>.Instance.MedicReportColorDuration;
         var reportNameDuration = OptionGroupSingleton<MedicOptions>.Instance.MedicReportNameDuration;
 
-        if (br.KillAge > reportColorDuration * 1000)
+        if (br.KillAge > reportColorDuration * 1000 && reportColorDuration > 0)
         {
             return
                 $"Body Report: The corpse is too old to gain information from. (Killed {Math.Round(br.KillAge / 1000)}s ago)";
@@ -65,7 +65,7 @@ public sealed class BodyReport
 
     public static string ParseDetectiveReport(BodyReport br)
     {
-        if (br.KillAge > OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveFactionDuration * 1000)
+        if (br.KillAge > OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveFactionDuration * 1000 && OptionGroupSingleton<DetectiveOptions>.Instance.DetectiveFactionDuration > 0)
         {
             return
                 $"Body Report: The corpse is too old to gain information from. (Killed {Math.Round(br.KillAge / 1000)}s ago)";
