@@ -151,6 +151,19 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
                 exeMod.OwnerId = player.PlayerId;
             }
         }
+        else if (player.Data.Role is VampireRole)
+        {
+            if (target.HasModifier<VampireBittenModifier>())
+            {
+                // Makes the amne stay with the bitten modifier
+                player.AddModifier<VampireBittenModifier>();
+            }
+            else
+            {
+                // Makes the og vampire a bitten vampire so to speak, yes it makes it more confusing, but that's how it is, deal with it - Atony
+                target.AddModifier<VampireBittenModifier>();
+            }
+        }
 
         if (player.AmOwner)
         {
