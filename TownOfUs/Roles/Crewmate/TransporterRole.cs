@@ -290,6 +290,11 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             {
                 return null;
             }
+            
+            if (pc.HasModifier<NoTransportModifier>())
+            {
+                return null;
+            }
             // FAKE PLAYER MUST BE A MONO BEHAVIOUR FOR THIS TO WORK
             /*var fakePlayer = Utilities.MiscUtils.GetFakePlayer(pc)?.body;
 
