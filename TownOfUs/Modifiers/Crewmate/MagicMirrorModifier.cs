@@ -51,6 +51,12 @@ public sealed class MagicMirrorModifier(PlayerControl mirrorcaster) : BaseShield
 
     public override void Update()
     {
+        if (Player == null || Mirrorcaster == null)
+        {
+            ModifierComponent?.RemoveModifier(this);
+            return;
+        }
+        
         if (!MeetingHud.Instance && MedicShield?.gameObject != null)
         {
             MedicShield?.SetActive(!Player.IsConcealed() && IsVisible && ShowShield);

@@ -77,6 +77,12 @@ public sealed class MedicShieldModifier(PlayerControl medic) : BaseShieldModifie
 
     public override void Update()
     {
+        if (Player == null || Medic == null)
+        {
+            ModifierComponent?.RemoveModifier(this);
+            return;
+        }
+        
         if (!MeetingHud.Instance && MedicShield?.gameObject != null)
         {
             MedicShield?.SetActive(!Player.IsConcealed() && IsVisible && ShowShield);

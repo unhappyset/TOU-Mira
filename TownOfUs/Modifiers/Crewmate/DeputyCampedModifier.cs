@@ -23,6 +23,11 @@ public sealed class DeputyCampedModifier(PlayerControl deputy) : BaseModifier
     public override void FixedUpdate()
     {
         base.FixedUpdate();
+        if (Player == null || Deputy == null)
+        {
+            ModifierComponent?.RemoveModifier(this);
+            return;
+        }
 
         if (Deputy.AmOwner)
         {

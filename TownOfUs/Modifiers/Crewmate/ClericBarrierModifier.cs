@@ -72,6 +72,12 @@ public sealed class ClericBarrierModifier(PlayerControl cleric) : BaseShieldModi
 
     public override void Update()
     {
+        if (Player == null || Cleric == null)
+        {
+            ModifierComponent?.RemoveModifier(this);
+            return;
+        }
+        
         if (!MeetingHud.Instance && ClericBarrier?.gameObject != null)
         {
             ClericBarrier?.SetActive(!Player.IsConcealed() && IsVisible && ShowBarrier);
