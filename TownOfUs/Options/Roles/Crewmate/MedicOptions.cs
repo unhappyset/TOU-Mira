@@ -21,6 +21,11 @@ public sealed class MedicOptions : AbstractOptionGroup<MedicRole>
 
     [ModdedToggleOption("Can Give Shield Away Next Round")]
     public bool ChangeTarget { get; set; } = true;
+    public ModdedNumberOption MedicShieldUses { get; } = new($"Max Amount of Shield Uses", 3f, 0f, 15f,
+        1f, MiraNumberSuffixes.None, "0", true)
+    {
+        Visible = () => OptionGroupSingleton<MedicOptions>.Instance.ChangeTarget
+    };
 
     [ModdedToggleOption("Shield Breaks On Murder Attempt")]
     public bool ShieldBreaks { get; set; } = false;

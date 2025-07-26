@@ -228,6 +228,7 @@
         "\n- Zipline and Ladder work for Phantom/Haunter once again",
         "\n\n\r<size=105%>Additions:</size>",
         "\n- New Role Buckets: Impostor Power and Impostor Special",
+        "\n- Added a Maximum Medic Shield Uses setting",
         "\n- New Crewmate Protective Role: The Mirrorcaster!\nThis role can absorb direct attacks from players, and unleash them onto others!",
         "\n- New Impostor Power Role: The Ambassador!\nThis role can retrain themselves or other impostors to roles of the same caliber (note: the confirmation option is not functional right now. Role does not play correctly with FFA Impostor mode at the moment either)",
         "\n\n\r<size=105%>Improvements:</size>",

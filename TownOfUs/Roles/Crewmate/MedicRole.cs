@@ -71,7 +71,7 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
 
     public string GetAdvancedDescription()
     {
-        return $"The {RoleName} is a Crewmate Protective role that can give a Shield to player."
+        return $"The {RoleName} is a Crewmate Protective role that can give a Shield to a player."
                + MiscUtils.AppendOptionsText(GetType());
     }
 

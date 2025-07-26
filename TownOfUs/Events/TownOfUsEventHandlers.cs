@@ -123,6 +123,19 @@ public static class TownOfUsEventHandlers
             engiVent.Button?.usesRemainingText.gameObject.SetActive(true);
             engiVent.Button?.usesRemainingSprite.gameObject.SetActive(true);
         }
+        
+        var medicShield = CustomButtonSingleton<MedicShieldButton>.Instance;
+        medicShield.SetUses(OptionGroupSingleton<MedicOptions>.Instance.ChangeTarget ? (int)OptionGroupSingleton<MedicOptions>.Instance.MedicShieldUses : 0);
+        if ((int)OptionGroupSingleton<MedicOptions>.Instance.MedicShieldUses == 0 || !OptionGroupSingleton<MedicOptions>.Instance.ChangeTarget)
+        {
+            medicShield.Button?.usesRemainingText.gameObject.SetActive(false);
+            medicShield.Button?.usesRemainingSprite.gameObject.SetActive(false);
+        }
+        else
+        {
+            medicShield.Button?.usesRemainingText.gameObject.SetActive(true);
+            medicShield.Button?.usesRemainingSprite.gameObject.SetActive(true);
+        }
 
         CustomButtonSingleton<PlumberBlockButton>.Instance.ExtraUses = 0;
         CustomButtonSingleton<PlumberBlockButton>.Instance.SetUses((int)OptionGroupSingleton<PlumberOptions>.Instance

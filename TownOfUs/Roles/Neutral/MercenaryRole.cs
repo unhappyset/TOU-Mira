@@ -66,7 +66,7 @@ public sealed class MercenaryRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            "The Mercenary is a Neutral Evil role that can only win by bribing players, allowing them to gain multiple win conditions."
+            "The Mercenary is a Neutral Benign role that can only win by bribing players, allowing them to gain multiple win conditions."
             + MiscUtils.AppendOptionsText(GetType());
     }
 
