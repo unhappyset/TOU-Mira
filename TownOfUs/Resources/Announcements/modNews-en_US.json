@@ -222,6 +222,7 @@
         "\n- Shy ghosts are no longer invisible, but their hat stays translucent",
         "\n\n\r<size=105%>Additions:</size>",
         "\n- New Crewmate Protective Role: The Mirrorcaster!\nThis role can absorb direct attacks from players, and unleash them onto others!",
+        "\n- New Impostor Power Role: The Ambassador!\nThis role can retrain themselves or other impostors to roles of the same caliber (note: the confirmation option is not functional right now)",
         "\n\n\r<size=105%>Improvements:</size>",
         "\n- Dying to Veteran now says \"Attacked\", dying to Deputy says \"Blasted\", and dying to Vampire says \"Bitten\""
       ]

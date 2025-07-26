@@ -11,6 +11,7 @@ using TMPro;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Universal;
+using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modifiers.Impostor.Venerer;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
@@ -400,6 +401,10 @@ public static class HudManagerPatches
                     {
                         roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
                     }
+                    if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
+                    {
+                        roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
+                    }
 
                     var cachedMod = player.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole);
                     if (cachedMod is ICachedRole cache && cache.Visible &&
@@ -428,6 +433,10 @@ public static class HudManagerPatches
                         if (PlayerControl.LocalPlayer.HasDied() && !player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole)
                         {
                             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
+                        }
+                        if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
+                        {
+                            roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
                         }
                     }
                     if (PlayerControl.LocalPlayer.HasDied() && player.TryGetModifier<DeathHandlerModifier>(out var deathMod))
@@ -576,6 +585,10 @@ public static class HudManagerPatches
                             ? $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color> ({cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color>)</size>"
                             : $"<size=80%>{cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.NiceName}</color> ({color.ToTextColor()}{player.Data.Role.NiceName}</color>)</size>";
                     }
+                    if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
+                    {
+                        roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
+                    }
 
                     // Guardian Angel here is vanilla's GA, NOT Town of Us GA
                     if (player.Data.IsDead && role is GuardianAngelRole gaRole)
@@ -595,6 +608,10 @@ public static class HudManagerPatches
                         if (!player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole)
                         {
                             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
+                        }
+                        if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
+                        {
+                            roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
                         }
                     }
                     if (PlayerControl.LocalPlayer.HasDied() && isVisible && player.TryGetModifier<DeathHandlerModifier>(out var deathMod))

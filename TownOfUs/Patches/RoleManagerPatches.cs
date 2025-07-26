@@ -182,6 +182,9 @@ public static class TouRoleManagerPatches
         if (uniqueRole != null && impRoles.Contains(RoleId.Get(uniqueRole.GetType())))
         {
             impCount = 1;
+            
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"Removing Impostor Roles because of {uniqueRole.NiceName}");
+            
             impRoles.RemoveAll(x => x != RoleId.Get(uniqueRole.GetType()));
 
             while (impostors.Count > impCount)
@@ -273,8 +276,8 @@ public static class TouRoleManagerPatches
         ];
         List<RoleListOption> impBuckets =
         [
-            RoleListOption.ImpConceal, RoleListOption.ImpKilling, RoleListOption.ImpSupport, RoleListOption.ImpCommon,
-            RoleListOption.ImpRandom
+            RoleListOption.ImpConceal, RoleListOption.ImpKilling, RoleListOption.ImpPower, RoleListOption.ImpSupport,
+            RoleListOption.ImpCommon, RoleListOption.ImpSpecial, RoleListOption.ImpRandom
         ];
         List<RoleListOption> buckets =
         [
@@ -459,6 +462,8 @@ public static class TouRoleManagerPatches
         var impConcealRoles = MiscUtils.GetRolesToAssign(RoleAlignment.ImpostorConcealing);
         var impKillingRoles =
             MiscUtils.GetRolesToAssign(RoleAlignment.ImpostorKilling, x => !excluded.Contains(x.Role));
+        var impPowerRoles =
+            MiscUtils.GetRolesToAssign(RoleAlignment.ImpostorPower, x => !excluded.Contains(x.Role));
         var impSupportRoles = MiscUtils.GetRolesToAssign(RoleAlignment.ImpostorSupport);
 
         // imp buckets
@@ -473,15 +478,25 @@ public static class TouRoleManagerPatches
         commonImpRoles.AddRange(impSupportRoles);
 
         impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, impKillingRoles, RoleListOption.ImpKilling,
-            RoleListOption.ImpRandom));
+            RoleListOption.ImpSpecial));
 
-        var randomImpRoles = impKillingRoles;
+        var specialImpRoles = impKillingRoles;
 
+        impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, impPowerRoles, RoleListOption.ImpPower,
+            RoleListOption.ImpSpecial));
+
+        specialImpRoles.AddRange(impPowerRoles);
+        
         impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, commonImpRoles, RoleListOption.ImpCommon,
             RoleListOption.ImpRandom));
+        
+        var randomImpRoles = commonImpRoles;
 
-        randomImpRoles.AddRange(commonImpRoles);
+        impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, specialImpRoles, RoleListOption.ImpSpecial,
+            RoleListOption.ImpRandom));
 
+        randomImpRoles.AddRange(specialImpRoles);
+        
         impRoles.AddRange(MiscUtils.ReadFromBucket(buckets, randomImpRoles, RoleListOption.ImpRandom));
 
         // crew buckets
@@ -564,6 +579,8 @@ public static class TouRoleManagerPatches
         if (uniqueRole != null && chosenImpRoles.Contains(RoleId.Get(uniqueRole.GetType())))
         {
             impCount = 1;
+            
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"Removing Impostor Roles because of {uniqueRole.NiceName}");
 
             while (impostors.Count > impCount)
             {
@@ -581,6 +598,8 @@ public static class TouRoleManagerPatches
             player.RpcSetRole((RoleTypes)role);
 
             impostors.RemoveAt(num);
+            
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).NiceName}'");
         }
 
         foreach (var role in crewRoles)
@@ -591,6 +610,8 @@ public static class TouRoleManagerPatches
             player.RpcSetRole((RoleTypes)role);
 
             crewmates.RemoveAt(num);
+            
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).NiceName}'");
         }
 
         // Assign vanilla roles to anyone who did not receive a role.
@@ -788,8 +809,8 @@ public static class TouRoleManagerPatches
         var maxSlots = players < 15 ? players : 15;
         List<RoleListOption> impBuckets =
         [
-            RoleListOption.ImpConceal, RoleListOption.ImpKilling, RoleListOption.ImpSupport, RoleListOption.ImpCommon,
-            RoleListOption.ImpRandom
+            RoleListOption.ImpConceal, RoleListOption.ImpKilling, RoleListOption.ImpPower, RoleListOption.ImpSupport,
+            RoleListOption.ImpCommon, RoleListOption.ImpSpecial, RoleListOption.ImpRandom
         ];
         List<RoleListOption> buckets = [];
         var anySlots = 0;

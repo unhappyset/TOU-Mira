@@ -13,6 +13,9 @@ public static class TouAssets
 
     public static readonly LoadableAsset<GameObject> RoleSelectionGame =
         new LoadableBundleAsset<GameObject>("SelectRoleGame", MainBundle);
+    
+    public static readonly LoadableAsset<GameObject> AltRoleSelectionGame =
+        new LoadableBundleAsset<GameObject>("AmbassadorRoleGame", MainBundle);
 
     public static LoadableAsset<GameObject> WikiPrefab { get; } =
         new LoadableBundleAsset<GameObject>("IngameWiki", MainBundle);
@@ -162,6 +165,12 @@ public static class TouAssets
     public static LoadableAsset<Sprite> ExecuteCleanSprite { get; } =
         new LoadableResourceAsset($"{ShortPath}.ExecuteClean.png", 254);
 
+    public static LoadableAsset<Sprite> RetrainSprite { get; } =
+        new LoadableResourceAsset($"{ShortPath}.Retrain.png", 300);
+    
+    public static LoadableAsset<Sprite> RetrainCleanSprite { get; } =
+        new LoadableResourceAsset($"{ShortPath}.RetrainClean.png", 300);
+    
     public static LoadableAsset<Sprite> Hacked { get; } = new LoadableResourceAsset($"{ShortPath}.Hacked.png");
 
     public static LoadableAsset<Sprite> BarricadeVentSprite { get; } =

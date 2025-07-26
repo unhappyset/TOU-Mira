@@ -13,24 +13,29 @@ using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
-using Random = UnityEngine.Random;
 
 namespace TownOfUs.Modules.Components;
 
 [RegisterInIl2Cpp]
 [SuppressMessage("Design", "CA1051:Do not declare visible instance fields", Justification = "Unity")]
 [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "Unity")]
-public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
+public sealed class AmbassadorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
 {
     public Transform? RolesHolder;
     public GameObject? RolePrefab;
     public TextMeshPro? StatusText;
+    public TextMeshPro? RoleName;
+    public SpriteRenderer? RoleIcon;
+    public TextMeshPro? RoleTeam;
+    public GameObject? RedRing;
+    public GameObject? WarpRing;
 
-    private readonly Color _bgColor = new Color32(6, 0, 0, 215);
+    private readonly Color _bgColor = new Color32(24, 0, 0, 215);
     private RoleTypes? _selectedRole;
     private List<RoleBehaviour> availableRoles = [];
     private Action<RoleBehaviour> clickHandler;
     public static int CurrentCard { get; set; }
+    public static int RoleCount { get; set; }
 
     private void Awake()
     {
@@ -42,20 +47,41 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
         RolesHolder = transform.FindChild("Roles");
         RolePrefab = transform.FindChild("RoleCardHolder").gameObject;
         StatusText = transform.FindChild("Status").gameObject.GetComponent<TextMeshPro>();
+        RoleName = transform.FindChild("Status").FindChild("RoleName").gameObject.GetComponent<TextMeshPro>();
+        RoleTeam = transform.FindChild("Status").FindChild("RoleTeam").gameObject.GetComponent<TextMeshPro>();
+        RoleIcon = transform.FindChild("Status").FindChild("RoleImage").gameObject.GetComponent<SpriteRenderer>();
+        RedRing = transform.FindChild("Status").FindChild("RoleRing").gameObject;
+        WarpRing = transform.FindChild("Status").FindChild("RingWarp").gameObject;
+        RoleTeam = transform.FindChild("Status").FindChild("RoleTeam").gameObject.GetComponent<TextMeshPro>();
 
         StatusText.font = HudManager.Instance.TaskPanel.taskText.font;
         StatusText.fontMaterial = HudManager.Instance.TaskPanel.taskText.fontMaterial;
-        StatusText.text = "Select a role.";
+        StatusText.text = "Choose a role for retraining.";
         StatusText.gameObject.SetActive(false);
+        
+        RoleName.font = HudManager.Instance.TaskPanel.taskText.font;
+        RoleName.fontMaterial = HudManager.Instance.TaskPanel.taskText.fontMaterial;
+        RoleName.text = "Random";
+        RoleName.gameObject.SetActive(false);
+        
+        RoleTeam.font = HudManager.Instance.TaskPanel.taskText.font;
+        RoleTeam.fontMaterial = HudManager.Instance.TaskPanel.taskText.fontMaterial;
+        RoleTeam.text = "Random Impostor";
+        RoleTeam.gameObject.SetActive(false);
+        
+        RoleIcon.sprite = TouRoleIcons.RandomImp.LoadAsset();
+        RoleIcon.gameObject.SetActive(false);
+        RedRing.SetActive(false);
+        WarpRing.SetActive(false);
     }
 
-    public static TraitorSelectionMinigame Create()
+    public static AmbassadorSelectionMinigame Create()
     {
-        var gameObject = Instantiate(TouAssets.RoleSelectionGame.LoadAsset(), HudManager.Instance.transform);
+        var gameObject = Instantiate(TouAssets.AltRoleSelectionGame.LoadAsset(), HudManager.Instance.transform);
         gameObject.GetComponent<Minigame>().DestroyImmediate();
         gameObject.SetActive(false);
 
-        return gameObject.AddComponent<TraitorSelectionMinigame>();
+        return gameObject.AddComponent<AmbassadorSelectionMinigame>();
     }
 
     [HideFromIl2Cpp]
@@ -64,11 +90,13 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
         availableRoles = roles;
         clickHandler = onClick;
         _selectedRole = defaultRole ?? roles.Random()!.Role;
+        // Adds random as an option
+        RoleCount = availableRoles.Count + 1;
 
         Coroutines.Start(CoOpen(this));
     }
 
-    private static IEnumerator CoOpen(TraitorSelectionMinigame minigame)
+    private static IEnumerator CoOpen(AmbassadorSelectionMinigame minigame)
     {
         while (ExileController.Instance != null)
         {
@@ -83,6 +111,7 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
     {
         HudManager.Instance.StartCoroutine(HudManager.Instance.CoFadeFullScreen(_bgColor, Color.clear));
         CurrentCard = -1;
+        RoleCount = -1;
         MinigameStubs.Close(this);
     }
 
@@ -91,9 +120,12 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
         HudManager.Instance.StartCoroutine(HudManager.Instance.CoFadeFullScreen(Color.clear, _bgColor));
 
         StatusText!.gameObject.SetActive(true);
-
-        var z = 0;
-
+        RoleName!.gameObject.SetActive(true);
+        RoleTeam!.gameObject.SetActive(true);
+        RoleIcon!.gameObject.SetActive(true);
+        RedRing!.SetActive(true);
+        WarpRing!.SetActive(true);
+        
         foreach (var role in availableRoles)
         {
             var teamName = role is ITownOfUsRole touRole
@@ -130,14 +162,12 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
                 }
             }
 
-            var card = CreateCard(roleName, teamName, roleImg, z, role.TeamColor);
+            var card = CreateCard(roleName, teamName, roleImg, role.TeamColor);
             card.OnClick.RemoveAllListeners();
             card.OnClick.AddListener((UnityAction)(() => { clickHandler.Invoke(role); }));
-
-            z++;
         }
 
-        var randomCard = CreateCard("Random", "Random\nImpostor", TouRoleIcons.RandomImp.LoadAsset(), z,
+        var randomCard = CreateCard("Random", "Random Impostor", TouRoleIcons.RandomImp.LoadAsset(),
             TownOfUsColors.Impostor);
         randomCard.OnClick.RemoveAllListeners();
         randomCard.OnClick.AddListener((UnityAction)(() =>
@@ -150,43 +180,49 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
         Begin(null);
     }
 
-    private PassiveButton CreateCard(string roleName, string teamName, Sprite? sprite, float z, Color color)
+    private PassiveButton CreateCard(string roleName, string teamName, Sprite? sprite, Color color)
     {
+
         var newRoleObj = Instantiate(RolePrefab, RolesHolder);
         var actualCard = newRoleObj!.transform.GetChild(0);
         var roleText = actualCard.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>();
         var roleImage = actualCard.transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
         var teamText = actualCard.transform.GetChild(2).gameObject.GetComponent<TextMeshPro>();
+        var selection = actualCard.transform.GetChild(3).gameObject;
         var passiveButton = actualCard.GetComponent<PassiveButton>();
         var buttonRollover = actualCard.GetComponent<ButtonRolloverHandler>();
 
+        selection.SetActive(false);
         passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
         {
-            newRoleObj.transform.localPosition = new Vector3(newRoleObj.transform.localPosition.x,
-                newRoleObj.transform.localPosition.y, newRoleObj.transform.localPosition.z - 10);
+            selection.SetActive(true);
+            RoleName!.text = roleName;
+            RoleTeam!.text = teamName;
+            if (sprite != null) RoleIcon!.sprite = sprite;
         }));
         passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
         {
-            newRoleObj.transform.localPosition = new Vector3(newRoleObj.transform.localPosition.x,
-                newRoleObj.transform.localPosition.y, newRoleObj.transform.localPosition.z + 10);
+            selection.SetActive(false);
         }));
 
-        var randZ = -10f + z * 5f + Random.RandomRange(-1.5f, 1.5f);
-        newRoleObj.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, -randZ));
+        float angle = (2 * Mathf.PI / RoleCount) * CurrentCard;
+        float x = 1.9f * Mathf.Cos(angle);
+        float y = 0.1f + 1.9f * Mathf.Sin(angle);
+        
         newRoleObj.transform.localPosition =
-            new Vector3(newRoleObj.transform.localPosition.x, newRoleObj.transform.localPosition.y, z);
-
+            new Vector3(x, y, -1f);
+        newRoleObj.name = roleName + " Selection";
+        
         roleText.text = roleName;
         teamText.text = teamName;
 
-        if (sprite != null)
-        {
-            roleImage.sprite = sprite;
-        }
+        roleImage.sprite = (sprite != null) ? sprite : TouRoleIcons.RandomImp.LoadAsset();
 
         buttonRollover.OverColor = color;
         roleText.color = color;
         teamText.color = color;
+        ++CurrentCard;
+        newRoleObj.gameObject.SetActive(true);
 
         return passiveButton;
     }
@@ -203,43 +239,11 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
             }
 
             var child = card.GetChild(0);
-            yield return CoAnimateCardIn(child);
-            Coroutines.Start(MiscUtils.BetterBloop(child, finalSize: 0.55f, duration: 0.22f, intensity: 0.16f));
-            yield return new WaitForSeconds(0.1f);
+            Coroutines.Start(MiscUtils.BetterBloop(child, finalSize: 0.5f - (RoleCount * 0.0075f), duration: 0.1f, intensity: 0.11f));
+            yield return new WaitForSeconds(0.01f);
         }
 
         CurrentCard = -1;
-    }
-
-    private static IEnumerator CoAnimateCardIn(Transform card)
-    {
-        var randY = (CurrentCard * CurrentCard * 0.5f - CurrentCard) * 0.1f + Random.RandomRange(-0.15f, 0f);
-        var randZ = -10f + CurrentCard * 5f + Random.RandomRange(-1.5f, 0f);
-        if (CurrentCard == 0)
-        {
-            randY = 0f;
-            randZ = -2f;
-        }
-
-        card.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, -randZ));
-        card.transform.localPosition = new Vector3(card.transform.localPosition.x, card.transform.localPosition.y - 5f,
-            card.transform.localPosition.z);
-        card.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 14f));
-        card.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-        card.parent.gameObject.SetActive(true);
-        for (var timer = 0f; timer < 0.4f; timer += Time.deltaTime)
-        {
-            var num = timer / 0.4f;
-            card.localPosition =
-                new Vector3(card.localPosition.x, Mathf.SmoothStep(-5f, randY, num), card.localPosition.z);
-            card.transform.localRotation =
-                Quaternion.Euler(new Vector3(0, 0, Mathf.SmoothStep(-randZ + 2.5f, -randZ, num)));
-            yield return null;
-        }
-
-        CurrentCard++;
-
-        card.localPosition = new Vector3(card.localPosition.x, randY, card.localPosition.z);
-        card.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, -randZ));
+        RoleCount = -1;
     }
 }

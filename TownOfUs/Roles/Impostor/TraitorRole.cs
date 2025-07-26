@@ -23,7 +23,7 @@ public sealed class TraitorRole(IntPtr cppPtr)
     public string RoleLongDescription => "Betray the Crewmates!";
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
-    public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
+    public RoleAlignment RoleAlignment => RoleAlignment.ImpostorPower;
 
     public CustomRoleConfiguration Configuration => new(this)
     {

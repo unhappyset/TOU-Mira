@@ -1,11 +1,14 @@
 using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using TownOfUs.Events;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Crewmate;
+using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Roles.Impostor;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 
@@ -22,6 +25,18 @@ public static class MeetingHudTimerPatch
         if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null || PlayerControl.LocalPlayer.HasDied()) return;
         switch (PlayerControl.LocalPlayer.Data.Role)
         {
+            case AmbassadorRole ambass:
+                var ambassOpt = OptionGroupSingleton<AmbassadorOptions>.Instance;
+                newText = $"\n{ambass.RetrainsAvailable} / {ambassOpt.MaxRetrains} Retrains Remaining";
+                if (DeathEventHandlers.CurrentRound < (int)ambassOpt.RoundWhenAvailable)
+                {
+                    newText = $"{newText} | Retrain on Round {(int)ambassOpt.RoundWhenAvailable}";
+                }
+                else if (ambass.RoundsCooldown > 0)
+                {
+                    newText = $"{newText} | Round Cooldown: {ambass.RoundsCooldown} / {(int)ambassOpt.RoundCooldown}";
+                }
+                break;
             case ProsecutorRole pros:
                 var prosecutes = OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions - pros.ProsecutionsCompleted;
                 newText = $"\n{prosecutes} / {OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions} Prosecutions Remaining";

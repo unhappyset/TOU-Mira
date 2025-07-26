@@ -71,10 +71,20 @@ public interface ITownOfUsRole : ICustomRole
             {
                 return TouRoleGroups.ImpKiller;
             }
+            
+            if (RoleAlignment == RoleAlignment.ImpostorPower)
+            {
+                return TouRoleGroups.ImpPower;
+            }
 
             if (RoleAlignment == RoleAlignment.NeutralEvil)
             {
                 return TouRoleGroups.NeutralEvil;
+            }
+            
+            if (RoleAlignment == RoleAlignment.NeutralOutlier)
+            {
+                return TouRoleGroups.NeutralOutlier;
             }
 
             if (RoleAlignment == RoleAlignment.NeutralKilling)
@@ -209,8 +219,10 @@ public enum RoleAlignment
     CrewmateSupport,
     ImpostorConcealing,
     ImpostorKilling,
+    ImpostorPower,
     ImpostorSupport,
     NeutralBenign,
     NeutralEvil,
+    NeutralOutlier,
     NeutralKilling
 }
