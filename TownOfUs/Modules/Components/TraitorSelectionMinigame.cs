@@ -96,9 +96,14 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
 
         foreach (var role in availableRoles)
         {
-            var teamName = role is ITownOfUsRole touRole
-                ? touRole.RoleAlignment.ToDisplayString()
+            var teamName = role is ICustomRole miraRole
+                ? miraRole.RoleOptionsGroup.Name.Replace(" Roles", "")
                 : role.TeamType.ToDisplayString();
+
+            if (role is ITownOfUsRole touRole)
+            {
+                teamName = touRole.RoleAlignment.ToDisplayString();
+            }
 
             var roleName = role.NiceName;
             var roleImg = TouRoleIcons.RandomAny.LoadAsset();

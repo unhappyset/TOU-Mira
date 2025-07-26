@@ -173,7 +173,7 @@ public static class MiscUtils
 
     public static IEnumerable<RoleBehaviour> GetRegisteredRoles(ModdedRoleTeams team)
     {
-        var roles = AllRoles.Where(x => x is ITownOfUsRole role && role.Team == team);
+        var roles = AllRoles.Where(x => x is ICustomRole role && role.Team == team);
         var registeredRoles = roles.ToList();
 
         switch (team)

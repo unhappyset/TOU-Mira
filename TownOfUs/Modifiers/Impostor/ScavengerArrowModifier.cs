@@ -10,7 +10,6 @@ public sealed class ScavengerArrowModifier(PlayerControl owner, Color color) : A
     public override void OnActivate()
     {
         base.OnActivate();
-        // it would be so awesome if scavenger had that Hide And Seek pop up but instead of showing a dead player it would show who needs to die next (and scavenge time available)
         var popup = GameManagerCreator.Instance.HideAndSeekManagerPrefab.DeathPopupPrefab;
         var item = Object.Instantiate(popup, HudManager.Instance.transform.parent);
         item.Show(Player, 0);
