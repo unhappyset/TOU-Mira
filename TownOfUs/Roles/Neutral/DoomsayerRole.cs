@@ -291,6 +291,11 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         {
             return;
         }
+        
+        if (Minigame.Instance != null)
+        {
+            return;
+        }
 
         var player = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId).Object;
 

@@ -102,6 +102,11 @@ public abstract class AssassinModifier : ExcludedGameModifier
         {
             return;
         }
+        
+        if (Minigame.Instance != null)
+        {
+            return;
+        }
 
         var player = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId).Object;
 

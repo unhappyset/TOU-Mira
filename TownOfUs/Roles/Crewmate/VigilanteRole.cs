@@ -137,6 +137,11 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         {
             return;
         }
+        
+        if (Minigame.Instance != null)
+        {
+            return;
+        }
 
         var player = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId).Object;
 
