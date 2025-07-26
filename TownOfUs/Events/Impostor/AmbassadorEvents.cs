@@ -3,7 +3,6 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
-using MiraAPI.Utilities;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles.Impostor;
