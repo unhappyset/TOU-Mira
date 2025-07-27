@@ -1,6 +1,5 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
-using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using Reactor.Localization.Utilities;
 using TownOfUs.Modules.Wiki;
@@ -20,17 +19,19 @@ public static class LogoPatch
             CustomStringName.CreateAndRegister("Impostor Ghost");
         
         var roles = MiscUtils.AllRoles.Where(x => x is not IWikiDiscoverable || x is ICustomRole custom && !custom.Configuration.HideSettings);
-        var modifiers = MiscUtils.AllModifiers.Where(x => x is GameModifier && x is not IWikiDiscoverable);
+        // var modifiers = MiscUtils.AllModifiers.Where(x => x is GameModifier && x is not IWikiDiscoverable);
 
-        foreach (var role in roles)
+        if (roles.Any())
         {
-            SoftWikiEntries.RegisterRoleEntry(role);
+            foreach (var role in roles)
+            {
+                SoftWikiEntries.RegisterRoleEntry(role);
+            }
         }
-
-        foreach (var modifier in modifiers)
+        /*foreach (var modifier in modifiers)
         {
             SoftWikiEntries.RegisterModifierEntry(modifier);
-        }
+        }*/
         
 
         var newLogo = GameObject.Find("LOGO-AU");
