@@ -411,9 +411,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 {
                     continue;
                 }
-                var teamName = role is ITownOfUsRole touRole
-                    ? touRole.RoleAlignment.ToDisplayString()
-                    : customRole.RoleOptionsGroup.Name.Replace(" Roles", "");
+                var teamName = role.GetRoleAlignment().ToDisplayString();
 
                 var newItem = CreateNewItem(customRole.RoleName, customRole.Configuration.Icon?.LoadAsset());
                 var wikiBg = newItem.transform.FindChild("WikiBg").gameObject.GetComponent<SpriteRenderer>();

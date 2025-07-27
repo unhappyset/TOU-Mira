@@ -2,7 +2,6 @@
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
-using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -38,14 +37,8 @@ public static class SoftWikiEntries
         {
             var entry = roleEntry.Value;
             entry.EntryName = role.NiceName;
-            var teamName = role is ICustomRole miraRole
-                ? miraRole.RoleOptionsGroup.Name.Replace(" Roles", "")
-                : role.TeamType.ToDisplayString();
+            var teamName = role.GetRoleAlignment().ToDisplayString();
 
-            if (role is ITownOfUsRole touRole)
-            {
-                teamName = touRole.RoleAlignment.ToDisplayString();
-            }
             entry.TeamName = teamName;
             entry.EntryColor = role is ICustomRole miraRole2 ? miraRole2.RoleColor : role.TeamColor;
             entry.GetAdvancedDescription = $"{role.BlurbLong}{MiscUtils.AppendOptionsText(entry.EntryTyoe)}";

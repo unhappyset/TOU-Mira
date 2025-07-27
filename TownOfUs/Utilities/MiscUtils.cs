@@ -143,9 +143,42 @@ public static class MiscUtils
         return builder.ToString();
     }
 
+    public static RoleAlignment GetRoleAlignment(this RoleBehaviour role)
+    {
+        if (role is ITownOfUsRole touRole)
+        {
+            return touRole.RoleAlignment;
+        }
+        else if (role is ICustomRole customRole)
+        {
+            var alignments = Enum.GetValues<RoleAlignment>();
+            foreach (var alignment in alignments)
+            {
+                var roleAlignment = alignment;
+                if (customRole.RoleOptionsGroup.Name.Replace(" Roles", "") == roleAlignment.ToDisplayString())
+                {
+                    return roleAlignment;
+                }
+            }
+        }
+        if (role.IsNeutral())
+        {
+            return RoleAlignment.NeutralOutlier;
+        }
+        else if (role.IsImpostor())
+        {
+            return RoleAlignment.ImpostorSupport;
+        }
+        else
+        {
+            return RoleAlignment.CrewmateSupport;
+        }
+    }
+
     public static IEnumerable<RoleBehaviour> GetRegisteredRoles(RoleAlignment alignment)
     {
-        var roles = AllRoles.Where(x => x is ITownOfUsRole role && role.RoleAlignment == alignment);
+        var roles = AllRoles.Where(x => x.GetRoleAlignment() == alignment);
+        
         var registeredRoles = roles.ToList();
 
         switch (alignment)
