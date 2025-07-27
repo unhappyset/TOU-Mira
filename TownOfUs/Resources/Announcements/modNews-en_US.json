@@ -198,7 +198,7 @@
     },
     {
       "Date": "2025-07-25T12:50:00Z",
-      "Number": "100008",
+      "Number": "100009",
       "ShortTitle": "TOU: Mira DEV",
       "SubTitle": "Current changelog as of this build",
       "Title": "Town of Us: Mira v1.1.0 PROGRESS",
@@ -232,7 +232,8 @@
         "\n- New Crewmate Protective Role: The Mirrorcaster!\nThis role can absorb direct attacks from players, and unleash them onto others!",
         "\n- New Impostor Power Role: The Ambassador!\nThis role can retrain themselves or other impostors to roles of the same caliber (note: the confirmation option is not functional right now. Role does not play correctly with FFA Impostor mode at the moment either)",
         "\n\n\r<size=105%>Improvements:</size>",
-        "\n- Dying to Veteran now says \"Attacked\", dying to Deputy says \"Blasted\", and dying to Vampire says \"Bitten\""
+        "\n- Dying to Veteran now says \"Attacked\", dying to Deputy says \"Blasted\", and dying to Vampire says \"Bitten\"",
+        "\n- Support for other MiraAPI mods has been improved across the board (this does not affect you if you only play Town of Us Mira standalone)"
       ]
     }
   ]
