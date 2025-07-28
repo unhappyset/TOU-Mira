@@ -184,12 +184,14 @@ public sealed class AmbusherRole(IntPtr cppPtr)
                 ambusher.GetModifier<FirstDeadShield>()!.SetVisible();
             }
             var bodySprite = body.transform.GetChild(1).gameObject;
+            var ambushAnim = AnimStore.SpawnFliplessAnimBody(ambusher, TouAssets.AmbushPrefab.LoadAsset());
+            ambushAnim.SetActive(false);
             
             yield return new WaitForSeconds(1.3f);
             
-            var ambushAnim = AnimStore.SpawnFliplessAnimBody(ambusher, TouAssets.AmbushPrefab.LoadAsset());
+            ambushAnim.SetActive(true);
             var spriteAnim = ambushAnim.GetComponent<SpriteAnim>();
-            var animationRend = ambushAnim.GetComponent<SpriteRenderer>();
+            var animationRend = ambushAnim.transform.GetChild(0).GetComponent<SpriteRenderer>();
             animationRend.material = bodySprite.GetComponent<SpriteRenderer>().material;
             body.gameObject.transform.position = new Vector3(bodyPos.x, bodyPos.y, bodyPos.z + 1000f);
             
