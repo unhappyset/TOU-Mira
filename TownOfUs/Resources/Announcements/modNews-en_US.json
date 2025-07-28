@@ -235,7 +235,9 @@
         "\n- New Impostor Killing Role: The Ambusher!\nThis role can select one player, track them, and then ambush the player closest to them. If they kill the player, then they will take the player's body with them.",
         "\n\n\r<size=105%>Improvements:</size>",
         "\n- Dying to Veteran now says \"Attacked\", dying to Deputy says \"Blasted\", and dying to Vampire says \"Bitten\"",
-        "\n- Support for other MiraAPI mods has been improved across the board (this does not affect you if you only play Town of Us Mira standalone)"
+        "\n- Support for other MiraAPI mods has been improved across the board (this does not affect you if you only play Town of Us Mira standalone)",
+        "\n\n\r<size=105%>Changes:</size>",
+        "\n- Mercenary and GA can win with their targets from alliance modifiers"
       ]
     }
   ]

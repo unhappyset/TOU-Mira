@@ -5,6 +5,7 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
@@ -85,7 +86,7 @@ public sealed class MercenaryRole(IntPtr cppPtr)
     {
         var bribed = ModifierUtils.GetPlayersWithModifier<MercenaryBribedModifier>();
 
-        return bribed.Any(x => x.Data.Role.DidWin(gameOverReason));
+        return bribed.Any(x => x.Data.Role.DidWin(gameOverReason) || x.GetModifiers<GameModifier>().Any(x => x.DidWin(gameOverReason) == true));
     }
 
     public void AddPayment()

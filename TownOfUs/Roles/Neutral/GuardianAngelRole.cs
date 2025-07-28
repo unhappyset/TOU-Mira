@@ -6,6 +6,7 @@ using Il2CppInterop.Runtime.Attributes;
 using InnerNet;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
@@ -154,8 +155,8 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
-        var target = ModifierUtils.GetPlayersWithModifier<GuardianAngelTargetModifier>().FirstOrDefault();
-        return target?.Data.Role.DidWin(gameOverReason) == true;
+        var target = ModifierUtils.GetPlayersWithModifier<GuardianAngelTargetModifier>().FirstOrDefault(x => x.OwnerId == Player.PlayerId);
+        return target?.Data.Role.DidWin(gameOverReason) == true || target?.GetModifiers<GameModifier>().Any(x => x.DidWin(gameOverReason) == true) == true;
     }
 
     public static bool GASeesRoleVisibilityFlag(PlayerControl player)
