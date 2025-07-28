@@ -290,6 +290,10 @@ public static class TownOfUsEventHandlers
         {
             switch (source.Data.Role)
             {
+                case AmbusherRole:
+                    var ambushButton = CustomButtonSingleton<AmbusherAmbushButton>.Instance;
+                    ambushButton.ResetCooldownAndOrEffect();
+                    break;
                 case BomberRole:
                     var bombButton = CustomButtonSingleton<BomberPlantButton>.Instance;
                     bombButton.ResetCooldownAndOrEffect();

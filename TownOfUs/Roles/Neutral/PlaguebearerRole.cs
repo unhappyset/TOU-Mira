@@ -27,7 +27,7 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
 {
     public void FixedUpdate()
     {
-        if (Player == null || Player.Data.Role is not PlaguebearerRole || Player.HasDied())
+        if (Player == null || Player.Data.Role is not PlaguebearerRole || Player.HasDied() || !Player.AmOwner)
         {
             return;
         }
@@ -44,10 +44,9 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
                     x.PlagueBearerId == Player.PlayerId);
 
             players.Do(x =>
-                x.RemoveModifier<PlaguebearerInfectedModifier>([HideFromIl2Cpp](x) =>
-                    x.PlagueBearerId == Player.PlayerId));
+                x.RpcRemoveModifier<PlaguebearerInfectedModifier>());
 
-            Player.ChangeRole(RoleId.Get<PestilenceRole>());
+            Player.RpcChangeRole(RoleId.Get<PestilenceRole>());
 
             CustomButtonSingleton<PestilenceKillButton>.Instance.SetTimer(OptionGroupSingleton<PlaguebearerOptions>
                 .Instance.PestKillCooldown);

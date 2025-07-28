@@ -34,6 +34,9 @@ public static class TouAssets
 
     public static LoadableAsset<GameObject> EclipsedPrefab { get; } =
         new LoadableBundleAsset<GameObject>("Eclipsed", MainBundle);
+    
+    public static LoadableAsset<GameObject> AmbushPrefab { get; } =
+        new LoadableBundleAsset<GameObject>("Ambush", MainBundle);
 
     public static LoadableAsset<GameObject> EscapistMarkPrefab { get; } =
         new LoadableBundleAsset<GameObject>("EscapistMark", MainBundle);
@@ -41,7 +44,7 @@ public static class TouAssets
     public static LoadableAsset<GameObject> MeetingDeathPrefab { get; } =
         new LoadableBundleAsset<GameObject>("DeathAnimation", MainBundle);
 
-    public static LoadableAsset<GameObject> MayorRevealPrefab { get; } =
+    public static LoadableAsset<GameObject> MayorRevealPrefab { get; set; } =
         new LoadableBundleAsset<GameObject>("MayorReveal", MainBundle);
 
     public static LoadableAsset<AnimationClip> MeetingDeathAnim1 { get; } =

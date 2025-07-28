@@ -46,6 +46,7 @@ public sealed class MayorRole(IntPtr cppPtr)
     };
 
     public bool IsPowerCrew => true;
+    public static bool DisabledAnimation { get; set; }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
@@ -82,7 +83,7 @@ public sealed class MayorRole(IntPtr cppPtr)
         {
             Player.GetModifier<ToBecomeTraitorModifier>()!.Clear();
         }
-        if (MeetingHud.Instance)
+        if (MeetingHud.Instance && !DisabledAnimation)
         {
             var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == player.PlayerId);
             Coroutines.Start(CoAnimateReveal(targetVoteArea));
@@ -108,7 +109,7 @@ public sealed class MayorRole(IntPtr cppPtr)
         RoleBehaviourStubs.OnMeetingStart(this);
 
         var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == Player.PlayerId);
-        if (Revealed)
+        if (Revealed && !DisabledAnimation)
         {
             Coroutines.Start(CoAnimatePostReveal(targetVoteArea));
         }
@@ -156,6 +157,15 @@ public sealed class MayorRole(IntPtr cppPtr)
     [MethodRpc((uint)TownOfUsRpc.AnimateNewReveal, SendImmediately = true)]
     public static void RpcAnimateNewReveal(PlayerControl plr)
     {
+        if (plr.Data.Role is MayorRole mayor)
+        {
+            mayor.Revealed = true;
+        }
+
+        if (DisabledAnimation)
+        {
+            return;
+        }
         var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == plr.PlayerId);
         Coroutines.Start(CoAnimateReveal(targetVoteArea));
     }

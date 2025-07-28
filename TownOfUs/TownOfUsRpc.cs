@@ -69,5 +69,6 @@ public enum TownOfUsRpc : uint
     LookoutSeePlayer,
     AnimateNewReveal,
     SheriffMisfire,
-    RetrainImpostor
+    RetrainImpostor,
+    AmbushPlayer
 }

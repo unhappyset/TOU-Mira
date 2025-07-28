@@ -35,7 +35,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Politician,
-        IntroSound = TouAudio.MayorRevealSound,
+        IntroSound = TouAudio.PoliticianIntroSound,
         MaxRoleCount = 1
     };
 
