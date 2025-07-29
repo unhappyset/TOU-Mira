@@ -34,7 +34,7 @@ public sealed class AmbusherRole(IntPtr cppPtr)
     public DoomableType DoomHintType => DoomableType.Fearmonger;
 
     public string RoleName => "Ambusher";
-    public string RoleDescription => "Kidnap Players Into The Shadows";
+    public string RoleDescription => "Kidnap Crewmates Into The Shadows";
     public string RoleLongDescription => "Pursue a player, then ambush the closest player to them.\nIf the player you ambush dies, then take their body with you.";
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
