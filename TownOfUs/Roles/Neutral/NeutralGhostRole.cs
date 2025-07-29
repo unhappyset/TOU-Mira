@@ -1,9 +1,11 @@
 ﻿using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using Reactor.Utilities;
 using TownOfUs.Modules;
+using TownOfUs.Options.Roles.Neutral;
 using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
@@ -117,7 +119,8 @@ public class NeutralGhostRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownOfUsR
 
         Logger<TownOfUsPlugin>.Message($"NeutralGhostRole.DidWin - role: {role.NiceName} DidWin: {win}");
 
-        if (role is JesterRole && win)
+        // Yes, this is bad, but we don't want to break the end game screen to allow other mods to still work with tou mira - Atony
+        if (role is JesterRole && win && OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.EndsGame)
         {
             Logger<TownOfUsPlugin>.Info($"Jester - Player: {Player.Data.PlayerName}");
             Player.Data.IsDead = false;

@@ -239,7 +239,7 @@ public sealed class MayorRole(IntPtr cppPtr)
 
     private static IEnumerator CoAnimatePostReveal(PlayerVoteArea voteArea)
     {
-        MayorPlayer = Instantiate(TouAssets.MayorRevealPrefab.LoadAsset(), voteArea.transform);
+        MayorPlayer = Instantiate(TouAssets.MayorPostRevealPrefab.LoadAsset(), voteArea.transform);
         MayorPlayer.transform.localPosition = new Vector3(-0.8f, 0, 0);
         MayorPlayer.transform.localScale = new Vector3(0.375f, 0.375f, 1f);
         MayorPlayer.gameObject.layer = MayorPlayer.transform.GetChild(0).gameObject.layer = voteArea.gameObject.layer;
@@ -261,14 +261,7 @@ public sealed class MayorRole(IntPtr cppPtr)
         MayorPlayer.gameObject.SetActive(true);
         MayorPlayer.transform.GetChild(0).gameObject.SetActive(true);
         MayorPlayer.transform.GetChild(1).gameObject.SetActive(true);
-
-        var bodysAnim = MayorPlayer.GetComponent<SpriteAnim>();
-        var outfitAnim = MayorPlayer.transform.GetChild(0).GetComponent<SpriteAnim>();
-        var handAnim = MayorPlayer.transform.GetChild(1).GetComponent<SpriteAnim>();
-        bodysAnim.SetSpeed(1.02f);
-        outfitAnim.SetSpeed(1.02f);
-        handAnim.SetSpeed(1.02f);
-        yield return new WaitForSeconds(bodysAnim.m_currAnim.length - 0.25f);
+        yield return new WaitForSeconds(0.01f);
     }
 
     public static void DestroyReveal(PlayerVoteArea voteArea)

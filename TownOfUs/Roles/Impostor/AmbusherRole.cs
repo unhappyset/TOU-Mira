@@ -108,6 +108,13 @@ public sealed class AmbusherRole(IntPtr cppPtr)
     {
         Pursued = null;
     }
+    public void CheckDeadPursued()
+    {
+        if (Pursued != null && Pursued.HasDied())
+        {
+            Pursued = null;
+        }
+    }
 
     [MethodRpc((uint)TownOfUsRpc.AmbushPlayer, SendImmediately = true)]
     public static void RpcAmbushPlayer(PlayerControl ambusher, PlayerControl target)

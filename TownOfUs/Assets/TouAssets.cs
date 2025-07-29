@@ -46,6 +46,9 @@ public static class TouAssets
 
     public static LoadableAsset<GameObject> MayorRevealPrefab { get; set; } =
         new LoadableBundleAsset<GameObject>("MayorReveal", MainBundle);
+    
+    public static LoadableAsset<GameObject> MayorPostRevealPrefab { get; set; } =
+        new LoadableBundleAsset<GameObject>("MayorPostReveal", MainBundle);
 
     public static LoadableAsset<AnimationClip> MeetingDeathAnim1 { get; } =
         new LoadableBundleAsset<AnimationClip>("DeathMeetingShotFront", MainBundle);
