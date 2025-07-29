@@ -217,6 +217,7 @@
         "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
         "\n- Fix Alive Neutral Ghost on Jester win",
         "\n- Jester Haunt, Phantom Spook, and Executioner Torment ignore shields correctly now",
+        "\n- Jester Haunt, Phantom Spook, and Executioner Torment cannot be opened multiple times anymore",
         "\n- Amnesiac will correctly know who their target is as GA or Executioner",
         "\n- Amnesiac will remove douses/infection when picking up Arsonist/Plaguebearer",
         "\n- Pestilence transform checks will run locally for the pb, not everyone in general to avoid desync or anything of that degree",

@@ -13,7 +13,7 @@ namespace TownOfUs.Buttons.Neutral;
 public sealed class ExeTormentButton : TownOfUsButton
 {
     public override string Name => "Torment";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Executioner;
     public override float Cooldown => 0.01f;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.ExeTormentSprite;
@@ -29,6 +29,10 @@ public sealed class ExeTormentButton : TownOfUsButton
 
     protected override void OnClick()
     {
+        if (Minigame.Instance != null)
+        {
+            return;
+        }
         var playerMenu = CustomPlayerMenu.Create();
         playerMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material =
             PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;

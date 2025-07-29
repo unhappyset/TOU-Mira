@@ -13,7 +13,7 @@ namespace TownOfUs.Buttons.Neutral;
 public sealed class JesterHauntButton : TownOfUsButton
 {
     public override string Name => "Haunt";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override string Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Jester;
     public override float Cooldown => 0.01f;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.JesterHauntSprite;
@@ -29,6 +29,10 @@ public sealed class JesterHauntButton : TownOfUsButton
 
     protected override void OnClick()
     {
+        if (Minigame.Instance != null)
+        {
+            return;
+        }
         var playerMenu = CustomPlayerMenu.Create();
         playerMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material =
             PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
