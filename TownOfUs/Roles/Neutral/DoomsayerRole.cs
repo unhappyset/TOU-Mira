@@ -386,7 +386,6 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                     {
                         Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false,
                             playKillSound: false);
-                        DeathHandlerModifier.RpcUpdateDeathHandler(victim, "Doomed", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {Player.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
                     }
 
                 }
@@ -403,7 +402,6 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                             Player.RpcCustomMurder(victim2, createDeadBody: false, teleportMurderer: false,
                                 showKillAnim: false,
                                 playKillSound: false);
-                            DeathHandlerModifier.RpcUpdateDeathHandler(victim2, "Doomed", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {Player.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
                         }
                     }
                 }
