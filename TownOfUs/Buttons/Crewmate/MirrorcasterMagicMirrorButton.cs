@@ -26,7 +26,7 @@ public sealed class MirrorcasterMagicMirrorButton : TownOfUsRoleButton<Mirrorcas
 
     public override bool CanUse()
     {
-        return base.CanUse() && Role is { Protected: null } && !EffectActive;
+        return base.CanUse() && Role is { Protected: null } && (OptionGroupSingleton<MirrorcasterOptions>.Instance.MultiUnleash || Role.UnleashesAvailable <= 0) && !EffectActive;
     }
     public override void ClickHandler()
     {

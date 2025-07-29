@@ -84,7 +84,7 @@ public sealed class MercenaryRole(IntPtr cppPtr)
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
-        var bribed = ModifierUtils.GetPlayersWithModifier<MercenaryBribedModifier>();
+        var bribed = ModifierUtils.GetPlayersWithModifier<MercenaryBribedModifier>(x => x.Mercenary == Player);
 
         return bribed.Any(x => x.Data.Role.DidWin(gameOverReason) || x.GetModifiers<GameModifier>().Any(x => x.DidWin(gameOverReason) == true));
     }

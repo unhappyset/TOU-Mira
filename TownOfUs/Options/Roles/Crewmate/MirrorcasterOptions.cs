@@ -25,6 +25,9 @@ public sealed class MirrorcasterOptions : AbstractOptionGroup<MirrorcasterRole>
     [ModdedToggleOption("Mirrorcaster Knows The Absorbed Type Of Attack")]
     public bool KnowAttackType { get; set; } = true;
     
+    [ModdedToggleOption("Accumulate Multiple Unleashes")]
+    public bool MultiUnleash { get; set; } = false;
+    
     [ModdedNumberOption("Max Number Of Magic Mirrors", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxMirrors { get; set; } = 5f;
 }

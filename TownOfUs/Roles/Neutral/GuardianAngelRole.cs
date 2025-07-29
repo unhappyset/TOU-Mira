@@ -147,16 +147,20 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         if (TutorialManager.InstanceExists && Player.AmOwner)
         {
             var players = ModifierUtils
-                .GetPlayersWithModifier<ExecutionerTargetModifier>([HideFromIl2Cpp](x) => x.OwnerId == Player.PlayerId)
+                .GetPlayersWithModifier<GuardianAngelTargetModifier>([HideFromIl2Cpp](x) => x.OwnerId == Player.PlayerId)
                 .ToList();
-            players.Do(x => x.RpcRemoveModifier<ExecutionerTargetModifier>());
+            players.Do(x => x.RpcRemoveModifier<GuardianAngelTargetModifier>());
         }
     }
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
-        var target = ModifierUtils.GetPlayersWithModifier<GuardianAngelTargetModifier>().FirstOrDefault(x => x.OwnerId == Player.PlayerId);
-        return target?.Data.Role.DidWin(gameOverReason) == true || target?.GetModifiers<GameModifier>().Any(x => x.DidWin(gameOverReason) == true) == true;
+        var gaMod = ModifierUtils.GetActiveModifiers<GuardianAngelTargetModifier>().FirstOrDefault(x => x.OwnerId == Player.PlayerId);
+        if (gaMod == null)
+        {
+            return false;
+        }
+        return gaMod.Player.Data.Role.DidWin(gameOverReason) || gaMod.Player.GetModifiers<GameModifier>().Any(x => x.DidWin(gameOverReason) == true);
     }
 
     public static bool GASeesRoleVisibilityFlag(PlayerControl player)
