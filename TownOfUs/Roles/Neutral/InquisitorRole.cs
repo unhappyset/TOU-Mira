@@ -313,10 +313,10 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
             return;
         }
 
-        if (Targets.All(x => x.HasDied()))
+        if (Targets.All(x => x.HasDied() || x == exiled))
             // Logger<TownOfUsPlugin>.Error($"CheckTargetEjection - exiled: {exiled.Data.PlayerName}");
         {
-            RpcInquisitorWin(Player);
+            InquisitorWin(Player);
         }
     }
 
@@ -348,6 +348,11 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
     [MethodRpc((uint)TownOfUsRpc.InquisitorWin, SendImmediately = true)]
     public static void RpcInquisitorWin(PlayerControl player)
+    {
+        InquisitorWin(player);
+    }
+    
+    public static void InquisitorWin(PlayerControl player)
     {
         if (player.Data.Role is not InquisitorRole)
         {
