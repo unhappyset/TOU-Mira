@@ -1,8 +1,10 @@
 ﻿using System.Collections;
+using System.Globalization;
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Events;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
@@ -13,6 +15,7 @@ using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Wiki;
+using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -24,16 +27,19 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 
     [HideFromIl2Cpp] public List<int> FutureBlocks { get; set; } = [];
 
-    [HideFromIl2Cpp] public List<int> VentsBlocked { get; set; } = [];
+    // Blocked vent, remaining rounds
+    [HideFromIl2Cpp] public static List<KeyValuePair<int, int>> VentsBlocked { get; set; } = [];
 
-    [HideFromIl2Cpp] public List<GameObject> Barricades { get; set; } = [];
+
+    // Barricade object, remaining rounds
+    [HideFromIl2Cpp] public static List<KeyValuePair<GameObject, int>> Barricades { get; set; } = [];
 
     public DoomableType DoomHintType => DoomableType.Trickster;
     public string RoleName => "Plumber";
     public string RoleDescription => "Get The Rats Out Of The Sewers";
 
     public string RoleLongDescription =>
-        "Flush the vent system to rid of venters, and\nbarricade vents to block them the next round";
+        "Flush the vent system to kick venters out, and\nbarricade vents to block them the next round";
 
     public Color RoleColor => TownOfUsColors.Plumber;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
@@ -48,12 +54,6 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     public void LobbyStart()
     {
         Clear();
-    }
-
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        return ITownOfUsRole.SetNewTabText(this);
     }
 
     public string GetAdvancedDescription()
@@ -74,16 +74,66 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
             TouCrewAssets.BarricadeSprite)
     ];
 
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        var stringB = ITownOfUsRole.SetNewTabText(this);
+        var duration = (int)OptionGroupSingleton<PlumberOptions>.Instance.BarricadeRoundDuration;
+        var text = duration == 0 ? "Barricades Stay Forever." : $"Barricades Stay For {duration} Round(s)";
+        stringB.Append(CultureInfo.InvariantCulture,
+            $"\n<b><size=60%>Note: {text}</size></b>");
+        if (VentsBlocked.Count > 0 || FutureBlocks.Count > 0)
+        {
+            stringB.Append(CultureInfo.InvariantCulture,
+                $"\n<b>Vents List:</b>");
+
+            if (VentsBlocked.Count > 0)
+            {
+                foreach (var ventPair in VentsBlocked)
+                {
+                    var vent = Helpers.GetVentById(ventPair.Key);
+                    if (vent == null) continue;
+                    var text2 = duration == 0 ? string.Empty : $": {ventPair.Value} Round(s) Remaining";
+                    stringB.Append(CultureInfo.InvariantCulture,
+                        $"\n{MiscUtils.GetRoomName(vent.transform.position)} Vent{text2}");
+                }
+            }
+            if (FutureBlocks.Count > 0)
+            {
+                foreach (var ventId in FutureBlocks)
+                {
+                    var vent = Helpers.GetVentById(ventId);
+                    if (vent == null) continue;
+                        
+                    stringB.Append(CultureInfo.InvariantCulture,
+                        $"\n<color=#BFBFBF>{MiscUtils.GetRoomName(vent.transform.position)} Vent: Preparing...</color>");
+                }
+            }
+        }
+
+        return stringB;
+    }
+
+    public override void Initialize(PlayerControl player)
+    {
+        RoleBehaviourStubs.Initialize(this, player);
+        if (TutorialManager.InstanceExists) Clear();
+    }
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
-        Clear();
+        SubClear();
     }
 
+    public void SubClear()
+    {
+        FutureBlocks.Clear();
+    }
+    
     public void Clear()
     {
-        foreach (var barricade in Barricades)
+        foreach (var barricade in Barricades.Select(x => x.Key))
         {
             Destroy(barricade);
         }
@@ -97,7 +147,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     {
         foreach (var ventId in FutureBlocks)
         {
-            VentsBlocked.Add(ventId);
+            VentsBlocked.Add(new(ventId, (int)OptionGroupSingleton<PlumberOptions>.Instance.BarricadeRoundDuration));
 
             GameObject barricade = new("Barricade");
 
@@ -156,7 +206,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
                 }
             }
 
-            Barricades.Add(barricade);
+            Barricades.Add(new (barricade, (int)OptionGroupSingleton<PlumberOptions>.Instance.BarricadeRoundDuration));
         }
 
         FutureBlocks.Clear();

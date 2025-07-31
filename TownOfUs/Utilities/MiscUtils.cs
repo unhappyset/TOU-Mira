@@ -1020,4 +1020,22 @@ public static class MiscUtils
         }
         return ModifierManager.GetModifierTypeId(mod.GetType()) ?? throw new InvalidOperationException("Modifier is not registered.");
     }
+
+    public static string GetRoomName(Vector3 position)
+    {
+        PlainShipRoom? plainShipRoom = null;
+
+        var allRooms2 = ShipStatus.Instance.FastRooms;
+        foreach (var plainShipRoom2 in allRooms2.Values)
+        {
+            if (plainShipRoom2.roomArea && plainShipRoom2.roomArea.OverlapPoint(position))
+            {
+                plainShipRoom = plainShipRoom2;
+            }
+        }
+
+        return plainShipRoom != null
+            ? TranslationController.Instance.GetString(plainShipRoom.RoomId)
+            : "Outside/Hallway";
+    }
 }

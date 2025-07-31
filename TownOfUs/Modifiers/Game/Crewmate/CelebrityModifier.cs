@@ -68,20 +68,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
             return;
         }
 
-        PlainShipRoom? plainShipRoom = null;
-
-        var allRooms2 = ShipStatus.Instance.FastRooms;
-        foreach (var plainShipRoom2 in allRooms2.Values)
-        {
-            if (plainShipRoom2.roomArea && plainShipRoom2.roomArea.OverlapPoint(player.GetTruePosition()))
-            {
-                plainShipRoom = plainShipRoom2;
-            }
-        }
-
-        var room = plainShipRoom != null
-            ? TranslationController.Instance.GetString(plainShipRoom.RoomId)
-            : "Outside/Hallway";
+        var room = MiscUtils.GetRoomName(player.GetTruePosition());
 
         var celeb = player.GetModifier<CelebrityModifier>()!;
         celeb.StoredRoom = room;
