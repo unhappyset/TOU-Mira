@@ -7,7 +7,6 @@ using MiraAPI.Utilities.Assets;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modules;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Utilities;
 using UnityEngine;

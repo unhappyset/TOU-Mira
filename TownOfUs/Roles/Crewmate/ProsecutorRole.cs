@@ -11,7 +11,6 @@ using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;

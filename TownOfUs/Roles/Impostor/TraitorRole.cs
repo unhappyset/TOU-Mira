@@ -3,8 +3,6 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using TownOfUs.Modifiers.Impostor;
-using TownOfUs.Modules.Localization;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Utilities;
 using UnityEngine;
 

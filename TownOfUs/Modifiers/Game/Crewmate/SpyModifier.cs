@@ -3,7 +3,6 @@ using MiraAPI.Hud;
 using MiraAPI.Roles;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Buttons.Modifiers;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;

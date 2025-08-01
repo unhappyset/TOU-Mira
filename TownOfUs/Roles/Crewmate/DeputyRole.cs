@@ -12,7 +12,6 @@ using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Utilities;
 using UnityEngine;
 

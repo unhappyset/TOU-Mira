@@ -4,7 +4,6 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Modifiers.Crewmate;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;

@@ -12,7 +12,6 @@ using Reactor.Utilities;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modifiers.Impostor;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;

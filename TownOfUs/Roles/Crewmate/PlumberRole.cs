@@ -14,7 +14,6 @@ using Reactor.Utilities;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;

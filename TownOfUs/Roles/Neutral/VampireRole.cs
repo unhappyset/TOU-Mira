@@ -13,7 +13,6 @@ using Reactor.Utilities;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Game.Neutral;
 using TownOfUs.Modifiers.Neutral;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;

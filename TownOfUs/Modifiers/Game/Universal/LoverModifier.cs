@@ -11,7 +11,6 @@ using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.GameOver;
 using TownOfUs.Modifiers.Neutral;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Modifiers.Alliance;
 using TownOfUs.Roles;

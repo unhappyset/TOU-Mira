@@ -5,7 +5,6 @@ using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Utilities;
 using UnityEngine;
 

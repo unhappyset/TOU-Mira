@@ -10,7 +10,6 @@ using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modules.Anims;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles.Crewmate;

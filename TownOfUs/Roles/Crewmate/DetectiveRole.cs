@@ -8,7 +8,6 @@ using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Components;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;

@@ -12,7 +12,6 @@ using Reactor.Networking.Rpc;
 using TownOfUs.Buttons.Impostor;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Impostor;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;

@@ -8,7 +8,6 @@ using Reactor.Networking.Attributes;
 using Reactor.Networking.Rpc;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Impostor;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;

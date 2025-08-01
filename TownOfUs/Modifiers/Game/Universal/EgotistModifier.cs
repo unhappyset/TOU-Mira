@@ -5,7 +5,6 @@ using MiraAPI.Utilities.Assets;
 using TownOfUs.GameOver;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Impostor;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
