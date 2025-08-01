@@ -416,6 +416,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         }
 
         var cnt = mono.TryCast<CustomNetworkTransform>();
+        mono.transform.position = position;
         if (cnt != null)
         {
             cnt.SnapTo(position, (ushort)(cnt.lastSequenceId + 1));
@@ -425,10 +426,6 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
                 ModCompatibility.ChangeFloor(cnt.myPlayer.GetTruePosition().y > -7);
                 ModCompatibility.CheckOutOfBoundsElevator(cnt.myPlayer);
             }
-        }
-        else
-        {
-            mono.transform.position = position;
         }
 
         if (mono.TryCast<PlayerControl>() is PlayerControl player2 && player2.AmOwner)

@@ -132,12 +132,30 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     
     public void Clear()
     {
-        foreach (var barricade in Barricades.Select(x => x.Key))
+        if (Barricades.Count > 0)
         {
-            Destroy(barricade);
+            foreach (var barricade in Barricades.Select(x => x.Key))
+            {
+                if (barricade == null) continue;
+                Destroy(barricade);
+            }
         }
 
         FutureBlocks.Clear();
+        VentsBlocked.Clear();
+        Barricades.Clear();
+    }
+    public static void ClearAll()
+    {
+        if (Barricades.Count > 0)
+        {
+            foreach (var barricade in Barricades.Select(x => x.Key))
+            {
+                if (barricade == null) continue;
+                Destroy(barricade);
+            }
+        }
+
         VentsBlocked.Clear();
         Barricades.Clear();
     }

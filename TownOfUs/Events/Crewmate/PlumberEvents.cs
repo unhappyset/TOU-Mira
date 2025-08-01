@@ -1,4 +1,5 @@
 ﻿using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Events.Vanilla.Usables;
@@ -14,6 +15,14 @@ namespace TownOfUs.Events.Crewmate;
 
 public static class PlumberEvents
 {
+    [RegisterEvent]
+    public static void RoundStartEventHandler(RoundStartEvent @event)
+    {
+        if (@event.TriggeredByIntro)
+        {
+            PlumberRole.ClearAll();
+        }
+    }
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
