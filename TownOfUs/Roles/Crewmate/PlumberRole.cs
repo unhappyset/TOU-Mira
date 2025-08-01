@@ -11,6 +11,7 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
+using Reactor.Utilities.Extensions;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
@@ -179,6 +180,14 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
             barricade.gameObject.layer = trueVent.gameObject.layer;
 
             var render = barricade.AddComponent<SpriteRenderer>();
+            var spriteList = new List<Sprite>
+            {
+                TouAssets.BarricadeVentSprite.LoadAsset(),
+                TouAssets.BarricadeVentSprite2.LoadAsset(),
+                TouAssets.BarricadeVentSprite3.LoadAsset(),
+            };
+            var trueBarricade = spriteList.Random();
+            render.sprite = trueBarricade;
 
             switch (ShipStatus.Instance.Type)
             {
@@ -187,12 +196,10 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
                     barricade.transform.localPosition = new Vector3(0.03f, -0.107f, -0.001f);
                     break;
                 case ShipStatus.MapType.Pb:
-                    render.sprite = TouAssets.BarricadeVentSprite.LoadAsset();
                     barricade.transform.localPosition = new Vector3(0, 0.05f, -0.001f);
                     barricade.transform.localScale = new Vector3(0.8f, 0.7f, 1f);
                     break;
                 default:
-                    render.sprite = TouAssets.BarricadeVentSprite.LoadAsset();
                     barricade.transform.localPosition = new Vector3(0, 0, -0.001f);
                     break;
             }
@@ -212,12 +219,10 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
                         barricade.transform.localPosition = new Vector3(0.03f, -0.107f, -0.001f);
                         break;
                     case "util-vent2":
-                        render.sprite = TouAssets.BarricadeVentSprite.LoadAsset();
                         barricade.transform.localPosition = new Vector3(0, 0.05f, -0.001f);
                         barricade.transform.localScale = new Vector3(0.8f, 0.7f, 1f);
                         break;
                     default:
-                        render.sprite = TouAssets.BarricadeVentSprite.LoadAsset();
                         barricade.transform.localPosition = new Vector3(0, 0, -0.001f);
                         break;
                 }
