@@ -7,7 +7,7 @@ namespace TownOfUs.Modifiers.Game.Neutral;
 
 public sealed class NeutralKillerDoubleShotModifier : DoubleShotModifier, IWikiDiscoverable
 {
-    public override string ModifierName => "Double Shot";
+    public override string ModifierName => TouLocale.Get(TouNames.DoubleShot, "Double Shot");
     public override bool ShowInFreeplay => true;
     public bool IsHiddenFromList => true;
     // YES this is scuffed, a better solution will be used at a later time

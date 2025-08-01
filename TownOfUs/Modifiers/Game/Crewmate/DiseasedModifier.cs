@@ -9,7 +9,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 
 public sealed class DiseasedModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => "Diseased";
+    public override string ModifierName => TouLocale.Get(TouNames.Diseased, "Diseased");
     public override string IntroInfo => "You will also extend your killer's cooldown upon death.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Diseased;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);

@@ -13,7 +13,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 
 public sealed class RottingModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => "Rotting";
+    public override string ModifierName => TouLocale.Get(TouNames.Rotting, "Rotting");
     public override string IntroInfo => "Your body will also rot away upon death.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Rotting;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);

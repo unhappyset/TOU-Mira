@@ -112,6 +112,7 @@ public enum TouNames
     Torch,
     // Other Modifiers
     FirstDeathShield,
+    Scatter,
     // EVERYTHING BELOW HERE IS FOR THE SIDEMEN, THEY ARE NOT FOR PUBLIC RELEASE!
     Astral,
     PuppetMaster,

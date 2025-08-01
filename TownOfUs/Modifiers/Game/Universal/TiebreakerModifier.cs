@@ -7,7 +7,7 @@ namespace TownOfUs.Modifiers.Game.Universal;
 
 public sealed class TiebreakerModifier : UniversalGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => "Tiebreaker";
+    public override string ModifierName => TouLocale.Get(TouNames.Tiebreaker, "Tiebreaker");
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Tiebreaker;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;

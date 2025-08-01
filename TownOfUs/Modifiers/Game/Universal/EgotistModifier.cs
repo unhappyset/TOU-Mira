@@ -14,7 +14,7 @@ namespace TownOfUs.Modifiers.Game.Alliance;
 
 public sealed class EgotistModifier : AllianceGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => "Egotist";
+    public override string ModifierName => TouLocale.Get(TouNames.Egotist, "Egotist");
     public override string IntroInfo => "Your Ego is Thriving...";
     public override string Symbol => "#";
     public override float IntroSize => 4f;
