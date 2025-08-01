@@ -25,7 +25,7 @@ public sealed class SpyModifier : TouGameModifier, IWikiDiscoverable, IColoredMo
     public string GetAdvancedDescription()
     {
         return
-            "The Spy gains extra information on the admin table. They now not only see how many people are in a room, but will also see who is in every room."
+            $"The {ModifierName} gains extra information on the admin table. They now not only see how many people are in a room, but will also see who is in every room."
             + MiscUtils.AppendOptionsText(CustomRoleSingleton<SpyRole>.Instance.GetType());
     }
 

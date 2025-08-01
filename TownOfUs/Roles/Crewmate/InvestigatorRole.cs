@@ -35,7 +35,7 @@ public sealed class InvestigatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
     public string GetAdvancedDescription()
     {
         return
-            $"The {RoleName} is a Crewmate Investigative role can see player's footprints throughout the game. Swooped players' footprints will not be visible to the Investigator."
+            $"The {RoleName} is a Crewmate Investigative role can see player's footprints throughout the game. Swooped players' footprints will not be visible to the {RoleName}."
             + MiscUtils.AppendOptionsText(GetType());
     }
 

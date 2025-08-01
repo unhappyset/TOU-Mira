@@ -24,7 +24,7 @@ public sealed class InvestigatorModifier : TouGameModifier, IWikiDiscoverable, I
     public string GetAdvancedDescription()
     {
         return
-            "The Investigator can see player's footprints throughout the game. Swooped players' footprints will not be visible to the Investigator."
+            $"The {ModifierName} can see player's footprints throughout the game. Swooped players' footprints will not be visible to the {ModifierName}."
             + MiscUtils.AppendOptionsText(CustomRoleSingleton<InvestigatorRole>.Instance.GetType());
     }
 
