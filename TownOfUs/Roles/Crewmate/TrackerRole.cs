@@ -6,6 +6,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -16,7 +17,7 @@ public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public string RoleName => "Tracker";
+    public string RoleName => TouLocale.Get(TouNames.Tracker, "Tracker");
     public string RoleDescription => "Track Everyone's Movement";
     public string RoleLongDescription => "Track suspicious players to see where they go";
     public Color RoleColor => TownOfUsColors.Tracker;
@@ -55,7 +56,7 @@ public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
     public string GetAdvancedDescription()
     {
         return
-            "The Tracker is a Crewmate Investigative role that can track other players to see their general position across the map, getting colored arrows towards all tracked players."
+            $"The {RoleName} is a Crewmate Investigative role that can track other players to see their general position across the map, getting colored arrows towards all tracked players."
             + MiscUtils.AppendOptionsText(GetType());
     }
 

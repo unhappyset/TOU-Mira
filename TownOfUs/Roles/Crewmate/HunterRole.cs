@@ -26,7 +26,7 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     [HideFromIl2Cpp] public List<PlayerControl> CaughtPlayers { get; } = [];
 
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public string RoleName => "Hunter";
+    public string RoleName => TouLocale.Get(TouNames.Hunter, "Hunter");
     public string RoleDescription => "Stalk The <color=#FF0000FF>Impostor</color>";
     public string RoleLongDescription => "Stalk player interactions and kill impostors, but not Crewmates";
     public Color RoleColor => TownOfUsColors.Hunter;
@@ -67,7 +67,7 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     public string GetAdvancedDescription()
     {
         return
-            "The Hunter is a Crewmate Killing role that can stalk players during the round. "
+            $"The {RoleName} is a Crewmate Killing role that can stalk players during the round. "
             + "If a stalked player uses an ability, they can be killed by the Hunter at any point in the game, even Crew."
             + MiscUtils.AppendOptionsText(GetType());
     }

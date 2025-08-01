@@ -7,6 +7,7 @@ using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -33,7 +34,7 @@ public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     }
 
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => "Warden";
+    public string RoleName => TouLocale.Get(TouNames.Warden, "Warden");
     public string RoleDescription => "Fortify Crewmates";
     public string RoleLongDescription => "Fortify crewmates to prevent interactions with them";
     public Color RoleColor => TownOfUsColors.Warden;
@@ -63,7 +64,7 @@ public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public string GetAdvancedDescription()
     {
         return
-            "The Warden is a Crewmate Protective role that can fortify players to prevent them from being interacted with. "
+            $"The {RoleName} is a Crewmate Protective role that can fortify players to prevent them from being interacted with. "
             + MiscUtils.AppendOptionsText(GetType());
     }
 

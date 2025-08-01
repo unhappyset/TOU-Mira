@@ -35,7 +35,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     [HideFromIl2Cpp] public static List<KeyValuePair<GameObject, int>> Barricades { get; set; } = [];
 
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => "Plumber";
+    public string RoleName => TouLocale.Get(TouNames.Plumber, "Plumber");
     public string RoleDescription => "Get The Rats Out Of The Sewers";
 
     public string RoleLongDescription =>
@@ -59,7 +59,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     public string GetAdvancedDescription()
     {
         return
-            "The Plumber is a Crewmate Support role that can place Barricades on vents and Flush anyone out of vents."
+            $"The {RoleName} is a Crewmate Support role that can place Barricades on vents and Flush anyone out of vents."
             + MiscUtils.AppendOptionsText(GetType());
     }
 

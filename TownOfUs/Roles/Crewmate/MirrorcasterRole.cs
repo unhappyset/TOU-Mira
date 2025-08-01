@@ -44,7 +44,7 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
     }
 
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => "Mirrorcaster";
+    public string RoleName => TouLocale.Get(TouNames.Mirrorcaster, "Mirrorcaster");
     public string RoleDescription => "Reflect Attacks Onto Others";
     public string RoleLongDescription => "Protect a player with a Magic Mirror.\nIf they are directly attacked, then\nunleash the attack onto another player!";
     public Color RoleColor => TownOfUsColors.Mirrorcaster;
@@ -74,7 +74,7 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
 
     public string GetAdvancedDescription()
     {
-        return $"The Mirrorcaster is a Crewmate Protective role that can cast a Magic Mirror on a player to protect them. If attacked directly, the Mirrorcaster can then unleash onto another player."
+        return $"The {RoleName} is a Crewmate Protective role that can cast a Magic Mirror on a player to protect them. If attacked directly, the Mirrorcaster can then unleash onto another player."
                + MiscUtils.AppendOptionsText(GetType());
     }
 

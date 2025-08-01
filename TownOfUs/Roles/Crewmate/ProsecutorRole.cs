@@ -66,7 +66,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
     }
 
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => "Prosecutor";
+    public string RoleName => TouLocale.Get(TouNames.Prosecutor, "Prosecutor");
     public string RoleDescription => "Exile Players Of Your Choosing";
     public string RoleLongDescription => "Choose to exile anyone you want";
     public Color RoleColor => TownOfUsColors.Prosecutor;
@@ -103,7 +103,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
     public string GetAdvancedDescription()
     {
         return
-            "The Prosecutor is a Crewmate Power role that can Exile a player, applying 5 votes to a player of their choosing. They can also see who voted for who, even if they’re anonymous."
+            $"The {RoleName} is a Crewmate Power role that can Exile a player, applying 5 votes to a player of their choosing. They can also see who voted for who, even if they’re anonymous."
             + MiscUtils.AppendOptionsText(GetType());
     }
 
