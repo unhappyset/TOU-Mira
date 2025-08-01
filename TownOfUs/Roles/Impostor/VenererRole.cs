@@ -12,7 +12,7 @@ namespace TownOfUs.Roles.Impostor;
 public sealed class VenererRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => "Venerer";
+    public string RoleName => TouLocale.Get(TouNames.Venerer, "Venerer");
     public string RoleDescription => "With Each Kill Your Ability Becomes Stronger";
     public string RoleLongDescription => "Kill players to unlock ability perks";
     public Color RoleColor => TownOfUsColors.Impostor;
@@ -33,7 +33,7 @@ public sealed class VenererRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
     public string GetAdvancedDescription()
     {
         return
-            "The Venerer is an Impostor Concealing role that can kill players to gain new abilities, preventing others from catching them! However, the ability will be used immediately as they receive it, which will stack up."
+            $"The {RoleName} is an Impostor Concealing role that can kill players to gain new abilities, preventing others from catching them! However, the ability will be used immediately as they receive it, which will stack up."
             + MiscUtils.AppendOptionsText(GetType());
     }
 

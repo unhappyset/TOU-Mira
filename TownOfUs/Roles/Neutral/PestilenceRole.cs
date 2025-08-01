@@ -21,7 +21,7 @@ public sealed class PestilenceRole(IntPtr cppPtr)
     public bool Announced { get; set; }
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<AurialRole>());
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => "Pestilence";
+    public string RoleName => TouLocale.Get(TouNames.Pestilence, "Pestilence");
     public string RoleDescription => "Horseman Of The Apocalypse!";
     public string RoleLongDescription => "Kill everyone in your path that interacts with you!";
     public string YouAreText => "You are";
@@ -78,7 +78,7 @@ public sealed class PestilenceRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            "The Pestillence is a Neutral Killing role that can kill and is invincible to everything but being exiled or guessing incorrectly. They win by being the last killer alive." +
+            $"The {RoleName} is a Neutral Killing role that can kill and is invincible to everything but being exiled or guessing incorrectly. They win by being the last killer alive." +
             MiscUtils.AppendOptionsText(GetType());
     }
 

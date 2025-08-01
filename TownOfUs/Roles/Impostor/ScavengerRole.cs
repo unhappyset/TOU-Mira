@@ -85,7 +85,7 @@ public sealed class ScavengerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TrackerTouRole>());
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public string RoleName => "Scavenger";
+    public string RoleName => TouLocale.Get(TouNames.Scavenger, "Scavenger");
     public string RoleDescription => "Hunt Down Your Prey";
     public string RoleLongDescription => "Kill your given targets for a reduced kill cooldown";
     public Color RoleColor => TownOfUsColors.Impostor;
@@ -119,7 +119,7 @@ public sealed class ScavengerRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            "The Scavenger is an Impostor Killing role that gets new targets after every kill and when the round starts. "
+            $"The {RoleName} is an Impostor Killing role that gets new targets after every kill and when the round starts. "
             + "If they kill their target, they get a reduced kill cooldown, but if they don't, their cooldown is increased significantly."
             + MiscUtils.AppendOptionsText(GetType());
     }

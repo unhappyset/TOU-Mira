@@ -35,7 +35,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VigilanteRole>());
     public DoomableType DoomHintType => DoomableType.Insight;
-    public string RoleName => "Doomsayer";
+    public string RoleName => TouLocale.Get(TouNames.Doomsayer, "Doomsayer");
     public string RoleDescription => "Guess People's Roles To Win!";
 
     public string RoleLongDescription =>
@@ -78,7 +78,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            $"The Doomsayer is a Neutral Evil role that wins by guessing {(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin} players' roles." +
+            $"The {RoleName} is a Neutral Evil role that wins by guessing {(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin} players' roles." +
             (OptionGroupSingleton<DoomsayerOptions>.Instance.CantObserve
                 ? string.Empty
                 : " They may observe players to get a hint of what their roles are the following meeting.") +

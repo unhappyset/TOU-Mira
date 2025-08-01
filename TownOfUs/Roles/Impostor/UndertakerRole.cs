@@ -39,7 +39,7 @@ public sealed class UndertakerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<AltruistRole>());
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => "Undertaker";
+    public string RoleName => TouLocale.Get(TouNames.Undertaker, "Undertaker");
     public string RoleDescription => "Drag Bodies And Hide Them";
     public string RoleLongDescription => "Drag bodies around to hide them from being reported";
     public Color RoleColor => TownOfUsColors.Impostor;
@@ -61,7 +61,7 @@ public sealed class UndertakerRole(IntPtr cppPtr)
 
     public string GetAdvancedDescription()
     {
-        return "The Undertaker is an Impostor Support role that can drag dead bodies around the map." +
+        return $"The {RoleName} is an Impostor Support role that can drag dead bodies around the map." +
                MiscUtils.AppendOptionsText(GetType());
     }
 

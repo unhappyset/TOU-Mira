@@ -13,7 +13,7 @@ public sealed class WarlockRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VeteranRole>());
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public string RoleName => "Warlock";
+    public string RoleName => TouLocale.Get(TouNames.Warlock, "Warlock");
     public string RoleDescription => "Charge Up Your Kill Button To Multi Kill";
     public string RoleLongDescription => "Kill people in small bursts";
     public Color RoleColor => TownOfUsColors.Impostor;
@@ -36,7 +36,7 @@ public sealed class WarlockRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            "The Warlock is an Impostor Killing role that can charge up attacks to wipe out the crew quickly."
+            $"The {RoleName} is an Impostor Killing role that can charge up attacks to wipe out the crew quickly."
             + MiscUtils.AppendOptionsText(GetType());
     }
 

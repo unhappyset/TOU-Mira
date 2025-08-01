@@ -40,7 +40,7 @@ public sealed class HypnotistRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<LookoutRole>());
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => "Hypnotist";
+    public string RoleName => TouLocale.Get(TouNames.Hypnotist, "Hypnotist");
     public string RoleDescription => "Hypnotize Crewmates";
     public string RoleLongDescription => "Hypnotize crewmates and drive them insane";
     public Color RoleColor => TownOfUsColors.Impostor;
@@ -62,7 +62,7 @@ public sealed class HypnotistRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            "The Hypnotist is an Impostor Support role that can hypnotize players. During a meeting they can release Mass Hysteria, which makes all hypnotized players (marked with <color=#D53F42>@</color>) have different visuals applied to players the following round."
+            $"The {RoleName} is an Impostor Support role that can hypnotize players. During a meeting they can release Mass Hysteria, which makes all hypnotized players (marked with <color=#D53F42>@</color>) have different visuals applied to players the following round."
             + MiscUtils.AppendOptionsText(GetType());
     }
 

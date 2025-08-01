@@ -32,7 +32,7 @@ public sealed class AmbusherRole(IntPtr cppPtr)
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
 
-    public string RoleName => "Ambusher";
+    public string RoleName => TouLocale.Get(TouNames.Ambusher, "Ambusher");
     public string RoleDescription => "Kidnap Crewmates Into The Shadows";
     public string RoleLongDescription => "Pursue a player, then ambush the closest player to them.\nIf the player you ambush dies, then take their body with you.";
     public Color RoleColor => TownOfUsColors.Impostor;
@@ -49,7 +49,7 @@ public sealed class AmbusherRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            $"The Ambusher is an Impostor Killing role that can pursue a player, getting an arrow to them. They may ambush the closest player next to them. If they manage to kill the player, they will drag their body into the shadows, teleporting back with the Ambusher." +
+            $"The {RoleName} is an Impostor Killing role that can pursue a player, getting an arrow to them. They may ambush the closest player next to them. If they manage to kill the player, they will drag their body into the shadows, teleporting back with the Ambusher." +
             MiscUtils.AppendOptionsText(GetType());
     }
 

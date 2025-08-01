@@ -108,7 +108,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<OracleRole>());
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public string RoleName => "Inquisitor";
+    public string RoleName => TouLocale.Get(TouNames.Inquisitor, "Inquisitor");
     public string RoleDescription => "Vanquish The Heretics!";
 
     public string RoleLongDescription =>
@@ -166,7 +166,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public string GetAdvancedDescription()
     {
         return
-            "The Inquisitor is a Neutral Evil role that wins if their targets (Heretics) die. The only information provided is their roles, and it's up to the Inquisitor to identify those players (marked with <color=#D94291>$</color> to the dead) and get them killed by any means neccesary." +
+            $"The {RoleName} is a Neutral Evil role that wins if their targets (Heretics) die. The only information provided is their roles, and it's up to the Inquisitor to identify those players (marked with <color=#D94291>$</color> to the dead) and get them killed by any means neccesary." +
             MiscUtils.AppendOptionsText(GetType());
     }
 
