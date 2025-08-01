@@ -34,7 +34,7 @@ public sealed class BomberRole(IntPtr cppPtr)
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Bomber,
-        CanUseVent = OptionGroupSingleton<BomberOptions>.Instance.BomberVent
+        CanUseVent = OptionGroupSingleton<BomberOptions>.Instance.CanVent
     };
 
     [HideFromIl2Cpp]

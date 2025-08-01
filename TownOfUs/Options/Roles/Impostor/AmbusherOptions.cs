@@ -22,6 +22,6 @@ public sealed class AmbusherOptions : AbstractOptionGroup<AmbusherRole>
     [ModdedToggleOption("Stop Pursing Player On Ambush")]
     public bool ResetAmbush { get; set; } = true;
 
-    [ModdedToggleOption("Can Vent")]
-    public bool AmbusherVent { get; set; } = true;
+    [ModdedToggleOption("Ambusher Can Vent")]
+    public bool CanVent { get; set; } = true;
 }

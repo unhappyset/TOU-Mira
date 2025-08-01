@@ -19,6 +19,6 @@ public sealed class SwooperOptions : AbstractOptionGroup<SwooperRole>
     [ModdedNumberOption("Swoop Duration", 5f, 15f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float SwoopDuration { get; set; } = 10f;
 
-    [ModdedToggleOption("Can Vent")]
+    [ModdedToggleOption("Swooper Can Vent")]
     public bool CanVent { get; set; } = true;
 }

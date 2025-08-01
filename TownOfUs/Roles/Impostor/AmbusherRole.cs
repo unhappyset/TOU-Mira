@@ -44,7 +44,7 @@ public sealed class AmbusherRole(IntPtr cppPtr)
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouRoleIcons.Ambusher,
-        CanUseVent = OptionGroupSingleton<AmbusherOptions>.Instance.AmbusherVent
+        CanUseVent = OptionGroupSingleton<AmbusherOptions>.Instance.CanVent
     };
 
     public string GetAdvancedDescription()
