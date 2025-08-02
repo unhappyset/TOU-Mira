@@ -76,6 +76,7 @@ public enum TouNames
     // Alliance Modifiers
     Egotist,
     Lover,
+    Lovers, // for plural
     // Universal Modifiers
     ButtonBarry,
     Flash,
