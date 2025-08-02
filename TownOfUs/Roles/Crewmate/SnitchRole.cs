@@ -1,5 +1,7 @@
 ﻿using System.Globalization;
 using System.Text;
+using AmongUs.GameOptions;
+using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
@@ -8,6 +10,7 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -180,20 +183,6 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
                 OptionGroupSingleton<SnitchOptions>.Instance.SnitchNeutralRoles);
     }
 
-    public static bool SnitchVisibilityFlag(PlayerControl player, bool showRole = false)
-    {
-        var snitchRevealed = PlayerControl.LocalPlayer.Data.Role is SnitchRole snitch && snitch.CompletedAllTasks;
-        var showSnitch = IsTargetOfSnitch(PlayerControl.LocalPlayer) && player.Data.Role is SnitchRole snitch2 &&
-                         snitch2.OnLastTask;
-
-        if (MeetingHud.Instance && !OptionGroupSingleton<SnitchOptions>.Instance.SnitchSeesImpostorsMeetings)
-        {
-            snitchRevealed = false;
-        }
-
-        return (snitchRevealed && IsTargetOfSnitch(player) && !showRole) || showSnitch;
-    }
-
     public override void OnDeath(DeathReason reason)
     {
         RoleBehaviourStubs.OnDeath(this, reason);
@@ -222,6 +211,8 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         {
             SnitchRevealArrow.gameObject.Destroy();
         }
+        ModifierUtils.GetActiveModifiers<SnitchImpostorRevealModifier>().Do(x => x.ModifierComponent?.RemoveModifier(x));
+        ModifierUtils.GetActiveModifiers<SnitchPlayerRevealModifier>().Do(x => x.ModifierComponent?.RemoveModifier(x));
     }
 
     private void CreateRevealingArrow()
@@ -231,6 +222,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             return;
         }
 
+        Player.AddModifier<SnitchPlayerRevealModifier>(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SnitchRole>()));
         PlayerNameColor.Set(Player);
         Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Snitch, alpha: 0.5f));
         SnitchRevealArrow = MiscUtils.CreateArrow(Player.transform, TownOfUsColors.Snitch);
@@ -251,12 +243,14 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         {
             _snitchArrows.Add(imp.PlayerId, MiscUtils.CreateArrow(imp.transform, TownOfUsColors.Impostor));
             PlayerNameColor.Set(imp);
+            imp.AddModifier<SnitchImpostorRevealModifier>();
         });
 
         if (OptionGroupSingleton<SnitchOptions>.Instance.SnitchSeesTraitor && traitor != null)
         {
             _snitchArrows.Add(traitor.PlayerId, MiscUtils.CreateArrow(traitor.transform, TownOfUsColors.Impostor));
             PlayerNameColor.Set(traitor);
+            traitor.AddModifier<SnitchImpostorRevealModifier>();
         }
 
         if (OptionGroupSingleton<SnitchOptions>.Instance.SnitchNeutralRoles)
@@ -268,6 +262,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
                 _snitchArrows.Add(neutral.Player.PlayerId,
                     MiscUtils.CreateArrow(neutral.Player.transform, TownOfUsColors.Neutral));
                 PlayerNameColor.Set(neutral.Player);
+                neutral.Player.AddModifier<SnitchImpostorRevealModifier>();
             });
         }
     }
@@ -300,6 +295,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             {
                 _snitchArrows.Add(traitor.PlayerId, MiscUtils.CreateArrow(traitor.transform, TownOfUsColors.Impostor));
                 PlayerNameColor.Set(traitor);
+                Player.AddModifier<SnitchImpostorRevealModifier>();
             }
         }
     }

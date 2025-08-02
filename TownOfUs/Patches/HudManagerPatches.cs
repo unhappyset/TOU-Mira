@@ -350,6 +350,7 @@ public static class HudManagerPatches
                 {
                     continue;
                 }
+                var revealMods = player.GetModifiers<RevealModifier>();
 
                 var playerName = player.GetDefaultAppearance().PlayerName ?? "Unknown";
                 var playerColor = Color.white;
@@ -388,14 +389,21 @@ public static class HudManagerPatches
                     (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is
                         { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
                     (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
-                    SnitchRole.SnitchVisibilityFlag(player, true) ||
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
                     SleuthModifier.SleuthVisibilityFlag(player) ||
-                    MayorRole.MayorVisibilityFlag(player))
+                    revealMods.Any(x => x.Visible && x.RevealRole))
                 {
                     color = role.TeamColor;
                     roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color></size>";
+                    
+                    var revealedRole = revealMods.FirstOrDefault(x => x.Visible && x.RevealRole && x.ShownRole != null);
+                    if (revealedRole != null)
+                    {
+                        color = revealedRole.ShownRole!.TeamColor;
+                        roleName = $"<size=80%>{color.ToTextColor()}{revealedRole.ShownRole!.NiceName}</color></size>";
+                    }
+                    
                     if (!player.HasModifier<VampireBittenModifier>() && role is VampireRole)
                     {
                         roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
@@ -474,11 +482,24 @@ public static class HudManagerPatches
 
                     playerName += revealText;
                 }
-
-                if (SnitchRole.SnitchVisibilityFlag(player))
+                
+                var revealedColorMod = revealMods.FirstOrDefault(x => x.Visible && x.NameColor != null);
+                if (revealedColorMod != null)
                 {
-                    playerColor = TownOfUsColors.Impostor;
+                    playerColor = (Color)revealedColorMod.NameColor!;
                     playerName = $"{playerColor.ToTextColor()}{playerName}</color>";
+                }
+                
+                var addedRoleNameText = revealMods.FirstOrDefault(x => x.Visible && x.ExtraRoleText != string.Empty);
+                if (addedRoleNameText != null)
+                {
+                    roleName += $"<size=80%>{addedRoleNameText.ExtraRoleText}</size>";
+                }
+                
+                var addedPlayerNameText = revealMods.FirstOrDefault(x => x.Visible && x.ExtraNameText != string.Empty);
+                if (addedPlayerNameText != null)
+                {
+                    playerName += addedPlayerNameText.ExtraNameText;
                 }
 
                 if (player?.Data?.Disconnected == true)
@@ -486,12 +507,11 @@ public static class HudManagerPatches
                     if (!((PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is
                               { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
                           (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
-                          SnitchRole.SnitchVisibilityFlag(player, true) ||
                           (!TutorialManager.InstanceExists &&
                            ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                             GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
                             SleuthModifier.SleuthVisibilityFlag(player) ||
-                            MayorRole.MayorVisibilityFlag(player)))))
+                           revealMods.Any(x => x.Visible && x.RevealRole)))))
                     {
                         roleName = "";
                         color = Color.white;
@@ -534,6 +554,8 @@ public static class HudManagerPatches
                 {
                     continue;
                 }
+                
+                var revealMods = player.GetModifiers<RevealModifier>();
 
                 var playerName = player.GetAppearance().PlayerName ?? "Unknown";
                 var playerColor = Color.white;
@@ -557,20 +579,27 @@ public static class HudManagerPatches
                 {
                     continue;
                 }
-
+                
                 var roleName = "";
                 var canSeeDeathReason = false;
                 if (player.AmOwner ||
                     (PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is
                         { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
                     (PlayerControl.LocalPlayer.GetRoleWhenAlive() is VampireRole && role is VampireRole) ||
-                    SnitchRole.SnitchVisibilityFlag(player, true) ||
                     (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && isVisible) ||
                     GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
-                    MayorRole.MayorVisibilityFlag(player))
+                    revealMods.Any(x => x.Visible && x.RevealRole))
                 {
                     color = role.TeamColor;
                     roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color></size>";
+                    
+                    var revealedRole = revealMods.FirstOrDefault(x => x.Visible && x.RevealRole && x.ShownRole != null);
+                    if (revealedRole != null)
+                    {
+                        color = revealedRole.ShownRole!.TeamColor;
+                        roleName = $"<size=80%>{color.ToTextColor()}{revealedRole.ShownRole!.NiceName}</color></size>";
+                    }
+                    
                     if (!player.HasModifier<VampireBittenModifier>() && player.Data.Role is VampireRole)
                     {
                         roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
@@ -639,20 +668,33 @@ public static class HudManagerPatches
                     roleName += $" - {scatter.GetDescription()}";
                 }
                 
+                var revealedColorMod = revealMods.FirstOrDefault(x => x.Visible && x.NameColor != null);
+                if (revealedColorMod != null)
+                {
+                    playerColor = (Color)revealedColorMod.NameColor!;
+                    playerName = $"{playerColor.ToTextColor()}{playerName}</color>";
+                }
+                
+                var addedRoleNameText = revealMods.FirstOrDefault(x => x.Visible && x.ExtraRoleText != string.Empty);
+                if (addedRoleNameText != null)
+                {
+                    roleName += $"<size=80%>{addedRoleNameText.ExtraRoleText}</size>";
+                }
+                
+                var addedPlayerNameText = revealMods.FirstOrDefault(x => x.Visible && x.ExtraNameText != string.Empty);
+                if (addedPlayerNameText != null)
+                {
+                    playerName += addedPlayerNameText.ExtraNameText;
+                }
+                
                 if (canSeeDeathReason)
                 {
                     playerName += $"\n<size=75%> </size>";
                 }
-
+                
                 if (player.AmOwner && player.Data.Role is IGhostRole { GhostActive: true })
                 {
                     playerColor = Color.clear;
-                }
-
-                if (SnitchRole.SnitchVisibilityFlag(player))
-                {
-                    playerColor = TownOfUsColors.Impostor;
-                    playerName = $"{playerColor.ToTextColor()}{playerName}</color>";
                 }
 
                 if (!string.IsNullOrEmpty(roleName))

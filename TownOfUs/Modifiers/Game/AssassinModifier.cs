@@ -213,7 +213,7 @@ public abstract class AssassinModifier : ExcludedGameModifier
                 !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode) ||
                (Player.Data.Role is VampireRole && votePlayer?.Data.Role is VampireRole) ||
                (votePlayer?.Data.Role is MayorRole mayor && mayor.Revealed) ||
-               (votePlayer?.Data.Role is SnitchRole && SnitchRole.SnitchVisibilityFlag(votePlayer, true)) ||
+               (votePlayer?.GetModifiers<RevealModifier>().Any(x => x.Visible && x.RevealRole) == true) ||
                (Player.IsLover() && votePlayer?.IsLover() == true) ||
                votePlayer?.HasModifier<JailedModifier>() == true;
     }

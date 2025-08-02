@@ -1,5 +1,6 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modifiers.Impostor;
@@ -159,8 +160,7 @@ public static class PlayerRoleTextExtensions
 
         if (player.HasModifier<EgotistModifier>() && (player.AmOwner ||
                                                       (EgotistModifier.EgoVisibilityFlag(player) &&
-                                                       (SnitchRole.SnitchVisibilityFlag(player, true) ||
-                                                        MayorRole.MayorVisibilityFlag(player))) ||
+                                                       (player.GetModifiers<RevealModifier>().Any(x => x.Visible && x.RevealRole))) ||
                                                       (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow &&
                                                        !hidden)))
         {
