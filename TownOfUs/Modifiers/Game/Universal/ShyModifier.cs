@@ -193,6 +193,12 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
 
         player.SetHatAndVisorAlpha(transparency);
         cosmetics.skin.layer.color = cosmetics.skin.layer.color.SetAlpha(transparency);
+        if (player.cosmetics.GetLongBoi() != null)
+        {
+            player.cosmetics.GetLongBoi().headSprite.color = player.cosmetics.GetLongBoi().headSprite.color.SetAlpha(transparency);
+            player.cosmetics.GetLongBoi().neckSprite.color = player.cosmetics.GetLongBoi().neckSprite.color.SetAlpha(transparency);
+            player.cosmetics.GetLongBoi().foregroundNeckSprite.color = player.cosmetics.GetLongBoi().foregroundNeckSprite.color.SetAlpha(transparency);
+        }
         if (player.cosmetics.currentPet != null)
         {
             foreach (var rend in player.cosmetics.currentPet.renderers)
