@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using InnerNet;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
@@ -137,6 +138,15 @@ public static class TeamChatPatches
     {
         public static void Postfix(ChatController __instance)
         {
+            if (PlayerControl.LocalPlayer == null ||
+                PlayerControl.LocalPlayer.Data == null ||
+                PlayerControl.LocalPlayer.Data.Role == null ||
+                !ShipStatus.Instance ||
+                (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started &&
+                 !TutorialManager.InstanceExists))
+            {
+                return;
+            }
             try
             {
                 if (__instance.IsOpenOrOpening)

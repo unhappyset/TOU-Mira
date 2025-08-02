@@ -404,19 +404,27 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 
     public static void Transport(MonoBehaviour mono, Vector3 position)
     {
-        if (mono.TryCast<PlayerControl>() is PlayerControl player && player.HasModifier<ImmovableModifier>())
+        var player = mono.TryCast<PlayerControl>();
+        if (player != null && player.HasModifier<ImmovableModifier>())
         {
             return;
         }
-
         if (mono.TryCast<DeadBody>() is DeadBody deadBody &&
             MiscUtils.PlayerById(deadBody.ParentId)?.HasModifier<ImmovableModifier>() == true)
         {
             return;
         }
 
-        var cnt = mono.TryCast<CustomNetworkTransform>();
         mono.transform.position = position;
+        
+        if (player != null)
+        {
+            player.MyPhysics.ResetMoveState();
+            player.transform.position = position;
+            player.NetTransform.SnapTo(position);
+        }
+
+        var cnt = mono.TryCast<CustomNetworkTransform>();
         if (cnt != null)
         {
             cnt.SnapTo(position, (ushort)(cnt.lastSequenceId + 1));
@@ -428,7 +436,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             }
         }
 
-        if (mono.TryCast<PlayerControl>() is PlayerControl player2 && player2.AmOwner)
+        if (player != null && player.AmOwner)
         {
             MiscUtils.SnapPlayerCamera(PlayerControl.LocalPlayer);
         }
