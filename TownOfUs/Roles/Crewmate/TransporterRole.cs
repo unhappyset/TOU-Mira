@@ -410,14 +410,14 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 
     public static void Transport(MonoBehaviour mono, Vector3 position)
     {
-        
+        var deadBody = mono.TryCast<DeadBody>();
         var player = mono.TryCast<PlayerControl>();
         if (player != null && player.HasModifier<ImmovableModifier>())
         {
             return;
         }
 
-        if (mono.TryCast<DeadBody>() is { } deadBody &&
+        if (deadBody != null &&
             MiscUtils.PlayerById(deadBody.ParentId)?.HasModifier<ImmovableModifier>() == true)
         {
             return;
@@ -425,7 +425,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 
         mono.transform.position = position;
         Collider2D cd = mono.GetComponent<Collider2D>();
-        if (cd != null && mono.TryCast<DeadBody>() != null)
+        if (cd != null && deadBody != null)
         {
             mono.transform.position += cd.bounds.center - position;
         }

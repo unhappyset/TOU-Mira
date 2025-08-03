@@ -220,6 +220,7 @@
         "\n- Transporter now transports players correctly, no more desync",
         "\n- If the Snitch reveals neutral killers, they now show the role color",
         "\n- If a blessed player is swapped, the swapped target will still be ejected",
+        "\n- Transporting a body next to a wall twice no longer throws you out of bounds (PR #51) (Nix-main)",
         "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
         "\n- Fix Alive Neutral Ghost on Jester win",
         "\n- Jester Haunt, Phantom Spook, and Executioner Torment ignore shields correctly now",
@@ -231,6 +232,7 @@
         "\n\n\r<size=105%>Impostor Role Bugfixes:</size>",
         "\n- If an Undertaker dies while dragging a body, the body will be let go automatically",
         "\n- Abilities can be used in Eclipse and while flashed now (bodies are not reportable in grenade flash though, only eclipse)",
+        "\n- Scavenger targets are no longer given during a meeting",
         "\n\n\r<size=105%>Modifier Bugfixes:</size>",
         "\n- Shy ghosts are no longer invisible, but their hat stays translucent",
         "\n- Mini and Giant can climb ladders correctly now without getting stuck",
@@ -249,6 +251,7 @@
         "\n- Support for other MiraAPI mods has been improved across the board (this does not affect you if you only play Town of Us Mira standalone)",
         "\n- Plumber now swaps between 3 barricade sprites",
         "\n\n\r<size=105%>Changes:</size>",
+        "\n- Torch is no longer immune to Eclipsal",
         "\n- Mercenary and GA can win with their targets from alliance modifiers",
         "\n- Plumber barricades will now only stay for a set amount of rounds (customizable, can be infinite)"
       ]
