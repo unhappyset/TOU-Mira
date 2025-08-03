@@ -1,7 +1,6 @@
 ﻿using AmongUs.Data;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Modifiers.Universal;
 using TownOfUs.Options.Roles.Neutral;
@@ -15,7 +14,7 @@ namespace TownOfUs.Modifiers.Game.Universal;
 
 public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => "Shy";
+    public override string ModifierName => TouLocale.Get(TouNames.Shy, "Shy");
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Shy;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalVisibility;
@@ -28,6 +27,7 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
         OptionGroupSingleton<ShyOptions>.Instance.TransformInvisDuration + 0.01f;
 
     private DateTime LastMoved { get; set; }
+    private bool StopShy { get; set; }
 
     public string GetAdvancedDescription()
     {
@@ -105,8 +105,15 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
 
         if (Player.HasDied())
         {
+            if (!StopShy)
+            {
+                StopShy = true;
+                SetVisibility(Player, 1f);
+            }
             return;
         }
+
+        StopShy = false;
 
         // check movement by animation
         var playerPhysics = Player.MyPhysics;
@@ -132,7 +139,7 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
         {
             SetVisibility(Player, 1f, true);
         }
-        else if (Player.HasDied() || Player.GetAppearanceType() == TownOfUsAppearances.Morph || Player.GetAppearanceType() == TownOfUsAppearances.Mimic)
+        else if (Player.GetAppearanceType() == TownOfUsAppearances.Morph || Player.GetAppearanceType() == TownOfUsAppearances.Mimic)
         {
             SetVisibility(Player, 1f);
         }
@@ -156,6 +163,11 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
                 var opacity = FinalTransparency / 100;
                 SetVisibility(Player, opacity);
             }
+        }
+
+        if (Player.HasDied())
+        {
+            SetVisibility(Player, 1f);
         }
     }
 
@@ -181,6 +193,12 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
 
         player.SetHatAndVisorAlpha(transparency);
         cosmetics.skin.layer.color = cosmetics.skin.layer.color.SetAlpha(transparency);
+        if (player.cosmetics.GetLongBoi() != null)
+        {
+            player.cosmetics.GetLongBoi().headSprite.color = player.cosmetics.GetLongBoi().headSprite.color.SetAlpha(transparency);
+            player.cosmetics.GetLongBoi().neckSprite.color = player.cosmetics.GetLongBoi().neckSprite.color.SetAlpha(transparency);
+            player.cosmetics.GetLongBoi().foregroundNeckSprite.color = player.cosmetics.GetLongBoi().foregroundNeckSprite.color.SetAlpha(transparency);
+        }
         if (player.cosmetics.currentPet != null)
         {
             foreach (var rend in player.cosmetics.currentPet.renderers)

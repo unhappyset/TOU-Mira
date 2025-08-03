@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using TownOfUs.Roles;
+using TownOfUs.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -33,58 +33,95 @@ public static class GhostRoleUsePatches
     [HarmonyPatch(typeof(MovingPlatformBehaviour))]
     [HarmonyPatch(nameof(MovingPlatformBehaviour.Use), typeof(PlayerControl))]
     [HarmonyPrefix]
-    public static bool MovingPlatformBehaviourUsePrefixPatch(Il2CppSystem.Object __instance,
-        [HarmonyArgument(0)] PlayerControl player, ref bool __state)
+    public static bool MovingPlatformBehaviourUsePrefixPatch(MovingPlatformBehaviour __instance, PlayerControl player)
     {
-        __state = false;
-
-        if (player.Data.Role is IGhostRole { GhostActive: true } && player.Data.IsDead)
+        var vector = __instance.transform.position - player.transform.position;
+        if (player.Data.IsGhostDead() || player.Data.Disconnected)
         {
-            // Logger<TownOfUsPlugin>.Message($"CanUsePrefixPatch IsDead");
-            player.Data.IsDead = false;
-            __state = true;
+            return false;
         }
 
-        return true;
+        if (__instance.Target || vector.magnitude > 3f)
+        {
+            return false;
+        }
+
+        __instance.IsDirty = true;
+        __instance.StartCoroutine(__instance.UsePlatform(player));
+        return false;
     }
 
-    [HarmonyPatch(typeof(MovingPlatformBehaviour))]
-    [HarmonyPatch(nameof(MovingPlatformBehaviour.Use), typeof(PlayerControl))]
-    [HarmonyPostfix]
-    public static void MovingPlatformBehaviourUsePostfixPatch(Il2CppSystem.Object __instance,
-        [HarmonyArgument(0)] PlayerControl player, ref bool __state)
+    [HarmonyPatch(typeof(ZiplineBehaviour), nameof(ZiplineBehaviour.Use), typeof(PlayerControl), typeof(bool))]
+    [HarmonyPrefix]
+    public static bool ZiplineBehaviourUsePrefixPatch(ZiplineBehaviour __instance, PlayerControl player, bool fromTop)
     {
-        if (__state)
-            // Logger<TownOfUsPlugin>.Message($"CanUsePostfixPatch IsDead");
+        if (player.Data.IsGhostDead() || player.Data.Disconnected)
         {
-            player.Data.IsDead = true;
+            return false;
         }
+
+        Transform transform;
+        Transform transform2;
+        Transform transform3;
+        if (fromTop)
+        {
+            transform = __instance.handleTop;
+            transform2 = __instance.handleBottom;
+            transform3 = __instance.landingPositionBottom;
+        }
+        else
+        {
+            transform = __instance.handleBottom;
+            transform2 = __instance.handleTop;
+            transform3 = __instance.landingPositionTop;
+        }
+
+        __instance.StopAllCoroutinesForPlayer(player);
+        __instance.playerIdUseZiplineCoroutines[player.PlayerId] =
+            __instance.StartCoroutine(__instance.CoUseZipline(player, transform, transform2, transform3, fromTop));
+        return false;
     }
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckUseZipline))]
     [HarmonyPrefix]
-    public static void CheckUseZiplinePrefixPatch(PlayerControl target, ref bool __state)
+    public static bool CheckUseZiplinePrefixPatch(PlayerControl __instance, PlayerControl target,
+        ZiplineBehaviour ziplineBehaviour, bool fromTop)
     {
-        __state = false;
-        var targetData = target.CachedPlayerData;
-
-        if (target.Data.Role is IGhostRole { GhostActive: true } && target.Data.IsDead)
+        __instance.logger.Debug($"Checking if {__instance.PlayerId} can use zipline");
+        if (AmongUsClient.Instance.IsGameOver || !AmongUsClient.Instance.AmHost)
         {
-            targetData.IsDead = false;
-            __state = true;
+            return false;
         }
-    }
 
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckUseZipline))]
-    [HarmonyPostfix]
-    public static void CheckUseZiplinePostfixPatch(PlayerControl target, ref bool __state)
-    {
-        var targetData = target.CachedPlayerData;
-
-        if (__state)
+        if (!target)
         {
-            targetData.IsDead = true;
+            __instance.logger.Warning("Invalid zipline use, player is null");
+            return false;
         }
+
+        var data = target.Data;
+        if (data == null || data.IsGhostDead() || target.inMovingPlat)
+        {
+            __instance.logger.Warning($"Invalid zipline use from {target.PlayerId}");
+            return false;
+        }
+
+        if (MeetingHud.Instance)
+        {
+            __instance.logger.Warning("Tried to zipline while a meeting was starting");
+            return false;
+        }
+
+        var vector = ziplineBehaviour.GetHandlePos(fromTop) - target.transform.position;
+        if (vector.magnitude > 3f)
+        {
+            __instance.logger.Info($"{target} was denied the zipline: distance={vector.magnitude}");
+            return false;
+        }
+
+        __instance.RpcUseZipline(target, ziplineBehaviour, fromTop);
+
+        return false;
     }
 
     [HarmonyPatch(typeof(OpenDoorConsole), nameof(OpenDoorConsole.Use))]

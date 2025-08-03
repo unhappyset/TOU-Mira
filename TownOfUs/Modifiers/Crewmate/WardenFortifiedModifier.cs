@@ -81,6 +81,12 @@ public sealed class WardenFortifiedModifier(PlayerControl warden) : BaseShieldMo
     
     public override void Update()
     {
+        if (Player == null || Warden == null)
+        {
+            ModifierComponent?.RemoveModifier(this);
+            return;
+        }
+        
         if (!MeetingHud.Instance && WardenFort?.gameObject != null)
         {
             WardenFort?.SetActive(!Player.IsConcealed() && IsVisible && ShowFort);

@@ -15,8 +15,6 @@ using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modifiers.Game.Neutral;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
-using TownOfUs.Modules.Localization;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -119,10 +117,50 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             inquis.TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select(x => x.TargetRole)
                 .OrderBy(x => x.NiceName).ToList();
         }
-
-        if (player.Data.Role is MayorRole mayor)
+        else if (player.Data.Role is PlaguebearerRole || player.Data.Role is PestilenceRole)
+        {
+            ModifierUtils.GetActiveModifiers<PlaguebearerInfectedModifier>().Do(x => x.ModifierComponent?.RemoveModifier(x));
+        }
+        else if (player.Data.Role is ArsonistRole)
+        {
+            ModifierUtils.GetActiveModifiers<ArsonistDousedModifier>().Do(x => x.ModifierComponent?.RemoveModifier(x));
+        }
+        else if (player.Data.Role is MayorRole mayor)
         {
             mayor.Revealed = false;
+        }
+        else if (player.Data.Role is GuardianAngelTouRole ga)
+        {
+            var gaTarget = ModifierUtils.GetPlayersWithModifier<GuardianAngelTargetModifier>().FirstOrDefault(x => x.PlayerId == target.PlayerId);
+
+            if (gaTarget != null && gaTarget.TryGetModifier<GuardianAngelTargetModifier>(out var gaMod))
+            {
+                ga.Target = gaTarget;
+                gaMod.OwnerId = player.PlayerId;
+            }
+        }
+        else if (player.Data.Role is ExecutionerRole exe)
+        {
+            var exeTarget = ModifierUtils.GetPlayersWithModifier<ExecutionerTargetModifier>().FirstOrDefault(x => x.PlayerId == target.PlayerId);
+
+            if (exeTarget != null && exeTarget.TryGetModifier<ExecutionerTargetModifier>(out var exeMod))
+            {
+                exe.Target = exeTarget;
+                exeMod.OwnerId = player.PlayerId;
+            }
+        }
+        else if (player.Data.Role is VampireRole)
+        {
+            if (target.HasModifier<VampireBittenModifier>())
+            {
+                // Makes the amne stay with the bitten modifier
+                player.AddModifier<VampireBittenModifier>();
+            }
+            else
+            {
+                // Makes the og vampire a bitten vampire so to speak, yes it makes it more confusing, but that's how it is, deal with it - Atony
+                target.AddModifier<VampireBittenModifier>();
+            }
         }
 
         if (player.AmOwner)

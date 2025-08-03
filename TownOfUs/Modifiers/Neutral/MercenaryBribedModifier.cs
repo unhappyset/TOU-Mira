@@ -12,6 +12,8 @@ public sealed class MercenaryBribedModifier(PlayerControl mercenary) : BaseModif
     public override string ModifierName => "Mercenary Bribed";
     public override bool HideOnUi => true;
     public PlayerControl Mercenary { get; } = mercenary;
+    // Multiple mercs can bribe the same player in this case
+    public override bool Unique => false;
 
     public override void OnActivate()
     {

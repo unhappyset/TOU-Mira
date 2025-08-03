@@ -13,10 +13,10 @@ using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Buttons.Crewmate;
+using TownOfUs.Events;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -36,7 +36,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         .FirstOrDefault(x => x.GetModifier<JailedModifier>()?.JailorId == Player.PlayerId)!;
 
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public string RoleName => "Jailor";
+    public string RoleName => TouLocale.Get(TouNames.Jailor, "Jailor");
     public string RoleDescription => "Jail And Execute The <color=#FF0000FF>Impostors</color>";
     public string RoleLongDescription => "Execute evildoers in meetings but avoid crewmates";
     public Color RoleColor => TownOfUsColors.Jailor;
@@ -71,7 +71,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     public string GetAdvancedDescription()
     {
         return
-            "The Jailor is a Crewmate Power role that can jail other players. During a meeting, the Jailor can choose to execute their jailed player. (Unless the Jailor is an Imitator)"
+            $"The {RoleName} is a Crewmate Power role that can jail other players. During a meeting, the Jailor can choose to execute their jailed player. (Unless the Jailor is an Imitator)"
             + MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -237,6 +237,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
                 }
 
                 Player.RpcCustomMurder(Jailed, createDeadBody: false, teleportMurderer: false);
+                DeathHandlerModifier.RpcUpdateDeathHandler(Jailed, "Executed", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {Player.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
             }
 
             var notif1 = Helpers.CreateAndShowNotification(

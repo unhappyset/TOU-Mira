@@ -13,7 +13,6 @@ using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Buttons.Neutral;
 using TownOfUs.Modifiers.Neutral;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -27,7 +26,7 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
 {
     public void FixedUpdate()
     {
-        if (Player == null || Player.Data.Role is not PlaguebearerRole || Player.HasDied())
+        if (Player == null || Player.Data.Role is not PlaguebearerRole || Player.HasDied() || !Player.AmOwner)
         {
             return;
         }
@@ -44,10 +43,9 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
                     x.PlagueBearerId == Player.PlayerId);
 
             players.Do(x =>
-                x.RemoveModifier<PlaguebearerInfectedModifier>([HideFromIl2Cpp](x) =>
-                    x.PlagueBearerId == Player.PlayerId));
+                x.RpcRemoveModifier<PlaguebearerInfectedModifier>());
 
-            Player.ChangeRole(RoleId.Get<PestilenceRole>());
+            Player.RpcChangeRole(RoleId.Get<PestilenceRole>());
 
             CustomButtonSingleton<PestilenceKillButton>.Instance.SetTimer(OptionGroupSingleton<PlaguebearerOptions>
                 .Instance.PestKillCooldown);
@@ -56,7 +54,7 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<AurialRole>());
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => "Plaguebearer";
+    public string RoleName => TouLocale.Get(TouNames.Plaguebearer, "Plaguebearer");
     public string RoleDescription => "Infect Everyone To Become <color=#4D4D4DFF>Pestilence</color>";
     public string RoleLongDescription => "Infect everyone to become <color=#4D4D4DFF>Pestilence</color>";
     public Color RoleColor => TownOfUsColors.Plaguebearer;
@@ -111,7 +109,7 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            "The Plaguebearer is a Neutral Killing role that needs to infect all other players to turn into the Pestilence." +
+            $"The {RoleName} is a Neutral Killing role that needs to infect all other players to turn into the Pestilence." +
             MiscUtils.AppendOptionsText(GetType());
     }
 

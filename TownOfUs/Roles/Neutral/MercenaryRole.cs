@@ -5,12 +5,12 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Buttons.Neutral;
 using TownOfUs.Modifiers.Neutral;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -27,7 +27,7 @@ public sealed class MercenaryRole(IntPtr cppPtr)
     public bool CanBribe => Gold >= BrideCost;
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<WardenRole>());
     public DoomableType DoomHintType => DoomableType.Insight;
-    public string RoleName => "Mercenary";
+    public string RoleName => TouLocale.Get(TouNames.Mercenary, "Mercenary");
     public string RoleDescription => "Bribe The Crewmates";
     public string RoleLongDescription => "Guard crewmates, and then bribe the winners!";
     public Color RoleColor => TownOfUsColors.Mercenary;
@@ -66,7 +66,7 @@ public sealed class MercenaryRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            "The Mercenary is a Neutral Evil role that can only win by bribing players, allowing them to gain multiple win conditions."
+            $"The {RoleName} is a Neutral Benign role that can only win by bribing players, allowing them to gain multiple win conditions."
             + MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -83,9 +83,9 @@ public sealed class MercenaryRole(IntPtr cppPtr)
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
-        var bribed = ModifierUtils.GetPlayersWithModifier<MercenaryBribedModifier>();
+        var bribed = ModifierUtils.GetPlayersWithModifier<MercenaryBribedModifier>(x => x.Mercenary == Player);
 
-        return bribed.Any(x => x.Data.Role.DidWin(gameOverReason));
+        return bribed.Any(x => x.Data.Role.DidWin(gameOverReason) || x.GetModifiers<GameModifier>().Any(x => x.DidWin(gameOverReason) == true));
     }
 
     public void AddPayment()

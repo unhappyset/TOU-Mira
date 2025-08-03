@@ -14,7 +14,6 @@ using MiraAPI.Utilities;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles;
@@ -143,9 +142,42 @@ public static class MiscUtils
         return builder.ToString();
     }
 
+    public static RoleAlignment GetRoleAlignment(this RoleBehaviour role)
+    {
+        if (role is ITownOfUsRole touRole)
+        {
+            return touRole.RoleAlignment;
+        }
+        else if (role is ICustomRole customRole)
+        {
+            var alignments = Enum.GetValues<RoleAlignment>();
+            foreach (var alignment in alignments)
+            {
+                var roleAlignment = alignment;
+                if (customRole.RoleOptionsGroup.Name.Replace(" Roles", "") == roleAlignment.ToDisplayString())
+                {
+                    return roleAlignment;
+                }
+            }
+        }
+        if (role.IsNeutral())
+        {
+            return RoleAlignment.NeutralOutlier;
+        }
+        else if (role.IsImpostor())
+        {
+            return RoleAlignment.ImpostorSupport;
+        }
+        else
+        {
+            return RoleAlignment.CrewmateSupport;
+        }
+    }
+
     public static IEnumerable<RoleBehaviour> GetRegisteredRoles(RoleAlignment alignment)
     {
-        var roles = AllRoles.Where(x => x is ITownOfUsRole role && role.RoleAlignment == alignment);
+        var roles = AllRoles.Where(x => x.GetRoleAlignment() == alignment);
+        
         var registeredRoles = roles.ToList();
 
         switch (alignment)
@@ -173,7 +205,7 @@ public static class MiscUtils
 
     public static IEnumerable<RoleBehaviour> GetRegisteredRoles(ModdedRoleTeams team)
     {
-        var roles = AllRoles.Where(x => x is ITownOfUsRole role && role.Team == team);
+        var roles = AllRoles.Where(x => x is ICustomRole role && role.Team == team);
         var registeredRoles = roles.ToList();
 
         switch (team)
@@ -986,5 +1018,23 @@ public static class MiscUtils
             return wikiMod.FakeTypeId;
         }
         return ModifierManager.GetModifierTypeId(mod.GetType()) ?? throw new InvalidOperationException("Modifier is not registered.");
+    }
+
+    public static string GetRoomName(Vector3 position)
+    {
+        PlainShipRoom? plainShipRoom = null;
+
+        var allRooms2 = ShipStatus.Instance.FastRooms;
+        foreach (var plainShipRoom2 in allRooms2.Values)
+        {
+            if (plainShipRoom2.roomArea && plainShipRoom2.roomArea.OverlapPoint(position))
+            {
+                plainShipRoom = plainShipRoom2;
+            }
+        }
+
+        return plainShipRoom != null
+            ? TranslationController.Instance.GetString(plainShipRoom.RoomId)
+            : "Outside/Hallway";
     }
 }

@@ -13,8 +13,6 @@ using Reactor.Utilities.Extensions;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modules;
-using TownOfUs.Modules.Localization;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -71,7 +69,7 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
 
     public string GetAdvancedDescription()
     {
-        return $"The {RoleName} is a Crewmate Protective role that can give a Shield to player."
+        return $"The {RoleName} is a Crewmate Protective role that can give a Shield to a player."
                + MiscUtils.AppendOptionsText(GetType());
     }
 

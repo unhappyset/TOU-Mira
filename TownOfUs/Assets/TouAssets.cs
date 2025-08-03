@@ -13,6 +13,12 @@ public static class TouAssets
 
     public static readonly LoadableAsset<GameObject> RoleSelectionGame =
         new LoadableBundleAsset<GameObject>("SelectRoleGame", MainBundle);
+    
+    public static readonly LoadableAsset<GameObject> AltRoleSelectionGame =
+        new LoadableBundleAsset<GameObject>("AmbassadorRoleGame", MainBundle);
+    
+    public static readonly LoadableAsset<GameObject> ConfirmMinigame =
+        new LoadableBundleAsset<GameObject>("AmbassadorConfirmGame", MainBundle);
 
     public static LoadableAsset<GameObject> WikiPrefab { get; } =
         new LoadableBundleAsset<GameObject>("IngameWiki", MainBundle);
@@ -31,6 +37,9 @@ public static class TouAssets
 
     public static LoadableAsset<GameObject> EclipsedPrefab { get; } =
         new LoadableBundleAsset<GameObject>("Eclipsed", MainBundle);
+    
+    public static LoadableAsset<GameObject> AmbushPrefab { get; } =
+        new LoadableBundleAsset<GameObject>("Ambush", MainBundle);
 
     public static LoadableAsset<GameObject> EscapistMarkPrefab { get; } =
         new LoadableBundleAsset<GameObject>("EscapistMark", MainBundle);
@@ -38,8 +47,11 @@ public static class TouAssets
     public static LoadableAsset<GameObject> MeetingDeathPrefab { get; } =
         new LoadableBundleAsset<GameObject>("DeathAnimation", MainBundle);
 
-    public static LoadableAsset<GameObject> MayorRevealPrefab { get; } =
+    public static LoadableAsset<GameObject> MayorRevealPrefab { get; set; } =
         new LoadableBundleAsset<GameObject>("MayorReveal", MainBundle);
+    
+    public static LoadableAsset<GameObject> MayorPostRevealPrefab { get; set; } =
+        new LoadableBundleAsset<GameObject>("MayorPostReveal", MainBundle);
 
     public static LoadableAsset<AnimationClip> MeetingDeathAnim1 { get; } =
         new LoadableBundleAsset<AnimationClip>("DeathMeetingShotFront", MainBundle);
@@ -162,10 +174,20 @@ public static class TouAssets
     public static LoadableAsset<Sprite> ExecuteCleanSprite { get; } =
         new LoadableResourceAsset($"{ShortPath}.ExecuteClean.png", 254);
 
+    public static LoadableAsset<Sprite> RetrainSprite { get; } =
+        new LoadableResourceAsset($"{ShortPath}.Retrain.png", 300);
+    
+    public static LoadableAsset<Sprite> RetrainCleanSprite { get; } =
+        new LoadableResourceAsset($"{ShortPath}.RetrainClean.png", 300);
+    
     public static LoadableAsset<Sprite> Hacked { get; } = new LoadableResourceAsset($"{ShortPath}.Hacked.png");
 
     public static LoadableAsset<Sprite> BarricadeVentSprite { get; } =
-        new LoadableResourceAsset($"{ShortPath}.BarricadeVent.png", 200);
+        new LoadableResourceAsset($"{ShortPath}.BarricadeVent1.png", 200);
+    public static LoadableAsset<Sprite> BarricadeVentSprite2 { get; } =
+        new LoadableResourceAsset($"{ShortPath}.BarricadeVent2.png", 200);
+    public static LoadableAsset<Sprite> BarricadeVentSprite3 { get; } =
+        new LoadableResourceAsset($"{ShortPath}.BarricadeVent3.png", 200);
 
     public static LoadableAsset<Sprite> BarricadeFungleSprite { get; } =
         new LoadableResourceAsset($"{ShortPath}.BarricadePlant.png", 200);

@@ -20,6 +20,10 @@ public enum TownOfUsRpc : uint
     SetSwaps,
     CleanBody,
     CatchPlayer,
+    MagicMirror,
+    ClearMagicMirror,
+    MagicMirrorAttacked,
+    MirrorcasterUnleash,
     MedicShield,
     ClearMedicShield,
     MedicShieldAttacked,
@@ -64,5 +68,8 @@ public enum TownOfUsRpc : uint
     ButtonBarry,
     LookoutSeePlayer,
     AnimateNewReveal,
-    SheriffMisfire
+    SheriffMisfire,
+    RetrainImpostor,
+    AmbushPlayer,
+    RetrainConfirm
 }

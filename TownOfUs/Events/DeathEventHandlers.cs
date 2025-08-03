@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using System.Collections;
+using HarmonyLib;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
@@ -16,6 +17,13 @@ namespace TownOfUs.Events;
 
 public static class DeathEventHandlers
 {
+    public static bool IsDeathRecent { get; set; }
+    public static IEnumerator CoWaitDeathHandler()
+    {
+        IsDeathRecent = true;
+        yield return new WaitForSeconds(0.15f);
+        IsDeathRecent = false;
+    }
     public static int CurrentRound { get; set; } = 1;
 
     [RegisterEvent(-1)]
@@ -56,6 +64,7 @@ public static class DeathEventHandlers
             }
             deathHandler.CauseOfDeath = cod;
             deathHandler.RoundOfDeath = CurrentRound;
+            Coroutines.Start(CoWaitDeathHandler());
         }
     }
     
@@ -67,22 +76,16 @@ public static class DeathEventHandlers
         {
             return;
         }
-        if (exiled.TryGetModifier<DeathHandlerModifier>(out var deathHandler) && !deathHandler.LockInfo)
+        if (!exiled.HasModifier<DeathHandlerModifier>())
         {
-            deathHandler.CauseOfDeath = "Ejected";
-            deathHandler.DiedThisRound = false;
-            deathHandler.RoundOfDeath = CurrentRound;
-            deathHandler.LockInfo = true;
+            DeathHandlerModifier.UpdateDeathHandler(exiled, "Ejected", CurrentRound, DeathHandlerOverride.SetFalse);
         }
     }
 
     [RegisterEvent(500)]
     public static void PlayerReviveEventHandler(PlayerReviveEvent reviveEvent)
     {
-        if (reviveEvent.Player.TryGetModifier<DeathHandlerModifier>(out var deathHandler))
-        {
-            reviveEvent.Player.RemoveModifier(deathHandler);
-        }
+        reviveEvent.Player.RemoveModifier<DeathHandlerModifier>();
     }
 
     [RegisterEvent(500)]
@@ -103,11 +106,14 @@ public static class DeathEventHandlers
             var cod = "Killed";
             switch (source.GetRoleWhenAlive())
             {
-                case SheriffRole or DeputyRole:
+                case SheriffRole:
                     cod = "Shot";
                     break;
-                case VeteranRole:
+                case DeputyRole:
                     cod = "Blasted";
+                    break;
+                case VeteranRole:
+                    cod = "Attacked";
                     break;
                 case JailorRole:
                     cod = "Executed";
@@ -128,7 +134,7 @@ public static class DeathEventHandlers
                     cod = "Reaped";
                     break;
                 case VampireRole:
-                    cod = "Bit";
+                    cod = "Bitten";
                     break;
                 case WerewolfRole:
                     cod = "Rampaged";
@@ -141,6 +147,11 @@ public static class DeathEventHandlers
                     break;
                 case ExecutionerRole:
                     cod = "Tormented";
+                    break;
+                case MirrorcasterRole mirror:
+                    cod = mirror.UnleashString != string.Empty ? mirror.UnleashString : "Killed";
+                    mirror.UnleashString = string.Empty;
+                    mirror.ContainedRole = null;
                     break;
                 case InquisitorRole:
                     cod = "Vanquished";
@@ -156,7 +167,6 @@ public static class DeathEventHandlers
             deathHandler2.KilledBy = $"By {source.Data.PlayerName}";
             deathHandler2.DiedThisRound = !MeetingHud.Instance && !ExileController.Instance;
             deathHandler2.RoundOfDeath = CurrentRound;
-            deathHandler2.LockInfo = true;
         }
     }
 

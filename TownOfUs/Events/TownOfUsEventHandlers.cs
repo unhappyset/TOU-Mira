@@ -22,6 +22,7 @@ using TownOfUs.Buttons.Impostor;
 using TownOfUs.Buttons.Modifiers;
 using TownOfUs.Buttons.Neutral;
 using TownOfUs.Events.TouEvents;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
@@ -51,9 +52,16 @@ public static class TownOfUsEventHandlers
             mod.ModifierComponent?.RemoveModifier(mod);
         }
 
-        CustomButtonSingleton<ExeTormentButton>.Instance.Show = false;
-        CustomButtonSingleton<JesterHauntButton>.Instance.Show = false;
-        CustomButtonSingleton<PhantomSpookButton>.Instance.Show = false;
+        var exeButton = CustomButtonSingleton<ExeTormentButton>.Instance;
+        var jestButton = CustomButtonSingleton<JesterHauntButton>.Instance;
+        var phantomButton = CustomButtonSingleton<PhantomSpookButton>.Instance;
+        if (exeButton.Show || jestButton.Show || phantomButton.Show)
+        {
+            PlayerControl.LocalPlayer.RpcRemoveModifier<IndirectAttackerModifier>();
+        }
+        exeButton.Show = false;
+        jestButton.Show = false;
+        phantomButton.Show = false;
     }
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
@@ -114,6 +122,19 @@ public static class TownOfUsEventHandlers
         {
             engiVent.Button?.usesRemainingText.gameObject.SetActive(true);
             engiVent.Button?.usesRemainingSprite.gameObject.SetActive(true);
+        }
+        
+        var medicShield = CustomButtonSingleton<MedicShieldButton>.Instance;
+        medicShield.SetUses(OptionGroupSingleton<MedicOptions>.Instance.ChangeTarget ? (int)OptionGroupSingleton<MedicOptions>.Instance.MedicShieldUses : 0);
+        if ((int)OptionGroupSingleton<MedicOptions>.Instance.MedicShieldUses == 0 || !OptionGroupSingleton<MedicOptions>.Instance.ChangeTarget)
+        {
+            medicShield.Button?.usesRemainingText.gameObject.SetActive(false);
+            medicShield.Button?.usesRemainingSprite.gameObject.SetActive(false);
+        }
+        else
+        {
+            medicShield.Button?.usesRemainingText.gameObject.SetActive(true);
+            medicShield.Button?.usesRemainingSprite.gameObject.SetActive(true);
         }
 
         CustomButtonSingleton<PlumberBlockButton>.Instance.ExtraUses = 0;
@@ -269,6 +290,10 @@ public static class TownOfUsEventHandlers
         {
             switch (source.Data.Role)
             {
+                case AmbusherRole:
+                    var ambushButton = CustomButtonSingleton<AmbusherAmbushButton>.Instance;
+                    ambushButton.ResetCooldownAndOrEffect();
+                    break;
                 case BomberRole:
                     var bombButton = CustomButtonSingleton<BomberPlantButton>.Instance;
                     bombButton.ResetCooldownAndOrEffect();
@@ -379,6 +404,12 @@ public static class TownOfUsEventHandlers
         MeetingMenu.Instances.Do(x => x.HideSingle(player.PlayerId));
     }
 
+    private static IEnumerator CoHideHud()
+    {
+        yield return new WaitForSeconds(0.01f);
+        HudManager.Instance.SetHudActive(false);
+    }
+
     private static IEnumerator CoAnimateDeath(PlayerVoteArea voteArea)
     {
         var animDic = new Dictionary<AnimationClip, AnimationClip>
@@ -441,6 +472,10 @@ public static class TownOfUsEventHandlers
         {
             instance.discussionTimer -= timer;
         }
+        else if (timer >= 15)
+        {
+            instance.discussionTimer -= 15f;
+        }
         // To handle murders during a meeting
         var targetVoteArea = instance.playerStates.First(x => x.TargetPlayerId == target.PlayerId);
 
@@ -467,7 +502,7 @@ public static class TownOfUsEventHandlers
         }
 
         targetVoteArea.Overlay.gameObject.SetActive(false);
-        if (target.Data.Role is MayorRole)
+        if (target.GetRoleWhenAlive() is MayorRole mayor && mayor.Revealed)
         {
             MayorRole.DestroyReveal(targetVoteArea);
         }
@@ -478,7 +513,7 @@ public static class TownOfUsEventHandlers
         if (target.AmOwner)
         {
             MeetingMenu.Instances.Do(x => x.HideButtons());
-            HudManager.Instance.SetHudActive(false);
+            Coroutines.Start(CoHideHud());
         }
         // hide meeting menu button for victim
         else if (!source.AmOwner && !target.AmOwner)

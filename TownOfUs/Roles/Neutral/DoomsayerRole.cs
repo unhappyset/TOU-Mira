@@ -11,13 +11,10 @@ using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
-using TownOfUs.Events;
-using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Components;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -38,7 +35,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VigilanteRole>());
     public DoomableType DoomHintType => DoomableType.Insight;
-    public string RoleName => "Doomsayer";
+    public string RoleName => TouLocale.Get(TouNames.Doomsayer, "Doomsayer");
     public string RoleDescription => "Guess People's Roles To Win!";
 
     public string RoleLongDescription =>
@@ -81,7 +78,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            $"The Doomsayer is a Neutral Evil role that wins by guessing {(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin} players' roles." +
+            $"The {RoleName} is a Neutral Evil role that wins by guessing {(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin} players' roles." +
             (OptionGroupSingleton<DoomsayerOptions>.Instance.CantObserve
                 ? string.Empty
                 : " They may observe players to get a hint of what their roles are the following meeting.") +
@@ -291,6 +288,11 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         {
             return;
         }
+        
+        if (Minigame.Instance != null)
+        {
+            return;
+        }
 
         var player = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId).Object;
 
@@ -381,7 +383,6 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                     {
                         Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false,
                             playKillSound: false);
-                        DeathHandlerModifier.RpcUpdateDeathHandler(victim, "Doomed", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {Player.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
                     }
 
                 }
@@ -398,7 +399,6 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                             Player.RpcCustomMurder(victim2, createDeadBody: false, teleportMurderer: false,
                                 showKillAnim: false,
                                 playKillSound: false);
-                            DeathHandlerModifier.RpcUpdateDeathHandler(victim2, "Doomed", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {Player.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
                         }
                     }
                 }

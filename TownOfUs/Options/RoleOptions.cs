@@ -27,7 +27,9 @@ public sealed class RoleOptions : AbstractOptionGroup
         "Random <color=#FF0000FF>Imp</color>",
         "<color=#FF0000FF>Imp</color> Concealing",
         "<color=#FF0000FF>Imp</color> Killing",
+        "<color=#FF0000FF>Imp</color> Power",
         "<color=#FF0000FF>Imp</color> Support",
+        "<color=#FF0000FF>Imp</color> Special",
         "Any"
     ];
 
@@ -193,6 +195,8 @@ public enum RoleListOption
     ImpRandom,
     ImpConceal,
     ImpKilling,
+    ImpPower,
     ImpSupport,
+    ImpSpecial,
     Any
 }

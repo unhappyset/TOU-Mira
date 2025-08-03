@@ -1,6 +1,10 @@
-﻿using MiraAPI.GameOptions;
+﻿using MiraAPI.Events;
+using MiraAPI.GameOptions;
+using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
+using TownOfUs.Buttons.Impostor;
+using TownOfUs.Events.TouEvents;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Options.Modifiers.Universal;
 using TownOfUs.Options.Roles.Impostor;
@@ -42,6 +46,24 @@ public sealed class DragModifier(byte bodyId) : BaseModifier
         }
     }
 
+    public override void OnDeath(DeathReason reason)
+    {
+        ModifierComponent?.RemoveModifier(this);
+        if (Player.AmOwner)
+        {
+            CustomButtonSingleton<UndertakerDragDropButton>.Instance.SetDrag();
+        }
+        if (DeadBody == null)
+        {
+            return;
+        }
+        var dropPos = DeadBody.transform.position;
+        dropPos.z = dropPos.y / 1000f;
+        DeadBody.transform.position = dropPos;
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.UndertakerDrop, Player, DeadBody);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+    }
     public override void OnDeactivate()
     {
         if (Player != null)

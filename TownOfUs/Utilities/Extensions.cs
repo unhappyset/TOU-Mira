@@ -30,6 +30,11 @@ namespace TownOfUs.Utilities;
 
 public static class Extensions
 {
+    public static bool IsGhostDead(this NetworkedPlayerInfo data)
+    {
+        return data.Role is IGhostRole ghostRole ? !ghostRole.GhostActive : data.IsDead;
+    }
+
     public static ITownOfUsRole? GetTownOfUsRole(this PlayerControl player)
     {
         var role = player.Data?.Role as ITownOfUsRole;
@@ -592,6 +597,12 @@ public static class Extensions
         }
 
         player!.cosmetics.currentBodySprite.BodySprite.color = color;
+        if (player.cosmetics.GetLongBoi() != null)
+        {
+            player.cosmetics.GetLongBoi().headSprite.color = color;
+            player.cosmetics.GetLongBoi().neckSprite.color = color;
+            player.cosmetics.GetLongBoi().foregroundNeckSprite.color = color;
+        }
     }
 
     public static void SpawnAtRandomVent(this PlayerControl player)

@@ -17,8 +17,6 @@ using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
-using TownOfUs.Modules.Localization;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -48,7 +46,6 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     {
         return ITownOfUsRole.SetNewTabText(this);
     }
-
     public string GetAdvancedDescription()
     {
         return
@@ -230,7 +227,14 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         }
 
         var positions = GetAdjustedPositions(t1, t2);
-
+        if (t1.TryCast<PlayerControl>() != null)
+        {
+            positions.Item1 = play1.Collider.bounds.center;
+        }
+        if (t2.TryCast<PlayerControl>() != null)
+        {
+            positions.Item2 = play2.Collider.bounds.center;
+        }
         Transport(t1, positions.Item2);
         Transport(t2, positions.Item1);
         var touAbilityEvent = new TouAbilityEvent(AbilityType.TransporterTransport, transporter, t1, t2);
@@ -287,6 +291,11 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 
             var pc = data.Object;
             if (!pc)
+            {
+                return null;
+            }
+            
+            if (pc.HasModifier<NoTransportModifier>())
             {
                 return null;
             }
@@ -401,15 +410,30 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 
     public static void Transport(MonoBehaviour mono, Vector3 position)
     {
-        if (mono.TryCast<PlayerControl>() is PlayerControl player && player.HasModifier<ImmovableModifier>())
+        var deadBody = mono.TryCast<DeadBody>();
+        var player = mono.TryCast<PlayerControl>();
+        if (player != null && player.HasModifier<ImmovableModifier>())
         {
             return;
         }
 
-        if (mono.TryCast<DeadBody>() is DeadBody deadBody &&
+        if (deadBody != null &&
             MiscUtils.PlayerById(deadBody.ParentId)?.HasModifier<ImmovableModifier>() == true)
         {
             return;
+        }
+
+        mono.transform.position = position;
+        Collider2D cd = mono.GetComponent<Collider2D>();
+        if (cd != null && deadBody != null)
+        {
+            mono.transform.position += cd.bounds.center - position;
+        }
+        if (player != null)
+        {
+            player.MyPhysics.ResetMoveState();
+            player.transform.position = position;
+            player.NetTransform.SnapTo(position);
         }
 
         var cnt = mono.TryCast<CustomNetworkTransform>();
@@ -423,12 +447,8 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
                 ModCompatibility.CheckOutOfBoundsElevator(cnt.myPlayer);
             }
         }
-        else
-        {
-            mono.transform.position = position;
-        }
 
-        if (mono.TryCast<PlayerControl>() is PlayerControl player2 && player2.AmOwner)
+        if (player != null && player.AmOwner)
         {
             MiscUtils.SnapPlayerCamera(PlayerControl.LocalPlayer);
         }

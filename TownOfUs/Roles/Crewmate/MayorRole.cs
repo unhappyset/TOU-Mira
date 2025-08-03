@@ -13,8 +13,6 @@ using Reactor.Utilities;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules;
-using TownOfUs.Modules.Localization;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -46,6 +44,7 @@ public sealed class MayorRole(IntPtr cppPtr)
     };
 
     public bool IsPowerCrew => true;
+    public static bool DisabledAnimation { get; set; }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
@@ -78,11 +77,12 @@ public sealed class MayorRole(IntPtr cppPtr)
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
+        Player.AddModifier<MayorRevealModifier>(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MayorRole>()));
         if (Player.HasModifier<ToBecomeTraitorModifier>())
         {
             Player.GetModifier<ToBecomeTraitorModifier>()!.Clear();
         }
-        if (MeetingHud.Instance)
+        if (MeetingHud.Instance && !DisabledAnimation)
         {
             var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == player.PlayerId);
             Coroutines.Start(CoAnimateReveal(targetVoteArea));
@@ -108,7 +108,7 @@ public sealed class MayorRole(IntPtr cppPtr)
         RoleBehaviourStubs.OnMeetingStart(this);
 
         var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == Player.PlayerId);
-        if (Revealed)
+        if (Revealed && !DisabledAnimation)
         {
             Coroutines.Start(CoAnimatePostReveal(targetVoteArea));
         }
@@ -156,6 +156,15 @@ public sealed class MayorRole(IntPtr cppPtr)
     [MethodRpc((uint)TownOfUsRpc.AnimateNewReveal, SendImmediately = true)]
     public static void RpcAnimateNewReveal(PlayerControl plr)
     {
+        if (plr.Data.Role is MayorRole mayor)
+        {
+            mayor.Revealed = true;
+        }
+
+        if (DisabledAnimation)
+        {
+            return;
+        }
         var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == plr.PlayerId);
         Coroutines.Start(CoAnimateReveal(targetVoteArea));
     }
@@ -164,11 +173,6 @@ public sealed class MayorRole(IntPtr cppPtr)
     public bool IsExempt(PlayerVoteArea voteArea)
     {
         return voteArea?.TargetPlayerId != Player.PlayerId;
-    }
-
-    public static bool MayorVisibilityFlag(PlayerControl player)
-    {
-        return player.IsRole<MayorRole>() && player.GetRole<MayorRole>()!.Revealed;
     }
 
     private static IEnumerator CoAnimateReveal(PlayerVoteArea voteArea)
@@ -229,7 +233,7 @@ public sealed class MayorRole(IntPtr cppPtr)
 
     private static IEnumerator CoAnimatePostReveal(PlayerVoteArea voteArea)
     {
-        MayorPlayer = Instantiate(TouAssets.MayorRevealPrefab.LoadAsset(), voteArea.transform);
+        MayorPlayer = Instantiate(TouAssets.MayorPostRevealPrefab.LoadAsset(), voteArea.transform);
         MayorPlayer.transform.localPosition = new Vector3(-0.8f, 0, 0);
         MayorPlayer.transform.localScale = new Vector3(0.375f, 0.375f, 1f);
         MayorPlayer.gameObject.layer = MayorPlayer.transform.GetChild(0).gameObject.layer = voteArea.gameObject.layer;
@@ -251,14 +255,7 @@ public sealed class MayorRole(IntPtr cppPtr)
         MayorPlayer.gameObject.SetActive(true);
         MayorPlayer.transform.GetChild(0).gameObject.SetActive(true);
         MayorPlayer.transform.GetChild(1).gameObject.SetActive(true);
-
-        var bodysAnim = MayorPlayer.GetComponent<SpriteAnim>();
-        var outfitAnim = MayorPlayer.transform.GetChild(0).GetComponent<SpriteAnim>();
-        var handAnim = MayorPlayer.transform.GetChild(1).GetComponent<SpriteAnim>();
-        bodysAnim.SetSpeed(1.02f);
-        outfitAnim.SetSpeed(1.02f);
-        handAnim.SetSpeed(1.02f);
-        yield return new WaitForSeconds(bodysAnim.m_currAnim.length - 0.25f);
+        yield return new WaitForSeconds(0.01f);
     }
 
     public static void DestroyReveal(PlayerVoteArea voteArea)

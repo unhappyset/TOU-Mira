@@ -55,41 +55,48 @@ public static class ProsecutorEvents
     public static void WrapUpEvent(EjectionEvent @event)
     {
         var player = @event.ExileController.initData.networkedPlayer?.Object;
-        if (player == null)
-        {
-            return;
-        }
 
         foreach (var pros in CustomRoleUtils.GetActiveRolesOfType<ProsecutorRole>())
         {
-            if (PlayerControl.LocalPlayer.IsHost() && pros.HasProsecuted && player.TryGetModifier<DeathHandlerModifier>(out var deathHandler) && !deathHandler.LockInfo)
+            var hasProsecuted = pros.HasProsecuted;
+            pros.Cleanup();
+            
+            if (player == null)
             {
-                DeathHandlerModifier.RpcUpdateDeathHandler(player, "Prosecuted", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {pros.Player.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
+                continue;
             }
-
-            if (pros.Player.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
+            
+            if (hasProsecuted)
             {
-                pros.Cleanup();
-                return;
-            }
 
-            if (player.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished)
-            {
-                pros.Cleanup();
-                return;
-            }
+                DeathHandlerModifier.UpdateDeathHandler(player, "Prosecuted", DeathEventHandlers.CurrentRound,
+                    DeathHandlerOverride.SetFalse, $"By {pros.Player.Data.PlayerName}",
+                    lockInfo: DeathHandlerOverride.SetTrue);
 
-            if (pros.HasProsecuted && player.IsCrewmate())
-            {
-                pros.Cleanup();
-                if (OptionGroupSingleton<ProsecutorOptions>.Instance.ExileOnCrewmate)
+                if (pros.Player.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
                 {
-                    pros.Player.Exiled();
-                    if (PlayerControl.LocalPlayer.IsHost()) DeathHandlerModifier.RpcUpdateDeathHandler(pros.Player, "Punished", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+                    return;
                 }
-                else
+
+                if (player.TryGetModifier<AllianceGameModifier>(out var allyMod2) && !allyMod2.GetsPunished)
                 {
-                    pros.ProsecutionsCompleted = (int)OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions;
+                    return;
+                }
+
+                if (player.IsCrewmate())
+                {
+                    if (OptionGroupSingleton<ProsecutorOptions>.Instance.ExileOnCrewmate)
+                    {
+                        pros.Player.Exiled();
+                        DeathHandlerModifier.UpdateDeathHandler(pros.Player, "Punished",
+                            DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse,
+                            lockInfo: DeathHandlerOverride.SetTrue);
+                    }
+                    else
+                    {
+                        pros.ProsecutionsCompleted =
+                            (int)OptionGroupSingleton<ProsecutorOptions>.Instance.MaxProsecutions;
+                    }
                 }
             }
         }

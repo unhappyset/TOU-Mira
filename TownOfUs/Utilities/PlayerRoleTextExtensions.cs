@@ -1,5 +1,6 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modifiers.Impostor;
@@ -113,6 +114,15 @@ public static class PlayerRoleTextExtensions
         {
             name += "<color=#006600> +</color>";
         }
+        
+        if ((player.HasModifier<MagicMirrorModifier>(x => x.Mirrorcaster.AmOwner) &&
+             PlayerControl.LocalPlayer.IsRole<MirrorcasterRole>())
+            || (player.HasModifier<MagicMirrorModifier>() &&
+                ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
+                 || (player.AmOwner && player.TryGetModifier<MagicMirrorModifier>(out var mm) && mm.VisibleSymbol))))
+        {
+            name += "<color=#90A2C3>〚〛</color>";
+        }
 
         if ((player.HasModifier<ClericBarrierModifier>(x => x.Cleric.AmOwner) &&
              PlayerControl.LocalPlayer.IsRole<ClericRole>())
@@ -150,8 +160,7 @@ public static class PlayerRoleTextExtensions
 
         if (player.HasModifier<EgotistModifier>() && (player.AmOwner ||
                                                       (EgotistModifier.EgoVisibilityFlag(player) &&
-                                                       (SnitchRole.SnitchVisibilityFlag(player, true) ||
-                                                        MayorRole.MayorVisibilityFlag(player))) ||
+                                                       (player.GetModifiers<RevealModifier>().Any(x => x.Visible && x.RevealRole))) ||
                                                       (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow &&
                                                        !hidden)))
         {

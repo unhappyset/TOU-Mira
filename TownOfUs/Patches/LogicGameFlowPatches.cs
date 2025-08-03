@@ -7,7 +7,9 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Events;
 using TownOfUs.GameOver;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Game.Alliance;
@@ -125,6 +127,11 @@ public static class LogicGameFlowPatches
         
         // Prevents game end on exile screen
         if (ExileController.Instance)
+        {
+            return false;
+        }
+
+        if (DeathHandlerModifier.IsCoroutineRunning || DeathEventHandlers.IsDeathRecent)
         {
             return false;
         }

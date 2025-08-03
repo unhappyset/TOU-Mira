@@ -6,6 +6,7 @@ using Il2CppInterop.Runtime.Attributes;
 using InnerNet;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
@@ -14,7 +15,6 @@ using Reactor.Utilities;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Neutral;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
@@ -71,7 +71,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<ClericRole>());
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => "Guardian Angel";
+    public string RoleName => TouLocale.Get(TouNames.GuardianAngel, "Guardian Angel");
     public string RoleDescription => TargetString();
     public string RoleLongDescription => TargetString();
     public Color RoleColor => TownOfUsColors.GuardianAngel;
@@ -120,7 +120,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
     public string GetAdvancedDescription()
     {
         return
-            "The Guardian Angel is a Neutral Benign that needs to protect their target (signified by <color=#B3FFFFFF>★</color>) from getting killed/ejected." +
+            $"The {RoleName} is a Neutral Benign that needs to protect their target (signified by <color=#B3FFFFFF>★</color>) from getting killed/ejected." +
             MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -146,16 +146,20 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         if (TutorialManager.InstanceExists && Player.AmOwner)
         {
             var players = ModifierUtils
-                .GetPlayersWithModifier<ExecutionerTargetModifier>([HideFromIl2Cpp](x) => x.OwnerId == Player.PlayerId)
+                .GetPlayersWithModifier<GuardianAngelTargetModifier>([HideFromIl2Cpp](x) => x.OwnerId == Player.PlayerId)
                 .ToList();
-            players.Do(x => x.RpcRemoveModifier<ExecutionerTargetModifier>());
+            players.Do(x => x.RpcRemoveModifier<GuardianAngelTargetModifier>());
         }
     }
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
-        var target = ModifierUtils.GetPlayersWithModifier<GuardianAngelTargetModifier>().FirstOrDefault();
-        return target?.Data.Role.DidWin(gameOverReason) == true;
+        var gaMod = ModifierUtils.GetActiveModifiers<GuardianAngelTargetModifier>().FirstOrDefault(x => x.OwnerId == Player.PlayerId);
+        if (gaMod == null)
+        {
+            return false;
+        }
+        return gaMod.Player.Data.Role.DidWin(gameOverReason) || gaMod.Player.GetModifiers<GameModifier>().Any(x => x.DidWin(gameOverReason) == true);
     }
 
     public static bool GASeesRoleVisibilityFlag(PlayerControl player)

@@ -45,6 +45,12 @@ public static class TouImpAssets
     public static LoadableAsset<Sprite> FreezeSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.CamoSprintFreezeButton.png");
 
+    public static LoadableAsset<Sprite> PursueSprite { get; } =
+        new LoadableResourceAsset($"{ButtonPath}.PursueButton.png");
+    
+    public static LoadableAsset<Sprite> AmbushSprite { get; } =
+        new LoadableResourceAsset($"{ButtonPath}.AmbushButton.png");
+    
     public static LoadableAsset<Sprite> PlaceSprite { get; } =
         new LoadableResourceAsset($"{ButtonPath}.PlaceButton.png");
 

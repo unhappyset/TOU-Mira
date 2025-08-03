@@ -151,7 +151,7 @@ public abstract class TownOfUsButton : CustomActionButton
             return false;
         }
 
-        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return false;
         }
@@ -179,7 +179,7 @@ public abstract class TownOfUsButton : CustomActionButton
     public override void ClickHandler()
     {
         if (!CanClick() || PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() ||
-            PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+            PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return;
         }
@@ -309,7 +309,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
             return false;
         }
         
-        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.HasModifier<DisabledModifier>())
+        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return false;
         }
@@ -466,7 +466,7 @@ public abstract class TownOfUsRoleButton<TRole, TTarget> : TownOfUsTargetButton<
         if (target is PlayerControl playerTarget)
         {
             return base.IsTargetValid(target) && !playerTarget.inVent &&
-                   !(playerTarget.TryGetModifier<DisabledModifier>(out var mod) && !mod.CanBeInteractedWith);
+                   !playerTarget.GetModifiers<DisabledModifier>().Any(mod => !mod.CanBeInteractedWith);
         }
 
         return base.IsTargetValid(target);

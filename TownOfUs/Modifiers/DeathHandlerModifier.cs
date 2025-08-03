@@ -25,6 +25,11 @@ public sealed class DeathHandlerModifier : BaseModifier
     [MethodRpc((uint)TownOfUsRpc.UpdateDeathHandler, SendImmediately = true)]
     public static void RpcUpdateDeathHandler(PlayerControl player, string causeOfDeath = "null", int roundOfDeath = -1, DeathHandlerOverride diedThisRound = DeathHandlerOverride.Ignore, string killedBy = "null", DeathHandlerOverride lockInfo = DeathHandlerOverride.Ignore)
     {
+        UpdateDeathHandler(player, causeOfDeath, roundOfDeath, diedThisRound, killedBy, lockInfo);
+    }
+    
+    public static void UpdateDeathHandler(PlayerControl player, string causeOfDeath = "null", int roundOfDeath = -1, DeathHandlerOverride diedThisRound = DeathHandlerOverride.Ignore, string killedBy = "null", DeathHandlerOverride lockInfo = DeathHandlerOverride.Ignore)
+    {
         if (!player.HasModifier<DeathHandlerModifier>())
         {
             Logger<TownOfUsPlugin>.Error("RpcUpdateDeathHandler - Player had no DeathHandlerModifier");
@@ -34,9 +39,11 @@ public sealed class DeathHandlerModifier : BaseModifier
         Coroutines.Start(CoWriteDeathHandler(player, causeOfDeath, roundOfDeath, diedThisRound, killedBy, lockInfo));
     }
 
+    public static bool IsCoroutineRunning { get; set; }
     public static IEnumerator CoWriteDeathHandler(PlayerControl player, string causeOfDeath, int roundOfDeath,
         DeathHandlerOverride diedThisRound, string killedBy, DeathHandlerOverride lockInfo)
     {
+        IsCoroutineRunning = true;
         yield return new WaitForSeconds(0.1f);
         var deathHandler = player.GetModifier<DeathHandlerModifier>()!;
         if (causeOfDeath != "null") deathHandler.CauseOfDeath = causeOfDeath;
@@ -44,6 +51,7 @@ public sealed class DeathHandlerModifier : BaseModifier
         if (diedThisRound != DeathHandlerOverride.Ignore) deathHandler.DiedThisRound = diedThisRound is DeathHandlerOverride.SetTrue;
         if (killedBy != "null") deathHandler.KilledBy = killedBy;
         if (lockInfo != DeathHandlerOverride.Ignore) deathHandler.LockInfo = lockInfo is DeathHandlerOverride.SetTrue;
+        IsCoroutineRunning = false;
     }
 }
 

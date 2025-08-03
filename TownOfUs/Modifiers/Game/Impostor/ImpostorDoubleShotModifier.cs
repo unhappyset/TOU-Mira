@@ -1,6 +1,5 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using TownOfUs.Modules.Wiki;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -9,7 +8,7 @@ namespace TownOfUs.Modifiers.Game.Impostor;
 
 public sealed class ImpostorDoubleShotModifier : DoubleShotModifier, IWikiDiscoverable
 {
-    public override string ModifierName => "Double Shot";
+    public override string ModifierName => TouLocale.Get(TouNames.DoubleShot, "Double Shot");
     public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
     
     public override bool ShowInFreeplay => true;
@@ -31,7 +30,7 @@ public sealed class ImpostorDoubleShotModifier : DoubleShotModifier, IWikiDiscov
         if (
             role.Player.IsImpostor()
             && role.Player.GetModifierComponent().HasModifier<ImpostorAssassinModifier>(true)
-            && base.IsModifierValidOn(role)
+            && !role.Player.GetModifierComponent().HasModifier<TouGameModifier>(true)
         )
         {
             return true;

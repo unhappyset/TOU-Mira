@@ -46,7 +46,10 @@ public static class TouAudio
 
     public static LoadableAsset<AudioClip> JailSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.Jail.wav");
 
-    public static LoadableAsset<AudioClip> MayorRevealSound { get; } =
+    public static LoadableAsset<AudioClip> MayorRevealSound { get; set; } =
+        new LoadableAudioResourceAsset($"{AudioPath}.MayorReveal.wav");
+    
+    public static LoadableAsset<AudioClip> PoliticianIntroSound { get; set; } =
         new LoadableAudioResourceAsset($"{AudioPath}.MayorReveal.wav");
 
     public static LoadableAsset<AudioClip> MediumIntroSound { get; } =

@@ -82,6 +82,7 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
     public override void Close()
     {
         HudManager.Instance.StartCoroutine(HudManager.Instance.CoFadeFullScreen(_bgColor, Color.clear));
+        CurrentCard = -1;
         MinigameStubs.Close(this);
     }
 
@@ -95,9 +96,12 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
 
         foreach (var role in availableRoles)
         {
-            var teamName = role is ITownOfUsRole touRole
-                ? touRole.RoleAlignment.ToDisplayString()
-                : role.TeamType.ToDisplayString();
+            var teamName = role.GetRoleAlignment().ToDisplayString();
+
+            if (role is ITownOfUsRole touRole)
+            {
+                teamName = touRole.RoleAlignment.ToDisplayString();
+            }
 
             var roleName = role.NiceName;
             var roleImg = TouRoleIcons.RandomAny.LoadAsset();
