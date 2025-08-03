@@ -244,7 +244,7 @@
         "\n- Added a Maximum Medic Shield Uses setting",
         "\n- Game Timer can now be paused at certain times within meetings",
         "\n- New Crewmate Protective Role: The Mirrorcaster!\nThis role can absorb direct attacks from players, and unleash them onto others!",
-        "\n- New Impostor Power Role: The Ambassador!\nThis role can retrain themselves or other impostors to roles of the same caliber (note: the confirmation option is not functional right now. Role does not play correctly with FFA Impostor mode at the moment either)",
+        "\n- New Impostor Power Role: The Ambassador!\nThis role can retrain themselves or other impostors to roles of the same caliber (note: Role does not play correctly with FFA Impostor mode at the moment)",
         "\n- New Impostor Killing Role: The Ambusher!\nThis role can select one player, track them, and then ambush the player closest to them. If they kill the player, then they will take the player's body with them.",
         "\n\n\r<size=105%>Improvements:</size>",
         "\n- Dying to Veteran now says \"Attacked\", dying to Deputy says \"Blasted\", and dying to Vampire says \"Bitten\"",
