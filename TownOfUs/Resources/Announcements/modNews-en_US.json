@@ -220,7 +220,7 @@
         "\n- Transporter now transports players correctly, no more desync",
         "\n- If the Snitch reveals neutral killers, they now show the role color",
         "\n- If a blessed player is swapped, the swapped target will still be ejected",
-        "\n- Transporting a body next to a wall twice no longer throws you out of bounds (PR #51) (Nix-main)",
+        "\n- Transporting a body next to a wall no longer places it outside of bounds (PR #51) (Nix-main)",
         "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
         "\n- Fix Alive Neutral Ghost on Jester win",
         "\n- Jester Haunt, Phantom Spook, and Executioner Torment ignore shields correctly now",
