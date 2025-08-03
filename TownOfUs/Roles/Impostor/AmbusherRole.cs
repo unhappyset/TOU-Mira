@@ -58,10 +58,10 @@ public sealed class AmbusherRole(IntPtr cppPtr)
     [
         new("Pursue",
             "Pursue a player to be able to ambush another player next to them at a later time.",
-            TouCrewAssets.TrackSprite),
+            TouImpAssets.PursueSprite),
         new("Ambush",
         "Ambush the closest player to the pursued target to kill them.",
-        TouImpAssets.DragSprite)
+        TouImpAssets.AmbushSprite)
     ];
     
     public void LobbyStart()

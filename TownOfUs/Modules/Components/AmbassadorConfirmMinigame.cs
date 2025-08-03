@@ -24,7 +24,6 @@ public sealed class AmbassadorConfirmMinigame(IntPtr cppPtr) : Minigame(cppPtr)
     public GameObject? DenyButton;
     public GameObject? AcceptButton;
     private RoleBehaviour NewRole;
-    private bool selectedChoice;
 
     private readonly Color _bgColor = new Color32(24, 0, 0, 215);
     private Action<bool> clickHandler;
@@ -113,14 +112,12 @@ public sealed class AmbassadorConfirmMinigame(IntPtr cppPtr) : Minigame(cppPtr)
         DenyButton!.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
         DenyButton!.GetComponent<PassiveButton>().OnClick.AddListener((UnityAction)(() =>
         {
-            selectedChoice = true;
             clickHandler.Invoke(false);
         }));
         
         AcceptButton!.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
         AcceptButton!.GetComponent<PassiveButton>().OnClick.AddListener((UnityAction)(() =>
         {
-            selectedChoice = true;
             clickHandler.Invoke(true);
         }));
 

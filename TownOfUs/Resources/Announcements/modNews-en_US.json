@@ -197,15 +197,15 @@
       ]
     },
     {
-      "Date": "2025-07-25T12:50:00Z",
+      "Date": "2025-08-03T12:50:00Z",
       "Number": "100010",
       "ShortTitle": "TOU: Mira v1.1.0",
       "SubTitle": "The Impostors grow in power...",
-      "Title": "The Content Update!",
+      "Title": "The First Content Update!",
       "Text": [
         "\r<b> Update now Available!</b>",
         "\n\n<b> This update has a few bugfixes under its belt, but most importantly, adds three new roles!</b>",
-        "\nThe Impostor roles are Ambusher and Ambassador, and the crew role is Mirrorcaster",
+        "\nThe new Impostor roles are Ambusher and Ambassador, and the new crew role is Mirrorcaster, the descriptions for these roles are listed under the Additions segment of the changelog.",
         "\n\nAgain, the Mira team really appreciates all of your support, thank you so much for playing the mod!",
         "\n\n★ <link=https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.1.0>TOU Mira v1.1.0 Download</link> ★ <link=https://au-avengers.github.io/docs.toum.gg/>Mod Guide & Details</link> ★",
         "\n\n\r<size=105%>Crewmate Role Bugfixes:</size>",
