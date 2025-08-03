@@ -16,6 +16,9 @@ public static class TouAssets
     
     public static readonly LoadableAsset<GameObject> AltRoleSelectionGame =
         new LoadableBundleAsset<GameObject>("AmbassadorRoleGame", MainBundle);
+    
+    public static readonly LoadableAsset<GameObject> ConfirmMinigame =
+        new LoadableBundleAsset<GameObject>("AmbassadorConfirmGame", MainBundle);
 
     public static LoadableAsset<GameObject> WikiPrefab { get; } =
         new LoadableBundleAsset<GameObject>("IngameWiki", MainBundle);

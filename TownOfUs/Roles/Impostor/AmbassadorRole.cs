@@ -217,6 +217,78 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                voteArea.GetPlayer()?.HasModifier<AmbassadorRetrainedModifier>() == true;
     }
 
+    [MethodRpc((uint)TownOfUsRpc.RetrainConfirm, SendImmediately = true)]
+    public static void RpcRetrainConfirm(PlayerControl ambassador, PlayerControl player, int cooldown, ushort role = 0, bool accepted = false)
+    {
+        if (ambassador.Data.Role is not AmbassadorRole ambassadorRole)
+        {
+            Logger<TownOfUsPlugin>.Error("RpcRetrainConfirm - Invalid ambassador");
+            return;
+        }
+        if (player != ambassadorRole.SelectedPlr?._object)
+        {
+            Logger<TownOfUsPlugin>.Error("RpcRetrainConfirm - Retrainee is not valid!");
+            return;
+        }
+        if (ambassadorRole.SelectedPlr == null || ambassadorRole.SelectedRole == null || ambassadorRole.Player.Data.IsDead || ambassadorRole.SelectedPlr.IsDead)
+        {
+            ambassadorRole.Clear();
+            Logger<TownOfUsPlugin>.Error("RpcRetrainConfirm - A player or role check failed");
+            return;
+        }
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            Logger<TownOfUsPlugin>.Error("RpcRetrainConfirm - You thought you were slick, huh? No, you can't retrain outside of rounds!");
+            return;
+        }
+        
+        ambassadorRole.Clear();
+        var newRole = RoleManager.Instance.GetRole((RoleTypes)role)!;
+
+        if (accepted)
+        {
+            --ambassadorRole.RetrainsAvailable;
+            ambassadorRole.RoundsCooldown = cooldown;
+            var currentTime = 0f;
+            if (player.AmOwner) currentTime = player.killTimer;
+
+            player.AddModifier<AmbassadorRetrainedModifier>((ushort)player.Data.Role.Role);
+            player.ChangeRole(role);
+
+            if (PlayerControl.LocalPlayer.IsImpostor())
+            {
+                var text =
+                    $"<b>{player.Data.PlayerName} has now been retrained into {newRole.NiceName}!</b>";
+
+                if (player.AmOwner)
+                {
+                    player.SetKillTimer(currentTime);
+                    text =
+                        $"<b>You have accepted your retrain into the {newRole.NiceName}!</b>";
+                }
+                var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: newRole.RoleIconWhite ?? TouRoleIcons.Ambassador.LoadAsset());
+
+                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            }
+        }
+        else if (PlayerControl.LocalPlayer.IsImpostor())
+        {
+            var text =
+                $"<b>{player.Data.PlayerName} has denied their retrain into {newRole.NiceName}!</b>";
+
+            if (player.AmOwner)
+            {
+                text =
+                    $"<b>You have denied your retrain into the {newRole.NiceName}!</b>";
+            }
+            var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: newRole.RoleIconWhite ?? TouRoleIcons.Ambassador.LoadAsset());
+
+            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        }
+    }
+
     [MethodRpc((uint)TownOfUsRpc.RetrainImpostor, SendImmediately = true)]
     private static void RpcRetrain(PlayerControl player, byte playerId = byte.MaxValue, ushort role = 0)
     {
