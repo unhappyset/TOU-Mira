@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <TouNames>
+        <string name="FoolsMode">April Fools Mode</string>
+        <string name="TertiaryAbility">Tertiary Ability (Hack Ability)</string>
+        <string name="ModifierAbility">Modifier Ability</string>
+        <!-- Client Options -->
+        <string name="ClientOptionsButton">Tou Client Options</string>
+        <string name="DeadSeeGhosts">Show Other Ghosts When Dead</string>
+        <string name="ShowVents">Show Vents On Map</string>
+        <string name="ShowWelcomeMessage">Show Welcome Msg</string>
+        <string name="ShowSummaryMessage">Show Summary Msg</string>
+        <string name="ColorPlayerName">Colored Player Name</string>
+        <string name="UseCrewmateTeamColor">Use Basic Crew Colors</string>
+        <string name="ShowShieldHud">Show Shields On Hud</string>
+        <string name="ButtonUIFactor">Button Scale Factor</string>
+        <string name="OffsetButtons">Offset Buttons If You Can't Vent</string>
+        <string name="SortGuessingByAlignment">Sort Guessing By Alignment</string>
+        <string name="PreciseCooldowns">Button Cooldowns Are In Decimal Under 10s</string>
+        <string name="ArrowStyle">Arrow Style</string>
+        <string name="ArrowDefault">Default</string>
+        <string name="ArrowDarkGlow">Dark Glow</string>
+        <string name="ArrowColorGlow">Color Glow</string>
+        <string name="ArrowLegacy">Legacy</string>
+        <!-- Player Colors, currently they are not functional -->
+        <string name="Watermelon">Watermelon</string>
+        <string name="Chocolate">Chocolate</string>
+        <string name="SkyBlue">Sky Blue</string>
+        <string name="Beige">Beige</string>
+        <string name="Magenta">Magenta</string>
+        <string name="SeaGreen">Sea Green</string>
+        <string name="Lilac">Lilac</string>
+        <string name="Olive">Olive</string>
+        <string name="Azure">Azure</string>
+        <string name="Plum">Plum</string>
+        <string name="Jungle">Jungle</string>
+        <string name="Mint">Mint</string>
+        <string name="Chartreuse">Chartreuse</string>
+        <string name="Macau">Macau</string>
+        <string name="Tawny">Tawny</string>
+        <string name="Gold">Gold</string>
+        <string name="Snow">Snow</string>
+        <string name="Turquoise">Turquoise</string>
+        <string name="Nacho">Nacho</string>
+        <string name="Blood">Blood</string>
+        <string name="Grass">Grass</string>
+        <string name="Mandarin">Mandarin</string>
+        <string name="Glass">Glass</string>
+        <string name="Ash">Ash</string>
+        <string name="Midnight">Midnight</string>
+        <string name="Steel">Steel</string>
+        <string name="Silver">Silver</string>
+        <string name="Shimmer">Shimmer</string>
+        <string name="Crimson">Crimson</string>
+        <string name="Charcoal">Charcoal</string>
+        <string name="Violet">Violet</string>
+        <string name="Denim">Denim</string>
+        <string name="CottonCandy">Cotton Candy</string>
+        <string name="Rainbow">Rainbow</string>
+        <!-- Role Subalignments -->
+        <string name="CrewmateInvestigative">Crewmate Investigative</string>
+        <string name="CrewmateKilling">Crewmate Killing</string>
+        <string name="CrewmatePower">Crewmate Power</string>
+        <string name="CrewmateProtective">Crewmate Protective</string>
+        <string name="CrewmateSupport">Crewmate Support</string>
+        <string name="NeutralBenign">Neutral Benign</string>
+        <string name="NeutralEvil">Neutral Evil</string>
+        <string name="NeutralOutlier">Neutral Outlier</string>
+        <string name="NeutralKilling">Neutral Killing</string>
+        <string name="ImpostorConcealing">Impostor Concealing</string>
+        <string name="ImpostorKilling">Impostor Killing</string>
+        <string name="ImpostorPower">Impostor Power</string>
+        <string name="ImpostorSupport">Impostor Support</string>
+        <!-- Role Buckets with Role List -->
+        <string name="CommonCrew">Common Crew</string>
+        <string name="SpecialCrew">Special Crew</string>
+        <string name="RandomCrew">Random Crew</string>
+        <string name="CommonNeutral">Common Neutral</string>
+        <string name="RandomNeutral">Random Neutral</string>
+        <string name="NonImp">Non-Imp</string>
+        <string name="CommonImp">Common Imp</string>
+        <string name="SpecialImp">Special Imp</string>
+        <string name="RandomImp">Random Imp</string>
+        <string name="Any">Any</string>
+        <string name="CrewInvestigative">Crew Investigative</string>
+        <string name="CrewKilling">Crew Killing</string>
+        <string name="CrewPower">Crew Power</string>
+        <string name="CrewProtective">Crew Protective</string>
+        <string name="CrewSupport">Crew Support</string>
+        <string name="ImpConcealing">Imp Concealing</string>
+        <string name="ImpKilling">Imp Killing</string>
+        <string name="ImpPower">Imp Power</string>
+        <string name="ImpSupport">Imp Support</string>
+        <!-- Keywords for use in ui to mark certain text into a certain color -->
+        <string name="CrewmateKeyword">Crewmate</string>
+        <string name="CrewKeyword">Crew</string>
+        <string name="NeutralKeyword">Neutral</string>
+        <string name="NeutKeyword">Neut</string>
+        <string name="ImpostorKeyword">Impostor</string>
+        <string name="ImpKeyword">Imp</string>
+        <!-- All possible types of modifiers -->
+        <string name="Alliance">Alliance</string>
+        <string name="Universal">Universal</string>
+        <string name="CrewmateAlliance">Crewmate Alliance</string>
+        <string name="CrewmateUtility">Crewmate Utility</string>
+        <string name="CrewmateVisibility">Crewmate Visibility</string>
+        <string name="CrewmatePostmortem">Crewmate Postmortem</string>
+        <string name="CrewmatePassive">Crewmate Passive</string>
+        <string name="NeutralAlliance">Neutral Alliance</string>
+        <string name="NeutralUtility">Neutral Utility</string>
+        <string name="NeutralVisibility">Neutral Visibility</string>
+        <string name="NeutralPostmortem">Neutral Postmortem</string>
+        <string name="NeutralPassive">Neutral Passive</string>
+        <string name="ImpostorAlliance">Impostor Alliance</string>
+        <string name="ImpostorUtility">Impostor Utility</string>
+        <string name="ImpostorVisibility">Impostor Visibility</string>
+        <string name="ImpostorPostmortem">Impostor Postmortem</string>
+        <string name="ImpostorPassive">Impostor Passive</string>
+        <string name="UniversalUtility">Universal Utility</string>
+        <string name="UniversalVisibility">Universal Visibility</string>
+        <string name="UniversalPostmortem">Universal Postmortem</string>
+        <string name="UniversalPassive">Universal Passive</string>
+        <string name="AssailantUtility">Assailant Utility</string>
+        <string name="AssailantVisibility">Assailant Visibility</string>
+        <string name="AssailantPostmortem">Assailant Postmortem</string>
+        <string name="AssailantPassive">Assailant Passive</string>
+        <string name="NonCrewmate">Non Crewmate</string>
+        <string name="NonCrewUtility">Non Crew Utility</string>
+        <string name="NonCrewVisibility">Non Crew Visibility</string>
+        <string name="NonCrewPostmortem">Non Crew Postmortem</string>
+        <string name="NonCrewPassive">Non Crew Passive</string>
+        <string name="NonNeutral">Non Neutral</string>
+        <string name="NonNeutUtility">Non Neut Utility</string>
+        <string name="NonNeutVisibility">Non Neut Visibility</string>
+        <string name="NonNeutPostmortem">Non Neut Postmortem</string>
+        <string name="NonNeutPassive">Non Neut Passive</string>
+        <string name="NonImpostor">Non Impostor</string>
+        <string name="NonImpUtility">Non Imp Utility</string>
+        <string name="NonImpVisibility">Non Imp Visibility</string>
+        <string name="NonImpPostmortem">Non Imp Postmortem</string>
+        <string name="NonImpPassive">Non Imp Passive</string>
+        <string name="External">External</string>
+        <string name="Other">Other</string>
+
+        <string name="Roles">Roles</string>
+        <string name="Modifiers">Modifiers</string>
+        <string name="Amount">Amount</string>
+        <string name="Chance">Chance</string>
+        <!-- Crewmate Roles -->
+        <!-- Altruist - Crewmate Protective -->
+        <string name="TouRoleAltruist">Altruist</string>
+        <string name="TouRoleAltruistIntroBlurb">Revive Dead Crewmates</string>
+        <string name="TouRoleAltruistTabDescription">Revive dead crewmates in groups</string>
+            <!-- Altruist Wiki / Abilities -->
+            <string name="TouRoleAltruistWikiDescription">The Altruist is a Crewmate Protective role can revive dead players in groups. However, their location and the revived players' locations will be revealed to all Impostors.</string>
+            <string name="TouRoleAltruistRevive">Revive</string>
+            <string name="TouRoleAltruistReviving">Reviving</string>
+            <string name="TouRoleAltruistReviveWikiDescription">Revive a group of dead bodies near you. You will be frozen during the revival and you will be unable to move until the revival is complete. Impostors will also have an arrow pointing towards you during the revival, so be cautious.</string>
+            <!-- Altruist Options -->
+            <string name="TouOptionAltruistReviveDuration">Revive Duration</string>
+            <string name="TouOptionAltruistReviveRange">Revive Range</string>
+            <string name="TouOptionAltruistMaxRevives">Revive Uses</string>
+            <string name="TouOptionAltruistHideAtBeginningOfRevive">Hide Bodies at Beginning Of Revive</string>
+        <!-- Aurial - Crewmate Investigative -->
+        <string name="TouRoleAurial">Aurial</string>
+        <string name="TouRoleAurialIntroBlurb">Sense Disturbances In Your Aura.</string>
+        <string name="TouRoleAurialTabDescription">Any player abilities used within your aura you will sense</string>
+            <!-- Aurial Wiki -->
+            <string name="TouRoleAurialWikiDescription">The Aurial is a Crewmate Investigative role that will be alerted whenever a player near them uses one of their abilities.</string>
+            <!-- Aurial Options -->
+            <string name="TouOptionAurialAuraInnerRadius">Radiate Colour Range</string>
+            <string name="TouOptionAurialAuraOuterRadius">Radiate Max Range</string>
+            <string name="TouOptionAurialSenseDuration">Sense Duration</string>
+        
+        <!-- Cleric - Crewmate Protective -->
+        <string name="TouRoleCleric">Cleric</string>
+        <string name="TouRoleClericIntroBlurb">Save The Crewmates</string>
+        
+        <!-- Deputy - Crewmate Killing -->
+        <string name="TouRoleDeputy">Deputy</string>
+        <string name="TouRoleDeputyIntroBlurb">Camp Crewmates To Catch Their Killer</string>
+        
+        <!-- Detective - Crewmate Investigative -->
+        <string name="TouRoleDetective">Detective</string>
+        <string name="TouRoleDetectiveIntroBlurb">Inspect Crime Scenes To Catch The Killer"</string>
+        
+        <!-- Engineer - Crewmate Investigative -->
+        <string name="TouRoleEngineer">Engineer</string>
+        <string name="TouRoleEngineerIntroBlurb">Maintain Important Systems On The Ship</string>
+        
+        <!-- Haunter - Crewmate Investigative -->
+        <string name="TouRoleHaunter">Haunter</string>
+        
+        <!-- Hunter - Crewmate Killing -->
+        <string name="TouRoleHunter">Hunter</string>
+        <string name="TouRoleHunterIntroBlurb">Stalk The Impostor</string>
+        
+        <!-- Imitator - Crewmate Support -->
+        <string name="TouRoleImitator">Imitator</string>
+        <string name="TouRoleImitatorIntroBlurb">Use Dead Roles To Benefit The Crew</string>
+        
+        <!-- Investigator - Crewmate Investigative -->
+        <string name="TouRoleInvestigator">Investigator</string>
+        <string name="TouRoleInvestigatorIntroBlurb">Find All Impostors By Examining Footprints.</string>
+        
+        <!-- Jailor - Crewmate Power -->
+        <string name="TouRoleJailor">Jailor</string>
+        <string name="TouRoleJailorIntroBlurb">Jail And Execute The Impostors</string>
+        
+        <!-- Lookout - Crewmate Investigative -->
+        <string name="TouRoleLookout">Lookout</string>
+        <string name="TouRoleLookoutIntroBlurb">Keep Your Eyes Wide Open</string>
+        
+        <!-- Mayor - Crewmate Power -->
+        <string name="TouRoleMayor">Mayor</string>
+        <string name="TouRoleMayorIntroBlurb">Reveal Yourself To Save The Crew</string>
+        
+        <!-- Medic - Crewmate Protective -->
+        <string name="TouRoleMedic">Medic</string>
+        <string name="TouRoleMedicIntroBlurb">Create A Shield To Protect A Crewmate</string>
+        
+        <!-- Medium - Crewmate Support -->
+        <string name="TouRoleMedium">Medium</string>
+        <string name="TouRoleMediumIntroBlurb">Watch The Spooky Ghosts</string>
+        
+        <!-- Mirrorcaster - Crewmate Protective -->
+        <string name="TouRoleMirrorcaster">Mirrorcaster</string>
+        <string name="TouRoleMirrorcasterIntroBlurb">Reflect Attacks Onto Others</string>
+        
+        <!-- Mystic - Crewmate Investigative -->
+        <string name="TouRoleMystic">Mystic</string>
+        <string name="TouRoleMysticIntroBlurb">Know When and Where Kills Happen</string>
+        
+        <!-- Oracle - Crewmate Protective -->
+        <string name="TouRoleOracle">Oracle</string>
+        <string name="TouRoleOracleIntroBlurb">Get Other Player's To Confess Their Sins</string>
+        
+        <!-- Plumber - Crewmate Support -->
+        <string name="TouRolePlumber">Plumber</string>
+        <string name="TouRolePlumberIntroBlurb">Get The Rats Out Of The Sewers</string>
+        
+        <!-- Politician - Crewmate Power -->
+        <string name="TouRolePolitician">Politician</string>
+        <string name="TouRolePoliticianIntroBlurb">Campaign To Become The Mayor!</string>
+        
+        <!-- Prosecutor - Crewmate Power -->
+        <string name="TouRoleProsecutor">Prosecutor</string>
+        <string name="TouRoleProsecutorIntroBlurb">Exile Players Of Your Choosing</string>
+        
+        <!-- Seer - Crewmate Investigative -->
+        <string name="TouRoleSeer">Seer</string>
+        <string name="TouRoleSeerIntroBlurb">Reveal The Alliance Of Other Players</string>
+        
+        <!-- Sheriff - Crewmate Killing -->
+        <string name="TouRoleSheriff">Sheriff</string>
+        <string name="TouRoleSheriffIntroBlurb">Shoot The Impostor</string>
+        
+        <!-- Snitch - Crewmate Investigative -->
+        <string name="TouRoleSnitch">Snitch</string>
+        <string name="TouRoleSnitchIntroBlurb">Find the Impostors!</string>
+        
+        <!-- Spy - Crewmate Investigative -->
+        <string name="TouRoleSpy">Spy</string>
+        <string name="TouRoleSpyIntroBlurb">Snoop Around And Find Stuff Out</string>
+        
+        <!-- Swapper - Crewmate Power -->
+        <string name="TouRoleSwapper">Swapper</string>
+        <string name="TouRoleSwapperIntroBlurb">Swap Votes To Save The Crew!</string>
+        
+        <!-- Tracker - Crewmate Investigative -->
+        <string name="TouRoleTracker">Tracker</string>
+        <string name="TouRoleTrackerIntroBlurb">Track Everyone's Movement</string>
+        
+        <!-- Transporter - Crewmate Support -->
+        <string name="TouRoleTransporter">Transporter</string>
+        <string name="TouRoleTransporterIntroBlurb">Choose Two Players To Swap Locations</string>
+        
+        <!-- Trapper - Crewmate Investigative -->
+        <string name="TouRoleTrapper">Trapper</string>
+        <string name="TouRoleTrapperIntroBlurb">Catch Killers In The Act</string>
+        
+        <!-- Veteran - Crewmate Killing -->
+        <string name="TouRoleVeteran">Veteran</string>
+        <string name="TouRoleVeteranIntroBlurb">Alert To Kill Anyone Who Interacts With You</string>
+        
+        <!-- Vigilante - Crewmate Killing -->
+        <string name="TouRoleVigilante">Vigilante</string>
+        <string name="TouRoleVigilanteIntroBlurb">Kill Impostors If You Can Guess Their Roles</string>
+        
+        <!-- Warden - Crewmate Protective -->
+        <string name="TouRoleWarden">Warden</string>
+        <string name="TouRoleWardenIntroBlurb">Fortify Crewmates</string>
+        
+        <!-- Impostor Roles -->
+        <string name="TouRoleAmbassador">Ambassador</string>
+        <string name="TouRoleAmbusher">Ambusher</string>
+        <string name="TouRoleBlackmailer">Blackmailer</string>
+        <string name="TouRoleBomber">Bomber</string>
+        <string name="TouRoleEclipsal">Eclipsal</string>
+        <string name="TouRoleEscapist">Escapist</string>
+        <string name="TouRoleGrenadier">Grenadier</string>
+        <string name="TouRoleHerbalist">Herbalist</string>
+        <string name="TouRoleHypnotist">Hypnotist</string>
+        <string name="TouRoleInfestor">Infestor</string>
+        <string name="TouRoleJanitor">Janitor</string>
+        <string name="TouRoleMiner">Miner</string>
+        <string name="TouRoleMorphling">Morphling</string>
+        <string name="TouRoleScavenger">Scavenger</string>
+        <string name="TouRoleSwooper">Swooper</string>
+        <string name="TouRoleTraitor">Traitor</string>
+        <string name="TouRoleUndertaker">Undertaker</string>
+        <string name="TouRoleVenerer">Venerer</string>
+        <string name="TouRoleWarlock">Warlock</string>
+        <!-- Neutral Roles -->
+        <string name="TouRoleAmnesiac">Amnesiac</string>
+        <string name="TouRoleArsonist">Arsonist</string>
+        <string name="TouRoleDoomsayer">Doomsayer</string>
+        <string name="TouRoleExecutioner">Executioner</string>
+        <string name="TouRoleGlitch">Glitch</string>
+        <string name="TouRoleGuardianAngel">Guardian Angel</string>
+        <string name="TouRoleInquisitor">Inquisitor</string>
+        <string name="TouRoleJester">Jester</string>
+        <string name="TouRoleJuggernaut">Juggernaut</string>
+        <string name="TouRoleMercenary">Mercenary</string>
+        <string name="TouRolePestilence">Pestilence</string>
+        <string name="TouRolePhantom">Phantom</string>
+        <string name="TouRolePlaguebearer">Plaguebearer</string>
+        <string name="TouRoleSoulCollector">Soul Collector</string>
+        <string name="TouRoleSurvivor">Survivor</string>
+        <string name="TouRoleVampire">Vampire</string>
+        <string name="TouRoleWerewolf">Werewolf</string>
+        <!-- Alliance Modifiers -->
+        <string name="TouModifierEgotist">Egotist</string>
+        <string name="TouModifierLover">Lover</string>
+        <string name="TouModifierLovers">Lovers</string>
+        <!-- Universal Modifiers -->
+        <string name="TouModifierButtonBarry">Button Barry</string>
+        <string name="TouModifierFlash">Flash</string>
+        <string name="TouModifierGiant">Giant</string>
+        <string name="TouModifierImmovable">Immovable</string>
+        <string name="TouModifierMini">Mini</string>
+        <string name="TouModifierRadar">Radar</string>
+        <string name="TouModifierSatellite">Satellite</string>
+        <string name="TouModifierShy">Shy</string>
+        <string name="TouModifierSixthSense">Sixth Sense</string>
+        <string name="TouModifierSleuth">Sleuth</string>
+        <string name="TouModifierTiebreaker">Tiebreaker</string>
+        <!-- Impostor Modifiers -->
+        <string name="TouModifierDisperser">Disperser</string>
+        <string name="TouModifierSaboteur">Saboteur</string>
+        <string name="TouModifierTelepath">Telepath</string>
+        <string name="TouModifierUnderdog">Underdog</string>
+        <!-- Assailant (NKs/Imp) Modifiers -->
+        <string name="TouModifierAssassin">Assassin</string>
+        <string name="TouModifierDoubleShot">Double Shot</string>
+        <!-- Crewmate Modifiers -->
+        <string name="TouModifierAftermath">Aftermath</string>
+        <string name="TouModifierBait">Bait</string>
+        <string name="TouModifierCelebrity">Celebrity</string>
+        <string name="TouModifierDiseased">Diseased</string>
+        <string name="TouModifierFrosty">Frosty</string>
+        <string name="TouModifierMultitasker">Multitasker</string>
+        <string name="TouModifierNoisemaker">Noisemaker</string>
+        <string name="TouModifierOperative">Operative</string>
+        <string name="TouModifierRotting">Rotting</string>
+        <string name="TouModifierScientist">Scientist</string>
+        <string name="TouModifierScout">Scout</string>
+        <string name="TouModifierTaskmaster">Taskmaster</string>
+        <string name="TouModifierTorch">Torch</string>
+        <!-- Other Modifiers, not technically modifiers so to speak -->
+        <string name="TouModifierFirstDeathShield">First Death Shield</string>
+        <string name="TouModifierScatter">Scatter</string>
+        <!-- Sidemen-Only Roles, DO NOT TRANSLATE -->
+        <string name="SidemenRoleAstral">Astral</string>
+        <string name="SidemenRolePuppetMaster">Puppet Master</string>
+        <string name="SidemenRoleMage">Mage</string>
+        <string name="SidemenRoleSandworm">Sandworm</string>
+        <string name="SidemenRoleRcxd">Rcxd</string>
+        <string name="SidemenRolePoisoner">Poisoner</string>
+        <string name="SidemenRoleSniper">Sniper</string>
+        <string name="SidemenRoleCannibal">Cannibal</string>
+        <string name="SidemenRoleTimelord">Timelord</string>
+    </TouNames>
+</resources>
