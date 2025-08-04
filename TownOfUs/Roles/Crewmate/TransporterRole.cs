@@ -11,6 +11,7 @@ using Reactor.Utilities;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Events.Crewmate;
 using TownOfUs.Events.TouEvents;
+using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Universal;
@@ -296,6 +297,11 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             }
             
             if (pc.HasModifier<NoTransportModifier>())
+            {
+                return null;
+            }
+            
+            if (pc.GetModifiers<BaseModifier>().Any(x => x is IUntransportable))
             {
                 return null;
             }

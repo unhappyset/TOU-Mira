@@ -9,6 +9,7 @@ using Reactor.Networking.Attributes;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Events.TouEvents;
+using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game;

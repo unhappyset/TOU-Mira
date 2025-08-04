@@ -9,6 +9,7 @@ using MiraAPI.Utilities;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Buttons;
+using TownOfUs.Interfaces;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Options;
 using TownOfUs.Roles;

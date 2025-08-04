@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TownOfUs.Extensions;
+namespace TownOfUs.Interfaces;
 
 public interface IColoredModifier
 {
