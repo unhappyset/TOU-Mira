@@ -44,13 +44,13 @@ public static class AprilFoolsPatches
                 var num = CurrentMode + 1;
                 CurrentMode = num > 3 ? 0 : num;
                 var text = aprilfoolstoggle.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>();
-                text.text = $"April fools mode: {Modes[CurrentMode]}";
+                text.text = $"{TouLocale.Get(TouNames.FoolsMode)}: {Modes[CurrentMode]}";
             }));
 
             var text = aprilfoolstoggle.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>();
             __instance.StartCoroutine(Effects.Lerp(0.1f, new Action<float>(p =>
             {
-                text.text = $"April fools mode: {Modes[CurrentMode]}";
+                text.text = $"{TouLocale.Get(TouNames.FoolsMode)}: {Modes[CurrentMode]}";
                 pos.AdjustPosition();
             })));
 
