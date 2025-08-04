@@ -255,6 +255,24 @@
         "\n- Mercenary and GA can win with their targets from alliance modifiers",
         "\n- Plumber barricades will now only stay for a set amount of rounds (customizable, can be infinite)"
       ]
+    },
+    {
+      "Date": "2025-08-04T12:50:00Z",
+      "Number": "100011",
+      "ShortTitle": "TOU: Mira v1.1.01",
+      "SubTitle": "my back hurts",
+      "Title": "Developer Build Progress",
+      "Text": [
+        "\r<b> Update IS NOT Available!</b>",
+        "\n\n<b> This build should include a few bugfixes, especially for Epic Games.</b>",
+        "\n\nAgain, the Mira team really appreciates all of your support, thank you so much for playing the mod!",
+        "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
+        "\n- Extra checks are added with Haunt/Torment/Spook menus to not linger around and allow double kills",
+        "\n\n\r<size=105%>Changes:</size>",
+        "\n- Mod News Coroutine is removed for Epic Games / MS Store builds",
+        "\n\n\r<size=105%>Improvements:</size>",
+        "\n- Translation System is in the works, allowing jsons and text files to replace certain names, however this will be moved to using XMLs for convenience."
+      ]
     }
   ]
 }

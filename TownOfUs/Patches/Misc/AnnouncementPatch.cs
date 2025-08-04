@@ -67,6 +67,13 @@ public static class ModNewsFetcher
 
     public static void CheckForNews()
     {
+        Logger<TownOfUsPlugin>.Error($"Running Mod News Fetcher...");
+        if (Environment.Is64BitProcess || TownOfUsPlugin.IsDevBuild)
+        {
+            Logger<TownOfUsPlugin>.Error(TownOfUsPlugin.IsDevBuild ? $"Loading News Locally, as this is a DEVELOPER BUILD" : $"Loading News Locally, as the architecture is x64");
+            LoadTouMiraModNewsFromResources();
+            return;
+        }
         Coroutines.Start(ModNewsFetcher.FetchNews());
     }
     public static IEnumerator FetchNews()
@@ -77,12 +84,6 @@ public static class ModNewsFetcher
         }
 
         downloaded = true;
-        if (TownOfUsPlugin.IsDevBuild)
-        {
-            Logger<TownOfUsPlugin>.Error($"Loading News Locally, as this is a DEVELOPER BUILD");
-            LoadTouMiraModNewsFromResources();
-            yield break;
-        }
         /* TouMiraModNewsURL += TranslationController.Instance.currentLanguage.languageID switch
         {
             SupportedLangs.German => "de_DE.json",
