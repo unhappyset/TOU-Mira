@@ -175,6 +175,22 @@
         <!-- Cleric - Crewmate Protective -->
         <string name="TouRoleCleric">Cleric</string>
         <string name="TouRoleClericIntroBlurb">Save The Crewmates</string>
+        <string name="TouRoleClericTabDescription">Barrier and Cleanse crewmates</string>
+            <!-- Cleric Wiki / Abilities -->
+            <string name="TouRoleClericWikiDescription">The Cleric is a Crewmate Protective that can protect crewmates by negating their negative effects, as well as placing barriers on them to prevent interactions.</string>
+            <string name="TouRoleClericBarrier">Barrier</string>
+            <string name="TouRoleClericBarrierWikiDescription">Prevent a Crewmate from being interacted with. The shield will last for %BarrierCooldown% seconds.</string>
+            <string name="TouRoleClericCleanse">Cleanse</string>
+            <string name="TouRoleClericCleanseWikiDescription">Remove all negative effects on a player. (Douse, Hack, Infect, Blackmail, Blind, Flash, and Hypnosis)</string>
+            <!-- Cleric Feedback -->
+            <string name="TouRoleClericMessageTitle">Cleric Feedback:</string>
+            <string name="TouRoleClericCleansedEffects">Cleansed effects on %player%:</string>
+            <string name="TouRoleClericCleansedNoEffects">No negative effects were found on %player%.</string>
+            <!-- Cleric Options -->
+            <string name="TouOptionClericReviveDuration">Revive Duration</string>
+            <string name="TouOptionClericReviveRange">Revive Range</string>
+            <string name="TouOptionClericMaxRevives">Revive Uses</string>
+            <string name="TouOptionClericHideAtBeginningOfRevive">Hide Bodies at Beginning Of Revive</string>
         
         <!-- Deputy - Crewmate Killing -->
         <string name="TouRoleDeputy">Deputy</string>
