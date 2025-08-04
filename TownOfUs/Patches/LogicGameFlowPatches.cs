@@ -78,7 +78,8 @@ public static class LogicGameFlowPatches
         for (var i = 0; i < __instance.AllPlayers.Count; i++)
         {
             var playerInfo = __instance.AllPlayers.ToArray()[i];
-            if (playerInfo.Disconnected) continue;
+            if (playerInfo.Disconnected || playerInfo.Object == null) continue;
+            
             if (playerInfo.Tasks != null && playerInfo.Object &&
                 (GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !playerInfo.IsDead) &&
                 !playerInfo._object.IsImpostor() &&
