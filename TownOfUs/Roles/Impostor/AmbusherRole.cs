@@ -24,6 +24,7 @@ using TownOfUs.Modules.Anims;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 
 namespace TownOfUs.Roles.Impostor;
 
@@ -228,7 +229,7 @@ public sealed class AmbusherRole(IntPtr cppPtr)
                 if (ambusher.AmOwner) ambusher.RpcSetPos(ogPos);
                 var targetPos = ogPos + new Vector3(-0.05f, 0.175f, 0f);
                 targetPos.z = targetPos.y / 1000f;
-                body.transform.position = targetPos;
+                body.transform.position = (ambusher.Collider.bounds.center - targetPos) + targetPos;
             }
             
             ambusher.Visible = true;
