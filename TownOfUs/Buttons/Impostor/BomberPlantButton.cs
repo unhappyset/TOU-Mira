@@ -16,7 +16,6 @@ public sealed class BomberPlantButton : TownOfUsRoleButton<BomberRole>, IAfterma
     public override float EffectDuration => OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay;
     public override int MaxUses => (int)OptionGroupSingleton<BomberOptions>.Instance.MaxBombs;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.PlaceSprite;
-
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
