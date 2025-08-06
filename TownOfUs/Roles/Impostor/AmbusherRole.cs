@@ -24,7 +24,6 @@ using TownOfUs.Modules.Anims;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
-using UnityEngine.ProBuilder;
 
 namespace TownOfUs.Roles.Impostor;
 
