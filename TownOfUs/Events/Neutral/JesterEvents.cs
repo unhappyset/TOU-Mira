@@ -20,7 +20,7 @@ namespace TownOfUs.Events.Neutral;
 
 public static class JesterEvents
 {
-    [RegisterEvent]
+    [RegisterEvent(0)]
     public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
         if (@event.DeathReason != DeathReason.Exile)
