@@ -12,7 +12,7 @@ namespace TownOfUs.Roles.Impostor;
 public sealed class VenererRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => TouLocale.Get(TouNames.Venerer, "Venerer");
+    public string RoleName => TouLocale.Get(Venerer, "Venerer");
     public string RoleDescription => "With Each Kill Your Ability Becomes Stronger";
     public string RoleLongDescription => "Kill players to unlock ability perks";
     public Color RoleColor => TownOfUsColors.Impostor;

@@ -13,7 +13,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 
 public sealed class OperativeModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(TouNames.Operative, "Operative");
+    public override string ModifierName => TouLocale.Get(Operative, "Operative");
     public override string IntroInfo => "You can also use security systems on-the-go.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Operative;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);

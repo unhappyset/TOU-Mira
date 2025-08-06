@@ -110,7 +110,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         Player.RemoveModifier<HaunterArrowModifier>();
     }
 
-    public string RoleName => TouLocale.Get(TouNames.Haunter, "Haunter");
+    public string RoleName => TouLocale.Get("TouRoleHaunter", "Haunter");
     public string RoleDescription => string.Empty;
     public string RoleLongDescription => "Complete all your tasks without getting caught to reveal impostors!";
     public Color RoleColor => TownOfUsColors.Haunter;

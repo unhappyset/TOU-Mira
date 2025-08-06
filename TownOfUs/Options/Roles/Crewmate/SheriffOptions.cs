@@ -7,7 +7,7 @@ namespace TownOfUs.Options.Roles.Crewmate;
 
 public sealed class SheriffOptions : AbstractOptionGroup<SheriffRole>
 {
-    public override string GroupName => TouLocale.Get(TouNames.Sheriff, "Sheriff");
+    public override string GroupName => TouLocale.Get(Sheriff, "Sheriff");
 
     [ModdedNumberOption("Kill Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float KillCooldown { get; set; } = 25f;

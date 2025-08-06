@@ -21,7 +21,7 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => TouLocale.Get(TouNames.Engineer, "Engineer");
+    public string RoleName => TouLocale.Get("TouRoleEngineer", "Engineer");
     public string RoleDescription => "Maintain Important Systems On The Ship";
     public string RoleLongDescription => "Vent around and fix sabotages remotely";
     public Color RoleColor => TownOfUsColors.Engineer;

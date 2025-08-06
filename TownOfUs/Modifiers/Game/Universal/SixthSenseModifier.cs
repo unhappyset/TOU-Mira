@@ -8,7 +8,7 @@ namespace TownOfUs.Modifiers.Game.Universal;
 
 public sealed class SixthSenseModifier : UniversalGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(TouNames.SixthSense, "Sixth Sense");
+    public override string ModifierName => TouLocale.Get(SixthSense, "Sixth Sense");
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.SixthSense;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;

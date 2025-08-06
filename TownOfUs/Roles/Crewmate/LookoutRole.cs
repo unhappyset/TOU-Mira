@@ -14,7 +14,7 @@ public sealed class LookoutRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public string RoleName => TouLocale.Get(TouNames.Lookout, "Lookout");
+    public string RoleName => TouLocale.Get("TouRoleLookout", "Lookout");
     public string RoleDescription => "Keep Your Eyes Wide Open";
     public string RoleLongDescription => "Watch other crewmates to see what roles interact with them";
     public Color RoleColor => TownOfUsColors.Lookout;

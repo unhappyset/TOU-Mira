@@ -11,7 +11,7 @@ namespace TownOfUs.Roles.Impostor;
 public sealed class GrenadierRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => TouLocale.Get(TouNames.Grenadier, "Grenadier");
+    public string RoleName => TouLocale.Get(Grenadier, "Grenadier");
     public string RoleDescription => "Hinder The Crewmates' Vision";
     public string RoleLongDescription => "Blind the crewmates to get sneaky kills";
     public Color RoleColor => TownOfUsColors.Impostor;

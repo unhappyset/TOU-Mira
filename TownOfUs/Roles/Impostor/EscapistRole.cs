@@ -46,7 +46,7 @@ public sealed class EscapistRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TransporterRole>());
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => TouLocale.Get(TouNames.Escapist, "Escapist");
+    public string RoleName => TouLocale.Get(Escapist, "Escapist");
     public string RoleDescription => "Get Away From Kills With Ease";
     public string RoleLongDescription => "Teleport to get away from the scene of the crime";
     public Color RoleColor => TownOfUsColors.Impostor;

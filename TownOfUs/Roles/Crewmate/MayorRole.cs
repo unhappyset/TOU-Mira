@@ -26,7 +26,7 @@ public sealed class MayorRole(IntPtr cppPtr)
     private MeetingMenu meetingMenu;
     public bool Revealed { get; set; }
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => TouLocale.Get(TouNames.Mayor, "Mayor");
+    public string RoleName => TouLocale.Get("TouRoleMayor", "Mayor");
     public string RoleDescription => "Reveal Yourself To Save The Crew";
     public string RoleLongDescription => "Lead the crew to victory!";
     public Color RoleColor => TownOfUsColors.Mayor;

@@ -14,7 +14,7 @@ namespace TownOfUs.Modifiers.Game.Universal;
 
 public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(TouNames.Shy, "Shy");
+    public override string ModifierName => TouLocale.Get(Shy, "Shy");
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Shy;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalVisibility;

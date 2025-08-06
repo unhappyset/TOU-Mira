@@ -16,7 +16,7 @@ public sealed class JuggernautRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 {
     public int KillCount { get; set; }
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public string RoleName => TouLocale.Get(TouNames.Juggernaut, "Juggernaut");
+    public string RoleName => TouLocale.Get(Juggernaut, "Juggernaut");
     public string RoleDescription => "Your Power Grows With Every Kill";
     public string RoleLongDescription => "With each kill your kill cooldown decreases";
     public Color RoleColor => TownOfUsColors.Juggernaut;

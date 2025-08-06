@@ -32,7 +32,7 @@ public sealed class WardenRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     }
 
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => TouLocale.Get(TouNames.Warden, "Warden");
+    public string RoleName => TouLocale.Get(Warden, "Warden");
     public string RoleDescription => "Fortify Crewmates";
     public string RoleLongDescription => "Fortify crewmates to prevent interactions with them";
     public Color RoleColor => TownOfUsColors.Warden;

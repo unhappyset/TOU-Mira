@@ -23,7 +23,7 @@ namespace TownOfUs.Roles.Impostor;
 public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Insight;
-    public string RoleName => TouLocale.Get(TouNames.Ambassador, "Ambassador");
+    public string RoleName => TouLocale.Get(Ambassador, "Ambassador");
     public string RoleDescription => "Lead The Impostors To Victory";
     public string RoleLongDescription => "Retrain yourself or fellow impostors into other roles\n<b>Imp Killing cannot be a Power role</b>\n<b>Imp Concealing/Support cannot be a Killing/Power role</b>";
     public Color RoleColor => TownOfUsColors.Impostor;

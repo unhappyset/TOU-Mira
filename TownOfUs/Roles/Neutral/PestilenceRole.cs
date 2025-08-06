@@ -21,7 +21,7 @@ public sealed class PestilenceRole(IntPtr cppPtr)
     public bool Announced { get; set; }
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<AurialRole>());
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => TouLocale.Get(TouNames.Pestilence, "Pestilence");
+    public string RoleName => TouLocale.Get(Pestilence, "Pestilence");
     public string RoleDescription => "Horseman Of The Apocalypse!";
     public string RoleLongDescription => "Kill everyone in your path that interacts with you!";
     public string YouAreText => "You are";

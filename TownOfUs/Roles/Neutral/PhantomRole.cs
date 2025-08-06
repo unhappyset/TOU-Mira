@@ -92,7 +92,7 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
         }
     }
 
-    public override string RoleName => TouLocale.Get(TouNames.Phantom, "Phantom");
+    public override string RoleName => TouLocale.Get(Phantom, "Phantom");
     public override string RoleDescription => string.Empty;
     public override string RoleLongDescription => "Complete all your tasks without being caught!";
     public override Color RoleColor => TownOfUsColors.Phantom;

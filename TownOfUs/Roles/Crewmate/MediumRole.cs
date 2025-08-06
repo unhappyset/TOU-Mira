@@ -18,7 +18,7 @@ public sealed class MediumRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     [HideFromIl2Cpp] public List<MediatedModifier> MediatedPlayers { get; } = new();
 
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => TouLocale.Get(TouNames.Medium, "Medium");
+    public string RoleName => TouLocale.Get(Medium, "Medium");
     public string RoleDescription => "Watch The Spooky Ghosts";
     public string RoleLongDescription => "Follow ghosts to get clues from them";
     public Color RoleColor => TownOfUsColors.Medium;

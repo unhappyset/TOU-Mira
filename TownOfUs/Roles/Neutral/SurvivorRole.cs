@@ -15,7 +15,7 @@ namespace TownOfUs.Roles.Neutral;
 public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => TouLocale.Get(TouNames.Survivor, "Survivor");
+    public string RoleName => TouLocale.Get(Survivor, "Survivor");
     public string RoleDescription => "Do Whatever It Takes To Live";
     public string RoleLongDescription => "Stay alive to win with any faction remaining";
     public Color RoleColor => TownOfUsColors.Survivor;

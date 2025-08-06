@@ -9,7 +9,7 @@ namespace TownOfUs.Modifiers.Game.Universal;
 
 public sealed class MiniModifier : UniversalGameModifier, IWikiDiscoverable, IVisualAppearance
 {
-    public override string ModifierName => TouLocale.Get(TouNames.Mini, "Mini");
+    public override string ModifierName => TouLocale.Get(Mini, "Mini");
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Mini;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalVisibility;

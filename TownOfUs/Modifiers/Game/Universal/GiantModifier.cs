@@ -9,7 +9,7 @@ namespace TownOfUs.Modifiers.Game.Universal;
 
 public sealed class GiantModifier : UniversalGameModifier, IWikiDiscoverable, IVisualAppearance
 {
-    public override string ModifierName => TouLocale.Get(TouNames.Giant, "Giant");
+    public override string ModifierName => TouLocale.Get(Giant, "Giant");
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Giant;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalVisibility;

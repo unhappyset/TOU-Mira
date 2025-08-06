@@ -13,7 +13,7 @@ public sealed class WarlockRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VeteranRole>());
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public string RoleName => TouLocale.Get(TouNames.Warlock, "Warlock");
+    public string RoleName => TouLocale.Get(Warlock, "Warlock");
     public string RoleDescription => "Charge Up Your Kill Button To Multi Kill";
     public string RoleLongDescription => "Kill people in small bursts";
     public Color RoleColor => TownOfUsColors.Impostor;

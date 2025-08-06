@@ -15,7 +15,7 @@ public sealed class ClericRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => TouLocale.Get(TouNames.Cleric, "Cleric");
+    public string RoleName => TouLocale.Get("TouRoleCleric", "Cleric");
     public string RoleDescription => "Save The Crewmates";
     public string RoleLongDescription => "Barrier and Cleanse crewmates";
     public Color RoleColor => TownOfUsColors.Cleric;

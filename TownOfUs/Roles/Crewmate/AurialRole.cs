@@ -17,7 +17,7 @@ public sealed class AurialRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 {
     private readonly Dictionary<(Vector3, int), ArrowBehaviour> _senseArrows = new();
     public DoomableType DoomHintType => DoomableType.Perception;
-    public string RoleName => TouLocale.Get(TouNames.Aurial, "Aurial");
+    public string RoleName => TouLocale.Get("TouRoleAurial", "Aurial");
     public string RoleDescription => "Sense Disturbances In Your Aura.";
     public string RoleLongDescription => "Any player abilities used within your aura you will sense";
     public Color RoleColor => TownOfUsColors.Aurial;

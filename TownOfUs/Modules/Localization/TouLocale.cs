@@ -148,15 +148,15 @@ public static class TouLocale
         try
         {
             xmlDoc.LoadXml(xmlContent);
-            XmlNodeList stringNodes = xmlDoc.SelectNodes("/resources/TouNames/string");
+            XmlNodeList? stringNodes = xmlDoc.SelectNodes("/resources/TouNames/string");
 
             if (stringNodes != null)
             {
                 foreach (XmlNode node in stringNodes)
                 {
-                    if (node.Attributes["name"] != null)
+                    if (node.Attributes?["name"] != null)
                     {
-                        string name = node.Attributes["name"].Value;
+                        string name = node.Attributes["name"]!.Value;
                         string value = node.InnerText;
                         
                         TouLocalization[language].TryAdd(name, value);

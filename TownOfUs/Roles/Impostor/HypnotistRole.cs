@@ -40,7 +40,7 @@ public sealed class HypnotistRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<LookoutRole>());
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => TouLocale.Get(TouNames.Hypnotist, "Hypnotist");
+    public string RoleName => TouLocale.Get(Hypnotist, "Hypnotist");
     public string RoleDescription => "Hypnotize Crewmates";
     public string RoleLongDescription => "Hypnotize crewmates and drive them insane";
     public Color RoleColor => TownOfUsColors.Impostor;

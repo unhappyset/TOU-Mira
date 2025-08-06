@@ -69,7 +69,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SnitchRole>());
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => TouLocale.Get(TouNames.Executioner, "Executioner");
+    public string RoleName => TouLocale.Get(Executioner, "Executioner");
     public string RoleDescription => TargetString();
     public string RoleLongDescription => TargetString();
     public Color RoleColor => TownOfUsColors.Executioner;

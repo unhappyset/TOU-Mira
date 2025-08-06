@@ -10,7 +10,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 
 public sealed class MultitaskerModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(TouNames.Multitasker, "Multitasker");
+    public override string ModifierName => TouLocale.Get(Multitasker, "Multitasker");
     public override string IntroInfo => "You can also see through tasks.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Multitasker;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);

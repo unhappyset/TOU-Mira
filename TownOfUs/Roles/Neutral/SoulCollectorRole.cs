@@ -17,7 +17,7 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MediumRole>());
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => TouLocale.Get(TouNames.SoulCollector, "Soul Collector");
+    public string RoleName => TouLocale.Get(SoulCollector, "Soul Collector");
     public string RoleDescription => "Reap The Souls From Your Crewmates";
     public string RoleLongDescription => "Reap the souls of others, leaving behind a lasting image";
     public Color RoleColor => TownOfUsColors.SoulCollector;

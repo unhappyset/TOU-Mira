@@ -9,7 +9,7 @@ namespace TownOfUs.Modifiers.Game.Impostor;
 
 public sealed class TelepathModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(TouNames.Telepath, "Telepath");
+    public override string ModifierName => TouLocale.Get(Telepath, "Telepath");
     public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
 
     public override string IntroInfo => "You also know information about teammates' kills" +

@@ -8,7 +8,7 @@ namespace TownOfUs.Modifiers.Game.Impostor;
 
 public sealed class ImpostorDoubleShotModifier : DoubleShotModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(TouNames.DoubleShot, "Double Shot");
+    public override string ModifierName => TouLocale.Get(DoubleShot, "Double Shot");
     public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
     
     public override bool ShowInFreeplay => true;

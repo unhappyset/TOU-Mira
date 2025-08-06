@@ -29,7 +29,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => TouLocale.Get(TouNames.Transporter, "Transporter");
+    public string RoleName => TouLocale.Get(Transporter, "Transporter");
     public string RoleDescription => "Choose Two Players To Swap Locations";
     public string RoleLongDescription => "Choose two players to swap locations with one another";
     public Color RoleColor => TownOfUsColors.Transporter;

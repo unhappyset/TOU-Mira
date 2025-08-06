@@ -22,7 +22,7 @@ namespace TownOfUs.Roles.Neutral;
 public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => TouLocale.Get(TouNames.Vampire, "Vampire");
+    public string RoleName => TouLocale.Get(Vampire, "Vampire");
     public string RoleDescription => "Convert Crewmates And Kill The Rest";
     public string RoleLongDescription => "Bite all other players";
     public Color RoleColor => TownOfUsColors.Vampire;

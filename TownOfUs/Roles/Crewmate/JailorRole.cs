@@ -36,7 +36,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         .FirstOrDefault(x => x.GetModifier<JailedModifier>()?.JailorId == Player.PlayerId)!;
 
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public string RoleName => TouLocale.Get(TouNames.Jailor, "Jailor");
+    public string RoleName => TouLocale.Get("TouRoleJailor", "Jailor");
     public string RoleDescription => "Jail And Execute The <color=#FF0000FF>Impostors</color>";
     public string RoleLongDescription => "Execute evildoers in meetings but avoid crewmates";
     public Color RoleColor => TownOfUsColors.Jailor;

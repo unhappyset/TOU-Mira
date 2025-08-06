@@ -9,7 +9,7 @@ namespace TownOfUs.Roles.Crewmate;
 public sealed class MysticRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Perception;
-    public string RoleName => TouLocale.Get(TouNames.Mystic, "Mystic");
+    public string RoleName => TouLocale.Get(Mystic, "Mystic");
     public string RoleDescription => "Know When and Where Kills Happen";
     public string RoleLongDescription => "Understand when and where kills happen";
     public Color RoleColor => TownOfUsColors.Mystic;

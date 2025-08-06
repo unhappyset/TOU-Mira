@@ -25,7 +25,7 @@ public sealed class JesterRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<PlumberRole>());
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => TouLocale.Get(TouNames.Jester, "Jester");
+    public string RoleName => TouLocale.Get(Jester, "Jester");
     public string RoleDescription => "Get voted out!";
     public string RoleLongDescription => "Be as suspicious as possible, and get voted out!";
     public Color RoleColor => TownOfUsColors.Jester;

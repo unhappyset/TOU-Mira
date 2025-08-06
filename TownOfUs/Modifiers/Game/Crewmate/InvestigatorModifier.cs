@@ -15,7 +15,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 public sealed class InvestigatorModifier : TouGameModifier, IWikiDiscoverable, IColoredModifier
 {
     public Color ModifierColor => new(0f, 0.7f, 0.7f, 1f);
-    public override string ModifierName => TouLocale.Get(TouNames.Investigator, "Investigator");
+    public override string ModifierName => TouLocale.Get(Investigator, "Investigator");
     public override string IntroInfo => "You will also see everyone's footprints for some time.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Investigator;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);

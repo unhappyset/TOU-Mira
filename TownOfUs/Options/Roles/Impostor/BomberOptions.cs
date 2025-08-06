@@ -8,7 +8,7 @@ namespace TownOfUs.Options.Roles.Impostor;
 
 public sealed class BomberOptions : AbstractOptionGroup<BomberRole>
 {
-    public override string GroupName => TouLocale.Get(TouNames.Bomber, "Bomber");
+    public override string GroupName => TouLocale.Get(Bomber, "Bomber");
 
     [ModdedNumberOption("Bomb Uses Per Game", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float MaxBombs { get; set; } = 3f;

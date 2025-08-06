@@ -12,7 +12,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 
 public sealed class BaitModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(TouNames.Bait, "Bait");
+    public override string ModifierName => TouLocale.Get(Bait, "Bait");
     public override string IntroInfo => "You will also force your killer to report your body.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Bait;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);

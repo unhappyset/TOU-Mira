@@ -23,7 +23,7 @@ namespace TownOfUs.Modifiers.Game.Alliance;
 
 public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAssignableTargets
 {
-    public override string ModifierName => TouLocale.Get(TouNames.Lover, "Lover");
+    public override string ModifierName => TouLocale.Get(Lover, "Lover");
     public override string Symbol => "♥";
     public override string IntroInfo => LoverString();
     public override float IntroSize => 3f;

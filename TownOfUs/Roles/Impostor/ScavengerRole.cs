@@ -92,7 +92,7 @@ public sealed class ScavengerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TrackerTouRole>());
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public string RoleName => TouLocale.Get(TouNames.Scavenger, "Scavenger");
+    public string RoleName => TouLocale.Get(Scavenger, "Scavenger");
     public string RoleDescription => "Hunt Down Your Prey";
     public string RoleLongDescription => "Kill your given targets for a reduced kill cooldown";
     public Color RoleColor => TownOfUsColors.Impostor;

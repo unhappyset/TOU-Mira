@@ -25,7 +25,7 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     [HideFromIl2Cpp] public List<PlayerControl> CaughtPlayers { get; } = [];
 
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public string RoleName => TouLocale.Get(TouNames.Hunter, "Hunter");
+    public string RoleName => TouLocale.Get("TouRoleHunter", "Hunter");
     public string RoleDescription => "Stalk The <color=#FF0000FF>Impostor</color>";
     public string RoleLongDescription => "Stalk player interactions and kill impostors, but not Crewmates";
     public Color RoleColor => TownOfUsColors.Hunter;

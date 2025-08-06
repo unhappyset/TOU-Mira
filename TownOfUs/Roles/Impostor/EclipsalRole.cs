@@ -9,7 +9,7 @@ namespace TownOfUs.Roles.Impostor;
 public sealed class EclipsalRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Perception;
-    public string RoleName => TouLocale.Get(TouNames.Eclipsal, "Eclipsal");
+    public string RoleName => TouLocale.Get(Eclipsal, "Eclipsal");
     public string RoleDescription => "Block Out The Light";
     public string RoleLongDescription => "Make crewmates unable to see, slowly returning their vision to normal.";
     public Color RoleColor => TownOfUsColors.Impostor;

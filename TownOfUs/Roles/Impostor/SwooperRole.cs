@@ -12,7 +12,7 @@ namespace TownOfUs.Roles.Impostor;
 public sealed class SwooperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public string RoleName => TouLocale.Get(TouNames.Swooper, "Swooper");
+    public string RoleName => TouLocale.Get(Swooper, "Swooper");
     public string RoleDescription => "Turn Invisible Temporarily";
     public string RoleLongDescription => "Turn invisible and sneakily kill";
     public Color RoleColor => TownOfUsColors.Impostor;

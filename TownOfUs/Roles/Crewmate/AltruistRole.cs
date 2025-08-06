@@ -26,7 +26,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => TouLocale.Get(TouNames.Altruist, "Altruist");
+    public string RoleName => TouLocale.Get("TouRoleAltruist", "Altruist");
     public string RoleDescription => "Revive Dead Crewmates";
     public string RoleLongDescription => "Revive dead crewmates in groups";
     public Color RoleColor => TownOfUsColors.Altruist;

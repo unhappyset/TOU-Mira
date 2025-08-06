@@ -108,7 +108,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<OracleRole>());
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public string RoleName => TouLocale.Get(TouNames.Inquisitor, "Inquisitor");
+    public string RoleName => TouLocale.Get(Inquisitor, "Inquisitor");
     public string RoleDescription => "Vanquish The Heretics!";
 
     public string RoleLongDescription =>

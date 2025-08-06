@@ -222,17 +222,17 @@ public static class TouAssets
     {
         get
         {
-            var name = TouLocale.Get(TouNames.ArrowDefault);
+            var name = TouLocale.Get("ArrowDefault");
             switch (TownOfUsPlugin.ArrowStyle.Value)
             {
                 case 1:
-                    name = TouLocale.Get(TouNames.ArrowDarkGlow);
+                    name = TouLocale.Get("ArrowDarkGlow");
                     break;
                 case 2:
-                    name = TouLocale.Get(TouNames.ArrowColorGlow);
+                    name = TouLocale.Get("ArrowColorGlow");
                     break;
                 case 3:
-                    name = TouLocale.Get(TouNames.ArrowLegacy);
+                    name = TouLocale.Get("ArrowLegacy");
                     break;
             }
             return name;

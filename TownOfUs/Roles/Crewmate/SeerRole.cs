@@ -10,7 +10,7 @@ public sealed class SeerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRol
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => TouLocale.Get(TouNames.Seer, "Seer");
+    public string RoleName => TouLocale.Get(Seer, "Seer");
     public string RoleDescription => "Reveal The Alliance Of Other Players";
     public string RoleLongDescription => "Reveal alliances of other players to find the Impostors";
     public Color RoleColor => TownOfUsColors.Seer;

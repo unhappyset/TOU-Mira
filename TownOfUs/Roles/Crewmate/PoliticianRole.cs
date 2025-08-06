@@ -22,9 +22,9 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
 
     public bool CanCampaign { get; set; } = true;
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => TouLocale.Get(TouNames.Politician, "Politician");
-    public string RoleDescription => $"Campaign To Become The {TouLocale.Get(TouNames.Mayor, "Mayor")}!";
-    public string RoleLongDescription => $"Spread your campaign to become the {TouLocale.Get(TouNames.Mayor, "Mayor")}!";
+    public string RoleName => TouLocale.Get(Politician, "Politician");
+    public string RoleDescription => $"Campaign To Become The {TouLocale.Get(Mayor, "Mayor")}!";
+    public string RoleLongDescription => $"Spread your campaign to become the {TouLocale.Get(Mayor, "Mayor")}!";
     public Color RoleColor => TownOfUsColors.Politician;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
@@ -53,7 +53,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
     public string GetAdvancedDescription()
     {
         return
-            $"The {RoleName} is a Crewmate Power role that can reveal themselves to the crew as the {TouLocale.Get(TouNames.Mayor, "Mayor")}, given that they have campaigned at least half of the crewmates."
+            $"The {RoleName} is a Crewmate Power role that can reveal themselves to the crew as the {TouLocale.Get(Mayor, "Mayor")}, given that they have campaigned at least half of the crewmates."
             + MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -64,7 +64,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
             "Give a player a ballot, which will only be useful to you if they are a Crewmate.",
             TouCrewAssets.CampaignButtonSprite),
         new("Reveal (Meeting)",
-            $"If you reveal and you have more than half of the crewmates campaigned (or no other crewmates remain), you will become the {TouLocale.Get(TouNames.Mayor, "Mayor")}! Otherwise, your ability will fail and you " +
+            $"If you reveal and you have more than half of the crewmates campaigned (or no other crewmates remain), you will become the {TouLocale.Get(Mayor, "Mayor")}! Otherwise, your ability will fail and you " +
             (OptionGroupSingleton<PoliticianOptions>.Instance.PreventCampaign ? "cannot" : "can") +
             " campaign the following round.",
             TouAssets.RevealCleanSprite)

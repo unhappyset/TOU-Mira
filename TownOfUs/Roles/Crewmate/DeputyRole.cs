@@ -24,7 +24,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
 
     public PlayerControl? Killer { get; set; }
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public string RoleName => TouLocale.Get(TouNames.Deputy, "Deputy");
+    public string RoleName => TouLocale.Get("TouRoleDeputy", "Deputy");
     public string RoleDescription => "Camp Crewmates To Catch Their Killer";
     public string RoleLongDescription => "Camp crewmates, then shoot their killer in the meeting!";
     public Color RoleColor => TownOfUsColors.Deputy;
