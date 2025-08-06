@@ -65,7 +65,7 @@ public static class TouLocale
             new(SupportedLangs.English, "en_US.xml"),
             //new(SupportedLangs.German, "de_DE.xml"),
             //new(SupportedLangs.Latam, "es_419.xml"),
-            new(SupportedLangs.Spanish, "es_ES.xml"),
+            //new(SupportedLangs.Spanish, "es_ES.xml"),
             //new(SupportedLangs.Filipino, "fil_PH.xml"),
             //new(SupportedLangs.French, "fr_FR.xml"),
             //new(SupportedLangs.Italian, "it_IT.xml"),
