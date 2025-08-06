@@ -6,10 +6,10 @@ public class TouLocalizationProvider : LocalizationProvider
 {
     public override bool TryGetText(StringNames stringName, out string? result)
     {
-        var id = (int)stringName - TouLocale.VanillaEnumAmounts;
-        if (Enum.IsDefined(typeof(TouNames), id) && CurrentLanguage != null)
+        var id = (int)stringName;
+        if (TouLocale.TouLocaleList.ContainsValue(id) && CurrentLanguage != null)
         {
-            var touName = (TouNames)id;
+            var touName = TouLocale.TouLocaleList.FirstOrDefault(x => x.Value == id).Key;
             
             if (TouLocale.TouLocalization.TryGetValue((SupportedLangs)CurrentLanguage, out var translations) &&
                 translations.TryGetValue(touName, out var translation))
@@ -24,7 +24,7 @@ public class TouLocalizationProvider : LocalizationProvider
                 return true;
             }
 
-            result = "STRMISS_" + touName.ToString();
+            result = "STRMISS_" + touName;
             return true;
         }
         

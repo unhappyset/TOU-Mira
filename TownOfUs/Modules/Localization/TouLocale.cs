@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Text.Json;
+using System.Xml;
 using BepInEx.Logging;
 using Reactor.Localization;
 using Reactor.Localization.Utilities;
@@ -19,17 +20,17 @@ public static class TouLocale
 
     public static string BepinexLocaleDirectory =>
         Path.Combine(BepInEx.Paths.BepInExRootPath, "MiraLocales", "TownOfUs");
-
-    public static Dictionary<SupportedLangs, Dictionary<TouNames, string>> TouLocalization { get; } = [];
+    public static Dictionary<string, int> TouLocaleList { get; } = [];
+    public static Dictionary<SupportedLangs, Dictionary<string, string>> TouLocalization { get; } = [];
     public static int VanillaEnumAmounts;
 
     private static ManualLogSource Logger { get; } = BepInEx.Logging.Logger.CreateLogSource("TouLocale");
 
-    public static string Get(TouNames name, string? defaultValue = null)
+    public static string Get(string name, string? defaultValue = null)
     {
-        if (TranslationController.InstanceExists)
+        if (TranslationController.InstanceExists && TouLocaleList.TryGetValue(name, out var value))
         {
-            var id = (int)name + VanillaEnumAmounts;
+            var id = value + VanillaEnumAmounts;
             return TranslationController.Instance.GetString((StringNames)id) ?? defaultValue ?? "STRMISS_" + name;
         }
 
@@ -62,20 +63,20 @@ public static class TouLocale
     {
         List<KeyValuePair<SupportedLangs, string>> list =
         [
-            new(SupportedLangs.English, "en_US.json"),
-            //new(SupportedLangs.German, "de_DE.json"),
-            //new(SupportedLangs.Latam, "es_419.json"),
-            new(SupportedLangs.Spanish, "es_ES.json"),
-            //new(SupportedLangs.Filipino, "fil_PH.json"),
-            //new(SupportedLangs.French, "fr_FR.json"),
-            //new(SupportedLangs.Italian, "it_IT.json"),
-            //new(SupportedLangs.Japanese, "ja_JP.json"),
-            //new(SupportedLangs.Korean, "ko_KR.json"),
-            //new(SupportedLangs.Dutch, "nl_NL.json"),
-            //new(SupportedLangs.Brazilian, "pt_BR.json"),
-            //new(SupportedLangs.Russian, "ru_RU.json"),
-            //new(SupportedLangs.SChinese, "zh_CN.json"),
-            //new(SupportedLangs.TChinese, "zh_TW.json")
+            new(SupportedLangs.English, "en_US.xml"),
+            //new(SupportedLangs.German, "de_DE.xml"),
+            //new(SupportedLangs.Latam, "es_419.xml"),
+            new(SupportedLangs.Spanish, "es_ES.xml"),
+            //new(SupportedLangs.Filipino, "fil_PH.xml"),
+            //new(SupportedLangs.French, "fr_FR.xml"),
+            //new(SupportedLangs.Italian, "it_IT.xml"),
+            //new(SupportedLangs.Japanese, "ja_JP.xml"),
+            //new(SupportedLangs.Korean, "ko_KR.xml"),
+            //new(SupportedLangs.Dutch, "nl_NL.xml"),
+            //new(SupportedLangs.Brazilian, "pt_BR.xml"),
+            //new(SupportedLangs.Russian, "ru_RU.xml"),
+            //new(SupportedLangs.SChinese, "zh_CN.xml"),
+            //new(SupportedLangs.TChinese, "zh_TW.xml")
         ];
 
         var assembly = Assembly.GetExecutingAssembly();
@@ -86,11 +87,11 @@ public static class TouLocale
                 ?? throw new InvalidOperationException(
                     $"Resource not found: TownOfUs.Resources.Locale.{locale.Value}");
             using StreamReader reader = new(resourceStream);
-            using var jsonDocument = JsonDocument.Parse(reader.ReadToEnd());
+            string xmlContent = reader.ReadToEnd();
+        
             TouLocalization.TryAdd(locale.Key, []);
-            ParseJsonFile(jsonDocument, locale.Key);
+            ParseXmlFile(xmlContent, locale.Key);
         }
-
     }
 
     public static void SearchDirectory(string directory)
@@ -126,18 +127,13 @@ public static class TouLocale
                 var key = parts[0];
                 var value = string.Join("=", parts.Skip(1));
 
-                if (!Enum.TryParse<TouNames>(key, out var touName))
+                if (TouLocalization[language].ContainsKey(key))
                 {
-                    Logger.LogWarning("Invalid key value in translation: " + translation);
-                }
-
-                if (TouLocalization[language].ContainsKey(touName))
-                {
-                    var ogValuePair = TouLocalization[language].FirstOrDefault(x => x.Key == touName);
+                    var ogValuePair = TouLocalization[language].FirstOrDefault(x => x.Key == key);
                     TouLocalization[language].Remove(ogValuePair.Key);
                 }
 
-                TouLocalization[language].TryAdd(touName, value);
+                TouLocalization[language].TryAdd(key, value);
             }
             else
             {
@@ -145,46 +141,41 @@ public static class TouLocale
             }
         }
     }
-
-    public static void ParseJsonFile(JsonDocument json, SupportedLangs language)
+    
+    public static void ParseXmlFile(string xmlContent, SupportedLangs language)
     {
-        JsonElement root = json.RootElement;
-
-        if (root.TryGetProperty("TouNames", out JsonElement touNamesElement) &&
-            touNamesElement.ValueKind == JsonValueKind.Array)
+        XmlDocument xmlDoc = new XmlDocument();
+        try
         {
-            JsonElement touNamesObject = touNamesElement.EnumerateArray().FirstOrDefault();
+            xmlDoc.LoadXml(xmlContent);
+            XmlNodeList stringNodes = xmlDoc.SelectNodes("/resources/TouNames/string");
 
-            if (touNamesObject.ValueKind == JsonValueKind.Object)
+            if (stringNodes != null)
             {
-                foreach (JsonProperty property in touNamesObject.EnumerateObject())
+                foreach (XmlNode node in stringNodes)
                 {
-                    if (Enum.TryParse(property.Name, out TouNames touName))
+                    if (node.Attributes["name"] != null)
                     {
-                        string value = property.Value.GetString()!;
-
-                        // Logger.LogWarning($"Found a match: Enum.{touName} with JSON value: {value}");
-
-                        TouLocalization[language].TryAdd(touName, value);
+                        string name = node.Attributes["name"].Value;
+                        string value = node.InnerText;
+                        
+                        TouLocalization[language].TryAdd(name, value);
                         if (language is SupportedLangs.English)
                         {
-                            var stringName = CustomStringName.CreateAndRegister(touName.ToString());
+                            var stringName = CustomStringName.CreateAndRegister(name);
                             if (VanillaEnumAmounts == 0)
                             {
                                 VanillaEnumAmounts = (int)stringName;
                             }
+                            TouLocaleList.TryAdd(name, (int)stringName);
                         }
-                    }
-                    else
-                    {
-                        Logger.LogWarning("Invalid translation format: " + property.Name);
                     }
                 }
             }
         }
-        else
+        catch (XmlException ex)
         {
-            Logger.LogError("Could not find 'TouNames' array in JSON or it is not in the expected format.");
+            Logger.LogError($"XML parsing error: {ex.Message}");
         }
     }
 }
