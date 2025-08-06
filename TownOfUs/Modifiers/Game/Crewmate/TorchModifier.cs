@@ -9,7 +9,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 
 public sealed class TorchModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(Torch, "Torch");
+    public override string ModifierName => TouLocale.Get("TouModifierTorch", "Torch");
     public override string IntroInfo => "You can also see without lights on.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Torch;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);

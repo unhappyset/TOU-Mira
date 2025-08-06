@@ -20,7 +20,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public PlayerVoteArea? Swap1 { get; set; }
     public PlayerVoteArea? Swap2 { get; set; }
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => TouLocale.Get(Swapper, "Swapper");
+    public string RoleName => TouLocale.Get("TouRoleSwapper", "Swapper");
     public string RoleDescription => "Swap Votes To Save The Crew!";
     public string RoleLongDescription => "Swap votes from one player to another during a meeting";
     public Color RoleColor => TownOfUsColors.Swapper;

@@ -16,7 +16,7 @@ namespace TownOfUs.Modifiers.Game.Universal;
 
 public sealed class ButtonBarryModifier : UniversalGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(ButtonBarry, "Button Barry");
+    public override string ModifierName => TouLocale.Get("TouModifierButtonBarry", "Button Barry");
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.ButtonBarry;
     public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
 

@@ -7,7 +7,7 @@ namespace TownOfUs.Options.Roles.Crewmate;
 
 public sealed class AltruistOptions : AbstractOptionGroup<AltruistRole>
 {
-    public override string GroupName => TouLocale.Get(Altruist, "Altruist");
+    public override string GroupName => TouLocale.Get("TouRoleAltruist", "Altruist");
 
     [ModdedNumberOption("Revive Duration", 1f, 15f, 1f, MiraNumberSuffixes.Seconds)]
     public float ReviveDuration { get; set; } = 10f;

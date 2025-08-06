@@ -16,7 +16,7 @@ namespace TownOfUs.Modifiers.Game.Impostor;
 
 public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(Disperser, "Disperser");
+    public override string ModifierName => TouLocale.Get("TouModifierDisperser", "Disperser");
     public override string IntroInfo => "You can also disperse players to vents around the map.";
 
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Disperser;

@@ -22,7 +22,7 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public override bool IsAffectedByComms => false;
     public bool HasMisfired { get; set; }
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public string RoleName => TouLocale.Get(Sheriff, "Sheriff");
+    public string RoleName => TouLocale.Get("TouRoleSheriff", "Sheriff");
     public string RoleDescription => "Shoot The <color=#FF0000FF>Impostor</color>";
     public string RoleLongDescription => "Kill off the impostors but don't kill crewmates";
     public Color RoleColor => TownOfUsColors.Sheriff;

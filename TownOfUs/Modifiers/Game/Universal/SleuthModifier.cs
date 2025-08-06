@@ -8,7 +8,7 @@ namespace TownOfUs.Modifiers.Game.Universal;
 
 public sealed class SleuthModifier : UniversalGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(Sleuth, "Sleuth");
+    public override string ModifierName => TouLocale.Get("TouModifierSleuth", "Sleuth");
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Sleuth;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;

@@ -27,7 +27,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MysticRole>());
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => TouLocale.Get(Amnesiac, "Amnesiac");
+    public string RoleName => TouLocale.Get("TouRoleAmnesiac", "Amnesiac");
     public string RoleDescription => "Remember A Role Of A Deceased Player";
     public string RoleLongDescription => "Find a dead body to remember and become their role";
     public Color RoleColor => TownOfUsColors.Amnesiac;

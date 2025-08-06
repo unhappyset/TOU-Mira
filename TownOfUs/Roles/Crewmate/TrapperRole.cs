@@ -19,7 +19,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     [HideFromIl2Cpp] public List<RoleBehaviour> TrappedPlayers { get; set; } = new();
 
     public DoomableType DoomHintType => DoomableType.Insight;
-    public string RoleName => TouLocale.Get(Trapper, "Trapper");
+    public string RoleName => TouLocale.Get("TouRoleTrapper", "Trapper");
     public string RoleDescription => "Catch Killers In The Act";
     public string RoleLongDescription => "Place traps around the map, revealing roles within them";
     public Color RoleColor => TownOfUsColors.Trapper;

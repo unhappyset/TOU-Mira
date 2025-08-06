@@ -39,7 +39,7 @@ public sealed class MinerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<EngineerTouRole>());
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => TouLocale.Get(Miner, "Miner");
+    public string RoleName => TouLocale.Get("TouRoleMiner", "Miner");
     public string RoleDescription => "From The Top, Make It Drop, That's A Vent";
     public string RoleLongDescription => "Place interconnected vents around the map";
     public Color RoleColor => TownOfUsColors.Impostor;

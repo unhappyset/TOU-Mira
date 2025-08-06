@@ -44,7 +44,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     }
 
     public DoomableType DoomHintType => DoomableType.Insight;
-    public string RoleName => TouLocale.Get(Snitch, "Snitch");
+    public string RoleName => TouLocale.Get("TouRoleSnitch", "Snitch");
     public string RoleDescription => "Find the <color=#FF0000FF>Impostors</color>!";
 
     public string RoleLongDescription =>

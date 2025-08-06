@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Text.Json;
 using System.Xml;
 using BepInEx.Logging;
 using Reactor.Localization;

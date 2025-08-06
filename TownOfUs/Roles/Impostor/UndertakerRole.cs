@@ -39,7 +39,7 @@ public sealed class UndertakerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<AltruistRole>());
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => TouLocale.Get(Undertaker, "Undertaker");
+    public string RoleName => TouLocale.Get("TouRoleUndertaker", "Undertaker");
     public string RoleDescription => "Drag Bodies And Hide Them";
     public string RoleLongDescription => "Drag bodies around to hide them from being reported";
     public Color RoleColor => TownOfUsColors.Impostor;

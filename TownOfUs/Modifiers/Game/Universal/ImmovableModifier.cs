@@ -9,7 +9,7 @@ namespace TownOfUs.Modifiers.Game.Universal;
 
 public sealed class ImmovableModifier : UniversalGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(Immovable, "Immovable");
+    public override string ModifierName => TouLocale.Get("TouModifierImmovable", "Immovable");
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Immovable;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;

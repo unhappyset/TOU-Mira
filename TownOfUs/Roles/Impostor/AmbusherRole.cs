@@ -24,7 +24,6 @@ using TownOfUs.Modules.Anims;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
-using UnityEngine.ProBuilder;
 
 namespace TownOfUs.Roles.Impostor;
 
@@ -33,7 +32,7 @@ public sealed class AmbusherRole(IntPtr cppPtr)
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
 
-    public string RoleName => TouLocale.Get(Ambusher, "Ambusher");
+    public string RoleName => TouLocale.Get("TouRoleAmbusher", "Ambusher");
     public string RoleDescription => "Kidnap Crewmates Into The Shadows";
     public string RoleLongDescription => "Pursue a player, then ambush the closest player to them.\nIf the player you ambush dies, then take their body with you.";
     public Color RoleColor => TownOfUsColors.Impostor;

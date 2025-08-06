@@ -32,7 +32,7 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
     }
 
     public DoomableType DoomHintType => DoomableType.Insight;
-    public string RoleName => TouLocale.Get(Blackmailer, "Blackmailer");
+    public string RoleName => TouLocale.Get("TouRoleBlackmailer", "Blackmailer");
     public string RoleDescription => "Silence Crewmates During Meetings";
     public string RoleLongDescription => "Silence a crewmate for the next meeting";
     public Color RoleColor => TownOfUsColors.Impostor;

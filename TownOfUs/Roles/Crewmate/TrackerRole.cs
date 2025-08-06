@@ -15,7 +15,7 @@ public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public string RoleName => TouLocale.Get(Tracker, "Tracker");
+    public string RoleName => TouLocale.Get("TouRoleTracker", "Tracker");
     public string RoleDescription => "Track Everyone's Movement";
     public string RoleLongDescription => "Track suspicious players to see where they go";
     public Color RoleColor => TownOfUsColors.Tracker;

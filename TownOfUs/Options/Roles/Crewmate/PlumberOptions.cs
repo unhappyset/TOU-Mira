@@ -7,7 +7,7 @@ namespace TownOfUs.Options.Roles.Crewmate;
 
 public sealed class PlumberOptions : AbstractOptionGroup<PlumberRole>
 {
-    public override string GroupName => TouLocale.Get(Plumber, "Plumber");
+    public override string GroupName => TouLocale.Get("TouRolePlumber", "Plumber");
 
     [ModdedNumberOption("Flush Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds, "0.0")]
     public float FlushCooldown { get; set; } = 25f;

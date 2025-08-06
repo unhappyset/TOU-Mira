@@ -8,7 +8,7 @@ namespace TownOfUs.Options.Roles.Crewmate;
 
 public sealed class DetectiveOptions : AbstractOptionGroup<DetectiveRole>
 {
-    public override string GroupName => TouLocale.Get(Detective, "Detective");
+    public override string GroupName => TouLocale.Get("TouRoleDetective", "Detective");
 
     [ModdedNumberOption("Examine Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float ExamineCooldown { get; set; } = 25f;

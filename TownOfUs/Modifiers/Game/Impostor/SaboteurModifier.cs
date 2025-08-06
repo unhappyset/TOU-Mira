@@ -8,7 +8,7 @@ namespace TownOfUs.Modifiers.Game.Impostor;
 
 public sealed class SaboteurModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(Saboteur, "Saboteur");
+    public override string ModifierName => TouLocale.Get("TouModifierSaboteur", "Saboteur");
     public override string IntroInfo => "You also have reduced sabotage cooldowns.";
     public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
 

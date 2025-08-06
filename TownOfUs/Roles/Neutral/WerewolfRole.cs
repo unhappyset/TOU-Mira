@@ -18,7 +18,7 @@ public sealed class WerewolfRole(IntPtr cppPtr)
     public bool Rampaging { get; set; }
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<HunterRole>());
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public string RoleName => TouLocale.Get(Werewolf, "Werewolf");
+    public string RoleName => TouLocale.Get("TouRoleWerewolf", "Werewolf");
     public string RoleDescription => "Rampage To Kill Everyone";
     public string RoleLongDescription => "Rampage to kill everyone in your path";
     public Color RoleColor => TownOfUsColors.Werewolf;

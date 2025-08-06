@@ -14,9 +14,9 @@ namespace TownOfUs.Modifiers.Crewmate;
 
 public sealed class MedicShieldModifier(PlayerControl medic) : BaseShieldModifier
 {
-    public override string ModifierName => $"{TouLocale.Get(Medic, "Medic")} Shield";
+    public override string ModifierName => TouLocale.Get("TouMedicShield", "Medic");
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Medic;
-    public override string ShieldDescription => $"You are shielded by a {TouLocale.Get(Medic, "Medic")} !\nYou may not die to other players";
+    public override string ShieldDescription => $"You are shielded by a {TouLocale.Get("TouRoleMedic", "Medic")} !\nYou may not die to other players";
     public PlayerControl Medic { get; } = medic;
     public GameObject? MedicShield { get; set; }
     public bool ShowShield { get; set; }

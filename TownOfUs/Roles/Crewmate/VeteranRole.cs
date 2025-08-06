@@ -16,7 +16,7 @@ public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
     public int Alerts { get; set; }
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => TouLocale.Get(Veteran, "Veteran");
+    public string RoleName => TouLocale.Get("TouRoleVeteran", "Veteran");
     public string RoleDescription => "Alert To Kill Anyone Who Interacts With You";
     public string RoleLongDescription => "Alert to kill whoever who interacts with you.";
     public Color RoleColor => TownOfUsColors.Veteran;
@@ -47,7 +47,7 @@ public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public List<CustomButtonWikiDescription> Abilities { get; } =
     [
         new("Alert",
-            $"When the {TouLocale.Get(Veteran, "Veteran")} is on alert, any player who interacts with them will be instantly killed, with the exception of Pestilence and shielded players, who will ignore the attack.",
+            $"When the Veteran is on alert, any player who interacts with them will be instantly killed, with the exception of Pestilence and shielded players, who will ignore the attack.",
             TouCrewAssets.AlertSprite)
     ];
 

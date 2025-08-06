@@ -7,7 +7,7 @@ namespace TownOfUs.Options.Roles.Neutral;
 
 public sealed class JesterOptions : AbstractOptionGroup<JesterRole>
 {
-    public override string GroupName => TouLocale.Get(Jester, "Jester");
+    public override string GroupName => TouLocale.Get("TouRoleJester", "Jester");
 
     [ModdedToggleOption("Can Use Button")]
     public bool CanButton { get; set; } = true;

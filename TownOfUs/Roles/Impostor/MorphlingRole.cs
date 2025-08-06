@@ -19,7 +19,7 @@ public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 {
     public PlayerControl? Sampled { get; set; }
     public DoomableType DoomHintType => DoomableType.Perception;
-    public string RoleName => TouLocale.Get(Morphling, "Morphling");
+    public string RoleName => TouLocale.Get("TouRoleMorphling", "Morphling");
     public string RoleDescription => "Transform Into Crewmates";
 
     public string RoleLongDescription =>

@@ -17,7 +17,7 @@ public sealed class GlitchRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SheriffRole>());
     public DoomableType DoomHintType => DoomableType.Perception;
-    public string RoleName => TouLocale.Get(Glitch, "Glitch");
+    public string RoleName => TouLocale.Get("TouRoleGlitch", "Glitch");
     public string RoleDescription => "Murder, Mimic, Hack... Data Lost";
     public string RoleLongDescription => "Murder everyone to win with your abilities!";
     public Color RoleColor => TownOfUsColors.Glitch;

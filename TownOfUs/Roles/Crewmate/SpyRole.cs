@@ -14,7 +14,7 @@ namespace TownOfUs.Roles.Crewmate;
 public sealed class SpyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Perception;
-    public string RoleName => TouLocale.Get(Spy, "Spy");
+    public string RoleName => TouLocale.Get("TouRoleSpy", "Spy");
     public string RoleDescription => "Snoop Around And Find Stuff Out";
     public string RoleLongDescription => "Gain extra information on the Admin Table";
     public Color RoleColor => TownOfUsColors.Spy;

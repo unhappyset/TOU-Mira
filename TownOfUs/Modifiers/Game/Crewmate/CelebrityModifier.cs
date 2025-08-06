@@ -17,7 +17,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 
 public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(Celebrity, "Celebrity");
+    public override string ModifierName => TouLocale.Get("TouModifierCelebrity", "Celebrity");
     public override string IntroInfo => "You will also reveal info about your death in the meeting.";
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Celebrity;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);

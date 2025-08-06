@@ -32,7 +32,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     public int MaxKills { get; set; }
     public int SafeShotsLeft { get; set; }
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public string RoleName => TouLocale.Get(Vigilante, "Vigilante");
+    public string RoleName => TouLocale.Get("TouRoleVigilante", "Vigilante");
     public string RoleDescription => "Kill Impostors If You Can Guess Their Roles";
     public string RoleLongDescription => "Guess the roles of impostors mid-meeting to kill them!";
     public Color RoleColor => TownOfUsColors.Vigilante;
@@ -69,7 +69,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     public string GetAdvancedDescription()
     {
         return
-            $"The {TouLocale.Get(Vigilante, "Vigilante")} is a Crewmate Killing role that can guess players roles in meetings. " +
+            $"The Vigilante is a Crewmate Killing role that can guess players roles in meetings. " +
             "If they guess correctly, the other player will die. If not, they will die. "
             + MiscUtils.AppendOptionsText(GetType());
     }

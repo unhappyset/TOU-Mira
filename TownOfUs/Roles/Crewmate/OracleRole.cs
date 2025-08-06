@@ -21,7 +21,7 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Insight;
-    public string RoleName => TouLocale.Get(Oracle, "Oracle");
+    public string RoleName => TouLocale.Get("TouRoleOracle", "Oracle");
     public string RoleDescription => "Get Other Player's To Confess Their Sins";
     public string RoleLongDescription => "Get another player to confess on your passing";
     public Color RoleColor => TownOfUsColors.Oracle;

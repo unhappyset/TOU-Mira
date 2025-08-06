@@ -9,7 +9,7 @@ namespace TownOfUs.Modifiers.Game.Universal;
 
 public sealed class FlashModifier : UniversalGameModifier, IWikiDiscoverable, IVisualAppearance
 {
-    public override string ModifierName => TouLocale.Get(Flash, "Flash");
+    public override string ModifierName => TouLocale.Get("TouModifierFlash", "Flash");
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Flash;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalVisibility;

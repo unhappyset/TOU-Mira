@@ -16,7 +16,7 @@ public sealed class TraitorRole(IntPtr cppPtr)
     public RoleBehaviour? SelectedRole { get; set; }
     public DoomableType DoomHintType => DoomableType.Trickster;
     public bool NoSpawn => true;
-    public string RoleName => TouLocale.Get(Traitor, "Traitor");
+    public string RoleName => TouLocale.Get("TouRoleTraitor", "Traitor");
     public string RoleDescription => "Betray The Crewmates!";
     public string RoleLongDescription => "Betray the Crewmates!";
     public Color RoleColor => TownOfUsColors.Impostor;
@@ -38,7 +38,7 @@ public sealed class TraitorRole(IntPtr cppPtr)
     public string GetAdvancedDescription()
     {
         return
-            $"The {RoleName} is an Impostor Killing role that spawns after a meeting, in which the spawn conditions are suitable. The Traitor will never be a {TouLocale.Get(Mayor, "Mayor")}, and must be a crewmate. The Traitor sets out to win the game for the fallen Impostors, and kill off the crew. They are also able to change to a better role."
+            $"The {RoleName} is an Impostor Killing role that spawns after a meeting, in which the spawn conditions are suitable. The Traitor will never be a Mayor, and must be a crewmate. The Traitor sets out to win the game for the fallen Impostors, and kill off the crew. They are also able to change to a better role."
             + MiscUtils.AppendOptionsText(GetType());
     }
 

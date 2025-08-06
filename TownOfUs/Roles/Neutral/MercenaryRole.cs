@@ -27,7 +27,7 @@ public sealed class MercenaryRole(IntPtr cppPtr)
     public bool CanBribe => Gold >= BrideCost;
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<WardenRole>());
     public DoomableType DoomHintType => DoomableType.Insight;
-    public string RoleName => TouLocale.Get(Mercenary, "Mercenary");
+    public string RoleName => TouLocale.Get("TouRoleMercenary", "Mercenary");
     public string RoleDescription => "Bribe The Crewmates";
     public string RoleLongDescription => "Guard crewmates, and then bribe the winners!";
     public Color RoleColor => TownOfUsColors.Mercenary;

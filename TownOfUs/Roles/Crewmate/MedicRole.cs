@@ -40,7 +40,7 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
     }
 
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => TouLocale.Get(Medic, "Medic");
+    public string RoleName => TouLocale.Get("TouRoleMedic", "Medic");
     public string RoleDescription => "Create A Shield To Protect A Crewmate";
     public string RoleLongDescription => "Protect a crewmate with a shield";
     public Color RoleColor => TownOfUsColors.Medic;
