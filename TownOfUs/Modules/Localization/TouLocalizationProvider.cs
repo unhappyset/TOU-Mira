@@ -31,4 +31,8 @@ public class TouLocalizationProvider : LocalizationProvider
         result = null;
         return false;
     }
+    public override void OnLanguageChanged(SupportedLangs newLanguage)
+    {
+        // Add checks for the options menu to change all names there, april fools button on the main menu, etc etc
+    }
 }
