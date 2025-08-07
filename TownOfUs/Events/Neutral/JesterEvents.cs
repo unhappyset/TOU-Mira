@@ -54,7 +54,7 @@ public static class JesterEvents
                 {
                     PlayerControl.LocalPlayer.RpcAddModifier<IndirectAttackerModifier>(true);
                     CustomButtonSingleton<JesterHauntButton>.Instance.SetActive(true, jester);
-                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Ejected", -1, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "null", -1, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
                     var notif2 = Helpers.CreateAndShowNotification(TouLocale.Get("TouNotifJesterHauntOwner"), Color.white);
 
                     notif2.Text.SetOutlineThickness(0.35f);
@@ -62,7 +62,7 @@ public static class JesterEvents
                 }
                 else
                 {
-                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Ejected", -1, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "null", -1, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
                 }
             }
             else

@@ -27,8 +27,8 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Death;
     public string RoleName => TouLocale.Get("TouRoleAltruist", "Altruist");
-    public string RoleDescription => "Revive Dead Crewmates";
-    public string RoleLongDescription => "Revive dead crewmates in groups";
+    public string RoleDescription => TouLocale.Get("TouRoleAltruistIntroBlurb", "Revive Dead Crewmates");
+    public string RoleLongDescription => TouLocale.Get("TouRoleAltruistTabDescription", "Revive dead crewmates in groups");
     public Color RoleColor => TownOfUsColors.Altruist;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
@@ -48,16 +48,15 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     public string GetAdvancedDescription()
     {
         return
-            $"The {RoleName} is a Crewmate Protective role can revive dead players in groups. However, their location and the revived players' locations will be revealed to all Impostors." +
+            TouLocale.Get("TouRoleAltruistWikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
 
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities { get; } =
     [
-        new("Revive",
-            "Revive a group of dead bodies near you. You will be frozen during the revival and you will be unable to move until the revival is complete." +
-            " Impostors will also have an arrow pointing towards you during the revival, so be cautious.",
+        new(TouLocale.Get("TouRoleAltruistRevive", "Revive"),
+            TouLocale.Get("TouRoleAltruistReviveWikiDescription"),
             TouCrewAssets.ReviveSprite)
     ];
 
@@ -134,7 +133,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             }
         }
 
-        yield return new WaitForSeconds(OptionGroupSingleton<AltruistOptions>.Instance.ReviveDuration);
+        yield return new WaitForSeconds(OptionGroupSingleton<AltruistOptions>.Instance.ReviveDuration.Value);
 
         if (!MeetingHud.Instance)
         {

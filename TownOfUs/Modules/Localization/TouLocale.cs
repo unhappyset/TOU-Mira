@@ -29,7 +29,7 @@ public static class TouLocale
     {
         if (TranslationController.InstanceExists && TouLocaleList.TryGetValue(name, out var value))
         {
-            var id = value + VanillaEnumAmounts;
+            var id = value;
             return TranslationController.Instance.GetString((StringNames)id) ?? defaultValue ?? "STRMISS_" + name;
         }
 
