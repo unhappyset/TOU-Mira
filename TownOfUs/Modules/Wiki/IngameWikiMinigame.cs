@@ -403,15 +403,22 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
             foreach (var role in roles)
             {
-                if (role is not IWikiDiscoverable && !SoftWikiEntries.RoleEntries.ContainsKey(role) || role is ICustomRole custom && custom.Configuration.HideSettings)
+                if (role is not IWikiDiscoverable && !SoftWikiEntries.RoleEntries.ContainsKey(role))
                 {
                     continue;
                 }
                 var customRole = role as ICustomRole;
+
                 if (customRole == null)
                 {
                     continue;
                 }
+                // Hides hidden roles from other mods, but keeps them visible for Pest/Mayor
+                if (customRole.Configuration.HideSettings && role is not IWikiDiscoverable)
+                {
+                    continue;
+                }
+                
                 var teamName = role.GetRoleAlignment().ToDisplayString();
 
                 var newItem = CreateNewItem(customRole.RoleName, customRole.Configuration.Icon?.LoadAsset());

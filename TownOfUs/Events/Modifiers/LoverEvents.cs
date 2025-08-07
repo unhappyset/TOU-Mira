@@ -18,11 +18,12 @@ public static class LoverEvents
     [RegisterEvent(400)]
     public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
-        if (!PlayerControl.LocalPlayer.IsHost())
+        if (@event.Player == null || !@event.Player.AmOwner)
         {
             return;
         }
-        if (@event.Player == null || !@event.Player.TryGetModifier<LoverModifier>(out var loveMod)
+        
+        if (!@event.Player.TryGetModifier<LoverModifier>(out var loveMod)
             || !OptionGroupSingleton<LoversOptions>.Instance.BothLoversDie || loveMod.OtherLover == null
             || loveMod.OtherLover.HasDied() || loveMod.OtherLover.HasModifier<InvulnerabilityModifier>())
         {
