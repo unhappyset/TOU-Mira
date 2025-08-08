@@ -1,4 +1,5 @@
-﻿using AmongUs.GameOptions;
+﻿using System.Collections;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using MiraAPI.Events;
@@ -11,6 +12,7 @@ using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace TownOfUs.Patches;
@@ -628,12 +630,19 @@ public static class TouRoleManagerPatches
 
     public static void AssignTargets()
     {
+        // This is a coroutine because otherwise, the game just assigns targets real badly like traitor egotist, exe being lovers with their targets, that sort of thing - Atony
+        Coroutines.Start(CoAssignTargets());
+    }
+
+    public static IEnumerator CoAssignTargets()
+    {
         foreach (var role in MiscUtils.AllRoles.Where(x => x is IAssignableTargets)
                      .OrderBy(x => (x as IAssignableTargets)!.Priority))
         {
             if (role is IAssignableTargets assignRole)
             {
                 assignRole.AssignTargets();
+                yield return new WaitForSeconds(0.01f);
             }
         }
 
@@ -643,6 +652,7 @@ public static class TouRoleManagerPatches
             if (modifier is IAssignableTargets assignMod)
             {
                 assignMod.AssignTargets();
+                yield return new WaitForSeconds(0.01f);
             }
         }
 
