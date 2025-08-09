@@ -274,6 +274,7 @@
         "\n- Jester no longer overrides their cause of death when Prosecuted.",
         "\n\n\r<size=105%>Impostor Role Bugfixes:</size>",
         "\n- Ambusher cannot drop bodies into the wall anymore. (PR #53) (Nix-main)",
+        "\n- Ambusher and Scavenger Arrows are removed correctly when a meeting starts.",
         "\n\n\r<size=105%>Modifier Bugfixes:</size>",
         "\n- Lover death checks are run on the dead lover's end instead of everyone else's end, fixing lovers not dying together properly.",
         "\n\n\r<size=105%>Other Bugfixes:</size>",
@@ -284,7 +285,8 @@
         "\n\n\r<size=105%>Additions:</size>",
         "\n- Bomb Round One Option has been added for Bomber. (PR #54) (Nix-main)",
         "\n\n\r<size=105%>Improvements:</size>",
-        "\n- Translation System is in the works, allowing jsons and text files to replace certain names, however this will be moved to using XMLs for convenience."
+        "\n- Translation System is in the works, allowing jsons and text files to replace certain names, however this will be moved to using XMLs for convenience.",
+        "\n- The subtitle for the Win Screen with nobody winning is now renamed to \"Game Draw!\" instead of \"Nobody Wins!\" as Neutral Evils can still win."
       ]
     }
   ]
