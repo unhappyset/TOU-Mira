@@ -76,6 +76,38 @@ public static class TouAssets
 
     public static LoadableAsset<Sprite> Banner { get; } = new LoadableResourceAsset($"{ShortPath}.Banner.png");
 
+    public static LoadableAsset<Sprite> MenuOption { get; } =
+        new LoadableResourceAsset($"{ShortPath}.MenuOption.png");
+        
+    public static LoadableAsset<Sprite> MenuOptionActive { get; } =
+        new LoadableResourceAsset($"{ShortPath}.MenuOptionActive.png");
+    
+    public static LoadableAsset<Sprite> FoolsMenuSprite(int value)
+    {
+            var sprite = FoolsNormal;
+            switch (value)
+            {
+                case 1:
+                    sprite = FoolsHorse;
+                    break;
+                case 2:
+                    sprite = FoolsLong;
+                    break;
+                case 3:
+                    sprite = FoolsLongHorse;
+                    break;
+            }
+            return sprite;
+    }
+    public static LoadableAsset<Sprite> FoolsNormal { get; } =
+        new LoadableResourceAsset($"{ShortPath}.AprilFools.Normal.png");
+    public static LoadableAsset<Sprite> FoolsHorse { get; } =
+        new LoadableResourceAsset($"{ShortPath}.AprilFools.Horse.png");
+    public static LoadableAsset<Sprite> FoolsLong { get; } =
+        new LoadableResourceAsset($"{ShortPath}.AprilFools.Long.png");
+    public static LoadableAsset<Sprite> FoolsLongHorse { get; } =
+        new LoadableResourceAsset($"{ShortPath}.AprilFools.LongHorse.png");
+
     public static LoadableAsset<Sprite> BlankSprite { get; } =
         new LoadableResourceAsset($"{ShortPath}.BlankSprite.png");
 

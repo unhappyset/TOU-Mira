@@ -258,7 +258,7 @@
     },
     {
       "Date": "2025-08-07T12:50:00Z",
-      "Number": "100011",
+      "Number": "100012",
       "ShortTitle": "TOU: Mira DEV",
       "SubTitle": "my back hurts",
       "Title": "Developer Build Progress",
@@ -286,7 +286,8 @@
         "\n- Bomb Round One Option has been added for Bomber. (PR #54) (Nix-main)",
         "\n\n\r<size=105%>Improvements:</size>",
         "\n- Translation System is in the works, allowing jsons and text files to replace certain names, however this will be moved to using XMLs for convenience.",
-        "\n- The subtitle for the Win Screen with nobody winning is now renamed to \"Game Draw!\" instead of \"Nobody Wins!\" as Neutral Evils can still win."
+        "\n- The subtitle for the Win Screen with nobody winning is now renamed to \"Game Draw!\" instead of \"Nobody Wins!\" as Neutral Evils can still win.",
+        "\n- Main Menu has been slightly adjusted visually, major change is the April Fools Selector now being moved into the main UI."
       ]
     }
   ]

@@ -290,12 +290,36 @@ public static class MiscUtils
 
         var roleList = assignmentData.Where(x => x is { Chance: > 0, Count: > 0, Role: ICustomRole }).Select(x => x.Role);
 
+        /*if (OptionGroupSingleton<GeneralOptions>.Instance.GuessVanillaRoles)
+        {
+            if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Tracker) is { Chance: > 0, Count: > 0 })
+                roleList = roleList.AddItem(
+                    RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Tracker)!);
+            if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Noisemaker) is { Chance: > 0, Count: > 0 })
+                roleList = roleList.AddItem(
+                    RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Noisemaker)!);
+            if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Engineer) is { Chance: > 0, Count: > 0 })
+                roleList = roleList.AddItem(
+                    RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Engineer)!);
+            if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Scientist) is { Chance: > 0, Count: > 0 })
+                roleList = roleList.AddItem(
+                    RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Scientist)!);
+            if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Shapeshifter) is
+                { Chance: > 0, Count: > 0 })
+                roleList = roleList.AddItem(
+                    RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Shapeshifter)!);
+            if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Phantom) is { Chance: > 0, Count: > 0 })
+                roleList = roleList.AddItem(
+                    RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Phantom)!);
+        }*/
+
         var crewmateRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Crewmate);
         roleList = roleList.AddItem(crewmateRole!);
         //Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - crewmateRole: '{crewmateRole?.NiceName}'");
 
         var impostorRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Impostor);
         roleList = roleList.AddItem(impostorRole!);
+        
         //Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - impostorRole: '{impostorRole?.NiceName}'");
 
         //roleList.Do(x => Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - role: '{x.NiceName}'"));
