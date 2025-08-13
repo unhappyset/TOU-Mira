@@ -109,7 +109,6 @@ public static class AprilFoolsPatches
             text2.fontSize = 3f;
             text2.fontSizeMin = 3f;
             text2.fontSizeMax = 3f;
-            text2.text = text2.text;
         }
     }
 

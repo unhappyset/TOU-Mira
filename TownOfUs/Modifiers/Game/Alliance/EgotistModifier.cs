@@ -30,6 +30,11 @@ public sealed class EgotistModifier : AllianceGameModifier, IWikiDiscoverable
     public override void OnActivate()
     {
         base.OnActivate();
+        if (!Player.HasModifier<BasicGhostModifier>())
+        {
+            Player.AddModifier<BasicGhostModifier>();
+        }
+        
         if (Player.HasModifier<TraitorCacheModifier>())
         {
             Player.RemoveModifier<TraitorCacheModifier>();

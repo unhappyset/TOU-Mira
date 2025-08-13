@@ -9,6 +9,7 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
 using TownOfUs.Buttons.Neutral;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Patches;
@@ -183,6 +184,10 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
             Player.MyPhysics.ResetMoveState();
 
             Faded = false;
+        }
+        else if (!Player.HasModifier<BasicGhostModifier>())
+        {
+            Player.AddModifier<BasicGhostModifier>();
         }
     }
 

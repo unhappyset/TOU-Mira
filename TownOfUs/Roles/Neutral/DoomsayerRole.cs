@@ -11,6 +11,7 @@ using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
@@ -149,6 +150,11 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         {
             meetingMenu?.Dispose();
             meetingMenu = null!;
+        }
+        
+        if (!Player.HasModifier<BasicGhostModifier>() && AllGuessesCorrect)
+        {
+            Player.AddModifier<BasicGhostModifier>();
         }
     }
 

@@ -111,6 +111,11 @@ public sealed class JesterRole(IntPtr cppPtr)
             HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
         }
+        
+        if (!Player.HasModifier<BasicGhostModifier>() && Voted)
+        {
+            Player.AddModifier<BasicGhostModifier>();
+        }
     }
 
     public override bool CanUse(IUsable usable)
