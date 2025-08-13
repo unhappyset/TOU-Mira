@@ -277,7 +277,7 @@ public sealed class AmbusherRole(IntPtr cppPtr)
             
             ambushAnim.gameObject.Destroy();
             
-            if (MeetingHud.Instance == null)
+            if (MeetingHud.Instance == null && target.HasDied())
             {
                 if (ambusher.AmOwner) ambusher.RpcSetPos(ogPos);
                 var targetPos = ogPos + new Vector3(-0.05f, 0.175f, 0f);
