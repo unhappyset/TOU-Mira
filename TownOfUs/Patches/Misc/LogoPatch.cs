@@ -57,6 +57,7 @@ public static class LogoPatch
         var tint = GameObject.Find("MainUI").transform.GetChild(0).gameObject;
         if (tint != null)
         {
+            tint.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.1f);
             tint.transform.localScale = new Vector3(7.5f, 7.5f, 1f);
         }
     }

@@ -91,7 +91,7 @@ public static class WikiHyperLinkPatches
     }
 
     [HarmonyPatch(typeof(ChatBubble), nameof(ChatBubble.SetText))]
-    private static class ChatBubble_SetText
+    public static class ChatBubble_SetText
     {
         public static void Prefix(ChatBubble __instance, ref string chatText)
         {
@@ -100,7 +100,7 @@ public static class WikiHyperLinkPatches
     }
     
     [HarmonyPatch(typeof(ChatNotification), nameof(ChatNotification.SetUp))]
-    private static class ChatNotification_SetUp
+    public static class ChatNotification_SetUp
     {
         public static void Prefix(ChatNotification __instance, ref string text)
         {

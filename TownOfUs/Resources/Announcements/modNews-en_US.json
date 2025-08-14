@@ -289,7 +289,12 @@
         "\n\n\r<size=105%>Improvements:</size>",
         "\n- Translation System is in the works, allowing jsons and text files to replace certain names, however this will be moved to using XMLs for convenience.",
         "\n- The subtitle for the Win Screen with nobody winning is now renamed to \"Game Draw!\" instead of \"Nobody Wins!\" as Neutral Evils can still win.",
-        "\n- Main Menu has been slightly adjusted visually, major change is the April Fools Selector now being moved into the main UI."
+        "\n- Main Menu has been slightly adjusted visually, major change is the April Fools Selector now being moved into the main UI.",
+        "\n- Redundant April Fools check was removed. (PR #57) (Astral)",
+        "\n- Added chat tags for roles and modifiers by doing #soul-collector or &celebrity for example. (PR #58) (Chipseq)",
+        "\n- Doomsayer report shows vanilla roles/non tou roles under an outsider category.",
+        "\n- Doomsayer report shows clickable wiki entries for role reports.",
+        "\n- Celebrity message shows clickable wiki entry for their killer's role."
       ]
     }
   ]

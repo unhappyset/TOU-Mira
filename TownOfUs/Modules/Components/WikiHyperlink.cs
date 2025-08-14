@@ -1,5 +1,4 @@
 ﻿using AmongUs.GameOptions;
-using Reactor.Utilities;
 using Reactor.Utilities.Attributes;
 using UnityEngine;
 using TMPro;
@@ -67,6 +66,7 @@ public class WikiHyperlink(IntPtr cppPtr) : MonoBehaviour(cppPtr)
                 }
                 catch
                 {
+                    // ignored
                 }
                 
                 var wiki = IngameWikiMinigame.Create();

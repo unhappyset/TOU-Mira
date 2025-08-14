@@ -201,11 +201,6 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                 hintType = doomableRole.DoomHintType;
             }
 
-            if (hintType == DoomableType.Default)
-            {
-                continue;
-            }
-
             switch (hintType)
             {
                 case DoomableType.Perception:
@@ -240,24 +235,39 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                     reportBuilder.AppendLine(TownOfUsPlugin.Culture,
                         $"You observe that {player.PlayerName} is capable of performing relentless attacks\n");
                     break;
+                case DoomableType.Default:
+                    // Get it? Because they're not from this "Town" of Us? heh...
+                    reportBuilder.AppendLine(TownOfUsPlugin.Culture,
+                        $"You observe that {player.PlayerName} is not from this town\n");
+                    break;
             }
 
-            var roles = MiscUtils.AllRoles
-                .Where(x => x is IDoomable doomRole && doomRole.DoomHintType == hintType && x is not IUnguessable)
-                .OrderBy(x => x.NiceName).ToList();
+            var roles = RoleManager.Instance.AllRoles
+                .Where(x => (x is IDoomable doomRole && doomRole.DoomHintType == DoomableType.Default &&
+                    x is not IUnguessable || x is not IDoomable) && !x.IsDead).ToList();
+            roles = roles.OrderBy(x => x.NiceName).ToList();
             var lastRole = roles[roles.Count - 1];
             roles.Remove(roles[roles.Count - 1]);
+            
+            if (hintType != DoomableType.Default)
+            {
+                roles = MiscUtils.AllRoles
+                    .Where(x => x is IDoomable doomRole && doomRole.DoomHintType == hintType && x is not IUnguessable)
+                    .OrderBy(x => x.NiceName).ToList();
+                lastRole = roles[roles.Count - 1];
+                roles.Remove(roles[roles.Count - 1]);
+            }
 
             if (roles.Count != 0)
             {
                 reportBuilder.Append(TownOfUsPlugin.Culture, $"(");
                 foreach (var role2 in roles)
                 {
-                    reportBuilder.Append(TownOfUsPlugin.Culture, $"{role2.NiceName}, ");
+                    reportBuilder.Append(TownOfUsPlugin.Culture, $"#{role2.NiceName.ToLowerInvariant().Replace(" ", "-")}, ");
                 }
 
                 reportBuilder = reportBuilder.Remove(reportBuilder.Length - 2, 2);
-                reportBuilder.Append(TownOfUsPlugin.Culture, $" or {lastRole.NiceName})");
+                reportBuilder.Append(TownOfUsPlugin.Culture, $" or #{lastRole.NiceName.ToLowerInvariant().Replace(" ", "-")})");
             }
 
             player.Object.RemoveModifier<DoomsayerObservedModifier>();

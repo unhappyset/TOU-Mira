@@ -147,7 +147,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
         else
         {
             celeb.DeathMessage =
-                $"The Celebrity, {player.GetDefaultAppearance().PlayerName}, was {cod}! Location: {celeb.StoredRoom}, Death: By the {role.NiceName}, Time: ";
+                $"The Celebrity, {player.GetDefaultAppearance().PlayerName}, was {cod}! Location: {celeb.StoredRoom}, Death: By the #{role.NiceName.ToLowerInvariant().Replace(" ", "-")}, Time: ";
         }
     }
 

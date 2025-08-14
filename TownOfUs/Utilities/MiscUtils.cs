@@ -16,6 +16,7 @@ using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Neutral;
+using TownOfUs.Patches.Misc;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Neutral;
 using UnityEngine;
@@ -352,6 +353,7 @@ public static class MiscUtils
         pooledBubble.votedMark.enabled = false;
         pooledBubble.Xmark.enabled = false;
         pooledBubble.TextArea.text = message;
+        pooledBubble.TextArea.text = WikiHyperLinkPatches.CheckForTags(message, pooledBubble.TextArea);
         pooledBubble.TextArea.ForceMeshUpdate(true, true);
         pooledBubble.Background.size = new Vector2(5.52f,
             0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
