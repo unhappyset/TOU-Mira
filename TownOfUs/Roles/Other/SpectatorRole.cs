@@ -31,6 +31,8 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Noisemaker),
         GhostRole = (RoleTypes)RoleId.Get<SpectatorRole>(),
         Icon = TouRoleIcons.Spectator,
+        CanModifyChance = false,
+        MaxRoleCount = 0
     };
 
     public override void Initialize(PlayerControl player)
@@ -79,14 +81,14 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         }
 
         if (Input.GetKeyDown(KeyCode.J))
-            {
-                CurrentTarget--;
+        {
+            CurrentTarget--;
 
-                if (CurrentTarget <= -1)
-                    CurrentTarget = TrackedPlayers.Count - 1;
+            if (CurrentTarget <= -1)
+                CurrentTarget = TrackedPlayers.Count - 1;
 
-                HudManager.Instance.PlayerCam.SetTarget(TrackedPlayers[CurrentTarget]);
-            }
+            HudManager.Instance.PlayerCam.SetTarget(TrackedPlayers[CurrentTarget]);
+        }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
