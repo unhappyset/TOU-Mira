@@ -28,8 +28,8 @@ public static class TouRoleIcons
     public static LoadableAsset<Sprite> Sheriff { get; } = new LoadableResourceAsset($"{iconPath}.Sheriff.png");
     public static LoadableAsset<Sprite> Veteran { get; } = new LoadableResourceAsset($"{iconPath}.Veteran.png");
     public static LoadableAsset<Sprite> Vigilante { get; } = new LoadableResourceAsset($"{iconPath}.Vigilante.png");
-    
-    
+
+
     public static LoadableAsset<Sprite> Agent { get; } = new LoadableResourceAsset($"{iconPath}.Agent.png");
     public static LoadableAsset<Sprite> Jailor { get; } = new LoadableResourceAsset($"{iconPath}.Jailor.png");
     public static LoadableAsset<Sprite> Politician { get; } = new LoadableResourceAsset($"{iconPath}.Politician.png");
@@ -85,14 +85,14 @@ public static class TouRoleIcons
     public static LoadableAsset<Sprite> Morphling { get; } = new LoadableResourceAsset($"{iconPath}.Morphling.png");
     public static LoadableAsset<Sprite> Swooper { get; } = new LoadableResourceAsset($"{iconPath}.Swooper.png");
     public static LoadableAsset<Sprite> Venerer { get; } = new LoadableResourceAsset($"{iconPath}.Venerer.png");
-    
+
 
     public static LoadableAsset<Sprite> Ambusher { get; } = new LoadableResourceAsset($"{iconPath}.Ambusher.png");
     public static LoadableAsset<Sprite> Bomber { get; } = new LoadableResourceAsset($"{iconPath}.Bomber.png");
     public static LoadableAsset<Sprite> Infestor { get; } = new LoadableResourceAsset($"{iconPath}.Infestor.png");
     public static LoadableAsset<Sprite> Scavenger { get; } = new LoadableResourceAsset($"{iconPath}.Scavenger.png");
     public static LoadableAsset<Sprite> Warlock { get; } = new LoadableResourceAsset($"{iconPath}.Warlock.png");
-    
+
     public static LoadableAsset<Sprite> Ambassador { get; } = new LoadableResourceAsset($"{iconPath}.Ambassador.png");
     public static LoadableAsset<Sprite> Traitor { get; } = new LoadableResourceAsset($"{iconPath}.Traitor.png");
 
@@ -102,6 +102,8 @@ public static class TouRoleIcons
     public static LoadableAsset<Sprite> Janitor { get; } = new LoadableResourceAsset($"{iconPath}.Janitor.png");
     public static LoadableAsset<Sprite> Miner { get; } = new LoadableResourceAsset($"{iconPath}.Miner.png");
     public static LoadableAsset<Sprite> Undertaker { get; } = new LoadableResourceAsset($"{iconPath}.Undertaker.png");
+
+    public static LoadableAsset<Sprite> Spectator { get; } = new LoadableResourceAsset($"{iconPath}.Spectator.png");
 
     public static LoadableAsset<Sprite> RandomAny { get; } = new LoadableResourceAsset($"{iconPath}.RandomAny.png");
     public static LoadableAsset<Sprite> RandomCrew { get; } = new LoadableResourceAsset($"{iconPath}.RandomCrew.png");

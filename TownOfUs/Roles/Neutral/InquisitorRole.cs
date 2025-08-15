@@ -17,6 +17,7 @@ using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -37,7 +38,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public void AssignTargets()
     {
         var inquis = PlayerControl.AllPlayerControls.ToArray()
-            .FirstOrDefault(x => x.IsRole<InquisitorRole>() && !x.HasDied());
+            .FirstOrDefault(x => x.IsRole<InquisitorRole>() && !x.HasDied() && !SpectatorRole.TrackedSpectators.Contains(x.PlayerId));
 
         if (inquis == null)
         {
@@ -216,7 +217,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
             var players = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().ToList();
             players.Do(x => x.RpcRemoveModifier<InquisitorHereticModifier>());
         }
-        
+
         if (!Player.HasModifier<BasicGhostModifier>() && TargetsDead)
         {
             Player.AddModifier<BasicGhostModifier>();
@@ -356,7 +357,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     {
         InquisitorWin(player);
     }
-    
+
     public static void InquisitorWin(PlayerControl player)
     {
         if (player.Data.Role is not InquisitorRole)

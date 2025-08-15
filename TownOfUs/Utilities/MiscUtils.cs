@@ -19,6 +19,7 @@ using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Patches.Misc;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Roles.Other;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -178,7 +179,7 @@ public static class MiscUtils
     public static IEnumerable<RoleBehaviour> GetRegisteredRoles(RoleAlignment alignment)
     {
         var roles = AllRoles.Where(x => x.GetRoleAlignment() == alignment);
-        
+
         var registeredRoles = roles.ToList();
 
         switch (alignment)
@@ -231,7 +232,7 @@ public static class MiscUtils
     public static IEnumerable<RoleBehaviour> GetRegisteredGhostRoles()
     {
         var baseGhostRoles = RoleManager.Instance.AllRoles.Where(x => x.IsDead && AllRoles.All(y => y.Role != x.Role));
-        var ghostRoles = AllRoles.Where(x => x.IsDead).Union(baseGhostRoles);
+        var ghostRoles = AllRoles.Where(x => x.IsDead && !x.TryCast<SpectatorRole>()).Union(baseGhostRoles);
 
         return ghostRoles;
     }
@@ -320,7 +321,7 @@ public static class MiscUtils
 
         var impostorRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Impostor);
         roleList = roleList.AddItem(impostorRole!);
-        
+
         //Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - impostorRole: '{impostorRole?.NiceName}'");
 
         //roleList.Do(x => Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - role: '{x.NiceName}'"));
@@ -1063,4 +1064,6 @@ public static class MiscUtils
             ? TranslationController.Instance.GetString(plainShipRoom.RoomId)
             : "Outside/Hallway";
     }
+
+    public static IEnumerable<T> Excluding<T>(this IEnumerable<T> source, Func<T, bool> predicate) => source.Where(x => !predicate(x)); // Added for easier inversion and reading
 }

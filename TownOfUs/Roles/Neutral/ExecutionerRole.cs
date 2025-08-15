@@ -16,6 +16,7 @@ using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Random = System.Random;
@@ -50,7 +51,8 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
                             x.Data.Role is not ProsecutorRole &&
                             x.Data.Role is not PoliticianRole &&
                             x.Data.Role is not JailorRole &&
-                            x.Data.Role is not VigilanteRole).ToList();
+                            x.Data.Role is not VigilanteRole &&
+                            !SpectatorRole.TrackedSpectators.Contains(x.PlayerId)).ToList();
 
             if (filtered.Count > 0)
             {
@@ -149,7 +151,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
                 .ToList();
             players.Do(x => x.RpcRemoveModifier<ExecutionerTargetModifier>());
         }
-        
+
         if (!Player.HasModifier<BasicGhostModifier>() && TargetVoted)
         {
             Player.AddModifier<BasicGhostModifier>();

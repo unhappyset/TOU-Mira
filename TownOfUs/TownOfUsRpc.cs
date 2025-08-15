@@ -71,5 +71,6 @@ public enum TownOfUsRpc : uint
     SheriffMisfire,
     RetrainImpostor,
     AmbushPlayer,
-    RetrainConfirm
+    RetrainConfirm,
+    SelectSpectator
 }

@@ -13,6 +13,7 @@ using TownOfUs.Interfaces;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Options;
 using TownOfUs.Roles;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Object = Il2CppSystem.Object;
@@ -98,6 +99,18 @@ public static class IntroScenePatches
 
             panel.SetTaskText(role.SetTabText().ToString());
         }
+
+        foreach (var id in SpectatorRole.TrackedSpectators)
+            MiscUtils.PlayerById(id)!.Visible = false;
+
+        SpectatorRole.InitList();
+
+        if (PlayerControl.LocalPlayer.Data.Role.TryCast<SpectatorRole>())
+        {
+            PlayerControl.LocalPlayer.Die(DeathReason.Exile, false);
+            HudManager.Instance.SetHudActive(false);
+            HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
+        }
     }
 
     [HarmonyPatch(typeof(SpawnInMinigame), nameof(SpawnInMinigame.Close))]
@@ -147,6 +160,15 @@ public static class ModifierIntroPatch
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
     public static class IntroCutscene_BeginCrewmate
     {
+        public static void Prefix(ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
+        {
+            foreach (var player in teamToDisplay.ToArray())
+            {
+                if (SpectatorRole.TrackedSpectators.Contains(player.PlayerId))
+                    teamToDisplay.Remove(player);
+            }
+        }
+
         public static void Postfix(IntroCutscene __instance)
         {
             ModifierText =
@@ -277,7 +299,7 @@ public static class ModifierIntroPatch
             DestroyableSingleton<TranslationController>.Instance.GetString(amount == 1 ? StringNames.NumImpostorsS : StringNames.NumImpostorsP, amount);
         __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
         __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
-        
+
         if (!OptionGroupSingleton<RoleOptions>.Instance.RoleListEnabled) return;
 
         var players = GameData.Instance.PlayerCount;

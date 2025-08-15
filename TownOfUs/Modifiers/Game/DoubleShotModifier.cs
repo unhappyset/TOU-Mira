@@ -1,6 +1,7 @@
 ﻿using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Options.Modifiers;
+using TownOfUs.Roles.Other;
 using UnityEngine;
 
 namespace TownOfUs.Modifiers.Game;
@@ -12,7 +13,7 @@ public class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
 
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.DoubleShot;
     public override ModifierFaction FactionType => ModifierFaction.AssailantUtility;
-    
+
     // YES this is scuffed, a better solution will be used at a later time
     public override bool ShowInFreeplay => false;
 
@@ -69,6 +70,6 @@ public class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        return false;
+        return !role.TryCast<SpectatorRole>();
     }
 }

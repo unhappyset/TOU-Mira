@@ -15,6 +15,7 @@ using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Modifiers.Alliance;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Random = System.Random;
@@ -62,7 +63,8 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
 
             var players = PlayerControl.AllPlayerControls.ToArray()
                 .Where(x => !x.HasDied() && !x.HasModifier<ExecutionerTargetModifier>() &&
-                            x.Data.Role is not InquisitorRole && (loveOpt.NeutralLovers || !x.IsNeutral())).ToList();
+                            x.Data.Role is not InquisitorRole && (loveOpt.NeutralLovers || !x.IsNeutral()) &&
+                            !SpectatorRole.TrackedSpectators.Contains(x.PlayerId)).ToList();
             players.Shuffle();
 
             Random rndIndex1 = new();

@@ -2,6 +2,7 @@ using System.Collections;
 using HarmonyLib;
 using Reactor.Utilities;
 using TownOfUs.Modules;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -46,6 +47,9 @@ public static class PlayerJoinPatch
 
         Logger<TownOfUsPlugin>.Info("Sending Message to Local Player...");
         TouRoleManagerPatches.ReplaceRoleManager = false;
+        SpectatorRole.TrackedSpectators.Clear();
+        SpectatorRole.TrackedPlayers.Clear();
+        SpectatorRole.FixedCam = false;
 
         var time = 0f;
         if (GameHistory.EndGameSummary != string.Empty && TownOfUsPlugin.ShowSummaryMessage.Value)
