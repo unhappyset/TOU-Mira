@@ -60,7 +60,7 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
 
     public void Update()
     {
-        if (!Player.AmOwner || LobbyBehaviour.Instance || MeetingHud.Instance)
+        if (Player?.AmOwner == false || LobbyBehaviour.Instance || MeetingHud.Instance || !HudManager.Instance)
             return;
 
         if (Input.GetKeyDown(KeyCode.F1))
