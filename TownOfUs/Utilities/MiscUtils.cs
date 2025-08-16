@@ -945,7 +945,15 @@ public static class MiscUtils
     {
         return FakePlayer.FakePlayers.FirstOrDefault(x => x.body?.name == $"Fake {player.gameObject.name}");
     }
-
+    
+    public static void SetForcedBodyType(this PlayerPhysics player, PlayerBodyTypes bodyType)
+    {
+        player.bodyType = bodyType;
+        player.myPlayer.cosmetics.EnsureInitialized(bodyType);
+        player.Animations.SetBodyType(bodyType, player.myPlayer.cosmetics.FlippedCosmeticOffset, player.myPlayer.cosmetics.NormalCosmeticOffset);
+        player.Animations.PlayIdleAnimation();
+    }
+    
     public static bool IsMap(byte mapid)
     {
         return (GameOptionsManager.Instance != null &&

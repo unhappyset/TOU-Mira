@@ -267,13 +267,17 @@ public static class HudManagerPatches
     public static void UpdateCamouflageComms()
     {
         var isActive = CommsSaboActive();
-
+        if (PlayerControl.LocalPlayer.IsHysteria())
+        {
+            return;
+        }
+        
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             var appearanceType = player.GetAppearanceType();
             if (isActive)
             {
-                if (appearanceType != TownOfUsAppearances.Swooper)
+                if (appearanceType != TownOfUsAppearances.Swooper && appearanceType != TownOfUsAppearances.Camouflage)
                 {
                     player.SetCamouflage();
                 }
@@ -281,8 +285,7 @@ public static class HudManagerPatches
             else
             {
                 if (appearanceType == TownOfUsAppearances.Camouflage &&
-                    !player.HasModifier<VenererCamouflageModifier>() &&
-                    !PlayerControl.LocalPlayer.IsHysteria())
+                    !player.HasModifier<VenererCamouflageModifier>())
                 {
                     player.SetCamouflage(false);
                 }
