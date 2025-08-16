@@ -4,7 +4,7 @@
       "FoolsMode": "Modo De Los Inocentes",
       "TertiaryAbility": "Tertiary Ability (Hack Ability)",
       "ModifierAbility": "Modifier Ability",
-      
+
       "ClientOptionsButton" : "Tou Client Options",
       "DeadSeeGhosts" : "Show Other Ghosts When Dead",
       "ShowVents" : "Show Vents On Map",
@@ -22,7 +22,7 @@
       "ArrowDarkGlow" : "Dark Glow",
       "ArrowColorGlow" : "Color Glow",
       "ArrowLegacy" : "Legacy",
-      
+
       "Watermelon" : "Sandia",
       "Chocolate" : "Chocolate",
       "SkyBlue" : "Cielo Azul",
@@ -57,7 +57,7 @@
       "Denim" : "Denim",
       "CottonCandy" : "Algodon De Azucar",
       "Rainbow" : "Arcoiris",
-      
+
       "CrewmateInvestigative": "Tripulante Investigative",
       "CrewmateKilling": "Tripulante Killing",
       "CrewmatePower": "Tripulante Power",
@@ -91,14 +91,14 @@
       "ImpKilling": "Imp Killing",
       "ImpPower": "Imp Power",
       "ImpSupport": "Imp Support",
-      
+
       "CrewmateKeyword": "Tripulante",
       "CrewKeyword": "Crew",
       "NeutralKeyword": "Neutral",
       "NeutKeyword": "Neut",
       "ImpostorKeyword": "Impostor",
       "ImpKeyword": "Imp",
-      
+
       "Alliance" : "Alliance",
       "Universal" : "Universal",
       "CrewmateAlliance" : "Tripulante Alliance",
@@ -141,12 +141,12 @@
       "NonImpPassive" : "Non Imp Passive",
       "External" : "External",
       "Other" : "Other",
-      
+
       "Roles": "Roles",
       "Modifiers": "Modifiers",
       "Amount" : "Amount",
       "Chance" : "Chance",
-      
+
       "Altruist": "Altruist",
       "Aurial": "Aurial",
       "Cleric": "Cleric",
@@ -179,7 +179,7 @@
       "Veteran": "Veteran",
       "Vigilante": "Vigilante",
       "Warden": "Warden",
-      
+
       "Ambassador" : "Ambassador",
       "Ambusher" : "Ambusher",
       "Blackmailer" : "Blackmailer",
@@ -199,7 +199,7 @@
       "Undertaker" : "Undertaker",
       "Venerer" : "Venerer",
       "Warlock" : "Warlock",
-      
+
       "Amnesiac" : "Amnesiac",
       "Arsonist" : "Arsonist",
       "Doomsayer" : "Doomsayer",
@@ -217,11 +217,13 @@
       "Survivor" : "Survivor",
       "Vampire" : "Vampiro",
       "Werewolf" : "Hombre-lobo",
-      
+
+      "Spectator" : "Spectator",
+
       "Egotist" : "Egoista",
       "Lover" : "Amante",
       "Lovers" : "Amantes",
-      
+
       "ButtonBarry" : "Button Barry",
       "Flash" : "Flash",
       "Giant" : "Gigante",
@@ -233,15 +235,15 @@
       "SixthSense" : "Sexto Sentido",
       "Sleuth" : "Sleuth",
       "Tiebreaker" : "Tiebreaker",
-      
+
       "Disperser" : "Disperser",
       "Saboteur" : "Saboteur",
       "Telepath" : "Telepath",
       "Underdog" : "Underdog",
-      
+
       "Assassin" : "Asesino",
       "DoubleShot" : "Double Shot",
-      
+
       "Aftermath" : "Aftermath",
       "Bait" : "Bait",
       "Celebrity" : "Celebrity",
@@ -255,10 +257,10 @@
       "Scout" : "Scout",
       "Taskmaster" : "Taskmaster",
       "Torch" : "Torch",
-      
+
       "FirstDeathShield" : "First Death Shield",
       "Scatter" : "Scatter",
-      
+
       "Astral" : "Astral",
       "PuppetMaster" : "Puppet Master",
       "Mage" : "Mage",

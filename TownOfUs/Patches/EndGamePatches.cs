@@ -202,7 +202,8 @@ public static class EndGamePatches
                 RoleString = playerRoleString.ToString(),
                 Winner = playerWinner,
                 LastRole = playerRoleType,
-                Team = playerTeam
+                Team = playerTeam,
+                PlayerId = playerControl.PlayerId
             });
         }
     }
@@ -476,6 +477,7 @@ public static class EndGamePatches
             public bool Winner { get; set; }
             public RoleTypes LastRole { get; set; }
             public ModdedRoleTeams Team { get; set; }
+            public byte PlayerId { get; set; }
         }
     }
 }

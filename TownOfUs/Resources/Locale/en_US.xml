@@ -71,6 +71,7 @@
         <string name="ImpostorKilling">Impostor Killing</string>
         <string name="ImpostorPower">Impostor Power</string>
         <string name="ImpostorSupport">Impostor Support</string>
+        <string name="GameOutlier">Game Outlier</string>
         <!-- Role Buckets with Role List -->
         <string name="CommonCrew">Common Crew</string>
         <string name="SpecialCrew">Special Crew</string>
@@ -615,6 +616,11 @@
         <string name="TouOptionWerewolfRampageDuration">Rampage Duration</string>
         <string name="TouOptionWerewolfKillCooldown">Rampage Kill Cooldown</string>
         <string name="TouOptionWerewolfCanVent">Werewolf Can Vent When Rampaged</string>
+
+        <!-- Spectator - Game Outlier -->
+        <string name="TouRoleSpectator">Spectator</string>
+        <string name="TouRoleSpectatorIntroBlurb">Watch The Chaos From Afar</string>
+        <string name="TouRoleSpectatorDescription">You don't actually participate in-game and not interact with players. All you can do is watch.</string>
 
         <!-- Alliance Modifiers -->
 

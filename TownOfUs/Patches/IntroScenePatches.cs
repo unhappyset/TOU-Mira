@@ -101,16 +101,23 @@ public static class IntroScenePatches
         }
 
         foreach (var id in SpectatorRole.TrackedSpectators)
-            MiscUtils.PlayerById(id)!.Visible = false;
+        {
+            var spec = MiscUtils.PlayerById(id);
+
+            if (!spec)
+                continue;
+
+            spec!.Visible = false;
+            spec.Die(DeathReason.Exile, false);
+
+            if (spec.AmOwner)
+            {
+                HudManager.Instance.SetHudActive(false);
+                HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
+            }
+        }
 
         SpectatorRole.InitList();
-
-        if (PlayerControl.LocalPlayer.Data.Role.TryCast<SpectatorRole>())
-        {
-            PlayerControl.LocalPlayer.Die(DeathReason.Exile, false);
-            HudManager.Instance.SetHudActive(false);
-            HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
-        }
     }
 
     [HarmonyPatch(typeof(SpawnInMinigame), nameof(SpawnInMinigame.Close))]
