@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <TouNames>
-        <string name="FoolsMode">April Fools Mode</string>
+        <string name="FoolsMode">Fools Mode</string>
         <string name="TertiaryAbility">Tertiary Ability (Hack Ability)</string>
         <string name="ModifierAbility">Modifier Ability</string>
         <!-- Client Options -->

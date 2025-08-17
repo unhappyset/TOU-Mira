@@ -16,6 +16,7 @@ using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Neutral;
+using TownOfUs.Patches.Misc;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Neutral;
 using UnityEngine;
@@ -288,7 +289,30 @@ public static class MiscUtils
             new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role),
                 roleOptions.GetChancePerGame(role.Role))).ToList();
 
-        var roleList = assignmentData.Where(x => x is { Chance: > 0, Role: ICustomRole }).Select(x => x.Role);
+        var roleList = assignmentData.Where(x => x is { Chance: > 0, Count: > 0, Role: ICustomRole }).Select(x => x.Role);
+
+        /*if (OptionGroupSingleton<GeneralOptions>.Instance.GuessVanillaRoles)
+        {
+            if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Tracker) is { Chance: > 0, Count: > 0 })
+                roleList = roleList.AddItem(
+                    RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Tracker)!);
+            if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Noisemaker) is { Chance: > 0, Count: > 0 })
+                roleList = roleList.AddItem(
+                    RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Noisemaker)!);
+            if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Engineer) is { Chance: > 0, Count: > 0 })
+                roleList = roleList.AddItem(
+                    RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Engineer)!);
+            if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Scientist) is { Chance: > 0, Count: > 0 })
+                roleList = roleList.AddItem(
+                    RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Scientist)!);
+            if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Shapeshifter) is
+                { Chance: > 0, Count: > 0 })
+                roleList = roleList.AddItem(
+                    RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Shapeshifter)!);
+            if (assignmentData.FirstOrDefault(x => x.Role.Role is RoleTypes.Phantom) is { Chance: > 0, Count: > 0 })
+                roleList = roleList.AddItem(
+                    RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Phantom)!);
+        }*/
 
         var crewmateRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Crewmate);
         roleList = roleList.AddItem(crewmateRole!);
@@ -296,6 +320,7 @@ public static class MiscUtils
 
         var impostorRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Impostor);
         roleList = roleList.AddItem(impostorRole!);
+        
         //Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - impostorRole: '{impostorRole?.NiceName}'");
 
         //roleList.Do(x => Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - role: '{x.NiceName}'"));
@@ -328,6 +353,7 @@ public static class MiscUtils
         pooledBubble.votedMark.enabled = false;
         pooledBubble.Xmark.enabled = false;
         pooledBubble.TextArea.text = message;
+        pooledBubble.TextArea.text = WikiHyperLinkPatches.CheckForTags(message, pooledBubble.TextArea);
         pooledBubble.TextArea.ForceMeshUpdate(true, true);
         pooledBubble.Background.size = new Vector2(5.52f,
             0.2f + pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight());
@@ -919,7 +945,15 @@ public static class MiscUtils
     {
         return FakePlayer.FakePlayers.FirstOrDefault(x => x.body?.name == $"Fake {player.gameObject.name}");
     }
-
+    
+    public static void SetForcedBodyType(this PlayerPhysics player, PlayerBodyTypes bodyType)
+    {
+        player.bodyType = bodyType;
+        player.myPlayer.cosmetics.EnsureInitialized(bodyType);
+        player.Animations.SetBodyType(bodyType, player.myPlayer.cosmetics.FlippedCosmeticOffset, player.myPlayer.cosmetics.NormalCosmeticOffset);
+        player.Animations.PlayIdleAnimation();
+    }
+    
     public static bool IsMap(byte mapid)
     {
         return (GameOptionsManager.Instance != null &&

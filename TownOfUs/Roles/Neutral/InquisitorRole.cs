@@ -13,6 +13,7 @@ using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Crewmate;
@@ -214,6 +215,11 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         {
             var players = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().ToList();
             players.Do(x => x.RpcRemoveModifier<InquisitorHereticModifier>());
+        }
+        
+        if (!Player.HasModifier<BasicGhostModifier>() && TargetsDead)
+        {
+            Player.AddModifier<BasicGhostModifier>();
         }
     }
 

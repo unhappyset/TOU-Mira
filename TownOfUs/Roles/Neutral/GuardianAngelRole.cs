@@ -150,6 +150,11 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
                 .ToList();
             players.Do(x => x.RpcRemoveModifier<GuardianAngelTargetModifier>());
         }
+        
+        if (!Player.HasModifier<BasicGhostModifier>() && Player.HasDied())
+        {
+            Player.AddModifier<BasicGhostModifier>();
+        }
     }
 
     public override bool DidWin(GameOverReason gameOverReason)
