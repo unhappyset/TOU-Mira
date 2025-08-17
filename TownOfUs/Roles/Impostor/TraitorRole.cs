@@ -43,12 +43,18 @@ public sealed class TraitorRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Change Role",
             "The Traitor can change their role to one of the provided role cards, or gamble on the random. Once they select a role, they stay as that role until they die. However, they must still be guessed as Traitor.",
             TouImpAssets.TraitorSelect)
-    ];
+            };
+        }
+    }
 
     public void Clear()
     {

@@ -260,7 +260,7 @@
         <!-- Haunter - Crewmate Investigative -->
         <!-- Haunter Wiki / Description -->
         <string name="TouRoleHaunter">Haunter</string>
-        <string name="TouRoleHaunterIntroBlurb"> </string> <!-- You cannot start the game as this role, so an intro blurb is unnecessary -->
+        <string name="TouRoleHaunterIntroBlurb">Reveal The Impostors Postmortem!</string> <!-- You cannot start the game as this role, so an intro blurb is unnecessary -->
         <string name="TouRoleHaunterTabDescription">Complete all your tasks without getting caught to reveal impostors!</string>
         <string name="TouRoleHaunterWikiDescription">The Haunter is a Crewmate Ghost who can do tasks. They will appear as a transparent player. If they finish all their tasks, all alive players will see who the Impostors are. However, if an Impostor clicks them first, they will become a normal ghost. Impostors get a warning shortly before and when the Haunter finishes their tasks.</string>
 
@@ -300,12 +300,12 @@
         <string name="TouRoleImitatorIntroBlurb">Use Dead Roles To Benefit The Crew</string>
         <string name="TouRoleImitatorTabDescription">Use dead players to benefit the crew via imitation in meetings</string>
         <string name="TouRoleImitatorWikiDescription">The Imitator is a Crewmate Support role that can select a dead crewmate to imitate their role. They will become their role and abilities until they change targets. Certain roles are innacessible if there are multiple living imitators.</string>
-        <string name="TouRoleImitatorCrewmate Imitation">Crewmate Imitation</string>
-        <string name="TouRoleImitatorCrewmate ImitationWikiDescription">All crewmate roles are available besides Imitator, and Crewmate. Politician, Mayor, Prosecutor and Jailor are limited, as they can only be selected if no other Imitators exist. Jailor and Prosecutor cannot use their meeting abilities, and Vigi does not get safe shots.</string>
-        <string name="TouRoleImitatorNeutral Counterparts">Neutral Counterparts</string>
-        <string name="TouRoleImitatorNeutral CounterpartsWikiDescription">Amnesiac ⇨ Medic | Doom ⇨ Vigi | Exe ⇨ Snitch\%nl\%Glitch ⇨ Sheriff | GA ⇨ Cleric | Inquis ⇨ Oracle\%nl\%Jester ⇨ Plumber | Merc ⇨ Warden\%nl\%Pb/Pest ⇨ Aurial | SC ⇨ Medium | WW ⇨ Hunter</string>
-        <string name="TouRoleImitatorImpostor Counterparts">Impostor Counterparts</string>
-        <string name="TouRoleImitatorImpostor CounterpartsWikiDescription">Bomber ⇨ Trapper | Hypnotist ⇨ Lookout | Janitor ⇨ Detective\%nl\%Miner ⇨ Engineer | Scavenger ⇨ Tracker\%nl\%Undertaker ⇨ Altruist | Warlock ⇨ Veteran</string>
+        <string name="TouRoleImitatorCrewmateImitation">Crewmate Imitation</string>
+        <string name="TouRoleImitatorCrewmateImitationWikiDescription">All crewmate roles are available besides Imitator, and Crewmate. Politician, Mayor, Prosecutor and Jailor are limited, as they can only be selected if no other Imitators exist. Jailor and Prosecutor cannot use their meeting abilities, and Vigi does not get safe shots.</string>
+        <string name="TouRoleImitatorNeutralCounterparts">Neutral Counterparts</string>
+        <string name="TouRoleImitatorNeutralCounterpartsWikiDescription">Amnesiac ⇨ Medic | Doom ⇨ Vigi | Exe ⇨ Snitch\%nl\%Glitch ⇨ Sheriff | GA ⇨ Cleric | Inquis ⇨ Oracle\%nl\%Jester ⇨ Plumber | Merc ⇨ Warden\%nl\%Pb/Pest ⇨ Aurial | SC ⇨ Medium | WW ⇨ Hunter</string>
+        <string name="TouRoleImitatorImpostorCounterparts">Impostor Counterparts</string>
+        <string name="TouRoleImitatorImpostorCounterpartsWikiDescription">Bomber ⇨ Trapper | Hypnotist ⇨ Lookout | Janitor ⇨ Detective\%nl\%Miner ⇨ Engineer | Scavenger ⇨ Tracker\%nl\%Undertaker ⇨ Altruist | Warlock ⇨ Veteran</string>
 
         <!-- Imitator Options -->
         <string name="TouOptionImitatorImitateNeutrals">Imitate Specific Neutrals As Similar Crew Roles</string>
@@ -1260,7 +1260,7 @@
         <!-- Egotist - Crewmate Alliance -->
         <!-- Egotist Wiki / Description -->
         <string name="TouModifierEgotist">Egotist</string>
-        <string name="TouModifierEgotistIntroBlurb">Your Ego is Thriving...</string>
+        <string name="TouModifierEgotistIntroBlurb">Betray The Crew to Feed Your Ego</string>
         <string name="TouModifierEgotistTabDescription">Defy the crew, win with killers.</string>
         <string name="TouModifierEgotistWikiDescription">The Egotist is a Crewmate Alliance modifier (signified by \%symbol\%). As the Egotist, you can only win if Crewmates lose, even when dead. If no crewmates remain after a meeting ends, you will leave in victory, but the game will continue.</string>
 

@@ -114,12 +114,18 @@ public sealed class PlaguebearerRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Infect",
             "Infect a player, causing them to be infected. When a infected player or dead body interacts or get interacted with the infection will spread to all non-infected players.",
             TouNeutAssets.InfectSprite)
-    ];
+            };
+        }
+    }
 
     public override void Initialize(PlayerControl player)
     {

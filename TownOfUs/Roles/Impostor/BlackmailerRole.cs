@@ -59,14 +59,20 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities =>
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Blackmail",
             "Silence a player for the next meeting. They will be unable to speak." +
             "They also will not be able to vote until less or equal amount of people are alive than the blackmailer settings allow." +
             "The blackmail will be visible to other players only if the setting is toggled",
             TouImpAssets.BlackmailSprite)
-    ];
+            };
+        }
+    }
 
     [MethodRpc((uint)TownOfUsRpc.Blackmail, LocalHandling = RpcLocalHandling.Before, SendImmediately = true)]
     public static void RpcBlackmail(PlayerControl source, PlayerControl target)

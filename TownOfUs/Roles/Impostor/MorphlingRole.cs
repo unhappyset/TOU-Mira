@@ -62,15 +62,21 @@ public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Sample",
             "Take a DNA sample of a player to morph into them later.",
             TouImpAssets.SampleSprite),
         new("Morph",
             "Morph into the appearance of the sampled player, which can be cancelled early.",
             TouImpAssets.MorphSprite)
-    ];
+            };
+        }
+    }
 
     public override void OnVotingComplete()
     {

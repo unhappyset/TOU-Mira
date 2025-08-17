@@ -172,15 +172,21 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Inquire",
             "Inquire a player, which will tell you if they are one of your targets within the meeting.",
             TouNeutAssets.InquireSprite),
         new("Vanquish",
             "Vanquish a player to kill them. If they are a heretic, you will be told and you can continue vanquishing. However, if the victim isn't a heretic, you will lose the ability to vanquish for the rest of the game.",
             TouNeutAssets.InquisKillSprite)
-    ];
+            };
+        }
+    }
 
     public override void Initialize(PlayerControl player)
     {

@@ -87,12 +87,18 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Observe",
             "Observe a player, gaining a hint in the next meeting what their role could be.",
             TouNeutAssets.Observe)
-    ];
+            };
+        }
+    }
 
     public override void Initialize(PlayerControl player)
     {

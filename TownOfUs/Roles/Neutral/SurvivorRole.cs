@@ -45,12 +45,18 @@ public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Vest",
             "Put on a Vest protecting you from attacks.",
             TouNeutAssets.VestSprite)
-    ];
+            };
+        }
+    }
 
     public string GetAdvancedDescription()
     {

@@ -32,12 +32,18 @@ public sealed class SatelliteModifier : UniversalGameModifier, IWikiDiscoverable
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Broadcast",
             $"You can check for bodies on the map, which you can do {OptionGroupSingleton<SatelliteOptions>.Instance.MaxNumCast} time(s) per game.",
             TouAssets.BroadcastSprite)
-    ];
+            };
+        }
+    }
 
     public override string GetDescription()
     {

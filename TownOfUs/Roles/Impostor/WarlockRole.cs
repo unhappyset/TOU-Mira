@@ -41,12 +41,18 @@ public sealed class WarlockRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Kill",
             "Replaces your regular kill button with three stages: On Cooldown, Uncharged, and Charged. " +
             "You cannot kill while on cooldown but can while it is charging up, however it will reset your charge. " +
             "When it is charged, you can kill in a small burst to kill multiple players in a short time.",
             TouAssets.KillSprite)
-    ];
+            };
+        }
+    }
 }

@@ -39,13 +39,19 @@ public sealed class SwooperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Swoop",
             "Turn invisible to all players except Impostors.",
             TouImpAssets.SwoopSprite),
         new("Unswoop",
             "Cancel your swoop early, or let it finish fully to make yourself visible once again.",
             TouImpAssets.UnswoopSprite)
-    ];
+            };
+        }
+    }
 }

@@ -61,12 +61,18 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Reap",
             "Reaping acts like a kill button, but instead of making a dead body, makes a fake player in its place, appearing alive.",
             TouNeutAssets.ReapSprite)
-    ];
+            };
+        }
+    }
 
     public override void Initialize(PlayerControl player)
     {

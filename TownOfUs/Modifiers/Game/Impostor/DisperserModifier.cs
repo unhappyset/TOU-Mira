@@ -30,12 +30,18 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Disperse",
             "You can disperse players on the map to any vents, which you can do once per game.",
             TouAssets.DisperseSprite)
-    ];
+            };
+        }
+    }
 
     public override string GetDescription()
     {

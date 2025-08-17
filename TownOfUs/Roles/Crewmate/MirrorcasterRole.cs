@@ -78,15 +78,21 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Magic Mirror",
             "Place a Mirror on a player. If the player is attacked directly, then you will be notified and you will be able to unleash onto another player. Roles that ignore the Magic Mirror are Arsonist, Veteran, Pestilence, Bomber (if the player is bombed), and a few others.",
             TouCrewAssets.MagicMirrorSprite),
         new("Unleash",
             "Once the Magic Mirror shatters, utilize its power to unleash the attack onto another player!",
             TouCrewAssets.UnleashSprite)
-    ];
+            };
+        }
+    }
 
     public void Clear()
     {

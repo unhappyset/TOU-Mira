@@ -110,12 +110,18 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Protect",
             "Protect your target from getting killed.",
             TouNeutAssets.ProtectSprite)
-    ];
+            };
+        }
+    }
 
     public string GetAdvancedDescription()
     {

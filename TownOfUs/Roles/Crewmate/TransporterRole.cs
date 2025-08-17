@@ -55,14 +55,20 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Transport",
             "Switch the positions of two players. Players can be transported out of vents." +
             "A red flash means one of the players became an invalid target," +
             "such as going on a ladder or zipline",
             TouCrewAssets.Transport)
-    ];
+            };
+        }
+    }
 
     [MethodRpc((uint)TownOfUsRpc.Transport, SendImmediately = true)]
     public static void RpcTransport(PlayerControl transporter, byte player1, byte player2)

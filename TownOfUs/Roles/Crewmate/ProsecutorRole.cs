@@ -107,12 +107,18 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Prosecute (Meeting)",
             "Exile any player of your choosing, throwing 5 votes on them and ignoring all other votes.",
             TouRoleIcons.Prosecutor)
-    ];
+            };
+        }
+    }
 
     public override void Initialize(PlayerControl player)
     {

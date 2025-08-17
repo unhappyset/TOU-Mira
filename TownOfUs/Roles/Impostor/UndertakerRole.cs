@@ -66,15 +66,21 @@ public sealed class UndertakerRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Drag",
             "Drag a dead body, if allowed through settings you can also take it into a vent.",
             TouImpAssets.DragSprite),
         new("Drop",
             "Drop the dragged dead body, stopping it from being dragged any further.",
             TouImpAssets.DropSprite)
-    ];
+            };
+        }
+    }
 
     [MethodRpc((uint)TownOfUsRpc.DragBody, LocalHandling = RpcLocalHandling.Before, SendImmediately = true)]
     public static void RpcStartDragging(PlayerControl playerControl, byte bodyId)

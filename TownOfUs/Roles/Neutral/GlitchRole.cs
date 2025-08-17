@@ -61,15 +61,21 @@ public sealed class GlitchRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Mimic",
             "Mimic the appearance of another player, taking on their whole look.",
             TouNeutAssets.MimicSprite),
         new("Hack",
             "Disable a player's abilities.",
             TouNeutAssets.HackSprite)
-    ];
+            };
+        }
+    }
 
     public override void Initialize(PlayerControl player)
     {

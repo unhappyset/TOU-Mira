@@ -30,12 +30,18 @@ public sealed class ButtonBarryModifier : UniversalGameModifier, IWikiDiscoverab
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Button",
             $"You can trigger an emergency meeting from across the map, which you may do {OptionGroupSingleton<ButtonBarryOptions>.Instance.MaxNumButtons} time(s) per game.",
             TouAssets.BarryButtonSprite)
-    ];
+            };
+        }
+    }
 
     public override string GetDescription()
     {

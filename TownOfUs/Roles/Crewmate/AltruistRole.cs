@@ -39,12 +39,18 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new(TouLocale.GetParsed($"TouRole{LocaleKey}Revive", "Revive"),
             TouLocale.GetParsed($"TouRole{LocaleKey}ReviveWikiDescription"),
             TouCrewAssets.ReviveSprite)
-    ];
+            };
+        }
+    }
     public Color RoleColor => TownOfUsColors.Altruist;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;

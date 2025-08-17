@@ -59,14 +59,20 @@ public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities =>
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Track",
             "Track a player to see where they go." +
             "You will have an arrow pointing to their location that will update periodically." +
             "It will disappear if they die, or depending on settings, the trackers will be reset after a meeting.",
             TouCrewAssets.TrackSprite)
-    ];
+            };
+        }
+    }
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {

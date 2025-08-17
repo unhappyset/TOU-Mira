@@ -52,12 +52,18 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Trap",
             "Places a trap. Depending on settings they may stay the entire game or reset after meetings.",
             TouCrewAssets.TrapSprite)
-    ];
+            };
+        }
+    }
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {

@@ -51,12 +51,18 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Swap (Meeting)",
             "Select two players to swap votes for, and at the end of the meeting, they will swap spots!",
             TouAssets.SwapActive)
-    ];
+            };
+        }
+    }
 
     public override void Initialize(PlayerControl player)
     {

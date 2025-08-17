@@ -81,8 +81,12 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Douse",
             "Douse a player in gasoline",
             TouNeutAssets.DouseButtonSprite),
@@ -91,7 +95,9 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                 ? "Kill every doused player on the map as long as you ignite one player close by."
                 : "Kill multiple doused players around you, given that they are within your radius.",
             TouNeutAssets.IgniteButtonSprite)
-    ];
+            };
+        }
+    }
 
     public override void Initialize(PlayerControl player)
     {

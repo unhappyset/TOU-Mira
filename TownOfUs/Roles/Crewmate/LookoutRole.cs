@@ -41,12 +41,18 @@ public sealed class LookoutRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Watch",
             "Watch a player or multiple, the next meeting you will know which players interacted with the watched ones.",
             TouCrewAssets.WatchSprite)
-    ];
+            };
+        }
+    }
 
     [MethodRpc((uint)TownOfUsRpc.LookoutSeePlayer, SendImmediately = true)]
     public static void RpcSeePlayer(PlayerControl target, PlayerControl source)

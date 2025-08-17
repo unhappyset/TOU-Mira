@@ -38,10 +38,16 @@ public sealed class GrenadierRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Flash",
             "Throw down a grenade flashing all players in it's radius.",
             TouImpAssets.FlashSprite)
-    ];
+            };
+        }
+    }
 }

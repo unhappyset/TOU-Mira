@@ -45,12 +45,18 @@ public sealed class MediumRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Mediate",
             "Communicate with the dead, which may lead you to the killers.",
             TouCrewAssets.MediateSprite)
-    ];
+            };
+        }
+    }
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {

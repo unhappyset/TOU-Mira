@@ -26,16 +26,25 @@ public sealed class ClericRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
-        new(TouLocale.GetParsed($"TouRole{LocaleKey}Barrier", "Barrier"),
-        TouLocale.GetParsed($"TouRole{LocaleKey}BarrierWikiDescription").Replace("<BarrierCooldown>", $"{OptionGroupSingleton<ClericOptions>.Instance.BarrierCooldown}"),
-            TouCrewAssets.BarrierSprite),
-        new(TouLocale.GetParsed($"TouRole{LocaleKey}Cleanse", "Cleanse"),
-            TouLocale.GetParsed($"TouRole{LocaleKey}CleanseWikiDescription"),
-            TouCrewAssets.CleanseSprite)
-    ];
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Barrier", "Barrier"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}BarrierWikiDescription").Replace("<BarrierCooldown>",
+                        $"{OptionGroupSingleton<ClericOptions>.Instance.BarrierCooldown}"),
+                    TouCrewAssets.BarrierSprite),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Cleanse", "Cleanse"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}CleanseWikiDescription"),
+                    TouCrewAssets.CleanseSprite)
+            };
+        }
+    }
+
     public Color RoleColor => TownOfUsColors.Cleric;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;

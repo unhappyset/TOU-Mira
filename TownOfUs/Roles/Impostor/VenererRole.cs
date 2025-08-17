@@ -38,8 +38,12 @@ public sealed class VenererRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Camouflage",
             "Stage 1 of the abilities.\n" +
             "You will appear as a gray bean for all players, allowing you to sneak away from kills.",
@@ -52,7 +56,9 @@ public sealed class VenererRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
             "The Final Stage of the abilities.\n" +
             "You will slow down players around you in a radius, as well as being fast and hidden from camo.",
             TouImpAssets.FreezeSprite)
-    ];
+            };
+        }
+    }
 
     public override void Initialize(PlayerControl player)
     {

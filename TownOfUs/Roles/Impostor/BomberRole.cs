@@ -49,12 +49,18 @@ public sealed class BomberRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Place",
             $"Place a bomb, showing the radius in which it'll kill, killing up to {(int)OptionGroupSingleton<BomberOptions>.Instance.MaxKillsInDetonation} player(s)",
             TouImpAssets.PlaceSprite)
-    ];
+            };
+        }
+    }
 
     [MethodRpc((uint)TownOfUsRpc.PlantBomb, SendImmediately = true)]
     public static void RpcPlantBomb(PlayerControl player, Vector2 position)

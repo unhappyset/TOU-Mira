@@ -80,15 +80,21 @@ public sealed class MercenaryRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Guard",
             "Guarding a player allows the Mercenary to absorb an ability used on the target. This will grant them gold, for Bribing. If any bribed targets win, the Mercenary will win with them.",
             TouNeutAssets.GuardSprite),
         new("Bribe",
             "Bribing a player allows the Mercenary to gain their win condition, given that they have gold to spare.",
             TouNeutAssets.BribeSprite)
-    ];
+            };
+        }
+    }
 
     public override bool DidWin(GameOverReason gameOverReason)
     {

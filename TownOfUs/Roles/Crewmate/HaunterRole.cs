@@ -111,9 +111,17 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         Player.RemoveModifier<HaunterArrowModifier>();
     }
 
-    public string RoleName => TouLocale.Get("TouRoleHaunter", "Haunter");
-    public string RoleDescription => string.Empty;
-    public string RoleLongDescription => "Complete all your tasks without getting caught to reveal impostors!";
+    public static string LocaleKey => "Haunter";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
     public Color RoleColor => TownOfUsColors.Haunter;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
@@ -130,16 +138,6 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     public StringBuilder SetTabText()
     {
         return ITownOfUsRole.SetNewTabText(this);
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Crewmate Ghost who can do tasks. They will appear as a transparent player. " +
-            "If they finish all their tasks, all alive players will see who the Impostors are. " +
-            "However, if an Impostor clicks them first, they will become a normal ghost. " +
-            $"Impostors get a warning shortly before and when the {RoleName} finishes their tasks. "
-            + MiscUtils.AppendOptionsText(GetType());
     }
     // public DangerMeter ImpostorMeter { get; set; }
 

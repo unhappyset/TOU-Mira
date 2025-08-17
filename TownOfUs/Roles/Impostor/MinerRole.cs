@@ -67,12 +67,18 @@ public sealed class MinerRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Mine",
             "Place a vent where you are standing. These vents won't connect to already existing vents on the map but with each other.",
             TouImpAssets.MineSprite)
-    ];
+            };
+        }
+    }
 
     public string GetAdvancedDescription()
     {

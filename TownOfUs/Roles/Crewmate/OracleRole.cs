@@ -48,15 +48,21 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Bless",
             "Blessing a player prevents any harm from being done to them in the meeting.",
             TouCrewAssets.BlessSprite),
         new("Confess",
             $"Make a player confess in a meeting, giving a vision of 3 possible evils (including the confessor), and also reveal their faction to everyone with {OptionGroupSingleton<OracleOptions>.Instance.RevealAccuracyPercentage}% accuracy when the Oracle dies.",
             TouCrewAssets.ConfessSprite)
-    ];
+            };
+        }
+    }
 
     public override void OnDeath(DeathReason reason)
     {

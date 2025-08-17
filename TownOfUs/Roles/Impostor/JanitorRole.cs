@@ -70,12 +70,18 @@ public sealed class JanitorRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Clean",
             "Clean a dead body, making it disapear and making it unreportable.",
             TouImpAssets.CleanButtonSprite)
-    ];
+            };
+        }
+    }
 
     [MethodRpc((uint)TownOfUsRpc.CleanBody, LocalHandling = RpcLocalHandling.Before, SendImmediately = true)]
     public static void RpcCleanBody(PlayerControl player, byte bodyId)

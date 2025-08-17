@@ -67,15 +67,21 @@ public sealed class HypnotistRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Hypnotize",
             "Hypnotize a player, causing them to see the game differently than non-hypnotized players if mass hysteria is active.",
             TouImpAssets.HypnotiseButtonSprite),
         new("Mass Hysteria (Meeting)",
             "Cause all hypnotised players to have different visuals applied to players on their screen the following round.",
             TouAssets.HysteriaCleanSprite)
-    ];
+            };
+        }
+    }
 
     public override void Initialize(PlayerControl player)
     {

@@ -54,15 +54,21 @@ public sealed class AmbusherRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Pursue",
             "Pursue a player to be able to ambush another player next to them at a later time.",
             TouImpAssets.PursueSprite),
         new("Ambush",
         "Ambush the closest player to the pursued target to kill them.",
         TouImpAssets.AmbushSprite)
-    ];
+            };
+        }
+    }
     
     public void LobbyStart()
     {

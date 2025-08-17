@@ -21,9 +21,33 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => TouLocale.Get("TouRoleEngineer", "Engineer");
-    public string RoleDescription => "Maintain Important Systems On The Ship";
-    public string RoleLongDescription => "Vent around and fix sabotages remotely";
+    public static string LocaleKey => "Engineer";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Fix", "Fix"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}FixWikiDescription").Replace("<engiMaxFixes>",
+                        $"{(int)OptionGroupSingleton<EngineerOptions>.Instance.MaxFixes}"),
+                    TouCrewAssets.FixButtonSprite)
+            };
+        }
+    }
+
     public Color RoleColor => TownOfUsColors.Engineer;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
@@ -41,20 +65,6 @@ public sealed class EngineerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     {
         return ITownOfUsRole.SetNewTabText(this);
     }
-
-    public string GetAdvancedDescription()
-    {
-        return $"The {RoleName} is a Crewmate Support role that can vent and fix sabotages remotely."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
-        new("Fix",
-            $"It doesn't matter where you are on the map, you can use your fix button to instantly fix the active sabotage. You can do this {OptionGroupSingleton<EngineerOptions>.Instance.MaxFixes} times per game.",
-            TouCrewAssets.FixButtonSprite)
-    ];
 
     public override void Initialize(PlayerControl player)
     {

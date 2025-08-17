@@ -83,12 +83,18 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Shoot",
             "Shoot a player to kill them, misfiring if they aren't a Impostor or one of the other selected shootable factions",
             TouCrewAssets.SheriffShootSprite)
-    ];
+            };
+        }
+    }
 
     public static void OnRoundStart()
     {

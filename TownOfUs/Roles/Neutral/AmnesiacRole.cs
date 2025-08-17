@@ -65,12 +65,18 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Remember",
             "Remember the role of a dead body. If the dead body's role is a unique role, you will remember the base faction's role instead.",
             TouNeutAssets.RememberButtonSprite)
-    ];
+            };
+        }
+    }
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {

@@ -110,7 +110,9 @@ public static class LocalSettings
                     HudManagerPatches.ResizeUI(TownOfUsPlugin.ButtonUIFactor.Value);
                 }
 
-                var optionsMenu = GameObject.Find("Menu(Clone)") ? GameObject.Find("Menu(Clone)") : GameObject.Find("OptionsMenu(Clone)");
+                var optionsMenu = GameObject.Find("Menu(Clone)")
+                    ? GameObject.Find("Menu(Clone)")
+                    : GameObject.Find("OptionsMenu(Clone)");
 
                 if (optionsMenu != null)
                 {
@@ -163,7 +165,9 @@ public static class LocalSettings
 
                 TownOfUsPlugin.ArrowStyle.Value = newVal;
 
-                var optionsMenu = GameObject.Find("Menu(Clone)") ? GameObject.Find("Menu(Clone)") : GameObject.Find("OptionsMenu(Clone)");
+                var optionsMenu = GameObject.Find("Menu(Clone)")
+                    ? GameObject.Find("Menu(Clone)")
+                    : GameObject.Find("OptionsMenu(Clone)");
 
                 if (optionsMenu != null)
                 {

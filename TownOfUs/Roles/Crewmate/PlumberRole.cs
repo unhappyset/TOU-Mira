@@ -64,15 +64,21 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Flush",
             "Flushing the vents makes every vent open and close, kicking out anyone who is actively in a vent. The Plumber also gets an arrow pointing to every flushed player for one second.",
             TouCrewAssets.FlushSprite),
         new("Barricade",
             "Barricading a vent places a barricade on the vent selected for the next round, preventing players from using it.",
             TouCrewAssets.BarricadeSprite)
-    ];
+            };
+        }
+    }
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()

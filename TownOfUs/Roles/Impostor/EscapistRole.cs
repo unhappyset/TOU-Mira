@@ -74,15 +74,21 @@ public sealed class EscapistRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Mark",
             "Mark a location for later use.",
             TouImpAssets.MarkSprite),
         new("Recall",
             "Recall to the marked location.",
             TouImpAssets.RecallSprite)
-    ];
+            };
+        }
+    }
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
