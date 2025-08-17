@@ -25,8 +25,8 @@ public static class TouLocale
 
     public static Dictionary<string, string> TmpTextList { get; } = new()
     {
-        { "{nl}", "\n" },
-        { "{and}", "&" },
+        { "<nl>", "\n" },
+        { "<and>", "&" },
     };
 
     public static Dictionary<SupportedLangs, Dictionary<string, string>> TouLocalization { get; } = [];
@@ -80,6 +80,16 @@ public static class TouLocale
         {
             text = translation2;
         }
+        
+        text = Regex.Replace(text, @"\%([^%]+)\%", @"<$1>");
+        if (text.Contains("\\<"))
+        {
+            text = text.Replace("\\<", "<");
+        }
+        if (text.Contains("\\>"))
+        {
+            text = text.Replace("\\>", ">");
+        }
 
         foreach (var tmpText in TmpTextList.Where(x => text.Contains(x.Key)))
         {
@@ -93,12 +103,7 @@ public static class TouLocale
                 text = text.Replace(tmpText.Key, tmpText.Value);
             }
         }
-
-        string pattern = @"\{([^}]+)\}";
-        string replacement = @"<$1>";
-
-        text = Regex.Replace(text, pattern, replacement);
-
+        
         return text;
     }
 

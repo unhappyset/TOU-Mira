@@ -19,10 +19,6 @@ public sealed class ClericRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    public static Dictionary<string, string> LocaleList { get; } = new()
-    {
-        { "{BarrierCooldown}", $"{OptionGroupSingleton<ClericOptions>.Instance.BarrierCooldown}" },
-    };
     
     public string GetAdvancedDescription()
     {
@@ -33,8 +29,8 @@ public sealed class ClericRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities { get; } =
     [
-        new(TouLocale.GetParsed($"TouRole{LocaleKey}Barrier", "Barrier", LocaleList),
-        TouLocale.GetParsed($"TouRole{LocaleKey}BarrierWikiDescription"),
+        new(TouLocale.GetParsed($"TouRole{LocaleKey}Barrier", "Barrier"),
+        TouLocale.GetParsed($"TouRole{LocaleKey}BarrierWikiDescription").Replace("<BarrierCooldown>", $"{OptionGroupSingleton<ClericOptions>.Instance.BarrierCooldown}"),
             TouCrewAssets.BarrierSprite),
         new(TouLocale.GetParsed($"TouRole{LocaleKey}Cleanse", "Cleanse"),
             TouLocale.GetParsed($"TouRole{LocaleKey}CleanseWikiDescription"),

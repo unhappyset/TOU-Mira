@@ -142,6 +142,69 @@ public static class MiscUtils
 
         return builder.ToString();
     }
+    /*public static string ReplaceText(this string text, Type classType, string prefix)
+    {
+        var options = GetModdedOptionsForRole(classType);
+        if (options == null)
+        {
+            return string.Empty;
+        }
+
+        foreach (var option in options)
+        {
+            var find = $"<{prefix}.{option.Title.Replace(" ", "")}>";
+            if (!text.Contains(find))
+            {
+                continue;
+            }
+            switch (option)
+            {
+                case ModdedToggleOption toggleOption:
+                    text = text.Replace(find, $"{toggleOption.Value}");
+                    break;
+                case ModdedEnumOption enumOption:
+                    text = text.Replace(find, $"{enumOption.Values[enumOption.Value]}");
+                    break;
+                case ModdedNumberOption numberOption:
+                    var optionStr = numberOption.Data.GetValueString(numberOption.Value);
+                    if (optionStr.Contains(".000"))
+                    {
+                        optionStr = optionStr.Replace(".000", "");
+                    }
+                    else if (optionStr.Contains(".00"))
+                    {
+                        optionStr = optionStr.Replace(".00", "");
+                    }
+                    else if (optionStr.Contains(".0"))
+                    {
+                        optionStr = optionStr.Replace(".0", "");
+                    }
+                    
+                    string suffix = numberOption.SuffixType switch
+                    {
+                        MiraNumberSuffixes.Multiplier => "x",
+                        MiraNumberSuffixes.Percent => "%",
+                        MiraNumberSuffixes.Seconds => "s",
+                        _ => ""
+                    };
+
+                    optionStr = optionStr.Replace(suffix, "");
+
+                    if (numberOption is { ZeroInfinity: true, Value: 0 })
+                    {
+                        text = text.Replace(find, "∞");
+                    }
+                    else
+                    {
+                        text = text.Replace(find, optionStr);
+                    }
+
+                    break;
+            }
+        }
+
+        return text;
+    }*/
 
     public static RoleAlignment GetRoleAlignment(this RoleBehaviour role)
     {
