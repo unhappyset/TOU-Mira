@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Xml;
 using BepInEx.Logging;
 using Reactor.Localization;
@@ -19,7 +20,15 @@ public static class TouLocale
 
     public static string BepinexLocaleDirectory =>
         Path.Combine(BepInEx.Paths.BepInExRootPath, "MiraLocales", "TownOfUs");
+
     public static Dictionary<string, int> TouLocaleList { get; } = [];
+
+    public static Dictionary<string, string> TmpTextList { get; } = new()
+    {
+        { "{nl}", "\n" },
+        { "{and}", "&" },
+    };
+
     public static Dictionary<SupportedLangs, Dictionary<string, string>> TouLocalization { get; } = [];
     public static int VanillaEnumAmounts;
 
@@ -45,6 +54,52 @@ public static class TouLocale
         }
 
         return translation;
+    }
+
+    public static string GetParsed(string name, string? defaultValue = null, Dictionary<string, string>? parseList = null)
+    {
+        var text = string.Empty;
+        if (TranslationController.InstanceExists && TouLocaleList.TryGetValue(name, out var value))
+        {
+            var id = value;
+            text = TranslationController.Instance.GetString((StringNames)id) ?? defaultValue ?? "STRMISS_" + name;
+        }
+
+        var currentLanguage =
+            TranslationController.InstanceExists
+                ? TranslationController.Instance.currentLanguage.languageID
+                : SupportedLangs.English;
+
+        if ((!TouLocalization.TryGetValue(currentLanguage, out var translations) ||
+             !translations.ContainsValue(name)) && text == string.Empty)
+        {
+            text = defaultValue ?? "STRMISS_" + name;
+        }
+
+        if (translations != null && translations.TryGetValue(name, out var translation2) && text == string.Empty)
+        {
+            text = translation2;
+        }
+
+        foreach (var tmpText in TmpTextList.Where(x => text.Contains(x.Key)))
+        {
+            text = text.Replace(tmpText.Key, tmpText.Value);
+        }
+
+        if (parseList != null)
+        {
+            foreach (var tmpText in parseList.Where(x => text.Contains(x.Key)))
+            {
+                text = text.Replace(tmpText.Key, tmpText.Value);
+            }
+        }
+
+        string pattern = @"\{([^}]+)\}";
+        string replacement = @"<$1>";
+
+        text = Regex.Replace(text, pattern, replacement);
+
+        return text;
     }
 
     public static void Initialize()

@@ -26,9 +26,25 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => TouLocale.Get("TouRoleAltruist", "Altruist");
-    public string RoleDescription => TouLocale.Get("TouRoleAltruistIntroBlurb", "Revive Dead Crewmates");
-    public string RoleLongDescription => TouLocale.Get("TouRoleAltruistTabDescription", "Revive dead crewmates in groups");
+    public static string LocaleKey => "Altruist";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; } =
+    [
+        new(TouLocale.GetParsed($"TouRole{LocaleKey}Revive", "Revive"),
+            TouLocale.GetParsed($"TouRole{LocaleKey}ReviveWikiDescription"),
+            TouCrewAssets.ReviveSprite)
+    ];
     public Color RoleColor => TownOfUsColors.Altruist;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
@@ -44,21 +60,6 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     {
         return ITownOfUsRole.SetNewTabText(this);
     }
-
-    public string GetAdvancedDescription()
-    {
-        return
-            TouLocale.Get("TouRoleAltruistWikiDescription") +
-            MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
-        new(TouLocale.Get("TouRoleAltruistRevive", "Revive"),
-            TouLocale.Get("TouRoleAltruistReviveWikiDescription"),
-            TouCrewAssets.ReviveSprite)
-    ];
 
     public override void OnMeetingStart()
     {

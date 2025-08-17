@@ -18,7 +18,7 @@ public sealed class InvestigatorOptions : AbstractOptionGroup<InvestigatorRole>
     [ModdedNumberOption("Footprint Duration", 1f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float FootprintDuration { get; set; } = 10f;
 
-    [ModdedToggleOption("Anonymous Footprint")]
+    [ModdedToggleOption("Anonymous Footprints")]
     public bool ShowAnonymousFootprints { get; set; } = false;
 
     [ModdedToggleOption("Footprint Vent Visible")]

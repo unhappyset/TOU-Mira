@@ -61,11 +61,13 @@ public static class AprilFoolsPatches
             aprilfoolstoggle.transform.GetChild(0).GetChild(0).transform.localPosition = new Vector3(-1.0159f, -0.0818f, 0f);
             var translator = aprilfoolstoggle.transform.GetChild(0).GetChild(0).GetComponent<TextTranslatorTMP>();
             aprilfoolstoggle.transform.GetChild(0).GetChild(0).GetComponent<AspectPosition>().anchorPoint = new Vector2(0.48f, 0.505f);
-            var id = (int)TouNames.FoolsMode + TouLocale.VanillaEnumAmounts;
-            translator.TargetText = (StringNames)id;
-            translator.defaultStr = TouLocale.Get(TouNames.FoolsMode);
+            if (TouLocale.TouLocaleList.TryGetValue("FoolsMode", out var id))
+            {
+                translator.TargetText = (StringNames)id;
+            }
+            translator.defaultStr = TouLocale.Get("FoolsMode");
             var text = aprilfoolstoggle.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>();
-            text.text = TouLocale.Get(TouNames.FoolsMode);
+            text.text = TouLocale.Get("FoolsMode");
             text.fontSize = 3f;
             text.fontSizeMin = 3f;
             text.fontSizeMax = 3f;
@@ -98,7 +100,7 @@ public static class AprilFoolsPatches
             {
                 var num = CurrentMode + 1;
                 CurrentMode = num > 3 ? 0 : num;
-                text.text = TouLocale.Get(TouNames.FoolsMode);
+                text.text = TouLocale.Get("FoolsMode");
                 sprite.sprite = TouAssets.FoolsMenuSprite(CurrentMode).LoadAsset();
                 sprite2.sprite = TouAssets.FoolsMenuSprite(CurrentMode).LoadAsset();
             }));
