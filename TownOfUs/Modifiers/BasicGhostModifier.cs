@@ -4,8 +4,7 @@ using MiraAPI.PluginLoading;
 namespace TownOfUs.Modifiers;
 
 // This modifier is used to stop a player from becoming Haunter, Phantom, or other tou ghost roles
-[MiraIgnore]
-public abstract class BasicGhostModifier : BaseModifier
+public sealed class BasicGhostModifier : BaseModifier
 {
     public override string ModifierName => "Basic Ghost";
 
