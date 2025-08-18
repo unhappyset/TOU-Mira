@@ -54,6 +54,22 @@ public abstract class TownOfUsButton : CustomActionButton
         };
     }
 
+    public override KeyboardKeyCode Defaultkeybind
+    {
+        get
+        {
+            return Keybind switch
+            {
+                Keybinds.PrimaryAction => KeyboardKeyCode.Q,
+                Keybinds.SecondaryAction => KeyboardKeyCode.F,
+                Keybinds.TertiaryAction => KeyboardKeyCode.C,
+                Keybinds.ModifierAction => KeyboardKeyCode.X,
+                Keybinds.VentAction => KeyboardKeyCode.V,
+                _ => KeyboardKeyCode.None
+            };
+        }
+    }
+
     public override void FixedUpdateHandler(PlayerControl playerControl)
     {
         if (Timer >= 0)
@@ -251,6 +267,22 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
             Keybinds.VentAction => Keybinds.VentConsole,
             _ => -1
         };
+    }
+
+    public override KeyboardKeyCode Defaultkeybind
+    {
+        get
+        {
+            return Keybind switch
+            {
+                Keybinds.PrimaryAction => KeyboardKeyCode.Q,
+                Keybinds.SecondaryAction => KeyboardKeyCode.F,
+                Keybinds.TertiaryAction => KeyboardKeyCode.C,
+                Keybinds.ModifierAction => KeyboardKeyCode.X,
+                Keybinds.VentAction => KeyboardKeyCode.V,
+                _ => KeyboardKeyCode.None
+            };
+        }
     }
 
     public override void FixedUpdateHandler(PlayerControl playerControl)
