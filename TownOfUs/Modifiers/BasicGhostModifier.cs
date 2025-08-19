@@ -1,5 +1,4 @@
 using MiraAPI.Modifiers;
-using MiraAPI.PluginLoading;
 
 namespace TownOfUs.Modifiers;
 
