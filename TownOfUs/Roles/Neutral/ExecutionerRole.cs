@@ -149,6 +149,11 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
                 .ToList();
             players.Do(x => x.RpcRemoveModifier<ExecutionerTargetModifier>());
         }
+        
+        if (!Player.HasModifier<BasicGhostModifier>() && TargetVoted)
+        {
+            Player.AddModifier<BasicGhostModifier>();
+        }
     }
 
     public override void OnDeath(DeathReason reason)

@@ -11,18 +11,23 @@ using MiraAPI.Events.Vanilla.Usables;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.ModifierDisplay;
 using MiraAPI.Modifiers.Types;
+using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using PowerTools;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
+using TMPro;
 using TownOfUs.Buttons;
 using TownOfUs.Buttons.Crewmate;
 using TownOfUs.Buttons.Impostor;
 using TownOfUs.Buttons.Modifiers;
 using TownOfUs.Buttons.Neutral;
 using TownOfUs.Events.TouEvents;
+using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
@@ -39,11 +44,219 @@ using TownOfUs.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
+using Object2 = Il2CppSystem.Object;
 
 namespace TownOfUs.Events;
 
 public static class TownOfUsEventHandlers
 {
+    internal static TextMeshPro ModifierText;
+
+    public static void RunModChecks()
+    {
+        var option = OptionGroupSingleton<GeneralOptions>.Instance.ModifierReveal;
+        var modifier = PlayerControl.LocalPlayer.GetModifiers<AllianceGameModifier>().FirstOrDefault();
+        var uniModifier = PlayerControl.LocalPlayer.GetModifiers<UniversalGameModifier>().FirstOrDefault();
+
+        if (modifier != null && option is ModReveal.Alliance)
+        {
+            ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
+
+            ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
+            if (modifier is IColoredModifier colorMod)
+            {
+                ModifierText.color = colorMod.ModifierColor;
+            }
+        }
+        else if (uniModifier != null && option is ModReveal.Universal)
+        {
+            ModifierText.text = $"<size=4><color=#FFFFFF>Modifier: </color>{uniModifier.ModifierName}</size>";
+
+            ModifierText.color = MiscUtils.GetRoleColour(uniModifier.ModifierName.Replace(" ", string.Empty));
+            if (uniModifier is IColoredModifier colorMod)
+            {
+                ModifierText.color = colorMod.ModifierColor;
+            }
+        }
+        else
+        {
+            ModifierText.text = string.Empty;
+        }
+    }
+    public static void SetHiddenImpostors(IntroCutscene __instance)
+    {
+        var amount = Helpers.GetAlivePlayers().Count(x => x.IsImpostor());
+        __instance.ImpostorText.text =
+            DestroyableSingleton<TranslationController>.Instance.GetString(amount == 1 ? StringNames.NumImpostorsS : StringNames.NumImpostorsP, amount);
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
+        
+        if (!OptionGroupSingleton<RoleOptions>.Instance.RoleListEnabled) return;
+
+        var players = GameData.Instance.PlayerCount;
+
+        if (players < 7)
+        {
+            return;
+        }
+
+        var list = OptionGroupSingleton<RoleOptions>.Instance;
+
+        int maxSlots = players < 15 ? players : 15;
+
+        List<RoleListOption> buckets = [];
+        if (list.RoleListEnabled)
+        {
+            for (int i = 0; i < maxSlots; i++)
+            {
+                int slotValue = i switch
+                {
+                    0 => list.Slot1,
+                    1 => list.Slot2,
+                    2 => list.Slot3,
+                    3 => list.Slot4,
+                    4 => list.Slot5,
+                    5 => list.Slot6,
+                    6 => list.Slot7,
+                    7 => list.Slot8,
+                    8 => list.Slot9,
+                    9 => list.Slot10,
+                    10 => list.Slot11,
+                    11 => list.Slot12,
+                    12 => list.Slot13,
+                    13 => list.Slot14,
+                    14 => list.Slot15,
+                    _ => -1
+                };
+
+                buckets.Add((RoleListOption)slotValue);
+            }
+        }
+
+        if (!buckets.Any(x => x is RoleListOption.Any)) return;
+
+
+        __instance.ImpostorText.text =
+            DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NumImpostorsP, 256);
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
+        __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("256", "???");
+    }
+    [RegisterEvent]
+    public static void IntroBeginEventHandler(IntroBeginEvent @event)
+    {
+        var cutscene = @event.IntroCutscene;
+        Coroutines.Start(CoChangeModifierText(cutscene));
+    }
+
+    public static IEnumerator CoChangeModifierText(IntroCutscene cutscene)
+    {
+        yield return new WaitForSeconds(0.01f);
+        if (PlayerControl.LocalPlayer.IsImpostor())
+        {
+            if (OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode)
+            {
+                cutscene.TeamTitle.text =
+                    DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Impostor, Array.Empty<Object2>());
+                cutscene.TeamTitle.color = Palette.ImpostorRed;
+
+                var player = cutscene.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, true);
+                cutscene.ourCrewmate = player;
+            }
+        }
+        else
+        {
+            SetHiddenImpostors(cutscene);
+        }
+        
+        ModifierText =
+            Object.Instantiate(cutscene.RoleText, cutscene.RoleText.transform.parent, false);
+        
+        if (PlayerControl.LocalPlayer.Data.Role is ITownOfUsRole custom)
+        {
+            cutscene.RoleText.text = custom.RoleName;
+            cutscene.YouAreText.text = custom.YouAreText;
+            cutscene.RoleBlurbText.text = custom.RoleDescription;
+        }
+
+        var teamModifier = PlayerControl.LocalPlayer.GetModifiers<TouGameModifier>().FirstOrDefault();
+        if (teamModifier != null && OptionGroupSingleton<GeneralOptions>.Instance.TeamModifierReveal)
+        {
+            var color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
+            if (teamModifier is IColoredModifier colorMod)
+            {
+                ModifierText.color = colorMod.ModifierColor;
+            }
+
+            cutscene.RoleBlurbText.text =
+                $"<size={teamModifier.IntroSize}>\n</size>{cutscene.RoleBlurbText.text}\n<size={teamModifier.IntroSize}><color=#{color.ToHtmlStringRGBA()}>{teamModifier.IntroInfo}</color></size>";
+        }
+
+        RunModChecks();
+
+        ModifierText.transform.position =
+            cutscene.transform.position - new Vector3(0f, 1.6f, -10f);
+        ModifierText.gameObject.SetActive(true);
+        ModifierText.color.SetAlpha(0.8f);
+    }
+    
+    [RegisterEvent]
+    public static void IntroEndEventHandler(IntroEndEvent @event)
+    {
+        HudManager.Instance.SetHudActive(false);
+        HudManager.Instance.SetHudActive(true);
+
+        foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(PlayerControl.LocalPlayer.Data.Role)))
+        {
+            if (button is FakeVentButton)
+            {
+                continue;
+            }
+
+            button.SetTimer(OptionGroupSingleton<GeneralOptions>.Instance.GameStartCd);
+        }
+
+        if (PlayerControl.LocalPlayer.IsImpostor())
+        {
+            PlayerControl.LocalPlayer.SetKillTimer(OptionGroupSingleton<GeneralOptions>.Instance.GameStartCd);
+        }
+
+        var modsTab = ModifierDisplayComponent.Instance;
+        if (modsTab != null && !modsTab.IsOpen && PlayerControl.LocalPlayer.GetModifiers<GameModifier>()
+                .Any(x => !x.HideOnUi && x.GetDescription() != string.Empty))
+        {
+            modsTab.ToggleTab();
+        }
+
+        var panelThing = HudManager.Instance.TaskStuff.transform.FindChild("RolePanel");
+        if (panelThing != null)
+        {
+            var panel = panelThing.gameObject.GetComponent<TaskPanelBehaviour>();
+            var role = PlayerControl.LocalPlayer.Data.Role as ICustomRole;
+            if (role == null)
+            {
+                return;
+            }
+
+            panel.open = true;
+
+            var tabText = panel.tab.gameObject.GetComponentInChildren<TextMeshPro>();
+            var ogPanel = HudManager.Instance.TaskStuff.transform.FindChild("TaskPanel").gameObject
+                .GetComponent<TaskPanelBehaviour>();
+            if (tabText.text != role.RoleName)
+            {
+                tabText.text = role.RoleName;
+            }
+
+            var y = ogPanel.taskText.textBounds.size.y + 1;
+            panel.closedPosition = new Vector3(ogPanel.closedPosition.x, ogPanel.open ? y + 0.2f : 2f,
+                ogPanel.closedPosition.z);
+            panel.openPosition = new Vector3(ogPanel.openPosition.x, ogPanel.open ? y : 2f, ogPanel.openPosition.z);
+
+            panel.SetTaskText(role.SetTabText().ToString());
+        }
+    }
+
     [RegisterEvent]
     public static void StartMeetingEventHandler(StartMeetingEvent @event)
     {
@@ -63,6 +276,7 @@ public static class TownOfUsEventHandlers
         jestButton.Show = false;
         phantomButton.Show = false;
     }
+    
     [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
@@ -148,9 +362,11 @@ public static class TownOfUsEventHandlers
         CustomButtonSingleton<WarlockKillButton>.Instance.BurstActive = false;
 
         CustomButtonSingleton<BarryButton>.Instance.Usable =
-            OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse;
+            OptionGroupSingleton<ButtonBarryOptions>.Instance.FirstRoundUse || TutorialManager.InstanceExists;
         CustomButtonSingleton<SatelliteButton>.Instance.Usable =
-            OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse;
+            OptionGroupSingleton<SatelliteOptions>.Instance.FirstRoundUse || TutorialManager.InstanceExists;
+        CustomButtonSingleton<BomberPlantButton>.Instance.Usable =
+            OptionGroupSingleton<BomberOptions>.Instance.CanBombFirstRound || TutorialManager.InstanceExists;
     }
 
     [RegisterEvent]

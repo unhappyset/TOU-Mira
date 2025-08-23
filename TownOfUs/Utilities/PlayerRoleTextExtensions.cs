@@ -158,13 +158,13 @@ public static class PlayerRoleTextExtensions
             name += "<color=#FF66CC> ♥</color>";
         }
 
-        if (player.HasModifier<EgotistModifier>() && (player.AmOwner ||
+        if (player.TryGetModifier<EgotistModifier>(out var egoMod) && (player.AmOwner ||
                                                       (EgotistModifier.EgoVisibilityFlag(player) &&
                                                        (player.GetModifiers<RevealModifier>().Any(x => x.Visible && x.RevealRole))) ||
                                                       (PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow &&
                                                        !hidden)))
         {
-            name += "<color=#FFFFFF> (<color=#669966>Egotist</color>)</color>";
+            name += $"<color=#FFFFFF> (<color=#669966>{egoMod.ModifierName}</color>)</color>";
         }
 
         return name;
