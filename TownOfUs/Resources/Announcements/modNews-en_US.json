@@ -269,6 +269,7 @@
         "\n\nAgain, the Mira team really appreciates all of your support, thank you so much for playing the mod!",
         "\n\n\r<size=105%>Crewmate Role Bugfixes:</size>",
         "\n- Detective no longer throws null errors, which broke ghost roles in the process.",
+        "\n- Blessed guessers no longer stay alive.",
         "\n- Transporter can no longer throw players out of bounds, again. (PR #55) (Nix-main)",
         "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
         "\n- Extra checks are added with Haunt/Torment/Spook menus to not linger around and allow double kills",
@@ -280,6 +281,7 @@
         "\n- Ambassador may only retrain themselves in FFA Impostor Mode now.",
         "\n- Solo killing settings for Blackmailer and Undertaker now work correctly.",
         "\n- Dragging a body between vents as Undertaker is now instant.",
+        "\n- If the Swooper has limited uses, then they cannot go under 0 uses.",
         "\n\n\r<size=105%>Modifier Bugfixes:</size>",
         "\n- Lover death checks are run on the dead lover's end instead of everyone else's end, fixing lovers not dying together properly.",
         "\n- Telepath cannot spawn with FFA Impostor Mode anymore.",
@@ -291,14 +293,14 @@
         "\n\n\r<size=105%>Additions:</size>",
         "\n- Bomb Round One Option has been added for Bomber. (PR #54) (Nix-main)",
         "\n\n\r<size=105%>Improvements:</size>",
-        "\n- Translation System is in the works, allowing jsons and text files to replace certain names, however this will be moved to using XMLs for convenience.",
         "\n- The subtitle for the Win Screen with nobody winning is now renamed to \"Game Draw!\" instead of \"Nobody Wins!\" as Neutral Evils can still win.",
         "\n- Main Menu has been slightly adjusted visually, major change is the April Fools Selector now being moved into the main UI.",
         "\n- Redundant April Fools check was removed. (PR #57) (Astral)",
         "\n- Added chat tags for roles and modifiers by doing #soul-collector or &celebrity for example. (PR #58) (Chipseq)",
         "\n- Doomsayer report shows vanilla roles/non tou roles under an outsider category.",
         "\n- Doomsayer report shows clickable wiki entries for role reports.",
-        "\n- Celebrity message shows clickable wiki entry for their killer's role."
+        "\n- Celebrity message shows clickable wiki entry for their killer's role.",
+        "\n- Camo Comms should no longer be prone to crashing."
       ]
     }
   ]
