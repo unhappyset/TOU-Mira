@@ -24,7 +24,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public ArrowBehaviour? SnitchRevealArrow { get; private set; }
     public bool CompletedAllTasks => TaskStage is TaskStage.CompletedTasks;
     public bool OnLastTask => TaskStage is TaskStage.Revealed;
-    public TaskStage TaskStage { get; private set; }
+    public TaskStage TaskStage { get; private set; } = TaskStage.Unrevealed;
 
     private void FixedUpdate()
     {
