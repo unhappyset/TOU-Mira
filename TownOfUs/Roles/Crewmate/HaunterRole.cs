@@ -12,6 +12,7 @@ using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Patches;
+using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
@@ -23,13 +24,24 @@ namespace TownOfUs.Roles.Crewmate;
 
 public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITownOfUsRole, IGhostRole, IWikiDiscoverable
 {
-    public bool Revealed { get; private set; }
-    public bool CompletedAllTasks { get; private set; }
+    public bool Revealed => TaskStage is GhostTaskStage.Revealed or GhostTaskStage.CompletedTasks;
+    public bool CompletedAllTasks => TaskStage is GhostTaskStage.CompletedTasks;
 
     public bool Setup { get; set; }
     public bool Caught { get; set; }
     public bool Faded { get; set; }
-    public bool CanBeClicked { get; set; }
+    public bool CanBeClicked
+    {
+        get
+        {
+            return TaskStage is GhostTaskStage.Clickable or GhostTaskStage.Revealed;
+        }
+        set
+        {
+            // Left Alone
+        }
+    }
+    public GhostTaskStage TaskStage { get; private set; } = GhostTaskStage.Unclickable;
     public bool GhostActive => Setup && !Caught;
 
     public bool CanCatch()
@@ -174,11 +186,6 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         }
 
         MiscUtils.AdjustGhostTasks(player);
-
-        var completedTasks = Player.myTasks.ToArray().Count(t => t.IsComplete);
-        var tasksRemaining = Player.myTasks.Count - completedTasks;
-
-        CanBeClicked = tasksRemaining <= (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeClickable;
     }
 
     /* public void FixedUpdate()
@@ -260,25 +267,25 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             return;
         }
 
-        var completedTasks = Player.myTasks.ToArray().Count(t => t.IsComplete);
-        var tasksRemaining = Player.myTasks.Count - completedTasks - 1;
+        var completedTasks = Player.myTasks.ToArray().Count(t => t.IsComplete) + 1;
+        var tasksRemaining = Player.myTasks.Count - completedTasks;
 
-        CanBeClicked = tasksRemaining <= (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeClickable;
-
-        if (!CompletedAllTasks && completedTasks == Player.myTasks.Count)
+        if (TaskStage is GhostTaskStage.Unclickable && tasksRemaining ==
+            (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeClickable)
         {
-            CompletedAllTasks = true;
-
-            if (Player.AmOwner || IsTargetOfHaunter(PlayerControl.LocalPlayer))
+            TaskStage = GhostTaskStage.Clickable;
+            if (Player.AmOwner)
             {
-                Coroutines.Start(MiscUtils.CoFlash(Color.white));
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>{TownOfUsColors.Haunter.ToTextColor()}You are now clickable by players!</b></color>", Color.white,
+                    new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Haunter.LoadAsset());
+                notif1.Text.SetOutlineThickness(0.35f);
             }
         }
 
         if (!Revealed && tasksRemaining == (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeAlerted)
         {
-            // Logger<TownOfUsPlugin>.Error($"CheckTaskRequirements Revealed");
-            Revealed = true;
+            TaskStage = GhostTaskStage.Revealed;
 
             if (Player.AmOwner)
             {
@@ -296,6 +303,31 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 Player.AddModifier<HaunterArrowModifier>(PlayerControl.LocalPlayer, RoleColor);
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{TownOfUsColors.Haunter.ToTextColor()}A Haunter is loose, catch them before they reveal you!</b></color>",
+                    Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Haunter.LoadAsset());
+                notif1.Text.SetOutlineThickness(0.35f);
+            }
+        }
+        
+        if (!CompletedAllTasks && completedTasks == Player.myTasks.Count)
+        {
+            TaskStage = GhostTaskStage.CompletedTasks;
+            
+            if (Player.AmOwner)
+            {
+                Coroutines.Start(MiscUtils.CoFlash(Color.white));
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>{TownOfUsColors.Haunter.ToTextColor()}You have revealed the Killers!</b></color>", Color.white,
+                    new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Haunter.LoadAsset());
+                notif1.Text.SetOutlineThickness(0.35f);
+            }
+            else if (IsTargetOfHaunter(PlayerControl.LocalPlayer))
+            {
+                // Logger<TownOfUsPlugin>.Error($"CheckTaskRequirements IsTargetOfHaunter");
+                Coroutines.Start(MiscUtils.CoFlash(Color.white));
+
+                Player.AddModifier<HaunterArrowModifier>(PlayerControl.LocalPlayer, RoleColor);
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>{TownOfUsColors.Haunter.ToTextColor()}The Haunter has completed their tasks!</b></color>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Haunter.LoadAsset());
                 notif1.Text.SetOutlineThickness(0.35f);
             }
