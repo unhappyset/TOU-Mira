@@ -151,7 +151,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
         }
     }
 
-    [MethodRpc((uint)TownOfUsRpc.UpdateCelebrityKilled, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.UpdateCelebrityKilled)]
     public static void RpcUpdateCelebrityKilled(PlayerControl player, float milliseconds)
     {
         if (!player.HasModifier<CelebrityModifier>())
