@@ -23,7 +23,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     private Dictionary<byte, ArrowBehaviour>? _snitchArrows;
     public ArrowBehaviour? SnitchRevealArrow { get; private set; }
     public bool CompletedAllTasks => TaskStage is TaskStage.CompletedTasks;
-    public bool OnLastTask => TaskStage is TaskStage.Revealed;
+    public bool OnLastTask => TaskStage is TaskStage.Revealed or TaskStage.CompletedTasks;
     public TaskStage TaskStage { get; private set; } = TaskStage.Unrevealed;
 
     private void FixedUpdate()
@@ -272,8 +272,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
     public void AddSnitchTraitorArrows()
     {
-        if (PlayerControl.LocalPlayer.IsTraitor() && OptionGroupSingleton<SnitchOptions>.Instance.SnitchSeesTraitor &&
-            OnLastTask)
+        if (PlayerControl.LocalPlayer.IsTraitor() && OnLastTask)
         {
             CreateRevealingArrow();
         }
