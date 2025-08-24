@@ -94,10 +94,13 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
     public void CheckTaskRequirements()
     {
-        var completedTasks = Player.myTasks.ToArray()
-            .Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
+        var realTasks = Player.myTasks.ToArray()
+            .Where(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>()).ToList();
+        
+        var completedTasks = realTasks.Count(t => t.IsComplete);
+        var tasksRemaining = realTasks.Count - completedTasks;
 
-        if (TaskStage is TaskStage.Unrevealed && Player.myTasks.Count - completedTasks <=
+        if (TaskStage is TaskStage.Unrevealed && tasksRemaining <=
             (int)OptionGroupSingleton<SnitchOptions>.Instance.TaskRemainingWhenRevealed)
         {
             TaskStage = TaskStage.Revealed;
@@ -136,7 +139,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             }
         }
 
-        if (completedTasks == Player.myTasks.Count)
+        if (completedTasks == realTasks.Count)
         {
             TaskStage = TaskStage.CompletedTasks;
             if (Player.AmOwner)
@@ -172,7 +175,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
             }
         }
-        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Snitch Stage for '{Player.Data.PlayerName}': {TaskStage.ToDisplayString()} - ({completedTasks} / {Player.myTasks.ToArray().Count})");
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Snitch Stage for '{Player.Data.PlayerName}': {TaskStage.ToDisplayString()} - ({completedTasks} / {realTasks.Count})");
     }
 
     public static bool IsTargetOfSnitch(PlayerControl player)

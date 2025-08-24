@@ -227,12 +227,13 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
         {
             return;
         }
+        var realTasks = Player.myTasks.ToArray()
+            .Where(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>()).ToList();
         
-        var completedTasks = Player.myTasks.ToArray()
-            .Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
-        var tasksRemaining = Player.myTasks.Count - completedTasks;
+        var completedTasks = realTasks.Count(t => t.IsComplete);
+        var tasksRemaining = realTasks.Count - completedTasks;
 
-        if (TaskStage is GhostTaskStage.Unclickable && tasksRemaining ==
+        if (TaskStage is GhostTaskStage.Unclickable && tasksRemaining <=
             (int)OptionGroupSingleton<PhantomOptions>.Instance.NumTasksLeftBeforeClickable)
         {
             TaskStage = GhostTaskStage.Clickable;
@@ -245,12 +246,12 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
             }
         }
 
-        if (completedTasks == Player.myTasks.Count)
+        if (completedTasks == realTasks.Count)
         {
             TaskStage = GhostTaskStage.CompletedTasks;
         }
         
-        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Phantom Stage for '{Player.Data.PlayerName}': {TaskStage.ToDisplayString()} - ({completedTasks} / {Player.myTasks.ToArray().Count})");
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Phantom Stage for '{Player.Data.PlayerName}': {TaskStage.ToDisplayString()} - ({completedTasks} / {realTasks.Count})");
 
         if (OptionGroupSingleton<PhantomOptions>.Instance.PhantomWin is not PhantomWinOptions.Spooks ||
             !CompletedAllTasks)
