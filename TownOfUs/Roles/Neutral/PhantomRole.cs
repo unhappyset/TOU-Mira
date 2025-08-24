@@ -227,8 +227,9 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
         {
             return;
         }
-
-        var completedTasks = Player.myTasks.ToArray().Count(t => t.IsComplete);
+        
+        var completedTasks = Player.myTasks.ToArray()
+            .Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
         var tasksRemaining = Player.myTasks.Count - completedTasks;
 
         if (TaskStage is GhostTaskStage.Unclickable && tasksRemaining ==
@@ -248,6 +249,8 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
         {
             TaskStage = GhostTaskStage.CompletedTasks;
         }
+        
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Phantom Stage for '{Player.Data.PlayerName}': {TaskStage.ToDisplayString()} - ({completedTasks} / {Player.myTasks.ToArray().Count})");
 
         if (OptionGroupSingleton<PhantomOptions>.Instance.PhantomWin is not PhantomWinOptions.Spooks ||
             !CompletedAllTasks)

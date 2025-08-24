@@ -34,7 +34,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     {
         get
         {
-            return TaskStage is GhostTaskStage.Clickable or GhostTaskStage.Revealed;
+            return TaskStage is GhostTaskStage.Clickable || TaskStage is GhostTaskStage.Revealed || TaskStage is GhostTaskStage.CompletedTasks;
         }
         set
         {
@@ -269,7 +269,8 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             return;
         }
 
-        var completedTasks = Player.myTasks.ToArray().Count(t => t.IsComplete) + 1;
+        var completedTasks = Player.myTasks.ToArray()
+            .Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
         var tasksRemaining = Player.myTasks.Count - completedTasks;
 
         if (TaskStage is GhostTaskStage.Unclickable && tasksRemaining ==
@@ -334,6 +335,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 notif1.Text.SetOutlineThickness(0.35f);
             }
         }
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Haunter Stage for '{Player.Data.PlayerName}': {TaskStage.ToDisplayString()} - ({completedTasks} / {Player.myTasks.ToArray().Count})");
     }
 
     public static bool IsTargetOfHaunter(PlayerControl player)

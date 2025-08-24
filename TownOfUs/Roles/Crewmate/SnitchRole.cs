@@ -94,7 +94,8 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
     public void CheckTaskRequirements()
     {
-        var completedTasks = Player.myTasks.ToArray().Count(t => t.IsComplete);
+        var completedTasks = Player.myTasks.ToArray()
+            .Count(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
 
         if (TaskStage is TaskStage.Unrevealed && Player.myTasks.Count - completedTasks <=
             (int)OptionGroupSingleton<SnitchOptions>.Instance.TaskRemainingWhenRevealed)
@@ -171,6 +172,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
             }
         }
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Snitch Stage for '{Player.Data.PlayerName}': {TaskStage.ToDisplayString()} - ({completedTasks} / {Player.myTasks.ToArray().Count})");
     }
 
     public static bool IsTargetOfSnitch(PlayerControl player)
