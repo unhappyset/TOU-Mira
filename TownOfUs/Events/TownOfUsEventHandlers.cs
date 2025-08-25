@@ -87,6 +87,12 @@ public static class TownOfUsEventHandlers
     public static void IntroRoleRevealEventHandler(IntroRoleRevealEvent @event)
     {
         var instance = @event.IntroCutscene;
+        
+        if (ModCompatibility.IsSubmerged())
+        {
+            Coroutines.Start(ModCompatibility.WaitMeeting(ModCompatibility.ResetTimers));
+        }
+        
         if (PlayerControl.LocalPlayer.Data.Role is ITownOfUsRole custom)
         {
             instance.RoleText.text = custom.RoleName;
