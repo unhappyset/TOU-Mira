@@ -135,7 +135,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         {
             return;
         }
-        
+
         if (Minigame.Instance != null)
         {
             return;
@@ -187,7 +187,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
                 meetingMenu?.HideButtons();
             }
 
-            if (victim.TryGetModifier<OracleBlessedModifier>(out var oracleMod))
+            if (victim != Player && victim.TryGetModifier<OracleBlessedModifier>(out var oracleMod))
             {
                 OracleRole.RpcOracleBlessNotify(oracleMod.Oracle, PlayerControl.LocalPlayer, victim);
 

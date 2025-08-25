@@ -7,7 +7,6 @@ using MiraAPI.PluginLoading;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
-using Rewired;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options;
@@ -41,7 +40,7 @@ public abstract class TownOfUsButton : CustomActionButton
     /// </summary>
     public virtual string Keybind => string.Empty;
 
-    private PassiveButton PassiveComp { get; set; }
+    public PassiveButton PassiveComp { get; set; }
 
     public virtual int ConsoleBind()
     {
@@ -169,12 +168,6 @@ public abstract class TownOfUsButton : CustomActionButton
 
         Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled ||
                                      HudManager.Instance.PetButton.isActiveAndEnabled);
-
-        if (CanUse() && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) ||
-                                                    ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
-        {
-            PassiveComp.OnClick.Invoke();
-        }
     }
 
     public override void ClickHandler()
@@ -240,7 +233,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
     /// </summary>
     public virtual string Keybind => string.Empty;
 
-    private PassiveButton PassiveComp { get; set; }
+    public PassiveButton PassiveComp { get; set; }
 
     public virtual int ConsoleBind()
     {
@@ -412,12 +405,6 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
 
         Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled ||
                                      HudManager.Instance.PetButton.isActiveAndEnabled);
-
-        if (CanUse() && Keybind != string.Empty && (ReInput.players.GetPlayer(0).GetButtonDown(Keybind) ||
-                                                    ConsoleJoystick.player.GetButtonDown(ConsoleBind())))
-        {
-            PassiveComp.OnClick.Invoke();
-        }
     }
 }
 
