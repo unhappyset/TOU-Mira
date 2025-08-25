@@ -1,13 +1,8 @@
 ﻿
 using HarmonyLib;
 using MiraAPI.GameOptions;
-using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
-using Reactor.Utilities.Extensions;
-using TownOfUs.Interfaces;
-using TownOfUs.Modifiers.Game;
 using TownOfUs.Options;
-using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using Object = Il2CppSystem.Object;
 
