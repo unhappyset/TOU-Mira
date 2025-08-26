@@ -3,7 +3,6 @@ using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 using TownOfUs.Options;
-using TownOfUs.Roles;
 using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using Object = Il2CppSystem.Object;
@@ -13,6 +12,19 @@ namespace TownOfUs.Patches;
 [HarmonyPatch]
 public static class IntroScenePatches
 {
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
+    public static class IntroCutsceneSpectatorPatch
+    {
+        public static void Prefix(ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
+        {
+            foreach (var player in teamToDisplay.ToArray())
+            {
+                if (SpectatorRole.TrackedSpectators.Contains(player.PlayerId))
+                    teamToDisplay.Remove(player);
+            }
+        }
+    }
+    
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
     [HarmonyPriority(Priority.Last)]
@@ -27,24 +39,14 @@ public static class IntroScenePatches
                     DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Impostor,
                         Array.Empty<Object>());
                 __instance.TeamTitle.color = Palette.ImpostorRed;
+
+                var player = __instance.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, true);
+                __instance.ourCrewmate = player;
             }
-
-            panel.open = true;
-
-            var tabText = panel.tab.gameObject.GetComponentInChildren<TextMeshPro>();
-            var ogPanel = HudManager.Instance.TaskStuff.transform.FindChild("TaskPanel").gameObject
-                .GetComponent<TaskPanelBehaviour>();
-            if (tabText.text != role.RoleName)
-            {
-                tabText.text = role.RoleName;
-            }
-
-            var y = ogPanel.taskText.textBounds.size.y + 1;
-            panel.closedPosition = new Vector3(ogPanel.closedPosition.x, ogPanel.open ? y + 0.2f : 2f,
-                ogPanel.closedPosition.z);
-            panel.openPosition = new Vector3(ogPanel.openPosition.x, ogPanel.open ? y : 2f, ogPanel.openPosition.z);
-
-            panel.SetTaskText(role.SetTabText().ToString());
+        }
+        else
+        {
+            SetHiddenImpostors(__instance);
         }
 
         foreach (var id in SpectatorRole.TrackedSpectators)
@@ -66,73 +68,6 @@ public static class IntroScenePatches
 
         SpectatorRole.InitList();
     }
-
-    [HarmonyPatch(typeof(SpawnInMinigame), nameof(SpawnInMinigame.Close))]
-    [HarmonyPrefix]
-    public static void SpawnInMinigameClosePatch()
-    {
-        IntroCutsceneOnDestroyPatch();
-    }
-}
-
-public static class ModifierIntroPatch
-{
-    private static TextMeshPro ModifierText;
-
-    public static void RunModChecks()
-    {
-        var option = OptionGroupSingleton<GeneralOptions>.Instance.ModifierReveal;
-        var modifier = PlayerControl.LocalPlayer.GetModifiers<AllianceGameModifier>().FirstOrDefault();
-        var uniModifier = PlayerControl.LocalPlayer.GetModifiers<UniversalGameModifier>().FirstOrDefault();
-
-        if (modifier != null && option is ModReveal.Alliance)
-        {
-            ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
-
-            ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-            if (modifier is IColoredModifier colorMod)
-            {
-                ModifierText.color = colorMod.ModifierColor;
-            }
-        }
-        else if (uniModifier != null && option is ModReveal.Universal)
-        {
-            ModifierText.text = $"<size=4><color=#FFFFFF>Modifier: </color>{uniModifier.ModifierName}</size>";
-
-            ModifierText.color = MiscUtils.GetRoleColour(uniModifier.ModifierName.Replace(" ", string.Empty));
-            if (uniModifier is IColoredModifier colorMod)
-            {
-                ModifierText.color = colorMod.ModifierColor;
-                var player = __instance.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, true);
-                __instance.ourCrewmate = player;
-            }
-        }
-        else
-        {
-            ModifierText.text = string.Empty;
-        }
-    }
-
-    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
-    public static class IntroCutscene_BeginCrewmate
-    {
-        public static void Prefix(ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
-        {
-            foreach (var player in teamToDisplay.ToArray())
-            {
-                if (SpectatorRole.TrackedSpectators.Contains(player.PlayerId))
-                    teamToDisplay.Remove(player);
-            }
-        }
-
-        public static void Postfix(IntroCutscene __instance)
-        {
-            ModifierText =
-                UnityEngine.Object.Instantiate(__instance.RoleText, __instance.RoleText.transform.parent, false);
-            SetHiddenImpostors(__instance);
-        }
-    }
-
     public static void SetHiddenImpostors(IntroCutscene __instance)
     {
         var amount = Helpers.GetAlivePlayers().Count(x => x.IsImpostor());
