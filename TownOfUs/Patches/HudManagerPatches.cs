@@ -6,6 +6,7 @@ using InnerNet;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using Reactor.Utilities;
 using TMPro;
 using TownOfUs.Modifiers;
@@ -21,6 +22,7 @@ using TownOfUs.Patches.Options;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
@@ -41,7 +43,6 @@ public static class HudManagerPatches
 
     public static bool Zooming;
     public static bool CamouflageCommsEnabled;
-    public static bool CamouflageFootsteps;
 
     public static IEnumerator CoResizeUI()
     {
@@ -767,6 +768,33 @@ public static class HudManagerPatches
             return;
         }
 
+        foreach (var player in PlayerControl.AllPlayerControls.ToArray())
+        {
+            if (player == null || player.Data == null)
+            {
+                continue;
+            }
+
+            var playerName = player.Data.PlayerName ?? "Unknown";
+            var playerInfo = "";
+            if (player.IsHost())
+            {
+                playerInfo = $"<size=80%>{TownOfUsColors.Jester.ToTextColor()}Host";
+            }
+            if (SpectatorRole.TrackedSpectators.Contains(player.PlayerId))
+            {
+                playerInfo =
+                    playerInfo != "" ? $"{playerInfo} {Color.yellow.ToTextColor()}(Spectating)</color>" : $"<size=80%>{Color.yellow.ToTextColor()}(Spectating)";
+            }
+
+            playerName = playerInfo != "" ? $"{playerInfo}</color></size>\n{playerName}" : playerName;
+            var playerColor = Color.white;
+
+            player.cosmetics.nameText.text = playerName;
+            player.cosmetics.nameText.color = playerColor;
+            player.cosmetics.nameText.transform.localPosition = new Vector3(0f, 0.15f, -0.5f);
+        }
+
         if (!RoleList)
         {
             var pingTracker = Object.FindObjectOfType<PingTracker>(true);
@@ -784,7 +812,7 @@ public static class HudManagerPatches
             var objText = RoleList.GetComponent<TextMeshPro>();
             var rolelistBuilder = new StringBuilder();
 
-            var players = GameData.Instance.PlayerCount;
+            var players = GameData.Instance.PlayerCount - SpectatorRole.TrackedSpectators.Count;
             var maxSlots = players < 15 ? players : 15;
 
             var list = OptionGroupSingleton<RoleOptions>.Instance;
@@ -937,15 +965,18 @@ public static class HudManagerPatches
     [HarmonyPostfix]
     public static void HudManagerUpdatePatch(HudManager __instance)
     {
+        if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null)
+        {
+            return;
+        }
+
         CreateZoomButton(__instance);
         CreateTeamChatButton(__instance);
         CreateWikiButton(__instance);
 
         UpdateRoleList(__instance);
 
-        if (PlayerControl.LocalPlayer == null ||
-            PlayerControl.LocalPlayer.Data == null ||
-            PlayerControl.LocalPlayer.Data.Role == null ||
+        if (PlayerControl.LocalPlayer.Data.Role == null ||
             !ShipStatus.Instance ||
             (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started &&
              !TutorialManager.InstanceExists))
@@ -953,12 +984,7 @@ public static class HudManagerPatches
             return;
         }
 
-        // TERRIBLE FOR PERFORMANCE (FindObjectsOfType is very costly)
-        var body = Object.FindObjectsOfType<DeadBody>()
-            .FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
-        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x.PlayerId == PlayerControl.LocalPlayer.PlayerId);
-
-        if (((PlayerControl.LocalPlayer.Data.IsDead && !body && !fakePlayer?.body &&
+        if (((PlayerControl.LocalPlayer.DiedOtherRound() &&
               (PlayerControl.LocalPlayer.Data.Role is IGhostRole { Caught: true } ||
                PlayerControl.LocalPlayer.Data.Role is not IGhostRole)) || TutorialManager.InstanceExists)
             && Input.GetAxis("Mouse ScrollWheel") != 0 && !MeetingHud.Instance && Minigame.Instance == null &&
@@ -973,9 +999,9 @@ public static class HudManagerPatches
         UpdateGhostRoles(__instance);
     }
 
-    [HarmonyPostfix]
-    [HarmonyPriority(Priority.Last)]
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
+    [HarmonyPriority(Priority.Last)]
+    [HarmonyPostfix]
     public static void HudManagerStartPatch(HudManager __instance)
     {
         Coroutines.Start(CoResizeUI());

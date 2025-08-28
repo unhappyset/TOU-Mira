@@ -29,10 +29,18 @@ public static class ChatPatches
 
         var spaceLess = text.Replace(" ", string.Empty);
 
-        if (spaceLess.StartsWith("/specme", StringComparison.OrdinalIgnoreCase))
+        if (spaceLess.StartsWith("/spec", StringComparison.OrdinalIgnoreCase))
         {
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "Set yourself as a spectator!");
-            SelectSpectator(PlayerControl.LocalPlayer);
+            if (SpectatorRole.TrackedSpectators.Contains(PlayerControl.LocalPlayer.PlayerId))
+            {
+                MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "You are no longer a spectator!");
+                RemoveSpectator(PlayerControl.LocalPlayer);
+            }
+            else
+            {
+                MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "Set yourself as a spectator!");
+                SelectSpectator(PlayerControl.LocalPlayer);
+            }
             __instance.freeChatField.Clear();
             __instance.quickChatMenu.Clear();
             __instance.quickChatField.Clear();
@@ -261,4 +269,7 @@ public static class ChatPatches
 
     [MethodRpc((uint)TownOfUsRpc.SelectSpectator, SendImmediately = true)]
     public static void SelectSpectator(PlayerControl player) => SpectatorRole.TrackedSpectators.Add(player.PlayerId);
+    
+    [MethodRpc((uint)TownOfUsRpc.RemoveSpectator, SendImmediately = true)]
+    public static void RemoveSpectator(PlayerControl player) => SpectatorRole.TrackedSpectators.Remove(player.PlayerId);
 }
