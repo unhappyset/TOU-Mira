@@ -82,7 +82,7 @@ public sealed class UndertakerRole(IntPtr cppPtr)
         }
     }
 
-    [MethodRpc((uint)TownOfUsRpc.DragBody, LocalHandling = RpcLocalHandling.Before, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.DragBody, LocalHandling = RpcLocalHandling.Before)]
     public static void RpcStartDragging(PlayerControl playerControl, byte bodyId)
     {
         playerControl.GetModifierComponent()?.AddModifier(new DragModifier(bodyId));
@@ -97,7 +97,7 @@ public sealed class UndertakerRole(IntPtr cppPtr)
         }
     }
 
-    [MethodRpc((uint)TownOfUsRpc.DropBody, LocalHandling = RpcLocalHandling.Before, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.DropBody, LocalHandling = RpcLocalHandling.Before)]
     public static void RpcStopDragging(PlayerControl playerControl, Vector2 dropLocation)
     {
         var dragMod = playerControl.GetModifier<DragModifier>()!;

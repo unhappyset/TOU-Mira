@@ -63,7 +63,7 @@ public sealed class BomberRole(IntPtr cppPtr)
         }
     }
 
-    [MethodRpc((uint)TownOfUsRpc.PlantBomb, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.PlantBomb)]
     public static void RpcPlantBomb(PlayerControl player, Vector2 position)
     {
         if (player.Data.Role is not BomberRole role)

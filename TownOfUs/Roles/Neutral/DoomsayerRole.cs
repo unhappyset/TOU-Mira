@@ -477,7 +477,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         return true;
     }
 
-    [MethodRpc((uint)TownOfUsRpc.DoomsayerWin, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.DoomsayerWin)]
     public static void RpcDoomsayerWin(PlayerControl player)
     {
         if (player.Data.Role is not DoomsayerRole)

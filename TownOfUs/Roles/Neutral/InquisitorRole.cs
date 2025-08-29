@@ -331,7 +331,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         }
     }
 
-    [MethodRpc((uint)TownOfUsRpc.AddInquisTarget, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.AddInquisTarget)]
     public static void RpcAddInquisTarget(PlayerControl player, PlayerControl target)
     {
         if (player.Data.Role is not InquisitorRole)
@@ -357,7 +357,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         target.AddModifier<InquisitorHereticModifier>();
     }
 
-    [MethodRpc((uint)TownOfUsRpc.InquisitorWin, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.InquisitorWin)]
     public static void RpcInquisitorWin(PlayerControl player)
     {
         InquisitorWin(player);

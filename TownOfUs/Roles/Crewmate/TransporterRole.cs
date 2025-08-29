@@ -70,7 +70,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         }
     }
 
-    [MethodRpc((uint)TownOfUsRpc.Transport, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.Transport)]
     public static void RpcTransport(PlayerControl transporter, byte player1, byte player2)
     {
         if (transporter.Data.Role is not TransporterRole)
