@@ -63,7 +63,7 @@ public static class AprilFoolsPatches
             aprilfoolstoggle.transform.GetChild(0).GetChild(0).GetComponent<AspectPosition>().anchorPoint = new Vector2(0.48f, 0.505f);
             if (TouLocale.TouLocaleList.TryGetValue("FoolsMode", out var id))
             {
-                translator.TargetText = (StringNames)id;
+                translator.TargetText = id;
             }
             translator.defaultStr = TouLocale.Get("FoolsMode");
             var text = aprilfoolstoggle.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>();

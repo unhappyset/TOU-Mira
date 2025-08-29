@@ -6,10 +6,10 @@ public class TouLocalizationProvider : LocalizationProvider
 {
     public override bool TryGetText(StringNames stringName, out string? result)
     {
-        var id = (int)stringName;
-        if (TouLocale.TouLocaleList.ContainsValue(id) && CurrentLanguage != null)
+        result = null;
+        if (TouLocale.TouLocaleList.ContainsValue(stringName) && CurrentLanguage != null)
         {
-            var touName = TouLocale.TouLocaleList.FirstOrDefault(x => x.Value == id).Key;
+            var touName = TouLocale.TouLocaleList.FirstOrDefault(x => x.Value == stringName).Key;
             
             if (TouLocale.TouLocalization.TryGetValue((SupportedLangs)CurrentLanguage, out var translations) &&
                 translations.TryGetValue(touName, out var translation))
@@ -17,7 +17,8 @@ public class TouLocalizationProvider : LocalizationProvider
                 result = translation;
                 return true;
             }
-            else if (TouLocale.TouLocalization.TryGetValue(SupportedLangs.English, out var translationsEng) &&
+            
+            if (TouLocale.TouLocalization.TryGetValue(SupportedLangs.English, out var translationsEng) &&
                      translationsEng.TryGetValue(touName, out var englishDefault))
             {
                 result = englishDefault;
@@ -27,8 +28,6 @@ public class TouLocalizationProvider : LocalizationProvider
             result = "STRMISS_" + touName;
             return true;
         }
-        
-        result = null;
         return false;
     }
     public override void OnLanguageChanged(SupportedLangs newLanguage)

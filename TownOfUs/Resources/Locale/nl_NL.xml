@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+    <string name="ButtonUIFactor">Knoppenschaalfactor</string>
+    <string name="UseCrewmateTeamColor">Gebruik basis bemanningskleuren</string>
+    <string name="FoolsMode">1-April stand</string>
+    <string name="ShowWelcomeMessage">Laat Welkomstbericht zien</string>
+    <string name="ShowSummaryMessage">Laat Samenvattingsbericht zien</string>
+</resources>

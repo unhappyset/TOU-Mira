@@ -10,27 +10,38 @@ namespace TownOfUs.Modules.Localization;
 
 public static class TouLocale
 {
-    // C# classes for deserialization
-    public class RootObject
-    {
-        public List<Dictionary<string, string>> RawTouNames { get; set; }
-    }
-
     public static string LocaleDirectory => Path.Combine(Application.persistentDataPath, "TownOfUs", "Locales");
+
+    public static Dictionary<SupportedLangs, string> LangList { get; } = new()
+    {
+        { SupportedLangs.English, "en_US.xml" },
+        { SupportedLangs.German, "de_DE.xml" },
+        { SupportedLangs.Latam, "es_419.xml" },
+        { SupportedLangs.Spanish, "es_ES.xml" },
+        { SupportedLangs.Filipino, "fil_PH.xml" },
+        { SupportedLangs.French, "fr_FR.xml" },
+        { SupportedLangs.Italian, "it_IT.xml" },
+        { SupportedLangs.Japanese, "ja_JP.xml" },
+        { SupportedLangs.Korean, "ko_KR.xml" },
+        { SupportedLangs.Dutch, "nl_NL.xml" },
+        { SupportedLangs.Brazilian, "pt_BR.xml" },
+        { SupportedLangs.Russian, "ru_RU.xml" },
+        { SupportedLangs.SChinese, "zh_CN.xml" },
+        { SupportedLangs.TChinese, "zh_TW.xml" }
+    };
 
     public static string BepinexLocaleDirectory =>
         Path.Combine(BepInEx.Paths.BepInExRootPath, "MiraLocales", "TownOfUs");
 
-    public static Dictionary<string, int> TouLocaleList { get; } = [];
+    public static Dictionary<string, StringNames> TouLocaleList { get; } = [];
 
     public static Dictionary<string, string> TmpTextList { get; } = new()
     {
         { "<nl>", "\n" },
         { "<and>", "&" },
     };
-
+    // Language, Xml Name, then Value
     public static Dictionary<SupportedLangs, Dictionary<string, string>> TouLocalization { get; } = [];
-    public static int VanillaEnumAmounts;
 
     private static ManualLogSource Logger { get; } = BepInEx.Logging.Logger.CreateLogSource("TouLocale");
 
@@ -38,8 +49,7 @@ public static class TouLocale
     {
         if (TranslationController.InstanceExists && TouLocaleList.TryGetValue(name, out var value))
         {
-            var id = value;
-            return TranslationController.Instance.GetString((StringNames)id) ?? defaultValue ?? "STRMISS_" + name;
+            return TranslationController.Instance.GetString(value) ?? defaultValue ?? "STRMISS3_" + name;
         }
 
         var currentLanguage =
@@ -50,7 +60,7 @@ public static class TouLocale
         if (!TouLocalization.TryGetValue(currentLanguage, out var translations) ||
             !translations.TryGetValue(name, out var translation))
         {
-            return defaultValue ?? "STRMISS_" + name;
+            return defaultValue ?? "STRMISS2_" + name;
         }
 
         return translation;
@@ -61,8 +71,7 @@ public static class TouLocale
         var text = string.Empty;
         if (TranslationController.InstanceExists && TouLocaleList.TryGetValue(name, out var value))
         {
-            var id = value;
-            text = TranslationController.Instance.GetString((StringNames)id) ?? defaultValue ?? "STRMISS_" + name;
+            text = TranslationController.Instance.GetString(value) ?? defaultValue ?? "STRMISS3_" + name;
         }
 
         var currentLanguage =
@@ -73,7 +82,7 @@ public static class TouLocale
         if ((!TouLocalization.TryGetValue(currentLanguage, out var translations) ||
              !translations.ContainsValue(name)) && text == string.Empty)
         {
-            text = defaultValue ?? "STRMISS_" + name;
+            text = defaultValue ?? "STRMISS2_" + name;
         }
 
         if (translations != null && translations.TryGetValue(name, out var translation2) && text == string.Empty)
@@ -120,34 +129,18 @@ public static class TouLocale
 
     public static void SearchInteralLocale()
     {
-        List<KeyValuePair<SupportedLangs, string>> list =
-        [
-            new(SupportedLangs.English, "en_US.xml"),
-            //new(SupportedLangs.German, "de_DE.xml"),
-            //new(SupportedLangs.Latam, "es_419.xml"),
-            //new(SupportedLangs.Spanish, "es_ES.xml"),
-            //new(SupportedLangs.Filipino, "fil_PH.xml"),
-            //new(SupportedLangs.French, "fr_FR.xml"),
-            //new(SupportedLangs.Italian, "it_IT.xml"),
-            //new(SupportedLangs.Japanese, "ja_JP.xml"),
-            //new(SupportedLangs.Korean, "ko_KR.xml"),
-            //new(SupportedLangs.Dutch, "nl_NL.xml"),
-            //new(SupportedLangs.Brazilian, "pt_BR.xml"),
-            //new(SupportedLangs.Russian, "ru_RU.xml"),
-            //new(SupportedLangs.SChinese, "zh_CN.xml"),
-            //new(SupportedLangs.TChinese, "zh_TW.xml")
-        ];
-
         var assembly = Assembly.GetExecutingAssembly();
-        foreach (var locale in list)
+        foreach (var locale in LangList)
         {
             using var resourceStream =
-                assembly.GetManifestResourceStream("TownOfUs.Resources.Locale." + locale.Value)
-                ?? throw new InvalidOperationException(
-                    $"Resource not found: TownOfUs.Resources.Locale.{locale.Value}");
+                assembly.GetManifestResourceStream("TownOfUs.Resources.Locale." + locale.Value);
+            if (resourceStream == null)
+            {
+                continue;
+            }
             using StreamReader reader = new(resourceStream);
             string xmlContent = reader.ReadToEnd();
-        
+            
             TouLocalization.TryAdd(locale.Key, []);
             ParseXmlFile(xmlContent, locale.Key);
         }
@@ -161,6 +154,21 @@ public static class TouLocale
             return;
         }
 
+        var xmlTranslations = Directory.GetFiles(directory, "*.xml");
+        foreach (var file in xmlTranslations)
+        {
+            var localeName = Path.GetFileNameWithoutExtension(file);
+            if (!LangList.ContainsValue(localeName + ".xml"))
+            {
+                Logger.LogWarning($"Invalid locale iso name: {localeName}");
+                continue;
+            }
+
+            var language = LangList.FirstOrDefault(x => x.Value == localeName + ".xml").Key;
+            TouLocalization.TryAdd(language, []);
+            ParseXmlFile(file, language);
+        }
+        
         var translations = Directory.GetFiles(directory, "*.txt");
         foreach (var file in translations)
         {
@@ -207,7 +215,7 @@ public static class TouLocale
         try
         {
             xmlDoc.LoadXml(xmlContent);
-            XmlNodeList? stringNodes = xmlDoc.SelectNodes("/resources/TouNames/string");
+            XmlNodeList? stringNodes = xmlDoc.SelectNodes("/resources/string");
 
             if (stringNodes != null)
             {
@@ -218,16 +226,20 @@ public static class TouLocale
                         string name = node.Attributes["name"]!.Value;
                         string value = node.InnerText;
                         
+                        if (TouLocalization[language].ContainsKey(name))
+                        {
+                            var ogValuePair = TouLocalization[language].FirstOrDefault(x => x.Key == name);
+                            TouLocalization[language].Remove(ogValuePair.Key);
+                        }
+                        
                         TouLocalization[language].TryAdd(name, value);
-                        if (language is SupportedLangs.English)
+                        
+                        if (language is SupportedLangs.English && !TouLocalization[language].ContainsKey(name))
                         {
                             var stringName = CustomStringName.CreateAndRegister(name);
-                            if (VanillaEnumAmounts == 0)
-                            {
-                                VanillaEnumAmounts = (int)stringName;
-                            }
-                            TouLocaleList.TryAdd(name, (int)stringName);
+                            TouLocaleList.TryAdd(name, stringName);
                         }
+                        
                     }
                 }
             }
