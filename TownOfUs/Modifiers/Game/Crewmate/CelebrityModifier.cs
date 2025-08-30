@@ -120,7 +120,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
             case ExecutionerRole:
                 cod = "tormented";
                 break;
-            case PhantomRole:
+            case PhantomTouRole:
                 cod = "spooked";
                 break;
             case MirrorcasterRole mirror:
