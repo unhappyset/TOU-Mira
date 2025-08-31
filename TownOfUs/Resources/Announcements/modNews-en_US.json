@@ -332,7 +332,9 @@
         "\n- When Spooked by a Phantom, the Celebrity shows their cause of death as Spooked properly.",
         "\n\n\r<size=105%>Other Bugfixes:</size>",
         "\n- Haunter, Phantom, and Snitch now ignore Sabotage and information on the task list (which is why there was some miscounting, I blame Slayed)",
-        "\n- There are now checks to prevent votes on dead players or votes happening from dead players"
+        "\n- There are now checks to prevent votes on dead players or votes happening from dead players",
+        "\n\n\r<size=105%>Improvements:</size>",
+        "\n- Chat Tags now italicize on hover. (PR #65) (Chipseq)"
       ]
     }
       ]

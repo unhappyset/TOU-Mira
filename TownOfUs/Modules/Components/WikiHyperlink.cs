@@ -40,8 +40,6 @@ public class WikiHyperlink(IntPtr cppPtr) : MonoBehaviour(cppPtr)
             {
                 OpenHyperlink(linkInfo);
             }
-
-            return;
         }
     }
 
