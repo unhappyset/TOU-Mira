@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Xml;
 using BepInEx.Logging;
+using MiraAPI.Utilities;
 using Reactor.Localization;
 using Reactor.Localization.Utilities;
 using UnityEngine;
@@ -43,7 +44,7 @@ public static class TouLocale
     // Language, Xml Name, then Value
     public static Dictionary<SupportedLangs, Dictionary<string, string>> TouLocalization { get; } = [];
 
-    private static ManualLogSource Logger { get; } = BepInEx.Logging.Logger.CreateLogSource("TouLocale");
+    internal static ManualLogSource Logger { get; } = BepInEx.Logging.Logger.CreateLogSource("TouLocale");
 
     public static string Get(string name, string? defaultValue = null)
     {
@@ -64,6 +65,10 @@ public static class TouLocale
         }
 
         return translation;
+    }
+    public static StringNames GetStringName(string name)
+    {
+        return TouLocaleList.GetValueOrDefault(name, StringNames.ErrorCreate);
     }
 
     public static string GetParsed(string name, string? defaultValue = null, Dictionary<string, string>? parseList = null)
@@ -136,8 +141,10 @@ public static class TouLocale
                 assembly.GetManifestResourceStream("TownOfUs.Resources.Locale." + locale.Value);
             if (resourceStream == null)
             {
+                Logger.LogError($"Language is not added: {locale.Key.ToDisplayString()}");
                 continue;
             }
+            Logger.LogWarning($"Language is being added: {locale.Key.ToDisplayString()}");
             using StreamReader reader = new(resourceStream);
             string xmlContent = reader.ReadToEnd();
             
@@ -219,6 +226,7 @@ public static class TouLocale
 
             if (stringNodes != null)
             {
+                Logger.LogWarning($"{stringNodes.Count} XML Nodes found!");
                 foreach (XmlNode node in stringNodes)
                 {
                     if (node.Attributes?["name"] != null)
@@ -234,7 +242,7 @@ public static class TouLocale
                         
                         TouLocalization[language].TryAdd(name, value);
                         
-                        if (language is SupportedLangs.English && !TouLocalization[language].ContainsKey(name))
+                        if (language is SupportedLangs.English && !TouLocaleList.ContainsKey(name))
                         {
                             var stringName = CustomStringName.CreateAndRegister(name);
                             TouLocaleList.TryAdd(name, stringName);
@@ -242,6 +250,11 @@ public static class TouLocale
                         
                     }
                 }
+                Logger.LogWarning($"{TouLocaleList.Count} String Names currently exist!");
+            }
+            else
+            {
+                Logger.LogError($"XML nodes were not found in {xmlContent}.");
             }
         }
         catch (XmlException ex)
