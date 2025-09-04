@@ -142,7 +142,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
 
         yield return new WaitForSeconds(OptionGroupSingleton<AltruistOptions>.Instance.ReviveDuration.Value);
 
-        if (!MeetingHud.Instance)
+        if (!MeetingHud.Instance && !Player.HasDied())
         {
             GameHistory.ClearMurder(dead);
 

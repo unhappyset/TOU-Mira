@@ -52,7 +52,6 @@ public static class JesterEvents
                 notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
                 if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.Haunts)
                 {
-                    PlayerControl.LocalPlayer.RpcAddModifier<IndirectAttackerModifier>(true);
                     CustomButtonSingleton<JesterHauntButton>.Instance.SetActive(true, jester);
                     DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "null", -1, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
                     var notif2 = Helpers.CreateAndShowNotification(TouLocale.Get("TouNotifJesterHauntOwner"), Color.white);
