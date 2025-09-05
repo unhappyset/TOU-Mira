@@ -6,4 +6,9 @@
   <string name="ShowWelcomeMessage">Laat Welkomstbericht zien</string>
   <string name="ShowSummaryMessage">Laat Samenvattingsbericht zien</string>
   <string name="TouRoleClericCleansedNoEffects">Geen negatieve effecten gevonden op \%player\%.</string>
+  <string name="CrewmateKeyword">Bemanningslid</string>
+  <string name="CrewKeyword">Bemanning</string>
+  <string name="NeutralKeyword">Neutraal</string>
+  <string name="Alliance">Alliantie</string>
+  <string name="ImpostorKeyword">Bedrieger</string>
 </resources>
