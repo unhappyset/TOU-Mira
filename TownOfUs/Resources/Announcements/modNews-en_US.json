@@ -309,8 +309,8 @@
       ]
     },
     {
-      "Date": "2025-08-24T12:50:00Z",
-      "Number": "100014",
+      "Date": "2025-09-06T12:50:00Z",
+      "Number": "100015",
       "ShortTitle": "TOU: Mira v1.1.2",
       "SubTitle": "Snitches Get Stitches",
       "Title": "Another Pack Of Bugfixes",
@@ -330,6 +330,7 @@
         "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
         "\n- Phantom, Executioner, and Jester ghost kills are now run through a more direct method to force a murder at all costs.",
         "\n\n\r<size=105%>Impostor Role Bugfixes:</size>",
+        "\n- Swooper player names are no longer revealed during Camo Comms.",
         "\n- Ambusher can no longer get outed when they are taking bodies away.",
         "\n- When the Ambusher's victim is revived while their body is taken away, the ambusher will no longer softlock.",
         "\n- Miner vents are fully disabled from other roles if they aren't visible.",
