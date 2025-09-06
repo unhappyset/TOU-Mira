@@ -12,7 +12,7 @@ namespace TownOfUs.Roles.Other;
 public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownOfUsRole, IWikiDiscoverable
 {
     private Minigame _hauntMenu = null!;
-    
+
     public static readonly List<byte> TrackedSpectators = [];
     public static readonly List<PlayerControl> TrackedPlayers = [];
     public static bool FixedCam;
@@ -26,7 +26,7 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         _hauntMenu = crewGhost.HauntMenu;
         Ability = crewGhost.Ability;
     }
-    
+
     // reimplement haunt minigame
     public override void UseAbility()
     {
@@ -50,7 +50,7 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         minigame.Begin(null);
         HudManager.Instance.AbilityButton.SetDisabled();
     }
-    
+
     public string RoleName => TouLocale.Get(TouNames.Spectator, "Spectator");
     public string RoleDescription => "Watch the game unfold!";
     public string RoleLongDescription => "Never participating, watch as the chaos unfolds in-game!";
@@ -77,7 +77,7 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         RoleBehaviourStubs.Initialize(this, player);
         DeathHandlerModifier.UpdateDeathHandler(Player, "Spectator", 0, DeathHandlerOverride.SetFalse);
 
-        if (!Player.AmOwner)
+        if (!player.AmOwner)
             return;
 
         ShowHud = false;
@@ -148,7 +148,7 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         FixedCam = false;
         ShowShadows = true;
 
-        if (!Player.AmOwner)
+        if (Player?.AmOwner != true)
             return;
 
         HudManager.Instance.PlayerCam.SetTarget(Player);

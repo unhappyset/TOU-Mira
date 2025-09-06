@@ -38,6 +38,15 @@ public static class EndGamePatches
             playerRoleString.Clear();
             if (playerControl.Data.Role is SpectatorRole)
             {
+                EndGameData.PlayerRecords.Add(new EndGameData.PlayerRecord
+                {
+                    PlayerName = playerControl.Data.PlayerName,
+                    RoleString = "Spectator",
+                    Winner = false,
+                    LastRole = (RoleTypes)RoleId.Get<SpectatorRole>(),
+                    Team = ModdedRoleTeams.Custom,
+                    PlayerId = playerControl.PlayerId
+                });
                 continue;
             }
 

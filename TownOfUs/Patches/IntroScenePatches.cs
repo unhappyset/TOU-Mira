@@ -17,14 +17,13 @@ public static class IntroScenePatches
     {
         public static void Prefix(ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
         {
-            foreach (var player in teamToDisplay.ToArray())
+            foreach (var id in SpectatorRole.TrackedSpectators)
             {
-                if (SpectatorRole.TrackedSpectators.Contains(player.PlayerId))
-                    teamToDisplay.Remove(player);
+                teamToDisplay.Remove(GameData.Instance.GetPlayerById(id).Object);
             }
         }
     }
-    
+
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
     [HarmonyPriority(Priority.Last)]
@@ -68,6 +67,7 @@ public static class IntroScenePatches
 
         SpectatorRole.InitList();
     }
+
     public static void SetHiddenImpostors(IntroCutscene __instance)
     {
         var amount = Helpers.GetAlivePlayers().Count(x => x.IsImpostor());

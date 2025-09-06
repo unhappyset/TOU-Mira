@@ -29,7 +29,7 @@ public static class ChatPatches
 
         var spaceLess = text.Replace(" ", string.Empty);
 
-        if (spaceLess.StartsWith("/spec", StringComparison.OrdinalIgnoreCase))
+        if (spaceLess.StartsWith("/spec", StringComparison.OrdinalIgnoreCase) && LobbyBehaviour.Instance)
         {
             if (SpectatorRole.TrackedSpectators.Contains(PlayerControl.LocalPlayer.PlayerId))
             {
@@ -269,7 +269,7 @@ public static class ChatPatches
 
     [MethodRpc((uint)TownOfUsRpc.SelectSpectator, SendImmediately = true)]
     public static void SelectSpectator(PlayerControl player) => SpectatorRole.TrackedSpectators.Add(player.PlayerId);
-    
+
     [MethodRpc((uint)TownOfUsRpc.RemoveSpectator, SendImmediately = true)]
     public static void RemoveSpectator(PlayerControl player) => SpectatorRole.TrackedSpectators.Remove(player.PlayerId);
 }
