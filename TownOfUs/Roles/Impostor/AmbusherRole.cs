@@ -202,7 +202,8 @@ public sealed class AmbusherRole(IntPtr cppPtr)
                 ambusher.NetTransform.SetPaused(true);
                 bodyPos.y += 0.175f;
                 bodyPos.z = bodyPos.y / 1000f;
-                ambusher.RpcSetPos(bodyPos);
+                ambusher.transform.position = bodyPos;
+                ambusher.NetTransform.SnapTo(bodyPos);
             }
 
             // Hide real player
@@ -277,8 +278,35 @@ public sealed class AmbusherRole(IntPtr cppPtr)
             
             yield return new WaitForSeconds(spriteAnim.m_defaultAnim.length);
 
-            if (ambusher.HasDied())
+            if (!target.HasDied() || MeetingHud.Instance || ambusher.HasDied())
             {
+                ambushAnim.gameObject.Destroy();
+                ambusher.Visible = true;
+                ambusher.RemoveModifier<IndirectAttackerModifier>();
+
+                foreach (var shield in ambusher.GetModifiers<BaseShieldModifier>())
+                {
+                    shield.IsVisible = true;
+                    shield.SetVisible();
+                }
+
+                if (ambusher.HasModifier<FirstDeadShield>())
+                {
+                    ambusher.GetModifier<FirstDeadShield>()!.IsVisible = true;
+                    ambusher.GetModifier<FirstDeadShield>()!.SetVisible();
+                }
+
+                if (!MeetingHud.Instance && !ambusher.HasDied())
+                {
+                    ambusher.transform.position = ogPos;
+                    ambusher.NetTransform.SnapTo(ogPos);
+                }
+                
+                if (!ambusher.AmOwner)
+                    yield break;
+
+                ambusher.moveable = true;
+                ambusher.NetTransform.SetPaused(false);
                 yield break;
             }
             
@@ -286,7 +314,8 @@ public sealed class AmbusherRole(IntPtr cppPtr)
             
             if (MeetingHud.Instance == null && target.HasDied())
             {
-                if (ambusher.AmOwner) ambusher.RpcSetPos(ogPos);
+                ambusher.transform.position = ogPos;
+                ambusher.NetTransform.SnapTo(ogPos);
                 var targetPos = ogPos + new Vector3(-0.05f, 0.175f, 0f);
                 targetPos.z = targetPos.y / 1000f;
                 body.transform.position = (ambusher.Collider.bounds.center - targetPos) + targetPos;
