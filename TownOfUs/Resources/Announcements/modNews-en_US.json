@@ -330,6 +330,8 @@
         "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
         "\n- Phantom, Executioner, and Jester ghost kills are now run through a more direct method to force a murder at all costs.",
         "\n\n\r<size=105%>Impostor Role Bugfixes:</size>",
+        "\n- Ambusher can no longer get outed when they are taking bodies away.",
+        "\n- When the Ambusher's victim is revived while their body is taken away, the ambusher will no longer softlock.",
         "\n- Miner vents are fully disabled from other roles if they aren't visible.",
         "\n\n\r<size=105%>Modifier Bugfixes:</size>",
         "\n- Celebrity Report no longer gets parsed incorrectly.",
