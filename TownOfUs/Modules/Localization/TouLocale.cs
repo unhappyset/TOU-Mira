@@ -121,18 +121,21 @@ public static class TouLocale
         return text;
     }
 
+    public static void RegisterManager()
+    {
+        LocalizationManager.Register(new TouLocalizationProvider());
+    }
     public static void Initialize()
     {
-        SearchInteralLocale();
+        SearchInternalLocale();
         SearchDirectory(BepInEx.Paths.PluginPath);
         SearchDirectory(BepInEx.Paths.BepInExRootPath);
         SearchDirectory(BepinexLocaleDirectory);
         SearchDirectory(BepInEx.Paths.GameRootPath);
         SearchDirectory(LocaleDirectory);
-        LocalizationManager.Register(new TouLocalizationProvider());
     }
 
-    public static void SearchInteralLocale()
+    public static void SearchInternalLocale()
     {
         var assembly = Assembly.GetExecutingAssembly();
         foreach (var locale in LangList)
