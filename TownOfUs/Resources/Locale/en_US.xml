@@ -56,6 +56,17 @@
     <string name="Denim">Denim</string>
     <string name="CottonCandy">Cotton Candy</string>
     <string name="Rainbow">Rainbow</string>
+    <!-- Terms used in-game and in the wiki -->
+    <string name="Alignment">Alignment</string>
+    <string name="WikiDescriptionTab">Description</string>
+    <string name="WikiAbilitiesTab">Abilities</string>
+    <string name="WikiRoleGuideTab">Role Guide</string>
+    <string name="SearchboxHeadsUp">Search Here</string>
+    <string name="Roles">Roles</string>
+    <string name="Modifiers">Modifiers</string>
+    <string name="Amount">Amount</string>
+    <string name="Chance">Chance</string>
+    <string name="Options">Options</string>
     <!-- Role Subalignments -->
     <string name="CrewmateInvestigative">Crewmate Investigative</string>
     <string name="CrewmateKilling">Crewmate Killing</string>
@@ -140,11 +151,6 @@
     <string name="NonImpPassive">Non Imp Passive</string>
     <string name="External">External</string>
     <string name="Other">Other</string>
-
-    <string name="Roles">Roles</string>
-    <string name="Modifiers">Modifiers</string>
-    <string name="Amount">Amount</string>
-    <string name="Chance">Chance</string>
     <!-- Role Tab and Intro Heads-Up -->
     <string name="YouAreA">You are a</string>
     <string name="YouAreAn">You are an</string>
