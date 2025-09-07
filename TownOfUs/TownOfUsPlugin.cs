@@ -67,7 +67,7 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
 
     public TownOfUsPlugin()
     {
-        TouLocale.RegisterManager();
+        TouLocale.Initialize();
     }
 
     /// <summary>

@@ -1,11 +1,9 @@
 using Reactor.Localization;
-using Reactor.Utilities;
 
 namespace TownOfUs.Modules.Localization;
 
 public class TouLocalizationProvider : LocalizationProvider
 {
-    private static bool _loadedStrings;
     public override bool TryGetText(StringNames stringName, out string? result)
     {
         result = null;
@@ -65,10 +63,14 @@ public class TouLocalizationProvider : LocalizationProvider
     }
     public override void OnLanguageChanged(SupportedLangs newLanguage)
     {
-        if (!_loadedStrings)
+        var langToUse = TouLocale.TouLocalization.ContainsKey(newLanguage) ? newLanguage : SupportedLangs.English;
+        foreach (var keypair in TouLocale.TouLocalization[langToUse])
         {
-            TouLocale.Initialize();
-            _loadedStrings = true;
+            TranslationController.Instance.currentLanguage.AllStrings.TryAdd(keypair.Key, keypair.Value);
+        }
+        foreach (var keypair in TouLocale.TouLocalization[SupportedLangs.English])
+        {
+            TranslationController.Instance.fallbackLanguage.AllStrings.TryAdd(keypair.Key, keypair.Value);
         }
         // Add checks for the options menu to change all names there, april fools button on the main menu, etc etc
     }
