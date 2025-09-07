@@ -14,9 +14,17 @@ public sealed class LookoutRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public string RoleName => TouLocale.Get("TouRoleLookout", "Lookout");
-    public string RoleDescription => "Keep Your Eyes Wide Open";
-    public string RoleLongDescription => "Watch other crewmates to see what roles interact with them";
+    public static string LocaleKey => "Lookout";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
     public Color RoleColor => TownOfUsColors.Lookout;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
@@ -33,13 +41,6 @@ public sealed class LookoutRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
         return ITownOfUsRole.SetNewTabText(this);
     }
 
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Crewmate Investigative role that can watch other players during rounds. During meetings they will see all roles who interact with each watched player."
-            + MiscUtils.AppendOptionsText(GetType());
-    }
-
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -47,13 +48,12 @@ public sealed class LookoutRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Watch",
-            "Watch a player or multiple, the next meeting you will know which players interacted with the watched ones.",
-            TouCrewAssets.WatchSprite)
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Watch", "Watch"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}WatchWikiDescription"),
+                    TouCrewAssets.WatchSprite)
             };
         }
     }
-
     [MethodRpc((uint)TownOfUsRpc.LookoutSeePlayer)]
     public static void RpcSeePlayer(PlayerControl target, PlayerControl source)
     {
