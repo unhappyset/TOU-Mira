@@ -7,7 +7,6 @@ using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles;
-using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities;
 
 namespace TownOfUs.Events.Impostor;
