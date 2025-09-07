@@ -75,9 +75,9 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
-        DeathHandlerModifier.UpdateDeathHandler(Player, "Spectator", 0, DeathHandlerOverride.SetFalse);
+        DeathHandlerModifier.UpdateDeathHandler(Player, "Spectating", 0, DeathHandlerOverride.SetFalse);
 
-        if (!player.AmOwner)
+        if (!Player.AmOwner)
             return;
 
         ShowHud = false;
@@ -148,12 +148,12 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         FixedCam = false;
         ShowShadows = true;
 
-        if (Player?.AmOwner != true)
+        /*if (!Player.AmOwner)
             return;
 
         HudManager.Instance.PlayerCam.SetTarget(Player);
         HudManager.Instance.ShadowQuad.gameObject.SetActive(ShowShadows);
-        HudManager.Instance.SetHudActive(ShowHud);
+        HudManager.Instance.SetHudActive(ShowHud);*/
     }
 
     public string GetAdvancedDescription()

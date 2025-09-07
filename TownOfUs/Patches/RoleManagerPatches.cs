@@ -675,7 +675,14 @@ public static class TouRoleManagerPatches
         }
 
         //Logger<TownOfUsPlugin>.Error($"RoleManager.SelectRoles 2");
+        var spectators = GameData.Instance.AllPlayers.ToArray().Where(x => SpectatorRole.TrackedSpectators.Contains(x.PlayerId)).ToList();
+        var specId = (RoleTypes)RoleId.Get<SpectatorRole>();
 
+        foreach (var player in spectators)
+        {
+            player.Object.RpcSetRole(RoleTypes.Crewmate);
+        }
+        
         var random = new System.Random();
 
         var players = GameData.Instance.AllPlayers.ToArray().Excluding(x => SpectatorRole.TrackedSpectators.Contains(x.PlayerId)).ToList();
@@ -726,14 +733,11 @@ public static class TouRoleManagerPatches
             AssignRoles(infected);
         }
 
-        var spectators = GameData.Instance.AllPlayers.ToArray().Where(x => SpectatorRole.TrackedSpectators.Contains(x.PlayerId)).ToList();
-        var specId = (RoleTypes)RoleId.Get<SpectatorRole>();
-
         foreach (var player in spectators)
         {
             player.Object.RpcSetRole(specId);
         }
-
+        
         AssignTargets();
 
         return false;
