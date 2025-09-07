@@ -4,18 +4,19 @@ namespace TownOfUs.Modules.Localization;
 
 public class TouLocalizationProvider : LocalizationProvider
 {
+    private static bool _loadedStrings;
     public override bool TryGetText(StringNames stringName, out string? result)
     {
         result = null;
         if (TouLocale.TouLocaleList.ContainsValue(stringName) && CurrentLanguage != null)
         {
             var touName = TouLocale.TouLocaleList.FirstOrDefault(x => x.Value == stringName).Key;
-            TouLocale.Logger.LogError($"Tou Name found for {touName}");
+            // TouLocale.Logger.LogError($"Tou Name found for {touName}");
             
             if (TouLocale.TouLocalization.TryGetValue((SupportedLangs)CurrentLanguage, out var translations) &&
                 translations.TryGetValue(touName, out var translation))
             {
-                TouLocale.Logger.LogError($"Tou Name fetched for {touName}: {translation}");
+                // TouLocale.Logger.LogError($"Tou Name fetched for {touName}: {translation}");
                 result = translation;
                 return true;
             }
@@ -23,7 +24,7 @@ public class TouLocalizationProvider : LocalizationProvider
             if (TouLocale.TouLocalization.TryGetValue(SupportedLangs.English, out var translationsEng) &&
                      translationsEng.TryGetValue(touName, out var englishDefault))
             {
-                TouLocale.Logger.LogError($"Tou Name fetched default for {touName}: {englishDefault}");
+                // .Logger.LogError($"Tou Name fetched default for {touName}: {englishDefault}");
                 result = englishDefault;
                 return true;
             }
@@ -38,12 +39,12 @@ public class TouLocalizationProvider : LocalizationProvider
         if (TouLocale.TouLocaleList.ContainsValue(stringName) && CurrentLanguage != null)
         {
             var touName = TouLocale.TouLocaleList.FirstOrDefault(x => x.Value == stringName).Key;
-            TouLocale.Logger.LogError($"Tou Name found for {touName}");
+            // TouLocale.Logger.LogError($"Tou Name found for {touName}");
             
             if (TouLocale.TouLocalization.TryGetValue((SupportedLangs)CurrentLanguage, out var translations) &&
                 translations.TryGetValue(touName, out var translation))
             {
-                TouLocale.Logger.LogError($"Tou Name fetched for {touName}: {translation}");
+                // TouLocale.Logger.LogError($"Tou Name fetched for {touName}: {translation}");
                 result = translation;
                 return true;
             }
@@ -51,7 +52,7 @@ public class TouLocalizationProvider : LocalizationProvider
             if (TouLocale.TouLocalization.TryGetValue(SupportedLangs.English, out var translationsEng) &&
                 translationsEng.TryGetValue(touName, out var englishDefault))
             {
-                TouLocale.Logger.LogError($"Tou Name fetched default for {touName}: {englishDefault}");
+                // TouLocale.Logger.LogError($"Tou Name fetched default for {touName}: {englishDefault}");
                 result = englishDefault;
                 return true;
             }
@@ -63,6 +64,11 @@ public class TouLocalizationProvider : LocalizationProvider
     }
     public override void OnLanguageChanged(SupportedLangs newLanguage)
     {
+        if (!_loadedStrings)
+        {
+            TouLocale.LoadExternalLocale();
+            _loadedStrings = true;
+        }
         var langToUse = TouLocale.TouLocalization.ContainsKey(newLanguage) ? newLanguage : SupportedLangs.English;
         foreach (var keypair in TouLocale.TouLocalization[langToUse])
         {

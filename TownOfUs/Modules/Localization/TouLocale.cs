@@ -120,10 +120,15 @@ public static class TouLocale
         
         return text;
     }
+
     public static void Initialize()
     {
         LocalizationManager.Register(new TouLocalizationProvider());
         SearchInternalLocale();
+    }
+
+    public static void LoadExternalLocale()
+    {
         SearchDirectory(BepInEx.Paths.PluginPath);
         SearchDirectory(BepInEx.Paths.BepInExRootPath);
         SearchDirectory(BepinexLocaleDirectory);
