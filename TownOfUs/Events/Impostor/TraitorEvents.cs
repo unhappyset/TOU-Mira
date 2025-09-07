@@ -17,14 +17,14 @@ public static class TraitorEvents
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (@event.TriggeredByIntro)
+        if (@event.TriggeredByIntro || !PlayerControl.LocalPlayer.IsHost())
         {
             return;
         }
 
         var traitor = ModifierUtils.GetActiveModifiers<ToBecomeTraitorModifier>()
             .Where(x => !x.Player.HasDied() && x.Player.IsCrewmate()).Random();
-        if (traitor != null && AmongUsClient.Instance.AmHost)
+        if (traitor != null)
         {
             var alives = Helpers.GetAlivePlayers().ToList();
             if (alives.Count < OptionGroupSingleton<TraitorOptions>.Instance.LatestSpawn)
@@ -56,12 +56,5 @@ public static class TraitorEvents
 
             ToBecomeTraitorModifier.RpcSetTraitor(traitorPlayer);
         }
-
-        if (PlayerControl.LocalPlayer?.Data?.Role is not TraitorRole traitorRole)
-        {
-            return;
-        }
-
-        traitorRole.UpdateRole();
     }
 }
