@@ -196,20 +196,22 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
             }
         }
 
-            
-        var traitorMenu = AmbassadorSelectionMinigame.Create();
-        traitorMenu.Open(
-            roleList,
-            role =>
-            {
-                if (role != null)
+        if (Minigame.Instance == null)
+        {
+            var trainMenu = AmbassadorSelectionMinigame.Create();
+            trainMenu.Open(
+                roleList,
+                role =>
                 {
-                    meetingMenu.Actives[voteArea.TargetPlayerId] = true;
-                    RpcRetrain(PlayerControl.LocalPlayer, player.PlayerId, (ushort)role.Role);
+                    if (role != null)
+                    {
+                        meetingMenu.Actives[voteArea.TargetPlayerId] = true;
+                        RpcRetrain(PlayerControl.LocalPlayer, player.PlayerId, (ushort)role.Role);
+                    }
+                    trainMenu.Close();
                 }
-                traitorMenu.Close();
-            }
-        );
+            );
+        }
     }
 
     private bool IsExempt(PlayerVoteArea voteArea)

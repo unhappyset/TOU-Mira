@@ -7,6 +7,7 @@ using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using PowerTools;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
@@ -78,9 +79,9 @@ public sealed class MayorRole(IntPtr cppPtr)
     {
         RoleBehaviourStubs.Initialize(this, player);
         Player.AddModifier<MayorRevealModifier>(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MayorRole>()));
-        if (Player.HasModifier<ToBecomeTraitorModifier>())
+        if (Player.TryGetModifier<ToBecomeTraitorModifier>(out var traitorMod) && PlayerControl.LocalPlayer.IsHost())
         {
-            Player.GetModifier<ToBecomeTraitorModifier>()!.Clear();
+            traitorMod.Clear();
         }
         if (MeetingHud.Instance && !DisabledAnimation)
         {
