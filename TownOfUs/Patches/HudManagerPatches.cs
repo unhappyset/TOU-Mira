@@ -275,10 +275,11 @@ public static class HudManagerPatches
         
         foreach (var player in PlayerControl.AllPlayerControls)
         {
-            var appearanceType = player.GetAppearanceType();
+            var appearance = player.GetAppearance();
+            var appearanceType = appearance.AppearanceType;
             if (isActive)
             {
-                if (appearanceType != TownOfUsAppearances.Swooper && appearanceType != TownOfUsAppearances.Camouflage)
+                if (appearanceType != TownOfUsAppearances.Swooper && appearanceType != TownOfUsAppearances.Camouflage || (appearanceType == TownOfUsAppearances.Camouflage && appearance.NameVisible))
                 {
                     player.SetCamouflage();
                 }

@@ -99,7 +99,7 @@ public sealed class MinerRole(IntPtr cppPtr)
         if (!player.AmOwner && !immediate)
         {
             Logger<TownOfUsPlugin>.Error("RpcPlaceVent - Hide Vent");
-            vent.myRend.enabled = false;
+            vent.gameObject.SetActive(false);
         }
 
         vent.Id = ventId;
@@ -193,7 +193,7 @@ public sealed class MinerRole(IntPtr cppPtr)
 
         if (vent != null)
         {
-            vent.myRend.enabled = true;
+            vent.gameObject.SetActive(true);
 
             var touAbilityEvent = new TouAbilityEvent(AbilityType.MinerRevealVent, player, vent);
             MiraEventManager.InvokeEvent(touAbilityEvent);

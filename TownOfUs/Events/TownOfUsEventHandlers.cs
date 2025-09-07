@@ -96,10 +96,15 @@ public static class TownOfUsEventHandlers
         if (PlayerControl.LocalPlayer.Data.Role is ITownOfUsRole custom)
         {
             instance.RoleText.text = custom.RoleName;
-            instance.YouAreText.text = custom.YouAreText;
+            if (instance.YouAreText.transform.TryGetComponent<TextTranslatorTMP>(out var tmp))
+            {
+                tmp.defaultStr = custom.YouAreText;
+                tmp.TargetText = StringNames.None;
+                tmp.ResetText();
+            }
             instance.RoleBlurbText.text = custom.RoleDescription;
         }
-
+        
         var teamModifier = PlayerControl.LocalPlayer.GetModifiers<TouGameModifier>().FirstOrDefault();
         if (teamModifier != null && OptionGroupSingleton<GeneralOptions>.Instance.TeamModifierReveal)
         {
@@ -579,6 +584,9 @@ public static class TownOfUsEventHandlers
     {
         yield return new WaitForSeconds(0.01f);
         HudManager.Instance.SetHudActive(false);
+        HudManager.Instance.AbilityButton.SetDisabled();
+        HudManager.Instance.SabotageButton.SetDisabled();
+        HudManager.Instance.UseButton.SetDisabled();
     }
 
     private static IEnumerator CoAnimateDeath(PlayerVoteArea voteArea)

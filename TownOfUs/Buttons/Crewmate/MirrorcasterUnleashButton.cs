@@ -1,7 +1,9 @@
 ﻿using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
+using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Options.Modifiers.Alliance;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
@@ -51,6 +53,13 @@ public sealed class MirrorcasterUnleashButton : TownOfUsRoleButton<MirrorcasterR
             return false;
         }
 
-        return base.IsTargetValid(target);
+        var isValid = base.IsTargetValid(target);
+        
+        if (isValid && target != null && target.TryGetModifier<MagicMirrorModifier>(out var mirrorMod) && mirrorMod.Mirrorcaster == PlayerControl.LocalPlayer)
+        {
+            isValid = false;
+        }
+
+        return isValid;
     }
 }
