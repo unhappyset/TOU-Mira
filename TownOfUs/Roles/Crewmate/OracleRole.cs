@@ -21,9 +21,34 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Insight;
-    public string RoleName => TouLocale.Get("TouRoleOracle", "Oracle");
-    public string RoleDescription => "Get Other Player's To Confess Their Sins";
-    public string RoleLongDescription => "Get another player to confess on your passing";
+    public static string LocaleKey => "Oracle";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription").Replace("<revealAccuracy>", $"{OptionGroupSingleton<OracleOptions>.Instance.RevealAccuracyPercentage}") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+    
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Bless", "Bless"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}BlessWikiDescription"),
+                    TouCrewAssets.BlessSprite),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Confess", "Confess"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}ConfessWikiDescription").Replace("<revealAccuracy>", $"{OptionGroupSingleton<OracleOptions>.Instance.RevealAccuracyPercentage}"),
+                    TouCrewAssets.ConfessSprite)
+            };
+        }
+    }
     public Color RoleColor => TownOfUsColors.Oracle;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
@@ -38,30 +63,6 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public StringBuilder SetTabText()
     {
         return ITownOfUsRole.SetNewTabText(this);
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Crewmate Protective role that can get another player to confess (revealing their faction with {OptionGroupSingleton<OracleOptions>.Instance.RevealAccuracyPercentage}% accuracy if the Oracle dies) or can protect a player from meeting abilities."
-            + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities
-    {
-        get
-        {
-            return new List<CustomButtonWikiDescription>
-            {
-        new("Bless",
-            "Blessing a player prevents any harm from being done to them in the meeting.",
-            TouCrewAssets.BlessSprite),
-        new("Confess",
-            $"Make a player confess in a meeting, giving a vision of 3 possible evils (including the confessor), and also reveal their faction to everyone with {OptionGroupSingleton<OracleOptions>.Instance.RevealAccuracyPercentage}% accuracy when the Oracle dies.",
-            TouCrewAssets.ConfessSprite)
-            };
-        }
     }
 
     public override void OnDeath(DeathReason reason)

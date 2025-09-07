@@ -41,9 +41,32 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
     }
 
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => TouLocale.Get("TouRoleMedic", "Medic");
-    public string RoleDescription => "Create A Shield To Protect A Crewmate";
-    public string RoleLongDescription => "Protect a crewmate with a shield";
+    public static string LocaleKey => "Medic";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Shield", "Shield"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}ShieldWikiDescription"),
+                    TouCrewAssets.MedicSprite)
+            };
+        }
+    }
+
     public Color RoleColor => TownOfUsColors.Medic;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
@@ -66,26 +89,6 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
         }
 
         return stringB;
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return $"The {RoleName} is a Crewmate Protective role that can give a Shield to a player."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities
-    {
-        get
-        {
-            return new List<CustomButtonWikiDescription>
-            {
-        new("Shield",
-            "Give a Shield to a player, protecting them from being killed by others",
-            TouCrewAssets.MedicSprite)
-            };
-        }
     }
 
     public override void Initialize(PlayerControl player)

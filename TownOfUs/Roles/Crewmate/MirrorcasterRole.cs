@@ -45,9 +45,34 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
     }
 
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => TouLocale.Get("TouRoleMirrorcaster", "Mirrorcaster");
-    public string RoleDescription => "Reflect Attacks Onto Others";
-    public string RoleLongDescription => "Protect a player with a Magic Mirror.\nIf they are directly attacked, then\nunleash the attack onto another player!";
+    public static string LocaleKey => "Mirrorcaster";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+    
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}MagicMirror", "Magic Mirror"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}MagicMirrorWikiDescription"),
+                    TouCrewAssets.MagicMirrorSprite),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Unleash", "Unleash"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}UnleashWikiDescription"),
+                    TouCrewAssets.UnleashSprite)
+            };
+        }
+    }
     public Color RoleColor => TownOfUsColors.Mirrorcaster;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
@@ -71,29 +96,6 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
         }
 
         return stringB;
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return $"The {RoleName} is a Crewmate Protective role that can cast a Magic Mirror on a player to protect them. If attacked directly, the Mirrorcaster can then unleash onto another player."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities
-    {
-        get
-        {
-            return new List<CustomButtonWikiDescription>
-            {
-        new("Magic Mirror",
-            "Place a Mirror on a player. If the player is attacked directly, then you will be notified and you will be able to unleash onto another player. Roles that ignore the Magic Mirror are Arsonist, Veteran, Pestilence, Bomber (if the player is bombed), and a few others.",
-            TouCrewAssets.MagicMirrorSprite),
-        new("Unleash",
-            "Once the Magic Mirror shatters, utilize its power to unleash the attack onto another player!",
-            TouCrewAssets.UnleashSprite)
-            };
-        }
     }
 
     public void Clear()
