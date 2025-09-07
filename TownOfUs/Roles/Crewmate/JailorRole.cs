@@ -57,7 +57,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Jail", "Jail"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}JailWikiDescription"),
                     TouCrewAssets.JailSprite),
-                new(TouLocale.GetParsed($"TouRole{LocaleKey}Execute", "Execute"),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}ExecuteWiki", "Execute"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}ExecuteWikiDescription"),
                     TouAssets.ExecuteCleanSprite)
             };

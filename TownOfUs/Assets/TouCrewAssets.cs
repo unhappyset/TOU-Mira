@@ -80,7 +80,7 @@ public static class TouCrewAssets
     public static LoadableAsset<Sprite> FlushSprite { get; } =
         new LoadableBundleAsset<Sprite>("FlushButton", TouAssets.MainBundle);
 
-    public static LoadableAsset<Sprite> BarricadeSprite { get; } =
+    public static LoadableAsset<Sprite> BlockSprite { get; } =
         new LoadableBundleAsset<Sprite>("BarricadeButton", TouAssets.MainBundle);
 
     public static LoadableAsset<Sprite> Transport { get; } =

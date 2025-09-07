@@ -22,7 +22,7 @@ public sealed class PlumberBlockButton : TownOfUsRoleButton<PlumberRole, Vent>
     public override Color TextOutlineColor => TownOfUsColors.Plumber;
     public override float Cooldown => OptionGroupSingleton<PlumberOptions>.Instance.BlockCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<PlumberOptions>.Instance.MaxBarricades;
-    public override LoadableAsset<Sprite> Sprite => TouCrewAssets.BarricadeSprite;
+    public override LoadableAsset<Sprite> Sprite => TouCrewAssets.BlockSprite;
     public int ExtraUses { get; set; }
 
     public override bool IsTargetValid(Vent? target)

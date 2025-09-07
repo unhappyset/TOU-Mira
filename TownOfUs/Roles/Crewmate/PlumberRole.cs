@@ -35,11 +35,34 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     [HideFromIl2Cpp] public static List<KeyValuePair<GameObject, int>> Barricades { get; set; } = [];
 
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => TouLocale.Get("TouRolePlumber", "Plumber");
-    public string RoleDescription => "Get The Rats Out Of The Sewers";
+    public static string LocaleKey => "Plumber";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
 
-    public string RoleLongDescription =>
-        "Flush the vent system to kick venters out, and\nbarricade vents to block them the next round";
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+    
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Flush", "Flush"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}FlushWikiDescription"),
+                    TouCrewAssets.FlushSprite),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Block", "Block"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}BlockWikiDescription"),
+                    TouCrewAssets.BlockSprite)
+            };
+        }
+    }
 
     public Color RoleColor => TownOfUsColors.Plumber;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
@@ -54,30 +77,6 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     public void LobbyStart()
     {
         Clear();
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Crewmate Support role that can place Barricades on vents and Flush anyone out of vents."
-            + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities
-    {
-        get
-        {
-            return new List<CustomButtonWikiDescription>
-            {
-        new("Flush",
-            "Flushing the vents makes every vent open and close, kicking out anyone who is actively in a vent. The Plumber also gets an arrow pointing to every flushed player for one second.",
-            TouCrewAssets.FlushSprite),
-        new("Barricade",
-            "Barricading a vent places a barricade on the vent selected for the next round, preventing players from using it.",
-            TouCrewAssets.BarricadeSprite)
-            };
-        }
     }
 
     [HideFromIl2Cpp]

@@ -145,6 +145,11 @@
     <string name="Modifiers">Modifiers</string>
     <string name="Amount">Amount</string>
     <string name="Chance">Chance</string>
+    <!-- Role Tab and Intro Heads-Up -->
+    <string name="YouAreA">You are a</string>
+    <string name="YouAreAn">You are an</string>
+    <string name="YouAreThe">You are the</string>
+    <string name="YouAre">You are</string>
     <!-- Status Effects -->
     <string name="TouFirstDeathShield">First Death Shield</string>
     <string name="TouClericBarrier">Cleric Barrier</string>
@@ -185,7 +190,7 @@
     <!-- Cleric - Crewmate Protective -->
     <string name="TouRoleCleric">Cleric</string>
     <string name="TouRoleClericIntroBlurb">Save The Crewmates</string>
-    <string name="TouRoleClericTabDescription">Cleanse negative effects off of crewmates and cast Barriers to stop any interactions altogether</string>
+    <string name="TouRoleClericTabDescription">Cleanse negative effects off of crewmates and\%nl\%cast Barriers to stop any interactions altogether</string>
 
     <!-- Cleric Wiki / Abilities -->
     <string name="TouRoleClericWikiDescription">The Cleric is a Crewmate Protective that can protect crewmates by negating their negative effects, as well as placing barriers on them to prevent interactions.</string>
@@ -276,7 +281,7 @@
     <!-- Hunter Wiki / Abilities -->
     <string name="TouRoleHunter">Hunter</string>
     <string name="TouRoleHunterIntroBlurb">Stalk The \%color=#FF0000FF\%Impostors\%/color\%</string>
-    <string name="TouRoleHunterTabDescription">Stalk players to get alerted when they use an ability. Once they use an ability, you may kill them.</string>
+    <string name="TouRoleHunterTabDescription">Stalk players to get alerted when they use an ability.\%nl\%Once they use an ability, you may kill them.</string>
     <string name="TouRoleHunterStalkingText">Stalking:</string>
     <string name="TouRoleHunterCaughtPlayersText">Caught Players:</string>
     <string name="TouRoleHunterWikiDescription">The Hunter is a Crewmate Killing role that can stalk players during the round. If a stalked player uses an ability, they can be killed by the Hunter at any point in the game, even Crew.</string>
@@ -327,11 +332,12 @@
     <!-- Jailor Wiki / Abilities -->
     <string name="TouRoleJailor">Jailor</string>
     <string name="TouRoleJailorIntroBlurb">Jail And Execute The \%color=#FF0000FF\%Impostors\%/color\%</string>
-    <string name="TouRoleJailorTabDescription">Discuss with crewmates in meetings privately, and execute them if they are an evildoer</string>
+    <string name="TouRoleJailorTabDescription">Discuss with crewmates in meetings privately, and\%nl\%execute them if they are an evildoer</string>
     <string name="TouRoleJailorWikiDescription">The Jailor is a Crewmate Power role that can jail other players. During a meeting, the Jailor can choose to execute their jailed player. (Unless the Jailor is an Imitator)</string>
     <string name="TouRoleJailorJail">Jail</string>
     <string name="TouRoleJailorJailWikiDescription">Jail a player. During the meeting everyone will see who is jailed. You can privately talk with your detained player using the instructions that are in the private chatbox</string>
-    <string name="TouRoleJailorExecute">Execute (Meeting)</string>
+    <string name="TouRoleJailorExecute">Execute</string>
+    <string name="TouRoleJailorExecuteWiki">Execute (Meeting)</string>
     <string name="TouRoleJailorExecuteWikiDescription">Execute the detained player. If the player is a crewmate, the Jailor will lose the ability to Jail.</string>
 
     <!-- Jailor Options -->
@@ -440,8 +446,8 @@
     <!-- Oracle - Crewmate Protective -->
     <!-- Oracle Wiki / Abilities -->
     <string name="TouRoleOracle">Oracle</string>
-    <string name="TouRoleOracleIntroBlurb">Get Crewmates To Confess Their Sins</string>
-    <string name="TouRoleOracleTabDescription">Bless crewmates to protect them in meetings, and make them confess in the meeting</string>
+    <string name="TouRoleOracleIntroBlurb">Get Crewmates To Confess Their Sins</string>s
+    <string name="TouRoleOracleTabDescription">Bless crewmates to protect them in meetings, and\%nl\%make them confess in the meeting</string>
     <string name="TouRoleOracleWikiDescription">The Oracle is a Crewmate Protective role that can get another player to confess (revealing their faction with \%revealAccuracy\%% accuracy if the Oracle dies) or can protect a player from meeting abilities.</string>
     <string name="TouRoleOracleBless">Bless</string>
     <string name="TouRoleOracleBlessWikiDescription">Blessing a player prevents any harm from being done to them in the meeting.</string>
@@ -468,12 +474,12 @@
     <!-- Plumber Wiki / Abilities -->
     <string name="TouRolePlumber">Plumber</string>
     <string name="TouRolePlumberIntroBlurb">Get The Rats Out Of The Sewers</string>
-    <string name="TouRolePlumberTabDescription">Flush the vent system to kick venters out, and\nbarricade vents to block them the next round</string>
+    <string name="TouRolePlumberTabDescription">Flush the vent system to kick venters out, and\%nl\%barricade vents to block them the next round</string>
     <string name="TouRolePlumberWikiDescription">The Plumber is a Crewmate Support role that can place Barricades on vents and Flush anyone out of vents.</string>
     <string name="TouRolePlumberFlush">Flush</string>
     <string name="TouRolePlumberFlushWikiDescription">Flushing the vents makes every vent open and close, kicking out anyone who is actively in a vent. The Plumber also gets an arrow pointing to every flushed player for one second.</string>
-    <string name="TouRolePlumberBarricade">Barricade</string>
-    <string name="TouRolePlumberBarricadeWikiDescription">Barricading a vent places a barricade on the vent selected for the next round, preventing players from using it.</string>
+    <string name="TouRolePlumberBlock">Block</string>
+    <string name="TouRolePlumberBarricadeWikiDescription">Block a vent places a barricade on the vent selected for the next round, preventing players from using it.</string>
 
     <!-- Plumber Options -->
     <string name="TouOptionPlumberFlushCooldown">Flush Cooldown</string>
@@ -486,16 +492,18 @@
     <!-- Politician Wiki / Abilities -->
     <string name="TouRolePolitician">Politician</string>
     <string name="TouRolePoliticianIntroBlurb">Campaign To Become The Mayor!</string>
-    <string name="TouRolePoliticianTabDescription">Campaign crewmates in hopes to become the Mayor! At least half of the innocent players must be campaigned to reveal successfully</string>
+    <string name="TouRolePoliticianTabDescription">Campaign crewmates in hopes to become the Mayor! At least half of\%nl\%the innocent players must be campaigned to reveal successfully</string>
     <string name="TouRolePoliticianWikiDescription">The Politician is a Crewmate Power role that can reveal themselves to the crew as the Mayor, given that they have campaigned at least half of the crewmates.</string>
     <string name="TouRolePoliticianCampaign">Campaign</string>
     <string name="TouRolePoliticianCampaignWikiDescription">Give a player a ballot, which will only be useful to you if they are a Crewmate.</string>
-    <string name="TouRolePoliticianReveal">Reveal (Meeting)</string>
-    <string name="TouRolePoliticianRevealWikiDescription">If you reveal, and you have more than half of the crewmates campaigned (or no other crewmates remain), you will become the Mayor! Otherwise, your ability will fail and you \%cannot:can\% campaign the following round.</string>
+    <string name="TouRolePoliticianReveal">Reveal</string>
+    <string name="TouRolePoliticianRevealWiki">Reveal (Meeting)</string>
+    <string name="TouRolePoliticianRevealWikiDescription">If you reveal, and you have more than half of the crewmates campaigned (or no other crewmates remain), you will become the Mayor! Otherwise, your ability will fail.</string>
+    <string name="TouRolePoliticianRevealWikiDescriptionPunished">If you reveal, and you have more than half of the crewmates campaigned (or no other crewmates remain), you will become the Mayor! Otherwise, your ability will fail and you cannot campaign the following round.</string>
 
     <!-- Politician Options -->
     <string name="TouOptionPoliticianCampaignCooldown">Campaign Cooldown</string>
-    <string name="TouOptionPoliticianPreventCampaigningonFailedReveal">Prevent Campaigning on Failed Reveal</string>
+    <string name="TouOptionPoliticianPreventCampaignOnFailedReveal">Prevent Campaigning on Failed Reveal</string>
 
     <!-- Politician Feedback -->
     <string name="TouRolePoliticianFailedRevealCanCampaign">You need to campaign more Crewmates! You may not reveal again in this meeting.</string>
@@ -508,7 +516,8 @@
     <string name="TouRoleProsecutorIntroBlurb">Exile Players Of Your Choosing</string>
     <string name="TouRoleProsecutorTabDescription">Choose to exile anyone of your choosing without anyone else having a say</string>
     <string name="TouRoleProsecutorWikiDescription">The Prosecutor is a Crewmate Power role that can Exile a player, applying 5 votes to a player of their choosing. They can also see who voted for whom, even if they're anonymous.</string>
-    <string name="TouRoleProsecutorProsecute">Prosecute (Meeting)</string>
+    <string name="TouRoleProsecutorProsecute">Prosecute</string>
+    <string name="TouRoleProsecutorProsecuteWiki">Prosecute (Meeting)</string>
     <string name="TouRoleProsecutorProsecuteWikiDescription">Exile any player of your choosing, throwing 5 votes on them and ignoring all other votes.</string>
 
     <!-- Prosecutor Options -->
@@ -554,7 +563,9 @@
     <string name="TouRoleSnitch">Snitch</string>
     <string name="TouRoleSnitchIntroBlurb">Find the \%color=#FF0000FF\%Impostors\%/color\%!</string>
     <string name="TouRoleSnitchTabDescription">Complete all your tasks to discover the Impostors.</string>
-    <string name="TouRoleSnitchTabDescriptionCompletedTasks">Help the Impostors!</string>
+    <string name="TouRoleSnitchTabDescriptionCompletedTasks">Find the Impostors!</string>
+    <string name="TouRoleSnitchTabDescriptionEgo">Complete all your tasks to discover \%and\% help the Impostors.</string>
+    <string name="TouRoleSnitchTabDescriptionCompletedTasksEgo">Help the Impostors!</string>
     <string name="TouRoleSnitchWikiDescription">The Snitch is a Crewmate Investigative role that can reveal the Impostors to themselves by finishing all their tasks. Upon completing all tasks, the Impostors will be revealed to the Snitch with an arrow and their red name.</string>
 
     <!-- Snitch Options -->
@@ -586,7 +597,8 @@
     <string name="TouRoleSwapperIntroBlurb">Swap Votes To Save The Crew!</string>
     <string name="TouRoleSwapperTabDescription">Swap votes from one player to another during a meeting</string>
     <string name="TouRoleSwapperWikiDescription">The Swapper is a Crewmate Power that can swap the votes of two players in a meeting. Their meeting vote areas will be swapped visually, and the votes will be swapped. If player 1 recieved the most votes, and you swap them with player 2, player 2 will now be ejected instead. </string>
-    <string name="TouRoleSwapperSwap">Swap (Meeting)</string>
+    <string name="TouRoleSwapperSwap">Swap</string>
+    <string name="TouRoleSwapperSwapWiki">Swap (Meeting)</string>
     <string name="TouRoleSwapperSwapWikiDescription">Select two players to swap votes for, and at the end of the meeting, they will swap spots!</string>
 
     <!-- Swapper Options -->
@@ -701,7 +713,8 @@
     <string name="TouRoleAmbassadorIntroBlurb">Lead The Impostors To Victory</string>
     <string name="TouRoleAmbassadorTabDescription">Retrain yourself or fellow impostors into other roles\%nl\%\%b\%Imp Killing cannot be a Power role\%/b\%\%nl\%\%b\%Imp Concealing/Support cannot be a Killing/Power role\%/b\%</string>
     <string name="TouRoleAmbassadorWikiDescription">The Ambassador is an Impostor Power role that can retrain impostors into other impostor roles.</string>
-    <string name="TouRoleAmbassadorRetrain">Retrain (Meeting)</string>
+    <string name="TouRoleAmbassadorRetrain">Retrain</string>
+    <string name="TouRoleAmbassadorRetrainWiki">Retrain (Meeting)</string>
     <string name="TouRoleAmbassadorRetrainWikiDescription">Retrain yourself or other impostors into a role within their alignment. Impostor Killing roles can be turned into any non-Power roles, and Concealing/Support roles can become Concealing or Support roles.</string>
 
     <!-- Ambassador Options -->
@@ -825,7 +838,8 @@
     <string name="TouRoleHypnotistWikiDescription">The Hypnotist is an Impostor Support role that can hypnotize players. During a meeting they can release Mass Hysteria, which makes all hypnotized players (marked with \%symbol\%) have different visuals applied to players the following round.</string>
     <string name="TouRoleHypnotistHypnotize">Hypnotize</string>
     <string name="TouRoleHypnotistHypnotizeWikiDescription">Hypnotize a player, causing them to see the game differently than non-hypnotized players if mass hysteria is active.</string>
-    <string name="TouRoleHypnotistMassHysteria">Mass Hysteria (Meeting)</string>
+    <string name="TouRoleHypnotistMassHysteria">Mass Hysteria</string>
+    <string name="TouRoleHypnotistMassHysteriaWiki">Mass Hysteria (Meeting)</string>
     <string name="TouRoleHypnotistMassHysteriaWikiDescription">Cause all hypnotised players to have different visuals applied to players on their screen the following round.</string>
 
     <!-- Hypnotist Options -->
