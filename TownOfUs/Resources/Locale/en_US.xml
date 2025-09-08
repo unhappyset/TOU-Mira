@@ -172,7 +172,8 @@
     <!-- Spectator - Game Outlier -->
     <string name="TouRoleSpectator">Spectator</string>
     <string name="TouRoleSpectatorIntroBlurb">Watch The Chaos From Afar</string>
-    <string name="TouRoleSpectatorDescription">You don't actually participate in-game and not interact with players. All you can do is watch.</string>
+    <string name="TouRoleAltruistTabDescription">Never participating, watch as the chaos unfolds in-game!</string>
+    <string name="TouRoleAltruistWikiDescription">You don't actually participate in-game and not interact with players. All you can do is watch.</string>
     <!-- Crewmate Roles -->
     <!-- Altruist - Crewmate Protective -->
     <string name="TouRoleAltruist">Altruist</string>
