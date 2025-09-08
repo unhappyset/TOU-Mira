@@ -2,6 +2,7 @@
 using MiraAPI.Modifiers.Types;
 using MiraAPI.PluginLoading;
 using TownOfUs.Modifiers.Neutral;
+using TownOfUs.Roles.Other;
 
 namespace TownOfUs.Modifiers.Game;
 
@@ -27,6 +28,6 @@ public abstract class AllianceGameModifier : GameModifier
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        return !role.Player.GetModifierComponent().HasModifier<AllianceGameModifier>(true) && !role.Player.HasModifier<ExecutionerTargetModifier>();
+        return !role.Player.GetModifierComponent().HasModifier<AllianceGameModifier>(true) && !role.Player.HasModifier<ExecutionerTargetModifier>() && !role.TryCast<SpectatorRole>();
     }
 }

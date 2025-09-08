@@ -4,6 +4,7 @@ using Reactor.Utilities.Extensions;
 using TownOfUs.Modules.Anims;
 using TownOfUs.Options;
 using TownOfUs.Patches;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -58,7 +59,7 @@ public sealed class FirstDeadShield : ExcludedGameModifier, IAnimated
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        if (FirstDeadPatch.PlayerNames.Count == 0)
+        if (FirstDeadPatch.PlayerNames.Count == 0 || !role.TryCast<SpectatorRole>())
         {
             return false;
         }

@@ -135,7 +135,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         {
             return;
         }
-        
+
         if (Minigame.Instance != null)
         {
             return;
@@ -186,7 +186,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             {
                 meetingMenu?.HideButtons();
             }
-            
+
             if (victim != Player && victim.TryGetModifier<OracleBlessedModifier>(out var oracleMod))
             {
                 OracleRole.RpcOracleBlessNotify(oracleMod.Oracle, PlayerControl.LocalPlayer, victim);
@@ -251,10 +251,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         }
 
         var options = OptionGroupSingleton<VigilanteOptions>.Instance;
-        var touRole = role as ITownOfUsRole;
-        var unguessableRole = role as IUnguessable;
 
-        if (unguessableRole != null && !unguessableRole.IsGuessable)
+        if (role is IUnguessable { IsGuessable: false })
         {
             return false;
         }
@@ -264,6 +262,8 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         {
             return false;
         }
+
+        var touRole = role as ITownOfUsRole;
 
         // If Vigilante is Egotist, then guessing investigative roles is based off assassin settings
         if (!OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessInvest && touRole?.RoleAlignment == RoleAlignment.CrewmateInvestigative)

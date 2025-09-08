@@ -285,5 +285,6 @@ public enum TouNames
     Poisoner,
     Sniper,
     Cannibal,
-    Timelord
+    Timelord,
+    Spectator
 }

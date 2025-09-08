@@ -1,6 +1,7 @@
 ﻿using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.PluginLoading;
+using TownOfUs.Roles.Other;
 
 namespace TownOfUs.Modifiers.Game;
 
@@ -23,6 +24,6 @@ public abstract class UniversalGameModifier : GameModifier
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        return !role.Player.GetModifierComponent().HasModifier<UniversalGameModifier>(true);
+        return !role.Player.GetModifierComponent().HasModifier<UniversalGameModifier>(true) && !role.TryCast<SpectatorRole>();
     }
 }

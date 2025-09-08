@@ -23,8 +23,8 @@ public static class TouRoleIcons
     public static LoadableAsset<Sprite> Sheriff { get; } = new LoadableBundleAsset<Sprite>("Sheriff", TouAssets.MainBundle);
     public static LoadableAsset<Sprite> Veteran { get; } = new LoadableBundleAsset<Sprite>("Veteran", TouAssets.MainBundle);
     public static LoadableAsset<Sprite> Vigilante { get; } = new LoadableBundleAsset<Sprite>("Vigilante", TouAssets.MainBundle);
-    
-    
+
+
     public static LoadableAsset<Sprite> Agent { get; } = new LoadableBundleAsset<Sprite>("Agent", TouAssets.MainBundle);
     public static LoadableAsset<Sprite> Jailor { get; } = new LoadableBundleAsset<Sprite>("Jailor", TouAssets.MainBundle);
     public static LoadableAsset<Sprite> Politician { get; } = new LoadableBundleAsset<Sprite>("Politician", TouAssets.MainBundle);
@@ -80,14 +80,14 @@ public static class TouRoleIcons
     public static LoadableAsset<Sprite> Morphling { get; } = new LoadableBundleAsset<Sprite>("Morphling", TouAssets.MainBundle);
     public static LoadableAsset<Sprite> Swooper { get; } = new LoadableBundleAsset<Sprite>("Swooper", TouAssets.MainBundle);
     public static LoadableAsset<Sprite> Venerer { get; } = new LoadableBundleAsset<Sprite>("Venerer", TouAssets.MainBundle);
-    
+
 
     public static LoadableAsset<Sprite> Ambusher { get; } = new LoadableBundleAsset<Sprite>("Ambusher", TouAssets.MainBundle);
     public static LoadableAsset<Sprite> Bomber { get; } = new LoadableBundleAsset<Sprite>("Bomber", TouAssets.MainBundle);
     public static LoadableAsset<Sprite> Infestor { get; } = new LoadableBundleAsset<Sprite>("Infestor", TouAssets.MainBundle);
     public static LoadableAsset<Sprite> Scavenger { get; } = new LoadableBundleAsset<Sprite>("Scavenger", TouAssets.MainBundle);
     public static LoadableAsset<Sprite> Warlock { get; } = new LoadableBundleAsset<Sprite>("Warlock", TouAssets.MainBundle);
-    
+
     public static LoadableAsset<Sprite> Ambassador { get; } = new LoadableBundleAsset<Sprite>("Ambassador", TouAssets.MainBundle);
     public static LoadableAsset<Sprite> Traitor { get; } = new LoadableBundleAsset<Sprite>("Traitor", TouAssets.MainBundle);
 
@@ -102,4 +102,6 @@ public static class TouRoleIcons
     public static LoadableAsset<Sprite> RandomCrew { get; } = new LoadableBundleAsset<Sprite>("RandomCrew", TouAssets.MainBundle);
     public static LoadableAsset<Sprite> RandomNeut { get; } = new LoadableBundleAsset<Sprite>("RandomNeut", TouAssets.MainBundle);
     public static LoadableAsset<Sprite> RandomImp { get; } = new LoadableBundleAsset<Sprite>("RandomImp", TouAssets.MainBundle);
+
+    public static LoadableAsset<Sprite> Spectator { get; } = new LoadableBundleAsset<Sprite>("Spectator", TouAssets.MainBundle);
 }
