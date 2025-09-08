@@ -4,7 +4,7 @@ namespace TownOfUs.Modules.Localization;
 
 public class TouLocalizationProvider : LocalizationProvider
 {
-    protected static List<IMiraTranslation> ActiveTexts = [];
+    internal static List<IMiraTranslation> ActiveTexts = [];
     private static bool _loadedStrings;
     public override void OnLanguageChanged(SupportedLangs newLanguage)
     {
