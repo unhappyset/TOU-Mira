@@ -158,6 +158,36 @@
     <string name="YouAreAn">You are an</string>
     <string name="YouAreThe">You are the</string>
     <string name="YouAre">You are</string>
+    <!-- Cause of Deaths -->
+    <string name="DiedByString">\%cod\% By \%player\%</string>
+    <string name="DiedToDisconnect">Disconnected</string>
+    <string name="DiedToEjection">Ejected</string>
+    <string name="DiedToKiller">Killed</string>
+    <string name="DiedToPunishment">Punished</string>
+    <string name="DiedToWinning">Victorious</string>
+    <string name="DiedToSuicide">Suicide</string>
+    <string name="DiedToMisguess">Misguessed</string>
+    <string name="DiedToGuess">Guessed</string>
+    <string name="DiedToHeartbreak">Heartbroken</string>
+    <string name="DiedToSheriff">Shot</string>
+    <string name="DiedToDeputy">Blasted</string>
+    <string name="DiedToVeteran">Attacked</string>
+    <string name="DiedToJailor">Executed</string>
+    <string name="DiedToProsecutor">Prosecuted</string>
+    <string name="DiedToArsonist">Ignited</string>
+    <string name="DiedToGlitch">Bugged</string>
+    <string name="DiedToJuggernaut">Destroyed</string>
+    <string name="DiedToPestilence">Diseased</string>
+    <string name="DiedToSoulCollector">Reaped</string>
+    <string name="DiedToVampire">Bit</string>
+    <string name="DiedToWerewolf">Rampaged</string>
+    <string name="DiedToDoomsayer">Doomed</string>
+    <string name="DiedToJester">Haunted</string>
+    <string name="DiedToExecutioner">Tormented</string>
+    <string name="DiedToPhantom">Spooked</string>
+    <string name="DiedToInquisitor">Vanquished</string>
+    <string name="DiedToAmbusherAmbush">Ambushed</string>
+    <string name="DiedToBomberBomb">Bombed</string>
     <!-- Status Effects -->
     <string name="TouFirstDeathShield">First Death Shield</string>
     <string name="TouClericBarrier">Cleric Barrier</string>
