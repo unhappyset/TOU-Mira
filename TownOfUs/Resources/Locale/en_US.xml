@@ -1581,15 +1581,4 @@
     <string name="TouModifierTorchIntroBlurb">You can also see without lights on.</string>
     <string name="TouModifierTorchTabDescription">Your vision won't get reduced\%nl\%when the lights are sabotaged.</string>
     <string name="TouModifierTorchWikiDescription">The lights being off do not affect your vision.</string>
-
-    <!-- Sidemen-Only Roles, DO NOT TRANSLATE -->
-    <string name="SidemenRoleAstral">Astral</string>
-    <string name="SidemenRolePuppetMaster">Puppet Master</string>
-    <string name="SidemenRoleMage">Mage</string>
-    <string name="SidemenRoleSandworm">Sandworm</string>
-    <string name="SidemenRoleRcxd">Rcxd</string>
-    <string name="SidemenRolePoisoner">Poisoner</string>
-    <string name="SidemenRoleSniper">Sniper</string>
-    <string name="SidemenRoleCannibal">Cannibal</string>
-    <string name="SidemenRoleTimelord">Timelord</string>
 </resources>
