@@ -16,9 +16,30 @@ public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
     public int Alerts { get; set; }
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => TouLocale.Get("TouRoleVeteran", "Veteran");
-    public string RoleDescription => "Alert To Kill Anyone Who Interacts With You";
-    public string RoleLongDescription => "Alert to kill whoever who interacts with you.";
+    public static string LocaleKey => "Veteran";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+    
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Alert", "Alert"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}AlertWikiDescription"),
+                    TouCrewAssets.AlertSprite)
+            };
+        }
+    }
     public Color RoleColor => TownOfUsColors.Veteran;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
@@ -34,27 +55,6 @@ public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public StringBuilder SetTabText()
     {
         return ITownOfUsRole.SetNewTabText(this);
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Crewmate Killing role that can go on alert and kill anyone who interacts with them."
-            + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities
-    {
-        get
-        {
-            return new List<CustomButtonWikiDescription>
-            {
-        new("Alert",
-            $"When the Veteran is on alert, any player who interacts with them will be instantly killed, with the exception of Pestilence and shielded players, who will ignore the attack.",
-            TouCrewAssets.AlertSprite)
-            };
-        }
     }
 
     public override void Initialize(PlayerControl player)

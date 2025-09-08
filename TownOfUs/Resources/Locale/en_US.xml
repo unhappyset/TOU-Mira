@@ -68,6 +68,7 @@
     <string name="Chance">Chance</string>
     <string name="Options">Options</string>
     <!-- Role Subalignments -->
+    <string name="GameOutlier">Game Outlier</string>
     <string name="CrewmateInvestigative">Crewmate Investigative</string>
     <string name="CrewmateKilling">Crewmate Killing</string>
     <string name="CrewmatePower">Crewmate Power</string>
@@ -102,6 +103,7 @@
     <string name="ImpPower">Imp Power</string>
     <string name="ImpSupport">Imp Support</string>
     <!-- Keywords for use in ui to mark certain text into a certain color -->
+    <string name="GameKeyword">Game</string>
     <string name="CrewmateKeyword">Crewmate</string>
     <string name="CrewKeyword">Crew</string>
     <string name="NeutralKeyword">Neutral</string>
@@ -167,6 +169,10 @@
     <string name="TouHypnosis">Hypnosis</string> <!-- Hypnotist Cleric Cleanse Info -->
     <string name="TouInfection">Infection</string> <!-- Plaguebearer Cleric Cleanse Info -->
     <string name="TouScatter">Scatter</string>
+    <!-- Spectator - Game Outlier -->
+    <string name="TouRoleSpectator">Spectator</string>
+    <string name="TouRoleSpectatorIntroBlurb">Watch The Chaos From Afar</string>
+    <string name="TouRoleSpectatorDescription">You don't actually participate in-game and not interact with players. All you can do is watch.</string>
     <!-- Crewmate Roles -->
     <!-- Altruist - Crewmate Protective -->
     <string name="TouRoleAltruist">Altruist</string>

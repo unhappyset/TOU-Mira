@@ -29,9 +29,30 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => TouLocale.Get("TouRoleTransporter", "Transporter");
-    public string RoleDescription => "Choose Two Players To Swap Locations";
-    public string RoleLongDescription => "Choose two players to swap locations with one another";
+    public static string LocaleKey => "Transporter";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+    
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Transport", "Transport"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}TransportWikiDescription"),
+                    TouCrewAssets.Transport)
+            };
+        }
+    }
     public Color RoleColor => TownOfUsColors.Transporter;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
@@ -46,28 +67,6 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     public StringBuilder SetTabText()
     {
         return ITownOfUsRole.SetNewTabText(this);
-    }
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Crewmate Support role that can transport two players, dead or alive, to swap their locations."
-            + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities
-    {
-        get
-        {
-            return new List<CustomButtonWikiDescription>
-            {
-        new("Transport",
-            "Switch the positions of two players. Players can be transported out of vents." +
-            "A red flash means one of the players became an invalid target," +
-            "such as going on a ladder or zipline",
-            TouCrewAssets.Transport)
-            };
-        }
     }
 
     [MethodRpc((uint)TownOfUsRpc.Transport)]

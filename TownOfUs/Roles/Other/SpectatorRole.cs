@@ -51,9 +51,16 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         HudManager.Instance.AbilityButton.SetDisabled();
     }
 
-    public string RoleName => TouLocale.Get(TouNames.Spectator, "Spectator");
-    public string RoleDescription => "Watch the game unfold!";
-    public string RoleLongDescription => "Never participating, watch as the chaos unfolds in-game!";
+    public static string LocaleKey => "Spectator";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
     public Color RoleColor => TownOfUsColors.Spectator;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.GameOutlier;
@@ -154,11 +161,6 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         HudManager.Instance.PlayerCam.SetTarget(Player);
         HudManager.Instance.ShadowQuad.gameObject.SetActive(ShowShadows);
         HudManager.Instance.SetHudActive(ShowHud);*/
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return $"The {RoleName} is a Game Outlier role that does not win, and instead can watch the game unfold before them." + MiscUtils.AppendOptionsText(GetType());
     }
 
     public override bool CanUse(IUsable console) => false;

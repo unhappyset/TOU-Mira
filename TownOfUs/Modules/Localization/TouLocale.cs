@@ -67,11 +67,6 @@ public static class TouLocale
 
         return defaultValue ?? "STRMISS_" + name;
     }
-    public static StringNames GetStringName(string name)
-    {
-        return TouLocaleList.GetValueOrDefault(name, StringNames.ErrorCreate);
-    }
-
     public static string GetParsed(string name, string? defaultValue = null, Dictionary<string, string>? parseList = null)
     {
         var text = defaultValue ?? "STRMISS_" + name;

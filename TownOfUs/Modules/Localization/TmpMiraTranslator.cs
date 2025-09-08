@@ -26,13 +26,13 @@ public class TmpMiraTranslator(IntPtr cppPtr) : MonoBehaviour(cppPtr), IMiraTran
         if (component != null)
         {
             component.text = text;
-            component.ForceMeshUpdate(false, false);
+            component.ForceMeshUpdate();
         }
         else
         {
             TextMeshProUGUI component2 = GetComponent<TextMeshProUGUI>();
             component2.text = text;
-            component2.ForceMeshUpdate(false, false);
+            component2.ForceMeshUpdate();
         }
     }
 
