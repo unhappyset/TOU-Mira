@@ -20,6 +20,7 @@ using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Patches.Misc;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -144,70 +145,6 @@ public static class MiscUtils
 
         return builder.ToString();
     }
-    /*public static string ReplaceText(this string text, Type classType, string prefix)
-    {
-        var options = GetModdedOptionsForRole(classType);
-        if (options == null)
-        {
-            return string.Empty;
-        }
-
-        foreach (var option in options)
-        {
-            var find = $"<{prefix}.{option.Title.Replace(" ", "")}>";
-            if (!text.Contains(find))
-            {
-                continue;
-            }
-            switch (option)
-            {
-                case ModdedToggleOption toggleOption:
-                    text = text.Replace(find, $"{toggleOption.Value}");
-                    break;
-                case ModdedEnumOption enumOption:
-                    text = text.Replace(find, $"{enumOption.Values[enumOption.Value]}");
-                    break;
-                case ModdedNumberOption numberOption:
-                    var optionStr = numberOption.Data.GetValueString(numberOption.Value);
-                    if (optionStr.Contains(".000"))
-                    {
-                        optionStr = optionStr.Replace(".000", "");
-                    }
-                    else if (optionStr.Contains(".00"))
-                    {
-                        optionStr = optionStr.Replace(".00", "");
-                    }
-                    else if (optionStr.Contains(".0"))
-                    {
-                        optionStr = optionStr.Replace(".0", "");
-                    }
-                    
-                    string suffix = numberOption.SuffixType switch
-                    {
-                        MiraNumberSuffixes.Multiplier => "x",
-                        MiraNumberSuffixes.Percent => "%",
-                        MiraNumberSuffixes.Seconds => "s",
-                        _ => ""
-                    };
-
-                    optionStr = optionStr.Replace(suffix, "");
-
-                    if (numberOption is { ZeroInfinity: true, Value: 0 })
-                    {
-                        text = text.Replace(find, "∞");
-                    }
-                    else
-                    {
-                        text = text.Replace(find, optionStr);
-                    }
-
-                    break;
-            }
-        }
-
-        return text;
-    }*/
-
     public static RoleAlignment GetRoleAlignment(this RoleBehaviour role)
     {
         if (role is ITownOfUsRole touRole)
@@ -243,7 +180,7 @@ public static class MiscUtils
     public static IEnumerable<RoleBehaviour> GetRegisteredRoles(RoleAlignment alignment)
     {
         var roles = AllRoles.Where(x => x.GetRoleAlignment() == alignment);
-        
+
         var registeredRoles = roles.ToList();
 
         switch (alignment)
@@ -296,7 +233,7 @@ public static class MiscUtils
     public static IEnumerable<RoleBehaviour> GetRegisteredGhostRoles()
     {
         var baseGhostRoles = RoleManager.Instance.AllRoles.Where(x => x.IsDead && AllRoles.All(y => y.Role != x.Role));
-        var ghostRoles = AllRoles.Where(x => x.IsDead).Union(baseGhostRoles);
+        var ghostRoles = AllRoles.Where(x => x.IsDead && !x.TryCast<SpectatorRole>()).Union(baseGhostRoles);
 
         return ghostRoles;
     }
@@ -385,7 +322,7 @@ public static class MiscUtils
 
         var impostorRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Impostor);
         roleList = roleList.AddItem(impostorRole!);
-        
+
         //Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - impostorRole: '{impostorRole?.NiceName}'");
 
         //roleList.Do(x => Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - role: '{x.NiceName}'"));
@@ -1010,7 +947,7 @@ public static class MiscUtils
     {
         return FakePlayer.FakePlayers.FirstOrDefault(x => x.body?.name == $"Fake {player.gameObject.name}");
     }
-    
+
     public static void SetForcedBodyType(this PlayerPhysics player, PlayerBodyTypes bodyType)
     {
         player.bodyType = bodyType;
@@ -1018,7 +955,7 @@ public static class MiscUtils
         player.Animations.SetBodyType(bodyType, player.myPlayer.cosmetics.FlippedCosmeticOffset, player.myPlayer.cosmetics.NormalCosmeticOffset);
         player.Animations.PlayIdleAnimation();
     }
-    
+
     public static bool IsMap(byte mapid)
     {
         return (GameOptionsManager.Instance != null &&
@@ -1134,7 +1071,7 @@ public static class MiscUtils
         }
         sprite.tileMode = SpriteTileMode.Adaptive;
     }
-    
+
     public static void SetSizeLimit(this GameObject spriteObj, float scale)
     {
         if (!spriteObj.TryGetComponent<SpriteRenderer>(out var sprite))
@@ -1215,4 +1152,6 @@ public static class MiscUtils
         translator.parseStr = parseInfo;
         translator.defaultStr = defaultStr ?? string.Empty;
     }
+
+    public static IEnumerable<T> Excluding<T>(this IEnumerable<T> source, Func<T, bool> predicate) => source.Where(x => !predicate(x)); // Added for easier inversion and reading
 }

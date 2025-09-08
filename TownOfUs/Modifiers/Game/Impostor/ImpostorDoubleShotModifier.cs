@@ -10,7 +10,7 @@ public sealed class ImpostorDoubleShotModifier : DoubleShotModifier, IWikiDiscov
 {
     public override string ModifierName => TouLocale.Get("TouModifierDoubleShot", "Double Shot");
     public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
-    
+
     public override bool ShowInFreeplay => true;
     public bool IsHiddenFromList => true;
     // YES this is scuffed, a better solution will be used at a later time

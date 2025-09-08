@@ -1,12 +1,14 @@
 using System.Globalization;
 using HarmonyLib;
 using MiraAPI.GameOptions;
+using Reactor.Networking.Attributes;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Patches.Options;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 
 namespace TownOfUs.Patches.Misc;
@@ -25,8 +27,29 @@ public static class ChatPatches
             return true;
         }
 
-        if (text.Replace(" ", string.Empty).StartsWith("/", StringComparison.OrdinalIgnoreCase)
-            && text.Replace(" ", string.Empty).Contains("summary", StringComparison.OrdinalIgnoreCase))
+        var spaceLess = text.Replace(" ", string.Empty);
+
+        if (spaceLess.StartsWith("/spec", StringComparison.OrdinalIgnoreCase) && LobbyBehaviour.Instance)
+        {
+            if (SpectatorRole.TrackedSpectators.Contains(PlayerControl.LocalPlayer.PlayerId))
+            {
+                MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "You are no longer a spectator!");
+                RemoveSpectator(PlayerControl.LocalPlayer);
+            }
+            else
+            {
+                MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "Set yourself as a spectator!");
+                SelectSpectator(PlayerControl.LocalPlayer);
+            }
+            __instance.freeChatField.Clear();
+            __instance.quickChatMenu.Clear();
+            __instance.quickChatField.Clear();
+            __instance.UpdateChatMode();
+            return false;
+        }
+
+        if (spaceLess.StartsWith("/", StringComparison.OrdinalIgnoreCase)
+            && spaceLess.Contains("summary", StringComparison.OrdinalIgnoreCase))
         {
             var title = "<color=#8BFDFD>System</color>";
             var msg = "No game summary to show!";
@@ -51,7 +74,7 @@ public static class ChatPatches
             return false;
         }
 
-        if (text.Replace(" ", string.Empty).StartsWith("/nerfme", StringComparison.OrdinalIgnoreCase))
+        if (spaceLess.StartsWith("/nerfme", StringComparison.OrdinalIgnoreCase))
         {
             var title = "<color=#8BFDFD>System</color>";
             var msg = "You cannot Nerf yourself outside of the lobby!";
@@ -70,7 +93,7 @@ public static class ChatPatches
             return false;
         }
 
-        if (text.Replace(" ", string.Empty).StartsWith("/setname", StringComparison.OrdinalIgnoreCase))
+        if (spaceLess.StartsWith("/setname", StringComparison.OrdinalIgnoreCase))
         {
             var title = "<color=#8BFDFD>System</color>";
             if (text.StartsWith("/setname ", StringComparison.OrdinalIgnoreCase))
@@ -118,7 +141,7 @@ public static class ChatPatches
             return false;
         }
 
-        if (text.Replace(" ", string.Empty).StartsWith("/help", StringComparison.OrdinalIgnoreCase))
+        if (spaceLess.StartsWith("/help", StringComparison.OrdinalIgnoreCase))
         {
             var title = "<color=#8BFDFD>System</color>";
 
@@ -144,7 +167,7 @@ public static class ChatPatches
             return false;
         }
 
-        if (text.Replace(" ", string.Empty).StartsWith("/jail", StringComparison.OrdinalIgnoreCase))
+        if (spaceLess.StartsWith("/jail", StringComparison.OrdinalIgnoreCase))
         {
             var title = "<color=#8BFDFD>System</color>";
 
@@ -158,7 +181,7 @@ public static class ChatPatches
             return false;
         }
 
-        if (text.Replace(" ", string.Empty).StartsWith("/", StringComparison.OrdinalIgnoreCase))
+        if (spaceLess.StartsWith("/", StringComparison.OrdinalIgnoreCase))
         {
             var title = "<color=#8BFDFD>System</color>";
 
@@ -243,4 +266,10 @@ public static class ChatPatches
 
         return true;
     }
+
+    [MethodRpc((uint)TownOfUsRpc.SelectSpectator, SendImmediately = true)]
+    public static void SelectSpectator(PlayerControl player) => SpectatorRole.TrackedSpectators.Add(player.PlayerId);
+
+    [MethodRpc((uint)TownOfUsRpc.RemoveSpectator, SendImmediately = true)]
+    public static void RemoveSpectator(PlayerControl player) => SpectatorRole.TrackedSpectators.Remove(player.PlayerId);
 }

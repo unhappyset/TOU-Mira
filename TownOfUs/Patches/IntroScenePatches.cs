@@ -3,6 +3,7 @@ using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 using TownOfUs.Options;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using Object = Il2CppSystem.Object;
 
@@ -11,6 +12,18 @@ namespace TownOfUs.Patches;
 [HarmonyPatch]
 public static class IntroScenePatches
 {
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
+    public static class IntroCutsceneSpectatorPatch
+    {
+        public static void Prefix(ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
+        {
+            foreach (var id in SpectatorRole.TrackedSpectators)
+            {
+                teamToDisplay.Remove(GameData.Instance.GetPlayerById(id).Object);
+            }
+        }
+    }
+
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
     [HarmonyPriority(Priority.Last)]
@@ -34,6 +47,25 @@ public static class IntroScenePatches
         {
             SetHiddenImpostors(__instance);
         }
+
+        foreach (var id in SpectatorRole.TrackedSpectators)
+        {
+            var spec = MiscUtils.PlayerById(id);
+
+            if (!spec)
+                continue;
+
+            spec!.Visible = false;
+            spec.Die(DeathReason.Exile, false);
+
+            if (spec.AmOwner)
+            {
+                HudManager.Instance.SetHudActive(false);
+                HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
+            }
+        }
+
+        SpectatorRole.InitList();
     }
 
     public static void SetHiddenImpostors(IntroCutscene __instance)

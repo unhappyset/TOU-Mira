@@ -73,7 +73,7 @@ public interface ITownOfUsRole : ICustomRole
             {
                 return TouRoleGroups.ImpKiller;
             }
-            
+
             if (RoleAlignment == RoleAlignment.ImpostorPower)
             {
                 return TouRoleGroups.ImpPower;
@@ -83,7 +83,7 @@ public interface ITownOfUsRole : ICustomRole
             {
                 return TouRoleGroups.NeutralEvil;
             }
-            
+
             if (RoleAlignment == RoleAlignment.NeutralOutlier)
             {
                 return TouRoleGroups.NeutralOutlier;
@@ -92,6 +92,11 @@ public interface ITownOfUsRole : ICustomRole
             if (RoleAlignment == RoleAlignment.NeutralKilling)
             {
                 return TouRoleGroups.NeutralKiller;
+            }
+
+            if (RoleAlignment == RoleAlignment.GameOutlier)
+            {
+                return TouRoleGroups.Other;
             }
 
             return Team switch
@@ -132,6 +137,10 @@ public interface ITownOfUsRole : ICustomRole
         else if (alignment.Contains("Neutral"))
         {
             alignment = alignment.Replace("Neutral", "<color=#8A8A8A>Neutral");
+        }
+        else if (alignment.Contains("Game"))
+        {
+            alignment = alignment.Replace("Game", "<color=#888888>Game");
         }
 
         var prefix = " a";
@@ -226,5 +235,6 @@ public enum RoleAlignment
     NeutralBenign,
     NeutralEvil,
     NeutralOutlier,
-    NeutralKilling
+    NeutralKilling,
+    GameOutlier // I honestly have no idea what else to put here lol
 }

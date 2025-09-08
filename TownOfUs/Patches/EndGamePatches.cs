@@ -14,6 +14,7 @@ using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
@@ -35,6 +36,19 @@ public static class EndGamePatches
         foreach (var playerControl in PlayerControl.AllPlayerControls)
         {
             playerRoleString.Clear();
+            if (playerControl.Data.Role is SpectatorRole)
+            {
+                EndGameData.PlayerRecords.Add(new EndGameData.PlayerRecord
+                {
+                    PlayerName = playerControl.Data.PlayerName,
+                    RoleString = "Spectator",
+                    Winner = false,
+                    LastRole = (RoleTypes)RoleId.Get<SpectatorRole>(),
+                    Team = ModdedRoleTeams.Custom,
+                    PlayerId = playerControl.PlayerId
+                });
+                continue;
+            }
 
             foreach (var role in GameHistory.RoleHistory.Where(x => x.Key == playerControl.PlayerId)
                          .Select(x => x.Value))
@@ -202,7 +216,8 @@ public static class EndGamePatches
                 RoleString = playerRoleString.ToString(),
                 Winner = playerWinner,
                 LastRole = playerRoleType,
-                Team = playerTeam
+                Team = playerTeam,
+                PlayerId = playerControl.PlayerId
             });
         }
     }
@@ -476,6 +491,7 @@ public static class EndGamePatches
             public bool Winner { get; set; }
             public RoleTypes LastRole { get; set; }
             public ModdedRoleTeams Team { get; set; }
+            public byte PlayerId { get; set; }
         }
     }
 }

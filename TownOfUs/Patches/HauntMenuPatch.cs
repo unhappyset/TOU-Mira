@@ -6,15 +6,16 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace TownOfUs.Patches;
 
@@ -28,15 +29,18 @@ public static class HauntMenuMinigamePatch
             return;
         }
 
-        var body = Object.FindObjectsOfType<DeadBody>()
-            .FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
-        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x.PlayerId == PlayerControl.LocalPlayer.PlayerId);
-
-        if (!TutorialManager.InstanceExists && (body || fakePlayer?.body))
+        if (!TutorialManager.InstanceExists && !PlayerControl.LocalPlayer.DiedOtherRound() && PlayerControl.LocalPlayer.Data.Role is not SpectatorRole)
         {
             __instance.Close();
             __instance.NameText.text = string.Empty;
             __instance.FilterText.text = string.Empty;
+            
+            var text = "You must wait until next round to haunt!";
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>{text}</b>", Color.white, spr: TouRoleIcons.Spectator.LoadAsset());
+            
+            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
             return;
         }
 

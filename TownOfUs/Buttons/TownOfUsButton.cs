@@ -10,6 +10,7 @@ using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -144,7 +145,7 @@ public abstract class TownOfUsButton : CustomActionButton
         {
             return false;
         }
-        
+
         if (PlayerControl.LocalPlayer.HasDied() && !UsableInDeath)
         {
             return false;
@@ -301,7 +302,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
         {
             return false;
         }
-        
+
         if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return false;
@@ -453,7 +454,7 @@ public abstract class TownOfUsRoleButton<TRole, TTarget> : TownOfUsTargetButton<
         if (target is PlayerControl playerTarget)
         {
             return base.IsTargetValid(target) && !playerTarget.inVent &&
-                   !playerTarget.GetModifiers<DisabledModifier>().Any(mod => !mod.CanBeInteractedWith);
+                   !playerTarget.GetModifiers<DisabledModifier>().Any(mod => !mod.CanBeInteractedWith) && !SpectatorRole.TrackedSpectators.Contains(playerTarget.PlayerId);
         }
 
         return base.IsTargetValid(target);
