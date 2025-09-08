@@ -81,16 +81,16 @@ public static class TouLocale
                 ? TranslationController.Instance.currentLanguage.languageID
                 : SupportedLangs.English;
         
-        if (TouLocalization.TryGetValue(currentLanguage, out var translations) &&
-            translations.TryGetValue(name, out var translation))
-        {
-            text = translation;
-        }
-        
         if (TouLocalization.TryGetValue(SupportedLangs.English, out var translationsEng) &&
             translationsEng.TryGetValue(name, out var translationEng))
         {
             text = translationEng;
+        }
+        
+        if (TouLocalization.TryGetValue(currentLanguage, out var translations) &&
+            translations.TryGetValue(name, out var translation))
+        {
+            text = translation;
         }
         
         text = Regex.Replace(text, @"\%([^%]+)\%", @"<$1>");

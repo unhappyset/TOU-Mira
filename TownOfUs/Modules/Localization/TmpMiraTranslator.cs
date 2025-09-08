@@ -1,7 +1,6 @@
 using Reactor.Utilities.Attributes;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace TownOfUs.Modules.Localization;
 
@@ -16,7 +15,6 @@ public class TmpMiraTranslator(IntPtr cppPtr) : MonoBehaviour(cppPtr), IMiraTran
 
     public bool resetWithoutDefault;
 
-    public UnityEvent onTranslate;
     public void ResetText()
     {
         if (resetWithoutDefault && defaultStr.IsNullOrWhiteSpace())
@@ -36,7 +34,6 @@ public class TmpMiraTranslator(IntPtr cppPtr) : MonoBehaviour(cppPtr), IMiraTran
             component2.text = text;
             component2.ForceMeshUpdate(false, false);
         }
-        onTranslate.Invoke();
     }
 
     public void Start()
