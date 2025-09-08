@@ -1190,4 +1190,29 @@ public static class MiscUtils
             ? TranslationController.Instance.GetString(plainShipRoom.RoomId)
             : "Outside/Hallway";
     }
+
+    public static void AddMiraTranslator(this GameObject obj, string stringName, bool parseInfo, string? defaultStr)
+    {
+        if (obj.TryGetComponent<TextTranslatorTMP>(out var amogTmp))
+        {
+            // we don't like innerscuff StringNames, im sorry
+            Object.Destroy(amogTmp);
+        }
+        var translator = obj.AddComponent<TmpMiraTranslator>();
+        translator.stringName = stringName;
+        translator.parseStr = parseInfo;
+        translator.defaultStr = defaultStr ?? string.Empty;
+    }
+    public static void AddMiraTranslator(this Transform obj, string stringName, bool parseInfo, string? defaultStr)
+    {
+        if (obj.TryGetComponent<TextTranslatorTMP>(out var amogTmp))
+        {
+            // we don't like innerscuff StringNames, im sorry
+            Object.Destroy(amogTmp);
+        }
+        var translator = obj.gameObject.AddComponent<TmpMiraTranslator>();
+        translator.stringName = stringName;
+        translator.parseStr = parseInfo;
+        translator.defaultStr = defaultStr ?? string.Empty;
+    }
 }

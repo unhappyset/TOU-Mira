@@ -48,23 +48,24 @@ public static class TouLocale
 
     public static string Get(string name, string? defaultValue = null)
     {
-        if (TranslationController.InstanceExists && TouLocaleList.TryGetValue(name, out var value))
-        {
-            return TranslationController.Instance.GetString(value) ?? defaultValue ?? "STRMISS3_" + name;
-        }
-
         var currentLanguage =
             TranslationController.InstanceExists
                 ? TranslationController.Instance.currentLanguage.languageID
                 : SupportedLangs.English;
 
-        if (!TouLocalization.TryGetValue(currentLanguage, out var translations) ||
-            !translations.TryGetValue(name, out var translation))
+        if (TouLocalization.TryGetValue(currentLanguage, out var translations) &&
+            translations.TryGetValue(name, out var translation))
         {
-            return defaultValue ?? "STRMISS2_" + name;
+            return translation;
+        }
+        
+        if (TouLocalization.TryGetValue(SupportedLangs.English, out var translationsEng) &&
+            translationsEng.TryGetValue(name, out var translationEng))
+        {
+            return translationEng;
         }
 
-        return translation;
+        return defaultValue ?? "STRMISS_" + name;
     }
     public static StringNames GetStringName(string name)
     {
@@ -73,26 +74,23 @@ public static class TouLocale
 
     public static string GetParsed(string name, string? defaultValue = null, Dictionary<string, string>? parseList = null)
     {
-        var text = string.Empty;
-        if (TranslationController.InstanceExists && TouLocaleList.TryGetValue(name, out var value))
-        {
-            text = TranslationController.Instance.GetString(value) ?? defaultValue ?? "STRMISS3_" + name;
-        }
+        var text = defaultValue ?? "STRMISS_" + name;
 
         var currentLanguage =
             TranslationController.InstanceExists
                 ? TranslationController.Instance.currentLanguage.languageID
                 : SupportedLangs.English;
-
-        if ((!TouLocalization.TryGetValue(currentLanguage, out var translations) ||
-             !translations.ContainsValue(name)) && text == string.Empty)
+        
+        if (TouLocalization.TryGetValue(currentLanguage, out var translations) &&
+            translations.TryGetValue(name, out var translation))
         {
-            text = defaultValue ?? "STRMISS2_" + name;
+            text = translation;
         }
-
-        if (translations != null && translations.TryGetValue(name, out var translation2) && text == string.Empty)
+        
+        if (TouLocalization.TryGetValue(SupportedLangs.English, out var translationsEng) &&
+            translationsEng.TryGetValue(name, out var translationEng))
         {
-            text = translation2;
+            text = translationEng;
         }
         
         text = Regex.Replace(text, @"\%([^%]+)\%", @"<$1>");
