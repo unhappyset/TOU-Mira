@@ -15,7 +15,7 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
 {
     private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.Usables);
     public override string Name => "Vent";
-    public override string Keybind => Keybinds.VentAction;
+    public override BaseKeybind Keybind => Keybinds.VentAction;
     public override Color TextOutlineColor => TownOfUsColors.Engineer;
 
     public override float Cooldown =>

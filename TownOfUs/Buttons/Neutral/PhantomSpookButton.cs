@@ -12,7 +12,7 @@ namespace TownOfUs.Buttons.Neutral;
 public sealed class PhantomSpookButton : TownOfUsButton
 {
     public override string Name => "Spook";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Phantom;
     public override float Cooldown => 0.01f;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.PhantomSpookSprite;

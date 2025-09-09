@@ -32,26 +32,29 @@ public abstract class TownOfUsButton : CustomActionButton
 
     public virtual bool UsableInDeath => false;
     public virtual bool ShouldPauseInVent => true;
-
-    /// <summary>
-    ///     Gets the keybind used for the button.<br />
-    ///     Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons,
-    ///     tou.ActionCustom for tertiary abilities, and tou.ActionCustom2 for modifier buttons.
-    /// </summary>
-    public virtual string Keybind => string.Empty;
-
+    
     public PassiveButton PassiveComp { get; set; }
 
     public virtual int ConsoleBind()
     {
-        return Keybind switch
+        var bind = -1;
+        if (Keybind == Keybinds.PrimaryAction)
         {
-            Keybinds.PrimaryAction => Keybinds.PrimaryConsole,
-            Keybinds.SecondaryAction => Keybinds.SecondaryConsole,
-            Keybinds.ModifierAction => Keybinds.ModifierConsole,
-            Keybinds.VentAction => Keybinds.VentConsole,
-            _ => -1
-        };
+            bind = Keybinds.PrimaryConsole;
+        }
+        else if (Keybind == Keybinds.SecondaryAction)
+        {
+            bind = Keybinds.SecondaryConsole;
+        }
+        else if (Keybind == Keybinds.ModifierAction)
+        {
+            bind = Keybinds.ModifierConsole;
+        }
+        else if (Keybind == Keybinds.VentAction)
+        {
+            bind = Keybinds.VentConsole;
+        }
+        return bind;
     }
 
     public override void FixedUpdateHandler(PlayerControl playerControl)
@@ -226,25 +229,28 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
     public virtual bool ShouldPauseInVent => true;
     public virtual bool UsableInDeath => false;
 
-    /// <summary>
-    ///     Gets the keybind used for the button.
-    ///     Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons,
-    ///     tou.ActionCustom for tertiary abilities, and tou.ActionCustom2 for modifier buttons.
-    /// </summary>
-    public virtual string Keybind => string.Empty;
-
     public PassiveButton PassiveComp { get; set; }
 
     public virtual int ConsoleBind()
     {
-        return Keybind switch
+        var bind = -1;
+        if (Keybind == Keybinds.PrimaryAction)
         {
-            Keybinds.PrimaryAction => Keybinds.PrimaryConsole,
-            Keybinds.SecondaryAction => Keybinds.SecondaryConsole,
-            Keybinds.ModifierAction => Keybinds.ModifierConsole,
-            Keybinds.VentAction => Keybinds.VentConsole,
-            _ => -1
-        };
+            bind = Keybinds.PrimaryConsole;
+        }
+        else if (Keybind == Keybinds.SecondaryAction)
+        {
+            bind = Keybinds.SecondaryConsole;
+        }
+        else if (Keybind == Keybinds.ModifierAction)
+        {
+            bind = Keybinds.ModifierConsole;
+        }
+        else if (Keybind == Keybinds.VentAction)
+        {
+            bind = Keybinds.VentConsole;
+        }
+        return bind;
     }
 
     public override void FixedUpdateHandler(PlayerControl playerControl)

@@ -11,7 +11,7 @@ namespace TownOfUs.Buttons.Crewmate;
 public sealed class VeteranAlertButton : TownOfUsRoleButton<VeteranRole>
 {
     public override string Name => "Alert";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Veteran;
     public override float Cooldown => OptionGroupSingleton<VeteranOptions>.Instance.AlertCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<VeteranOptions>.Instance.AlertDuration;

@@ -14,7 +14,7 @@ namespace TownOfUs.Buttons.Neutral;
 public sealed class DoomsayerObserveButton : TownOfUsRoleButton<DoomsayerRole, PlayerControl>
 {
     public override string Name => "Observe";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Doomsayer;
     public override float Cooldown => OptionGroupSingleton<DoomsayerOptions>.Instance.ObserveCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.Observe;

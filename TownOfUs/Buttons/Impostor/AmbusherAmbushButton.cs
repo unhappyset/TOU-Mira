@@ -14,7 +14,7 @@ namespace TownOfUs.Buttons.Impostor;
 public sealed class AmbusherAmbushButton : TownOfUsRoleButton<AmbusherRole, PlayerControl>, IKillButton, IDiseaseableButton
 {
     public override string Name => "Ambush";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => PlayerControl.LocalPlayer.GetKillCooldown() + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<AmbusherOptions>.Instance.MaxAmbushes;

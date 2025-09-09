@@ -16,7 +16,7 @@ namespace TownOfUs.Buttons.Neutral;
 public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAftermathableButton
 {
     public override string Name => "Mimic";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Glitch;
     public override float Cooldown => OptionGroupSingleton<GlitchOptions>.Instance.MimicCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<GlitchOptions>.Instance.MimicDuration;

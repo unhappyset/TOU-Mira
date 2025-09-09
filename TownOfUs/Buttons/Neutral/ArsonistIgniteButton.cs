@@ -21,7 +21,7 @@ public sealed class ArsonistIgniteButton : TownOfUsRoleButton<ArsonistRole>
 {
     public PlayerControl? ClosestTarget;
     public override string Name => "Ignite";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Arsonist;
     public override float Cooldown => OptionGroupSingleton<ArsonistOptions>.Instance.DouseCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.IgniteButtonSprite;

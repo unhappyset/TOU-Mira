@@ -13,7 +13,7 @@ public sealed class InquisitorVanquishButton : TownOfUsRoleButton<InquisitorRole
     IKillButton
 {
     public override string Name => "Vanquish";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Inquisitor;
     public override float Cooldown => OptionGroupSingleton<InquisitorOptions>.Instance.VanquishCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.InquisKillSprite;

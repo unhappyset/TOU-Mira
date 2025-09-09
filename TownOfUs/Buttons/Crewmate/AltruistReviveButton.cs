@@ -14,7 +14,7 @@ namespace TownOfUs.Buttons.Crewmate;
 public sealed class AltruistReviveButton : TownOfUsRoleButton<AltruistRole>
 {
     public override string Name => TouLocale.Get("TouRoleAltruistRevive", "Revive");
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Altruist;
     public override float Cooldown => 0.001f + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<AltruistOptions>.Instance.ReviveDuration.Value;

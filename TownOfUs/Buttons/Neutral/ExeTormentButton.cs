@@ -12,7 +12,7 @@ namespace TownOfUs.Buttons.Neutral;
 public sealed class ExeTormentButton : TownOfUsButton
 {
     public override string Name => "Torment";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Executioner;
     public override float Cooldown => 0.01f;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.ExeTormentSprite;

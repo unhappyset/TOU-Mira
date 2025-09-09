@@ -14,7 +14,7 @@ namespace TownOfUs.Buttons.Neutral;
 public sealed class InquisitorInquireButton : TownOfUsRoleButton<InquisitorRole, PlayerControl>
 {
     public override string Name => "Inquire";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override int MaxUses => (int)OptionGroupSingleton<InquisitorOptions>.Instance.MaxUses;
     public override Color TextOutlineColor => TownOfUsColors.Inquisitor;
 

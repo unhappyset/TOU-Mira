@@ -12,7 +12,7 @@ namespace TownOfUs.Buttons.Impostor;
 public sealed class UndertakerDragDropButton : TownOfUsRoleButton<UndertakerRole, DeadBody>, IAftermathableBodyButton
 {
     public override string Name => "Drag";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<UndertakerOptions>.Instance.DragCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.DragSprite;

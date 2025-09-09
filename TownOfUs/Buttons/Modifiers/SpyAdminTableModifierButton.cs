@@ -13,7 +13,7 @@ namespace TownOfUs.Buttons.Modifiers;
 public sealed class SpyAdminTableModifierButton : TownOfUsButton
 {
     public override string Name => "Admin";
-    public override string Keybind => Keybinds.ModifierAction;
+    public override BaseKeybind Keybind => Keybinds.ModifierAction;
     public override Color TextOutlineColor => TownOfUsColors.Spy;
     public override float Cooldown => OptionGroupSingleton<SpyOptions>.Instance.DisplayCooldown.Value + MapCooldown;
     public float AvailableCharge { get; set; } = OptionGroupSingleton<SpyOptions>.Instance.StartingCharge.Value;

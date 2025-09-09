@@ -16,7 +16,7 @@ namespace TownOfUs.Buttons.Impostor;
 public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
 {
     public override string Name => "Change Role";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => 1f;
     public override ButtonLocation Location => ButtonLocation.BottomLeft;

@@ -12,7 +12,7 @@ namespace TownOfUs.Buttons.Crewmate;
 public sealed class TransporterTransportButton : TownOfUsRoleButton<TransporterRole>
 {
     public override string Name => "Transport";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Transporter;
 
     public override float Cooldown =>

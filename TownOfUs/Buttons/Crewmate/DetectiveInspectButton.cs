@@ -9,7 +9,7 @@ namespace TownOfUs.Buttons.Crewmate;
 public sealed class DetectiveInspectButton : TownOfUsRoleButton<DetectiveRole, CrimeSceneComponent>
 {
     public override string Name => "Inspect";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Detective;
     public override float Cooldown => 1f + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.InspectSprite;
