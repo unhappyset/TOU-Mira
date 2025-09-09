@@ -154,7 +154,7 @@ public static class TouLocale
     {
         if (!Directory.Exists(directory))
         {
-            Logger.LogWarning($"Directory does not exist: {directory}");
+            Logger.LogError($"Directory does not exist: {directory}");
             return;
         }
 
@@ -164,13 +164,15 @@ public static class TouLocale
             var localeName = Path.GetFileNameWithoutExtension(file);
             if (!LangList.ContainsValue(localeName + ".xml"))
             {
-                Logger.LogWarning($"Invalid locale iso name: {localeName}");
+                Logger.LogError($"Invalid locale iso name: {localeName}");
                 continue;
             }
+            Logger.LogWarning($"Adding locale for: {localeName} in {file}");
 
             var language = LangList.FirstOrDefault(x => x.Value == localeName + ".xml").Key;
             TouLocalization.TryAdd(language, []);
-            ParseXmlFile(file, language);
+            var xmlContent = File.ReadAllText(file);
+            ParseXmlFile(xmlContent, language);
         }
         
         var translations = Directory.GetFiles(directory, "*.txt");
@@ -179,7 +181,7 @@ public static class TouLocale
             var localeName = Path.GetFileNameWithoutExtension(file);
             if (!Enum.TryParse<SupportedLangs>(localeName, out var language))
             {
-                Logger.LogWarning($"Invalid locale name: {localeName}");
+                Logger.LogError($"Invalid locale name: {localeName}");
                 continue;
             }
 
