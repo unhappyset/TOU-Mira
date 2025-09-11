@@ -88,7 +88,7 @@ public static class MiscUtils
 
         var builder = new StringBuilder();
         builder.AppendLine(CultureInfo.InvariantCulture,
-            $"\n<size=50%> \n</size><b>{TownOfUsColors.Vigilante.ToTextColor()}Options</color></b>");
+            $"\n<size=50%> \n</size><b>{TownOfUsColors.Vigilante.ToTextColor()}{TouLocale.Get("Options")}</color></b>");
 
         foreach (var option in options)
         {
@@ -145,6 +145,41 @@ public static class MiscUtils
 
         return builder.ToString();
     }
+
+    public static RoleAlignment GetRoleAlignment(this ICustomRole role)
+    {
+        if (role is ITownOfUsRole touRole)
+        {
+            return touRole.RoleAlignment;
+        }
+
+        var alignments = Enum.GetValues<RoleAlignment>();
+        foreach (var alignment in alignments)
+        {
+            var roleAlignment = alignment;
+            if (role.RoleOptionsGroup.Name.Replace(" Roles", "") == roleAlignment.ToDisplayString() ||
+                role.RoleOptionsGroup.Name.Replace($" {TouLocale.Get("Roles")}", "") ==
+                roleAlignment.ToDisplayString())
+            {
+                return roleAlignment;
+            }
+        }
+
+        var basicRole = role as RoleBehaviour;
+        if (basicRole!.IsNeutral())
+        {
+            return RoleAlignment.NeutralOutlier;
+        }
+        else if (basicRole!.IsImpostor())
+        {
+            return RoleAlignment.ImpostorSupport;
+        }
+        else
+        {
+            return RoleAlignment.CrewmateSupport;
+        }
+    }
+
     public static RoleAlignment GetRoleAlignment(this RoleBehaviour role)
     {
         if (role is ITownOfUsRole touRole)
@@ -157,12 +192,23 @@ public static class MiscUtils
             foreach (var alignment in alignments)
             {
                 var roleAlignment = alignment;
-                if (customRole.RoleOptionsGroup.Name.Replace(" Roles", "") == roleAlignment.ToDisplayString())
+                if (customRole.RoleOptionsGroup.Name.Replace(" Roles", "") == roleAlignment.ToDisplayString() || customRole.RoleOptionsGroup.Name.Replace($" {TouLocale.Get("Roles")}", "") == roleAlignment.ToDisplayString())
                 {
                     return roleAlignment;
                 }
             }
         }
+
+        if (role.Role is RoleTypes.Tracker)
+        {
+            return RoleAlignment.CrewmateInvestigative;
+        }
+
+        if (role.Role is RoleTypes.Shapeshifter or RoleTypes.Phantom)
+        {
+            return RoleAlignment.ImpostorConcealing;
+        }
+
         if (role.IsNeutral())
         {
             return RoleAlignment.NeutralOutlier;
@@ -176,6 +222,105 @@ public static class MiscUtils
             return RoleAlignment.CrewmateSupport;
         }
     }
+    public static string GetParsedRoleAlignment(ICustomRole role, bool coloredText = false)
+    {
+        var localeName = $"{role.GetRoleAlignment()}";
+        var localizedName = TouLocale.Get(localeName);
+
+        if (coloredText)
+        {
+            if (localizedName.Contains("Crewmate") || localizedName.Contains(TouLocale.Get("CrewmateKeyword")))
+            {
+                localizedName = $"<color=#68ACF4>{localizedName}";
+            }
+            else if (localizedName.Contains("Impostor") || localizedName.Contains(TouLocale.Get("ImpostorKeyword")))
+            {
+                localizedName = $"<color=#D63F42>{localizedName}";
+            }
+            else if (localizedName.Contains("Neutral") || localizedName.Contains(TouLocale.Get("NeutralKeyword")))
+            {
+                localizedName = $"<color=#8A8A8A>{localizedName}";
+            }
+            else if (localizedName.Contains("Game") || localizedName.Contains(TouLocale.Get("GameKeyword")))
+            {
+                localizedName = $"<color=#888888>{localizedName}";
+            }
+            else
+            {
+                localizedName = $"<color=#FFFFFF>{localizedName}";
+            }
+
+            localizedName += "</color>";
+        }
+        
+        return localizedName;
+    }
+    public static string GetParsedRoleAlignment(RoleBehaviour role, bool coloredText = false)
+    {
+        var localeName = $"{role.GetRoleAlignment()}";
+        var localizedName = TouLocale.Get(localeName);
+
+        if (coloredText)
+        {
+            if (localizedName.Contains("Crewmate") || localizedName.Contains(TouLocale.Get("CrewmateKeyword")))
+            {
+                localizedName = $"<color=#68ACF4>{localizedName}";
+            }
+            else if (localizedName.Contains("Impostor") || localizedName.Contains(TouLocale.Get("ImpostorKeyword")))
+            {
+                localizedName = $"<color=#D63F42>{localizedName}";
+            }
+            else if (localizedName.Contains("Neutral") || localizedName.Contains(TouLocale.Get("NeutralKeyword")))
+            {
+                localizedName = $"<color=#8A8A8A>{localizedName}";
+            }
+            else if (localizedName.Contains("Game") || localizedName.Contains(TouLocale.Get("GameKeyword")))
+            {
+                localizedName = $"<color=#888888>{localizedName}";
+            }
+            else
+            {
+                localizedName = $"<color=#FFFFFF>{localizedName}";
+            }
+
+            localizedName += "</color>";
+        }
+        
+        return localizedName;
+    }
+    public static string GetParsedRoleAlignment(RoleAlignment roleAlignment, bool coloredText = false)
+    {
+        var localeName = $"{roleAlignment}";
+        var localizedName = TouLocale.Get(localeName);
+
+        if (coloredText)
+        {
+            if (localizedName.Contains("Crewmate") || localizedName.Contains(TouLocale.Get("CrewmateKeyword")))
+            {
+                localizedName = $"<color=#68ACF4>{localizedName}";
+            }
+            else if (localizedName.Contains("Impostor") || localizedName.Contains(TouLocale.Get("ImpostorKeyword")))
+            {
+                localizedName = $"<color=#D63F42>{localizedName}";
+            }
+            else if (localizedName.Contains("Neutral") || localizedName.Contains(TouLocale.Get("NeutralKeyword")))
+            {
+                localizedName = $"<color=#8A8A8A>{localizedName}";
+            }
+            else if (localizedName.Contains("Game") || localizedName.Contains(TouLocale.Get("GameKeyword")))
+            {
+                localizedName = $"<color=#888888>{localizedName}";
+            }
+            else
+            {
+                localizedName = $"<color=#FFFFFF>{localizedName}";
+            }
+
+            localizedName += "</color>";
+        }
+        
+        return localizedName;
+    }
 
     public static IEnumerable<RoleBehaviour> GetRegisteredRoles(RoleAlignment alignment)
     {
@@ -187,6 +332,7 @@ public static class MiscUtils
         {
             case RoleAlignment.CrewmateInvestigative:
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Tracker));
+                //registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Detective));
                 break;
             case RoleAlignment.CrewmateSupport:
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Crewmate));
@@ -196,6 +342,7 @@ public static class MiscUtils
                 break;
             case RoleAlignment.ImpostorSupport:
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Impostor));
+                //registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Viper));
                 break;
             case RoleAlignment.ImpostorConcealing:
                 registeredRoles.Add(RoleManager.Instance.GetRole(RoleTypes.Shapeshifter));
@@ -255,7 +402,7 @@ public static class MiscUtils
     public static IEnumerable<RoleBehaviour> GetRoles(RoleAlignment alignment)
     {
         return CustomRoleUtils.GetActiveRoles()
-            .Where(x => x is ITownOfUsRole role && role.RoleAlignment == alignment);
+            .Where(x => x.GetRoleAlignment() == alignment);
     }
 
     public static PlayerControl? GetPlayerWithModifier<T>() where T : BaseModifier

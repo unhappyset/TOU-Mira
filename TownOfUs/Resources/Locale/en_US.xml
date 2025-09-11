@@ -158,6 +158,10 @@
     <string name="YouAreAn">You are an</string>
     <string name="YouAreThe">You are the</string>
     <string name="YouAre">You are</string>
+    <string name="YouWereA">You were a</string>
+    <string name="YouWereAn">You were an</string>
+    <string name="YouWereThe">You were the</string>
+    <string name="YouWere">You were</string>
     <!-- Cause of Deaths -->
     <string name="DiedByString">\%cod\% By \%player\%</string>
     <string name="DiedToDisconnect">Disconnected</string>

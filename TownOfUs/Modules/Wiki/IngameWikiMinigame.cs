@@ -69,13 +69,14 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
         CloseButton.Value.OnClick.AddListener((UnityAction)closeAction);
         OutsideCloseButton.Value.OnClick.AddListener((UnityAction)closeAction);
-
+        HomepageModifiersBtn.Value.GetComponentInChildren<TextMeshPro>().text = TouLocale.Get("Modifiers", "Modifiers");
         HomepageModifiersBtn.Value.OnClick.AddListener((UnityAction)(() =>
         {
             _modifiersSelected = true;
             UpdatePage(WikiPage.SearchScreen);
         }));
 
+        HomepageRolesBtn.Value.GetComponentInChildren<TextMeshPro>().text = TouLocale.Get("Roles", "Roles");
         HomepageRolesBtn.Value.OnClick.AddListener((UnityAction)(() =>
         {
             _modifiersSelected = false;
@@ -122,14 +123,14 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         {
             if (DetailDescription.Value.gameObject.activeSelf)
             {
-                ToggleAbilitiesBtn.Value.buttonText.text = "Description";
+                ToggleAbilitiesBtn.Value.buttonText.text = TouLocale.Get("WikiDescriptionTab", "Description");
                 DetailDescription.Value.gameObject.SetActive(false);
                 AbilityScroller.Value.transform.parent.gameObject.SetActive(true);
             }
             else
             {
                 ToggleAbilitiesBtn.Value.buttonText.text =
-                    _selectedItem != null ? _selectedItem.SecondTabName : "Abilities";
+                    _selectedItem != null ? _selectedItem.SecondTabName : TouLocale.Get("WikiAbilitiesTab", "Abilities");
                 DetailDescription.Value.gameObject.SetActive(true);
                 AbilityScroller.Value.transform.parent.gameObject.SetActive(false);
             }
@@ -222,7 +223,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         if (_selectedItem is ITownOfUsRole touRole)
         {
             DetailScreenItemName.Value.text =
-                $"{touRole.RoleName}\n<size=60%>{touRole.RoleColor.ToTextColor()}{touRole.RoleAlignment.ToDisplayString()}</size></color>";
+                $"{touRole.RoleName}\n<size=60%>{touRole.RoleColor.ToTextColor()}{MiscUtils.GetParsedRoleAlignment(touRole.RoleAlignment)}</size></color>";
             DetailScreenIcon.Value.sprite = touRole.Configuration.Icon != null
                 ? touRole.Configuration.Icon.LoadAsset()
                 : TouRoleIcons.RandomAny.LoadAsset();
@@ -237,7 +238,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
         else if (_selectedSoftItem != null)
         {
             DetailScreenItemName.Value.text =
-                $"{_selectedSoftItem.EntryName}\n<size=60%>{_selectedSoftItem.EntryColor.ToTextColor()}{_selectedSoftItem.TeamName}</size></color>";
+                $"{_selectedSoftItem.EntryName}\n<size=60%>{_selectedSoftItem.EntryColor.ToTextColor()}{TouLocale.Get(_selectedSoftItem.TeamName, _selectedSoftItem.TeamName)}</size></color>";
             DetailScreenIcon.Value.sprite = _selectedSoftItem.Icon != null
                 ? _selectedSoftItem.Icon
                 : TouRoleIcons.RandomAny.LoadAsset();
@@ -297,7 +298,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
     private void LoadSearchScreen()
     {
         SearchScreen.Value.gameObject.SetActive(true);
-        SearchPageText.Value.text = _modifiersSelected ? "Modifiers" : "Roles";
+        SearchPageText.Value.text = TouLocale.Get(_modifiersSelected ? "Modifiers" : "Roles");
         SearchPageIcon.Value.sprite = _modifiersSelected
             ? TouModifierIcons.Bait.LoadAsset()
             : TouRoleIcons.Warlock.LoadAsset();
@@ -389,7 +390,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                     chance = allyMod2.CustomChance;
                 }
 
-                var txt = amount != 0 ? $"Amount: {amount} - Chance: {chance}%" : "Amount: 0";
+                var txt = amount != 0 ? $"{TouLocale.Get("Amount", "Amount")}: {amount} - {TouLocale.Get("Chance", "Chance")}: {chance}%" : $"{TouLocale.Get("Amount", "Amount")}: 0";
 
                 amountTxt.text =
                     $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{txt}</font>";
@@ -446,7 +447,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                     continue;
                 }
                 
-                var teamName = role.GetRoleAlignment().ToDisplayString();
+                var teamName = MiscUtils.GetParsedRoleAlignment(role);
 
                 var newItem = CreateNewItem(customRole.RoleName, customRole.Configuration.Icon?.LoadAsset(), customRole.RoleColor);
                 var team = newItem.transform.GetChild(2).gameObject.GetComponent<TextMeshPro>();
@@ -464,7 +465,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                     var chance = customRole.GetChance();
                     var amountTxt = newItem.transform.FindChild("AmountTxt").gameObject.GetComponent<TextMeshPro>();
 
-                    var txt = amount != 0 ? $"Amount: {amount} - Chance: {chance}%" : "Amount: 0";
+                    var txt = amount != 0 ? $"{TouLocale.Get("Amount", "Amount")}: {amount} - {TouLocale.Get("Chance", "Chance")}: {chance}%" : $"{TouLocale.Get("Amount", "Amount")}: 0";
                     amountTxt.text =
                         $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{txt}</font>";
                     amountTxt.fontSizeMin = 1.85f;

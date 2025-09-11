@@ -60,7 +60,7 @@ public sealed class ImitatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         return ITownOfUsRole.SetNewTabText(this);
     }
 
-    public string SecondTabName => "Role Guide";
+    public string SecondTabName => TouLocale.Get("WikiRoleGuideTab", "Role Guide");
 
     public override void Initialize(PlayerControl player)
     {

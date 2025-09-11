@@ -107,34 +107,11 @@ public static class Extensions
 
     public static bool Is(this PlayerControl player, RoleAlignment roleAlignment)
     {
-        if (player.Data.Role is ITownOfUsRole role && role.RoleAlignment == roleAlignment)
+        if (player.Data.Role.GetRoleAlignment() == roleAlignment)
         {
             return true;
         }
-
-        if (player.Data.Role.Role is RoleTypes.Crewmate or RoleTypes.Scientist or RoleTypes.Noisemaker
-                or RoleTypes.Engineer &&
-            roleAlignment == RoleAlignment.CrewmateSupport)
-        {
-            return true;
-        }
-
-        if (player.Data.Role.Role is RoleTypes.Tracker && roleAlignment == RoleAlignment.CrewmateInvestigative)
-        {
-            return true;
-        }
-
-        if (player.Data.Role.Role is RoleTypes.Impostor && roleAlignment == RoleAlignment.ImpostorSupport)
-        {
-            return true;
-        }
-
-        if (player.Data.Role.Role is RoleTypes.Shapeshifter or RoleTypes.Phantom &&
-            roleAlignment == RoleAlignment.ImpostorConcealing)
-        {
-            return true;
-        }
-
+        
         return false;
     }
 
