@@ -34,7 +34,7 @@ public static class TouLocale
     public static string BepinexLocaleDirectory =>
         Path.Combine(BepInEx.Paths.BepInExRootPath, "MiraLocales", "TownOfUs");
 
-    public static Dictionary<string, StringNames> TouLocaleList { get; } = [];
+    /*public static Dictionary<string, StringNames> TouLocaleList { get; } = [];*/
 
     public static Dictionary<string, string> TmpTextList { get; } = new()
     {
@@ -241,15 +241,15 @@ public static class TouLocale
                         
                         TouLocalization[language].TryAdd(name, value);
                         
-                        if (language is SupportedLangs.English && !TouLocaleList.ContainsKey(name))
+                        /*if (language is SupportedLangs.English && !TouLocaleList.ContainsKey(name))
                         {
                             var stringName = CustomStringName.CreateAndRegister(name);
                             TouLocaleList.TryAdd(name, stringName);
-                        }
+                        }*/
                         
                     }
                 }
-                Logger.LogWarning($"{TouLocaleList.Count} String Names currently exist!");
+                Logger.LogWarning($"{TouLocalization[language].Count} Localization strings added to {language.ToDisplayString()}!");
             }
             else
             {
