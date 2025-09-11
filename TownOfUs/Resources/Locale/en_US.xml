@@ -1079,7 +1079,7 @@
     <string name="TouRoleDoomsayerWikiAddIfObserve"> They may observe players to get a hint of what their roles are the following meeting.</string>
 
     <string name="TouRoleDoomsayerObserve">Observe</string>
-    <string name="TouRoleDoomsayerObserve">Observe a player, gaining a hint in the next meeting what their role could be.</string>
+    <string name="TouRoleDoomsayerObserveWikiDescription">Observe a player, gaining a hint in the next meeting what their role could be.</string>
 
     <!-- Doomsayer Options -->
     <string name="TouOptionDoomsayerCooldown">Observe Cooldown</string>
