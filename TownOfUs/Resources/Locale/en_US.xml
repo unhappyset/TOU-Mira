@@ -972,14 +972,13 @@
   <!-- Doomsayer -->
     <!-- Doomsayer Wiki / Abilities -->
     <string name="TouRoleDoomsayer">Doomsayer</string>
-    <string name="TouRoleDoomsayerIntroBlurb">Guess People's Roles To Win!</string>
-    <string name="TouRoleDoomsayerTabDescription">Win by guessing the roles of \%guessCount\% players.</string>
-    <string name="TouRoleDoomsayerWikiDescription">The Doomsayer is a Neutral Evil role that wins by guessing \%guessCount\% players' roles.</string>
-    <string name="TouRoleDoomsayerWikiAddIfObserve"> They may observe players to get a hint of what their roles are the following meeting.</string>
-
-    <string name="TouRoleDoomsayerObserve">Observe</string>
-    <string name="TouRoleDoomsayerObserveWikiDescription">Observe a player, gaining a hint in the next meeting what their role could be.</string>
-    <!-- Doomsayer Options -->
+  <string name="TouRoleDoomsayerIntroBlurb">Guess People's Roles To Win!</string>
+  <string name="TouRoleDoomsayerTabDescription">Win by guessing the roles of \%guessCount\% players.</string>
+  <string name="TouRoleDoomsayerWikiDescription">The Doomsayer is a Neutral Evil role that wins by guessing \%guessCount\% players' roles.</string>
+  <string name="TouRoleDoomsayerWikiAddIfObserve"> They may observe players to get a hint of what their roles are the following meeting.</string>
+  <string name="TouRoleDoomsayerObserve">Observe</string>
+  <string name="TouRoleDoomsayerObserveWikiDescription">Observe a player, gaining a hint in the next meeting what their role could be.</string>
+  <!-- Doomsayer Options -->
     <string name="TouOptionDoomsayerCooldown">Observe Cooldown</string>
   <string name="TouOptionDoomsayerNecessaryGuessed">Number Of Guesses Needed To Win</string>
   <string name="TouOptionDoomsayerGuessCrewInvestigative">Doomsayer Can Guess Crew Investigative Roles</string>
