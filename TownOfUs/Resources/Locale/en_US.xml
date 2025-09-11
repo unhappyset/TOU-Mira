@@ -57,6 +57,7 @@
     <string name="CottonCandy">Cotton Candy</string>
     <string name="Rainbow">Rainbow</string>
     <!-- Terms used in-game and in the wiki -->
+    <string name="BackButtonText">Back</string>
     <string name="Alignment">Alignment</string>
     <string name="WikiDescriptionTab">Description</string>
     <string name="WikiAbilitiesTab">Abilities</string>
