@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-  <string name="FoolsMode">愚人模式</string>
+  <string name="FoolsMode">愚人节模式</string>
   <string name="TertiaryAbility">第三技能(骇入技能)</string>
   <string name="ModifierAbility">附加职业技能</string>
   <string name="ClientOptionsButton">我们的小镇客户端设置</string>
@@ -177,8 +177,8 @@
   <string name="TouScatter">永动</string>
   <string name="TouRoleSpectator">观察者</string>
   <string name="TouRoleSpectatorIntroBlurb">在远处观察混乱</string>
-  <string name="TouRoleAltruistTabDescription">集体复活死去的船员，但同时杀手会收到警示，自身也失去召开会议的技能</string>
-  <string name="TouRoleAltruistWikiDescription">您实际上并不参与游戏，也不与玩家互动。你能做的就是看着。</string>
+  <string name="TouRoleAltruistTabDescription">复活死去的船员，以%nl\%的代价告知杀手并在会议后移除使用次数。</string>
+  <string name="TouRoleAltruistWikiDescription">殉道者是一个可以在团队中复活死去的玩家的船员保护类职业。然而，他的位置和复活的玩家的位置会显示给所有的伪装者。</string>
   <string name="TouRoleAltruist">殉道者</string>
   <string name="TouRoleAltruistIntroBlurb">复活死去的船员</string>
   <string name="TouRoleAltruistRevive">复活</string>
@@ -212,4 +212,8 @@
   <string name="CottonCandy">棉花糖</string>
   <string name="Rainbow">彩虹</string>
   <string name="BackButtonText">向后</string>
+  <string name="YouWereA">你是一个</string>
+  <string name="YouWereAn">你是一个</string>
+  <string name="YouWereThe">你是</string>
+  <string name="YouWere">你是</string>
 </resources>
