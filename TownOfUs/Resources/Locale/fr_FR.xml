@@ -1,4 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-
+  <string name="ShowVents">Afficher Les Conduits Sur La Carte</string>
+  <string name="Watermelon">Pastèque</string>
+  <string name="Chocolate">Chocolat</string>
+  <string name="SkyBlue">Bleu Ciel</string>
+  <string name="Beige">Beige</string>
+  <string name="SeaGreen">Vert Mer</string>
+  <string name="Lilac">Lilas</string>
+  <string name="Azure">Azur</string>
+  <string name="Mint">Menthe</string>
+  <string name="Gold">Or</string>
+  <string name="Snow">Neige</string>
 </resources>
