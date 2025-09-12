@@ -1,4 +1,37 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string name="FoolsMode">Modalità folle</string>
+  <string name="ShowWelcomeMessage">Mostra messaggio di benvenuto</string>
+  <string name="Watermelon">Cocomero</string>
+  <string name="Chocolate">Cioccolato</string>
+  <string name="SkyBlue">Celeste</string>
+  <string name="Beige">Beige</string>
+  <string name="Magenta">Magenta</string>
+  <string name="SeaGreen">Verde acqua</string>
+  <string name="Lilac">Lilla</string>
+  <string name="Olive">Verde oliva</string>
+  <string name="Azure">Azzurro</string>
+  <string name="Plum">Prugna</string>
+  <string name="Mint">Verde menta</string>
+  <string name="Chartreuse">Chartreuse</string>
+  <string name="Gold">Giallo oro</string>
+  <string name="Turquoise">Turchese</string>
+  <string name="Blood">Rosso sangue</string>
+  <string name="Grass">Verde erba</string>
+  <string name="Mandarin">Mandarino</string>
+  <string name="Ash">Cenere</string>
+  <string name="Silver">Argento</string>
+  <string name="Crimson">Rosso cremisi</string>
+  <string name="Charcoal">Nero carbone</string>
+  <string name="Violet">Violetto</string>
+  <string name="Denim">Denim</string>
+  <string name="Rainbow">Arcobaleno</string>
+  <string name="BackButtonText">Indietro</string>
+  <string name="WikiDescriptionTab">Descrizione</string>
+  <string name="WikiAbilitiesTab">Abilità</string>
+  <string name="SearchboxHeadsUp">Cerca qui</string>
+  <string name="Roles">Ruoli</string>
+  <string name="Modifiers">Modificatori</string>
+  <string name="Amount">Quantità</string>
+  <string name="Options">Opzioni</string>
 </resources>
