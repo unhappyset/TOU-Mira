@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-  <string name="FoolsMode">琪露诺模式</string>
-  <string name="TertiaryAbility">高级技能(黑入技能)</string>
+  <string name="FoolsMode">愚人模式</string>
+  <string name="TertiaryAbility">第三技能(骇入技能)</string>
   <string name="ModifierAbility">附加职业技能</string>
   <string name="ClientOptionsButton">我们的小镇客户端设置</string>
   <string name="DeadSeeGhosts">死后显示其他鬼魂</string>
@@ -137,14 +137,14 @@
   <string name="YouAreThe">你是</string>
   <string name="YouAre">你是</string>
   <string name="DiedByString">\%cod\% By \%player\%</string>
-  <string name="DiedToDisconnect">断开连接</string>
+  <string name="DiedToDisconnect">断线</string>
   <string name="DiedToEjection">驱逐</string>
   <string name="DiedToKiller">击杀</string>
   <string name="DiedToPunishment">惩罚</string>
   <string name="DiedToWinning">胜利</string>
   <string name="DiedToSuicide">自杀</string>
   <string name="DiedToMisguess">误猜</string>
-  <string name="DiedToGuess">猜测</string>
+  <string name="DiedToGuess">被猜</string>
   <string name="DiedToHeartbreak">心碎</string>
   <string name="DiedToSheriff">执法</string>
   <string name="DiedToDeputy">中弹</string>
@@ -177,7 +177,7 @@
   <string name="TouScatter">永动</string>
   <string name="TouRoleSpectator">观察者</string>
   <string name="TouRoleSpectatorIntroBlurb">在远处观察混乱</string>
-  <string name="TouRoleAltruistTabDescription">从不参与，看着游戏中的混乱展开！</string>
+  <string name="TouRoleAltruistTabDescription">集体复活死去的船员，但同时杀手会收到警示，自身也失去召开会议的技能</string>
   <string name="TouRoleAltruistWikiDescription">您实际上并不参与游戏，也不与玩家互动。你能做的就是看着。</string>
   <string name="TouRoleAltruist">殉道者</string>
   <string name="TouRoleAltruistIntroBlurb">复活死去的船员</string>
@@ -211,4 +211,5 @@
   <string name="Denim">牛仔布</string>
   <string name="CottonCandy">棉花糖</string>
   <string name="Rainbow">彩虹</string>
+  <string name="BackButtonText">向后</string>
 </resources>
