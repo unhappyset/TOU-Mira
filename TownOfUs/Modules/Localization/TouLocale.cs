@@ -15,19 +15,21 @@ public static class TouLocale
     public static Dictionary<SupportedLangs, string> LangList { get; } = new()
     {
         { SupportedLangs.English, "en_US.xml" },
-        { SupportedLangs.German, "de_DE.xml" },
         { SupportedLangs.Latam, "es_419.xml" },
-        { SupportedLangs.Spanish, "es_ES.xml" },
+        { SupportedLangs.Brazilian, "pt_BR.xml" },
+        { SupportedLangs.Portuguese, "pt_PT.xml" },
+        { SupportedLangs.Korean, "ko_KR.xml" },
+        { SupportedLangs.Russian, "ru_RU.xml" },
+        { SupportedLangs.Dutch, "nl_NL.xml" },
         { SupportedLangs.Filipino, "fil_PH.xml" },
         { SupportedLangs.French, "fr_FR.xml" },
+        { SupportedLangs.German, "de_DE.xml" },
         { SupportedLangs.Italian, "it_IT.xml" },
         { SupportedLangs.Japanese, "ja_JP.xml" },
-        { SupportedLangs.Korean, "ko_KR.xml" },
-        { SupportedLangs.Dutch, "nl_NL.xml" },
-        { SupportedLangs.Brazilian, "pt_BR.xml" },
-        { SupportedLangs.Russian, "ru_RU.xml" },
+        { SupportedLangs.Spanish, "es_ES.xml" },
         { SupportedLangs.SChinese, "zh_CN.xml" },
-        { SupportedLangs.TChinese, "zh_TW.xml" }
+        { SupportedLangs.TChinese, "zh_TW.xml" },
+        { SupportedLangs.Irish, "ga_IE.xml" }
     };
 
     public static string BepinexLocaleDirectory =>
