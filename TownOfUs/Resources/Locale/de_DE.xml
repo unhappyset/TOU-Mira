@@ -1,4 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-
+  <string name="FoolsMode">Narrenmodus</string>
+  <string name="TertiaryAbility">Tertiäre Fähigkeit (Hack-Fähigkeit)</string>
+  <string name="ModifierAbility">Modifikator Fähigkeit</string>
+  <string name="ClientOptionsButton">Tou Client Optionen</string>
+  <string name="DeadSeeGhosts">Andere Geister Anzeigen Wenn Tot Sind</string>
+  <string name="ShowVents">Anzeigen Vents Auf Der Karte</string>
+  <string name="ShowWelcomeMessage">Willkommensnachricht Anzeigen</string>
 </resources>
