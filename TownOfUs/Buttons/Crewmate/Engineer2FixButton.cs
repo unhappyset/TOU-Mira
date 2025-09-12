@@ -9,7 +9,7 @@ namespace TownOfUs.Buttons.Crewmate;
 
 public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
 {
-    public override string Name => "Fix";
+    public override string Name => TouLocale.Get("TouRoleEngineerFix", "Fix");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Engineer;
     public override float Cooldown => 0.001f + MapCooldown;
@@ -32,7 +32,7 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
 
     protected override void OnClick()
     {
-        OverrideName("Fixing");
+        OverrideName(TouLocale.Get("TouRoleEngineerFixing", "Fixing"));
         var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
 
         if (system is not { AnyActive: true })

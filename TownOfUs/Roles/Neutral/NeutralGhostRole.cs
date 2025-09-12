@@ -6,6 +6,7 @@ using MiraAPI.Roles;
 using Reactor.Utilities;
 using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Neutral;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
@@ -24,7 +25,7 @@ public class NeutralGhostRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownOfUsR
         Ability = crewGhost.Ability;
     }
 
-    public virtual string RoleName => Player != null ? Player.GetRoleWhenAlive().NiceName : "Neutral Ghost";
+    public virtual string RoleName => Player != null ? Player.GetRoleWhenAlive().GetRoleName() : "Neutral Ghost";
     public virtual string RoleDescription => Player != null ? Player.GetRoleWhenAlive().Blurb : string.Empty;
     public virtual string RoleLongDescription => Player != null ? Player.GetRoleWhenAlive().BlurbLong : string.Empty;
     public virtual Color RoleColor => Player != null ? Player.GetRoleWhenAlive().TeamColor : TownOfUsColors.Neutral;
@@ -117,7 +118,7 @@ public class NeutralGhostRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownOfUsR
 
         var win = role.DidWin(gameOverReason);
 
-        Logger<TownOfUsPlugin>.Message($"NeutralGhostRole.DidWin - role: {role.NiceName} DidWin: {win}");
+        Logger<TownOfUsPlugin>.Message($"NeutralGhostRole.DidWin - role: {role.GetRoleName()} DidWin: {win}");
 
         // Yes, this is bad, but we don't want to break the end game screen to allow other mods to still work with tou mira - Atony
         if (role is JesterRole && win && OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.EndsGame)

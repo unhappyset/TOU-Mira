@@ -98,7 +98,7 @@ public sealed class MeetingMenu : IDisposable
         var targetBox = UObject.Instantiate(
             voteArea.Buttons.transform.Find("CancelButton").gameObject,
             voteArea.transform);
-        targetBox.name = $"MeetingButton{Owner.NiceName.Replace(" ", "")}{voteArea.TargetPlayerId}";
+        targetBox.name = $"MeetingButton{Owner.GetRoleName().Replace(" ", "")}{voteArea.TargetPlayerId}";
         targetBox.transform.localPosition = Position;
         var renderer = targetBox.GetComponent<SpriteRenderer>();
         renderer.sprite = (Type == MeetingAbilityType.Toggle ? DisabledSprite : ActiveSprite).LoadAsset();

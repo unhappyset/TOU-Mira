@@ -42,7 +42,7 @@ public static class TouRoleManagerPatches
 
         foreach (var role in ghostRoles)
         {
-            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"GhostRoleSetup - ghostRoles role NiceName: {role.NiceName}");
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"GhostRoleSetup - ghostRoles role NiceName: {role.GetRoleName()}");
             var data = MiscUtils.GetAssignData(role.Role);
 
             switch (data.Chance)
@@ -188,7 +188,7 @@ public static class TouRoleManagerPatches
         {
             impCount = 1;
 
-            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"Removing Impostor Roles because of {uniqueRole.NiceName}");
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"Removing Impostor Roles because of {uniqueRole.GetRoleName()}");
 
             impRoles.RemoveAll(x => x != RoleId.Get(uniqueRole.GetType()));
 
@@ -229,7 +229,7 @@ public static class TouRoleManagerPatches
 
             crewmates.RemoveAt(num);
 
-            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).NiceName}'");
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).GetRoleName()}'");
         }
 
         foreach (var role in impRoles)
@@ -241,7 +241,7 @@ public static class TouRoleManagerPatches
 
             impostors.RemoveAt(num);
 
-            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).NiceName}'");
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).GetRoleName()}'");
         }
 
         foreach (var player in crewmates)
@@ -585,7 +585,7 @@ public static class TouRoleManagerPatches
         {
             impCount = 1;
 
-            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"Removing Impostor Roles because of {uniqueRole.NiceName}");
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"Removing Impostor Roles because of {uniqueRole.GetRoleName()}");
 
             while (impostors.Count > impCount)
             {
@@ -604,7 +604,7 @@ public static class TouRoleManagerPatches
 
             impostors.RemoveAt(num);
 
-            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).NiceName}'");
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).GetRoleName()}'");
         }
 
         foreach (var role in crewRoles)
@@ -616,7 +616,7 @@ public static class TouRoleManagerPatches
 
             crewmates.RemoveAt(num);
 
-            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).NiceName}'");
+            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"SelectRoles - player: '{player.Data.PlayerName}', role: '{RoleManager.Instance.GetRole((RoleTypes)role).GetRoleName()}'");
         }
 
         // Assign vanilla roles to anyone who did not receive a role.
@@ -817,7 +817,7 @@ public static class TouRoleManagerPatches
         if (ghostRole != RoleTypes.CrewmateGhost && ghostRole != RoleTypes.ImpostorGhost &&
             ghostRole != (RoleTypes)RoleId.Get<NeutralGhostRole>())
             // var newRole = RoleManager.Instance.GetRole(ghostRole);
-            // Logger<TownOfUsPlugin>.Message($"TryAssignSpecialGhostRolesPatch - ghostRoles role: {newRole.NiceName}");
+            // Logger<TownOfUsPlugin>.Message($"TryAssignSpecialGhostRolesPatch - ghostRoles role: {newRole.GetRoleName()}");
         {
             player.RpcChangeRole((ushort)ghostRole);
         }

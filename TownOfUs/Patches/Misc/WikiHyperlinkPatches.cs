@@ -44,7 +44,7 @@ public static class WikiHyperLinkPatches
             bool shouldHyperlink = true;
             if (match.Value[0] == '#') // Role tag
             {
-                var role = MiscUtils.AllRoles.FirstOrDefault(x => x.NiceName.Equals(key, StringComparison.OrdinalIgnoreCase));
+                var role = MiscUtils.AllRoles.FirstOrDefault(x => x.GetRoleName().Equals(key, StringComparison.OrdinalIgnoreCase));
                 if (role is ICustomRole customRole)
                 {
                     replacement = $"{fontTag}<b>{customRole.RoleColor.ToTextColor()}<link={customRole.GetType().FullName}:{linkIndex}>{customRole.RoleName}</link></color></b></font>";
@@ -53,10 +53,10 @@ public static class WikiHyperLinkPatches
                 else
                 {
                     // Non-custom roles (aka vanilla ones) can also be tagged, but they have no wiki entries.
-                    role = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.NiceName.Equals(key, StringComparison.OrdinalIgnoreCase));
+                    role = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.GetRoleName().Equals(key, StringComparison.OrdinalIgnoreCase));
                     if (role != null)
                     {
-                        replacement = $"{fontTag}<b>{role.TeamColor.ToTextColor()}{role.NiceName}</color></b></font>";
+                        replacement = $"{fontTag}<b>{role.TeamColor.ToTextColor()}{role.GetRoleName()}</color></b></font>";
                         shouldHyperlink = false;
                     }
                 }

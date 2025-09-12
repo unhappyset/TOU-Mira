@@ -10,7 +10,7 @@ namespace TownOfUs.Buttons.Impostor;
 
 public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
-    public override string Name => "Kill";
+    public override string Name => TranslationController.Instance.GetStringWithDefault(StringNames.KillLabel, "Kill");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => PlayerControl.LocalPlayer.GetKillCooldown() + MapCooldown;
@@ -66,7 +66,7 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
         }
         else
         {
-            OverrideName("Kill");
+            OverrideName(TranslationController.Instance.GetStringWithDefault(StringNames.KillLabel, "Kill"));
         }
 
         base.FixedUpdate(playerControl);

@@ -50,7 +50,7 @@ public sealed class AmbassadorConfirmMinigame(IntPtr cppPtr) : Minigame(cppPtr)
         
         RetrainText.font = HudManager.Instance.TaskPanel.taskText.font;
         RetrainText.fontMaterial = HudManager.Instance.TaskPanel.taskText.fontMaterial;
-        RetrainText.text = $"Are you sure you want to be retrained into {NewRole.NiceName}?\nThis change is permanent.";
+        RetrainText.text = $"Are you sure you want to be retrained into {NewRole.GetRoleName()}?\nThis change is permanent.";
         
         RoleIcon.sprite = NewRole.RoleIconWhite ?? TouRoleIcons.RandomImp.LoadAsset();
         

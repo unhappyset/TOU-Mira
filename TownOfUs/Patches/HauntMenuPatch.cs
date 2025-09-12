@@ -82,7 +82,7 @@ public static class HauntMenuMinigamePatch
             role = target.GetRoleWhenAlive();
         }
 
-        var name = role.NiceName;
+        var name = role.GetRoleName();
 
         var rColor = role is ICustomRole custom ? custom.RoleColor : role.TeamColor;
 

@@ -251,7 +251,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             var roles = RoleManager.Instance.AllRoles
                 .Where(x => (x is IDoomable doomRole && doomRole.DoomHintType == DoomableType.Default &&
                     x is not IUnguessable || x is not IDoomable) && !x.IsDead).ToList();
-            roles = roles.OrderBy(x => x.NiceName).ToList();
+            roles = roles.OrderBy(x => x.GetRoleName()).ToList();
             var lastRole = roles[roles.Count - 1];
             roles.Remove(roles[roles.Count - 1]);
             
@@ -259,7 +259,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             {
                 roles = MiscUtils.AllRoles
                     .Where(x => x is IDoomable doomRole && doomRole.DoomHintType == hintType && x is not IUnguessable)
-                    .OrderBy(x => x.NiceName).ToList();
+                    .OrderBy(x => x.GetRoleName()).ToList();
                 lastRole = roles[roles.Count - 1];
                 roles.Remove(roles[roles.Count - 1]);
             }
@@ -269,11 +269,11 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                 reportBuilder.Append(TownOfUsPlugin.Culture, $"(");
                 foreach (var role2 in roles)
                 {
-                    reportBuilder.Append(TownOfUsPlugin.Culture, $"#{role2.NiceName.ToLowerInvariant().Replace(" ", "-")}, ");
+                    reportBuilder.Append(TownOfUsPlugin.Culture, $"#{role2.GetRoleName().ToLowerInvariant().Replace(" ", "-")}, ");
                 }
 
                 reportBuilder = reportBuilder.Remove(reportBuilder.Length - 2, 2);
-                reportBuilder.Append(TownOfUsPlugin.Culture, $" or #{lastRole.NiceName.ToLowerInvariant().Replace(" ", "-")})");
+                reportBuilder.Append(TownOfUsPlugin.Culture, $" or #{lastRole.GetRoleName().ToLowerInvariant().Replace(" ", "-")})");
             }
 
             player.Object.RemoveModifier<DoomsayerObservedModifier>();

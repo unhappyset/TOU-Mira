@@ -4,7 +4,6 @@ using System.Xml;
 using BepInEx.Logging;
 using MiraAPI.Utilities;
 using Reactor.Localization;
-using Reactor.Localization.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Modules.Localization;

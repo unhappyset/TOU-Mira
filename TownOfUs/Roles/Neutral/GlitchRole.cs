@@ -17,9 +17,34 @@ public sealed class GlitchRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SheriffRole>());
     public DoomableType DoomHintType => DoomableType.Perception;
-    public string RoleName => TouLocale.Get("TouRoleGlitch", "Glitch");
-    public string RoleDescription => "Murder, Mimic, Hack... Data Lost";
-    public string RoleLongDescription => "Murder everyone to win with your abilities!";
+    public static string LocaleKey => "Glitch";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Mimic", "Mimic"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}MimicWikiDescription"),
+                    TouNeutAssets.MimicSprite),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Hack", "Hack"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}HackWikiDescription"),
+                    TouNeutAssets.HackSprite)
+            };
+        }
+    }
     public Color RoleColor => TownOfUsColors.Glitch;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
@@ -51,30 +76,6 @@ public sealed class GlitchRole(IntPtr cppPtr)
     public StringBuilder SetTabText()
     {
         return ITownOfUsRole.SetNewTabText(this);
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Neutral Killing role that wins by being the last killer alive. They can Mimic into another player or they can hack a player." +
-            MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities
-    {
-        get
-        {
-            return new List<CustomButtonWikiDescription>
-            {
-        new("Mimic",
-            "Mimic the appearance of another player, taking on their whole look.",
-            TouNeutAssets.MimicSprite),
-        new("Hack",
-            "Disable a player's abilities.",
-            TouNeutAssets.HackSprite)
-            };
-        }
     }
 
     public override void Initialize(PlayerControl player)

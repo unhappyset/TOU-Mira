@@ -146,6 +146,14 @@ public static class MiscUtils
         return builder.ToString();
     }
 
+    public static string GetRoleName(this RoleBehaviour role)
+    {
+        if (role is ICustomRole custom)
+        {
+            return custom.RoleName;
+        }
+        return role.NiceName;
+    }
     public static RoleAlignment GetRoleAlignment(this ICustomRole role)
     {
         if (role is ITownOfUsRole touRole)
@@ -427,7 +435,7 @@ public static class MiscUtils
     public static string RoleNameLookup(RoleTypes roleType)
     {
         var role = RoleManager.Instance.GetRole(roleType);
-        return role?.NiceName ?? (roleType == RoleTypes.Crewmate ? "Crewmate" : "Impostor");
+        return role?.GetRoleName() ?? (roleType == RoleTypes.Crewmate ? "Crewmate" : "Impostor");
     }
 
     public static IEnumerable<RoleBehaviour> GetPotentialRoles()
@@ -465,14 +473,14 @@ public static class MiscUtils
 
         var crewmateRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Crewmate);
         roleList = roleList.AddItem(crewmateRole!);
-        //Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - crewmateRole: '{crewmateRole?.NiceName}'");
+        //Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - crewmateRole: '{crewmateRole?.GetRoleName()}'");
 
         var impostorRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Impostor);
         roleList = roleList.AddItem(impostorRole!);
 
-        //Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - impostorRole: '{impostorRole?.NiceName}'");
+        //Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - impostorRole: '{impostorRole?.GetRoleName()}'");
 
-        //roleList.Do(x => Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - role: '{x.NiceName}'"));
+        //roleList.Do(x => Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - role: '{x.GetRoleName()}'"));
 
         return roleList;
     }

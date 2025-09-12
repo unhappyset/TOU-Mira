@@ -62,9 +62,9 @@ public static class EndGamePatches
                 var color = role.TeamColor;
                 string roleName;
 
-                if (!string.IsNullOrEmpty(role.NiceName.Trim()))
+                if (!string.IsNullOrEmpty(role.GetRoleName().Trim()))
                 {
-                    roleName = role.NiceName;
+                    roleName = role.GetRoleName();
                 }
                 else
                 {
@@ -414,7 +414,7 @@ public static class EndGamePatches
                 var nameTxt = player.cosmetics.nameText;
                 nameTxt.gameObject.SetActive(true);
                 player.SetName(
-                    $"\n<size=85%>{realPlayer.PlayerName}</size>\n<size=65%><color=#{role.TeamColor.ToHtmlStringRGBA()}>{role.NiceName}</size>",
+                    $"\n<size=85%>{realPlayer.PlayerName}</size>\n<size=65%><color=#{role.TeamColor.ToHtmlStringRGBA()}>{role.GetRoleName()}</size>",
                     new Vector3(1.1619f, 1.1619f, 1f), Color.white, -15f);
                 player.SetNamePosition(new Vector3(0f, -1.31f, -0.5f));
                 nameTxt.fontSize = 1.9f;

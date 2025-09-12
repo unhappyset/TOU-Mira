@@ -263,13 +263,13 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                 (!OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode || ambassador.AmOwner))
             {
                 var text =
-                    $"<b>{player.Data.PlayerName} has now been retrained into {newRole.NiceName}!</b>";
+                    $"<b>{player.Data.PlayerName} has now been retrained into {newRole.GetRoleName()}!</b>";
 
                 if (player.AmOwner)
                 {
                     player.SetKillTimer(currentTime);
                     text =
-                        $"<b>You have accepted your retrain into the {newRole.NiceName}!</b>";
+                        $"<b>You have accepted your retrain into the {newRole.GetRoleName()}!</b>";
                 }
                 var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: newRole.RoleIconWhite ?? TouRoleIcons.Ambassador.LoadAsset());
 
@@ -281,12 +281,12 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                  (!OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode || ambassador.AmOwner))
         {
             var text =
-                $"<b>{player.Data.PlayerName} has denied their retrain into {newRole.NiceName}!</b>";
+                $"<b>{player.Data.PlayerName} has denied their retrain into {newRole.GetRoleName()}!</b>";
 
             if (player.AmOwner)
             {
                 text =
-                    $"<b>You have denied your retrain into the {newRole.NiceName}!</b>";
+                    $"<b>You have denied your retrain into the {newRole.GetRoleName()}!</b>";
             }
             var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: newRole.RoleIconWhite ?? TouRoleIcons.Ambassador.LoadAsset());
 
@@ -332,22 +332,22 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
             (!OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode || player.AmOwner))
         {
             var text =
-                $"<b>The Ambassador has decided to retrain {ambassador.SelectedPlr.PlayerName} into {TownOfUsColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.NiceName}</color></b>";
+                $"<b>The Ambassador has decided to retrain {ambassador.SelectedPlr.PlayerName} into {TownOfUsColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.GetRoleName()}</color></b>";
             if (ambassador.SelectedPlr.Object.AmOwner && player.AmOwner)
             {
                 text =
-                    $"<b>You have decided to retrain yourself into {TownOfUsColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.NiceName}</color></b>";
+                    $"<b>You have decided to retrain yourself into {TownOfUsColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.GetRoleName()}</color></b>";
             }
             else if (ambassador.SelectedPlr.Object == player)
             {
                 text =
-                    $"<b>The Ambassador has decided to retrain themselves into {TownOfUsColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.NiceName}</color></b>";
+                    $"<b>The Ambassador has decided to retrain themselves into {TownOfUsColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.GetRoleName()}</color></b>";
 
             }
             else if (ambassador.SelectedPlr.Object.AmOwner)
             {
                 text =
-                    $"<b>The Ambassador has decided to retrain you into {TownOfUsColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.NiceName}</color></b>";
+                    $"<b>The Ambassador has decided to retrain you into {TownOfUsColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.GetRoleName()}</color></b>";
 
             }
             var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: ambassador.SelectedRole.RoleIconWhite != null ? ambassador.SelectedRole.RoleIconWhite : TouRoleIcons.Ambassador.LoadAsset());

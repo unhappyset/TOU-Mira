@@ -312,7 +312,7 @@ public static class Extensions
         }
 
         var finalString =
-            $"<size=88%>{roleBehaviour.NiceName}</size>\n<size=70%><color=white>{alignment}</color></size>";
+            $"<size=88%>{roleBehaviour.GetRoleName()}</size>\n<size=70%><color=white>{alignment}</color></size>";
 
         // material.SetColor(PlayerMaterial.BackColor, color.DarkenColor(0.35f));
         // material.SetColor(PlayerMaterial.BodyColor, color);

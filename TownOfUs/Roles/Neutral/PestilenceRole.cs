@@ -21,6 +21,8 @@ public sealed class PestilenceRole(IntPtr cppPtr)
     public bool Announced { get; set; }
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<AurialRole>());
     public DoomableType DoomHintType => DoomableType.Fearmonger;
+    public string YouAreText => TouLocale.Get("YouAre");
+    public string YouWereText => TouLocale.Get("YouWere");
     public static string LocaleKey => "Pestilence";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
@@ -32,7 +34,6 @@ public sealed class PestilenceRole(IntPtr cppPtr)
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
-    public string YouAreText => TouLocale.Get("YouAre");
     public Color RoleColor => TownOfUsColors.Pestilence;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;

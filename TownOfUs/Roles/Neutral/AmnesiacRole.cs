@@ -29,9 +29,31 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<MysticRole>());
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => TouLocale.Get("TouRoleAmnesiac", "Amnesiac");
-    public string RoleDescription => "Remember A Role Of A Deceased Player";
-    public string RoleLongDescription => "Find a dead body to remember and become their role";
+    public static string LocaleKey => "Amnesiac";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Remember", "Remember"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}RememberWikiDescription"),
+                    TouNeutAssets.RememberButtonSprite)
+            };
+        }
+    }
     public Color RoleColor => TownOfUsColors.Amnesiac;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
@@ -55,27 +77,6 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
     public StringBuilder SetTabText()
     {
         return ITownOfUsRole.SetNewTabText(this);
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Neutral Benign role that gains access to a new role from remembering a dead body’s role. Use the role you remember to win the game." +
-            MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities
-    {
-        get
-        {
-            return new List<CustomButtonWikiDescription>
-            {
-        new("Remember",
-            "Remember the role of a dead body. If the dead body's role is a unique role, you will remember the base faction's role instead.",
-            TouNeutAssets.RememberButtonSprite)
-            };
-        }
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -131,7 +132,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             }
             inquis.Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().ToList();
             inquis.TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Select(x => x.TargetRole)
-                .OrderBy(x => x.NiceName).ToList();
+                .OrderBy(x => x.GetRoleName()).ToList();
         }
         else if (player.Data.Role is PlaguebearerRole || player.Data.Role is PestilenceRole)
         {
@@ -182,7 +183,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
         if (player.AmOwner)
         {
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>You remembered that you were like {target.Data.PlayerName}, the {player.Data.Role.TeamColor.ToTextColor()}{player.Data.Role.NiceName}</color>.</b>",
+                $"<b>You remembered that you were like {target.Data.PlayerName}, the {player.Data.Role.TeamColor.ToTextColor()}{player.Data.Role.GetRoleName()}</color>.</b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Amnesiac.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
         }

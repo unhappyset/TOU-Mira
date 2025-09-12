@@ -36,7 +36,7 @@ public static class SoftWikiEntries
         if (roleEntry.Key != null && roleEntry.Value != null)
         {
             var entry = roleEntry.Value;
-            entry.EntryName = role.NiceName;
+            entry.EntryName = role.GetRoleName();
             var teamName = role.GetRoleAlignment().ToDisplayString();
 
             entry.TeamName = teamName;

@@ -229,7 +229,7 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
             CustomButtonSingleton<MirrorcasterMagicMirrorButton>.Instance.ResetCooldownAndOrEffect();
             CustomButtonSingleton<MirrorcasterUnleashButton>.Instance.ResetCooldownAndOrEffect();
             DangerAnim();
-            var text = (opt.KnowAttackType && role.ContainedRole != null) ? $"<b>{protectedPlayer.Data.PlayerName} was attacked by the {role.ContainedRole.NiceName}! You can now unleash the attack onto another player!</b></color>" :
+            var text = (opt.KnowAttackType && role.ContainedRole != null) ? $"<b>{protectedPlayer.Data.PlayerName} was attacked by the {role.ContainedRole.GetRoleName()}! You can now unleash the attack onto another player!</b></color>" :
                 $"<b>{protectedPlayer.Data.PlayerName} was attacked! You can now unleash the attack onto another player!</b>";
             var notif1 = Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mirrorcaster.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);

@@ -52,7 +52,7 @@ public sealed class LookoutWatchedModifier(PlayerControl lookout) : BaseModifier
 
             foreach (var role in SeenPlayers)
             {
-                message.Append(TownOfUsPlugin.Culture, $"{role.NiceName}, ");
+                message.Append(TownOfUsPlugin.Culture, $"{role.GetRoleName()}, ");
             }
 
             message = message.Remove(message.Length - 2, 2);

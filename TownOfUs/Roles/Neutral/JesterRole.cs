@@ -34,9 +34,17 @@ public sealed class JesterRole(IntPtr cppPtr)
              .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<ExecutionerRole>())) &&
          OptionGroupSingleton<ExecutionerOptions>.Instance.OnTargetDeath is BecomeOptions.Jester);
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => TouLocale.Get("TouRoleJester", "Jester");
-    public string RoleDescription => "Get voted out!";
-    public string RoleLongDescription => "Be as suspicious as possible, and get voted out!";
+    public static string LocaleKey => "Jester";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
     public Color RoleColor => TownOfUsColors.Jester;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
@@ -68,12 +76,6 @@ public sealed class JesterRole(IntPtr cppPtr)
 
         return Voted ||
                GameHistory.DeathHistory.Exists(x => x.Item1 == Player.PlayerId && x.Item2 == DeathReason.Exile);
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return $"The {RoleName} is a Neutral Evil role that wins by getting themselves ejected." +
-               MiscUtils.AppendOptionsText(GetType());
     }
 
     public override void Initialize(PlayerControl player)

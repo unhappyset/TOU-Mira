@@ -105,9 +105,18 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
         }
     }
 
-    public override string RoleName => TouLocale.Get("TouRolePhantom", "Phantom");
-    public override string RoleDescription => string.Empty;
-    public override string RoleLongDescription => "Complete all your tasks without being caught!";
+    public static string LocaleKey => "Phantom";
+    public override string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public override string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public override string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+
     public override Color RoleColor => TownOfUsColors.Phantom;
     public override RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
 
@@ -130,13 +139,6 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
     public StringBuilder SetTabText()
     {
         return ITownOfUsRole.SetNewTabText(this);
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Neutral Ghost role that wins the game by finishing their tasks before a alive player has clicked on them." +
-            MiscUtils.AppendOptionsText(GetType());
     }
 
     public override void UseAbility()

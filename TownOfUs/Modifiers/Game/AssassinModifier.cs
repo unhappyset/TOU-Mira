@@ -129,7 +129,7 @@ public abstract class AssassinModifier : ExcludedGameModifier
 
             ClickHandler(victim);
             LastAttemptedVictim = player;
-            LastGuessedItem = $"{role.TeamColor.ToTextColor()}{role.NiceName}</color>";
+            LastGuessedItem = $"{role.TeamColor.ToTextColor()}{role.GetRoleName()}</color>";
         }
 
         void ClickModifierHandle(BaseModifier modifier)

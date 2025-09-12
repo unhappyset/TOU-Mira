@@ -71,10 +71,10 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         var stalkedPlayer = ModifierUtils.GetPlayersWithModifier<HunterStalkedModifier>(x => x.Hunter.AmOwner)
             .FirstOrDefault();
         var stalked = stalkedPlayer != null && !stalkedPlayer.HasDied() ? stalkedPlayer.Data.PlayerName : "Nobody";
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"Stalking: <b>{stalked}</b>");
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"{TouLocale.Get("TouRoleHunterStalking")}: <b>{stalked}</b>");
         if (CaughtPlayers.Count != 0)
         {
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>Caught Players:</b>");
+            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>{TouLocale.Get("TouRoleHunterCaughtPlayersText")}</b>");
         }
 
         foreach (var player in CaughtPlayers)
