@@ -43,7 +43,7 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
 
     public override void OnEffectEnd()
     {
-        OverrideName("Fix");
+        OverrideName(TouLocale.Get("TouRoleEngineerFix", "Fix"));
         var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
 
         if (system is { AnyActive: true })

@@ -69,8 +69,8 @@ public static class ProsecutorEvents
             
             if (hasProsecuted)
             {
-                DeathHandlerModifier.UpdateDeathHandler(player, "Prosecuted", DeathEventHandlers.CurrentRound,
-                    DeathHandlerOverride.SetFalse, $"By {pros.Player.Data.PlayerName}",
+                DeathHandlerModifier.UpdateDeathHandler(player, TouLocale.Get("DiedToProsecutor"), DeathEventHandlers.CurrentRound,
+                    DeathHandlerOverride.SetFalse, TouLocale.GetParsed("DiedByStringBasic").Replace("<player>", pros.Player.Data.PlayerName),
                     lockInfo: DeathHandlerOverride.SetTrue);
 
                 if (pros.Player.TryGetModifier<AllianceGameModifier>(out var allyMod) && !allyMod.GetsPunished)
@@ -88,7 +88,7 @@ public static class ProsecutorEvents
                     if (OptionGroupSingleton<ProsecutorOptions>.Instance.ExileOnCrewmate)
                     {
                         pros.Player.Exiled();
-                        DeathHandlerModifier.UpdateDeathHandler(pros.Player, "Punished",
+                        DeathHandlerModifier.UpdateDeathHandler(pros.Player, TouLocale.Get("DiedToPunishment"),
                             DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse,
                             lockInfo: DeathHandlerOverride.SetTrue);
                         if (@pros.Player.TryGetModifier<CelebrityModifier>(out var celeb))

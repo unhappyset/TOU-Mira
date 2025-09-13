@@ -83,8 +83,10 @@ public sealed class Bomb : IDisposable
         {
             if (!player.HasDied() || _bomber == null)
                 continue;
-            DeathHandlerModifier.RpcUpdateDeathHandler(player, "Bombed", DeathEventHandlers.CurrentRound,
-                DeathHandlerOverride.SetTrue, $"By {_bomber.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
+            DeathHandlerModifier.RpcUpdateDeathHandler(player, TouLocale.Get("DiedToBomberBomb"),
+                DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue,
+                TouLocale.GetParsed("DiedByStringBasic").Replace("<player>", _bomber.Data.PlayerName),
+                lockInfo: DeathHandlerOverride.SetTrue);
         }
     }
 

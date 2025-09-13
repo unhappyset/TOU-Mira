@@ -14,7 +14,7 @@ namespace TownOfUs.Buttons.Crewmate;
 
 public sealed class MirrorcasterUnleashButton : TownOfUsRoleButton<MirrorcasterRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
-    public override string Name => "Unleash";
+    public override string Name => TouLocale.Get("TouRoleMirrorcasterUnleash", "Unleash");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Mirrorcaster;
     public override float Cooldown => OptionGroupSingleton<MirrorcasterOptions>.Instance.UnleashCooldown.Value + MapCooldown;

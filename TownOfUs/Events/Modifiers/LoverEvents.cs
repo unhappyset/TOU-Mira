@@ -32,11 +32,11 @@ public static class LoverEvents
         {
             case DeathReason.Exile:
                 loveMod.OtherLover.RpcPlayerExile();
-                DeathHandlerModifier.RpcUpdateDeathHandler(loveMod.OtherLover, "Heartbroken", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+                DeathHandlerModifier.RpcUpdateDeathHandler(loveMod.OtherLover, TouLocale.Get("DiedToHeartbreak"), DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
                 break;
             case DeathReason.Kill:
                 loveMod.OtherLover.RpcCustomMurder(loveMod.OtherLover);
-                DeathHandlerModifier.RpcUpdateDeathHandler(loveMod.OtherLover, "Heartbroken", DeathEventHandlers.CurrentRound,
+                DeathHandlerModifier.RpcUpdateDeathHandler(loveMod.OtherLover, TouLocale.Get("DiedToHeartbreak"), DeathEventHandlers.CurrentRound,
                     (!MeetingHud.Instance && !ExileController.Instance) ? DeathHandlerOverride.SetTrue : DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
                 break;
         }

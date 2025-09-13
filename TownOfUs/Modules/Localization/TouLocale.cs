@@ -29,7 +29,8 @@ public static class TouLocale
         { SupportedLangs.Spanish, "es_ES.xml" },
         { SupportedLangs.SChinese, "zh_CN.xml" },
         { SupportedLangs.TChinese, "zh_TW.xml" },
-        { SupportedLangs.Irish, "ga_IE.xml" }
+        { SupportedLangs.Irish, "ga_IE.xml" },
+        { (SupportedLangs)16, "pl_PL.xml" } // Polish
     };
 
     public static string BepinexLocaleDirectory =>

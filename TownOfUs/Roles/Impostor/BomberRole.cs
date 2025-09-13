@@ -23,9 +23,11 @@ public sealed class BomberRole(IntPtr cppPtr)
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TrapperRole>());
     public DoomableType DoomHintType => DoomableType.Relentless;
 
-    public string RoleName => TouLocale.Get("TouRoleBomber", "Bomber");
-    public string RoleDescription => "Plant Bombs To Kill Multiple Crewmates At Once";
-    public string RoleLongDescription => "Plant bombs to kill several crewmates at once";
+    public static string LocaleKey => "Bomber";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;

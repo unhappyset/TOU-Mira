@@ -14,7 +14,7 @@ public sealed class DeathHandlerModifier : BaseModifier
     // This will determine if another mira event should be able to modify the information
     public bool LockInfo { get; set; }
     // This will determine if symbols or anything are shown
-    public bool DiedThisRound { get; set; } = true;
+    public bool DiedThisRound { get; set; } = !MeetingHud.Instance;
     // This will specify how the player died such as; Suicide, Prosecuted, Ejected, Rampaged, Reaped, etc.
     public string CauseOfDeath { get; set; } = "Suicide";
     // This is set up by the game itself and will display in the lobby

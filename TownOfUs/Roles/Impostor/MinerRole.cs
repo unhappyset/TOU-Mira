@@ -39,9 +39,17 @@ public sealed class MinerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<EngineerTouRole>());
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => TouLocale.Get("TouRoleMiner", "Miner");
-    public string RoleDescription => "From The Top, Make It Drop, That's A Vent";
-    public string RoleLongDescription => "Place interconnected vents around the map";
+    public static string LocaleKey => "Miner";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
@@ -78,11 +86,6 @@ public sealed class MinerRole(IntPtr cppPtr)
             TouImpAssets.MineSprite)
             };
         }
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return $"The {RoleName} is an Impostor Support role that can create vents." + MiscUtils.AppendOptionsText(GetType());
     }
 
     [MethodRpc((uint)TownOfUsRpc.PlaceVent)]

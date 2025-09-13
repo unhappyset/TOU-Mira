@@ -12,7 +12,7 @@ public interface ITownOfUsRole : ICustomRole
 
     bool HasImpostorVision => false;
     public virtual bool MetWinCon => false;
-    public static string LocaleKey => "STR_MISS";
+    public virtual string LocaleKey => "KEY_MISS";
     public static Dictionary<string, string> LocaleList => [];
 
     public virtual string YouAreText

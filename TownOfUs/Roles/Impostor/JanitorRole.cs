@@ -38,13 +38,19 @@ public sealed class JanitorRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<DetectiveRole>());
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => TouLocale.Get("TouRoleJanitor", "Janitor");
-    public string RoleDescription => "Sanitize The Ship";
-
+    public static string LocaleKey => "Janitor";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => "Clean bodies to hide kills" +
                                          (OptionGroupSingleton<JanitorOptions>.Instance.CleanDelay == 0
                                              ? string.Empty
                                              : "\n<b>You must stay next to the body while cleaning.</b>");
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
 
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
@@ -61,12 +67,6 @@ public sealed class JanitorRole(IntPtr cppPtr)
     public StringBuilder SetTabText()
     {
         return ITownOfUsRole.SetNewTabText(this);
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return $"The {RoleName} is an Impostor Support role that can clean dead bodies." +
-               MiscUtils.AppendOptionsText(GetType());
     }
 
     [HideFromIl2Cpp]

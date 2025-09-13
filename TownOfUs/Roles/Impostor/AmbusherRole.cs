@@ -31,10 +31,17 @@ public sealed class AmbusherRole(IntPtr cppPtr)
     : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-
-    public string RoleName => TouLocale.Get("TouRoleAmbusher", "Ambusher");
-    public string RoleDescription => "Kidnap Crewmates Into The Shadows";
-    public string RoleLongDescription => "Pursue a player, then ambush the closest player to them.\nIf the player you ambush dies, then take their body with you.";
+    public static string LocaleKey => "Ambusher";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
@@ -46,13 +53,6 @@ public sealed class AmbusherRole(IntPtr cppPtr)
         Icon = TouRoleIcons.Ambusher,
         CanUseVent = OptionGroupSingleton<AmbusherOptions>.Instance.CanVent
     };
-
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is an Impostor Killing role that can pursue a player, getting an arrow to them. They may ambush the closest player next to them. If they manage to kill the player, they will drag their body into the shadows, teleporting back with the {RoleName}." +
-            MiscUtils.AppendOptionsText(GetType());
-    }
 
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
@@ -191,8 +191,8 @@ public sealed class AmbusherRole(IntPtr cppPtr)
 
         if (body != null)
         {
-            DeathHandlerModifier.UpdateDeathHandler(target, "Ambushed", DeathEventHandlers.CurrentRound,
-                DeathHandlerOverride.SetTrue, $"By {ambusher.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
+            DeathHandlerModifier.UpdateDeathHandler(target, TouLocale.Get("DiedToAmbusherAmbush"), DeathEventHandlers.CurrentRound,
+                DeathHandlerOverride.SetTrue, TouLocale.GetParsed("DiedByStringBasic").Replace("<player>", ambusher.Data.PlayerName), lockInfo: DeathHandlerOverride.SetTrue);
             
             var bodyPos = body.transform.position;
             if (MeetingHud.Instance == null && ambusher.AmOwner)
