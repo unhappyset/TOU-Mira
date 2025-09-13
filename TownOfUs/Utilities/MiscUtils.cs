@@ -9,6 +9,7 @@ using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TownOfUs.Modifiers;
@@ -229,6 +230,119 @@ public static class MiscUtils
         {
             return RoleAlignment.CrewmateSupport;
         }
+    }
+
+    public static ModifierFaction GetSoftModifierFaction(this BaseModifier mod)
+    {
+        if (mod is GameModifier gameMod)
+        {
+            var isForCrew = false;
+            var isForNeut = false;
+            var isForImp = false;
+            foreach (var crewRole in AllRoles.Where(x => x.IsCrewmate()))
+            {
+                if (!isForCrew && gameMod.IsModifierValidOn(crewRole))
+                {
+                    isForCrew = true;
+                    break;
+                }
+            }
+            foreach (var neutRole in AllRoles.Where(x => x.IsNeutral()))
+            {
+                if (!isForNeut && gameMod.IsModifierValidOn(neutRole))
+                {
+                    isForNeut = true;
+                    break;
+                }
+            }
+            foreach (var impRole in AllRoles.Where(x => x.IsImpostor()))
+            {
+                if (!isForImp && gameMod.IsModifierValidOn(impRole))
+                {
+                    isForImp = true;
+                    break;
+                }
+            }
+            if (isForCrew && isForNeut && isForImp)
+            {
+                return ModifierFaction.Universal;
+            }
+            else if (isForCrew && isForNeut)
+            {
+                return ModifierFaction.NonImpostor;
+            }
+            else if (isForNeut && isForImp)
+            {
+                return ModifierFaction.NonCrewmate;
+            }
+            else if (isForCrew && isForImp)
+            {
+                return ModifierFaction.NonNeutral;
+            }
+            else if (isForImp)
+            {
+                return ModifierFaction.Impostor;
+            }
+            else if (isForCrew)
+            {
+                return ModifierFaction.Crewmate;
+            }
+            else if (isForNeut)
+            {
+                return ModifierFaction.Neutral;
+            }
+        }
+        return ModifierFaction.External;
+    }
+
+    public static ModifierFaction GetModifierFaction(this AllianceGameModifier mod)
+    {
+        return mod.FactionType;
+    }
+    public static ModifierFaction GetModifierFaction(this TouGameModifier mod)
+    {
+        return mod.FactionType;
+    }
+    public static ModifierFaction GetModifierFaction(this UniversalGameModifier mod)
+    {
+        return mod.FactionType;
+    }
+    public static ModifierFaction GetModifierFaction(this GameModifier mod)
+    {
+        return GetModifierFaction(mod as BaseModifier);
+    }
+    public static ModifierFaction GetModifierFaction(this BaseModifier mod)
+    {
+        if (mod is TouGameModifier touMod)
+        {
+            return touMod.FactionType;
+        }
+        else if (mod is AllianceGameModifier allyMod)
+        {
+            return allyMod.FactionType;
+        }
+        else if (mod is UniversalGameModifier uniMod)
+        {
+            return uniMod.FactionType;
+        }
+
+        if (SoftWikiEntries.ModifierEntries.ContainsKey(mod))
+        {
+            var name = SoftWikiEntries.ModifierEntries.FirstOrDefault(x => x.Key == mod).Value.TeamName;
+            if (Enum.TryParse<ModifierFaction>(name, out var modFaction))
+            {
+                return modFaction;
+            }
+        }
+
+        return ModifierFaction.External;
+    }
+    public static string GetParsedModifierFaction(BaseModifier modifier)
+    {
+        var localeName = $"{modifier.GetModifierFaction()}";
+        var localizedName = TouLocale.Get(localeName);
+
+        return localizedName;
     }
     public static string GetParsedRoleAlignment(ICustomRole role, bool coloredText = false)
     {
@@ -1306,6 +1420,68 @@ public static class MiscUtils
         translator.stringName = stringName;
         translator.parseStr = parseInfo;
         translator.defaultStr = defaultStr ?? string.Empty;
+    }
+
+    public static string GetParsedRoleBucket(string bucket)
+    {
+        var text = TouLocale.Get(bucket);
+        var crewmateKeyword = TouLocale.Get("CrewmateKeyword");
+        var crewKeyword = TouLocale.Get("CrewKeyword");
+        var impostorKeyword = TouLocale.Get("ImpostorKeyword");
+        var impKeyword = TouLocale.Get("ImpKeyword");
+        var neutralKeyword = TouLocale.Get("NeutralKeyword");
+        var neutKeyword = TouLocale.Get("NeutKeyword");
+
+        if (text.Contains(impostorKeyword))
+        {
+            text = text.Replace(impostorKeyword, $"<color=#FF0000FF>{impostorKeyword}</color>");
+        }
+        else if (text.Contains(crewmateKeyword))
+        {
+            text = text.Replace(crewmateKeyword, $"<color=#66FFFFFF>{crewmateKeyword}</color>");
+        }
+        else if (text.Contains(neutralKeyword))
+        {
+            text = text.Replace(neutralKeyword, $"<color=#999999FF>{neutralKeyword}</color>");
+        }
+        else if (text.Contains(impKeyword))
+        {
+            text = text.Replace(impKeyword, $"<color=#FF0000FF>{impKeyword}</color>");
+        }
+        else if (text.Contains(crewKeyword))
+        {
+            text = text.Replace(crewKeyword, $"<color=#66FFFFFF>{crewKeyword}</color>");
+        }
+        else if (text.Contains(neutKeyword))
+        {
+            text = text.Replace(neutKeyword, $"<color=#999999FF>{neutKeyword}</color>");
+        }
+        else if (text.Contains("Impostor"))
+        {
+            text = text.Replace("Impostor", "<color=#FF0000FF>Impostor</color>");
+        }
+        else if (text.Contains("Crewmate"))
+        {
+            text = text.Replace("Crewmate", "<color=#66FFFFFF>Crewmate</color>");
+        }
+        else if (text.Contains("Neutral"))
+        {
+            text = text.Replace("Neutral", "<color=#999999FF>Neutral</color>");
+        }
+        else if (text.Contains("Imp"))
+        {
+            text = text.Replace("Imp", "<color=#FF0000FF>Imp</color>");
+        }
+        else if (text.Contains("Crew"))
+        {
+            text = text.Replace("Crew", "<color=#66FFFFFF>Crew</color>");
+        }
+        else if (text.Contains("Neut"))
+        {
+            text = text.Replace("Neut", "<color=#999999FF>Neut</color>");
+        }
+
+        return text;
     }
 
     public static IEnumerable<T> Excluding<T>(this IEnumerable<T> source, Func<T, bool> predicate) => source.Where(x => !predicate(x)); // Added for easier inversion and reading

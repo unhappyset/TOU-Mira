@@ -5,7 +5,6 @@ using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
-using MiraAPI.Utilities;
 using Reactor.Utilities.Attributes;
 using Reactor.Utilities.Extensions;
 using TMPro;
@@ -337,12 +336,16 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
             }
 
             var modifiers = MiscUtils.AllModifiers
-                .Where(x => x is IWikiDiscoverable wikiMod && !wikiMod.IsHiddenFromList)
                 .OrderBy(x => x, comparer)
                 .ToList();
 
             foreach (var modifier in modifiers)
             {
+                if ((modifier is not IWikiDiscoverable wikiMod || wikiMod.IsHiddenFromList) && !SoftWikiEntries.ModifierEntries.ContainsKey(modifier))
+                {
+                    continue;
+                }
+                
                 var color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
                 if (modifier is IColoredModifier colorMod)
                 {
@@ -350,26 +353,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 }
                 var newItem = CreateNewItem(modifier.ModifierName, modifier.ModifierIcon?.LoadAsset(), color);
                 newItem.transform.GetChild(2).gameObject.SetActive(false);
-                var alignment = "External";
-                if (modifier is UniversalGameModifier uniMod)
-                {
-                    alignment = uniMod.FactionType.ToDisplayString();
-                }
-
-                if (modifier is TouGameModifier touMod)
-                {
-                    alignment = touMod.FactionType.ToDisplayString();
-                }
-
-                if (modifier is AllianceGameModifier allyMod)
-                {
-                    alignment = allyMod.FactionType.ToDisplayString();
-                }
-
-                if (alignment.Contains("Non "))
-                {
-                    alignment = alignment.Replace("Non ", "Non-");
-                }
+                var alignment = MiscUtils.GetParsedModifierFaction(modifier);
 
                 var amount = modifier is GameModifier gameMod ? gameMod.GetAmountPerGame() : 0;
                 var chance = modifier is GameModifier gameMod2 ? gameMod2.GetAssignmentChance() : 0;

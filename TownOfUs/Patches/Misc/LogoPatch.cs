@@ -19,7 +19,6 @@ public static class LogoPatch
 
         var roles = MiscUtils.AllRoles.Where(x =>
             x is not IWikiDiscoverable || x is ICustomRole custom && !custom.Configuration.HideSettings);
-        // var modifiers = MiscUtils.AllModifiers.Where(x => x is GameModifier && x is not IWikiDiscoverable);
 
         if (roles.Any())
         {
@@ -28,11 +27,6 @@ public static class LogoPatch
                 SoftWikiEntries.RegisterRoleEntry(role);
             }
         }
-        /*foreach (var modifier in modifiers)
-        {
-            SoftWikiEntries.RegisterModifierEntry(modifier);
-        }*/
-
 
         var newLogo = GameObject.Find("LOGO-AU");
         var sizer = GameObject.Find("Sizer");

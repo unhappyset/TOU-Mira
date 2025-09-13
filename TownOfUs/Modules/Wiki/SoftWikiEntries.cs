@@ -1,7 +1,6 @@
 ﻿using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
-using MiraAPI.Utilities;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -9,8 +8,9 @@ namespace TownOfUs.Modules.Wiki;
 
 public sealed class SoftWikiInfo(Type type)
 {
-    [HideFromIl2Cpp] public List<CustomButtonWikiDescription> Abilities { get; set; } = [];
-    public Type EntryTyoe => type;
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities { get; set; } = [];
+    public Type EntryType => type;
     public Sprite Icon { get; set; }
     public string EntryName { get; set; } = "Unknown";
     public string TeamName { get; set; } = "Unknown";
@@ -37,11 +37,11 @@ public static class SoftWikiEntries
         {
             var entry = roleEntry.Value;
             entry.EntryName = role.GetRoleName();
-            var teamName = role.GetRoleAlignment().ToDisplayString();
+            var teamName = $"{role.GetRoleAlignment()}";
 
             entry.TeamName = teamName;
             entry.EntryColor = role is ICustomRole miraRole2 ? miraRole2.RoleColor : role.TeamColor;
-            entry.GetAdvancedDescription = $"{role.BlurbLong}{MiscUtils.AppendOptionsText(entry.EntryTyoe)}";
+            entry.GetAdvancedDescription = $"{role.BlurbLong}{MiscUtils.AppendOptionsText(entry.EntryType)}";
             
             var roleImg = TouRoleIcons.RandomAny.LoadAsset();
 
@@ -85,9 +85,9 @@ public static class SoftWikiEntries
         {
             var entry = roleEntry.Value;
             entry.EntryName = modifier.ModifierName;
-            entry.TeamName = "External";
+            entry.TeamName = $"{modifier.GetModifierFaction()}";
             entry.EntryColor = Color.grey;
-            entry.GetAdvancedDescription = $"{modifier.GetDescription()}{MiscUtils.AppendOptionsText(entry.EntryTyoe)}";
+            entry.GetAdvancedDescription = $"{modifier.GetDescription()}{MiscUtils.AppendOptionsText(entry.EntryType)}";
             entry.Icon = modifier.ModifierIcon?.LoadAsset() ?? TouRoleIcons.RandomAny.LoadAsset();
         }
     }

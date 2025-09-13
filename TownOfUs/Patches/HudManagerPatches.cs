@@ -5,6 +5,8 @@ using HarmonyLib;
 using InnerNet;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
+using MiraAPI.PluginLoading;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
@@ -1000,11 +1002,54 @@ public static class HudManagerPatches
         UpdateGhostRoles(__instance);
     }
 
+    private static bool _registeredSoftModifiers;
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
     [HarmonyPriority(Priority.Last)]
     [HarmonyPostfix]
     public static void HudManagerStartPatch(HudManager __instance)
     {
+        List<string> localizedRoleList = [];
+        List<string> roleBuckets =
+        [
+            "CommonCrew",
+            "RandomCrew",
+            "CrewInvestigative",
+            "CrewKilling",
+            "CrewProtective",
+            "CrewPower",
+            "CrewSupport",
+            "SpecialCrew",
+            "NonImp",
+            "CommonNeutral",
+            "RandomNeutral",
+            "NeutralBenign",
+            "NeutralEvil",
+            "NeutralKilling",
+            "CommonImp",
+            "RandomImp",
+            "ImpConcealing",
+            "ImpKilling",
+            "ImpPower",
+            "ImpSupport",
+            "SpecialImp",
+            "Any"
+        ];
+        foreach (var bucket in roleBuckets)
+        {
+            localizedRoleList.Add(MiscUtils.GetParsedRoleBucket(bucket));
+        }
+
+        RoleOptions.OptionStrings = localizedRoleList.ToArray();
         Coroutines.Start(CoResizeUI());
+        if (!_registeredSoftModifiers)
+        {
+            var modifiers = MiscUtils.AllModifiers.Where(x => x.ParentMod != MiraPluginManager.GetPluginByGuid("auavengers.tou.mira") && x is GameModifier && x is not IWikiDiscoverable);
+            foreach (var modifier in modifiers)
+            {
+                SoftWikiEntries.RegisterModifierEntry(modifier);
+            }
+
+            _registeredSoftModifiers = true;
+        }
     }
 }
