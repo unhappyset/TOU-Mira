@@ -16,7 +16,7 @@ public sealed class InvestigatorModifier : TouGameModifier, IWikiDiscoverable, I
 {
     public Color ModifierColor => new(0f, 0.7f, 0.7f, 1f);
     public override string LocaleKey => "Investigator";
-    public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
+    public override string ModifierName => TouLocale.Get($"TouRole{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
     public override string GetDescription()
     {
