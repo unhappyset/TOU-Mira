@@ -782,12 +782,12 @@ public static class HudManagerPatches
             var playerInfo = "";
             if (player.IsHost())
             {
-                playerInfo = $"<size=80%>{TownOfUsColors.Jester.ToTextColor()}Host";
+                playerInfo = $"<size=80%>{TownOfUsColors.Jester.ToTextColor()}{StoredHostLocale}";
             }
-            if (SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
+            if (SpectatorRole.TrackedSpectators.Contains(playerName))
             {
                 playerInfo =
-                    playerInfo != "" ? $"{playerInfo} {Color.yellow.ToTextColor()}(Spectating)</color>" : $"<size=80%>{Color.yellow.ToTextColor()}(Spectating)";
+                    playerInfo != "" ? $"{playerInfo} {Color.yellow.ToTextColor()}({StoredSpectatingLocale})</color>" : $"<size=80%>{Color.yellow.ToTextColor()}({StoredSpectatingLocale})";
             }
 
             playerName = playerInfo != "" ? $"{playerInfo}</color></size>\n{playerName}" : playerName;
@@ -844,18 +844,18 @@ public static class HudManagerPatches
                     };
 
                     rolelistBuilder.AppendLine(GetRoleForSlot(slotValue));
-                    objText.text = $"<color=#FFD700>Set Role List:</color>\n{rolelistBuilder}";
+                    objText.text = $"<color=#FFD700>{StoredRoleList}:</color>\n{rolelistBuilder}";
                 }
             }
             else
             {
                 rolelistBuilder.AppendLine(CultureInfo.InvariantCulture,
-                    $"<color=#999999>Neutral</color> Benigns: {list.MinNeutralBenign.Value} Min, {list.MaxNeutralBenign.Value} Max");
+                    $"{NeutralBenigns}: {list.MinNeutralBenign.Value} {StoredMinimum}, {list.MaxNeutralBenign.Value} {StoredMaximum}");
                 rolelistBuilder.AppendLine(CultureInfo.InvariantCulture,
-                    $"<color=#999999>Neutral</color> Evils: {list.MinNeutralEvil.Value} Min, {list.MaxNeutralEvil.Value} Max");
+                    $"{NeutralEvils}: {list.MinNeutralEvil.Value} {StoredMinimum}, {list.MaxNeutralEvil.Value} {StoredMaximum}");
                 rolelistBuilder.AppendLine(CultureInfo.InvariantCulture,
-                    $"<color=#999999>Neutral</color> Killers: {list.MinNeutralKiller.Value} Min, {list.MaxNeutralKiller.Value} Max");
-                objText.text = $"<color=#FFD700>Neutral Faction List:</color>\n{rolelistBuilder}";
+                    $"{NeutralKillers}: {list.MinNeutralKiller.Value} {StoredMinimum}, {list.MaxNeutralKiller.Value} {StoredMaximum}");
+                objText.text = $"<color=#FFD700>{StoredFactionList}:</color>\n{rolelistBuilder}";
             }
 
             objText.alignment = TextAlignmentOptions.TopLeft;
@@ -1003,12 +1003,54 @@ public static class HudManagerPatches
     }
 
     private static bool _registeredSoftModifiers;
+    public static string StoredHostLocale { get; private set; } = "Host";
+    public static string StoredSpectatingLocale { get; private set; } = "Spectator";
+    public static string StoredRoleList { get; private set; } = "Set Role List";
+    public static string StoredFactionList { get; private set; } = "Neutral Faction List";
+    public static string NeutralBenigns { get; private set; } = "Neutral Benigns";
+    public static string NeutralEvils { get; private set; } = "Neutral Evils";
+    public static string NeutralOutliers { get; private set; } = "Neutral Outliers";
+    public static string NeutralKillers { get; private set; } = "Neutral Killers";
+    public static string StoredMinimum { get; private set; } = "Min";
+    public static string StoredMaximum { get; private set; } = "Max";
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
     [HarmonyPriority(Priority.Last)]
     [HarmonyPostfix]
     public static void HudManagerStartPatch(HudManager __instance)
     {
+        StoredHostLocale = TranslationController.Instance.GetString(StringNames.HostNounLabel).Replace(":", "");
+        StoredSpectatingLocale = TouLocale.Get("TouRoleSpectator");
+        StoredRoleList = TouLocale.Get("SetRoleList");
+        StoredFactionList = TouLocale.Get("NeutralFactionList");
+        List<string> lists =
+        [
+            TouLocale.Get("NeutralBenigns"),
+            TouLocale.Get("NeutralEvils"),
+            TouLocale.Get("NeutralOutliers"),
+            TouLocale.Get("NeutralKillers")
+        ];
+        List<string> listsNew = [];
+        var neutKeyword = TouLocale.Get("NeutralKeyword");
+        foreach (var alignment in lists)
+        {
+            var text = alignment;
+            if (text.Contains(neutKeyword))
+            {
+                text = text.Replace(neutKeyword, $"<color=#8A8A8A>{neutKeyword}</color>");
+            }
+            else if (alignment.Contains("Neutral"))
+            {
+                text = text.Replace("Neutral", "<color=#8A8A8A>Neutral</color>");
+            }
+            listsNew.Add(text);
+        }
+        NeutralBenigns = listsNew[0];
+        NeutralEvils = listsNew[1];
+        NeutralOutliers = listsNew[2];
+        NeutralKillers = listsNew[3];
+        StoredMinimum = TouLocale.Get("MinimumShort");
+        StoredMaximum = TouLocale.Get("MaximumShort");
         List<string> localizedRoleList = [];
         List<string> roleBuckets =
         [

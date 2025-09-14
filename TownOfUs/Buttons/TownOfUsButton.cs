@@ -460,7 +460,7 @@ public abstract class TownOfUsRoleButton<TRole, TTarget> : TownOfUsTargetButton<
         if (target is PlayerControl playerTarget)
         {
             return base.IsTargetValid(target) && !playerTarget.inVent &&
-                   !playerTarget.GetModifiers<DisabledModifier>().Any(mod => !mod.CanBeInteractedWith) && !SpectatorRole.TrackedSpectators.Contains(playerTarget.PlayerId);
+                   !playerTarget.GetModifiers<DisabledModifier>().Any(mod => !mod.CanBeInteractedWith) && !SpectatorRole.TrackedSpectators.Contains(playerTarget.Data.PlayerName);
         }
 
         return base.IsTargetValid(target);

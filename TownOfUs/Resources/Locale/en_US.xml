@@ -69,6 +69,15 @@
   <string name="Amount">Amount</string>
   <string name="Chance">Chance</string>
   <string name="Options">Options</string>
+  <!-- Role List -->
+  <string name="SetRoleList">Set Role List</string>
+  <string name="NeutralFactionList">Neutral Faction List</string>
+  <string name="NeutralBenigns">Neutral Benigns</string>
+  <string name="NeutralEvils">Neutral Evils</string>
+  <string name="NeutralOutliers">Neutral Outliers</string>
+  <string name="NeutralKillers">Neutral Killers</string>
+  <string name="MinimumShort">Min</string>
+  <string name="MaximumShort">Max</string>
   <!-- Role Subalignments -->
   <string name="GameOutlier">Game Outlier</string>
   <string name="CrewmateInvestigative">Crewmate Investigative</string>

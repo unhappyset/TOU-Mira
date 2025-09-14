@@ -29,9 +29,9 @@ public static class ChatPatches
 
         var spaceLess = text.Replace(" ", string.Empty);
 
-        if (spaceLess.StartsWith("/spec", StringComparison.OrdinalIgnoreCase) && LobbyBehaviour.Instance)
+        if (spaceLess.StartsWith("/spec", StringComparison.OrdinalIgnoreCase))
         {
-            if (LobbyBehaviour.Instance)
+            if (!LobbyBehaviour.Instance)
             {
                 MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "You cannot select your spectate status outside of the lobby!");
             }

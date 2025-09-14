@@ -8,7 +8,7 @@ namespace TownOfUs.Options;
 
 public sealed class RoleOptions : AbstractOptionGroup
 {
-    public static string[] OptionStrings =
+    internal static string[] OptionStrings =
     [
         MiscUtils.GetParsedRoleBucket("CommonCrew"),
         MiscUtils.GetParsedRoleBucket("RandomCrew"),
