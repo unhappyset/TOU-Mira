@@ -378,9 +378,10 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
                 amountTxt.text =
                     $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{txt}</font>";
-                amountTxt.fontSizeMin = 1.85f;
+                amountTxt.fontSizeMin = 1.66f;
                 amountTxt.fontSizeMax = 1.85f;
-                amountTxt.fontSize = 1.85f;
+                amountTxt.m_maxWidth = amountTxt.maxWidth + 0.1f;
+                amountTxt.m_enableWordWrapping = false;
                 newItem.GetChild(1).GetComponent<TextMeshPro>().transform.localPosition += new Vector3(0f, 0.12f);
 
                 var team = newItem.transform.GetChild(2).gameObject.GetComponent<TextMeshPro>();
@@ -452,9 +453,11 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                     var txt = amount != 0 ? $"{TouLocale.Get("Amount", "Amount")}: {amount} - {TouLocale.Get("Chance", "Chance")}: {chance}%" : $"{TouLocale.Get("Amount", "Amount")}: 0";
                     amountTxt.text =
                         $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{txt}</font>";
-                    amountTxt.fontSizeMin = 1.85f;
+                    amountTxt.fontSizeMin = 1.66f;
                     amountTxt.fontSizeMax = 1.85f;
                     amountTxt.fontSize = 1.85f;
+                    amountTxt.m_maxWidth = amountTxt.maxWidth + 0.1f;
+                    amountTxt.m_enableWordWrapping = false;
                     newItem.GetChild(1).GetComponent<TextMeshPro>().transform.localPosition += new Vector3(0f, 0.12f);
                 }
 
