@@ -49,7 +49,6 @@
   <string name="TouModifierScoutTabDescription">Votre vision est meilleure quand les lumières sont allumées, mais très mauvaise quand elles sont éteintes.</string>
   <string name="TouModifierScoutWikiDescription">Bien que vous puissiez voir deux fois plus loin qu'un coéquipier lambda, votre vision défaille sans lumière.</string>
   <string name="TouModifierTaskmasterIntroBlurb">Vous finissez aussi des tâches aléatoires à chaque tour.</string>
-  <string name="TouModifierTabDescription">Une tâche aléatoire est finie automatiquement après chaque meeting.</string>
   <string name="TouModifierTaskmasterWikiDescription">Au début de chaque tour, vous finissez une tâche automatiquement.</string>
   <string name="TouModifierTorch">Torche</string>
   <string name="TouModifierTorchIntroBlurb">Vous pouvez aussi voir sans les lumières.</string>
