@@ -7,7 +7,7 @@ using UnityEngine;
 namespace TownOfUs.Modifiers.Game.Impostor;
 
 public sealed class ImpostorDoubleShotModifier : DoubleShotModifier, IWikiDiscoverable
-{
+{ 
     public override string ModifierName => TouLocale.Get("TouModifierDoubleShot", "Double Shot");
     public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
 

@@ -1,4 +1,5 @@
-﻿using Il2CppInterop.Runtime.Attributes;
+﻿using System.Globalization;
+using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Utilities.Assets;
@@ -11,24 +12,28 @@ using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
+using IFormatProvider = Il2CppSystem.IFormatProvider;
 
 namespace TownOfUs.Modifiers.Game.Universal;
 
 public sealed class ButtonBarryModifier : UniversalGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get("TouModifierButtonBarry", "Button Barry");
+    public override string LocaleKey => "ButtonBarry";
+    public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.ButtonBarry;
     public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
 
     public int Priority { get; set; } = 5;
     public override ModifierFaction FactionType => ModifierFaction.UniversalUtility;
 
+    public override string GetDescription()
+    {
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
+    }
     public string GetAdvancedDescription()
     {
-        return "You can button from anywhere on the map."
-               + MiscUtils.AppendOptionsText(GetType());
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription") + MiscUtils.AppendOptionsText(GetType());
     }
-
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -36,16 +41,11 @@ public sealed class ButtonBarryModifier : UniversalGameModifier, IWikiDiscoverab
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Button",
-            $"You can trigger an emergency meeting from across the map, which you may do {OptionGroupSingleton<ButtonBarryOptions>.Instance.MaxNumButtons} time(s) per game.",
-            TouAssets.BarryButtonSprite)
-            };
+                new(TouLocale.Get($"TouModifier{LocaleKey}Button"),
+                    TouLocale.GetParsed($"TouModifier{LocaleKey}ButtonWikiDescription").Replace("<barryUses>", $"{Math.Round(OptionGroupSingleton<ButtonBarryOptions>.Instance.MaxNumButtons, 0)}"),
+                    TouAssets.BarryButtonSprite)
+                    };
         }
-    }
-
-    public override string GetDescription()
-    {
-        return "You can call a meeting\n from anywhere on the map.";
     }
 
     public override int GetAmountPerGame()

@@ -12,7 +12,6 @@ public abstract class TouGameModifier : GameModifier
     public virtual string IntroInfo => $"{TouLocale.Get("Modifier")}: {ModifierName}";
     public virtual float IntroSize => 2.8f;
     public virtual ModifierFaction FactionType => ModifierFaction.Universal;
-
     public virtual int CustomAmount => GetAmountPerGame();
     public virtual int CustomChance => GetAssignmentChance();
 
