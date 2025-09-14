@@ -8,7 +8,8 @@ namespace TownOfUs.Modifiers.Game;
 [MiraIgnore]
 public abstract class TouGameModifier : GameModifier
 {
-    public virtual string IntroInfo => $"Modifier: {ModifierName}";
+    public virtual string LocaleKey => "KEY_MISS";
+    public virtual string IntroInfo => $"{TouLocale.Get("Modifier")}: {ModifierName}";
     public virtual float IntroSize => 2.8f;
     public virtual ModifierFaction FactionType => ModifierFaction.Universal;
 

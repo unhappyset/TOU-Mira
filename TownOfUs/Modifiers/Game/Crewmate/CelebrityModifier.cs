@@ -17,8 +17,17 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 
 public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get("TouModifierCelebrity", "Celebrity");
-    public override string IntroInfo => "You will also reveal info about your death in the meeting.";
+    public static string LocaleKey => "Celebrity";
+    public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
+    public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
+    public override string GetDescription()
+    {
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
+    }
+    public string GetAdvancedDescription()
+    {
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription");
+    }
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Celebrity;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 
@@ -32,17 +41,6 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
     public bool Announced { get; set; }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
-
-    public string GetAdvancedDescription()
-    {
-        return
-            "After you die, details about your death will be revealed such as where you were killed and which role killed you during the meeting.";
-    }
-
-    public override string GetDescription()
-    {
-        return "Announce how you died on your passing.";
-    }
 
     public override int GetAssignmentChance()
     {

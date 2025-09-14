@@ -64,6 +64,7 @@
   <string name="WikiRoleGuideTab">Role Guide</string>
   <string name="SearchboxHeadsUp">Search Here</string>
   <string name="Roles">Roles</string>
+  <string name="Modifier">Modifier</string>
   <string name="Modifiers">Modifiers</string>
   <string name="Amount">Amount</string>
   <string name="Chance">Chance</string>
@@ -237,7 +238,7 @@
   <!-- Aurial Wiki -->
   <string name="TouRoleAurialWikiDescription">The Aurial is a Crewmate Investigative role that will be alerted whenever a player near them uses one of their abilities.</string>
   <!-- Aurial Options -->
-  <string name="TouOptionAurialAuraInnerRadius">Radiate Colour Range</string>
+  <string name="TouOptionAurialAuraInnerRadius">Radiate Color Range</string>
   <string name="TouOptionAurialAuraOuterRadius">Radiate Max Range</string>
   <string name="TouOptionAurialSenseDuration">Sense Duration</string>
   <!-- Cleric - Crewmate Protective -->
@@ -443,7 +444,7 @@
   <string name="TouRoleMirrorcasterMagic Mirror">Magic Mirror</string>
   <string name="TouRoleMirrorcasterMagic MirrorWikiDescription">Place a Mirror on a player. If the player is attacked directly, then you will be notified, and you will be able to unleash onto another player. Roles that ignore the Magic Mirror are Arsonist, Veteran, Pestilence, Bomber (if the player is bombed), and a few others.</string>
   <string name="TouRoleMirrorcasterUnleash">Unleash</string>
-  <string name="TouRoleMirrorcasterUnleashWikiDescription">Once the Magic Mirror shatters, utilize its power to unleash the attack onto another player!</string>
+  <string name="TouRoleMirrorcasterUnleashWikiDescription">Once the Magic Mirror shatters, use its power to unleash the attack onto another player!</string>
   <!-- Mirrorcaster Options -->
   <string name="TouOptionMirrorcasterWhoGetsMurderAttemptIndicator">Who Gets Murder Attempt Indicator</string>
   <string name="TouOptionMirrorcasterMagicMirrorCooldown">Magic Mirror Cooldown</string>
@@ -472,7 +473,7 @@
   <string name="TouRoleOracleBless">Bless</string>
   <string name="TouRoleOracleBlessWikiDescription">Blessing a player prevents any harm from being done to them in the meeting.</string>
   <string name="TouRoleOracleConfess">Confess</string>
-  <string name="TouRoleOracleConfessWikiDescription">Make a player confess in a meeting, giving a vision of 3 possible evils (including the confessor), and also reveal their faction to everyone with \%revealAccuracy\%% accuracy when the Oracle dies.</string>
+  <string name="TouRoleOracleConfessWikiDescription">Make a player confess in a meeting, giving a vision of three possible evils (including the confessor), and also reveal their faction to everyone with \%revealAccuracy\%% accuracy when the Oracle dies.</string>
   <!-- Oracle Options -->
   <string name="TouOptionOracleConfessCooldown">Confess Cooldown</string>
   <string name="TouOptionOracleBlessCooldown">Bless Cooldown</string>
@@ -494,7 +495,7 @@
   <string name="TouRolePlumberTabDescription">Flush the vent system to kick venters out, and\%nl\%barricade vents to block them the next round</string>
   <string name="TouRolePlumberWikiDescription">The Plumber is a Crewmate Support role that can place Barricades on vents and Flush anyone out of vents.</string>
   <string name="TouRolePlumberFlush">Flush</string>
-  <string name="TouRolePlumberFlushWikiDescription">Flushing the vents makes every vent open and close, kicking out anyone who is actively in a vent. The Plumber also gets an arrow pointing to every flushed player for one second.</string>
+  <string name="TouRolePlumberFlushWikiDescription">Flushing the vents makes every vent open and close, kicking out anyone actively in a vent. The Plumber also gets an arrow pointing to every flushed player for one second.</string>
   <string name="TouRolePlumberBlock">Block</string>
   <string name="TouRolePlumberBarricadeWikiDescription">Block a vent places a barricade on the vent selected for the next round, preventing players from using it.</string>
   <!-- Plumber Options -->
@@ -527,10 +528,10 @@
   <string name="TouRoleProsecutor">Prosecutor</string>
   <string name="TouRoleProsecutorIntroBlurb">Exile Players Of Your Choosing</string>
   <string name="TouRoleProsecutorTabDescription">Choose to exile anyone of your choosing without anyone else having a say</string>
-  <string name="TouRoleProsecutorWikiDescription">The Prosecutor is a Crewmate Power role that can Exile a player, applying 5 votes to a player of their choosing. They can also see who voted for whom, even if they're anonymous.</string>
+  <string name="TouRoleProsecutorWikiDescription">The Prosecutor is a Crewmate Power role that can Exile a player, applying five votes to a player of their choosing. They can also see who voted for whom, even if they're anonymous.</string>
   <string name="TouRoleProsecutorProsecute">Prosecute</string>
   <string name="TouRoleProsecutorProsecuteWiki">Prosecute (Meeting)</string>
-  <string name="TouRoleProsecutorProsecuteWikiDescription">Exile any player of your choosing, throwing 5 votes on them and ignoring all other votes.</string>
+  <string name="TouRoleProsecutorProsecuteWikiDescription">Exile any player of your choosing, throwing five votes on them and ignoring all other votes.</string>
   <!-- Prosecutor Options -->
   <string name="TouOptionProsecutorDiesWhenCrewmateExiled">Prosecutor Dies When They Exile A Crewmate</string>
   <string name="TouOptionProsecutorMaxProsecutions">Max Prosecutions</string>
@@ -660,7 +661,7 @@
   <string name="TouRoleVeteranTabDescription">Alert to kill whoever who interacts with you.</string>
   <string name="TouRoleVeteranWikiDescription">The Veteran is a Crewmate Killing role that can go on alert and kill anyone who interacts with them.</string>
   <string name="TouRoleVeteranAlert">Alert</string>
-  <string name="TouRoleVeteranAlertWikiDescription">When the Veteran is on alert, any player who interacts with them will be instantly killed, with the exception of Pestilence and shielded players, who will ignore the attack.</string>
+  <string name="TouRoleVeteranAlertWikiDescription">When the Veteran is on alert, any player who interacts with them will be instantly killed, except Pestilence and shielded players, who will ignore the attack.</string>
   <!-- Veteran Options -->
   <string name="TouOptionVeteranAlertCooldown">Alert Cooldown</string>
   <string name="TouOptionVeteranAlertDuration">Alert Duration</string>
@@ -825,7 +826,7 @@
   <string name="TouRoleJanitorTabDescription">Clean bodies to hide kills and crime scenes</string>
   <string name="TouRoleJanitorWikiDescription">The Janitor is an Impostor Support role that can clean dead bodies.</string>
   <string name="TouRoleJanitorClean">Clean</string>
-  <string name="TouRoleJanitorCleanWikiDescription">Clean a dead body, making it disappear and making it unreportable.</string>
+  <string name="TouRoleJanitorCleanWikiDescription">Clean a dead body, making it disappear, and making it unreportable.</string>
   <!-- Janitor Options -->
   <string name="TouOptionJanitorCleanUsesPerGame">Clean Uses Per Game</string>
   <string name="TouOptionJanitorCleanCooldown">Clean Cooldown</string>
@@ -853,7 +854,7 @@
   <string name="TouRoleMorphlingSample">Sample</string>
   <string name="TouRoleMorphlingSampleWikiDescription">Take a DNA sample of a player to morph into them later.</string>
   <string name="TouRoleMorphlingMorph">Morph</string>
-  <string name="TouRoleMorphlingMorphWikiDescription">Morph into the appearance of the sampled player, which can be cancelled early.</string>
+  <string name="TouRoleMorphlingMorphWikiDescription">Morph into the appearance of the sampled player, which can be canceled early.</string>
   <!-- Morphling Options -->
   <string name="TouOptionMorphlingSamplesPerGame">Samples Per Game</string>
   <string name="TouOptionMorphlingMorphUsesPerRound">Morph Uses Per Round</string>
@@ -1199,9 +1200,8 @@
   <!-- Lover - Universal Alliance -->
   <!-- Lover Wiki / Description -->
   <string name="TouModifierLover">Lover</string>
-  <string name="TouModifierLoverIntroBlurb">You are in love with \%player\%.</string>
-  <string name="TouModifierLoverTabDescription">You are in love with \%player\%.</string>
-  <string name="TouModifierLoverWikiDescription">As a lover, you can chat with your other lover (signified with \%symbol\%) during the round, and you can win with your lover if you are both a part of the final 3 players.</string>
+  <string name="TouModifierLoverInfo">You are in love with \%player\%.</string>
+  <string name="TouModifierLoverWikiDescription">As a lover, you can chat with your other lover (signified with \%symbol\%) during the round, and you can win with your lover if you are both a part of the final three players.</string>
   <!-- Lover Options -->
   <string name="TouOptionLoverDieAndRevive">Both Lovers Die And Revive Together</string>
   <string name="TouOptionLoverAnotherKiller">Loving Another Killer Probability</string>
@@ -1348,7 +1348,7 @@
   <string name="TouModifierAftermath">Aftermath</string>
   <string name="TouModifierAftermathIntroBlurb">You will also trigger your killer's abilities upon death.</string>
   <string name="TouModifierAftermathTabDescription">Your killer will be forced to use their abilities!</string>
-  <string name="TouModifierAftermathWikiDescription">After you die, your killer will be forced to use their abilities, targetting your body or targetting themselves.</string>
+  <string name="TouModifierAftermathWikiDescription">After you die, your killer will be forced to use their abilities on your body or themselves.</string>
   <!-- Bait -->
   <!-- Bait Wiki / Description -->
   <string name="TouModifierBait">Bait</string>
@@ -1381,6 +1381,11 @@
   <!-- Frosty Options -->
   <string name="TouOptionFrostyChillDuration">Chill Duration</string>
   <string name="TouOptionFrostyChillStartSpeed">Chill Start Speed</string>
+  <!-- Investigator -->
+  <!-- Investigator Wiki / Description -->
+  <string name="TouModifierInvestigatorIntroBlurb">You will also see everyone's footprints for some time.</string>
+  <string name="TouModifierInvestigatorTabDescription">You can see everyone's footprints.</string>
+  <string name="TouModifierInvestigatorWikiDescription">The Investigator can see player's footprints throughout the game. Swooped players' footprints will not be visible to the Investigator.</string>
   <!-- Multitasker -->
   <!-- Multitasker Wiki / Description -->
   <string name="TouModifierMultitasker">Multitasker</string>
@@ -1439,6 +1444,11 @@
   <string name="TouModifierScoutIntroBlurb">You can also see farther in light but very low in dark.</string>
   <string name="TouModifierScoutTabDescription">Your vision is higher when lights are on, but very low when lights are off.</string>
   <string name="TouModifierScoutWikiDescription">While you can see twice as far as a regular crewmate, your vision falters when lights are off.</string>
+  <!-- Spy -->
+  <!-- Spy Wiki / Description -->
+  <string name="TouModifierSpyIntroBlurb">You can also gain extra information on the Admin Table</string>
+  <string name="TouModifierSpyTabDescription">Gain extra information on the Admin Table.</string>
+  <string name="TouModifierSpyWikiDescription">The Spy gains extra information on the admin table. They now not only see how many people are in a room, but will also see who is in every room.</string>
   <!-- Taskmaster -->
   <!-- Taskmaster Wiki / Description -->
   <string name="TouModifierTaskmaster">Taskmaster</string>

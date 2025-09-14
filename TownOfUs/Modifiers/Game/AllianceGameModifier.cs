@@ -9,7 +9,8 @@ namespace TownOfUs.Modifiers.Game;
 [MiraIgnore]
 public abstract class AllianceGameModifier : GameModifier
 {
-    public virtual string IntroInfo => $"Alliance: {ModifierName}";
+    public virtual string LocaleKey => "KEY_MISS";
+    public virtual string IntroInfo => $"{TouLocale.Get("Alliance")}: {ModifierName}";
     public virtual string Symbol => "?";
     public virtual float IntroSize => 4f;
     public virtual int CustomAmount => GetAmountPerGame();
