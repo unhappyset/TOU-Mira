@@ -122,4 +122,12 @@
   <string name="UniversalVisibility">Visibilità Universale</string>
   <string name="UniversalPostmortem">Postmortem Universale</string>
   <string name="UniversalPassive">Passive Universale</string>
+  <string name="NeutralKillers">Neutrale Assassini</string>
+  <string name="MaximumShort">Massimo</string>
+  <string name="MinimumShort">Minimo</string>
+  <string name="NonCrewmate">No-Astronauta</string>
+  <string name="NonCrewUtility">No Utilità Astronauta</string>
+  <string name="NonCrewVisibility">No Visibilità Astronauta</string>
+  <string name="NonCrewPostmortem">No Postmortem Astronauta</string>
+  <string name="NonCrewPassive">No Passive Astronauta</string>
 </resources>
