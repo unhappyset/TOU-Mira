@@ -119,4 +119,7 @@
   <string name="ImpostorPostmortem">Postmortem Impostore</string>
   <string name="ImpostorPassive">Passive Impostore</string>
   <string name="UniversalUtility">Utilità Universale</string>
+  <string name="UniversalVisibility">Visibilità Universale</string>
+  <string name="UniversalPostmortem">Postmortem Universale</string>
+  <string name="UniversalPassive">Passive Universale</string>
 </resources>
