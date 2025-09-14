@@ -1397,7 +1397,7 @@ public static class MiscUtils
             : "Outside/Hallway";
     }
 
-    public static void AddMiraTranslator(this GameObject obj, string stringName, bool parseInfo, string? defaultStr)
+    public static void AddMiraTranslator(this GameObject obj, string stringName, bool parseInfo, string? defaultStr = null)
     {
         if (obj.TryGetComponent<TextTranslatorTMP>(out var amogTmp))
         {
@@ -1409,7 +1409,7 @@ public static class MiscUtils
         translator.parseStr = parseInfo;
         translator.defaultStr = defaultStr ?? string.Empty;
     }
-    public static void AddMiraTranslator(this Transform obj, string stringName, bool parseInfo, string? defaultStr)
+    public static void AddMiraTranslator(this Transform obj, string stringName, bool parseInfo, string? defaultStr = null)
     {
         if (obj.TryGetComponent<TextTranslatorTMP>(out var amogTmp))
         {

@@ -16,6 +16,48 @@ namespace TownOfUs.Events.Crewmate;
 
 public static class ProsecutorEvents
 {
+    [RegisterEvent(1000)]
+    public static void BeforeLocalVoteEvent(BeforeVoteEvent @event)
+    {
+        // Players who are dead can no longer vote, and dead player can't be voted either
+        var voteArea = @event.VoteArea;
+        var votedPlayer = voteArea.GetPlayer();
+        if (PlayerControl.LocalPlayer.HasDied() || (votedPlayer != null && votedPlayer.HasDied()))
+        {
+            @event.Cancel();
+            return;
+        }
+        
+        if (PlayerControl.LocalPlayer.Data.Role is not ProsecutorRole prosecutor)
+        {
+            return;
+        }
+
+        if (voteArea.Parent.state is MeetingHud.VoteStates.Proceeding or MeetingHud.VoteStates.Results)
+        {
+            @event.Cancel();
+            return;
+        }
+
+        if (voteArea == prosecutor.ProsecuteButton && !prosecutor.SelectingProsecuteVictim)
+        {
+            prosecutor.SelectingProsecuteVictim = true;
+            @event.Cancel();
+            return;
+        }
+
+        if (voteArea != prosecutor.ProsecuteButton && voteArea != MeetingHud.Instance.SkipVoteButton &&
+            prosecutor.SelectingProsecuteVictim)
+        {
+            ProsecutorRole.RpcProsecute(PlayerControl.LocalPlayer, voteArea.TargetPlayerId);
+        }
+
+        if (voteArea == MeetingHud.Instance.SkipVoteButton && prosecutor.SelectingProsecuteVictim)
+        {
+            prosecutor.SelectingProsecuteVictim = false;
+            prosecutor.ProsecuteVictim = byte.MaxValue;
+        }
+    }
     [RegisterEvent]
     public static void VoteEvent(CheckForEndVotingEvent @event)
     {

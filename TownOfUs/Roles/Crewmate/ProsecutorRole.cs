@@ -151,7 +151,8 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
         ProsecuteButton.transform.localPosition = skip.transform.localPosition + new Vector3(0f, -0.17f, 0f);
 
         ProsecuteButton.gameObject.GetComponentInChildren<TextTranslatorTMP>().Destroy();
-        ProsecuteButton.gameObject.GetComponentInChildren<TextMeshPro>().text = "PROSECUTE";
+        ProsecuteButton.gameObject.GetComponentInChildren<TextMeshPro>().text = TouLocale.GetParsed($"TouRole{LocaleKey}Prosecute").ToUpperInvariant();
+        ProsecuteButton.gameObject.name = "button_prosecuteButton";
 
         foreach (var plr in meeting.playerStates.AddItem(skip))
         {
