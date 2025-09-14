@@ -1,4 +1,47 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-
+  <string name="TertiaryAbility">Дополнителая способность (Взлом)</string>
+  <string name="ModifierAbility">Способность модификатора</string>
+  <string name="ClientOptionsButton">Настройки клиента ToU</string>
+  <string name="DeadSeeGhosts">Показывать других призраков при смерти</string>
+  <string name="ShowVents">Отображать вент. шахты на карте</string>
+  <string name="ShowWelcomeMessage">Отображать сообщение с приветствием</string>
+  <string name="ShowSummaryMessage">Отображать результаты в чате</string>
+  <string name="ColorPlayerName">Имя игрока цветное</string>
+  <string name="UseCrewmateTeamColor">Использовать базовые цвета экипажа</string>
+  <string name="ShowShieldHud">Отображать щиты в интерфейсе</string>
+  <string name="ButtonUIFactor">Фактор размера кнопок</string>
+  <string name="OffsetButtons">Скрыть кнопки если нельзя исп. вент</string>
+  <string name="SortGuessingByAlignment">Упорядочить гадалку по приверженности</string>
+  <string name="PreciseCooldowns">Перезарядка способностей в десятых если меньше 10с</string>
+  <string name="ArrowStyle">Стиль стрелок</string>
+  <string name="ArrowDefault">По умолчанию</string>
+  <string name="ArrowDarkGlow">Темное освещение</string>
+  <string name="ArrowColorGlow">Освещение по цвету</string>
+  <string name="ArrowLegacy">Классика</string>
+  <string name="Watermelon">Арбузовый</string>
+  <string name="Chocolate">Шоколадный</string>
+  <string name="SkyBlue">Небесный</string>
+  <string name="Steel">Стальной</string>
+  <string name="Silver">Серебряный</string>
+  <string name="Violet">Лиловый</string>
+  <string name="Denim">Джинсовый</string>
+  <string name="CottonCandy">Ватный</string>
+  <string name="Rainbow">Радужный</string>
+  <string name="Alignment">Приверженность</string>
+  <string name="WikiDescriptionTab">Описание</string>
+  <string name="WikiAbilitiesTab">Способности</string>
+  <string name="WikiRoleGuideTab">Сборник ролей</string>
+  <string name="SearchboxHeadsUp">Искать</string>
+  <string name="Roles">Роли</string>
+  <string name="Modifiers">Модификаторы</string>
+  <string name="Amount">Кол-во</string>
+  <string name="Chance">Шанс</string>
+  <string name="Options">Настройки</string>
+  <string name="GameOutlier">Игровой Останец</string>
+  <string name="CrewmateInvestigative">Экипаж Расследывающий</string>
+  <string name="CrewmateKilling">Экипаж Убийца</string>
+  <string name="CrewmatePower">Экипаж Сила</string>
+  <string name="CrewmateProtective">Экипаж Защитник</string>
+  <string name="CrewmateSupport">Экипаж Поддержка</string>
 </resources>
