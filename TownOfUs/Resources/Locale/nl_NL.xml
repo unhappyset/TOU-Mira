@@ -291,7 +291,7 @@
   <string name="TouOptionHunterKillCooldown">Jager doden afkoelperiode</string>
   <string name="TouOptionHunterHunterBodyReport">Jager kan rapporteren wie hij gedood heeft</string>
   <string name="TouRoleImitator">Imitator</string>
-  <string name="TouRoleJailor">Gevangenisbewaarder</string>
+  <string name="TouRoleJailor">Cipier</string>
   <string name="TouRoleJailorIntroBlurb">Vang en executeer de %color=#FF0000FF\%Bedriegers%/color\%</string>
   <string name="TouRoleJailorTabDescription">Discussieer privé met de bemanningsleden tijdens de vergadering en%nl\%executeer ze als ze slecht zijn</string>
   <string name="TouRoleJailorWikiDescription">De Cipier is een Bemanning Kracht rol die andere spelers kan opsluiten. Tijdens een vergadering kan de Cipier ervoor kiezen om zijn gevangen speler te executeren. (Tenzij de Cipier een Imitator is)</string>
