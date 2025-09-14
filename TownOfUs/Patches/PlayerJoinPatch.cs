@@ -47,7 +47,6 @@ public static class PlayerJoinPatch
 
         Logger<TownOfUsPlugin>.Info("Sending Message to Local Player...");
         TouRoleManagerPatches.ReplaceRoleManager = false;
-        SpectatorRole.TrackedSpectators.Clear();
         SpectatorRole.TrackedPlayers.Clear();
         SpectatorRole.FixedCam = false;
 

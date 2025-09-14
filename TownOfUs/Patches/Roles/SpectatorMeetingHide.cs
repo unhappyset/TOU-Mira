@@ -10,7 +10,7 @@ public static class HideSpecVoteAreas
     {
         foreach (var voteArea in __instance.playerStates)
         {
-            if (SpectatorRole.TrackedSpectators.Contains(voteArea.TargetPlayerId))
+            if (SpectatorRole.TrackedSpectators.Contains(GameData.Instance.GetPlayerById(voteArea.TargetPlayerId).PlayerName))
                 voteArea.gameObject.SetActive(false);
         }
     }

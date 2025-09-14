@@ -38,7 +38,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
     public void AssignTargets()
     {
         var inquis = PlayerControl.AllPlayerControls.ToArray()
-            .FirstOrDefault(x => x.IsRole<InquisitorRole>() && !x.HasDied() && !SpectatorRole.TrackedSpectators.Contains(x.PlayerId));
+            .FirstOrDefault(x => x.IsRole<InquisitorRole>() && !x.HasDied() && !SpectatorRole.TrackedSpectators.Contains(x.Data.PlayerName));
 
         if (inquis == null)
         {

@@ -675,7 +675,7 @@ public static class TouRoleManagerPatches
         }
 
         //Logger<TownOfUsPlugin>.Error($"RoleManager.SelectRoles 2");
-        var spectators = GameData.Instance.AllPlayers.ToArray().Where(x => SpectatorRole.TrackedSpectators.Contains(x.PlayerId)).ToList();
+        var spectators = GameData.Instance.AllPlayers.ToArray().Where(x => SpectatorRole.TrackedSpectators.Contains(x.PlayerName)).ToList();
         var specId = (RoleTypes)RoleId.Get<SpectatorRole>();
 
         foreach (var player in spectators)
@@ -685,7 +685,7 @@ public static class TouRoleManagerPatches
         
         var random = new System.Random();
 
-        var players = GameData.Instance.AllPlayers.ToArray().Excluding(x => SpectatorRole.TrackedSpectators.Contains(x.PlayerId)).ToList();
+        var players = GameData.Instance.AllPlayers.ToArray().Excluding(x => SpectatorRole.TrackedSpectators.Contains(x.PlayerName)).ToList();
         players.Shuffle();
 
         var impCount = GameOptionsManager.Instance.CurrentGameOptions.GetAdjustedNumImpostors(players.Count);
@@ -737,7 +737,7 @@ public static class TouRoleManagerPatches
         {
             player.Object.RpcSetRole(specId);
         }
-        
+
         AssignTargets();
 
         return false;

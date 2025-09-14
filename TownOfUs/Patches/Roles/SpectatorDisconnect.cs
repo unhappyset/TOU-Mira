@@ -1,6 +1,5 @@
 using HarmonyLib;
 using TownOfUs.Roles.Other;
-using TownOfUs.Utilities;
 
 namespace TownOfUs.Patches.Roles;
 
@@ -11,7 +10,7 @@ public static class DisconnectHandler2
     [HarmonyPatch(nameof(GameData.HandleDisconnect), typeof(PlayerControl), typeof(DisconnectReasons))]
     public static void Prefix([HarmonyArgument(0)] PlayerControl player)
     {
-        SpectatorRole.TrackedSpectators.RemoveAll(x => x == player.PlayerId || !MiscUtils.PlayerById(x));
+        SpectatorRole.TrackedSpectators.Remove(player.Data.PlayerName);
     }
 }
 

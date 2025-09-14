@@ -13,7 +13,7 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
 {
     private Minigame _hauntMenu = null!;
 
-    public static readonly List<byte> TrackedSpectators = [];
+    public static readonly HashSet<string> TrackedSpectators = [];
     public static readonly List<PlayerControl> TrackedPlayers = [];
     public static bool FixedCam;
     private static int CurrentTarget;
@@ -55,12 +55,14 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     public Color RoleColor => TownOfUsColors.Spectator;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.GameOutlier;
@@ -104,7 +106,9 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
 
     public void Update()
     {
-        if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null || PlayerControl.LocalPlayer.Data.Role is not SpectatorRole || LobbyBehaviour.Instance || MeetingHud.Instance ||
+        if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null ||
+            PlayerControl.LocalPlayer.Data.Role is not SpectatorRole || LobbyBehaviour.Instance ||
+            MeetingHud.Instance ||
             !HudManager.Instance)
         {
             return;
@@ -155,12 +159,7 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         FixedCam = false;
         ShowShadows = true;
 
-        /*if (!Player.AmOwner)
-            return;
-
-        HudManager.Instance.PlayerCam.SetTarget(Player);
-        HudManager.Instance.ShadowQuad.gameObject.SetActive(ShowShadows);
-        HudManager.Instance.SetHudActive(ShowHud);*/
+        HudManager.Instance.SetHudActive(ShowHud);
     }
 
     public override bool CanUse(IUsable console) => false;
@@ -175,9 +174,8 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
     public static void InitList()
     {
         foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            if (!TrackedSpectators.Contains(player.PlayerId))
+
+            if (!TrackedSpectators.Contains(player.Data.PlayerName))
                 TrackedPlayers.Add(player);
-        }
     }
 }
