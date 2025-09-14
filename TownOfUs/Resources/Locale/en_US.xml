@@ -108,7 +108,7 @@
   <string name="CrewmateKeyword">Crewmate</string>
   <string name="CrewKeyword">Crew</string>
   <string name="NeutralKeyword">Neutral</string>
-  <string name="NeutKeyword">Neut</string>
+  <string name="NeutKeyword">Neutrale</string>
   <string name="ImpostorKeyword">Impostor</string>
   <string name="ImpKeyword">Imp</string>
   <!-- All possible types of modifiers -->
@@ -1045,8 +1045,7 @@
   <string name="TouRoleInquisitorMessageTitle">Inquisitor Report</string>
   <string name="TouRoleInquisitorInquiredHeretic">Your inquiry reveals that \%player\% is a heretic!</string>
   <string name="TouRoleInquisitorInquiredNonHeretic">Your inquiry reveals that \%player\% is not a heretic!</string>
-
-    <string name="TouRoleInquisitorInquire">Inquire</string>
+  <string name="TouRoleInquisitorInquire">Inquire</string>
   <string name="TouRoleInquisitorInquireWikiDescription">Inquire a player, which will tell you if they are one of your targets within the meeting.</string>
   <string name="TouRoleInquisitorVanquish">Vanquish</string>
   <string name="TouRoleInquisitorVanquishWikiDescription">Vanquish a player to kill them. If they are a heretic, you will be told, and you can continue vanquishing. However, if the victim isn't a heretic, you will lose the ability to vanquish for the rest of the game.</string>
