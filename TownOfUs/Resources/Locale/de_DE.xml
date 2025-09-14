@@ -4,13 +4,13 @@
   <string name="TertiaryAbility">Tertiäre Fähigkeit (Hack-Fähigkeit)</string>
   <string name="ModifierAbility">Modifikator Fähigkeit</string>
   <string name="ClientOptionsButton">Tou Client Optionen</string>
-  <string name="DeadSeeGhosts">Andere Geister Anzeigen Wenn Tot Sind</string>
-  <string name="ShowVents">Anzeigen Vents Auf Der Karte</string>
+  <string name="DeadSeeGhosts">Andere Geister Anzeigen Wenn Du Tot Bist</string>
+  <string name="ShowVents">Zeige Schächte Auf Der Karte</string>
   <string name="ShowWelcomeMessage">Willkommensnachricht Anzeigen</string>
   <string name="ShowSummaryMessage">Zusammenfassungsnachricht Anzeigen</string>
-  <string name="ColorPlayerName">Farbiger Spielername</string>
-  <string name="UseCrewmateTeamColor">Verwenden Grundlegende Crew-Farben</string>
+  <string name="ColorPlayerName">Farbige Spielernamen</string>
+  <string name="UseCrewmateTeamColor">Benutze Grundlegende Besatzungsfarben</string>
   <string name="ShowShieldHud">Schilde Auf HUD Anzeigen</string>
-  <string name="ButtonUIFactor">Schaltflächenskalierungsfaktor</string>
-  <string name="OffsetButtons">Versetzte Tasten Wenn Du Nicht Entlüften Können</string>
+  <string name="ButtonUIFactor">Knopfkalierungsfaktor</string>
+  <string name="OffsetButtons">Versetzte Tasten Wenn Du Nicht In Schächte Kannst</string>
 </resources>
