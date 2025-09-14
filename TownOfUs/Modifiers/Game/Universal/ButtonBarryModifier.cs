@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using Il2CppInterop.Runtime.Attributes;
+﻿using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Utilities.Assets;
@@ -12,7 +11,6 @@ using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
-using IFormatProvider = Il2CppSystem.IFormatProvider;
 
 namespace TownOfUs.Modifiers.Game.Universal;
 

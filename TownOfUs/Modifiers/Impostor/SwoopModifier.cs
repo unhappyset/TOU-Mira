@@ -6,6 +6,7 @@ using TownOfUs.Buttons.Impostor;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Impostor;
+using TownOfUs.Patches;
 using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
@@ -86,15 +87,19 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
         Player.ResetAppearance();
         Player.cosmetics.ToggleNameVisible(true);
 
-        var button = CustomButtonSingleton<SwooperSwoopButton>.Instance;
-        button.OverrideSprite(TouImpAssets.SwoopSprite.LoadAsset());
-        button.OverrideName("Swoop");
-
         if (Player.AmOwner)
         {
+            var button = CustomButtonSingleton<SwooperSwoopButton>.Instance;
+            button.OverrideSprite(TouImpAssets.SwoopSprite.LoadAsset());
+            button.OverrideName("Swoop");
             TouAudio.PlaySound(TouAudio.SwooperDeactivateSound);
         }
 
+        if (HudManagerPatches.CamouflageCommsEnabled)
+        {
+            Player.cosmetics.ToggleNameVisible(false);
+        }
+        
         var mushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
         if (mushroom && mushroom.IsActive)
         {
