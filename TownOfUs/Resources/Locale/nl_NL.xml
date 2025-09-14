@@ -291,4 +291,24 @@
   <string name="TouOptionHunterKillCooldown">Jager doden afkoelperiode</string>
   <string name="TouOptionHunterHunterBodyReport">Jager kan rapporteren wie hij gedood heeft</string>
   <string name="TouRoleImitator">Imitator</string>
+  <string name="TouRoleJailor">Gevangenisbewaarder</string>
+  <string name="TouRoleJailorIntroBlurb">Vang en executeer de %color=#FF0000FF\%Bedriegers%/color\%</string>
+  <string name="TouRoleJailorTabDescription">Discussieer privé met de bemanningsleden tijdens de vergadering en%nl\%executeer ze als ze slecht zijn</string>
+  <string name="TouRoleJailorWikiDescription">De Gevangenisbewaarder is een Bemanning Kracht rol die andere spelers kan opsluiten. Tijdens een vergadering, de Gevangenisbewaarder kan kiezen om zijn gevangen speler te executere. (Tenzij de Gevangenisbewaarder een Imitator is)</string>
+  <string name="TouRoleJailorJail">Opsluiten</string>
+  <string name="TouRoleJailorJailWikiDescription">Sluit een speler op. Tijdens de vergadering kan iedereen zien wie opgesloten is. Je kunt privé met de opgesloten speler praten als je de instructies in de privé-chatbox volgt.</string>
+  <string name="TouRoleJailorExecute">Executeer</string>
+  <string name="TouRoleJailorExecuteWiki">Executeer (vergadering)</string>
+  <string name="TouRoleJailorExecuteWikiDescription">Executeer de opgesloten speler. Als de speler een Bemanningslid is, zal de Gevangenisbewaarder zijn kracht om iemand op te sluiten verliezen.</string>
+  <string name="TouOptionJailorJailCooldown">Opsluiten afkoeltijd</string>
+  <string name="TouOptionJailorMaxExecutes">Maximale aantal executies</string>
+  <string name="TouOptionJailorJailInARow">Sluit dezelfde speler 2 keer achter elkaar op</string>
+  <string name="TouOptionJailorJaileePublicChat">Gevangene kan publieke chat gebruiken</string>
+  <string name="TouRoleJailorJailorFeedback ">Communiceer met je gevangene in de %b\%RODE%/b\% privé-chatbox naast de %b\%NORMALE%/b\% chatbox.</string>
+  <string name="TouRoleJailorCannotExecute">%player\% kan niet worden geëxecuteerd! Ze zijn onkwetsbaar of gezegend!</string>
+  <string name="TouRoleJailorExecutedCrew">%player\% was een Bemanningslid! Je kunt niemand meer opsluiten!</string>
+  <string name="TouRoleJailorExecutedEvil">%player\% was succesvol geëxecuteerd!</string>
+  <string name="TouRoleLookout">Uitkijker</string>
+  <string name="TouRoleLookoutIntroBlurb">Hoe je ogen open</string>
+  <string name="TouRoleLookoutTabDescription">Bekijk andere bemanningsleden en zie welke rollen geïnteracteerd hebben met hen</string>
 </resources>
