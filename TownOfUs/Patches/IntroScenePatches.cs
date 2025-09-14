@@ -17,9 +17,10 @@ public static class IntroScenePatches
     {
         public static void Prefix(ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
         {
-            foreach (var id in SpectatorRole.TrackedSpectators)
+            foreach (var player in PlayerControl.AllPlayerControls)
             {
-                teamToDisplay.Remove(GameData.Instance.GetPlayerById(id).Object);
+                if (SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
+                    teamToDisplay.Remove(player);
             }
         }
     }
@@ -48,11 +49,9 @@ public static class IntroScenePatches
             SetHiddenImpostors(__instance);
         }
 
-        foreach (var id in SpectatorRole.TrackedSpectators)
+        foreach (var spec in PlayerControl.AllPlayerControls)
         {
-            var spec = MiscUtils.PlayerById(id);
-
-            if (!spec)
+            if (!spec || !SpectatorRole.TrackedSpectators.Contains(spec.Data.PlayerName))
                 continue;
 
             spec!.Visible = false;

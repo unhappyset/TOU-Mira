@@ -52,7 +52,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
                             x.Data.Role is not PoliticianRole &&
                             x.Data.Role is not JailorRole &&
                             x.Data.Role is not VigilanteRole &&
-                            !SpectatorRole.TrackedSpectators.Contains(x.PlayerId)).ToList();
+                            !SpectatorRole.TrackedSpectators.Contains(x.Data.PlayerName)).ToList();
 
             if (filtered.Count > 0)
             {

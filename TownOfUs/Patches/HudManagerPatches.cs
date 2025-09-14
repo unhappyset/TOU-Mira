@@ -272,7 +272,7 @@ public static class HudManagerPatches
         {
             return;
         }
-        
+
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             var appearance = player.GetAppearance();
@@ -401,14 +401,14 @@ public static class HudManagerPatches
                 {
                     color = role.TeamColor;
                     roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color></size>";
-                    
+
                     var revealedRole = revealMods.FirstOrDefault(x => x.Visible && x.RevealRole && x.ShownRole != null);
                     if (revealedRole != null)
                     {
                         color = revealedRole.ShownRole!.TeamColor;
                         roleName = $"<size=80%>{color.ToTextColor()}{revealedRole.ShownRole!.NiceName}</color></size>";
                     }
-                    
+
                     if (!player.HasModifier<VampireBittenModifier>() && role is VampireRole)
                     {
                         roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
@@ -459,14 +459,14 @@ public static class HudManagerPatches
                         roleName = $"{deathReason}{roleName}";
                     }
                 }
-                
+
                 var revealedColorMod = revealMods.FirstOrDefault(x => x.Visible && x.NameColor != null);
                 if (revealedColorMod != null)
                 {
                     playerColor = (Color)revealedColorMod.NameColor!;
                     playerName = $"{playerColor.ToTextColor()}{playerName}</color>";
                 }
-                
+
                 var addedRoleNameText = revealMods.FirstOrDefault(x => x.Visible && x.ExtraRoleText != string.Empty);
                 if (addedRoleNameText != null)
                 {
@@ -500,7 +500,7 @@ public static class HudManagerPatches
 
                     playerName += revealText;
                 }
-                
+
                 var addedPlayerNameText = revealMods.FirstOrDefault(x => x.Visible && x.ExtraNameText != string.Empty);
                 if (addedPlayerNameText != null)
                 {
@@ -559,7 +559,7 @@ public static class HudManagerPatches
                 {
                     continue;
                 }
-                
+
                 var revealMods = player.GetModifiers<RevealModifier>();
 
                 var playerName = player.GetAppearance().PlayerName ?? "Unknown";
@@ -584,7 +584,7 @@ public static class HudManagerPatches
                 {
                     continue;
                 }
-                
+
                 var roleName = "";
                 var canSeeDeathReason = false;
                 if (player.AmOwner ||
@@ -597,14 +597,14 @@ public static class HudManagerPatches
                 {
                     color = role.TeamColor;
                     roleName = $"<size=80%>{color.ToTextColor()}{player.Data.Role.NiceName}</color></size>";
-                    
+
                     var revealedRole = revealMods.FirstOrDefault(x => x.Visible && x.RevealRole && x.ShownRole != null);
                     if (revealedRole != null)
                     {
                         color = revealedRole.ShownRole!.TeamColor;
                         roleName = $"<size=80%>{color.ToTextColor()}{revealedRole.ShownRole!.NiceName}</color></size>";
                     }
-                    
+
                     if (!player.HasModifier<VampireBittenModifier>() && player.Data.Role is VampireRole)
                     {
                         roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
@@ -656,14 +656,14 @@ public static class HudManagerPatches
                         canSeeDeathReason = true;
                     }
                 }
-                
+
                 var revealedColorMod = revealMods.FirstOrDefault(x => x.Visible && x.NameColor != null);
                 if (revealedColorMod != null)
                 {
                     playerColor = (Color)revealedColorMod.NameColor!;
                     playerName = $"{playerColor.ToTextColor()}{playerName}</color>";
                 }
-                
+
                 var addedRoleNameText = revealMods.FirstOrDefault(x => x.Visible && x.ExtraRoleText != string.Empty);
                 if (addedRoleNameText != null)
                 {
@@ -685,18 +685,18 @@ public static class HudManagerPatches
                 {
                     roleName += $" - {scatter.GetDescription()}";
                 }
-                
+
                 var addedPlayerNameText = revealMods.FirstOrDefault(x => x.Visible && x.ExtraNameText != string.Empty);
                 if (addedPlayerNameText != null)
                 {
                     playerName += addedPlayerNameText.ExtraNameText;
                 }
-                
+
                 if (canSeeDeathReason)
                 {
                     playerName += $"\n<size=75%> </size>";
                 }
-                
+
                 if (player.AmOwner && player.Data.Role is IGhostRole { GhostActive: true })
                 {
                     playerColor = Color.clear;
@@ -782,7 +782,7 @@ public static class HudManagerPatches
             {
                 playerInfo = $"<size=80%>{TownOfUsColors.Jester.ToTextColor()}Host";
             }
-            if (SpectatorRole.TrackedSpectators.Contains(player.PlayerId))
+            if (SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
             {
                 playerInfo =
                     playerInfo != "" ? $"{playerInfo} {Color.yellow.ToTextColor()}(Spectating)</color>" : $"<size=80%>{Color.yellow.ToTextColor()}(Spectating)";

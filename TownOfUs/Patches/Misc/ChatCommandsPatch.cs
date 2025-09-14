@@ -31,16 +31,24 @@ public static class ChatPatches
 
         if (spaceLess.StartsWith("/spec", StringComparison.OrdinalIgnoreCase) && LobbyBehaviour.Instance)
         {
-            if (SpectatorRole.TrackedSpectators.Contains(PlayerControl.LocalPlayer.PlayerId))
+            if (LobbyBehaviour.Instance)
             {
-                MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "You are no longer a spectator!");
-                RemoveSpectator(PlayerControl.LocalPlayer);
+                MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "You cannot select your spectate status outside of the lobby!");
             }
             else
             {
-                MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "Set yourself as a spectator!");
-                SelectSpectator(PlayerControl.LocalPlayer);
+                if (SpectatorRole.TrackedSpectators.Contains(PlayerControl.LocalPlayer.Data.PlayerName))
+                {
+                    MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "You are no longer a spectator!");
+                    RemoveSpectator(PlayerControl.LocalPlayer);
+                }
+                else
+                {
+                    MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "Set yourself as a spectator!");
+                    SelectSpectator(PlayerControl.LocalPlayer);
+                }
             }
+
             __instance.freeChatField.Clear();
             __instance.quickChatMenu.Clear();
             __instance.quickChatField.Clear();
@@ -268,8 +276,8 @@ public static class ChatPatches
     }
 
     [MethodRpc((uint)TownOfUsRpc.SelectSpectator, SendImmediately = true)]
-    public static void SelectSpectator(PlayerControl player) => SpectatorRole.TrackedSpectators.Add(player.PlayerId);
+    public static void SelectSpectator(PlayerControl player) => SpectatorRole.TrackedSpectators.Add(player.Data.PlayerName);
 
     [MethodRpc((uint)TownOfUsRpc.RemoveSpectator, SendImmediately = true)]
-    public static void RemoveSpectator(PlayerControl player) => SpectatorRole.TrackedSpectators.Remove(player.PlayerId);
+    public static void RemoveSpectator(PlayerControl player) => SpectatorRole.TrackedSpectators.Remove(player.Data.PlayerName);
 }
