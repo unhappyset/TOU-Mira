@@ -15,7 +15,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 
 public sealed class ScientistModifier : TouGameModifier, IWikiDiscoverable
 {
-    public static string LocaleKey => "Scientist";
+    public override string LocaleKey => "Scientist";
     public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
     public override string GetDescription()

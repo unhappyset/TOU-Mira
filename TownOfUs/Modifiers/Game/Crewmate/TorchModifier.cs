@@ -9,7 +9,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 
 public sealed class TorchModifier : TouGameModifier, IWikiDiscoverable
 {
-    public static string LocaleKey => "Torch";
+    public override string LocaleKey => "Torch";
     public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
     public override string GetDescription()

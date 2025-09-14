@@ -13,7 +13,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 
 public sealed class NoisemakerModifier : TouGameModifier, IWikiDiscoverable
 {
-    public static string LocaleKey => "Noisemaker";
+    public override string LocaleKey => "Noisemaker";
     public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
     public override string GetDescription()

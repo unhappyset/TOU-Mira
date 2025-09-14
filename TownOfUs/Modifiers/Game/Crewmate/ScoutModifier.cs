@@ -9,7 +9,7 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 
 public sealed class ScoutModifier : TouGameModifier, IWikiDiscoverable
 {
-    public static string LocaleKey => "Scout";
+    public override string LocaleKey => "Scout";
     public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
     public override string GetDescription()

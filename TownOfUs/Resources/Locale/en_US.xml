@@ -1453,7 +1453,7 @@
   <!-- Taskmaster Wiki / Description -->
   <string name="TouModifierTaskmaster">Taskmaster</string>
   <string name="TouModifierTaskmasterIntroBlurb">You also finish random tasks each round.</string>
-  <string name="TouModifierTabDescription">A random task is auto completed for you after each meeting.</string>
+  <string name="TouModifierTaskmasterTabDescription">A random task is auto completed for you after each meeting.</string>
   <string name="TouModifierTaskmasterWikiDescription">Every time a round starts, you will automatically finish a task.</string>
   <!-- Torch -->
   <!-- Torch Wiki / Description -->
