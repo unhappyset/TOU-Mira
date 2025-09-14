@@ -93,6 +93,7 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
             UpdatePage(WikiPage.SearchScreen);
         }));
 
+        SearchTextbox.Value.transform.GetParent().GetChild(2).GetComponent<TextMeshPro>().text = TouLocale.Get("SearchboxHeadsUp", "Search Here");
         SearchTextbox.Value.gameObject.GetComponent<PassiveButton>().OnClick.AddListener((UnityAction)(() =>
         {
             SearchTextbox.Value.GiveFocus();
