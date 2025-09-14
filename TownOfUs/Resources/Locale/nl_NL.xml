@@ -404,4 +404,8 @@
   <string name="TouRoleOracleBless">Zegen</string>
   <string name="TouRoleOracleBlessWikiDescription">Door een speler te zegenen voorkom je dat er iets met hen gebeurd tijdens vergaderingen.</string>
   <string name="TouRoleOracleConfess">Opbiechten</string>
+  <string name="TouRoleOracleConfessWikiDescription">Laat een speler biechten in een vergadering zodat je een visioen krijgt van 3 mogelijke slechteriken (inclusief de biechtvader) en onthul hun geaardheid aan iedereen met %revealAccuracy\% nauwkeurigheid als het Orakel sterft.</string>
+  <string name="TouOptionOracleConfessCooldown">Biechten Afkoelperiode</string>
+  <string name="TouOptionOracleBlessCooldown">Zegen Afkoelperiode</string>
+  <string name="TouOptionOracleRevealAccuracy">Onthul Nauwkeurigheid</string>
 </resources>
