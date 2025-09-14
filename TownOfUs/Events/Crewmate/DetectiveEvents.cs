@@ -19,7 +19,7 @@ public static class DetectiveEvents
             return;
         }
 
-        if (@event.Reporter.Data.Role is DetectiveRole detective && @event.Reporter.AmOwner)
+        if (@event.Reporter.Data.Role is DetectiveTouRole detective && @event.Reporter.AmOwner)
         {
             detective.Report(@event.Target.PlayerId);
         }
@@ -38,7 +38,7 @@ public static class DetectiveEvents
             return;
         }
 
-        if (!Helpers.GetAlivePlayers().Any(x => x.Data.Role is DetectiveRole))
+        if (!Helpers.GetAlivePlayers().Any(x => x.Data.Role is DetectiveTouRole))
         {
             return;
         }
@@ -52,7 +52,7 @@ public static class DetectiveEvents
             scene.gameObject.SetActive(false);
         }
 
-        if (PlayerControl.LocalPlayer.Data.Role is DetectiveRole)
+        if (PlayerControl.LocalPlayer.Data.Role is DetectiveTouRole)
         {
             foreach (var scene in CrimeSceneComponent._crimeScenes)
             {
