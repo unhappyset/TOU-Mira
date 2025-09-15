@@ -333,7 +333,7 @@
         "\n- Phantom, Executioner, and Jester ghost kills are now run through a more direct method to force a murder at all costs.",
         "\n\n\r<size=105%>Impostor Role Bugfixes:</size>",
         "\n- Traitor can no longer vent as a ghost.",
-        "\n- Hypnotist applies the same body type to all players.",
+        "\n- Hypnotist applies the same body type to all players, and clears properly without breaking.",
         "\n- Swooper player names are no longer revealed during Camo Comms.",
         "\n- Ambusher can no longer get outed when they are taking bodies away.",
         "\n- When the Ambusher's victim is revived while their body is taken away, the ambusher will no longer softlock.",
@@ -346,7 +346,8 @@
         "\n- There are now checks to prevent votes on dead players or votes happening from dead players",
         "\n\n\r<size=105%>Improvements:</size>",
         "\n- Chat Tags now italicize on hover. (PR #65) (Chipseq)",
-        "\n- Controllers on the Main Menu can now select the April Fools Toggle"
+        "\n- Controllers on the Main Menu can now select the April Fools Toggle",
+        "\n- Chat is now hidden from recently killed players."
       ]
     }
       ]

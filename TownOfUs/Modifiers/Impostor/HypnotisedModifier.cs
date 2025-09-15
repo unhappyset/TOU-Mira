@@ -2,6 +2,7 @@
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using TownOfUs.Events.TouEvents;
+using TownOfUs.Patches;
 using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
@@ -153,8 +154,12 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
         // Logger<TownOfUsPlugin>.Message($"HypnotisedModifier.UnHysteria - {Player.Data.PlayerName}");
         foreach (var player in PlayerControl.AllPlayerControls.ToArray().Where(x => !x.HasDied()))
         {
-            player.MyPhysics.SetBodyType(PlayerControl.LocalPlayer.BodyType);
-            Player.ResetAppearance();
+            player.MyPhysics.SetForcedBodyType(PlayerControl.LocalPlayer.BodyType);
+            if (HudManagerPatches.CamouflageCommsEnabled)
+            {
+                continue;
+            }
+            player.RawSetAppearance(player.GetDefaultModifiedAppearance());
             player.cosmetics.ToggleNameVisible(true);
         }
 
