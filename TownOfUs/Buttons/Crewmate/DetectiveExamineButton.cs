@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Crewmate;
 
-public sealed class DetectiveExamineButton : TownOfUsRoleButton<DetectiveRole, PlayerControl>
+public sealed class DetectiveExamineButton : TownOfUsRoleButton<DetectiveTouRole, PlayerControl>
 {
     public override string Name => TouLocale.Get("TouRoleDetectiveExamine", "Examine");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;

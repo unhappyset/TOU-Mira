@@ -357,7 +357,7 @@ public static class HudManagerPatches
                 {
                     continue;
                 }
-                var revealMods = player.GetModifiers<RevealModifier>();
+                var revealMods = player.GetModifiers<RevealModifier>().ToList();
 
                 var playerName = player.GetDefaultAppearance().PlayerName ?? "Unknown";
                 var playerColor = Color.white;
@@ -509,7 +509,7 @@ public static class HudManagerPatches
                     playerName += addedPlayerNameText.ExtraNameText;
                 }
 
-                if (player?.Data?.Disconnected == true)
+                if (player.Data?.Disconnected == true)
                 {
                     if (!((PlayerControl.LocalPlayer.IsImpostor() && player.IsImpostor() && genOpt is
                               { ImpsKnowRoles.Value: true, FFAImpostorMode: false }) ||
@@ -562,7 +562,7 @@ public static class HudManagerPatches
                     continue;
                 }
 
-                var revealMods = player.GetModifiers<RevealModifier>();
+                var revealMods = player.GetModifiers<RevealModifier>().ToList();
 
                 var playerName = player.GetAppearance().PlayerName ?? "Unknown";
                 var playerColor = Color.white;
@@ -722,29 +722,6 @@ public static class HudManagerPatches
             var tabText = HudManager.Instance.TaskPanel.tab.transform.FindChild("TabText_TMP")
                 .GetComponent<TextMeshPro>();
             tabText.SetText($"Tasks {PlayerControl.LocalPlayer.TaskInfo()}");
-        }
-    }
-
-    public static void UpdateGhostRoles(HudManager instance)
-    {
-        foreach (var phantom in CustomRoleUtils.GetActiveRolesOfType<PhantomTouRole>())
-        {
-            if (phantom.Player.Data != null && phantom.Player.Data.Disconnected)
-            {
-                continue;
-            }
-
-            phantom.FadeUpdate(instance);
-        }
-
-        foreach (var haunter in CustomRoleUtils.GetActiveRolesOfType<HaunterRole>())
-        {
-            if (haunter.Player.Data != null && haunter.Player.Data.Disconnected)
-            {
-                continue;
-            }
-
-            haunter.FadeUpdate(instance);
         }
     }
 
@@ -999,7 +976,6 @@ public static class HudManagerPatches
         UpdateTeamChat();
         UpdateCamouflageComms();
         UpdateRoleNameText();
-        UpdateGhostRoles(__instance);
     }
 
     private static bool _registeredSoftModifiers;

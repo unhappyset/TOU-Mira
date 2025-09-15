@@ -36,7 +36,7 @@ public sealed class JanitorRole(IntPtr cppPtr)
                                                      (Player != null && MiscUtils.ImpAliveCount == 1));
     }
 
-    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<DetectiveRole>());
+    public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<DetectiveTouRole>());
     public DoomableType DoomHintType => DoomableType.Death;
     public static string LocaleKey => "Janitor";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
