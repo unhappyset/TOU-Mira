@@ -408,4 +408,18 @@
   <string name="TouOptionOracleConfessCooldown">Biechten Afkoelperiode</string>
   <string name="TouOptionOracleBlessCooldown">Zegen Afkoelperiode</string>
   <string name="TouOptionOracleRevealAccuracy">Onthul Nauwkeurigheid</string>
+  <string name="TouOptionOracleNeutralBenignShowUpAsEvil">Neutraal Goedaardig verschijnt als Slecht</string>
+  <string name="TouOptionOracleNeutralEvilShowUpAsEvil">Neutraal Kwaadaardig verschijnt als Slecht</string>
+  <string name="TouOptionOracleNeutralKillingShowUpAsEvil">Neutraal Doden verschijnt als Slecht</string>
+  <string name="TouRoleOracleConfessorDied">Je biechtvader heeft het niet overleefd, dus krijg je geen bekentenis</string>
+  <string name="TouRoleOracleTooFew">Er zijn te weinig overlevende op een bekentenis te krijgen</string>
+  <string name="TouRoleOracleNoMoreEvil">%player\% biecht op te weten dat er geen slechte spelers meer zijn!</string>
+  <string name="TouRoleOracleThreePlayers">%player1\% biecht op te weten dat hij, %player2\% en/of %player3\% slecht is!</string>
+  <string name="TouRoleOracleBlessingMessageSelf">Jouw zegen heeft %player\% van de dood beschermd!</string>
+  <string name="TouRoleOracleBlessingMessageOthers">%player\% heeft het overleefd omdat hij gezegend is door een %color=#FFBF00BF\%Orakel%/color\%!</string>
+  <string name="TouRolePlumber">Loodgieter</string>
+  <string name="TouRolePlumberIntroBlurb">Haal de ratten uit het riool</string>
+  <string name="TouRolePlumberTabDescription">Spoel het ventilatiesysteem om venters eruit te gooien en%nl\%barricadeer ventilatieschachten om deze de volgende ronde te blokkeren</string>
+  <string name="TouRolePlumberWikiDescription">De Loodgieter is een Bemanning Ondersteuning rol die barricades op ventilatieschachten kan plaatsen en iedereen uit ventilatieschachten kan spoelen.</string>
+  <string name="TouRolePlumberFlush">Spoel</string>
 </resources>

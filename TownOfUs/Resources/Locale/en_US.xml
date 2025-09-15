@@ -816,7 +816,7 @@
   <!-- Hypnotist Wiki / Abilities -->
   <string name="TouRoleHypnotist">Hypnotist</string>
   <string name="TouRoleHypnotistIntroBlurb">Hypnotize Crewmates</string>
-  <string name="TouRoleHypnotistTabDescription">HHypnotize crewmates to prevent them from distinguishing players under a mass hysteria</string>
+  <string name="TouRoleHypnotistTabDescription">Hypnotize crewmates to prevent them from\%nl\%distinguishing players under a mass hysteria</string>
   <string name="TouRoleHypnotistWikiDescription">The Hypnotist is an Impostor Support role that can hypnotize players. During a meeting they can release Mass Hysteria, which makes all hypnotized players (marked with \%symbol\%) have different visuals applied to players the following round.</string>
   <string name="TouRoleHypnotistHypnotize">Hypnotize</string>
   <string name="TouRoleHypnotistHypnotizeWikiDescription">Hypnotize a player, causing them to see the game differently than non-hypnotized players if mass hysteria is active.</string>
