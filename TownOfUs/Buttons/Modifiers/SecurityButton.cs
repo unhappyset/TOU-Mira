@@ -15,7 +15,7 @@ namespace TownOfUs.Buttons.Modifiers;
 public sealed class SecurityButton : TownOfUsButton
 {
     public Minigame? securityMinigame;
-    public override string Name => "Security";
+    public override string Name => TranslationController.Instance.GetStringWithDefault(StringNames.Security, "Security");
     public override BaseKeybind Keybind => Keybinds.ModifierAction;
     public override Color TextOutlineColor => TownOfUsColors.Operative;
     public override float Cooldown => OptionGroupSingleton<OperativeOptions>.Instance.DisplayCooldown + MapCooldown;
