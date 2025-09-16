@@ -420,4 +420,6 @@
   <string name="TouRolePlumberTabDescription">Spoel het ventilatiesysteem om venters eruit te gooien en%nl\%barricadeer ventilatieschachten om deze de volgende ronde te blokkeren</string>
   <string name="TouRolePlumberWikiDescription">De Loodgieter is een Bemanning Ondersteuning rol die barricades op ventilatieschachten kan plaatsen en iedereen uit ventilatieschachten kan spoelen.</string>
   <string name="TouRolePlumberFlush">Spoel</string>
+  <string name="TouRoleMirrorcasterMagicMirror">Magische Spiegel</string>
+  <string name="TouRoleMirrorcasterMagicMirrorWikiDescription">Plaats een Spiegel op een speler. Als deze speler direct wordt aangevallen, zal jij geïnformeerd worden en kun je de aanval op een andere speler ontketenen. Rollen die niet beïnvloed worden door de Magische Spiegel zijn Brandstichter, Veteraan, Pestilentie, Bommenwerper (als de speler ontploft wordt), en een paar andere.</string>
 </resources>

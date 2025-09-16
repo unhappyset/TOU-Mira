@@ -458,4 +458,6 @@
   <string name="TouRoleAmbassadorYouHaveAccepted">你已接受转变为%newRoleNiceName\%！</string>
   <string name="TouRoleAmbassadorPlayerHasBeenRetrained">%player\%现已被转变为%newRoleNiceName\%！</string>
   <string name="TouRoleAmbassadorNeedKills">你或伪装者要想转变必须至少有%requiredKills\%次击杀。</string>
+  <string name="TouRoleMirrorcasterMagicMirror">魔法镜</string>
+  <string name="TouRoleMirrorcasterMagicMirrorWikiDescription">为一名玩家放置魔法镜。如果该玩家被直接攻击，你会收到通知，并可以将攻击反射到另一名玩家。无视魔法镜的角色有纵火犯、老兵、瘟疫之源、爆破手（被炸弹炸时）等。</string>
 </resources>
