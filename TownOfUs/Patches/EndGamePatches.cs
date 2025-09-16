@@ -104,6 +104,21 @@ public static class EndGamePatches
             foreach (var modifierName in modifierNames)
             {
                 var modColor = MiscUtils.GetRoleColour(modifierName.Replace(" ", string.Empty));
+                if (modColor == TownOfUsColors.Impostor)
+                {
+                    switch (modifiers.FirstOrDefault(x => x.ModifierName == modifierName))
+                    {
+                        case UniversalGameModifier uniMod:
+                            modColor = MiscUtils.GetRoleColour(uniMod.LocaleKey.Replace(" ", string.Empty));
+                            break;
+                        case TouGameModifier touMod:
+                            modColor = MiscUtils.GetRoleColour(touMod.LocaleKey.Replace(" ", string.Empty));
+                            break;
+                        case AllianceGameModifier allyMod:
+                            modColor = MiscUtils.GetRoleColour(allyMod.LocaleKey.Replace(" ", string.Empty));
+                            break;
+                    }
+                }
                 if (modifiers.FirstOrDefault(x => x.ModifierName == modifierName) is IColoredModifier colorMod)
                 {
                     modColor = colorMod.ModifierColor;
