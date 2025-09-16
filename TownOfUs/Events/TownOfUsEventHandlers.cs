@@ -62,6 +62,7 @@ public static class TownOfUsEventHandlers
             ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
 
             ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
+            if (ModifierText.color == TownOfUsColors.Impostor) ModifierText.color = MiscUtils.GetRoleColour(modifier.LocaleKey.Replace(" ", string.Empty));
             if (modifier is IColoredModifier colorMod)
             {
                 ModifierText.color = colorMod.ModifierColor;
@@ -72,6 +73,7 @@ public static class TownOfUsEventHandlers
             ModifierText.text = $"<size=4><color=#FFFFFF>Modifier: </color>{uniModifier.ModifierName}</size>";
 
             ModifierText.color = MiscUtils.GetRoleColour(uniModifier.ModifierName.Replace(" ", string.Empty));
+            if (ModifierText.color == TownOfUsColors.Impostor) ModifierText.color = MiscUtils.GetRoleColour(uniModifier.LocaleKey.Replace(" ", string.Empty));
             if (uniModifier is IColoredModifier colorMod)
             {
                 ModifierText.color = colorMod.ModifierColor;
@@ -109,6 +111,7 @@ public static class TownOfUsEventHandlers
         if (teamModifier != null && OptionGroupSingleton<GeneralOptions>.Instance.TeamModifierReveal)
         {
             var color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
+            if (color == TownOfUsColors.Impostor) color = MiscUtils.GetRoleColour(teamModifier.LocaleKey.Replace(" ", string.Empty));
             if (teamModifier is IColoredModifier colorMod)
             {
                 color = colorMod.ModifierColor;
@@ -143,9 +146,10 @@ public static class TownOfUsEventHandlers
         if (teamModifier != null && OptionGroupSingleton<GeneralOptions>.Instance.TeamModifierReveal)
         {
             var color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
+            if (color == TownOfUsColors.Impostor) color = MiscUtils.GetRoleColour(teamModifier.LocaleKey.Replace(" ", string.Empty));
             if (teamModifier is IColoredModifier colorMod)
             {
-                ModifierText.color = colorMod.ModifierColor;
+                color = colorMod.ModifierColor;
             }
 
             cutscene.RoleBlurbText.text =

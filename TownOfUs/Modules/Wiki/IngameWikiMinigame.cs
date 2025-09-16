@@ -350,6 +350,21 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 }
                 
                 var color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
+                if (color == TownOfUsColors.Impostor)
+                {
+                    switch (modifier)
+                    {
+                        case UniversalGameModifier uniMod:
+                            color = MiscUtils.GetRoleColour(uniMod.LocaleKey.Replace(" ", string.Empty));
+                            break;
+                        case TouGameModifier touMod:
+                            color = MiscUtils.GetRoleColour(touMod.LocaleKey.Replace(" ", string.Empty));
+                            break;
+                        case AllianceGameModifier allyMod:
+                            color = MiscUtils.GetRoleColour(allyMod.LocaleKey.Replace(" ", string.Empty));
+                            break;
+                    }
+                }
                 if (modifier is IColoredModifier colorMod)
                 {
                     color = colorMod.ModifierColor;
