@@ -707,7 +707,7 @@
   <!-- Ambassador Wiki / Abilities -->
   <string name="TouRoleAmbassador">Ambassador</string>
   <string name="TouRoleAmbassadorIntroBlurb">Lead The Impostors To Victory</string>
-  <string name="TouRoleAmbassadorTabDescription">Retrain yourself or fellow impostors into other roles\%nl\%\%b\%Imp Killing cannot be a Power role\%/b\%\%nl\%\%b\%Imp Concealing/Support cannot be a Killing/Power role\%/b\%</string>
+  <string name="TouRoleAmbassadorTabDescription">Retrain yourself or fellow impostors into another role\%nl\%\%b\%Imp Killing cannot be a Power role\%/b\%\%nl\%\%b\%Imp Concealing/Support cannot be a Killing/Power role\%/b\%</string>
   <string name="TouRoleAmbassadorWikiDescription">The Ambassador is an Impostor Power role that can retrain impostors into other impostor roles.</string>
   <string name="TouRoleAmbassadorRetrain">Retrain</string>
   <string name="TouRoleAmbassadorRetrainWiki">Retrain (Meeting)</string>
@@ -1012,10 +1012,10 @@
   <!-- Glitch Wiki / Abilities -->
   <string name="TouRoleGlitch">Glitch</string>
   <string name="TouRoleGlitchIntroBlurb">Murder, Mimic, Hack... Data Lost</string>
-  <string name="TouRoleGlitchTabDescription">Hack players to stop their abilities momentarily, and mimic into others to frame them</string>
+  <string name="TouRoleGlitchTabDescription">Hack players to stop their abilities momentarily,\%nl\%mimic into others to frame them.</string>
   <string name="TouRoleGlitchWikiDescription">The Glitch is a Neutral Killing role that wins by being the last killer alive. They can Mimic into another player, or they can hack a player.</string>
   <string name="TouRoleGlitchMimic">Mimic</string>
-  <string name="TouRoleGlitchMimicWikiDescription">Mimic the appearance of another player, taking on their whole look.</string>
+  <string name="TouRoleGlitchMimicWikiDescription">Mimic the appearance of another player, taking on their whole appearance.</string>
   <string name="TouRoleGlitchHack">Hack</string>
   <string name="TouRoleGlitchHackWikiDescription">Disable a player's abilities.</string>
   <!-- Glitch Options -->
