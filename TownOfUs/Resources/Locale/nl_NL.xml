@@ -372,8 +372,6 @@
   <string name="TouRoleMirrorcasterIntroBlurb">Reflecteer aanvallen op anderen</string>
   <string name="TouRoleMirrorcasterTabDescription">Bescherm een speler met een Magische Spiegel.%nl\%Als ze direct aangevallen worden, wordt%nl\%de aanval gereflecteerd op een andere speler!</string>
   <string name="TouRoleMirrorcasterWikiDescription">De Reflector is een Bemanning Bescherming rol die een Magische Spiegel kan werpen op een speler om deze te beschermen. Als deze speler direct wordt aangevallen, kan de Reflector de aanval op een andere speler ontketenen.</string>
-  <string name="TouRoleMirrorcasterMagic Mirror">Magische Spiegel</string>
-  <string name="TouRoleMirrorcasterMagic MirrorWikiDescription">Plaats een Spiegel op een speler. Als deze speler direct wordt aangevallen, zal jij geïnformeerd worden en kun je de aanval op een andere speler ontketenen. Rollen die niet beïnvloed worden door de Magische Spiegel zijn Brandstichter, Veteraan, Pestilentie, Bommenwerper (als de speler ontploft wordt), en een paar andere.</string>
   <string name="TouRoleMirrorcasterUnleash">Ontketen</string>
   <string name="TouRoleMirrorcasterUnleashWikiDescription">Zodra de Magische Spiegel breekt, gebruik zijn kracht om een aanval op een andere speler te ontketenen!</string>
   <string name="TouOptionMirrorcasterWhoGetsMurderAttemptIndicator">Wie krijgt moordpoging-indicator</string>

@@ -435,8 +435,6 @@
   <string name="TouRoleMirrorcasterIntroBlurb">反射攻击到其他人</string>
   <string name="TouRoleMirrorcasterTabDescription">用魔法镜保护一名玩家。%nl\%如果他们被直接攻击，%nl\%则将攻击反射到另一名玩家身上！</string>
   <string name="TouRoleMirrorcasterWikiDescription">镜法师是船员保护型角色，可以为一名玩家施加魔法镜进行保护。如果被直接攻击，镜法师可以将攻击反射到另一名玩家身上。</string>
-  <string name="TouRoleMirrorcasterMagic Mirror">魔法镜</string>
-  <string name="TouRoleMirrorcasterMagic MirrorWikiDescription">为一名玩家放置魔法镜。如果该玩家被直接攻击，你会收到通知，并可以将攻击反射到另一名玩家。无视魔法镜的角色有纵火犯、老兵、瘟疫之源、爆破手（被炸弹炸时）等。</string>
   <string name="TouRoleMirrorcasterUnleash">反射</string>
   <string name="TouRoleMirrorcasterUnleashWikiDescription">一旦魔法镜破碎，利用其力量将攻击反射到另一名玩家！</string>
   <string name="TouRoleAmbassadorIntroBlurb">带领伪装者取得胜利</string>
