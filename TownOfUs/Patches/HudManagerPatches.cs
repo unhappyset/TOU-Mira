@@ -720,7 +720,7 @@ public static class HudManagerPatches
         {
             var tabText = HudManager.Instance.TaskPanel.tab.transform.FindChild("TabText_TMP")
                 .GetComponent<TextMeshPro>();
-            tabText.SetText($"Tasks {PlayerControl.LocalPlayer.TaskInfo()}");
+            tabText.SetText($"{StoredTasksText} {PlayerControl.LocalPlayer.TaskInfo()}");
         }
     }
 
@@ -732,7 +732,7 @@ public static class HudManagerPatches
             return roleListText[slotValue];
         }
 
-        return "<color=#696969>Unknown</color>";
+        return "<color=#696969>???</color>";
     }
 
     public static void UpdateRoleList(HudManager instance)
@@ -978,6 +978,7 @@ public static class HudManagerPatches
     }
 
     private static bool _registeredSoftModifiers;
+    public static string StoredTasksText { get; private set; } = "Tasks";
     public static string StoredHostLocale { get; private set; } = "Host";
     public static string StoredSpectatingLocale { get; private set; } = "Spectator";
     public static string StoredRoleList { get; private set; } = "Set Role List";
@@ -995,6 +996,7 @@ public static class HudManagerPatches
     public static void HudManagerStartPatch(HudManager __instance)
     {
         StoredHostLocale = TranslationController.Instance.GetString(StringNames.HostNounLabel).Replace(":", "");
+        StoredTasksText = TranslationController.Instance.GetString(StringNames.Tasks);
         StoredSpectatingLocale = TouLocale.Get("TouRoleSpectator");
         StoredRoleList = TouLocale.Get("SetRoleList");
         StoredFactionList = TouLocale.Get("NeutralFactionList");

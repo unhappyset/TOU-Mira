@@ -176,6 +176,7 @@
   <!-- Cause of Deaths -->
   <string name="DiedByString">\%cod\% By \%player\%</string>
   <string name="DiedByStringBasic">By \%player\%</string>
+  <string name="Alive">Alive</string>
   <string name="DiedToDisconnect">Disconnected</string>
   <string name="DiedToEjection">Ejected</string>
   <string name="DiedToKiller">Killed</string>
@@ -210,15 +211,10 @@
   <string name="TouMedicShield">Medic Shield</string>
   <string name="TouWardenFort">Warden Fort</string>
   <string name="TouDoused">Doused</string>
-  <!-- Arsonist Cleric Cleanse Info -->
-  <string name="TouHacked">Hacked</string>
-  <!-- Glitch Cleric Cleanse Info -->
-  <string name="TouFlash">Flash</string>
-  <!-- Grenadier Cleric Cleanse Info -->
-  <string name="TouHypnosis">Hypnosis</string>
-  <!-- Hypnotist Cleric Cleanse Info -->
-  <string name="TouInfection">Infection</string>
-  <!-- Plaguebearer Cleric Cleanse Info -->
+  <string name="TouHacked">Hacked</string>\
+  <string name="TouFlash">Flash</string>\
+  <string name="TouHypnosis">Hypnosis</string>\
+  <string name="TouInfection">Infection</string>\
   <string name="TouScatter">Scatter</string>
   <!-- Spectator - Game Outlier -->
   <string name="TouRoleSpectator">Spectator</string>
@@ -450,8 +446,8 @@
   <string name="TouRoleMirrorcasterIntroBlurb">Reflect Attacks Onto Others</string>
   <string name="TouRoleMirrorcasterTabDescription">Protect a player with a Magic Mirror.\%nl\%f they are directly attacked, then\%nl\%unleash the attack onto another player!</string>
   <string name="TouRoleMirrorcasterWikiDescription">The Mirrorcaster is a Crewmate Protective role that can cast a Magic Mirror on a player to protect them. If attacked directly, the Mirrorcaster can then unleash onto another player.</string>
-  <string name="TouRoleMirrorcasterMagic Mirror">Magic Mirror</string>
-  <string name="TouRoleMirrorcasterMagic MirrorWikiDescription">Place a Mirror on a player. If the player is attacked directly, then you will be notified, and you will be able to unleash onto another player. Roles that ignore the Magic Mirror are Arsonist, Veteran, Pestilence, Bomber (if the player is bombed), and a few others.</string>
+  <string name="TouRoleMirrorcasterMagicMirror">Magic Mirror</string>
+  <string name="TouRoleMirrorcasterMagicMirrorWikiDescription">Place a Mirror on a player. If the player is attacked directly, then you will be notified, and you will be able to unleash onto another player. Roles that ignore the Magic Mirror are Arsonist, Veteran, Pestilence, Bomber (if the player is bombed), and a few others.</string>
   <string name="TouRoleMirrorcasterUnleash">Unleash</string>
   <string name="TouRoleMirrorcasterUnleashWikiDescription">Once the Magic Mirror shatters, use its power to unleash the attack onto another player!</string>
   <!-- Mirrorcaster Options -->
