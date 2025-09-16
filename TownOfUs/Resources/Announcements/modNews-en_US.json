@@ -330,6 +330,7 @@
         "\n- Prosecutor button is no longer hidden when the skip button is hidden.",
         "\n- Jailee is no longer in Jail if the Jailor is converted.",
         "\n- Mayor no longer trips up Traitor checks from sending repetitive requests to all players.",
+        "\n- Fixing Comms as Engineer no longer uses up two charges.",
         "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
         "\n- Amnesiac Inquisitor can no longer target themselves.",
         "\n- Phantom, Executioner, and Jester ghost kills are now run through a more direct method to force a murder at all costs.",

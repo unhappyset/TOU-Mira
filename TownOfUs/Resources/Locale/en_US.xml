@@ -426,9 +426,9 @@
   <string name="TouOptionMedicShowShieldedPlayer">Show Shielded Player</string>
   <string name="TouOptionMedicWhoGetsMurderAttemptIndicator">Who Gets Murder Attempt Indicator</string>
   <string name="TouOptionMedicCanGiveShieldAwayNextRound">Can Give Shield Away Next Round</string>
-  <string name="TouOptionMedicMaxAmountofShieldUses">Max Amount of Shield Uses</string>
+  <string name="TouOptionMedicMaxAmountOfShieldUses">Max Amount of Shield Uses</string>
   <string name="TouOptionMedicShieldBreaksOnMurderAttempt">Shield Breaks On Murder Attempt</string>
-  <string name="TouOptionMedicShowReportsinChat">Show Reports in Chat</string>
+  <string name="TouOptionMedicShowReportsInChat">Show Reports in Chat</string>
   <string name="TouOptionMedicTimeWhereMedicWillHaveName">Time Where Medic Will Have Name</string>
   <string name="TouOptionMedicTimeWhereMedicWillHaveColorType">Time Where Medic Will Have Color Type</string>
   <!-- Medium - Crewmate Support -->
@@ -441,7 +441,7 @@
   <string name="TouRoleMediumMediateWikiDescription">Communicate with the dead, which may lead you to the killers.</string>
   <!-- Medium Options -->
   <string name="TouOptionMediumMediateCooldown">Mediate Cooldown</string>
-  <string name="TouOptionMediumRevealAppearenceofMediateTarget">Reveal Appearence of Mediate Target</string>
+  <string name="TouOptionMediumRevealAppearanceOfMediateTarget">Reveal Appearance of Mediate Target</string>
   <string name="TouOptionMediumArrowVisibility">Arrow Visibility</string>
   <string name="TouOptionMediumWhoisRevealed">Who is Revealed</string>
   <!-- Mirrorcaster - Crewmate Protective -->
@@ -580,6 +580,8 @@
   <string name="TouRoleSheriffTabMisfireKillsSheriff">Misfiring will lead to suicide.</string>
   <string name="TouRoleSheriffTabMisfireKillsTarget">Misfiring will lead to your target's death,\%nl\%at the cost of your ability.</string>
   <string name="TouRoleSheriffTabMisfireKillsNobody">Misfiring will prevent you from shooting again.</string>
+  <!-- Sheriff Feedback -->
+  <string name="TouRoleSheriffMisfireFeedback">You have lost the ability to shoot!</string>
   <!-- Sheriff Options -->
   <string name="TouOptionSheriffKillCooldown">Kill Cooldown</string>
   <string name="TouOptionSheriffCanSelfReport">Can Self Report</string>
