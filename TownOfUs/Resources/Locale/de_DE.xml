@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-  <string name="FoolsMode">Narrenmodus</string>
+  <string name="FoolsMode">April Scherz Modus</string>
   <string name="TertiaryAbility">Tertiäre Fähigkeit (Hack-Fähigkeit)</string>
   <string name="ModifierAbility">Modifikator Fähigkeit</string>
   <string name="ClientOptionsButton">Tou Client Optionen</string>
@@ -9,8 +9,14 @@
   <string name="ShowWelcomeMessage">Willkommensnachricht Anzeigen</string>
   <string name="ShowSummaryMessage">Zusammenfassungsnachricht Anzeigen</string>
   <string name="ColorPlayerName">Farbige Spielernamen</string>
-  <string name="UseCrewmateTeamColor">Benutze Grundlegende Besatzungsfarben</string>
+  <string name="UseCrewmateTeamColor">Verwende Grundlegende Besatzungsfarben</string>
   <string name="ShowShieldHud">Schilde Auf HUD Anzeigen</string>
-  <string name="ButtonUIFactor">Knopfkalierungsfaktor</string>
+  <string name="ButtonUIFactor">Knopfskalierungsfaktor</string>
   <string name="OffsetButtons">Versetzte Tasten Wenn Du Nicht In Schächte Kannst</string>
+  <string name="SortGuessingByAlignment">Sortiere Raten Nach Ausrichtung</string>
+  <string name="PreciseCooldowns">Fähigkeiten-Wartezeit Ist Unter 10s In Dezimal</string>
+  <string name="ArrowStyle">Pfeil Stil</string>
+  <string name="ArrowDefault">Standard</string>
+  <string name="ArrowDarkGlow">Dunkles Leuchten</string>
+  <string name="ArrowColorGlow">Farbiges Leuchten</string>
 </resources>
