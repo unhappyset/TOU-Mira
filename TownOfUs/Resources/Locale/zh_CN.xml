@@ -470,9 +470,7 @@
   <string name="TouOptionMedicShowShieldedPlayer">显示有护盾的玩家</string>
   <string name="TouOptionMedicWhoGetsMurderAttemptIndicator">可看见击杀尝试的人是</string>
   <string name="TouOptionMedicCanGiveShieldAwayNextRound">允许法医下回合更换保护对象</string>
-  <string name="TouOptionMedicMaxAmountofShieldUses">最大护盾使用次数</string>
   <string name="TouOptionMedicShieldBreaksOnMurderAttempt">护盾会因击杀未遂而破裂</string>
-  <string name="TouOptionMedicShowReportsinChat">聊天框显示法医报告</string>
   <string name="TouOptionMedicTimeWhereMedicWillHaveName">法医报告显示名字信息的时间</string>
   <string name="TouOptionMedicTimeWhereMedicWillHaveColorType">法医报告显示颜色类型信息的时间</string>
   <string name="TouRoleMediumIntroBlurb">观察幽灵的动向</string>
@@ -481,7 +479,6 @@
   <string name="TouRoleMediumMediate">招魂</string>
   <string name="TouRoleMediumMediateWikiDescription">与死者交流，这可能会让你找到凶手。</string>
   <string name="TouOptionMediumMediateCooldown">招魂冷却时间</string>
-  <string name="TouOptionMediumRevealAppearenceofMediateTarget">揭示招魂目标的外观</string>
   <string name="TouOptionMediumArrowVisibility">箭头可见性</string>
   <string name="TouOptionMediumWhoisRevealed">被揭示者</string>
   <string name="Alive">存活</string>

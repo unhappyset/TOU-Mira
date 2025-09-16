@@ -353,9 +353,7 @@
   <string name="TouOptionMedicShowShieldedPlayer">Toon beschermde speler</string>
   <string name="TouOptionMedicWhoGetsMurderAttemptIndicator">Wie krijgt moordpoging-indicator</string>
   <string name="TouOptionMedicCanGiveShieldAwayNextRound">Kan schild volgende ronde weggeven</string>
-  <string name="TouOptionMedicMaxAmountofShieldUses">Maximale aantal schild toepassingen</string>
   <string name="TouOptionMedicShieldBreaksOnMurderAttempt">Schild breekt bij moordpoging</string>
-  <string name="TouOptionMedicShowReportsinChat">Toon meldingen in chat</string>
   <string name="TouOptionMedicTimeWhereMedicWillHaveName">Tijd waarin de Dokter een naam krijgt</string>
   <string name="TouOptionMedicTimeWhereMedicWillHaveColorType">Tijd waarin de Dokter een kleurtype krijgt</string>
   <string name="TouRoleMedium">Medium</string>
@@ -365,7 +363,6 @@
   <string name="TouRoleMediumMediate">Mediteren</string>
   <string name="TouRoleMediumMediateWikiDescription">Communiceer met de doden zodat deze je misschien naar de moordenaars kunnen leiden.</string>
   <string name="TouOptionMediumMediateCooldown">Mediteren afkoelperiode</string>
-  <string name="TouOptionMediumRevealAppearenceofMediateTarget">Onthul het uiterlijk van het gemediteerde doelwit</string>
   <string name="TouOptionMediumArrowVisibility">Pijl zichtbaarheid</string>
   <string name="TouOptionMediumWhoisRevealed">Wie wordt onthuld</string>
   <string name="TouRoleMirrorcaster">Reflector</string>
