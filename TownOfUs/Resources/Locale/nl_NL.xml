@@ -233,7 +233,7 @@
   <string name="TouOptionClericShowBarriered">Toon Afgeschermde Speler</string>
   <string name="TouOptionClericAttackNotif">Geestelijke Krijgt Aanvals Notificatie</string>
   <string name="TouRoleDeputy">Hulpsheriff</string>
-  <string name="TouRoleDeputyIntroBlurb">Bewaak Dode Bemanningsleden Om Hun Moordenaar Te Vangen</string>
+  <string name="TouRoleDeputyIntroBlurb">Bewaak Bemanningsleden Om Hun Moordenaar Te Vangen</string>
   <string name="TouRoleDeputyTabDescription">Bewaak Dode Bemanningsleden, En Beschiet Hun Moordenaar Tijdens De Meeting!</string>
   <string name="TouRoleDeputyWikiDescription">De Hulpsheriff is een Bemanningslid Dodende-rol die andere spelers kan bewaken. Zodra een bewaakte speler sterft, wordt de Hulpsheriff gewaarschuwd van hun dood. Tijdens de volgende vergadering kan de Hulpsheriff vervolgens proberen de moordenaar van de bewaakte speler neer te schieten. Als dit lukt, sterft de moordenaar en als dit niet lukt, gebeurt er niets.</string>
   <string name="TouRoleDeputyCamp">Bewaak</string>
@@ -242,7 +242,7 @@
   <string name="TouRoleDetective">Detective</string>
   <string name="TouRoleDetectiveIntroBlurb">Inspecteer plaats delicten om de moordenaar te pakken</string>
   <string name="TouRoleDetectiveTabDescription">Inspecteer plaats delicten en onderzoek vervolgens spelers om te zien of ze op de plaats delict aanwezig waren.</string>
-  <string name="TouRoleDetectiveWikiDescription">De hulpsheriff kan een plaats delict inspecteren en spelers onderzoeken om te zien of ze op de plaats delict waren. Als dat het geval is, knippert hij rood.</string>
+  <string name="TouRoleDetectiveWikiDescription">De Detective kan een plaats delict inspecteren en spelers onderzoeken om te zien of ze op de plaats delict waren. Als dat het geval is, knippert hij rood.</string>
   <string name="TouRoleDetectiveInspect">Inspecteer</string>
   <string name="TouRoleDetectiveInspectWikiDescription">Op de plaats delict zullen alle lijken verschijnen. Onderzoek de plaats delict en ondervraag vervolgens de spelers om aanwijzingen te vinden. Tijdens de volgende bijeenkomst ontvang je een rapport waarin de rol van de moordenaar wordt onthuld.</string>
   <string name="TouRoleDetectiveExamine">Onderzoeken</string>
