@@ -211,11 +211,13 @@
   <string name="TouMedicShield">Medic Shield</string>
   <string name="TouWardenFort">Warden Fort</string>
   <string name="TouDoused">Doused</string>
-  <string name="TouHacked">Hacked</string>\
-  <string name="TouFlash">Flash</string>\
-  <string name="TouHypnosis">Hypnosis</string>\
-  <string name="TouInfection">Infection</string>\
+  <string name="TouHacked">Hacked</string>
+  <string name="TouFlash">Flash</string>
+  <string name="TouHypnosis">Hypnosis</string>
+  <string name="TouInfection">Infection</string>
   <string name="TouScatter">Scatter</string>
+  <!-- Common Terms -->
+  <string name="TargetingNobody">Nobody</string>
   <!-- Spectator - Game Outlier -->
   <string name="TouRoleSpectator">Spectator</string>
   <string name="TouRoleSpectatorIntroBlurb">Watch The Chaos From Afar</string>
@@ -409,6 +411,8 @@
   <string name="TouRoleMayor">Mayor</string>
   <string name="TouRoleMayorIntroBlurb">Reveal Yourself To Save The Crew</string>
   <string name="TouRoleMayorTabDescription">Lead the crew to victory!</string>
+  <string name="TouRoleMayorTabDescriptionEgo">Lead the evils to victory!</string>
+  <string name="TouRoleMayorUnrevealedTabText">Reveal yourself whenever you wish.</string>
   <string name="TouRoleMayorWikiDescription">The Mayor is a Crewmate Power role that gains three votes and is revealed to all players, also changing their look in meetings.</string>
   <!-- Medic - Crewmate Protective -->
   <!-- Medic Wiki / Abilities -->
@@ -498,6 +502,12 @@
   <string name="TouRolePlumber">Plumber</string>
   <string name="TouRolePlumberIntroBlurb">Get The Rats Out Of The Sewers</string>
   <string name="TouRolePlumberTabDescription">Flush the vent system to kick venters out, and\%nl\%barricade vents to block them the next round</string>
+  <string name="TouRolePlumberExtraTabText">Note: Barricades Stay For \%roundCount\% Round(s)</string>
+  <string name="TouRolePlumberVentListTabText">Vents List</string>
+  <string name="TouRolePlumberUnbuiltBarricadeTabText">Preparing...</string>
+  <string name="TouRolePlumberVentLabelTabText">\%roomName\% Vent</string>
+  <string name="TouRolePlumberVentRoundsTabText">\%roundsRemaining\% Round(s) Remaining</string>
+  <string name="TouNotifPlumberBlock">This vent will be blocked at the beginning of next round.</string>
   <string name="TouRolePlumberWikiDescription">The Plumber is a Crewmate Support role that can place Barricades on vents and Flush anyone out of vents.</string>
   <string name="TouRolePlumberFlush">Flush</string>
   <string name="TouRolePlumberFlushWikiDescription">Flushing the vents makes every vent open and close, kicking out anyone actively in a vent. The Plumber also gets an arrow pointing to every flushed player for one second.</string>
@@ -532,7 +542,7 @@
   <!-- Prosecutor Wiki / Abilities -->
   <string name="TouRoleProsecutor">Prosecutor</string>
   <string name="TouRoleProsecutorIntroBlurb">Exile Players Of Your Choosing</string>
-  <string name="TouRoleProsecutorTabDescription">Choose to exile anyone of your choosing without anyone else having a say</string>
+  <string name="TouRoleProsecutorTabDescription">Choose to exile anyone of your choosing</string>
   <string name="TouRoleProsecutorWikiDescription">The Prosecutor is a Crewmate Power role that can Exile a player, applying five votes to a player of their choosing. They can also see who voted for whom, even if they're anonymous.</string>
   <string name="TouRoleProsecutorProsecute">Prosecute</string>
   <string name="TouRoleProsecutorProsecuteWiki">Prosecute (Meeting)</string>
@@ -560,9 +570,16 @@
   <string name="TouRoleSheriff">Sheriff</string>
   <string name="TouRoleSheriffIntroBlurb">Shoot The \%color=#FF0000FF\%Impostor\%/color\%</string>
   <string name="TouRoleSheriffTabDescription">Kill off the impostors but don't kill crewmates</string>
+  <string name="TouRoleSheriffTabDescriptionEgo">Kill off whoever you wish in hopes of crew losing</string>
   <string name="TouRoleSheriffWikiDescription">The Sheriff is a Crewmate Killing that can shoot a player to attempt to kill them. If Sheriff doesn't die to misfire, they will lose the ability to shoot.</string>
   <string name="TouRoleSheriffShoot">Shoot</string>
   <string name="TouRoleSheriffShootWikiDescription">Shoot a player to kill them, misfiring if they aren't an Impostor or one of the other selected shootable factions</string>
+  <!-- Sheriff Misfire Text -->
+  <string name="TouRoleSheriffTabMisfired">You can no longer shoot.</string>
+  <string name="TouRoleSheriffTabMisfireKillsBoth">Misfiring kills you and your target.</string>
+  <string name="TouRoleSheriffTabMisfireKillsSheriff">Misfiring will lead to suicide.</string>
+  <string name="TouRoleSheriffTabMisfireKillsTarget">Misfiring will lead to your target's death,\%nl\%at the cost of your ability.</string>
+  <string name="TouRoleSheriffTabMisfireKillsNobody">Misfiring will prevent you from shooting again.</string>
   <!-- Sheriff Options -->
   <string name="TouOptionSheriffKillCooldown">Kill Cooldown</string>
   <string name="TouOptionSheriffCanSelfReport">Can Self Report</string>
