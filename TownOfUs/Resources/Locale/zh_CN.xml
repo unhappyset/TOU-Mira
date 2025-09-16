@@ -354,7 +354,7 @@
   <string name="TouRoleMayorTabDescription">带领船员走向胜利！</string>
   <string name="TouRoleMayorWikiDescription">市长是一个船员强力类职业，获得三票并向所有玩家展示，也会改变他们在会议中的外观。</string>
   <string name="TouRoleMedic">法医</string>
-  <string name="TouRoleMirrorcaster">镜法师</string>
+  <string name="TouRoleMirrorcaster">法镜师</string>
   <string name="TouRoleMedium">招魂师</string>
   <string name="TouRoleMystic">灵媒</string>
   <string name="TouRoleOracle">神谕者</string>
@@ -434,7 +434,7 @@
   <string name="TouModifierTorch">火炬</string>
   <string name="TouRoleMirrorcasterIntroBlurb">反射攻击到其他人</string>
   <string name="TouRoleMirrorcasterTabDescription">用魔法镜保护一名玩家。%nl\%如果他们被直接攻击，%nl\%则将攻击反射到另一名玩家身上！</string>
-  <string name="TouRoleMirrorcasterWikiDescription">镜法师是船员保护型角色，可以为一名玩家施加魔法镜进行保护。如果被直接攻击，镜法师可以将攻击反射到另一名玩家身上。</string>
+  <string name="TouRoleMirrorcasterWikiDescription">法镜师是船员保护型角色，可以为一名玩家施加魔法镜进行保护。如果被直接攻击，法镜师可以将攻击反射到另一名玩家身上。</string>
   <string name="TouRoleMirrorcasterUnleash">反射</string>
   <string name="TouRoleMirrorcasterUnleashWikiDescription">一旦魔法镜破碎，利用其力量将攻击反射到另一名玩家！</string>
   <string name="TouRoleAmbassadorIntroBlurb">带领伪装者取得胜利</string>
@@ -460,4 +460,28 @@
   <string name="TouRoleAmbassadorNeedKills">你或伪装者要想转变必须至少有%requiredKills\%次击杀。</string>
   <string name="TouRoleMirrorcasterMagicMirror">魔法镜</string>
   <string name="TouRoleMirrorcasterMagicMirrorWikiDescription">为一名玩家放置魔法镜。如果该玩家被直接攻击，你会收到通知，并可以将攻击反射到另一名玩家。无视魔法镜的角色有纵火犯、老兵、瘟疫之源、爆破手（被炸弹炸时）等。</string>
+  <string name="TouRoleMayorTabDescriptionEgo">带领邪恶走向胜利！</string>
+  <string name="TouRoleMayorUnrevealedTabText">随时揭晓自己。</string>
+  <string name="TouRoleMedicIntroBlurb">创建一个护盾来保护船员</string>
+  <string name="TouRoleMedicTabDescription">使用护盾保护船员免受攻击</string>
+  <string name="TouRoleMedicWikiDescription">法医是一个船员保护类职业，可以为玩家提供护盾。</string>
+  <string name="TouRoleMedicShield">护盾</string>
+  <string name="TouRoleMedicShieldWikiDescription">给玩家一个护盾，保护他们不被其他人杀死</string>
+  <string name="TouOptionMedicShowShieldedPlayer">显示有护盾的玩家</string>
+  <string name="TouOptionMedicWhoGetsMurderAttemptIndicator">谁获得击杀未遂的指示器</string>
+  <string name="TouOptionMedicCanGiveShieldAwayNextRound">下一轮可以送出护盾</string>
+  <string name="TouOptionMedicMaxAmountofShieldUses">护盾最大使用量</string>
+  <string name="TouOptionMedicShieldBreaksOnMurderAttempt">护盾会因击杀未遂而破裂</string>
+  <string name="TouOptionMedicShowReportsinChat">在聊天中显示报告</string>
+  <string name="TouOptionMedicTimeWhereMedicWillHaveName">医生拥有名字信息的时间</string>
+  <string name="TouOptionMedicTimeWhereMedicWillHaveColorType">医生获得颜色类型信息的时间</string>
+  <string name="TouRoleMediumIntroBlurb">观察幽灵的动向</string>
+  <string name="TouRoleMediumTabDescription">跟随鬼魂从他们那里获取线索</string>
+  <string name="TouRoleMediumWikiDescription">招魂师是一个船员辅助类职业，每次使用技能可以看到一个幽灵。招魂师和幽灵会互相显示箭头，随时向对方显示彼此的位置。</string>
+  <string name="TouRoleMediumMediate">招魂</string>
+  <string name="TouRoleMediumMediateWikiDescription">与死者交流，这可能会让你找到凶手。</string>
+  <string name="TouOptionMediumMediateCooldown">招魂冷却时间</string>
+  <string name="TouOptionMediumRevealAppearenceofMediateTarget">揭示招魂目标的外观</string>
+  <string name="TouOptionMediumArrowVisibility">箭头可见性</string>
+  <string name="TouOptionMediumWhoisRevealed">谁被揭晓</string>
 </resources>
