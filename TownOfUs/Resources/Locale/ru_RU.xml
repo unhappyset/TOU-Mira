@@ -185,4 +185,7 @@
   <string name="RandomCrew">Случайный Член Экипажа</string>
   <string name="NeutKeyword">Нейт</string>
   <string name="CrewmateAlliance">Командные Члены Экипажа</string>
+  <string name="Mint">Мятный</string>
+  <string name="Mandarin">Мандарин</string>
+  <string name="Midnight">Полуночный</string>
 </resources>
