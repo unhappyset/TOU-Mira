@@ -353,7 +353,8 @@
         "\n- Chat is now hidden from recently killed players.",
         "\n- Your abilities can no longer be triggered when typing in lovers chat.",
         "\n\n\r<size=105%>Additions:</size>",
-        "\n- Players can now spectate in games by running \"/spec\" in their chat."
+        "\n- Players can now spectate in games by running \"/spec\" in their chat.",
+        "\n- It is now possible to change what ranges of buttons are affected by the starting cooldown, if any."
       ]
     }
       ]

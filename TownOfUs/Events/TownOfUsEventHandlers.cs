@@ -170,19 +170,41 @@ public static class TownOfUsEventHandlers
         HudManager.Instance.SetHudActive(false);
         HudManager.Instance.SetHudActive(true);
 
-        foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(PlayerControl.LocalPlayer.Data.Role)))
+        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
+
+        if (genOpt.StartCooldownMode is not StartCooldownType.NoButtons)
         {
-            if (button is FakeVentButton)
+            var minCooldown = Math.Min(genOpt.StartCooldownMin, genOpt.StartCooldownMax);
+            var maxCooldown = Math.Max(genOpt.StartCooldownMin, genOpt.StartCooldownMax);
+            foreach (var button in CustomButtonManager.Buttons.Where(x => x.Enabled(PlayerControl.LocalPlayer.Data.Role)))
             {
-                continue;
+                if (button is FakeVentButton)
+                {
+                    continue;
+                }
+
+                switch (genOpt.StartCooldownMode)
+                {
+                    case StartCooldownType.AllButtons:
+                        button.SetTimer(genOpt.GameStartCd);
+                        break;
+                    default:
+                        if (button.Cooldown >= minCooldown && button.Cooldown <= maxCooldown)
+                        {
+                            button.SetTimer(genOpt.GameStartCd);
+                        }
+                        else
+                        {
+                            button.SetTimer(button.Cooldown);
+                        }
+                        break;
+                }
             }
 
-            button.SetTimer(OptionGroupSingleton<GeneralOptions>.Instance.GameStartCd);
-        }
-
-        if (PlayerControl.LocalPlayer.IsImpostor())
-        {
-            PlayerControl.LocalPlayer.SetKillTimer(OptionGroupSingleton<GeneralOptions>.Instance.GameStartCd);
+            if (PlayerControl.LocalPlayer.IsImpostor())
+            {
+                PlayerControl.LocalPlayer.SetKillTimer(genOpt.GameStartCd);
+            }
         }
 
         var modsTab = ModifierDisplayComponent.Instance;
