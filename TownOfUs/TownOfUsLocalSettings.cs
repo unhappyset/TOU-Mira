@@ -6,7 +6,7 @@ namespace TownOfUs;
 
 public class TownOfUsLocalSettings(ConfigFile config) : LocalSettingsTab(config)
 {
-    public override string TabName => "TOU";
+    public override string TabName => "ToU:M";
     protected override bool ShouldCreateLabels => false;
 
     public override LocalSettingTabAppearance TabAppearance => new()
