@@ -68,7 +68,7 @@ public static class EndGamePatches
                 }
                 else
                 {
-                    roleName = role.Player.IsImpostor() ? "Impostor" : "Crewmate";
+                    roleName = TranslationController.Instance.GetString(role.Player.IsImpostor() ? StringNames.Impostor : StringNames.Crewmate);
                 }
 
                 playerRoleString.Append(TownOfUsPlugin.Culture, $"{color.ToTextColor()}{roleName}</color> > ");

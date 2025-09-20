@@ -70,7 +70,7 @@ public static class TownOfUsEventHandlers
         }
         else if (uniModifier != null && option is ModReveal.Universal)
         {
-            ModifierText.text = $"<size=4><color=#FFFFFF>Modifier: </color>{uniModifier.ModifierName}</size>";
+            ModifierText.text = $"<size=4><color=#FFFFFF>{TouLocale.Get("Modifier")}: </color>{uniModifier.ModifierName}</size>";
 
             ModifierText.color = MiscUtils.GetRoleColour(uniModifier.ModifierName.Replace(" ", string.Empty));
             if (ModifierText.color == TownOfUsColors.Impostor) ModifierText.color = MiscUtils.GetRoleColour(uniModifier.LocaleKey.Replace(" ", string.Empty));
