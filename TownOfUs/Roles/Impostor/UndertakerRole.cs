@@ -39,9 +39,17 @@ public sealed class UndertakerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<AltruistRole>());
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => TouLocale.Get(TouNames.Undertaker, "Undertaker");
-    public string RoleDescription => "Drag Bodies And Hide Them";
-    public string RoleLongDescription => "Drag bodies around to hide them from being reported";
+    public static string LocaleKey => "Undertaker";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
@@ -59,24 +67,24 @@ public sealed class UndertakerRole(IntPtr cppPtr)
         return ITownOfUsRole.SetNewTabText(this);
     }
 
-    public string GetAdvancedDescription()
-    {
-        return $"The {RoleName} is an Impostor Support role that can drag dead bodies around the map." +
-               MiscUtils.AppendOptionsText(GetType());
-    }
-
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Drag",
             "Drag a dead body, if allowed through settings you can also take it into a vent.",
             TouImpAssets.DragSprite),
         new("Drop",
             "Drop the dragged dead body, stopping it from being dragged any further.",
             TouImpAssets.DropSprite)
-    ];
+            };
+        }
+    }
 
-    [MethodRpc((uint)TownOfUsRpc.DragBody, LocalHandling = RpcLocalHandling.Before, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.DragBody, LocalHandling = RpcLocalHandling.Before)]
     public static void RpcStartDragging(PlayerControl playerControl, byte bodyId)
     {
         playerControl.GetModifierComponent()?.AddModifier(new DragModifier(bodyId));
@@ -91,7 +99,7 @@ public sealed class UndertakerRole(IntPtr cppPtr)
         }
     }
 
-    [MethodRpc((uint)TownOfUsRpc.DropBody, LocalHandling = RpcLocalHandling.Before, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.DropBody, LocalHandling = RpcLocalHandling.Before)]
     public static void RpcStopDragging(PlayerControl playerControl, Vector2 dropLocation)
     {
         var dragMod = playerControl.GetModifier<DragModifier>()!;

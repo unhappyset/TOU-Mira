@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
@@ -23,13 +22,43 @@ namespace TownOfUs.Roles.Neutral;
 public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Death;
-    public string RoleName => TouLocale.Get(TouNames.Vampire, "Vampire");
-    public string RoleDescription => "Convert Crewmates And Kill The Rest";
-    public string RoleLongDescription => "Bite all other players";
+    public string YouAreText => TouLocale.Get("YouAreA");
+    public string YouWereText => TouLocale.Get("YouWereA");
+    public static string LocaleKey => "Vampire";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Bite", "Bite"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}BiteWikiDescription"),
+                    TouNeutAssets.BiteSprite)
+            };
+        }
+    }
     public Color RoleColor => TownOfUsColors.Vampire;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
 
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        return ITownOfUsRole.SetNewTabText(this);
+    }
+    
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<VampireOptions>.Instance.CanVent,
@@ -41,21 +70,6 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
 
     public bool HasImpostorVision => OptionGroupSingleton<VampireOptions>.Instance.HasVision;
 
-    [HideFromIl2Cpp]
-    public StringBuilder SetTabText()
-    {
-        var alignment = RoleAlignment.ToDisplayString().Replace("Neutral", "<color=#8A8A8AFF>Neutral");
-
-        var stringB = new StringBuilder();
-        stringB.AppendLine(CultureInfo.InvariantCulture,
-            $"{RoleColor.ToTextColor()}You are a<b> {RoleName}.</b></color>");
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>Alignment: <b>{alignment}</color></b></size>");
-        stringB.Append("<size=70%>");
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"{RoleLongDescription}");
-
-        return stringB;
-    }
-
     public bool WinConditionMet()
     {
         var vampireCount = CustomRoleUtils.GetActiveRolesOfType<VampireRole>().Count(x => !x.Player.HasDied());
@@ -66,21 +80,6 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         }
 
         return vampireCount >= Helpers.GetAlivePlayers().Count - vampireCount;
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
-        new("Bite",
-            "Bite a player. If the bitten player is a Crewmate and you have not exceeded the maximum amount of vampires in a game yet. You convert them into a vampire. Otherwise they just get killed.",
-            TouNeutAssets.BiteSprite)
-    ];
-
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Neutral Killing role that wins by being the last killer(s) alive. They can bite, changing others into Vampires, or kill players." +
-            MiscUtils.AppendOptionsText(GetType());
     }
 
     public override void Initialize(PlayerControl player)
@@ -124,7 +123,7 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         return WinConditionMet();
     }
 
-    [MethodRpc((uint)TownOfUsRpc.VampireBite, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.VampireBite)]
     public static void RpcVampireBite(PlayerControl player, PlayerControl target)
     {
         if (player.Data.Role is not VampireRole)

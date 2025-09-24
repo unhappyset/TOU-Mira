@@ -16,6 +16,7 @@ using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Random = System.Random;
@@ -50,7 +51,8 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
                             x.Data.Role is not ProsecutorRole &&
                             x.Data.Role is not PoliticianRole &&
                             x.Data.Role is not JailorRole &&
-                            x.Data.Role is not VigilanteRole).ToList();
+                            x.Data.Role is not VigilanteRole &&
+                            !SpectatorRole.TrackedSpectators.Contains(x.Data.PlayerName)).ToList();
 
             if (filtered.Count > 0)
             {
@@ -69,7 +71,8 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SnitchRole>());
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public string RoleName => TouLocale.Get(TouNames.Executioner, "Executioner");
+    public static string LocaleKey => "Executioner";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TargetString();
     public string RoleLongDescription => TargetString();
     public Color RoleColor => TownOfUsColors.Executioner;
@@ -149,7 +152,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
                 .ToList();
             players.Do(x => x.RpcRemoveModifier<ExecutionerTargetModifier>());
         }
-        
+
         if (!Player.HasModifier<BasicGhostModifier>() && TargetVoted)
         {
             Player.AddModifier<BasicGhostModifier>();
@@ -221,7 +224,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
         }
     }
 
-    [MethodRpc((uint)TownOfUsRpc.SetExeTarget, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.SetExeTarget)]
     public static void RpcSetExeTarget(PlayerControl player, PlayerControl target)
     {
         if (player.Data.Role is not ExecutionerRole)

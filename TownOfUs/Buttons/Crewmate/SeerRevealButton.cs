@@ -15,8 +15,8 @@ namespace TownOfUs.Buttons.Crewmate;
 
 public sealed class SeerRevealButton : TownOfUsRoleButton<SeerRole, PlayerControl>
 {
-    public override string Name => "Reveal";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override string Name => TouLocale.Get("TouRoleSeerReveal", "Reveal");
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Seer;
     public override float Cooldown => OptionGroupSingleton<SeerOptions>.Instance.SeerCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.SeerSprite;

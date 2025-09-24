@@ -14,18 +14,43 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Crewmate;
 
-public sealed class DetectiveRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class DetectiveTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public override bool IsAffectedByComms => false;
 
+    [HideFromIl2Cpp]
     public CrimeSceneComponent? InvestigatingScene { get; set; }
 
     [HideFromIl2Cpp] public List<byte> InvestigatedPlayers { get; init; } = new();
 
     public DoomableType DoomHintType => DoomableType.Insight;
-    public string RoleName => TouLocale.Get(TouNames.Detective, "Detective");
-    public string RoleDescription => "Inspect Crime Scenes To Catch The Killer";
-    public string RoleLongDescription => "Inspect crime scenes, then examine players to see if they were at the scene.";
+    public static string LocaleKey => "Detective";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+        new(TouLocale.GetParsed($"TouRole{LocaleKey}Inspect", "Inspect"),
+            TouLocale.GetParsed($"TouRole{LocaleKey}InspectWikiDescription"),
+            TouCrewAssets.InspectSprite),
+        new(TouLocale.GetParsed($"TouRole{LocaleKey}Examine", "Examine"),
+            TouLocale.GetParsed($"TouRole{LocaleKey}ExamineWikiDescription"),
+            TouCrewAssets.ExamineSprite)
+            };
+        }
+    }
     public Color RoleColor => TownOfUsColors.Detective;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
@@ -49,24 +74,6 @@ public sealed class DetectiveRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     {
         return ITownOfUsRole.SetNewTabText(this);
     }
-
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} can inspect a crime scene and examine players to see if they were at the crime scene, flashing red if they were there."
-            + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
-        new("Inspect",
-            "Crime scenes will spawn with all dead bodies. Inspect the crime scene and then examine players to discover clues. During the next meeting, you will recieve a report revealing the killer's role.",
-            TouCrewAssets.InspectSprite),
-        new("Examine",
-            "Examine players after inspecting a crime scene. You will be told if the player was at the crime scene.",
-            TouCrewAssets.ExamineSprite)
-    ];
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {

@@ -17,6 +17,7 @@ using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Random = System.Random;
@@ -41,7 +42,8 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         {
             var filtered = PlayerControl.AllPlayerControls.ToArray()
                 .Where(x => !x.IsRole<GuardianAngelTouRole>() && !x.HasDied() &&
-                            !x.HasModifier<ExecutionerTargetModifier>() && !x.HasModifier<AllianceGameModifier>())
+                            !x.HasModifier<ExecutionerTargetModifier>() && !x.HasModifier<AllianceGameModifier>() &&
+                            !SpectatorRole.TrackedSpectators.Contains(x.Data.PlayerName))
                 .ToList();
 
             if (evilTargetPercent > 0f)
@@ -71,7 +73,8 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<ClericRole>());
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => TouLocale.Get(TouNames.GuardianAngel, "Guardian Angel");
+    public static string LocaleKey => "GuardianAngel";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TargetString();
     public string RoleLongDescription => TargetString();
     public Color RoleColor => TownOfUsColors.GuardianAngel;
@@ -110,12 +113,18 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Protect",
             "Protect your target from getting killed.",
             TouNeutAssets.ProtectSprite)
-    ];
+            };
+        }
+    }
 
     public string GetAdvancedDescription()
     {
@@ -150,7 +159,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
                 .ToList();
             players.Do(x => x.RpcRemoveModifier<GuardianAngelTargetModifier>());
         }
-        
+
         if (!Player.HasModifier<BasicGhostModifier>() && Player.HasDied())
         {
             Player.AddModifier<BasicGhostModifier>();
@@ -230,7 +239,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         return $"Protect {Target?.Data.PlayerName} With Your Life!";
     }
 
-    [MethodRpc((uint)TownOfUsRpc.SetGATarget, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.SetGATarget)]
     public static void RpcSetGATarget(PlayerControl player, PlayerControl target)
     {
         if (player.Data.Role is not GuardianAngelTouRole)

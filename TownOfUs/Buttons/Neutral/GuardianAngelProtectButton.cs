@@ -12,7 +12,7 @@ namespace TownOfUs.Buttons.Neutral;
 public sealed class GuardianAngelProtectButton : TownOfUsRoleButton<GuardianAngelTouRole>
 {
     public override string Name => "Protect";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.GuardianAngel;
     public override float Cooldown => OptionGroupSingleton<GuardianAngelOptions>.Instance.ProtectCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<GuardianAngelOptions>.Instance.ProtectDuration;

@@ -16,7 +16,7 @@ namespace TownOfUs.Buttons.Neutral;
 public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAftermathableButton
 {
     public override string Name => "Mimic";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Glitch;
     public override float Cooldown => OptionGroupSingleton<GlitchOptions>.Instance.MimicCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<GlitchOptions>.Instance.MimicDuration;
@@ -117,6 +117,11 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
 
     public override bool CanUse()
     {
+        if (HudManager.Instance.Chat.IsOpenOrOpening || MeetingHud.Instance)
+        {
+            return false;
+        }
+
         if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return false;

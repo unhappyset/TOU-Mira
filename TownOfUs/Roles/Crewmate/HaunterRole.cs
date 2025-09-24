@@ -34,7 +34,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     {
         get
         {
-            return TaskStage is GhostTaskStage.Clickable or GhostTaskStage.Revealed;
+            return TaskStage is GhostTaskStage.Clickable || TaskStage is GhostTaskStage.Revealed || TaskStage is GhostTaskStage.CompletedTasks;
         }
         set
         {
@@ -87,7 +87,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         }
     }
 
-    public void FadeUpdate(HudManager instance)
+    public void FadeUpdate()
     {
         if (!Caught && Setup)
         {
@@ -108,6 +108,15 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             // Logger<TownOfUsPlugin>.Message($"HaunterRole.FadeUpdate UnFaded");
         }
     }
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not HaunterRole || MeetingHud.Instance)
+        {
+            return;
+        }
+
+        FadeUpdate();
+    }
 
     public void Clicked()
     {
@@ -123,9 +132,17 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         Player.RemoveModifier<HaunterArrowModifier>();
     }
 
-    public string RoleName => TouLocale.Get(TouNames.Haunter, "Haunter");
-    public string RoleDescription => string.Empty;
-    public string RoleLongDescription => "Complete all your tasks without getting caught to reveal impostors!";
+    public static string LocaleKey => "Haunter";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
     public Color RoleColor => TownOfUsColors.Haunter;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
@@ -142,16 +159,6 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     public StringBuilder SetTabText()
     {
         return ITownOfUsRole.SetNewTabText(this);
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Crewmate Ghost who can do tasks. They will appear as a transparent player. " +
-            "If they finish all their tasks, all alive players will see who the Impostors are. " +
-            "However, if an Impostor clicks them first, they will become a normal ghost. " +
-            $"Impostors get a warning shortly before and when the {RoleName} finishes their tasks. "
-            + MiscUtils.AppendOptionsText(GetType());
     }
     // public DangerMeter ImpostorMeter { get; set; }
 
@@ -268,9 +275,11 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         {
             return;
         }
+        var realTasks = Player.myTasks.ToArray()
+            .Where(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>()).ToList();
 
-        var completedTasks = Player.myTasks.ToArray().Count(t => t.IsComplete) + 1;
-        var tasksRemaining = Player.myTasks.Count - completedTasks;
+        var completedTasks = realTasks.Count(t => t.IsComplete);
+        var tasksRemaining = realTasks.Count - completedTasks;
 
         if (TaskStage is GhostTaskStage.Unclickable && tasksRemaining ==
             (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeClickable)
@@ -310,7 +319,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             }
         }
         
-        if (!CompletedAllTasks && completedTasks == Player.myTasks.Count)
+        if (!CompletedAllTasks && completedTasks == realTasks.Count)
         {
             TaskStage = GhostTaskStage.CompletedTasks;
             
@@ -334,6 +343,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 notif1.Text.SetOutlineThickness(0.35f);
             }
         }
+        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Haunter Stage for '{Player.Data.PlayerName}': {TaskStage.ToDisplayString()} - ({completedTasks} / {realTasks.Count})");
     }
 
     public static bool IsTargetOfHaunter(PlayerControl player)

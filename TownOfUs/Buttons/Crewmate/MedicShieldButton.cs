@@ -11,8 +11,8 @@ namespace TownOfUs.Buttons.Crewmate;
 public sealed class MedicShieldButton : TownOfUsRoleButton<MedicRole, PlayerControl>
 {
     public bool CanChangeTarget = OptionGroupSingleton<MedicOptions>.Instance.ChangeTarget;
-    public override string Name => "Shield";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override string Name => TouLocale.Get("TouRoleMedicShield", "Shield");
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Medic;
     public override int MaxUses => OptionGroupSingleton<MedicOptions>.Instance.ChangeTarget ? (int)OptionGroupSingleton<MedicOptions>.Instance.MedicShieldUses : 0;
     public override float Cooldown => 0.001f + MapCooldown;

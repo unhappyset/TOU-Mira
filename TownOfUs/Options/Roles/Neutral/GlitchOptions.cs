@@ -7,7 +7,7 @@ namespace TownOfUs.Options.Roles.Neutral;
 
 public sealed class GlitchOptions : AbstractOptionGroup<GlitchRole>
 {
-    public override string GroupName => TouLocale.Get(TouNames.Glitch, "Glitch");
+    public override string GroupName => TouLocale.Get("TouRoleGlitch", "Glitch");
 
     [ModdedNumberOption("Kill Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float KillCooldown { get; set; } = 25f;

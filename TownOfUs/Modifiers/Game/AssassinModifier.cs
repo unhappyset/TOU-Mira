@@ -14,6 +14,7 @@ using TownOfUs.Options;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -47,7 +48,7 @@ public abstract class AssassinModifier : ExcludedGameModifier
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        return false;
+        return !role.TryCast<SpectatorRole>();
     }
 
     public override void OnActivate()
@@ -102,7 +103,7 @@ public abstract class AssassinModifier : ExcludedGameModifier
         {
             return;
         }
-        
+
         if (Minigame.Instance != null)
         {
             return;
@@ -128,7 +129,7 @@ public abstract class AssassinModifier : ExcludedGameModifier
 
             ClickHandler(victim);
             LastAttemptedVictim = player;
-            LastGuessedItem = $"{role.TeamColor.ToTextColor()}{role.NiceName}</color>";
+            LastGuessedItem = $"{role.TeamColor.ToTextColor()}{role.GetRoleName()}</color>";
         }
 
         void ClickModifierHandle(BaseModifier modifier)
@@ -185,11 +186,11 @@ public abstract class AssassinModifier : ExcludedGameModifier
                 LastGuessedItem = string.Empty;
                 LastAttemptedVictim = null;
                 MeetingMenu.Instances.Do(x => x.HideSingle(victim.PlayerId));
-                DeathHandlerModifier.RpcUpdateDeathHandler(victim, "Guessed", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, $"By {Player.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
+                DeathHandlerModifier.RpcUpdateDeathHandler(victim, TouLocale.Get("DiedToGuess"), DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, TouLocale.GetParsed("DiedByStringBasic").Replace("<player>", Player.Data.PlayerName), lockInfo: DeathHandlerOverride.SetTrue);
             }
             else
             {
-                DeathHandlerModifier.RpcUpdateDeathHandler(victim, "Misguessed", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+                DeathHandlerModifier.RpcUpdateDeathHandler(victim, TouLocale.Get("DiedToMisguess"), DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
             }
 
             maxKills--;
@@ -226,16 +227,20 @@ public abstract class AssassinModifier : ExcludedGameModifier
         }
 
         var options = OptionGroupSingleton<AssassinOptions>.Instance;
-        var touRole = role as ITownOfUsRole;
-        var assassinRole = Player.Data.Role as ITownOfUsRole;
-        var unguessableRole = role as IUnguessable;
 
-        if (touRole is IGhostRole)
+        if (role is IGhostRole)
         {
             return false;
         }
 
-        if (unguessableRole != null && !unguessableRole.IsGuessable)
+        if (role is IUnguessable { IsGuessable: false })
+        {
+            return false;
+        }
+
+        var touRole = role as ITownOfUsRole;
+
+        if (touRole?.RoleAlignment == RoleAlignment.GameOutlier)
         {
             return false;
         }
@@ -254,6 +259,8 @@ public abstract class AssassinModifier : ExcludedGameModifier
         {
             return true;
         }
+
+        var assassinRole = Player.Data.Role as ITownOfUsRole;
 
         if (role.IsImpostor() && OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessImpostors &&
             assassinRole?.RoleAlignment is RoleAlignment.NeutralKilling or RoleAlignment.NeutralEvil)

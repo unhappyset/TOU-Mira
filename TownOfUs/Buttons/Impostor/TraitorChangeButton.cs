@@ -16,7 +16,7 @@ namespace TownOfUs.Buttons.Impostor;
 public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
 {
     public override string Name => "Change Role";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => 1f;
     public override ButtonLocation Location => ButtonLocation.BottomLeft;
@@ -81,16 +81,19 @@ public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
             Role.RandomRole = random;
         }
 
-        var traitorMenu = TraitorSelectionMinigame.Create();
-        traitorMenu.Open(
-            Role.ChosenRoles,
-            role =>
-            {
-                Role.SelectedRole = role;
-                Role.UpdateRole();
-                traitorMenu.Close();
-            },
-            Role.RandomRole?.Role
-        );
+        if (Minigame.Instance == null)
+        {
+            var traitorMenu = TraitorSelectionMinigame.Create();
+            traitorMenu.Open(
+                Role.ChosenRoles,
+                role =>
+                {
+                    Role.SelectedRole = role;
+                    Role.UpdateRole();
+                    traitorMenu.Close();
+                },
+                Role.RandomRole?.Role
+            );
+        }
     }
 }

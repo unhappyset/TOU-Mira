@@ -14,6 +14,7 @@ using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
@@ -35,6 +36,19 @@ public static class EndGamePatches
         foreach (var playerControl in PlayerControl.AllPlayerControls)
         {
             playerRoleString.Clear();
+            if (playerControl.Data.Role is SpectatorRole)
+            {
+                EndGameData.PlayerRecords.Add(new EndGameData.PlayerRecord
+                {
+                    PlayerName = playerControl.Data.PlayerName,
+                    RoleString = "Spectator",
+                    Winner = false,
+                    LastRole = (RoleTypes)RoleId.Get<SpectatorRole>(),
+                    Team = ModdedRoleTeams.Custom,
+                    PlayerId = playerControl.PlayerId
+                });
+                continue;
+            }
 
             foreach (var role in GameHistory.RoleHistory.Where(x => x.Key == playerControl.PlayerId)
                          .Select(x => x.Value))
@@ -48,13 +62,13 @@ public static class EndGamePatches
                 var color = role.TeamColor;
                 string roleName;
 
-                if (!string.IsNullOrEmpty(role.NiceName.Trim()))
+                if (!string.IsNullOrEmpty(role.GetRoleName().Trim()))
                 {
-                    roleName = role.NiceName;
+                    roleName = role.GetRoleName();
                 }
                 else
                 {
-                    roleName = role.Player.IsImpostor() ? "Impostor" : "Crewmate";
+                    roleName = TranslationController.Instance.GetString(role.Player.IsImpostor() ? StringNames.Impostor : StringNames.Crewmate);
                 }
 
                 playerRoleString.Append(TownOfUsPlugin.Culture, $"{color.ToTextColor()}{roleName}</color> > ");
@@ -90,6 +104,21 @@ public static class EndGamePatches
             foreach (var modifierName in modifierNames)
             {
                 var modColor = MiscUtils.GetRoleColour(modifierName.Replace(" ", string.Empty));
+                if (modColor == TownOfUsColors.Impostor)
+                {
+                    switch (modifiers.FirstOrDefault(x => x.ModifierName == modifierName))
+                    {
+                        case UniversalGameModifier uniMod:
+                            modColor = MiscUtils.GetRoleColour(uniMod.LocaleKey.Replace(" ", string.Empty));
+                            break;
+                        case TouGameModifier touMod:
+                            modColor = MiscUtils.GetRoleColour(touMod.LocaleKey.Replace(" ", string.Empty));
+                            break;
+                        case AllianceGameModifier allyMod:
+                            modColor = MiscUtils.GetRoleColour(allyMod.LocaleKey.Replace(" ", string.Empty));
+                            break;
+                    }
+                }
                 if (modifiers.FirstOrDefault(x => x.ModifierName == modifierName) is IColoredModifier colorMod)
                 {
                     modColor = colorMod.ModifierColor;
@@ -202,7 +231,8 @@ public static class EndGamePatches
                 RoleString = playerRoleString.ToString(),
                 Winner = playerWinner,
                 LastRole = playerRoleType,
-                Team = playerTeam
+                Team = playerTeam,
+                PlayerId = playerControl.PlayerId
             });
         }
     }
@@ -399,7 +429,7 @@ public static class EndGamePatches
                 var nameTxt = player.cosmetics.nameText;
                 nameTxt.gameObject.SetActive(true);
                 player.SetName(
-                    $"\n<size=85%>{realPlayer.PlayerName}</size>\n<size=65%><color=#{role.TeamColor.ToHtmlStringRGBA()}>{role.NiceName}</size>",
+                    $"\n<size=85%>{realPlayer.PlayerName}</size>\n<size=65%><color=#{role.TeamColor.ToHtmlStringRGBA()}>{role.GetRoleName()}</size>",
                     new Vector3(1.1619f, 1.1619f, 1f), Color.white, -15f);
                 player.SetNamePosition(new Vector3(0f, -1.31f, -0.5f));
                 nameTxt.fontSize = 1.9f;
@@ -476,6 +506,7 @@ public static class EndGamePatches
             public bool Winner { get; set; }
             public RoleTypes LastRole { get; set; }
             public ModdedRoleTeams Team { get; set; }
+            public byte PlayerId { get; set; }
         }
     }
 }

@@ -24,9 +24,11 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
 {
     public override bool IsAffectedByComms => false;
 
+    [HideFromIl2Cpp]
     public PlayerControl? Protected { get; set; }
     public int UnleashesAvailable { get; set; }
     public string UnleashString { get; set; }
+    [HideFromIl2Cpp]
     public RoleBehaviour? ContainedRole { get; set; }
 
     public void FixedUpdate()
@@ -43,9 +45,34 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
     }
 
     public DoomableType DoomHintType => DoomableType.Protective;
-    public string RoleName => TouLocale.Get(TouNames.Mirrorcaster, "Mirrorcaster");
-    public string RoleDescription => "Reflect Attacks Onto Others";
-    public string RoleLongDescription => "Protect a player with a Magic Mirror.\nIf they are directly attacked, then\nunleash the attack onto another player!";
+    public static string LocaleKey => "Mirrorcaster";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+    
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}MagicMirror", "Magic Mirror"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}MagicMirrorWikiDescription"),
+                    TouCrewAssets.MagicMirrorSprite),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Unleash", "Unleash"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}UnleashWikiDescription"),
+                    TouCrewAssets.UnleashSprite)
+            };
+        }
+    }
     public Color RoleColor => TownOfUsColors.Mirrorcaster;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
@@ -70,23 +97,6 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
 
         return stringB;
     }
-
-    public string GetAdvancedDescription()
-    {
-        return $"The {RoleName} is a Crewmate Protective role that can cast a Magic Mirror on a player to protect them. If attacked directly, the Mirrorcaster can then unleash onto another player."
-               + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
-        new("Magic Mirror",
-            "Place a Mirror on a player. If the player is attacked directly, then you will be notified and you will be able to unleash onto another player. Roles that ignore the Magic Mirror are Arsonist, Veteran, Pestilence, Bomber (if the player is bombed), and a few others.",
-            TouCrewAssets.MagicMirrorSprite),
-        new("Unleash",
-            "Once the Magic Mirror shatters, utilize its power to unleash the attack onto another player!",
-            TouCrewAssets.UnleashSprite)
-    ];
 
     public void Clear()
     {
@@ -120,7 +130,7 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
         Coroutines.Start(MiscUtils.CoFlash(new Color32(144, 162, 195, 255)));
     }
 
-    [MethodRpc((uint)TownOfUsRpc.MagicMirror, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.MagicMirror)]
     public static void RpcMagicMirror(PlayerControl mc, PlayerControl target)
     {
         if (mc.Data.Role is not MirrorcasterRole role)
@@ -132,13 +142,13 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
         role?.SetProtectedPlayer(target);
     }
 
-    [MethodRpc((uint)TownOfUsRpc.ClearMagicMirror, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.ClearMagicMirror)]
     public static void RpcClearMagicMirror(PlayerControl mc)
     {
         ClearMagicMirror(mc);
     }
 
-    [MethodRpc((uint)TownOfUsRpc.MirrorcasterUnleash, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.MirrorcasterUnleash)]
     public static void RpcMirrorcasterUnleash(PlayerControl mc)
     {
         if (mc.Data.Role is not MirrorcasterRole role)
@@ -159,7 +169,7 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
         role?.SetProtectedPlayer(null);
     }
 
-    [MethodRpc((uint)TownOfUsRpc.MagicMirrorAttacked, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.MagicMirrorAttacked)]
     public static void RpcMagicMirrorAttacked(PlayerControl mirrorcaster, PlayerControl source, PlayerControl protectedPlayer)
     {
         if (mirrorcaster.Data.Role is not MirrorcasterRole role)
@@ -219,7 +229,7 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
             CustomButtonSingleton<MirrorcasterMagicMirrorButton>.Instance.ResetCooldownAndOrEffect();
             CustomButtonSingleton<MirrorcasterUnleashButton>.Instance.ResetCooldownAndOrEffect();
             DangerAnim();
-            var text = (opt.KnowAttackType && role.ContainedRole != null) ? $"<b>{protectedPlayer.Data.PlayerName} was attacked by the {role.ContainedRole.NiceName}! You can now unleash the attack onto another player!</b></color>" :
+            var text = (opt.KnowAttackType && role.ContainedRole != null) ? $"<b>{protectedPlayer.Data.PlayerName} was attacked by the {role.ContainedRole.GetRoleName()}! You can now unleash the attack onto another player!</b></color>" :
                 $"<b>{protectedPlayer.Data.PlayerName} was attacked! You can now unleash the attack onto another player!</b>";
             var notif1 = Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mirrorcaster.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);

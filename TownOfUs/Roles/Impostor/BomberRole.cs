@@ -23,9 +23,11 @@ public sealed class BomberRole(IntPtr cppPtr)
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<TrapperRole>());
     public DoomableType DoomHintType => DoomableType.Relentless;
 
-    public string RoleName => TouLocale.Get(TouNames.Bomber, "Bomber");
-    public string RoleDescription => "Plant Bombs To Kill Multiple Crewmates At Once";
-    public string RoleLongDescription => "Plant bombs to kill several crewmates at once";
+    public static string LocaleKey => "Bomber";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
@@ -50,14 +52,20 @@ public sealed class BomberRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Place",
             $"Place a bomb, showing the radius in which it'll kill, killing up to {(int)OptionGroupSingleton<BomberOptions>.Instance.MaxKillsInDetonation} player(s)",
             TouImpAssets.PlaceSprite)
-    ];
+            };
+        }
+    }
 
-    [MethodRpc((uint)TownOfUsRpc.PlantBomb, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.PlantBomb)]
     public static void RpcPlantBomb(PlayerControl player, Vector2 position)
     {
         if (player.Data.Role is not BomberRole role)

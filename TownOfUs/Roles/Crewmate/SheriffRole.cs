@@ -22,9 +22,31 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public override bool IsAffectedByComms => false;
     public bool HasMisfired { get; set; }
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public string RoleName => TouLocale.Get(TouNames.Sheriff, "Sheriff");
-    public string RoleDescription => "Shoot The <color=#FF0000FF>Impostor</color>";
-    public string RoleLongDescription => "Kill off the impostors but don't kill crewmates";
+    public static string LocaleKey => "Sheriff";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+    
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Shoot", "Shoot"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}ShootWikiDescription"),
+                    TouCrewAssets.SheriffShootSprite)
+            };
+        }
+    }
     public Color RoleColor => TownOfUsColors.Sheriff;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
@@ -75,27 +97,12 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
         return stringB;
     }
 
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Crewmate Killing that can shoot a player to attempt to kill them. If {RoleName} doesn't die to misfire, they will lose the ability to shoot." +
-            MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
-        new("Shoot",
-            "Shoot a player to kill them, misfiring if they aren't a Impostor or one of the other selected shootable factions",
-            TouCrewAssets.SheriffShootSprite)
-    ];
-
     public static void OnRoundStart()
     {
         CustomButtonSingleton<SheriffShootButton>.Instance.Usable = true;
     }
 
-    [MethodRpc((uint)TownOfUsRpc.SheriffMisfire, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.SheriffMisfire)]
     public static void RpcSheriffMisfire(PlayerControl sheriff)
     {
         if (sheriff.Data.Role is not SheriffRole role)

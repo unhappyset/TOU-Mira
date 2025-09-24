@@ -40,9 +40,10 @@ public sealed class HypnotistRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<LookoutRole>());
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => TouLocale.Get(TouNames.Hypnotist, "Hypnotist");
-    public string RoleDescription => "Hypnotize Crewmates";
-    public string RoleLongDescription => "Hypnotize crewmates and drive them insane";
+    public static string LocaleKey => "Hypnotist";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
@@ -67,15 +68,21 @@ public sealed class HypnotistRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Hypnotize",
             "Hypnotize a player, causing them to see the game differently than non-hypnotized players if mass hysteria is active.",
             TouImpAssets.HypnotiseButtonSprite),
         new("Mass Hysteria (Meeting)",
             "Cause all hypnotised players to have different visuals applied to players on their screen the following round.",
             TouAssets.HysteriaCleanSprite)
-    ];
+            };
+        }
+    }
 
     public override void Initialize(PlayerControl player)
     {
@@ -145,7 +152,7 @@ public sealed class HypnotistRole(IntPtr cppPtr)
         return voteArea?.TargetPlayerId != Player.PlayerId;
     }
 
-    [MethodRpc((uint)TownOfUsRpc.Hysteria, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.Hysteria)]
     public static void RpcHysteria(PlayerControl player)
     {
         if (player.Data.Role is not HypnotistRole)

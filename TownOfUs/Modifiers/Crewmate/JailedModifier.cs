@@ -4,6 +4,7 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Events.TouEvents;
+using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,7 +31,7 @@ public sealed class JailedModifier(byte jailorId) : BaseModifier
     public override void OnMeetingStart()
     {
         Clear();
-        if (GameData.Instance.GetPlayerById(JailorId).Object.HasDied() || Player.HasDied() ||
+        if (GameData.Instance.GetPlayerById(JailorId).Object.HasDied() || GameData.Instance.GetPlayerById(JailorId).Object.Data.Role is not JailorRole || Player.HasDied() ||
             !MeetingHud.Instance)
         {
             return;

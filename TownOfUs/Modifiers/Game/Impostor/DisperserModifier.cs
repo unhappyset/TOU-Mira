@@ -16,30 +16,35 @@ namespace TownOfUs.Modifiers.Game.Impostor;
 
 public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(TouNames.Disperser, "Disperser");
-    public override string IntroInfo => "You can also disperse players to vents around the map.";
+    public override string LocaleKey => "Disperser";
+    public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
+    public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
 
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Disperser;
     public override ModifierFaction FactionType => ModifierFaction.ImpostorUtility;
     public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
 
+    public override string GetDescription()
+    {
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
+    }
     public string GetAdvancedDescription()
     {
-        return
-            $"Disperse everyone on the map to a random vent, given that they are not Immovable. You cannot have any other button modifiers with {ModifierName}.";
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription") + MiscUtils.AppendOptionsText(GetType());
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
-        new("Disperse",
-            "You can disperse players on the map to any vents, which you can do once per game.",
-            TouAssets.DisperseSprite)
-    ];
-
-    public override string GetDescription()
+    public List<CustomButtonWikiDescription> Abilities
     {
-        return "Separate the Crew.";
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+        new(TouLocale.Get($"TouModifier{LocaleKey}Disperse"),
+            TouLocale.GetParsed($"TouModifier{LocaleKey}DisperseWikiDescription"),
+            TouAssets.DisperseSprite)
+            };
+        }
     }
 
     public override int GetAssignmentChance()

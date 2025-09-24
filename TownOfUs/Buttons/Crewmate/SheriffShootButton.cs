@@ -20,8 +20,8 @@ namespace TownOfUs.Buttons.Crewmate;
 
 public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerControl>, IKillButton
 {
-    public override string Name => "Shoot";
-    public override string Keybind => Keybinds.PrimaryAction;
+    public override string Name => TouLocale.Get("TouRoleSheriffShoot", "Shoot");
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Sheriff;
     public override float Cooldown => OptionGroupSingleton<SheriffOptions>.Instance.KillCooldown + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.SheriffShootSprite;
@@ -55,12 +55,12 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
         if (missType is MisfireOptions.Sheriff or MisfireOptions.Both)
         {
             PlayerControl.LocalPlayer.RpcCustomMurder(PlayerControl.LocalPlayer);
-            DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "Suicide", DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
+            DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, TouLocale.Get("DiedToSuicide"), DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
         }
 
         FailedShot = true;
 
-        var notif1 = Helpers.CreateAndShowNotification("<b>You have lost the ability to shoot!</b>", Color.white,
+        var notif1 = Helpers.CreateAndShowNotification($"<b>{TouLocale.GetParsed("TouRoleSheriffMisfireFeedback")}</b>", Color.white,
             spr: TouRoleIcons.Sheriff.LoadAsset());
 
         notif1.Text.SetOutlineThickness(0.35f);
@@ -119,12 +119,6 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
         {
             switch (alignment)
             {
-                case RoleAlignment.ImpostorConcealing:
-                case RoleAlignment.ImpostorKilling:
-                case RoleAlignment.ImpostorSupport:
-                    PlayerControl.LocalPlayer.RpcCustomMurder(Target);
-                    break;
-
                 case RoleAlignment.NeutralBenign:
                 case RoleAlignment.CrewmateInvestigative:
                 case RoleAlignment.CrewmateKilling:
@@ -158,7 +152,14 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
 
                     break;
                 default:
-                    Misfire();
+                    if (Target.IsImpostor())
+                    {
+                        PlayerControl.LocalPlayer.RpcCustomMurder(Target);
+                    }
+                    else
+                    {
+                        Misfire();
+                    }
                     break;
             }
         }

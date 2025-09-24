@@ -10,6 +10,7 @@ using Reactor.Utilities.Extensions;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -27,30 +28,33 @@ public abstract class TownOfUsButton : CustomActionButton
     public override ButtonLocation Location => ButtonLocation.BottomRight;
 
     public override string CooldownTimerFormatString =>
-        Timer <= 10f && TownOfUsPlugin.PreciseCooldowns.Value ? "0.0" : "0";
+        Timer <= 10f && LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value ? "0.0" : "0";
 
     public virtual bool UsableInDeath => false;
     public virtual bool ShouldPauseInVent => true;
-
-    /// <summary>
-    ///     Gets the keybind used for the button.<br />
-    ///     Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons,
-    ///     tou.ActionCustom for tertiary abilities, and tou.ActionCustom2 for modifier buttons.
-    /// </summary>
-    public virtual string Keybind => string.Empty;
-
+    
     public PassiveButton PassiveComp { get; set; }
 
     public virtual int ConsoleBind()
     {
-        return Keybind switch
+        var bind = -1;
+        if (Keybind == Keybinds.PrimaryAction)
         {
-            Keybinds.PrimaryAction => Keybinds.PrimaryConsole,
-            Keybinds.SecondaryAction => Keybinds.SecondaryConsole,
-            Keybinds.ModifierAction => Keybinds.ModifierConsole,
-            Keybinds.VentAction => Keybinds.VentConsole,
-            _ => -1
-        };
+            bind = Keybinds.PrimaryConsole;
+        }
+        else if (Keybind == Keybinds.SecondaryAction)
+        {
+            bind = Keybinds.SecondaryConsole;
+        }
+        else if (Keybind == Keybinds.ModifierAction)
+        {
+            bind = Keybinds.ModifierConsole;
+        }
+        else if (Keybind == Keybinds.VentAction)
+        {
+            bind = Keybinds.VentConsole;
+        }
+        return bind;
     }
 
     public override void FixedUpdateHandler(PlayerControl playerControl)
@@ -120,7 +124,7 @@ public abstract class TownOfUsButton : CustomActionButton
             Button.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
+        TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
 
         PassiveComp = Button.GetComponent<PassiveButton>();
     }
@@ -135,7 +139,7 @@ public abstract class TownOfUsButton : CustomActionButton
             Button!.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
+        TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
     }
 
     public override bool CanUse()
@@ -144,7 +148,12 @@ public abstract class TownOfUsButton : CustomActionButton
         {
             return false;
         }
-        
+
+        if (HudManager.Instance.Chat.IsOpenOrOpening || MeetingHud.Instance)
+        {
+            return false;
+        }
+
         if (PlayerControl.LocalPlayer.HasDied() && !UsableInDeath)
         {
             return false;
@@ -191,7 +200,7 @@ public abstract class TownOfUsButton : CustomActionButton
                 }
             }
 
-            TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
+            TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
         }
 
         OnClick();
@@ -220,30 +229,33 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
     public override ButtonLocation Location => ButtonLocation.BottomRight;
 
     public override string CooldownTimerFormatString =>
-        Timer <= 10f && TownOfUsPlugin.PreciseCooldowns.Value ? "0.0" : "0";
+        Timer <= 10f && LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value ? "0.0" : "0";
 
     public virtual bool ShouldPauseInVent => true;
     public virtual bool UsableInDeath => false;
-
-    /// <summary>
-    ///     Gets the keybind used for the button.
-    ///     Use ActionQuaternary for primary abilities, ActionSecondary for secondary abilities or kill buttons,
-    ///     tou.ActionCustom for tertiary abilities, and tou.ActionCustom2 for modifier buttons.
-    /// </summary>
-    public virtual string Keybind => string.Empty;
 
     public PassiveButton PassiveComp { get; set; }
 
     public virtual int ConsoleBind()
     {
-        return Keybind switch
+        var bind = -1;
+        if (Keybind == Keybinds.PrimaryAction)
         {
-            Keybinds.PrimaryAction => Keybinds.PrimaryConsole,
-            Keybinds.SecondaryAction => Keybinds.SecondaryConsole,
-            Keybinds.ModifierAction => Keybinds.ModifierConsole,
-            Keybinds.VentAction => Keybinds.VentConsole,
-            _ => -1
-        };
+            bind = Keybinds.PrimaryConsole;
+        }
+        else if (Keybind == Keybinds.SecondaryAction)
+        {
+            bind = Keybinds.SecondaryConsole;
+        }
+        else if (Keybind == Keybinds.ModifierAction)
+        {
+            bind = Keybinds.ModifierConsole;
+        }
+        else if (Keybind == Keybinds.VentAction)
+        {
+            bind = Keybinds.VentConsole;
+        }
+        return bind;
     }
 
     public override void FixedUpdateHandler(PlayerControl playerControl)
@@ -301,7 +313,12 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
         {
             return false;
         }
-        
+
+        if (HudManager.Instance.Chat.IsOpenOrOpening || MeetingHud.Instance)
+        {
+            return false;
+        }
+
         if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return false;
@@ -342,7 +359,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
             Button.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
+        TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
 
         PassiveComp = Button.GetComponent<PassiveButton>();
     }
@@ -357,7 +374,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
             Button!.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
+        TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
     }
 
     public override void ClickHandler()
@@ -379,7 +396,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
                     }
                 }
 
-                TownOfUsColors.UseBasic = TownOfUsPlugin.UseCrewmateTeamColor.Value;
+                TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
             }
 
             OnClick();
@@ -453,7 +470,7 @@ public abstract class TownOfUsRoleButton<TRole, TTarget> : TownOfUsTargetButton<
         if (target is PlayerControl playerTarget)
         {
             return base.IsTargetValid(target) && !playerTarget.inVent &&
-                   !playerTarget.GetModifiers<DisabledModifier>().Any(mod => !mod.CanBeInteractedWith);
+                   !playerTarget.GetModifiers<DisabledModifier>().Any(mod => !mod.CanBeInteractedWith) && !SpectatorRole.TrackedSpectators.Contains(playerTarget.Data.PlayerName);
         }
 
         return base.IsTargetValid(target);

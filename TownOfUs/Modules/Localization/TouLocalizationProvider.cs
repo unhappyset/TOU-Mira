@@ -4,31 +4,18 @@ namespace TownOfUs.Modules.Localization;
 
 public class TouLocalizationProvider : LocalizationProvider
 {
-    public override bool TryGetText(StringNames stringName, out string? result)
+    internal static List<IMiraTranslation> ActiveTexts = [];
+    private static bool _loadedStrings;
+    public override void OnLanguageChanged(SupportedLangs newLanguage)
     {
-        var id = (int)stringName - TouLocale.VanillaEnumAmounts;
-        if (Enum.IsDefined(typeof(TouNames), id) && CurrentLanguage != null)
+        if (!_loadedStrings)
         {
-            var touName = (TouNames)id;
-            
-            if (TouLocale.TouLocalization.TryGetValue((SupportedLangs)CurrentLanguage, out var translations) &&
-                translations.TryGetValue(touName, out var translation))
-            {
-                result = translation;
-                return true;
-            }
-            else if (TouLocale.TouLocalization.TryGetValue(SupportedLangs.English, out var translationsEng) &&
-                     translationsEng.TryGetValue(touName, out var englishDefault))
-            {
-                result = englishDefault;
-                return true;
-            }
-
-            result = "STRMISS_" + touName.ToString();
-            return true;
+            TouLocale.LoadExternalLocale();
+            _loadedStrings = true;
         }
-        
-        result = null;
-        return false;
+        for (int i = 0; i < ActiveTexts.Count; i++)
+        {
+            ActiveTexts[i].ResetText();
+        }
     }
 }

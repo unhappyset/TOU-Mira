@@ -11,25 +11,23 @@ namespace TownOfUs.Modifiers.Game.Crewmate;
 
 public sealed class TaskmasterModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => TouLocale.Get(TouNames.Taskmaster, "Taskmaster");
-    public override string IntroInfo => "You also finish random tasks each round.";
+    public override string LocaleKey => "Taskmaster";
+    public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
+    public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
+    public override string GetDescription()
+    {
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
+    }
+    public string GetAdvancedDescription()
+    {
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription");
+    }
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Taskmaster;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePassive;
 
-    public string GetAdvancedDescription()
-    {
-        return
-            "Every time a round starts, you will automatically finish a task.";
-    }
-
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
-
-    public override string GetDescription()
-    {
-        return "A random task is auto completed for you after each meeting";
-    }
 
     public override int GetAssignmentChance()
     {

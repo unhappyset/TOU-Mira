@@ -11,8 +11,8 @@ namespace TownOfUs.Buttons.Modifiers;
 
 public sealed class BarryButton : TownOfUsButton
 {
-    public override string Name => "Button";
-    public override string Keybind => Keybinds.ModifierAction;
+    public override string Name => TouLocale.Get("TouModifierButtonBarryButton", "Button");
+    public override BaseKeybind Keybind => Keybinds.ModifierAction;
     public override Color TextOutlineColor => TownOfUsColors.ButtonBarry;
     public override float Cooldown => OptionGroupSingleton<ButtonBarryOptions>.Instance.Cooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<ButtonBarryOptions>.Instance.MaxNumButtons;
@@ -42,7 +42,7 @@ public sealed class BarryButton : TownOfUsButton
         CallButtonBarry(PlayerControl.LocalPlayer);
     }
 
-    [MethodRpc((uint)TownOfUsRpc.ButtonBarry, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.ButtonBarry)]
     public static void CallButtonBarry(PlayerControl player)
     {
         if (AmongUsClient.Instance.AmHost)

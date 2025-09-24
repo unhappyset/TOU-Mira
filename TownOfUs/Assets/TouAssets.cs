@@ -12,6 +12,7 @@ public static class TouAssets
     public static readonly AssetBundle MainBundle = AssetBundleManager.Load("tou-assets");
 
     public static LoadableAsset<Sprite> Banner { get; } = new LoadableResourceAsset($"{ShortPath}.Banner.png");
+    public static LoadableAsset<Sprite> TouMiraIcon { get; } = new LoadableResourceAsset($"{ShortPath}.TouMiraIcon.png", 150);
     
     public static LoadableAsset<Sprite> FoolsMenuSprite(int value)
     {
@@ -245,39 +246,19 @@ public static class TouAssets
         get
         {
             var sprite = ArrowBasicSprite;
-            switch (TownOfUsPlugin.ArrowStyle.Value)
+            switch (LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.ArrowStyleEnum.Value)
             {
-                case 1:
+                case ArrowStyleType.DarkGlow:
                     sprite = ArrowDarkOutSprite;
                     break;
-                case 2:
+                case ArrowStyleType.ColorGlow:
                     sprite = ArrowLightOutSprite;
                     break;
-                case 3:
+                case ArrowStyleType.Legacy:
                     sprite = ArrowLegacySprite;
                     break;
             }
             return sprite;
-        }
-    }
-    public static string ArrowSpriteName
-    {
-        get
-        {
-            var name = TouLocale.Get(TouNames.ArrowDefault);
-            switch (TownOfUsPlugin.ArrowStyle.Value)
-            {
-                case 1:
-                    name = TouLocale.Get(TouNames.ArrowDarkGlow);
-                    break;
-                case 2:
-                    name = TouLocale.Get(TouNames.ArrowColorGlow);
-                    break;
-                case 3:
-                    name = TouLocale.Get(TouNames.ArrowLegacy);
-                    break;
-            }
-            return name;
         }
     }
 

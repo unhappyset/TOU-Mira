@@ -32,9 +32,11 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
     }
 
     public DoomableType DoomHintType => DoomableType.Insight;
-    public string RoleName => TouLocale.Get(TouNames.Blackmailer, "Blackmailer");
-    public string RoleDescription => "Silence Crewmates During Meetings";
-    public string RoleLongDescription => "Silence a crewmate for the next meeting";
+    public static string LocaleKey => "Blackmailer";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
@@ -59,16 +61,22 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities =>
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Blackmail",
             "Silence a player for the next meeting. They will be unable to speak." +
             "They also will not be able to vote until less or equal amount of people are alive than the blackmailer settings allow." +
             "The blackmail will be visible to other players only if the setting is toggled",
             TouImpAssets.BlackmailSprite)
-    ];
+            };
+        }
+    }
 
-    [MethodRpc((uint)TownOfUsRpc.Blackmail, LocalHandling = RpcLocalHandling.Before, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.Blackmail, LocalHandling = RpcLocalHandling.Before)]
     public static void RpcBlackmail(PlayerControl source, PlayerControl target)
     {
         var existingBmed = PlayerControl.AllPlayerControls.ToArray()

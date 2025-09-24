@@ -36,8 +36,9 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VigilanteRole>());
     public DoomableType DoomHintType => DoomableType.Insight;
-    public string RoleName => TouLocale.Get(TouNames.Doomsayer, "Doomsayer");
-    public string RoleDescription => "Guess People's Roles To Win!";
+    public static string LocaleKey => "Doomsayer";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
 
     public string RoleLongDescription =>
         $"Win by guessing the roles of {(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin} players";
@@ -87,12 +88,18 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Observe",
             "Observe a player, gaining a hint in the next meeting what their role could be.",
             TouNeutAssets.Observe)
-    ];
+            };
+        }
+    }
 
     public override void Initialize(PlayerControl player)
     {
@@ -242,10 +249,10 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                     break;
             }
 
-            var roles = RoleManager.Instance.AllRoles
+            var roles = RoleManager.Instance.AllRoles.ToArray()
                 .Where(x => (x is IDoomable doomRole && doomRole.DoomHintType == DoomableType.Default &&
                     x is not IUnguessable || x is not IDoomable) && !x.IsDead).ToList();
-            roles = roles.OrderBy(x => x.NiceName).ToList();
+            roles = roles.OrderBy(x => x.GetRoleName()).ToList();
             var lastRole = roles[roles.Count - 1];
             roles.Remove(roles[roles.Count - 1]);
             
@@ -253,7 +260,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             {
                 roles = MiscUtils.AllRoles
                     .Where(x => x is IDoomable doomRole && doomRole.DoomHintType == hintType && x is not IUnguessable)
-                    .OrderBy(x => x.NiceName).ToList();
+                    .OrderBy(x => x.GetRoleName()).ToList();
                 lastRole = roles[roles.Count - 1];
                 roles.Remove(roles[roles.Count - 1]);
             }
@@ -263,11 +270,11 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                 reportBuilder.Append(TownOfUsPlugin.Culture, $"(");
                 foreach (var role2 in roles)
                 {
-                    reportBuilder.Append(TownOfUsPlugin.Culture, $"#{role2.NiceName.ToLowerInvariant().Replace(" ", "-")}, ");
+                    reportBuilder.Append(TownOfUsPlugin.Culture, $"#{role2.GetRoleName().ToLowerInvariant().Replace(" ", "-")}, ");
                 }
 
                 reportBuilder = reportBuilder.Remove(reportBuilder.Length - 2, 2);
-                reportBuilder.Append(TownOfUsPlugin.Culture, $" or #{lastRole.NiceName.ToLowerInvariant().Replace(" ", "-")})");
+                reportBuilder.Append(TownOfUsPlugin.Culture, $" or #{lastRole.GetRoleName().ToLowerInvariant().Replace(" ", "-")})");
             }
 
             player.Object.RemoveModifier<DoomsayerObservedModifier>();
@@ -471,7 +478,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         return true;
     }
 
-    [MethodRpc((uint)TownOfUsRpc.DoomsayerWin, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.DoomsayerWin)]
     public static void RpcDoomsayerWin(PlayerControl player)
     {
         if (player.Data.Role is not DoomsayerRole)

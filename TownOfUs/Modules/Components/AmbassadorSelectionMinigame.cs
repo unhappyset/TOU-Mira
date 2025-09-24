@@ -136,7 +136,7 @@ public sealed class AmbassadorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr
                 teamName = touRole.RoleAlignment.ToDisplayString();
             }
 
-            var roleName = role.NiceName;
+            var roleName = role.GetRoleName();
             var roleImg = TouRoleIcons.RandomAny.LoadAsset();
 
             if (role is ICustomRole customRole)

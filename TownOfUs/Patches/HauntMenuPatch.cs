@@ -6,15 +6,16 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace TownOfUs.Patches;
 
@@ -28,15 +29,18 @@ public static class HauntMenuMinigamePatch
             return;
         }
 
-        var body = Object.FindObjectsOfType<DeadBody>()
-            .FirstOrDefault(x => x.ParentId == PlayerControl.LocalPlayer.PlayerId);
-        var fakePlayer = FakePlayer.FakePlayers.FirstOrDefault(x => x.PlayerId == PlayerControl.LocalPlayer.PlayerId);
-
-        if (!TutorialManager.InstanceExists && (body || fakePlayer?.body))
+        if (!TutorialManager.InstanceExists && !PlayerControl.LocalPlayer.DiedOtherRound() && PlayerControl.LocalPlayer.Data.Role is not SpectatorRole)
         {
             __instance.Close();
             __instance.NameText.text = string.Empty;
             __instance.FilterText.text = string.Empty;
+            
+            var text = "You must wait until next round to haunt!";
+            var notif1 = Helpers.CreateAndShowNotification(
+                $"<b>{text}</b>", Color.white, spr: TouRoleIcons.Spectator.LoadAsset());
+            
+            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
             return;
         }
 
@@ -45,7 +49,7 @@ public static class HauntMenuMinigamePatch
 
         var modifiers = target.GetModifiers<GameModifier>().Where(x => x is not ExcludedGameModifier)
             .OrderBy(x => x.ModifierName).ToList();
-        __instance.FilterText.text = "<color=#FFFFFF><size=100%>(No Modifiers)</size></color>";
+        __instance.FilterText.text = $"<color=#FFFFFF><size=100%>({TouLocale.Get("PlayerHasNoModifiers")})</size></color>";
         if (modifiers.Count != 0)
         {
             var modifierTextBuilder = new StringBuilder("<color=#FFFFFF><size=100%>(");
@@ -78,7 +82,7 @@ public static class HauntMenuMinigamePatch
             role = target.GetRoleWhenAlive();
         }
 
-        var name = role.NiceName;
+        var name = role.GetRoleName();
 
         var rColor = role is ICustomRole custom ? custom.RoleColor : role.TeamColor;
 
@@ -86,17 +90,17 @@ public static class HauntMenuMinigamePatch
         {
             if (role.IsNeutral())
             {
-                name = "Neutral";
+                name = TouLocale.Get("NeutralKeyword");
                 rColor = Color.gray;
             }
             else if (role.IsCrewmate())
             {
-                name = "Crewmate";
+                name = TranslationController.Instance.GetString(StringNames.Crewmate);
                 rColor = Palette.CrewmateBlue;
             }
             else
             {
-                name = "Impostor";
+                name = TranslationController.Instance.GetString(StringNames.Impostor);
                 rColor = Palette.ImpostorRed;
             }
         }

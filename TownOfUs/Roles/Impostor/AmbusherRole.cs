@@ -31,13 +31,21 @@ public sealed class AmbusherRole(IntPtr cppPtr)
     : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-
-    public string RoleName => TouLocale.Get(TouNames.Ambusher, "Ambusher");
-    public string RoleDescription => "Kidnap Crewmates Into The Shadows";
-    public string RoleLongDescription => "Pursue a player, then ambush the closest player to them.\nIf the player you ambush dies, then take their body with you.";
+    public static string LocaleKey => "Ambusher";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
+    [HideFromIl2Cpp]
     public PlayerControl? Pursued { get; set; }
 
     public CustomRoleConfiguration Configuration => new(this)
@@ -46,23 +54,22 @@ public sealed class AmbusherRole(IntPtr cppPtr)
         CanUseVent = OptionGroupSingleton<AmbusherOptions>.Instance.CanVent
     };
 
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is an Impostor Killing role that can pursue a player, getting an arrow to them. They may ambush the closest player next to them. If they manage to kill the player, they will drag their body into the shadows, teleporting back with the {RoleName}." +
-            MiscUtils.AppendOptionsText(GetType());
-    }
-
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Pursue",
             "Pursue a player to be able to ambush another player next to them at a later time.",
             TouImpAssets.PursueSprite),
         new("Ambush",
         "Ambush the closest player to the pursued target to kill them.",
         TouImpAssets.AmbushSprite)
-    ];
+            };
+        }
+    }
     
     public void LobbyStart()
     {
@@ -136,7 +143,7 @@ public sealed class AmbusherRole(IntPtr cppPtr)
         }
     }
 
-    [MethodRpc((uint)TownOfUsRpc.AmbushPlayer, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.AmbushPlayer)]
     public static void RpcAmbushPlayer(PlayerControl ambusher, PlayerControl target)
     {
         if (ambusher.Data.Role is not AmbusherRole)
@@ -184,8 +191,8 @@ public sealed class AmbusherRole(IntPtr cppPtr)
 
         if (body != null)
         {
-            DeathHandlerModifier.UpdateDeathHandler(target, "Ambushed", DeathEventHandlers.CurrentRound,
-                DeathHandlerOverride.SetTrue, $"By {ambusher.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
+            DeathHandlerModifier.UpdateDeathHandler(target, TouLocale.Get("DiedToAmbusherAmbush"), DeathEventHandlers.CurrentRound,
+                DeathHandlerOverride.SetTrue, TouLocale.GetParsed("DiedByStringBasic").Replace("<player>", ambusher.Data.PlayerName), lockInfo: DeathHandlerOverride.SetTrue);
             
             var bodyPos = body.transform.position;
             if (MeetingHud.Instance == null && ambusher.AmOwner)
@@ -195,7 +202,8 @@ public sealed class AmbusherRole(IntPtr cppPtr)
                 ambusher.NetTransform.SetPaused(true);
                 bodyPos.y += 0.175f;
                 bodyPos.z = bodyPos.y / 1000f;
-                ambusher.RpcSetPos(bodyPos);
+                ambusher.transform.position = bodyPos;
+                ambusher.NetTransform.SnapTo(bodyPos);
             }
 
             // Hide real player
@@ -270,8 +278,35 @@ public sealed class AmbusherRole(IntPtr cppPtr)
             
             yield return new WaitForSeconds(spriteAnim.m_defaultAnim.length);
 
-            if (ambusher.HasDied())
+            if (!target.HasDied() || MeetingHud.Instance || ambusher.HasDied())
             {
+                ambushAnim.gameObject.Destroy();
+                ambusher.Visible = true;
+                ambusher.RemoveModifier<IndirectAttackerModifier>();
+
+                foreach (var shield in ambusher.GetModifiers<BaseShieldModifier>())
+                {
+                    shield.IsVisible = true;
+                    shield.SetVisible();
+                }
+
+                if (ambusher.HasModifier<FirstDeadShield>())
+                {
+                    ambusher.GetModifier<FirstDeadShield>()!.IsVisible = true;
+                    ambusher.GetModifier<FirstDeadShield>()!.SetVisible();
+                }
+
+                if (!MeetingHud.Instance && !ambusher.HasDied())
+                {
+                    ambusher.transform.position = ogPos;
+                    ambusher.NetTransform.SnapTo(ogPos);
+                }
+                
+                if (!ambusher.AmOwner)
+                    yield break;
+
+                ambusher.moveable = true;
+                ambusher.NetTransform.SetPaused(false);
                 yield break;
             }
             
@@ -279,7 +314,8 @@ public sealed class AmbusherRole(IntPtr cppPtr)
             
             if (MeetingHud.Instance == null && target.HasDied())
             {
-                if (ambusher.AmOwner) ambusher.RpcSetPos(ogPos);
+                ambusher.transform.position = ogPos;
+                ambusher.NetTransform.SnapTo(ogPos);
                 var targetPos = ogPos + new Vector3(-0.05f, 0.175f, 0f);
                 targetPos.z = targetPos.y / 1000f;
                 body.transform.position = (ambusher.Collider.bounds.center - targetPos) + targetPos;

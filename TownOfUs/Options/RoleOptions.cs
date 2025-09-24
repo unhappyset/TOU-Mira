@@ -2,35 +2,36 @@
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
+using TownOfUs.Utilities;
 
 namespace TownOfUs.Options;
 
 public sealed class RoleOptions : AbstractOptionGroup
 {
-    public static readonly string[] OptionStrings =
+    internal static string[] OptionStrings =
     [
-        "Common <color=#66FFFFFF>Crew</color>",
-        "Random <color=#66FFFFFF>Crew</color>",
-        "<color=#66FFFFFF>Crew</color> Investigative",
-        "<color=#66FFFFFF>Crew</color> Killing",
-        "<color=#66FFFFFF>Crew</color> Protective",
-        "<color=#66FFFFFF>Crew</color> Power",
-        "<color=#66FFFFFF>Crew</color> Support",
-        "Special <color=#66FFFFFF>Crew</color>",
-        "Non-<color=#FF0000FF>Imp</color>",
-        "Common <color=#999999FF>Neutral</color>",
-        "Random <color=#999999FF>Neutral</color>",
-        "<color=#999999FF>Neutral</color> Benign",
-        "<color=#999999FF>Neutral</color> Evil",
-        "<color=#999999FF>Neutral</color> Killing",
-        "Common <color=#FF0000FF>Imp</color>",
-        "Random <color=#FF0000FF>Imp</color>",
-        "<color=#FF0000FF>Imp</color> Concealing",
-        "<color=#FF0000FF>Imp</color> Killing",
-        "<color=#FF0000FF>Imp</color> Power",
-        "<color=#FF0000FF>Imp</color> Support",
-        "<color=#FF0000FF>Imp</color> Special",
-        "Any"
+        MiscUtils.GetParsedRoleBucket("CommonCrew"),
+        MiscUtils.GetParsedRoleBucket("RandomCrew"),
+        MiscUtils.GetParsedRoleBucket("CrewInvestigative"),
+        MiscUtils.GetParsedRoleBucket("CrewKilling"),
+        MiscUtils.GetParsedRoleBucket("CrewProtective"),
+        MiscUtils.GetParsedRoleBucket("CrewPower"),
+        MiscUtils.GetParsedRoleBucket("CrewSupport"),
+        MiscUtils.GetParsedRoleBucket("SpecialCrew"),
+        MiscUtils.GetParsedRoleBucket("NonImp"),
+        MiscUtils.GetParsedRoleBucket("CommonNeutral"),
+        MiscUtils.GetParsedRoleBucket("RandomNeutral"),
+        MiscUtils.GetParsedRoleBucket("NeutralBenign"),
+        MiscUtils.GetParsedRoleBucket("NeutralEvil"),
+        MiscUtils.GetParsedRoleBucket("NeutralKilling"),
+        MiscUtils.GetParsedRoleBucket("CommonImp"),
+        MiscUtils.GetParsedRoleBucket("RandomImp"),
+        MiscUtils.GetParsedRoleBucket("ImpConcealing"),
+        MiscUtils.GetParsedRoleBucket("ImpKilling"),
+        MiscUtils.GetParsedRoleBucket("ImpPower"),
+        MiscUtils.GetParsedRoleBucket("ImpSupport"),
+        MiscUtils.GetParsedRoleBucket("SpecialImp"),
+        MiscUtils.GetParsedRoleBucket("Any")
     ];
 
     public override string GroupName => "Role";

@@ -1,6 +1,7 @@
 using HarmonyLib;
 using Reactor.Utilities.Extensions;
 using TMPro;
+using TownOfUs.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
@@ -59,16 +60,13 @@ public static class AprilFoolsPatches
             baseObj.transform.GetChild(0).transform.localScale = new Vector3(1.0854f, 0.5427f, 0.5427f);
 
             aprilfoolstoggle.transform.GetChild(0).GetChild(0).transform.localPosition = new Vector3(-1.0159f, -0.0818f, 0f);
-            var translator = aprilfoolstoggle.transform.GetChild(0).GetChild(0).GetComponent<TextTranslatorTMP>();
             aprilfoolstoggle.transform.GetChild(0).GetChild(0).GetComponent<AspectPosition>().anchorPoint = new Vector2(0.48f, 0.505f);
-            var id = (int)TouNames.FoolsMode + TouLocale.VanillaEnumAmounts;
-            translator.TargetText = (StringNames)id;
-            translator.defaultStr = TouLocale.Get(TouNames.FoolsMode);
             var text = aprilfoolstoggle.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>();
-            text.text = TouLocale.Get(TouNames.FoolsMode);
             text.fontSize = 3f;
             text.fontSizeMin = 3f;
             text.fontSizeMax = 3f;
+            aprilfoolstoggle.transform.GetChild(0).GetChild(0)
+                .AddMiraTranslator("FoolsMode", false, "Fools Mode");
             var sprite = highlightObj.transform.GetChild(0).GetComponent<SpriteRenderer>();
             sprite.sprite = TouAssets.FoolsMenuSprite(CurrentMode).LoadAsset();
             var sprite2 = baseObj.transform.GetChild(0).GetComponent<SpriteRenderer>();
@@ -98,7 +96,6 @@ public static class AprilFoolsPatches
             {
                 var num = CurrentMode + 1;
                 CurrentMode = num > 3 ? 0 : num;
-                text.text = TouLocale.Get(TouNames.FoolsMode);
                 sprite.sprite = TouAssets.FoolsMenuSprite(CurrentMode).LoadAsset();
                 sprite2.sprite = TouAssets.FoolsMenuSprite(CurrentMode).LoadAsset();
             }));
@@ -109,6 +106,24 @@ public static class AprilFoolsPatches
             text2.fontSize = 3f;
             text2.fontSizeMin = 3f;
             text2.fontSizeMax = 3f;
+            
+            var uiList = new Il2CppSystem.Collections.Generic.List<PassiveButton>();
+            uiList.Add(__instance.playButton);
+            uiList.Add(__instance.inventoryButton);
+            uiList.Add(__instance.shopButton);
+            uiList.Add(aprilfoolstoggle);
+
+            foreach (var ogButtons in __instance.mainButtons)
+            {
+                if (ogButtons == __instance.playButton || ogButtons == __instance.inventoryButton ||
+                    ogButtons == __instance.shopButton)
+                {
+                    continue;
+                }
+                uiList.Add(ogButtons);
+            }
+            __instance.mainButtons = uiList;
+            __instance.SetUpControllerNav();
         }
     }
 

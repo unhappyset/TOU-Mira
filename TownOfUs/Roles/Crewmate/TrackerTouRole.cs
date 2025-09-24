@@ -15,9 +15,30 @@ public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public string RoleName => TouLocale.Get(TouNames.Tracker, "Tracker");
-    public string RoleDescription => "Track Everyone's Movement";
-    public string RoleLongDescription => "Track suspicious players to see where they go";
+    public static string LocaleKey => "Tracker";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+    
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Track", "Track"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}TrackWikiDescription"),
+                    TouCrewAssets.TrackSprite)
+            };
+        }
+    }
     public Color RoleColor => TownOfUsColors.Tracker;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
@@ -50,23 +71,6 @@ public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
 
         return stringB;
     }
-
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Crewmate Investigative role that can track other players to see their general position across the map, getting colored arrows towards all tracked players."
-            + MiscUtils.AppendOptionsText(GetType());
-    }
-
-    [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities =>
-    [
-        new("Track",
-            "Track a player to see where they go." +
-            "You will have an arrow pointing to their location that will update periodically." +
-            "It will disappear if they die, or depending on settings, the trackers will be reset after a meeting.",
-            TouCrewAssets.TrackSprite)
-    ];
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {

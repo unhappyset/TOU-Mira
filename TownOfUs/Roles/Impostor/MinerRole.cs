@@ -39,9 +39,17 @@ public sealed class MinerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<EngineerTouRole>());
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public string RoleName => TouLocale.Get(TouNames.Miner, "Miner");
-    public string RoleDescription => "From The Top, Make It Drop, That's A Vent";
-    public string RoleLongDescription => "Place interconnected vents around the map";
+    public static string LocaleKey => "Miner";
+    public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
+    public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+    
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
@@ -67,19 +75,20 @@ public sealed class MinerRole(IntPtr cppPtr)
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities { get; } =
-    [
+    public List<CustomButtonWikiDescription> Abilities
+    {
+        get
+        {
+            return new List<CustomButtonWikiDescription>
+            {
         new("Mine",
             "Place a vent where you are standing. These vents won't connect to already existing vents on the map but with each other.",
             TouImpAssets.MineSprite)
-    ];
-
-    public string GetAdvancedDescription()
-    {
-        return $"The {RoleName} is an Impostor Support role that can create vents." + MiscUtils.AppendOptionsText(GetType());
+            };
+        }
     }
 
-    [MethodRpc((uint)TownOfUsRpc.PlaceVent, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.PlaceVent)]
     public static void RpcPlaceVent(PlayerControl player, int ventId, Vector2 position, float zAxis, bool immediate)
     {
         if (player.Data.Role is not MinerRole miner)
@@ -99,7 +108,7 @@ public sealed class MinerRole(IntPtr cppPtr)
         if (!player.AmOwner && !immediate)
         {
             Logger<TownOfUsPlugin>.Error("RpcPlaceVent - Hide Vent");
-            vent.myRend.enabled = false;
+            vent.gameObject.SetActive(false);
         }
 
         vent.Id = ventId;
@@ -180,7 +189,7 @@ public sealed class MinerRole(IntPtr cppPtr)
         }
     }
 
-    [MethodRpc((uint)TownOfUsRpc.ShowVent, SendImmediately = true)]
+    [MethodRpc((uint)TownOfUsRpc.ShowVent)]
     public static void RpcShowVent(PlayerControl player, int ventId)
     {
         if (player.Data.Role is not MinerRole miner)
@@ -193,7 +202,7 @@ public sealed class MinerRole(IntPtr cppPtr)
 
         if (vent != null)
         {
-            vent.myRend.enabled = true;
+            vent.gameObject.SetActive(true);
 
             var touAbilityEvent = new TouAbilityEvent(AbilityType.MinerRevealVent, player, vent);
             MiraEventManager.InvokeEvent(touAbilityEvent);

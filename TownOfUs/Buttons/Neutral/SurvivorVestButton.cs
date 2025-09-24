@@ -16,7 +16,7 @@ namespace TownOfUs.Buttons.Neutral;
 public sealed class SurvivorVestButton : TownOfUsRoleButton<SurvivorRole>
 {
     public override string Name => "Safeguard";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Survivor;
     public override float Cooldown => OptionGroupSingleton<SurvivorOptions>.Instance.VestCooldown;
     public override float EffectDuration => OptionGroupSingleton<SurvivorOptions>.Instance.VestDuration;

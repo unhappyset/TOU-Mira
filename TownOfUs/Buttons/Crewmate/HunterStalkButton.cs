@@ -14,8 +14,8 @@ namespace TownOfUs.Buttons.Crewmate;
 
 public sealed class HunterStalkButton : TownOfUsRoleButton<HunterRole, PlayerControl>
 {
-    public override string Name => "Stalk";
-    public override string Keybind => Keybinds.SecondaryAction;
+    public override string Name => TouLocale.Get("TouRoleHunterStalk", "Stalk");
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Hunter;
     public override float Cooldown => OptionGroupSingleton<HunterOptions>.Instance.HunterStalkCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<HunterOptions>.Instance.HunterStalkDuration;
@@ -37,12 +37,12 @@ public sealed class HunterStalkButton : TownOfUsRoleButton<HunterRole, PlayerCon
         notif1.Text.SetOutlineThickness(0.35f);
 
         Target.RpcAddModifier<HunterStalkedModifier>(PlayerControl.LocalPlayer);
-        OverrideName("Stalking");
+        OverrideName(TouLocale.Get("TouRoleHunterStalking", "Stalking"));
     }
 
     public override void OnEffectEnd()
     {
-        OverrideName("Stalk");
+        OverrideName(TouLocale.Get("TouRoleHunterStalk", "Stalk"));
     }
 
     public override PlayerControl? GetTarget()
