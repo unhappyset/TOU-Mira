@@ -1395,7 +1395,7 @@
   <string name="TouModifierDiseased">Diseased</string>
   <string name="TouModifierDiseasedIntroBlurb">You will also extend your killer's cooldown upon death.</string>
   <string name="TouModifierDiseasedTabDescription">Increase your killer's kill cooldown.</string>
-  <String name="TouModifierDiseasedWikiDescription">After you die, your killer's kill cooldown is multiplied by a factor of \%cooldownMultiplier\%x.</String>
+  <String name="TouModifierDiseasedWikiDescription">Your murderer's kill cooldown is multiplied by a factor of \%cooldownMultiplier\%x.</String>
   <!-- Diseased Options-->
   <string name="TouOptionDiseasedCooldownModifier">Diseased Kill Modifier</string>
   <!-- Frosty -->
