@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using HarmonyLib;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using UnityEngine;
 using TMPro;
 using TownOfUs.Modules.Components;
@@ -53,7 +54,7 @@ public static class WikiHyperLinkPatches
                 else
                 {
                     // Non-custom roles (aka vanilla ones) can also be tagged, but they have no wiki entries.
-                    role = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.GetRoleName().Equals(key, StringComparison.OrdinalIgnoreCase));
+                    role = RoleManager.Instance.AllRoles.ToArray().FirstOrDefault(x => x.GetRoleName().Equals(key, StringComparison.OrdinalIgnoreCase));
                     if (role != null)
                     {
                         replacement = $"{fontTag}<b>{role.TeamColor.ToTextColor()}{role.GetRoleName()}</color></b></font>";
