@@ -521,4 +521,19 @@
   <string name="TouOptionSnitchSeesImpostorsInMeetings">Видит Предателей на собрании</string>
   <string name="TouOptionSnitchTasksRemainingWhenRevealed">Раскрывается убийцам когда осталось выполнить заданий</string>
   <string name="TouRoleSpy">Шпион</string>
+  <string name="TouRoleSpyIntroBlurb">Разнюхивайте всё вокруг</string>
+  <string name="TouRoleSpyTabDescription">Получайте дополнительную информацию на столе админа</string>
+  <string name="TouRoleSpyWikiDescription">Шпион - это Расследующий Член Экипажа, который получает дополнительную информацию на столе админа. Он может видеть не только количество игроков в комнате, но и тех, кто именно там находится.</string>
+  <string name="TouOptionSpyWhoSeesDeadBodiesOnAdmin">Кто видит тела на столе админа</string>
+  <string name="TouOptionSpyAllowPortableAdminTableFor">Добавить переносной стол админа для</string>
+  <string name="TouOptionSpyMoveWhileUsingPortableAdmin">Двигаться при использовании переносного админа</string>
+  <string name="TouOptionSpyStartingCharge">Начальный заряд</string>
+  <string name="TouOptionSpyBatteryChargedEachRound">Заряд добавляется каждый раунд</string>
+  <string name="TouOptionSpyBatteryChargedPerTask">Добавляется заряда за задание</string>
+  <string name="TouOptionSpyPortableAdminDisplayCooldown">Откат переносного админа</string>
+  <string name="TouOptionSpyPortableAdminDisplayDuration">Длительность переносного админа</string>
+  <string name="TouRoleSwapper">Сваппер</string>
+  <string name="TouRoleSwapperIntroBlurb">Подмените голоса чтобы спасти мирных!</string>
+  <string name="TouRoleSwapperTabDescription">Поменяйте голоса в двух игроков местами во время собрания</string>
+  <string name="TouRoleSwapperWikiDescription">Сваппер - это Сильный Член Экипажа, который может менять голоса в двух игроков во время собрания. Их места для голосования будут визуально изменены, а голоса поменяются местами. Если игрок 1 набрал большее количество голосов и вы поменяете их местами с игроком 2, игрок 2 будет исключён. </string>
 </resources>
