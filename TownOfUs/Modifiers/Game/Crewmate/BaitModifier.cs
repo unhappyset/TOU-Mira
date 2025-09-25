@@ -21,7 +21,7 @@ public sealed class BaitModifier : TouGameModifier, IWikiDiscoverable
     }
     public string GetAdvancedDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription");
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription") + MiscUtils.AppendOptionsText(GetType());
     }
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Bait;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);

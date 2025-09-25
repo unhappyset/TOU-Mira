@@ -2,7 +2,6 @@
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Options.Modifiers;
 using TownOfUs.Options.Modifiers.Universal;
-using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
 
@@ -31,7 +30,7 @@ public sealed class MiniModifier : UniversalGameModifier, IWikiDiscoverable, IVi
     }
     public string GetAdvancedDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<miniSpeed>",  $"{Math.Round(OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed, 2)}") + MiscUtils.AppendOptionsText(GetType());
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<miniSpeed>",  $"{Math.Round(OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed, 2)}");
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
