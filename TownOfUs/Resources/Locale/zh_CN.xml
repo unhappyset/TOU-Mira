@@ -497,7 +497,7 @@
   <string name="TouRoleWardenFortifyWikiDescription">为一名玩家强化，防止他人对其进行互动。如果有人尝试与被强化玩家互动，该能力将失效，且护卫者和被强化者都会收到紫色闪光提示。</string>
   <string name="TouOptionWardenShowFortifyPlayer">强化结界显示对象</string>
   <string name="TouRoleAmbusherIntroBlurb">将船员拖入黑暗之中</string>
-  <string name="TouRoleAmbusherTabDescription">追踪一名玩家，然后伏击其身边最近的玩家。\n如果你伏击的玩家死亡，则将其尸体带走。</string>
+  <string name="TouRoleAmbusherTabDescription">追踪一名玩家，然后伏击其身边最近的玩家。%nl\%如果你伏击的玩家死亡，则将其尸体带走。</string>
   <string name="TouRoleAmbusherWikiDescription">伏击者是伪装者击杀型职业，可以追踪一名玩家并获得指向他们的箭头。你可以伏击其身边最近的玩家。如果成功击杀该玩家，你会将其尸体拖入黑暗，并与伏击者一起传送回去。</string>
   <string name="TouRoleAmbusherPursue">追踪</string>
   <string name="TouRoleAmbusherPursueWikiDescription">追踪一名玩家，以便之后伏击其身边的其他玩家。</string>
@@ -1166,4 +1166,11 @@
   <string name="TouOptionPlumberMaxNumberOfBarricades">最大路障数量</string>
   <string name="TouOptionPlumberAmountOfRoundsBarricadesLast">路障能持续封锁的轮数</string>
   <string name="TouOptionPlumberGetMoreFromTasks">完成任务可获得更多路障</string>
+  <string name="ClientTabGameplay">游戏玩法</string>
+  <string name="ShowVanillaWikiEntries">展示原版维基条目</string>
+  <string name="PlayerHasNoModifiers">无附加职业</string>
+  <string name="TouRoleAmnesiacRemember">记起</string>
+  <string name="TouRoleAmnesiacRememberWikiDescription">记起尸体的职业。如果尸体的职业是独特的职业，你会记起基础阵营的职业。</string>
+  <string name="TouOptionIncreasedWhen2">当2个伪装者存在时，增加击杀冷却时间</string>
+  <string name="TouModifierDiseasedWikiDescription">击杀你的凶手的击杀冷却时间乘以 \%cooldownMultiplier\%。</string>
 </resources>
