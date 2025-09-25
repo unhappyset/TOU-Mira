@@ -515,7 +515,7 @@
   <string name="TouRolePlumberFlush">Flush</string>
   <string name="TouRolePlumberFlushWikiDescription">Flushing the vents makes every vent open and close, kicking out anyone actively in a vent. The Plumber also gets an arrow pointing to every flushed player for one second.</string>
   <string name="TouRolePlumberBlock">Block</string>
-  <string name="TouRolePlumberBarricadeWikiDescription">Block a vent places a barricade on the vent selected for the next round, preventing players from using it.</string>
+  <string name="TouRolePlumberBlockWikiDescription">Block a vent by placing a barricade on it for the next round, preventing players from using it.</string>
   <!-- Plumber Options -->
   <string name="TouOptionPlumberFlushCooldown">Flush Cooldown</string>
   <string name="TouOptionPlumberBlockCooldown">Block Cooldown</string>
@@ -1273,7 +1273,7 @@
   <!-- Mini Wiki / Description -->
   <string name="TouModifierMini">Mini</string>
   <string name="TouModifierMiniTabDescription">You are smaller than regular players, and you also move \%miniSpeed\%x faster than regular players.</string>
-  <string name="TouModifierMiniWikTabDescription">You are smaller than the average player, moving \%miniSpeed\%x faster.</string>
+  <string name="TouModifierMiniWikiDescription">You are smaller than the average player, moving \%miniSpeed\%x faster.</string>
   <!-- Mini Options -->
   <string name="TouOptionMiniSpeed">Mini Speed</string>
   <!-- Radar -->
@@ -1448,7 +1448,7 @@
   <string name="TouModifierRotting">Rotting</string>
   <string name="TouModifierRottingIntroBlurb">Your body will also rot away upon death.</string>
   <string name="TouModifierRottingTabDescription">Your body will rot away after \%rotDelay\% second(s).</string>
-  <string name="TouModifierWikiDescription">After \%rotDelay\% second(s), your body will rot away, preventing you from being reported</string>
+  <string name="TouModifierRottingWikiDescription">After \%rotDelay\% second(s), your body will rot away, preventing you from being reported</string>
   <!-- Rotting Options -->
   <string name="TouOptionRottingDelay">Time Before Body Rots Away</string>
   <!-- Scientist -->

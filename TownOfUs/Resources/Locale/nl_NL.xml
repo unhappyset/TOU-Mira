@@ -447,7 +447,7 @@
   <string name="TouOptionGuardianAngelTargetKnowsGAExists">Doelwit Weet Dat Engelbewaarder Bestaat</string>
   <string name="TouOptionGuardianAngelGAKnowsRole">Engelbewaarder kent Doelwits Rol</string>
   <string name="TouOptionGuardianAngelEvilOdds">Kans Dat Doelwit Kwaad Is</string>
-  <string name="TouRolePlumberBarricadeWikiDescription">Blokkeer Ventilatieopeningen plaatst een barrière op de geselecteerde vent voor de volgende ronde, wat spelers voorkomt die te gebruiken.</string>
+  <string name="TouRolePlumberBlockWikiDescription">Blokkeer Ventilatieopeningen plaatst een barrière op de geselecteerde vent voor de volgende ronde, wat spelers voorkomt die te gebruiken.</string>
   <string name="TouOptionPlumberFlushCooldown">Spoel Afkoelperiode</string>
   <string name="TouOptionPlumberBlockCooldown">Blokkeer Afkoelperiode</string>
   <string name="TouOptionPlumberMaxNumberOfBarricades">Maximum Aantal Barrières</string>

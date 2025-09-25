@@ -650,7 +650,7 @@
   <string name="TouModifierImmovableTabDescription">你不会被传送到会议区，也不会被分散或传送。</string>
   <string name="TouModifierImmovableWikiDescription">你不会被技能或会议移动。</string>
   <string name="TouModifierMiniTabDescription">你比普通玩家更小，移动速度也比普通玩家快\%miniSpeed\%倍。</string>
-  <string name="TouModifierMiniWikTabDescription">你比普通玩家更小，移动速度也比普通玩家快\%miniSpeed\%倍。</string>
+  <string name="TouModifierMiniWikiDescription">你比普通玩家更小，移动速度也比普通玩家快\%miniSpeed\%倍。</string>
   <string name="TouOptionMiniSpeed">迷你速度</string>
   <string name="TouModifierRadarTabDescription">获得一个指向最近玩家的箭头。</string>
   <string name="TouModifierRadarWikiDescription">你会获得一个指向\%nl\%最近玩家的箭头。</string>
@@ -725,7 +725,7 @@
   <string name="TouOptionOperativeMaxDisplayDuration">最大监控显示时长</string>
   <string name="TouModifierRottingIntroBlurb">你的尸体会腐烂，无法被报告。</string>
   <string name="TouModifierRottingTabDescription">你的尸体将在\%rotDelay\%秒后腐烂消失。</string>
-  <string name="TouModifierWikiDescription">\%rotDelay\%秒后，你的尸体会腐烂，无法被报告</string>
+  <string name="TouModifierRottingWikiDescription">\%rotDelay\%秒后，你的尸体会腐烂，无法被报告</string>
   <string name="TouOptionRottingDelay">尸体腐烂前的时间</string>
   <string name="TouModifierScientistIntroBlurb">你可随时随地查看生命体征。</string>
   <string name="TouModifierScientistTabDescription">可随时随地查看生命体征，只要有电量。</string>
@@ -1160,7 +1160,7 @@
   <string name="TouOptionSeerTraitorSwapsColors">背叛者转换颜色</string>
   <string name="TouRolePlumberFlushWikiDescription">冲洗通风口会让所有通风口开关一次，将所有正在通风口中的玩家踢出。水管工还会获得指向每个被冲出的玩家的箭头，持续一秒。</string>
   <string name="TouRolePlumberBlock">路障</string>
-  <string name="TouRolePlumberBarricadeWikiDescription">在选定的通风口设置路障，下回合阻止玩家使用该通风口。</string>
+  <string name="TouRolePlumberBlockWikiDescription">在选定的通风口设置路障，下回合阻止玩家使用该通风口。</string>
   <string name="TouOptionPlumberFlushCooldown">冲洗冷却</string>
   <string name="TouOptionPlumberBlockCooldown">封锁冷却</string>
   <string name="TouOptionPlumberMaxNumberOfBarricades">最大路障数量</string>

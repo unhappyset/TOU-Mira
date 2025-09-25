@@ -417,7 +417,7 @@
   <string name="TouRolePlumberFlush">Выкинуть</string>
   <string name="TouRolePlumberFlushWikiDescription">Выкидывание из люков заставляет все люки открыться и закрыться, выкидывая сидящих там игроков. Также, Сантехник на секунду получает стрелку на всех выкинутых игроков.</string>
   <string name="TouRolePlumberBlock">Баррикада</string>
-  <string name="TouRolePlumberBarricadeWikiDescription">Баррикадирование люков не даёт никому в него залезть, начиная со след. раунда.</string>
+  <string name="TouRolePlumberBlockWikiDescription">Баррикадирование люков не даёт никому в него залезть, начиная со след. раунда.</string>
   <string name="TouOptionPlumberFlushCooldown">Откат выкидывания</string>
   <string name="TouOptionPlumberBlockCooldown">Откат баррикадирования</string>
   <string name="TouOptionPlumberMaxNumberOfBarricades">Макс. кол-во баррикад</string>
