@@ -2,7 +2,7 @@
 <resources>
   <string name="FoolsMode">愚人节模式</string>
   <string name="TertiaryAbility">第三技能(黑入技能)</string>
-  <string name="ModifierAbility">附加属性技能</string>
+  <string name="ModifierAbility">附加职业技能</string>
   <string name="ClientOptionsButton">我们的小镇Mira客户端设置</string>
   <string name="DeadSeeGhosts">死后显示其他鬼魂</string>
   <string name="ShowVents">在地图上显示通风口</string>
@@ -46,7 +46,7 @@
   <string name="WikiRoleGuideTab">职业指南</string>
   <string name="SearchboxHeadsUp">点击这里搜索</string>
   <string name="Roles">职业</string>
-  <string name="Modifiers">附加属性</string>
+  <string name="Modifiers">附加职业</string>
   <string name="Amount">数量</string>
   <string name="Chance">概率</string>
   <string name="Options">设置</string>
@@ -239,18 +239,18 @@
   <string name="TouRoleDeputyCamp">蹲守</string>
   <string name="TouRoleDeputyCampWikiDescription">蹲守一名玩家，当玩家死亡后收到信息。在他们死后，您可以尝试射杀凶手。如果你的射杀成功，凶手就会死，否则什么都不会发生。</string>
   <string name="TouRoleDeputyMissedShot">你空枪了！他们要么不是杀手，要么是无敌的。</string>
-  <string name="TouRoleDetective">侧写师</string>
+  <string name="TouRoleDetective">侦探</string>
   <string name="TouRoleDetectiveIntroBlurb">调查犯罪现场以抓捕凶手</string>
   <string name="TouRoleDetectiveTabDescription">调查犯罪现场，然后检查玩家是否在现场。</string>
-  <string name="TouRoleDetectiveWikiDescription">侧写师可以检查犯罪现场并调查玩家是否在犯罪现场，如果他们在那里，则闪烁红色。</string>
+  <string name="TouRoleDetectiveWikiDescription">侦探可以检查犯罪现场并调查玩家是否在犯罪现场，如果他们在那里，则闪烁红色。</string>
   <string name="TouRoleDetectiveInspect">调查</string>
   <string name="TouRoleDetectiveInspectWikiDescription">犯罪现场将与所有尸体一起生成。调查犯罪现场，然后检查玩家以发现线索。在下一次会议上，您将收到一份报告，揭示凶手的职业。</string>
   <string name="TouRoleDetectiveExamine">检查</string>
   <string name="TouRoleDetectiveExamineWikiDescription">检查犯罪现场后检查玩家。系统会告诉你玩家是否在犯罪现场。</string>
   <string name="TouOptionDetectiveExamineCooldown">检查冷却时间</string>
-  <string name="TouOptionDetectiveReportOn">显示侧写师报告</string>
-  <string name="TouOptionDetectiveRoleDuration">侧写师获得职业信息的时间</string>
-  <string name="TouOptionDetectiveFactionDuration">侧写师获得阵营信息的时间</string>
+  <string name="TouOptionDetectiveReportOn">显示侦探报告</string>
+  <string name="TouOptionDetectiveRoleDuration">侦探获得职业信息的时间</string>
+  <string name="TouOptionDetectiveFactionDuration">侦探获得阵营信息的时间</string>
   <string name="TouRoleDetectiveAtScene">\%player\%在\%deadPlayer\%的案发现场！\%nl\%他们可能是凶手或证人。</string>
   <string name="TouRoleDetectiveNotAtScene">\%player\%不在案发现场。</string>
   <string name="TouRoleEngineer">工程师</string>
@@ -270,7 +270,7 @@
   <string name="TouRoleHaunterIntroBlurb">揭晓后期的伪装者！</string>
   <string name="TouRoleHaunterTabDescription">完成所有任务而不被被抓住，以揭露伪装者！</string>
   <string name="TouRoleHaunterWikiDescription">冤魂是一个船员鬼魂型可以做任务的职业。他们将以半透明玩家的形象出现。如果他们完成了所有任务，所有活着的玩家都会看到伪装者是谁。但是，如果伪装者先点击它们，他们就会变成普通的鬼魂。伪装者在冤魂完成任务之前不久或当他们完成任务时收到警告。</string>
-  <string name="Modifier">附加属性</string>
+  <string name="Modifier">附加职业</string>
   <string name="SetRoleList">设置职业列表</string>
   <string name="NeutralFactionList">中立职业类型列表</string>
   <string name="NeutralBenigns">中立善良型</string>
@@ -310,7 +310,7 @@
   <string name="TouRoleImitatorNeutralCounterparts">中立对应表</string>
   <string name="TouRoleImitatorNeutralCounterpartsWikiDescription">失忆者 ⇨ 医生 |末日预言者 ⇨ 侠客 |行刑者 ⇨ 告密者\%nl\%混沌 ⇨ 警长 |守护天使 ⇨ 牧师 |审判官 ⇨ 神谕者\%nl\%小丑 ⇨ 水管工 |雇佣兵 ⇨ 护卫者\%nl\%瘟疫之源 ⇨ 感应者 |噬魂兽 ⇨ 招魂师 |月下狼人 ⇨ 巡猎者</string>
   <string name="TouRoleImitatorImpostorCounterparts">伪装者对应表</string>
-  <string name="TouRoleImitatorImpostorCounterpartsWikiDescription">爆破手 ⇨ 陷阱师 |催眠师 ⇨ 观测者 |清理者 ⇨ 侧写师\%nl\%矿工 ⇨ 工程师 |赏金猎人 ⇨ 追踪者\%nl\%送葬者 ⇨ 殉道者 |巫术师 ⇨ 老兵</string>
+  <string name="TouRoleImitatorImpostorCounterpartsWikiDescription">爆破手 ⇨ 陷阱师 |催眠师 ⇨ 观测者 |清理者 ⇨ 侦探\%nl\%矿工 ⇨ 工程师 |赏金猎人 ⇨ 追踪者\%nl\%送葬者 ⇨ 殉道者 |巫术师 ⇨ 老兵</string>
   <string name="TouOptionImitatorImitateNeutrals">效仿特定中立职业作为相似船员职业</string>
   <string name="TouOptionImitatorImitateImpostors">效仿特定伪装者职业作为相似船员职业</string>
   <string name="TouRoleInvestigator">调查员</string>
@@ -422,7 +422,7 @@
   <string name="TouRoleJuggernaut">天启</string>
   <string name="TouModifierAftermath">余波</string>
   <string name="TouModifierBait">诱饵</string>
-  <string name="TouModifierCelebrity">名人</string>
+  <string name="TouModifierCelebrity">大明星</string>
   <string name="TouModifierFrosty">寒霜</string>
   <string name="TouModifierMultitasker">多线程</string>
   <string name="TouModifierNoisemaker">大嗓门</string>
