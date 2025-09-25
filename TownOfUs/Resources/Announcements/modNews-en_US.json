@@ -360,6 +360,20 @@
         "\n- It is now possible to change what ranges of buttons are affected by the starting cooldown, if any.",
         "\n- New Client Option: Hide Vanilla Wiki Entries Toggle (this shows up in the sidebar rather than the current tou client options menu)."
       ]
+    },
+    {
+      "Date": "2025-09-25T12:50:00Z",
+      "Number": "100020",
+      "ShortTitle": "TOU: Mira v1.2.1",
+      "SubTitle": "Hotfix Update",
+      "Title": "Just cleaning up, is all.",
+      "Text": [
+        "\n\n<b> This update has purely bugfixes.</b>",
+        "\n\nAgain, the Mira team really appreciates all of your support, thank you so much for playing the mod!",
+        "\n\n★ <link=https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.2.1>TOU Mira v1.2.1 Download</link> ★ <link=https://au-avengers.github.io/docs.toum.gg/>Mod Guide & Details</link> ★",
+        "\n\n\r<size=105%>Modifier Bugfixes:</size>",
+        "\n- Diseased wiki description now shows up correctly."
+      ]
     }
       ]
 }
