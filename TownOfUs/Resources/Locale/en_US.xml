@@ -4,7 +4,9 @@
   <string name="TertiaryAbility">Tertiary Ability (Hack Ability)</string>
   <string name="ModifierAbility">Modifier Ability</string>
   <!-- Client Options -->
+  <string name="ClientTabGameplay">Gameplay</string>
   <string name="ClientOptionsButton">Tou Client Options</string>
+  <string name="ShowVanillaWikiEntries">Show Vanilla Wiki Entries</string>
   <string name="DeadSeeGhosts">Show Other Ghosts When Dead</string>
   <string name="ShowVents">Show Vents On Map</string>
   <string name="ShowWelcomeMessage">Show Welcome Msg</string>
@@ -69,6 +71,7 @@
   <string name="Amount">Amount</string>
   <string name="Chance">Chance</string>
   <string name="Options">Options</string>
+  <string name="PlayerHasNoModifiers">No Modifiers</string>
   <!-- Role List -->
   <string name="SetRoleList">Set Role List</string>
   <string name="NeutralFactionList">Neutral Faction List</string>
@@ -118,7 +121,7 @@
   <string name="CrewmateKeyword">Crewmate</string>
   <string name="CrewKeyword">Crew</string>
   <string name="NeutralKeyword">Neutral</string>
-  <string name="NeutKeyword">Neutrale</string>
+  <string name="NeutKeyword">Neut</string>
   <string name="ImpostorKeyword">Impostor</string>
   <string name="ImpKeyword">Imp</string>
   <!-- All possible types of modifiers -->
@@ -747,7 +750,7 @@
   <!-- Ambusher Wiki / Abilities -->
   <string name="TouRoleAmbusher">Ambusher</string>
   <string name="TouRoleAmbusherIntroBlurb">Kidnap Crewmates Into The Shadows</string>
-  <string name="TouRoleAmbusherTabDescription">Pursue a player, then ambush the closest player to them.\nIf the player you ambush dies, then take their body with you.</string>
+  <string name="TouRoleAmbusherTabDescription">Pursue a player, then ambush the closest player to them.\%nl\%If the player you ambush dies, then take their body with you.</string>
   <string name="TouRoleAmbusherWikiDescription">The Ambusher is an Impostor Killing role that can pursue a player, getting an arrow to them. They may ambush the closest player next to them. If they manage to kill the player, they will drag their body into the shadows, teleporting back with the Ambusher.</string>
   <string name="TouRoleAmbusherPursue">Pursue</string>
   <string name="TouRoleAmbusherPursueWikiDescription">Pursue a player to be able to ambush another player next to them at a later time.</string>
@@ -972,8 +975,8 @@
   <string name="TouRoleAmnesiacIntroBlurb">Remember A Role Of A Deceased Player</string>
   <string name="TouRoleAmnesiacTabDescription">Find a dead body to remember and become their role.</string>
   <string name="TouRoleAmnesiacWikiDescription">The Amnesiac is a Neutral Benign role that gains access to a new role from remembering a dead body’s role. Use the role you remember to win the game.</string>
-  <String name="TouRoleAmnesiacRemember">Remember</String>
-  <String name="TouRoleAmnesiacRememberWikiDescription">Remember the role of a dead body. If the dead body's role is a unique role, you will remember the base faction's role instead.</String>
+  <string name="TouRoleAmnesiacRemember">Remember</string>
+  <string name="TouRoleAmnesiacRememberWikiDescription">Remember the role of a dead body. If the dead body's role is a unique role, you will remember the base faction's role instead.</string>
   <!-- Amnesiac Options -->
   <string name="TouOptionAmnesiacShowArrows">Show Arrows Pointing To Dead Bodies</string>
   <string name="TouOptionAmnesiacArrowDelay">Time After Death Arrow Appears</string>
@@ -1355,7 +1358,7 @@
   <string name="TouModifierUnderdogWikiDescription">Your kill cooldown is lower if you're solo or your teammate is dead.</string>
   <!-- Underdog Options -->
   <string name="TouOptionUnderdogBonus">Kill Cooldown Bonus</string>
-  <String name="TouOptionIncreasedWhen2">Increased Kill Cooldown When 2+ Imps</String>
+  <string name="TouOptionIncreasedWhen2">Increased Kill Cooldown When 2+ Imps</string>
   <!-- Assailant (NKs/Imp) Modifiers -->
   <string name="TouModifierAssassin">Assassin</string>
   <!-- Double Shot -->
@@ -1392,7 +1395,7 @@
   <string name="TouModifierDiseased">Diseased</string>
   <string name="TouModifierDiseasedIntroBlurb">You will also extend your killer's cooldown upon death.</string>
   <string name="TouModifierDiseasedTabDescription">Increase your killer's kill cooldown.</string>
-  <String name="TouModifierDiseasedWikiDescription">After you die, your killer's kill cooldown is multiplied by a factor of \%cooldownMultiplier\%x.</String>
+  <string name="TouModifierDiseasedWikiDescription">Your murderer's kill cooldown is multiplied by a factor of \%cooldownMultiplier\%x.</string>
   <!-- Diseased Options-->
   <string name="TouOptionDiseasedCooldownModifier">Diseased Kill Modifier</string>
   <!-- Frosty -->

@@ -147,14 +147,6 @@ public static class MiscUtils
         return builder.ToString();
     }
 
-    public static string GetRoleName(this RoleBehaviour role)
-    {
-        if (role is ICustomRole custom)
-        {
-            return custom.RoleName;
-        }
-        return role.NiceName;
-    }
     public static RoleAlignment GetRoleAlignment(this ICustomRole role)
     {
         if (role is ITownOfUsRole touRole)
@@ -208,7 +200,7 @@ public static class MiscUtils
             }
         }
 
-        if (role.Role is RoleTypes.Tracker)
+        if (role.Role is RoleTypes.Tracker or RoleTypes.Detective)
         {
             return RoleAlignment.CrewmateInvestigative;
         }
@@ -216,6 +208,11 @@ public static class MiscUtils
         if (role.Role is RoleTypes.Shapeshifter or RoleTypes.Phantom)
         {
             return RoleAlignment.ImpostorConcealing;
+        }
+        
+        if (role.Role is RoleTypes.Viper)
+        {
+            return RoleAlignment.ImpostorSupport;
         }
 
         if (role.IsNeutral())
@@ -501,7 +498,7 @@ public static class MiscUtils
 
     public static IEnumerable<RoleBehaviour> GetRegisteredGhostRoles()
     {
-        var baseGhostRoles = RoleManager.Instance.AllRoles.Where(x => x.IsDead && AllRoles.All(y => y.Role != x.Role));
+        var baseGhostRoles = RoleManager.Instance.AllRoles.ToArray().Where(x => x.IsDead && AllRoles.All(y => y.Role != x.Role));
         var ghostRoles = AllRoles.Where(x => x.IsDead && !x.TryCast<SpectatorRole>()).Union(baseGhostRoles);
 
         return ghostRoles;
@@ -511,7 +508,7 @@ public static class MiscUtils
     {
         // we want to prioritize the custom roles because the role has the right RoleColour/TeamColor
         var role = AllRoles.FirstOrDefault(x => x.Role == roleType) ??
-                   RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == roleType);
+                   RoleManager.Instance.AllRoles.ToArray().FirstOrDefault(x => x.Role == roleType);
 
         return role;
     }
@@ -549,14 +546,14 @@ public static class MiscUtils
     public static string RoleNameLookup(RoleTypes roleType)
     {
         var role = RoleManager.Instance.GetRole(roleType);
-        return role?.GetRoleName() ?? (roleType == RoleTypes.Crewmate ? "Crewmate" : "Impostor");
+        return role?.GetRoleName() ?? TranslationController.Instance.GetString(roleType == RoleTypes.Crewmate ? StringNames.Crewmate : StringNames.Impostor);
     }
 
     public static IEnumerable<RoleBehaviour> GetPotentialRoles()
     {
         var currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
         var roleOptions = currentGameOptions.RoleOptions;
-        var assignmentData = RoleManager.Instance.AllRoles.Select(role =>
+        var assignmentData = RoleManager.Instance.AllRoles.ToArray().Select(role =>
             new RoleManager.RoleAssignmentData(role, roleOptions.GetNumPerGame(role.Role),
                 roleOptions.GetChancePerGame(role.Role))).ToList();
 
@@ -585,11 +582,11 @@ public static class MiscUtils
                     RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Phantom)!);
         }*/
 
-        var crewmateRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Crewmate);
+        var crewmateRole = RoleManager.Instance.AllRoles.ToArray().FirstOrDefault(x => x.Role == RoleTypes.Crewmate);
         roleList = roleList.AddItem(crewmateRole!);
         //Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - crewmateRole: '{crewmateRole?.GetRoleName()}'");
 
-        var impostorRole = RoleManager.Instance.AllRoles.FirstOrDefault(x => x.Role == RoleTypes.Impostor);
+        var impostorRole = RoleManager.Instance.AllRoles.ToArray().FirstOrDefault(x => x.Role == RoleTypes.Impostor);
         roleList = roleList.AddItem(impostorRole!);
 
         //Logger<TownOfUsPlugin>.Error($"GetPotentialRoles - impostorRole: '{impostorRole?.GetRoleName()}'");
@@ -1328,27 +1325,30 @@ public static class MiscUtils
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(includePostors, distance);
     }
 
-    public static void SetSizeLimit(this SpriteRenderer sprite, float scale)
+    public static void SetSizeLimit(this SpriteRenderer sprite, float pixelSize)
     {
-        if (sprite.bounds.size.x < sprite.bounds.size.y)
+        sprite.drawMode = SpriteDrawMode.Sliced;
+        float spriteWidth = sprite.sprite.rect.width;
+        float spriteHeight = sprite.sprite.rect.height;
+
+        if (spriteWidth < spriteHeight)
         {
-            sprite.size = new Vector2(scale * sprite.bounds.size.x / sprite.bounds.size.y, scale);
+            sprite.size = new Vector2(pixelSize * spriteWidth / spriteHeight, pixelSize);
         }
         else
         {
-            sprite.size = new Vector2(scale, scale * sprite.bounds.size.y / sprite.bounds.size.x);
+            sprite.size = new Vector2(pixelSize, pixelSize * spriteHeight / spriteWidth);
         }
-        sprite.tileMode = SpriteTileMode.Adaptive;
     }
 
-    public static void SetSizeLimit(this GameObject spriteObj, float scale)
+    public static void SetSizeLimit(this GameObject spriteObj, float pixelSize)
     {
         if (!spriteObj.TryGetComponent<SpriteRenderer>(out var sprite))
         {
             return;
         }
 
-        sprite.SetSizeLimit(scale);
+        sprite.SetSizeLimit(pixelSize);
     }
     public static bool DiedOtherRound(this PlayerControl player)
     {
