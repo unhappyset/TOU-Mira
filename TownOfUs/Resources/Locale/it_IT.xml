@@ -207,4 +207,5 @@
   <string name="TouRoleClericWikiDescription">Il Chierico è un Astronauta Protettivo che può proteggere gli Astronauti negando i loro effetti negativi, mettendogli delle barriere per prevenire le interazioni.</string>
   <string name="TouRoleClericBarrier">Barriera</string>
   <string name="TouRoleClericBarrierWikiDescription">Impedisci ad un Astronauta di essere interagito. Lo scudo durerà per \%BarrierCooldown\% secondi.</string>
+  <string name="PlayerHasNoModifiers">Nessun Modificatore</string>
 </resources>
