@@ -156,10 +156,10 @@
   <string name="TouRoleImitatorCrewmateImitationWikiDescription">Может копировать любую роль Экипажа, кроме Имитатора, Политика, Мэра, и обычного Члена экипажа. Пленник и Прокурор не смогут использовать свои способности во время собрания, а Линчеватель не получает право на ошибку в гадалке.</string>
   <string name="TouOptionImitatorImitateNeutrals">Копировать Нейтральных как похожих ролей Экипажа</string>
   <string name="TouOptionImitatorImitateImpostors">Копировать Предателей как похожих ролей Экипажа</string>
-  <string name="TouRoleInvestigator">Расследователь</string>
+  <string name="TouRoleInvestigator">Следователь</string>
   <string name="TouRoleInvestigatorIntroBlurb">Идите за следами других</string>
   <string name="TouRoleInvestigatorTabDescription">Вы видите следы всех игроков.</string>
-  <string name="TouRoleInvestigatorWikiDescription">Расследователь - роль класса «Экипаж-Расследывающий», способная постоянно видеть следы других игроков. Невидимые игроки не оставляют следы.</string>
+  <string name="TouRoleInvestigatorWikiDescription">Следователь - Расследующий Член Экипажа, способный постоянно видеть следы других игроков. Невидимые игроки не оставляют следы.</string>
   <string name="TouOptionInvestigatorFootprintSize">Размер следов</string>
   <string name="TouOptionInvestigatorFootprintInterval">Интервал следов</string>
   <string name="TouOptionInvestigatorFootprintDuration">Длительность следов</string>
