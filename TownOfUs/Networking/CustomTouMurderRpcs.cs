@@ -27,7 +27,6 @@ public static class CustomTouMurderRpcs
         {
             return;
         }
-        var cod = "killed";
         var role = source.GetRoleWhenAlive();
         if (source.Data.Role is IGhostRole)
         {
@@ -40,21 +39,18 @@ public static class CustomTouMurderRpcs
         }
         source.AddModifier<IndirectAttackerModifier>(true);
         
-        switch (role)
+        var cod = "Killer";
+        if (touRole.LocaleKey != "KEY_MISS")
         {
-            case PhantomTouRole:
-            cod = "Spooked";
-            break;
-            case JesterRole:
-            cod = "Haunted";
-            break;
-            case ExecutionerRole:
-            cod = "Tormented";
-            break;
+            cod = touRole.LocaleKey;
         }
-        
-        DeathHandlerModifier.UpdateDeathHandler(target, cod, DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, $"By {source.Data.PlayerName}", lockInfo: DeathHandlerOverride.SetTrue);
-        DeathHandlerModifier.UpdateDeathHandler(source, "null", -1, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+
+        DeathHandlerModifier.UpdateDeathHandler(target, TouLocale.Get($"DiedTo{cod}"), DeathEventHandlers.CurrentRound,
+            DeathHandlerOverride.SetTrue,
+            TouLocale.GetParsed("DiedByStringBasic").Replace("<player>", source.Data.PlayerName),
+            lockInfo: DeathHandlerOverride.SetTrue);
+        DeathHandlerModifier.UpdateDeathHandler(source, "null", -1, DeathHandlerOverride.SetFalse,
+            lockInfo: DeathHandlerOverride.SetTrue);
         source.CustomMurder(
             target,
             MurderResultFlags.Succeeded);

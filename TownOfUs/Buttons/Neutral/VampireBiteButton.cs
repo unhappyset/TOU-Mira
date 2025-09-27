@@ -19,7 +19,9 @@ namespace TownOfUs.Buttons.Neutral;
 
 public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
-    public override string Name => "Bite";
+    private string _biteName = "Bite";
+    private string _killName = "Kill";
+    public override string Name => _biteName;
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Vampire;
     public override float Cooldown => OptionGroupSingleton<VampireOptions>.Instance.BiteCooldown + MapCooldown;
@@ -28,6 +30,18 @@ public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerCo
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
+    }
+
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        if (KeybindIcon != null)
+        {
+            KeybindIcon.transform.localPosition = new Vector3(0.4f, 0.45f, -9f);
+        }
+        _killName = TranslationController.Instance.GetStringWithDefault(StringNames.KillLabel, "Kill");
+        _biteName = TouLocale.Get("TouRoleVampireBite", "Bite");
+        OverrideName(_killName);
     }
 
     protected override void FixedUpdate(PlayerControl playerControl)
@@ -39,7 +53,7 @@ public sealed class VampireBiteButton : TownOfUsRoleButton<VampireRole, PlayerCo
         var canBite = vampireCount < 2 && totalVamps < options.MaxVampires &&
                       (!PlayerControl.LocalPlayer.HasModifier<VampireBittenModifier>() || options.CanConvertAsNewVamp);
 
-        OverrideName(canBite ? "Bite" : "Kill");
+        OverrideName(canBite ? _biteName : _killName);
 
         base.FixedUpdate(playerControl);
     }

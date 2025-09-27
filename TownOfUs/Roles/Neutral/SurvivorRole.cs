@@ -35,8 +35,8 @@ public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         {
             return new List<CustomButtonWikiDescription>
             {
-                new(TouLocale.GetParsed($"TouRole{LocaleKey}Vest", "Vest"),
-                    TouLocale.GetParsed($"TouRole{LocaleKey}VestWikiDescription"),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Safeguard", "Safeguard"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}SafeguardWikiDescription"),
                     TouNeutAssets.VestSprite)
             };
         }

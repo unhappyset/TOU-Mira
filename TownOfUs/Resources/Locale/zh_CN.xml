@@ -902,8 +902,8 @@
   <string name="TouRoleSurvivorIntroBlurb">不择手段活下去</string>
   <string name="TouRoleSurvivorTabDescription">活到最后即可与任意阵营一同获胜</string>
   <string name="TouRoleSurvivorWikiDescription">求存者是一名中立善良型职业，只需要活到游戏结束即可获胜。</string>
-  <string name="TouRoleSurvivorVest">防弹衣</string>
-  <string name="TouRoleSurvivorVestWikiDescription">穿上防弹衣保护自己免受攻击。</string>
+  <string name="TouRoleSurvivorSafeguard">防弹衣</string>
+  <string name="TouRoleSurvivorSafeguardWikiDescription">穿上防弹衣保护自己免受攻击。</string>
   <string name="TouOptionSurvivorVestCooldown">防弹衣冷却</string>
   <string name="TouOptionSurvivorVestDuration">防弹衣持续时间</string>
   <string name="TouOptionSurvivorMaxVests">最大防弹衣数量</string>

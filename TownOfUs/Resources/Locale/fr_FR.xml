@@ -128,8 +128,8 @@
   <string name="TouRoleSurvivorIntroBlurb">Faites le Nécessaire Pour Vivre</string>
   <string name="TouRoleSurvivorTabDescription">Restez en vie pour gagner avec la faction restante</string>
   <string name="TouRoleSurvivorWikiDescription">Le Survivant est un rôle Neutre Bénin qui doit juste survivre jusqu'à la fin de la partie.</string>
-  <string name="TouRoleSurvivorVest">Gilet</string>
-  <string name="TouRoleSurvivorVestWikiDescription">Portez un Gilet vous protégeant des attaques.</string>
+  <string name="TouRoleSurvivorSafeguard">Gilet</string>
+  <string name="TouRoleSurvivorSafeguardWikiDescription">Portez un Gilet vous protégeant des attaques.</string>
   <string name="TouOptionSurvivorVestCooldown">Délai du Gilet</string>
   <string name="TouOptionSurvivorVestDuration">Durée du Gilet</string>
   <string name="TouOptionSurvivorMaxVests">Nombre Max de Gilets</string>

@@ -15,7 +15,7 @@ namespace TownOfUs.Buttons.Neutral;
 
 public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAftermathableButton
 {
-    public override string Name => "Mimic";
+    public override string Name => TouLocale.Get("TouRoleGlitchMimic", "Mimic");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Glitch;
     public override float Cooldown => OptionGroupSingleton<GlitchOptions>.Instance.MimicCooldown + MapCooldown;
@@ -84,7 +84,7 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
 
                         EffectActive = true;
                         Timer = EffectDuration;
-                        OverrideName("Unmimic");
+                        OverrideName(TouLocale.Get("TouRoleGlitchUnmimic", "Unmimic"));
                     }
                     else
                     {
@@ -104,7 +104,7 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
         else
         {
             PlayerControl.LocalPlayer.RpcRemoveModifier<GlitchMimicModifier>();
-            OverrideName("Mimic");
+            OverrideName(TouLocale.Get("TouRoleGlitchMimic", "Mimic"));
             TouAudio.PlaySound(TouAudio.UnmimicSound);
         }
     }
@@ -112,7 +112,7 @@ public sealed class GlitchMimicButton : TownOfUsRoleButton<GlitchRole>, IAfterma
     public override void OnEffectEnd()
     {
         TouAudio.PlaySound(TouAudio.UnmimicSound);
-        OverrideName("Mimic");
+        OverrideName(TouLocale.Get("TouRoleGlitchMimic", "Mimic"));
     }
 
     public override bool CanUse()
