@@ -262,7 +262,7 @@
   <string name="TouRoleClericCleanse">Cleanse</string>
   <string name="TouRoleClericCleanseWikiDescription">Remove all negative effects on a player. (Douse, Hack, Infect, Blackmail, Blind, Flash, and Hypnosis)</string>
   <!-- Cleric Feedback -->
-  <string name="TouRoleClericMessageTitle">Cleric Feedback:</string>
+  <string name="TouRoleClericMessageTitle">Cleric Feedback</string>
   <string name="TouRoleClericCleansedEffects">Cleansed effects on \%player\%:</string>
   <string name="TouRoleClericCleansedNoEffects">No negative effects were found on \%player\%.</string>
   <!-- Cleric Options -->
@@ -1015,6 +1015,17 @@
   <string name="TouOptionDoomsayerGuessesAllAtOnce">Doomsayer Guesses All Roles At Once</string>
   <string name="TouOptionDoomsayerCantObserve">Doomsayer Can't Observe</string>
   <string name="TouOptionDoomsayerWin">Doomsayer Win</string>
+  <!-- Doomsayer Feedback -->
+  <string name="TouRoleDoomsayerMessageTitle">Doomsayer Report</string>
+  <string name="TouRoleDoomsayerRoleHintPerception">You observe that \%player\% has an altered perception of reality</string>
+  <string name="TouRoleDoomsayerRoleHintInsight">You observe that \%player\% has an insight for private information</string>
+  <string name="TouRoleDoomsayerRoleHintDeath">You observe that \%player\% has an unusual obsession with dead bodies</string>
+  <string name="TouRoleDoomsayerRoleHintHunter">You observe that \%player\% is well trained in hunting down prey</string>
+  <string name="TouRoleDoomsayerRoleHintFearmonger">You observe that \%player\% spreads fear amongst the group</string>
+  <string name="TouRoleDoomsayerRoleHintProtective">You observe that \%player\% hides to guard themselves or others</string>
+  <string name="TouRoleDoomsayerRoleHintTrickster">You observe that \%player\% has a trick up their sleeve</string>
+  <string name="TouRoleDoomsayerRoleHintRelentless">You observe that \%player\% is capable of performing relentless attacks</string>
+  <string name="TouRoleDoomsayerRoleHintDefault">You observe that \%player\% is not from this town</string>
   <!-- Executioner -->
   <!-- Executioner Wiki / Description -->
   <string name="TouRoleExecutioner">Executioner</string>

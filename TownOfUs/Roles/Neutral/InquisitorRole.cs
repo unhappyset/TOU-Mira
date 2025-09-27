@@ -266,17 +266,21 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
                     $"{text}\n");
                 var roles = TargetRoles;
                 var lastRole = roles[roles.Count - 1];
-                roles.Remove(lastRole);
 
                 if (roles.Count != 0)
                 {
                     reportBuilder.Append(TownOfUsPlugin.Culture, $"(");
                     foreach (var role2 in roles)
                     {
-                        reportBuilder.Append(TownOfUsPlugin.Culture, $"{role2.GetRoleName()}, ");
+                        if (role2 == lastRole)
+                        {
+                            reportBuilder.Append(TownOfUsPlugin.Culture, $"#{lastRole.GetRoleName().ToLowerInvariant().Replace(" ", "-")})");
+                        }
+                        else
+                        {
+                            reportBuilder.Append(TownOfUsPlugin.Culture, $"#{role2.GetRoleName().ToLowerInvariant().Replace(" ", "-")}, ");
+                        }
                     }
-
-                    reportBuilder.Append(TownOfUsPlugin.Culture, $"{lastRole.GetRoleName()})");
                 }
             }
             else
