@@ -3,7 +3,6 @@ using System.Globalization;
 using HarmonyLib;
 using MiraAPI.Events;
 using System.Text;
-using InnerNet;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
