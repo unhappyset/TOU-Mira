@@ -995,7 +995,7 @@ public static class HudManagerPatches
     [HarmonyPostfix]
     public static void HudManagerStartPatch(HudManager __instance)
     {
-        StoredHostLocale = TranslationController.Instance.GetString(StringNames.HostNounLabel).Replace(":", "");
+        StoredHostLocale = TranslationController.Instance.GetString(StringNames.HostNounEmpty);
         StoredTasksText = TranslationController.Instance.GetString(StringNames.Tasks);
         StoredSpectatingLocale = TouLocale.Get("TouRoleSpectator");
         StoredRoleList = TouLocale.Get("SetRoleList");
