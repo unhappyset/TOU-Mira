@@ -100,7 +100,7 @@ public static class TouRoleManagerPatches
         }
 
         CrewmateGhostRolePool.RemoveAll(x => x == (RoleTypes)RoleId.Get<HaunterRole>());
-        CustomGhostRolePool.RemoveAll(x => x == (RoleTypes)RoleId.Get<PhantomTouRole>());
+        CustomGhostRolePool.RemoveAll(x => x == (RoleTypes)RoleId.Get<PhantomTouRole>() || x == (RoleTypes)RoleId.Get<SpectatorRole>());
     }
 
     private static void AssignRoles(List<NetworkedPlayerInfo> infected)
@@ -683,7 +683,7 @@ public static class TouRoleManagerPatches
         {
             player.Object.RpcSetRole(RoleTypes.Crewmate);
         }
-        
+
         var random = new System.Random();
 
         var players = GameData.Instance.AllPlayers.ToArray().Excluding(x => SpectatorRole.TrackedSpectators.Contains(x.PlayerName)).ToList();
