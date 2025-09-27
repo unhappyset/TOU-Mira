@@ -797,6 +797,7 @@
   <string name="TouRoleEclipsalTabDescription">Blind players to prevent them from seeing others</string>
   <string name="TouRoleEclipsalWikiDescription">The Eclipsal is an Impostor Concealing role that can hinder the vision of all crewmates and neutrals alike, given that they are near the Eclipsal.</string>
   <string name="TouRoleEclipsalBlind">Blind</string>
+  <string name="TouRoleEclipsalUnblinding">Unblinding</string>
   <string name="TouRoleEclipsalBlindWikiDescription">Blinding players causes their fog of war to overtake their screen, only letting them see the map and prevents reporting. After a while, they will regain their vision and have vision like normal.</string>
   <!-- Eclipsal Options -->
   <string name="TouOptionEclipsalBlindCooldown">Blind Cooldown</string>
@@ -844,8 +845,6 @@
   <!-- Hypnotist Options -->
   <string name="TouOptionHypnotistHypnotizeCooldown">Hypnotize Cooldown</string>
   <string name="TouOptionHypnotistHypnotistCanKillWithTeammate">Hypnotist Can Kill With Teammate</string>
-  <string name="TouRoleInfestor">Infestor</string>
-  <!-- Not in code yet -->
 
   <!-- Janitor Wiki / Abilities -->
   <string name="TouRoleJanitor">Janitor</string>
@@ -853,6 +852,7 @@
   <string name="TouRoleJanitorTabDescription">Clean bodies to hide kills and crime scenes</string>
   <string name="TouRoleJanitorWikiDescription">The Janitor is an Impostor Support role that can clean dead bodies.</string>
   <string name="TouRoleJanitorClean">Clean</string>
+  <string name="TouRoleJanitorCleaning">Cleaning</string>
   <string name="TouRoleJanitorCleanWikiDescription">Clean a dead body, making it disappear, and making it unreportable.</string>
   <!-- Janitor Options -->
   <string name="TouOptionJanitorCleanUsesPerGame">Clean Uses Per Game</string>
@@ -881,6 +881,7 @@
   <string name="TouRoleMorphlingSample">Sample</string>
   <string name="TouRoleMorphlingSampleWikiDescription">Take a DNA sample of a player to morph into them later.</string>
   <string name="TouRoleMorphlingMorph">Morph</string>
+  <string name="TouRoleMorphlingUnmorph">Unmorph</string>
   <string name="TouRoleMorphlingMorphWikiDescription">Morph into the appearance of the sampled player, which can be canceled early.</string>
   <!-- Morphling Options -->
   <string name="TouOptionMorphlingSamplesPerGame">Samples Per Game</string>
@@ -917,8 +918,8 @@
   <string name="TouRoleTraitorIntroBlurb">Betray The Crewmates!</string>
   <string name="TouRoleTraitorTabDescription">Betray the crewmates with a new impostor role!</string>
   <string name="TouRoleTraitorWikiDescription">The Traitor is an Impostor Power role that spawns after a meeting, in which the spawn conditions are suitable. The Traitor will always be a crewmate, and they may change to a few select roles.</string>
-  <string name="TouRoleTraitorChange Role">Change Role</string>
-  <string name="TouRoleTraitorChange RoleWikiDescription">The Traitor can change their role to one of the provided role cards, or gamble on the random. Once they select a role, they stay as that role until they die. However, they must still be guessed as Traitor.</string>
+  <string name="TouRoleTraitorChangeRole">Change Role</string>
+  <string name="TouRoleTraitorChangeRoleWikiDescription">The Traitor can change their role to one of the provided role cards, or gamble on the random. Once they select a role, they stay as that role until they die. However, they must still be guessed as Traitor.</string>
   <!-- Traitor Options -->
   <string name="TouOptionTraitorMinimumPeopleAlive">Minimum People Alive When Traitor Can Spawn</string>
   <string name="TouOptionTraitorTraitorWontSpawnIfNKIsAlive">Traitor Won't Spawn If NK Is Alive</string>
@@ -961,7 +962,8 @@
   <string name="TouRoleWarlockIntroBlurb">Charge Up Your Kill Button To Multi Kill</string>
   <string name="TouRoleWarlockTabDescription">Charge your attack to 100% to kill crewmates in small bursts</string>
   <string name="TouRoleWarlockWikiDescription">The Warlock is an Impostor Killing role that can charge up attacks to wipe out the crew quickly.</string>
-  <string name="TouRoleWarlockKill">Kill</string>
+  <string name="TouRoleWarlockBurstKill">Burst Kill</string>
+  <string name="TouRoleWarlockBurstActive">Burst Active</string>
   <string name="TouRoleWarlockKillWikiDescription">Replaces your regular kill button with three stages: On Cooldown, Uncharged, and Charged. If you kill while charging, your burst will be fully reset. When it is charged, you can kill in a small burst to kill multiple players in a short time.</string>
   <!-- Warlock Options -->
   <string name="TouOptionWarlockTimeItTakesToFullyCharge">Time It Takes To Fully Charge</string>
@@ -1005,7 +1007,7 @@
   <string name="TouRoleDoomsayerIntroBlurb">Guess People's Roles To Win!</string>
   <string name="TouRoleDoomsayerTabDescription">Win by guessing the roles of \%guessCount\% players.</string>
   <string name="TouRoleDoomsayerWikiDescription">The Doomsayer is a Neutral Evil role that wins by guessing \%guessCount\% players' roles.</string>
-  <string name="TouRoleDoomsayerWikiAddIfObserve"> They may observe players to get a hint of what their roles are the following meeting.</string>
+  <string name="TouRoleDoomsayerWikiDescriptionIfCanObserve">The Doomsayer is a Neutral Evil role that wins by guessing \%guessCount\% players' roles. They may observe players to get a hint of what their roles are the following meeting.</string>
   <string name="TouRoleDoomsayerObserve">Observe</string>
   <string name="TouRoleDoomsayerObserveWikiDescription">Observe a player, gaining a hint in the next meeting what their role could be.</string>
   <!-- Doomsayer Options -->
@@ -1015,6 +1017,9 @@
   <string name="TouOptionDoomsayerGuessesAllAtOnce">Doomsayer Guesses All Roles At Once</string>
   <string name="TouOptionDoomsayerCantObserve">Doomsayer Can't Observe</string>
   <string name="TouOptionDoomsayerWin">Doomsayer Win</string>
+  <!-- Doomsayer Misguess -->
+  <string name="TouRoleDoomsayerMisguessOne">Only one guess was incorrect!</string>
+  <string name="TouRoleDoomsayerMisguessMultiple">\%misguessCount\% guesses were incorrect.</string>
   <!-- Doomsayer Feedback -->
   <string name="TouRoleDoomsayerMessageTitle">Doomsayer Report</string>
   <string name="TouRoleDoomsayerRoleHintPerception">You observe that \%player\% has an altered perception of reality</string>

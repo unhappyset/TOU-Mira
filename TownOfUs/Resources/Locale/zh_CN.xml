@@ -1016,8 +1016,8 @@
   <string name="TouRoleTraitorIntroBlurb">背叛船员！</string>
   <string name="TouRoleTraitorTabDescription">背叛船员，获得新伪装者身份！</string>
   <string name="TouRoleTraitorWikiDescription">背叛者是一名伪装者击杀型职业，会在会议后满足条件时生成。背叛者不会成为市长，且必须是船员。背叛者的目标是为已死伪装者赢得游戏并消灭船员，同时可以变更为更强力的职业。</string>
-  <string name="TouRoleTraitorChange Role">变更职业</string>
-  <string name="TouRoleTraitorChange RoleWikiDescription">背叛者可以从提供的职业卡中选择变更，或随机抽取。选择后将一直保持该身份直到死亡，但仍需被猜中为背叛者。</string>
+  <string name="TouRoleTraitorChangeRole">变更职业</string>
+  <string name="TouRoleTraitorChangeRoleWikiDescription">背叛者可以从提供的职业卡中选择变更，或随机抽取。选择后将一直保持该身份直到死亡，但仍需被猜中为背叛者。</string>
   <string name="TouOptionTraitorMinimumPeopleAlive">背叛者可生成时最少存活人数</string>
   <string name="TouOptionTraitorTraitorWontSpawnIfNKIsAlive">有中立杀手存活时不生成背叛者</string>
   <string name="TouOptionTraitorDisableExistingImpostorRoles">禁用本场游戏伪装者职业</string>

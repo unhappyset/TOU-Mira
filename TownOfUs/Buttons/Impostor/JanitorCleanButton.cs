@@ -11,7 +11,7 @@ namespace TownOfUs.Buttons.Impostor;
 public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBody>, IAftermathableBodyButton,
     IDiseaseableButton
 {
-    public override string Name => "Clean";
+    public override string Name => TouLocale.Get("TouRoleJanitorClean", "Clean");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<JanitorOptions>.Instance.CleanCooldown + MapCooldown;
@@ -39,12 +39,12 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
         }
 
         CleaningBody = Target;
-        OverrideName("Cleaning");
+        OverrideName(TouLocale.Get("TouRoleJanitorCleaning", "Cleaning"));
     }
 
     public override void OnEffectEnd()
     {
-        OverrideName("Clean");
+        OverrideName(TouLocale.Get("TouRoleJanitorClean", "Clean"));
         if (CleaningBody == Target && CleaningBody != null)
         {
             JanitorRole.RpcCleanBody(PlayerControl.LocalPlayer, CleaningBody.ParentId);

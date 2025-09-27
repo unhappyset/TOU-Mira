@@ -41,7 +41,8 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
 
     public string RoleLongDescription =>
-        $"Win by guessing the roles of {(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin} players";
+        TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription").Replace("<guessCount>",
+            $"{(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin}");
 
     public Color RoleColor => TownOfUsColors.Doomsayer;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
@@ -79,11 +80,12 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
     public string GetAdvancedDescription()
     {
+        var opts = OptionGroupSingleton<DoomsayerOptions>.Instance;
+        var shownDesc = TouLocale.GetParsed(opts.CantObserve
+            ? "TouRoleDoomsayerWikiDescription"
+            : "TouRoleDoomsayerWikiDescriptionIfCanObserve");
         return
-            $"The {RoleName} is a Neutral Evil role that wins by guessing {(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin} players' roles." +
-            (OptionGroupSingleton<DoomsayerOptions>.Instance.CantObserve
-                ? string.Empty
-                : " They may observe players to get a hint of what their roles are the following meeting.") +
+            shownDesc.Replace("<guessCount>", $"{(int)opts.DoomsayerGuessesToWin}") +
             MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -94,8 +96,8 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Observe",
-            "Observe a player, gaining a hint in the next meeting what their role could be.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Observe", "Observe"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}ObserveWikiDescription"),
             TouNeutAssets.Observe)
             };
         }
@@ -186,6 +188,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         {
             var role = player.Object.Data.Role;
             var doomableRole = role as IDoomable;
+            var undoomableRole = role as IUnguessable;
             var hintType = DoomableType.Default;
             var cachedMod =
                 player.Object.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole) as ICachedRole;
@@ -195,11 +198,9 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                 doomableRole = role as IDoomable;
             }
 
-            var unguessableMod =
-                player.Object.GetModifiers<BaseModifier>().FirstOrDefault(x => x is IUnguessable) as IUnguessable;
-            if (unguessableMod != null)
+            if (undoomableRole != null)
             {
-                role = unguessableMod.AppearAs;
+                role = undoomableRole.AppearAs;
                 doomableRole = role as IDoomable;
             }
 
@@ -357,8 +358,8 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             if (IncorrectGuesses > 0 && opts.DoomsayerGuessAllAtOnce)
             {
                 var text = NumberOfGuesses - AllVictims.Count == 1
-                    ? "<b>Only one guess was incorrect!</b>"
-                    : $"<b>{NumberOfGuesses - AllVictims.Count} guesses were incorrect.</b>";
+                    ? $"<b>{TouLocale.GetParsed("TouRoleDoomsayerMisguessOne")}</b>"
+                    : $"<b>{TouLocale.GetParsed("TouRoleDoomsayerMisguessMultiple").Replace("<misguessCount>", $"{NumberOfGuesses - AllVictims.Count}")}</b>";
                 var notif1 = Helpers.CreateAndShowNotification(
                     text, Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
 

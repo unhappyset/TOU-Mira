@@ -87,7 +87,7 @@ public sealed class VenererAbilityButton : TownOfUsRoleButton<VenererRole>, IAft
 
     private void SetAbility(string name, Sprite sprite)
     {
-        OverrideName(name);
+        OverrideName(TouLocale.Get($"TouRoleVenener{name}", name));
         OverrideSprite(sprite);
     }
 

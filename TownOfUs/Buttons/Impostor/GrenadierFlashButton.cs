@@ -13,7 +13,7 @@ namespace TownOfUs.Buttons.Impostor;
 
 public sealed class GrenadierFlashButton : TownOfUsRoleButton<GrenadierRole>, IAftermathableButton
 {
-    public override string Name => "Flash";
+    public override string Name => TouLocale.Get("TouRoleGrenadierFlash", "Flash");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => OptionGroupSingleton<GrenadierOptions>.Instance.GrenadeCooldown + MapCooldown;
