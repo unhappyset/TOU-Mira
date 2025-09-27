@@ -8,8 +8,9 @@ namespace TownOfUs.Modifiers.Game;
 
 public class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string ModifierName => "Double Shot";
-    public override string IntroInfo => "You also get a second chance when guessing.";
+    public override string LocaleKey => "DoubleShot";
+    public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
+    public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
 
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.DoubleShot;
     public override ModifierFaction FactionType => ModifierFaction.AssailantUtility;
@@ -19,18 +20,16 @@ public class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
 
     public bool Used { get; set; }
 
+    public override string GetDescription()
+    {
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
+    }
     public string GetAdvancedDescription()
     {
-        return
-            "You get a second chance when you fail to guess a player in a meeting.";
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription");
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
-
-    public override string GetDescription()
-    {
-        return "You have an extra chance when assassinating";
-    }
 
     public override int GetAssignmentChance()
     {
