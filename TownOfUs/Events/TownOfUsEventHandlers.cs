@@ -3,6 +3,7 @@ using System.Globalization;
 using HarmonyLib;
 using MiraAPI.Events;
 using System.Text;
+using InnerNet;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
@@ -601,10 +602,24 @@ public static class TownOfUsEventHandlers
     [RegisterEvent]
     public static void PlayerJoinEventHandler(PlayerJoinEvent @event)
     {
-        var newPlayer = @event.ClientData.Character;
-        if (newPlayer.IsHost() || !PlayerControl.LocalPlayer.IsHost())
+        Coroutines.Start(CoSendSpecData());
+    }
+
+    public static IEnumerator CoSendSpecData()
+    {
+        while (!AmongUsClient.Instance)
         {
-            return;
+            yield return null;
+        }
+
+        while (!PlayerControl.LocalPlayer)
+        {
+            yield return null;
+        }
+
+        if (!PlayerControl.LocalPlayer.IsHost())
+        {
+            yield break;
         }
 
         foreach (var player in PlayerControl.AllPlayerControls)
@@ -614,7 +629,6 @@ public static class TownOfUsEventHandlers
                 ChatPatches.RpcSelectSpectator(PlayerControl.LocalPlayer);
             }
         }
-        
     }
 
     [RegisterEvent]
