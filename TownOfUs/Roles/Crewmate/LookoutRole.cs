@@ -14,7 +14,7 @@ public sealed class LookoutRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public static string LocaleKey => "Lookout";
+    public string LocaleKey => "Lookout";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

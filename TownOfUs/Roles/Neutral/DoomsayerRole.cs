@@ -36,7 +36,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VigilanteRole>());
     public DoomableType DoomHintType => DoomableType.Insight;
-    public static string LocaleKey => "Doomsayer";
+    public string LocaleKey => "Doomsayer";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
 

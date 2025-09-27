@@ -13,7 +13,7 @@ namespace TownOfUs.Roles.Crewmate;
 public sealed class InvestigatorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public static string LocaleKey => "Investigator";
+    public string LocaleKey => "Investigator";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

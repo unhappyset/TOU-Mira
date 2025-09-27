@@ -20,7 +20,7 @@ public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     [HideFromIl2Cpp]
     public PlayerControl? Sampled { get; set; }
     public DoomableType DoomHintType => DoomableType.Perception;
-    public static string LocaleKey => "Morphling";
+    public string LocaleKey => "Morphling";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

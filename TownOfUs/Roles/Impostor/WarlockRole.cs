@@ -13,7 +13,7 @@ public sealed class WarlockRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VeteranRole>());
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public static string LocaleKey => "Warlock";
+    public string LocaleKey => "Warlock";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

@@ -40,7 +40,7 @@ public sealed class HypnotistRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<LookoutRole>());
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public static string LocaleKey => "Hypnotist";
+    public string LocaleKey => "Hypnotist";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

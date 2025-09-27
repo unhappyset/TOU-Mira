@@ -52,7 +52,7 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         HudManager.Instance.AbilityButton.SetDisabled();
     }
 
-    public static string LocaleKey => "Spectator";
+    public string LocaleKey => "Spectator";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

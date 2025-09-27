@@ -382,6 +382,7 @@
         "\n- Inquisitor Report entries can now be clicked to open their wiki entries.",
         "\n- Vanilla wiki entries for Viper and Detective no longer appear as \"STRMISS\"",
         "\n\n\r<size=105%>Other Bugfixes:</size>",
+        "\n- Causes of death are now changed properly.",
         "\n- Spectator information is updated as soon as a new client joins the lobby, hiding Spectators from the meeting.",
         "\n- Spectator can no longer become Phantom."
       ]

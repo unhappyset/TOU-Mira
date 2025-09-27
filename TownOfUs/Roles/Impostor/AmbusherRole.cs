@@ -31,7 +31,7 @@ public sealed class AmbusherRole(IntPtr cppPtr)
     : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public static string LocaleKey => "Ambusher";
+    public string LocaleKey => "Ambusher";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

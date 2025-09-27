@@ -21,7 +21,7 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Insight;
-    public static string LocaleKey => "Oracle";
+    public string LocaleKey => "Oracle";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

@@ -19,7 +19,7 @@ namespace TownOfUs.Roles.Neutral;
 public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public static string LocaleKey => "Arsonist";
+    public string LocaleKey => "Arsonist";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
 

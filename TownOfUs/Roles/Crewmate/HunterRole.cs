@@ -25,7 +25,7 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     [HideFromIl2Cpp] public List<PlayerControl> CaughtPlayers { get; } = [];
 
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public static string LocaleKey => "Hunter";
+    public string LocaleKey => "Hunter";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

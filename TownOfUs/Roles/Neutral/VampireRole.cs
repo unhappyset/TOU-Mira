@@ -24,7 +24,7 @@ public sealed class VampireRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
     public DoomableType DoomHintType => DoomableType.Death;
     public string YouAreText => TouLocale.Get("YouAreA");
     public string YouWereText => TouLocale.Get("YouWereA");
-    public static string LocaleKey => "Vampire";
+    public string LocaleKey => "Vampire";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

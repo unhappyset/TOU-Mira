@@ -29,7 +29,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public static string LocaleKey => "Transporter";
+    public string LocaleKey => "Transporter";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

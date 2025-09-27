@@ -22,7 +22,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     [HideFromIl2Cpp]
     public PlayerVoteArea? Swap2 { get; set; }
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public static string LocaleKey => "Swapper";
+    public string LocaleKey => "Swapper";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

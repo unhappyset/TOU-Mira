@@ -25,7 +25,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     [HideFromIl2Cpp]
     public PlayerControl? Killer { get; set; }
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public static string LocaleKey => "Deputy";
+    public string LocaleKey => "Deputy";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

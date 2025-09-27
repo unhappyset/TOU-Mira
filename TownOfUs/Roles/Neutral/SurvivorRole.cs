@@ -16,7 +16,7 @@ namespace TownOfUs.Roles.Neutral;
 public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IGuessable
 {
     public DoomableType DoomHintType => DoomableType.Protective;
-    public static string LocaleKey => "Survivor";
+    public string LocaleKey => "Survivor";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

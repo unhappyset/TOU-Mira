@@ -24,7 +24,7 @@ namespace TownOfUs.Roles.Impostor;
 public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Insight;
-    public static string LocaleKey => "Ambassador";
+    public string LocaleKey => "Ambassador";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
