@@ -48,7 +48,7 @@ public sealed class WarlockRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-                new(TouLocale.GetParsed($"TouRole{LocaleKey}BurstKill", "BurstKill"),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}BurstKill", "Burst Kill"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}KillWikiDescription"),
             TouAssets.KillSprite)
             };
