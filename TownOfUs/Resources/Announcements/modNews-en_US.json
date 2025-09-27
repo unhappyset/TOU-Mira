@@ -362,8 +362,8 @@
       ]
     },
     {
-      "Date": "2025-09-25T12:50:00Z",
-      "Number": "100020",
+      "Date": "2025-09-27T12:50:00Z",
+      "Number": "100021",
       "ShortTitle": "TOU: Mira v1.2.1",
       "SubTitle": "Hotfix Update",
       "Title": "Just cleaning up, is all.",
@@ -372,7 +372,18 @@
         "\n\nAgain, the Mira team really appreciates all of your support, thank you so much for playing the mod!",
         "\n\n★ <link=https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.2.1>TOU Mira v1.2.1 Download</link> ★ <link=https://au-avengers.github.io/docs.toum.gg/>Mod Guide & Details</link> ★",
         "\n\n\r<size=105%>Modifier Bugfixes:</size>",
-        "\n- Diseased wiki description now shows up correctly."
+        "\n- Diseased wiki description now shows up correctly.",
+        "\n\n\r<size=105%>Localization Updates:</size>",
+        "\n- Impostor Abilities are nearly fully ready for translations.",
+        "\n- Doomsayer now adds localization changes correctly.",
+        "\n\n\r<size=105%>Wiki Bugfixes:</size>",
+        "\n- Fixed wiki entries for Diseased, Lovers, Bait, Mini, Rotting, Satellite, Amnesiac, and Plumber.",
+        "\n- Vanilla wiki entries get properly localized to your active language.",
+        "\n- Inquisitor Report entries can now be clicked to open their wiki entries.",
+        "\n- Vanilla wiki entries for Viper and Detective no longer appear as \"STRMISS\",",
+        "\n\n\r<size=105%>Other Bugfixes:</size>",
+        "\n- Spectator information is updated as soon as a new client joins the lobby, hiding Spectators from the meeting.",
+        "\n- Spectator can no longer become Phantom."
       ]
     }
       ]

@@ -626,7 +626,7 @@ public static class TownOfUsEventHandlers
         {
             if (SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
             {
-                ChatPatches.RpcSelectSpectator(PlayerControl.LocalPlayer);
+                ChatPatches.RpcSelectSpectator(player);
             }
         }
     }
