@@ -557,9 +557,29 @@ public static class TownOfUsEventHandlers
             return;
         }
 
+        if (PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        {
+            @event.Cancel();
+        }
+
         // Prevent last 2 players from venting
         if (@event.IsVent)
         {
+            if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>())
+            {
+                if (PlayerControl.LocalPlayer.inVent)
+                {
+                    PlayerControl.LocalPlayer.GetModifier<GlitchHackedModifier>()!.ShowHacked();
+                    PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
+                    PlayerControl.LocalPlayer.MyPhysics.ExitAllVents();
+                }
+                @event.Cancel();
+            }
+            else if (HudManager.Instance.Chat.IsOpenOrOpening || MeetingHud.Instance)
+            {
+                @event.Cancel();
+            }
+
             var aliveCount = PlayerControl.AllPlayerControls.ToArray().Count(x => !x.HasDied());
 
             if (PlayerControl.LocalPlayer.inVent && aliveCount <= 2 &&

@@ -6,7 +6,6 @@ namespace TownOfUs.Patches;
 public static class ButtonClickPatches
 {
     [HarmonyPatch(typeof(ReportButton), nameof(ReportButton.DoClick))]
-    [HarmonyPatch(typeof(VentButton), nameof(VentButton.DoClick))]
     [HarmonyPatch(typeof(UseButton), nameof(UseButton.DoClick))]
     [HarmonyPatch(typeof(PetButton), nameof(PetButton.DoClick))]
     [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.DoClick))]
