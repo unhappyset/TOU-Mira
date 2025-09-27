@@ -37,9 +37,11 @@ using TownOfUs.Options.Modifiers.Universal;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Patches;
+using TownOfUs.Patches.Misc;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Impostor;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -594,6 +596,25 @@ public static class TownOfUsEventHandlers
                 @event.Cancel();
             }
         }
+    }
+
+    [RegisterEvent]
+    public static void PlayerJoinEventHandler(PlayerJoinEvent @event)
+    {
+        var newPlayer = @event.ClientData.Character;
+        if (newPlayer.IsHost() || !PlayerControl.LocalPlayer.IsHost())
+        {
+            return;
+        }
+
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
+            {
+                ChatPatches.RpcSelectSpectator(PlayerControl.LocalPlayer);
+            }
+        }
+        
     }
 
     [RegisterEvent]

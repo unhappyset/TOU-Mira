@@ -40,12 +40,12 @@ public static class ChatPatches
                 if (SpectatorRole.TrackedSpectators.Contains(PlayerControl.LocalPlayer.Data.PlayerName))
                 {
                     MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "You are no longer a spectator!");
-                    RemoveSpectator(PlayerControl.LocalPlayer);
+                    RpcRemoveSpectator(PlayerControl.LocalPlayer);
                 }
                 else
                 {
                     MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "Set yourself as a spectator!");
-                    SelectSpectator(PlayerControl.LocalPlayer);
+                    RpcSelectSpectator(PlayerControl.LocalPlayer);
                 }
             }
 
@@ -277,8 +277,20 @@ public static class ChatPatches
     }
 
     [MethodRpc((uint)TownOfUsRpc.SelectSpectator, SendImmediately = true)]
-    public static void SelectSpectator(PlayerControl player) => SpectatorRole.TrackedSpectators.Add(player.Data.PlayerName);
+    public static void RpcSelectSpectator(PlayerControl player)
+    {
+        if (!SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
+        {
+            SpectatorRole.TrackedSpectators.Add(player.Data.PlayerName);
+        }
+    }
 
     [MethodRpc((uint)TownOfUsRpc.RemoveSpectator, SendImmediately = true)]
-    public static void RemoveSpectator(PlayerControl player) => SpectatorRole.TrackedSpectators.Remove(player.Data.PlayerName);
+    public static void RpcRemoveSpectator(PlayerControl player)
+    {
+        if (SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
+        {
+            SpectatorRole.TrackedSpectators.Remove(player.Data.PlayerName);
+        }
+    }
 }
