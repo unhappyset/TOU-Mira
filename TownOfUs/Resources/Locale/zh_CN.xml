@@ -489,7 +489,6 @@
   <string name="TouModifierLovers">恋人</string>
   <string name="TouModifierMini">迷你船员</string>
   <string name="TouRoleHerbalist">草药师</string>
-  <string name="TouRoleInfestor">感染者</string>
   <string name="TouRoleWardenIntroBlurb">强化船员</string>
   <string name="TouRoleWardenTabDescription">强化船员，防止他人对其进行互动</string>
   <string name="TouRoleWardenWikiDescription">护卫者是一名船员保护型职业，可以强化一名玩家，防止他人对其进行互动。 </string>
@@ -527,7 +526,6 @@
   <string name="TouRoleDoomsayerIntroBlurb">猜中他人身份即可获胜！</string>
   <string name="TouRoleDoomsayerTabDescription">通过猜中\%guessCount\%名玩家的身份获胜。</string>
   <string name="TouRoleDoomsayerWikiDescription">末日预言者是一名中立邪恶型职业，通过猜中\%guessCount\%名玩家的身份获胜。</string>
-  <string name="TouRoleDoomsayerWikiAddIfObserve"> 可在会议前观察玩家，获得其身份线索。</string>
   <string name="TouRoleDoomsayerObserve">洞察</string>
   <string name="TouRoleDoomsayerObserveWikiDescription">洞察一名玩家，在下次会议获得其身份线索。</string>
   <string name="TouOptionDoomsayerCooldown">洞察冷却</string>
@@ -778,7 +776,6 @@
   <string name="TouRoleWarlockIntroBlurb">蓄力击杀，连环收割</string>
   <string name="TouRoleWarlockTabDescription">蓄力后可短时间内连续击杀多名玩家</string>
   <string name="TouRoleWarlockWikiDescription">巫术师是一名伪装者击杀型职业，可以蓄力攻击，快速收割船员。</string>
-  <string name="TouRoleWarlockKill">击杀</string>
   <string name="TouRoleWarlockKillWikiDescription">你的普通击杀键被三阶段替代：冷却中、蓄力中、已蓄力。冷却时无法击杀，蓄力中时可击杀但会重置蓄力，蓄力完成后可短时间内连续击杀多名玩家。</string>
   <string name="TouOptionWarlockTimeItTakesToFullyCharge">击杀键充能至100%额外所需用时</string>
   <string name="TouOptionWarlockTimeMultiplierAddedPerKillForNextCharge">每次击杀增加下次充能时间增加倍率</string>
