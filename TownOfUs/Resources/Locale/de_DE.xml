@@ -142,4 +142,13 @@
   <string name="TouRoleClericBarrier">Barriere</string>
   <string name="TouRoleClericCleanse">Säubern</string>
   <string name="TouRoleDeputy">Hilfssheriff</string>
+  <string name="ClientTabGameplay"></string>
+  <string name="ShowVanillaWikiEntries">Vanilla Wiki Eintrage Anzeigen</string>
+  <string name="PlayerHasNoModifiers">Keine Modifikationen</string>
+  <string name="MinimumShort">Min</string>
+  <string name="MaximumShort">Max</string>
+  <string name="CrewmateSupport">Unterstützende Besatzung</string>
+  <string name="ImpostorSupport">Unterstüzende Verräter</string>
+  <string name="CrewInvestigative">Ermittelnde Besatzung</string>
+  <string name="CrewPower">Machtvolle Besatzung</string>
 </resources>
