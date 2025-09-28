@@ -24,7 +24,7 @@ public sealed class DetectiveTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
     [HideFromIl2Cpp] public List<byte> InvestigatedPlayers { get; init; } = new();
 
     public DoomableType DoomHintType => DoomableType.Insight;
-    public static string LocaleKey => "Detective";
+    public string LocaleKey => "Detective";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

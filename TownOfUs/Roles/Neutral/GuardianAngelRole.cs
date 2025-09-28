@@ -73,7 +73,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<ClericRole>());
     public DoomableType DoomHintType => DoomableType.Protective;
-    public static string LocaleKey => "GuardianAngel";
+    public string LocaleKey => "GuardianAngel";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TargetString();
     public string RoleLongDescription => TargetString();

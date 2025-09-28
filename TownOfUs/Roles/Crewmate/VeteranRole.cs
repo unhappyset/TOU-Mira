@@ -16,7 +16,7 @@ public sealed class VeteranRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 
     public int Alerts { get; set; }
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public static string LocaleKey => "Veteran";
+    public string LocaleKey => "Veteran";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

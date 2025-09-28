@@ -18,7 +18,7 @@ public sealed class WerewolfRole(IntPtr cppPtr)
     public bool Rampaging { get; set; }
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<HunterRole>());
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public static string LocaleKey => "Werewolf";
+    public string LocaleKey => "Werewolf";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

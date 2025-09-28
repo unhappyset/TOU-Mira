@@ -262,7 +262,7 @@
   <string name="TouRoleClericCleanse">Cleanse</string>
   <string name="TouRoleClericCleanseWikiDescription">Remove all negative effects on a player. (Douse, Hack, Infect, Blackmail, Blind, Flash, and Hypnosis)</string>
   <!-- Cleric Feedback -->
-  <string name="TouRoleClericMessageTitle">Cleric Feedback:</string>
+  <string name="TouRoleClericMessageTitle">Cleric Feedback</string>
   <string name="TouRoleClericCleansedEffects">Cleansed effects on \%player\%:</string>
   <string name="TouRoleClericCleansedNoEffects">No negative effects were found on \%player\%.</string>
   <!-- Cleric Options -->
@@ -280,6 +280,7 @@
   <string name="TouRoleDeputyCamp">Camp</string>
   <string name="TouRoleDeputyCampWikiDescription">Camp a player to be alerted once they die. After their death, you may attempt to shoot the killer. If your shot is successful, the killer dies, if not, nothing will happen.</string>
   <!-- Deputy Feedback -->
+  <string name="TouRoleDeputyMessageTitle">Deputy Feedback</string>
   <string name="TouRoleDeputyMissedShot">You missed your shot! They are either not the killer or are invincible.</string>
   <!-- Detective - Crewmate Investigative -->
   <!-- Detective Wiki / Abilities -->
@@ -515,7 +516,7 @@
   <string name="TouRolePlumberFlush">Flush</string>
   <string name="TouRolePlumberFlushWikiDescription">Flushing the vents makes every vent open and close, kicking out anyone actively in a vent. The Plumber also gets an arrow pointing to every flushed player for one second.</string>
   <string name="TouRolePlumberBlock">Block</string>
-  <string name="TouRolePlumberBarricadeWikiDescription">Block a vent places a barricade on the vent selected for the next round, preventing players from using it.</string>
+  <string name="TouRolePlumberBlockWikiDescription">Block a vent by placing a barricade on it for the next round, preventing players from using it.</string>
   <!-- Plumber Options -->
   <string name="TouOptionPlumberFlushCooldown">Flush Cooldown</string>
   <string name="TouOptionPlumberBlockCooldown">Block Cooldown</string>
@@ -782,6 +783,7 @@
   <string name="TouRoleBomberTabDescription">Place bombs to kill several crewmates upon detonation at once</string>
   <string name="TouRoleBomberWikiDescription">The Bomber is an Impostor Killing role that can drop a bomb on the map, which detonates after \%detonateDelay\% second(s).</string>
   <string name="TouRoleBomberPlace">Place</string>
+  <string name="TouRoleBomberDetonating">Detonating</string>
   <string name="TouRoleBomberPlaceWikiDescription">Place a bomb, showing the radius in which it'll kill, killing up to \%maxKills\% player(s)</string>
   <!-- Bomber Options -->
   <string name="TouOptionBomberBombUsesPerGame">Bomb Uses Per Game</string>
@@ -797,6 +799,7 @@
   <string name="TouRoleEclipsalTabDescription">Blind players to prevent them from seeing others</string>
   <string name="TouRoleEclipsalWikiDescription">The Eclipsal is an Impostor Concealing role that can hinder the vision of all crewmates and neutrals alike, given that they are near the Eclipsal.</string>
   <string name="TouRoleEclipsalBlind">Blind</string>
+  <string name="TouRoleEclipsalUnblinding">Unblinding</string>
   <string name="TouRoleEclipsalBlindWikiDescription">Blinding players causes their fog of war to overtake their screen, only letting them see the map and prevents reporting. After a while, they will regain their vision and have vision like normal.</string>
   <!-- Eclipsal Options -->
   <string name="TouOptionEclipsalBlindCooldown">Blind Cooldown</string>
@@ -844,8 +847,6 @@
   <!-- Hypnotist Options -->
   <string name="TouOptionHypnotistHypnotizeCooldown">Hypnotize Cooldown</string>
   <string name="TouOptionHypnotistHypnotistCanKillWithTeammate">Hypnotist Can Kill With Teammate</string>
-  <string name="TouRoleInfestor">Infestor</string>
-  <!-- Not in code yet -->
 
   <!-- Janitor Wiki / Abilities -->
   <string name="TouRoleJanitor">Janitor</string>
@@ -853,6 +854,7 @@
   <string name="TouRoleJanitorTabDescription">Clean bodies to hide kills and crime scenes</string>
   <string name="TouRoleJanitorWikiDescription">The Janitor is an Impostor Support role that can clean dead bodies.</string>
   <string name="TouRoleJanitorClean">Clean</string>
+  <string name="TouRoleJanitorCleaning">Cleaning</string>
   <string name="TouRoleJanitorCleanWikiDescription">Clean a dead body, making it disappear, and making it unreportable.</string>
   <!-- Janitor Options -->
   <string name="TouOptionJanitorCleanUsesPerGame">Clean Uses Per Game</string>
@@ -881,6 +883,7 @@
   <string name="TouRoleMorphlingSample">Sample</string>
   <string name="TouRoleMorphlingSampleWikiDescription">Take a DNA sample of a player to morph into them later.</string>
   <string name="TouRoleMorphlingMorph">Morph</string>
+  <string name="TouRoleMorphlingUnmorph">Unmorph</string>
   <string name="TouRoleMorphlingMorphWikiDescription">Morph into the appearance of the sampled player, which can be canceled early.</string>
   <!-- Morphling Options -->
   <string name="TouOptionMorphlingSamplesPerGame">Samples Per Game</string>
@@ -917,8 +920,8 @@
   <string name="TouRoleTraitorIntroBlurb">Betray The Crewmates!</string>
   <string name="TouRoleTraitorTabDescription">Betray the crewmates with a new impostor role!</string>
   <string name="TouRoleTraitorWikiDescription">The Traitor is an Impostor Power role that spawns after a meeting, in which the spawn conditions are suitable. The Traitor will always be a crewmate, and they may change to a few select roles.</string>
-  <string name="TouRoleTraitorChange Role">Change Role</string>
-  <string name="TouRoleTraitorChange RoleWikiDescription">The Traitor can change their role to one of the provided role cards, or gamble on the random. Once they select a role, they stay as that role until they die. However, they must still be guessed as Traitor.</string>
+  <string name="TouRoleTraitorChangeRole">Change Role</string>
+  <string name="TouRoleTraitorChangeRoleWikiDescription">The Traitor can change their role to one of the provided role cards, or gamble on the random. Once they select a role, they stay as that role until they die. However, they must still be guessed as Traitor.</string>
   <!-- Traitor Options -->
   <string name="TouOptionTraitorMinimumPeopleAlive">Minimum People Alive When Traitor Can Spawn</string>
   <string name="TouOptionTraitorTraitorWontSpawnIfNKIsAlive">Traitor Won't Spawn If NK Is Alive</string>
@@ -961,7 +964,8 @@
   <string name="TouRoleWarlockIntroBlurb">Charge Up Your Kill Button To Multi Kill</string>
   <string name="TouRoleWarlockTabDescription">Charge your attack to 100% to kill crewmates in small bursts</string>
   <string name="TouRoleWarlockWikiDescription">The Warlock is an Impostor Killing role that can charge up attacks to wipe out the crew quickly.</string>
-  <string name="TouRoleWarlockKill">Kill</string>
+  <string name="TouRoleWarlockBurstKill">Burst Kill</string>
+  <string name="TouRoleWarlockBurstActive">Burst Active</string>
   <string name="TouRoleWarlockKillWikiDescription">Replaces your regular kill button with three stages: On Cooldown, Uncharged, and Charged. If you kill while charging, your burst will be fully reset. When it is charged, you can kill in a small burst to kill multiple players in a short time.</string>
   <!-- Warlock Options -->
   <string name="TouOptionWarlockTimeItTakesToFullyCharge">Time It Takes To Fully Charge</string>
@@ -975,8 +979,8 @@
   <string name="TouRoleAmnesiacIntroBlurb">Remember A Role Of A Deceased Player</string>
   <string name="TouRoleAmnesiacTabDescription">Find a dead body to remember and become their role.</string>
   <string name="TouRoleAmnesiacWikiDescription">The Amnesiac is a Neutral Benign role that gains access to a new role from remembering a dead body’s role. Use the role you remember to win the game.</string>
-  <String name="TouRoleAmnesiacRemember">Remember</String>
-  <String name="TouRoleAmnesiacRememberWikiDescription">Remember the role of a dead body. If the dead body's role is a unique role, you will remember the base faction's role instead.</String>
+  <string name="TouRoleAmnesiacRemember">Remember</string>
+  <string name="TouRoleAmnesiacRememberWikiDescription">Remember the role of a dead body. If the dead body's role is a unique role, you will remember the base faction's role instead.</string>
   <!-- Amnesiac Options -->
   <string name="TouOptionAmnesiacShowArrows">Show Arrows Pointing To Dead Bodies</string>
   <string name="TouOptionAmnesiacArrowDelay">Time After Death Arrow Appears</string>
@@ -1005,7 +1009,7 @@
   <string name="TouRoleDoomsayerIntroBlurb">Guess People's Roles To Win!</string>
   <string name="TouRoleDoomsayerTabDescription">Win by guessing the roles of \%guessCount\% players.</string>
   <string name="TouRoleDoomsayerWikiDescription">The Doomsayer is a Neutral Evil role that wins by guessing \%guessCount\% players' roles.</string>
-  <string name="TouRoleDoomsayerWikiAddIfObserve"> They may observe players to get a hint of what their roles are the following meeting.</string>
+  <string name="TouRoleDoomsayerWikiDescriptionIfCanObserve">The Doomsayer is a Neutral Evil role that wins by guessing \%guessCount\% players' roles. They may observe players to get a hint of what their roles are the following meeting.</string>
   <string name="TouRoleDoomsayerObserve">Observe</string>
   <string name="TouRoleDoomsayerObserveWikiDescription">Observe a player, gaining a hint in the next meeting what their role could be.</string>
   <!-- Doomsayer Options -->
@@ -1015,13 +1019,28 @@
   <string name="TouOptionDoomsayerGuessesAllAtOnce">Doomsayer Guesses All Roles At Once</string>
   <string name="TouOptionDoomsayerCantObserve">Doomsayer Can't Observe</string>
   <string name="TouOptionDoomsayerWin">Doomsayer Win</string>
+  <!-- Doomsayer Misguess -->
+  <string name="TouRoleDoomsayerMisguessOne">Only one guess was incorrect!</string>
+  <string name="TouRoleDoomsayerMisguessMultiple">\%misguessCount\% guesses were incorrect.</string>
+  <!-- Doomsayer Feedback -->
+  <string name="TouRoleDoomsayerMessageTitle">Doomsayer Report</string>
+  <string name="TouRoleDoomsayerRoleHintPerception">You observe that \%player\% has an altered perception of reality</string>
+  <string name="TouRoleDoomsayerRoleHintInsight">You observe that \%player\% has an insight for private information</string>
+  <string name="TouRoleDoomsayerRoleHintDeath">You observe that \%player\% has an unusual obsession with dead bodies</string>
+  <string name="TouRoleDoomsayerRoleHintHunter">You observe that \%player\% is well trained in hunting down prey</string>
+  <string name="TouRoleDoomsayerRoleHintFearmonger">You observe that \%player\% spreads fear amongst the group</string>
+  <string name="TouRoleDoomsayerRoleHintProtective">You observe that \%player\% hides to guard themselves or others</string>
+  <string name="TouRoleDoomsayerRoleHintTrickster">You observe that \%player\% has a trick up their sleeve</string>
+  <string name="TouRoleDoomsayerRoleHintRelentless">You observe that \%player\% is capable of performing relentless attacks</string>
+  <string name="TouRoleDoomsayerRoleHintDefault">You observe that \%player\% is not from this town</string>
   <!-- Executioner -->
   <!-- Executioner Wiki / Description -->
   <string name="TouRoleExecutioner">Executioner</string>
   <string name="TouRoleExecutionerIntroBlurb">Get \%target\% voted out to win.</string>
   <string name="TouRoleExecutionerTabDescription">Get \%target\% voted out to win.</string>
-  <string name="TouRoleExecutionerValueIfNoTarget">your target</string>
+  <string name="TouRoleExecutionerMissingTargetDescription">Get your target voted out to win.</string>
   <string name="TouRoleExecutionerWikiDescription">The Executioner is a Neutral Evil role that wins by getting their target (signified by \%symbol\%) ejected in a meeting.</string>
+  <string name="TouRoleExecutionerTorment">Torment</string>
   <!-- Executioner Options -->
   <string name="TouOptionExecutionerBecomesTargetDeath">On Target Death, Executioner Becomes</string>
   <string name="TouOptionExecutionerCanButton">Executioner Can Button</string>
@@ -1033,6 +1052,7 @@
   <string name="TouRoleGlitchTabDescription">Hack players to stop their abilities momentarily,\%nl\%mimic into others to frame them.</string>
   <string name="TouRoleGlitchWikiDescription">The Glitch is a Neutral Killing role that wins by being the last killer alive. They can Mimic into another player, or they can hack a player.</string>
   <string name="TouRoleGlitchMimic">Mimic</string>
+  <string name="TouRoleGlitchUnmimic">Unmimic</string>
   <string name="TouRoleGlitchMimicWikiDescription">Mimic the appearance of another player, taking on their whole appearance.</string>
   <string name="TouRoleGlitchHack">Hack</string>
   <string name="TouRoleGlitchHackWikiDescription">Disable a player's abilities.</string>
@@ -1091,6 +1111,7 @@
   <string name="TouRoleJesterIntroBlurb">Get voted out!</string>
   <string name="TouRoleJesterTabDescription">Be as suspicious as possible, and get voted out!</string>
   <string name="TouRoleJesterWikiDescription">The Jester is a Neutral Evil role that wins by getting themselves ejected.</string>
+  <string name="TouRoleJesterHaunt">Haunt</string>
   <!-- Jester Messages -->
   <string name="TouNotifJesterWinOwner">You have successfully won as the Jester, by getting voted out!</string>
   <string name="TouNotifJesterHauntOwner">You have one round to haunt a player of your choice to death, choose wisely</string>
@@ -1140,6 +1161,7 @@
   <!-- You cannot start the game as this role, and thus, it has no intro blurb -->
   <string name="TouRolePhantomTabDescription">Complete all your tasks without being caught!</string>
   <string name="TouRolePhantomWikiDescription">The Phantom is a Neutral Ghost role that wins the game by finishing their tasks before a alive player has clicked on them.</string>
+  <string name="TouRolePhantomSpook">Spook</string>
   <!-- Phantom Options -->
   <string name="TouOptionPhantomTasksLeftClickable">Tasks Left Before Clickable</string>
   <string name="TouOptionPhantomWin">Phantom Win</string>
@@ -1178,8 +1200,8 @@
   <string name="TouRoleSurvivorWikiDescription">The Survivor is a Neutral Benign role that just needs to survive until the end of the game.</string>
   <!-- till to until for clarity -->
 
-  <string name="TouRoleSurvivorVest">Vest</string>
-  <string name="TouRoleSurvivorVestWikiDescription">Put on a Vest protecting you from attacks.</string>
+  <string name="TouRoleSurvivorSafeguard">Safeguard</string>
+  <string name="TouRoleSurvivorSafeguardWikiDescription">Put on a Vest protecting you from attacks.</string>
   <!-- Survivor Options -->
   <string name="TouOptionSurvivorVestCooldown">Vest Cooldown</string>
   <string name="TouOptionSurvivorVestDuration">Vest Duration</string>
@@ -1273,7 +1295,7 @@
   <!-- Mini Wiki / Description -->
   <string name="TouModifierMini">Mini</string>
   <string name="TouModifierMiniTabDescription">You are smaller than regular players, and you also move \%miniSpeed\%x faster than regular players.</string>
-  <string name="TouModifierMiniWikTabDescription">You are smaller than the average player, moving \%miniSpeed\%x faster.</string>
+  <string name="TouModifierMiniWikiDescription">You are smaller than the average player, moving \%miniSpeed\%x faster.</string>
   <!-- Mini Options -->
   <string name="TouOptionMiniSpeed">Mini Speed</string>
   <!-- Radar -->
@@ -1358,7 +1380,7 @@
   <string name="TouModifierUnderdogWikiDescription">Your kill cooldown is lower if you're solo or your teammate is dead.</string>
   <!-- Underdog Options -->
   <string name="TouOptionUnderdogBonus">Kill Cooldown Bonus</string>
-  <String name="TouOptionIncreasedWhen2">Increased Kill Cooldown When 2+ Imps</String>
+  <string name="TouOptionIncreasedWhen2">Increased Kill Cooldown When 2+ Imps</string>
   <!-- Assailant (NKs/Imp) Modifiers -->
   <string name="TouModifierAssassin">Assassin</string>
   <!-- Double Shot -->
@@ -1395,7 +1417,7 @@
   <string name="TouModifierDiseased">Diseased</string>
   <string name="TouModifierDiseasedIntroBlurb">You will also extend your killer's cooldown upon death.</string>
   <string name="TouModifierDiseasedTabDescription">Increase your killer's kill cooldown.</string>
-  <String name="TouModifierDiseasedWikiDescription">After you die, your killer's kill cooldown is multiplied by a factor of \%cooldownMultiplier\%x.</String>
+  <string name="TouModifierDiseasedWikiDescription">Your murderer's kill cooldown is multiplied by a factor of \%cooldownMultiplier\%x.</string>
   <!-- Diseased Options-->
   <string name="TouOptionDiseasedCooldownModifier">Diseased Kill Modifier</string>
   <!-- Frosty -->
@@ -1448,7 +1470,7 @@
   <string name="TouModifierRotting">Rotting</string>
   <string name="TouModifierRottingIntroBlurb">Your body will also rot away upon death.</string>
   <string name="TouModifierRottingTabDescription">Your body will rot away after \%rotDelay\% second(s).</string>
-  <string name="TouModifierWikiDescription">After \%rotDelay\% second(s), your body will rot away, preventing you from being reported</string>
+  <string name="TouModifierRottingWikiDescription">After \%rotDelay\% second(s), your body will rot away, preventing you from being reported</string>
   <!-- Rotting Options -->
   <string name="TouOptionRottingDelay">Time Before Body Rots Away</string>
   <!-- Scientist -->

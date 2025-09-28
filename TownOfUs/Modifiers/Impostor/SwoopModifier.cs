@@ -64,7 +64,7 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
 
         var button = CustomButtonSingleton<SwooperSwoopButton>.Instance;
         button.OverrideSprite(TouImpAssets.UnswoopSprite.LoadAsset());
-        button.OverrideName("Unswoop");
+        button.OverrideName(TouLocale.Get("TouRoleSwooperUnswoop", "Unswoop"));
 
         var touAbilityEvent = new TouAbilityEvent(AbilityType.SwooperSwoop, Player);
         MiraEventManager.InvokeEvent(touAbilityEvent);
@@ -91,7 +91,7 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
         {
             var button = CustomButtonSingleton<SwooperSwoopButton>.Instance;
             button.OverrideSprite(TouImpAssets.SwoopSprite.LoadAsset());
-            button.OverrideName("Swoop");
+            button.OverrideName(TouLocale.Get("TouRoleSwooperSwoop", "Swoop"));
             TouAudio.PlaySound(TouAudio.SwooperDeactivateSound);
         }
 

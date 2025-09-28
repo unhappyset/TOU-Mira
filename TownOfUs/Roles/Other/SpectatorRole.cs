@@ -1,6 +1,7 @@
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using TownOfUs.Modifiers;
@@ -51,7 +52,7 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         HudManager.Instance.AbilityButton.SetDisabled();
     }
 
-    public static string LocaleKey => "Spectator";
+    public string LocaleKey => "Spectator";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
@@ -84,6 +85,10 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
+        if (!Player.HasModifier<BasicGhostModifier>())
+        {
+            Player.AddModifier<BasicGhostModifier>();
+        }
         DeathHandlerModifier.UpdateDeathHandler(Player, "Spectating", 0, DeathHandlerOverride.SetFalse);
 
         if (!Player.AmOwner)

@@ -38,7 +38,7 @@ public sealed class JanitorRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<DetectiveTouRole>());
     public DoomableType DoomHintType => DoomableType.Death;
-    public static string LocaleKey => "Janitor";
+    public string LocaleKey => "Janitor";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => "Clean bodies to hide kills" +

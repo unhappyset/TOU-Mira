@@ -746,6 +746,15 @@ public static class HudManagerPatches
 
             return;
         }
+        
+        if (AmongUsClient.Instance.AmHost && GameStartManager.InstanceExists)
+        {
+            CancelCountdownStart.CancelStartButton.gameObject.SetActive(GameStartManager.Instance.startState is GameStartManager.StartingStates.Countdown);
+
+            var startTexttransform = GameStartManager.Instance.GameStartText.transform;
+            startTexttransform.localPosition = new Vector3(startTexttransform.localPosition.x, 2f,
+                startTexttransform.localPosition.z);
+        }
 
         foreach (var player in PlayerControl.AllPlayerControls.ToArray())
         {
@@ -995,7 +1004,7 @@ public static class HudManagerPatches
     [HarmonyPostfix]
     public static void HudManagerStartPatch(HudManager __instance)
     {
-        StoredHostLocale = TranslationController.Instance.GetString(StringNames.HostNounLabel).Replace(":", "");
+        StoredHostLocale = TranslationController.Instance.GetString(StringNames.HostNounEmpty);
         StoredTasksText = TranslationController.Instance.GetString(StringNames.Tasks);
         StoredSpectatingLocale = TouLocale.Get("TouRoleSpectator");
         StoredRoleList = TouLocale.Get("SetRoleList");

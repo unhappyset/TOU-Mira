@@ -132,7 +132,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         Player.RemoveModifier<HaunterArrowModifier>();
     }
 
-    public static string LocaleKey => "Haunter";
+    public string LocaleKey => "Haunter";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

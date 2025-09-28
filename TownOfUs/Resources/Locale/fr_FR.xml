@@ -44,7 +44,7 @@
   <string name="TouModifierRotting">Pourriture</string>
   <string name="TouOptionRottingDelay">Délai Avant La Décomposition Du Corps</string>
   <string name="TouModifierRottingTabDescription">Votre corps pourrira après \%rotDelay\% seconde(s).</string>
-  <string name="TouModifierWikiDescription">Après \%rotDelay\% seconde(s), votre corps pourrira, l'empêchant d'être signalé</string>
+  <string name="TouModifierRottingWikiDescription">Après \%rotDelay\% seconde(s), votre corps pourrira, l'empêchant d'être signalé</string>
   <string name="TouModifierScoutIntroBlurb">Vous pouvez aussi voir plus loin dans la lumière, mais très peu dans les pénombres.</string>
   <string name="TouModifierScoutTabDescription">Votre vision est meilleure quand les lumières sont allumées, mais très mauvaise quand elles sont éteintes.</string>
   <string name="TouModifierScoutWikiDescription">Bien que vous puissiez voir deux fois plus loin qu'un coéquipier lambda, votre vision défaille sans lumière.</string>
@@ -128,8 +128,8 @@
   <string name="TouRoleSurvivorIntroBlurb">Faites le Nécessaire Pour Vivre</string>
   <string name="TouRoleSurvivorTabDescription">Restez en vie pour gagner avec la faction restante</string>
   <string name="TouRoleSurvivorWikiDescription">Le Survivant est un rôle Neutre Bénin qui doit juste survivre jusqu'à la fin de la partie.</string>
-  <string name="TouRoleSurvivorVest">Gilet</string>
-  <string name="TouRoleSurvivorVestWikiDescription">Portez un Gilet vous protégeant des attaques.</string>
+  <string name="TouRoleSurvivorSafeguard">Gilet</string>
+  <string name="TouRoleSurvivorSafeguardWikiDescription">Portez un Gilet vous protégeant des attaques.</string>
   <string name="TouOptionSurvivorVestCooldown">Délai du Gilet</string>
   <string name="TouOptionSurvivorVestDuration">Durée du Gilet</string>
   <string name="TouOptionSurvivorMaxVests">Nombre Max de Gilets</string>

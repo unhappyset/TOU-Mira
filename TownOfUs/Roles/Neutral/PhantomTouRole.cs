@@ -114,7 +114,7 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
         }
     }
 
-    public static string LocaleKey => "Phantom";
+    public string LocaleKey => "Phantom";
     public override string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public override string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public override string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

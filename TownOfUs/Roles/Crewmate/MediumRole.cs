@@ -18,7 +18,7 @@ public sealed class MediumRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     [HideFromIl2Cpp] public List<MediatedModifier> MediatedPlayers { get; } = new();
 
     public DoomableType DoomHintType => DoomableType.Death;
-    public static string LocaleKey => "Medium";
+    public string LocaleKey => "Medium";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

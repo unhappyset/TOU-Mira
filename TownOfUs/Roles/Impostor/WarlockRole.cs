@@ -13,7 +13,7 @@ public sealed class WarlockRole(IntPtr cppPtr)
 {
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VeteranRole>());
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public static string LocaleKey => "Warlock";
+    public string LocaleKey => "Warlock";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
@@ -48,10 +48,8 @@ public sealed class WarlockRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Kill",
-            "Replaces your regular kill button with three stages: On Cooldown, Uncharged, and Charged. " +
-            "You cannot kill while on cooldown but can while it is charging up, however it will reset your charge. " +
-            "When it is charged, you can kill in a small burst to kill multiple players in a short time.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}BurstKill", "Burst Kill"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}KillWikiDescription"),
             TouAssets.KillSprite)
             };
         }

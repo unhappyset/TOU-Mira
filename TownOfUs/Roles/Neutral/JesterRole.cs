@@ -34,7 +34,7 @@ public sealed class JesterRole(IntPtr cppPtr)
              .Contains(RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<ExecutionerRole>())) &&
          OptionGroupSingleton<ExecutionerOptions>.Instance.OnTargetDeath is BecomeOptions.Jester);
     public DoomableType DoomHintType => DoomableType.Trickster;
-    public static string LocaleKey => "Jester";
+    public string LocaleKey => "Jester";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

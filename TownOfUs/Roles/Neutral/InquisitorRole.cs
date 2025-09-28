@@ -47,7 +47,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
         }
 
         var required = (int)OptionGroupSingleton<InquisitorOptions>.Instance.AmountOfHeretics;
-        var players = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Data.Role is not InquisitorRole).ToList();
+        var players = PlayerControl.AllPlayerControls.ToArray().Where(x => x.Data.Role is not InquisitorRole && x.Data.Role is not SpectatorRole).ToList();
         if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Warning($"Players in heretic list possible: {players.Count}");
         players.Shuffle();
         players.Shuffle();
@@ -110,7 +110,7 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<OracleRole>());
     public DoomableType DoomHintType => DoomableType.Hunter;
-    public static string LocaleKey => "Inquisitor";
+    public string LocaleKey => "Inquisitor";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
@@ -266,17 +266,21 @@ public sealed class InquisitorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
                     $"{text}\n");
                 var roles = TargetRoles;
                 var lastRole = roles[roles.Count - 1];
-                roles.Remove(lastRole);
 
                 if (roles.Count != 0)
                 {
                     reportBuilder.Append(TownOfUsPlugin.Culture, $"(");
                     foreach (var role2 in roles)
                     {
-                        reportBuilder.Append(TownOfUsPlugin.Culture, $"{role2.GetRoleName()}, ");
+                        if (role2 == lastRole)
+                        {
+                            reportBuilder.Append(TownOfUsPlugin.Culture, $"#{lastRole.GetRoleName().ToLowerInvariant().Replace(" ", "-")})");
+                        }
+                        else
+                        {
+                            reportBuilder.Append(TownOfUsPlugin.Culture, $"#{role2.GetRoleName().ToLowerInvariant().Replace(" ", "-")}, ");
+                        }
                     }
-
-                    reportBuilder.Append(TownOfUsPlugin.Culture, $"{lastRole.GetRoleName()})");
                 }
             }
             else

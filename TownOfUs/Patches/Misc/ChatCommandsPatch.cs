@@ -40,12 +40,12 @@ public static class ChatPatches
                 if (SpectatorRole.TrackedSpectators.Contains(PlayerControl.LocalPlayer.Data.PlayerName))
                 {
                     MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "You are no longer a spectator!");
-                    RemoveSpectator(PlayerControl.LocalPlayer);
+                    RpcRemoveSpectator(PlayerControl.LocalPlayer);
                 }
                 else
                 {
                     MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "Set yourself as a spectator!");
-                    SelectSpectator(PlayerControl.LocalPlayer);
+                    RpcSelectSpectator(PlayerControl.LocalPlayer);
                 }
             }
 
@@ -155,7 +155,7 @@ public static class ChatPatches
 
             List<string> randomNames =
             [
-                "Atony", "Alchlc", "angxlwtf", "Digi", "Donners", "K3ndo", "DragonBreath", "Pietro",
+                "Atony", "Alchlc", "angxlwtf", "Digi", "Donners", "K3ndo", "DragonBreath", "Pietro", "Nix", "Daemon", "6pak",
                 "twix", "xerm", "XtraCube", "Zeo", "Slushie", "chloe", "moon", "decii", "Northie", "GD", "Chilled",
                 "Himi", "Riki", "Leafly", "miniduikboot"
             ];
@@ -164,6 +164,7 @@ public static class ChatPatches
                       "/help - Shows this message\n" +
                       "/nerfme - Cuts your vision in half\n" +
                       $"/setname - Change your name to whatever text follows the command (like /setname {randomNames.Random()}) for the next match.\n" +
+                      "/spec - Allows you to spectate for the rest of the game automatically.\n" +
                       "/summary - Shows the previous end game summary\n</size>";
 
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg);
@@ -276,8 +277,20 @@ public static class ChatPatches
     }
 
     [MethodRpc((uint)TownOfUsRpc.SelectSpectator, SendImmediately = true)]
-    public static void SelectSpectator(PlayerControl player) => SpectatorRole.TrackedSpectators.Add(player.Data.PlayerName);
+    public static void RpcSelectSpectator(PlayerControl player)
+    {
+        if (!SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
+        {
+            SpectatorRole.TrackedSpectators.Add(player.Data.PlayerName);
+        }
+    }
 
     [MethodRpc((uint)TownOfUsRpc.RemoveSpectator, SendImmediately = true)]
-    public static void RemoveSpectator(PlayerControl player) => SpectatorRole.TrackedSpectators.Remove(player.Data.PlayerName);
+    public static void RpcRemoveSpectator(PlayerControl player)
+    {
+        if (SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
+        {
+            SpectatorRole.TrackedSpectators.Remove(player.Data.PlayerName);
+        }
+    }
 }

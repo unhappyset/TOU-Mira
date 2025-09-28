@@ -16,7 +16,7 @@ public sealed class JuggernautRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOf
 {
     public int KillCount { get; set; }
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public static string LocaleKey => "Juggernaut";
+    public string LocaleKey => "Juggernaut";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

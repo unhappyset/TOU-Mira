@@ -32,7 +32,7 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     public int MaxKills { get; set; }
     public int SafeShotsLeft { get; set; }
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public static string LocaleKey => "Vigilante";
+    public string LocaleKey => "Vigilante";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

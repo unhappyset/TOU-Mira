@@ -25,7 +25,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     [HideFromIl2Cpp]
     public PlayerControl? Killer { get; set; }
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public static string LocaleKey => "Deputy";
+    public string LocaleKey => "Deputy";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
@@ -156,11 +156,11 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         }
         else
         {
-            var title = $"<color=#{TownOfUsColors.Deputy.ToHtmlStringRGBA()}>Deputy Feedback</color>";
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title,
-                "You missed your shot! They are either not the killer or are invincible.", false, true);
+            var title = $"<color=#{TownOfUsColors.Deputy.ToHtmlStringRGBA()}>{TouLocale.Get("TouRoleDeputyMessageTitle")}</color>";
+            var msg = TouLocale.Get("TouRoleDeputyMissedShot");
+            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{TownOfUsColors.Deputy.ToTextColor()}You missed your shot! They are either not the killer or are invincible.</b></color>",
+                $"<b>{TownOfUsColors.Deputy.ToTextColor()}{msg}</b></color>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Deputy.LoadAsset());
             notif1.Text.SetOutlineThickness(0.35f);
         }

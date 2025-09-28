@@ -22,7 +22,7 @@ public sealed class SheriffRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
     public override bool IsAffectedByComms => false;
     public bool HasMisfired { get; set; }
     public DoomableType DoomHintType => DoomableType.Relentless;
-    public static string LocaleKey => "Sheriff";
+    public string LocaleKey => "Sheriff";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

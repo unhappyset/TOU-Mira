@@ -32,7 +32,7 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
     }
     public string GetAdvancedDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<symbol>", "<color=#FF66CCFF>♥</color>");
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<symbol>", "<color=#FF66CCFF>♥</color>") + MiscUtils.AppendOptionsText(GetType());
     }
     public string LoverString()
     {

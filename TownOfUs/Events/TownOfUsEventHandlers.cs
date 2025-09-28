@@ -37,9 +37,11 @@ using TownOfUs.Options.Modifiers.Universal;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Patches;
+using TownOfUs.Patches.Misc;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Impostor;
+using TownOfUs.Roles.Other;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -557,9 +559,29 @@ public static class TownOfUsEventHandlers
             return;
         }
 
+        if (PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        {
+            @event.Cancel();
+        }
+
         // Prevent last 2 players from venting
         if (@event.IsVent)
         {
+            if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>())
+            {
+                if (PlayerControl.LocalPlayer.inVent)
+                {
+                    PlayerControl.LocalPlayer.GetModifier<GlitchHackedModifier>()!.ShowHacked();
+                    PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
+                    PlayerControl.LocalPlayer.MyPhysics.ExitAllVents();
+                }
+                @event.Cancel();
+            }
+            else if (HudManager.Instance.Chat.IsOpenOrOpening || MeetingHud.Instance)
+            {
+                @event.Cancel();
+            }
+
             var aliveCount = PlayerControl.AllPlayerControls.ToArray().Count(x => !x.HasDied());
 
             if (PlayerControl.LocalPlayer.inVent && aliveCount <= 2 &&
@@ -572,6 +594,38 @@ public static class TownOfUsEventHandlers
             if (aliveCount <= 2)
             {
                 @event.Cancel();
+            }
+        }
+    }
+
+    [RegisterEvent]
+    public static void PlayerJoinEventHandler(PlayerJoinEvent @event)
+    {
+        Coroutines.Start(CoSendSpecData());
+    }
+
+    public static IEnumerator CoSendSpecData()
+    {
+        while (!AmongUsClient.Instance)
+        {
+            yield return null;
+        }
+
+        while (!PlayerControl.LocalPlayer)
+        {
+            yield return null;
+        }
+
+        if (!PlayerControl.LocalPlayer.IsHost())
+        {
+            yield break;
+        }
+
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
+            {
+                ChatPatches.RpcSelectSpectator(player);
             }
         }
     }

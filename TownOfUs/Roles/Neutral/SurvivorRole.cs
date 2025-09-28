@@ -16,7 +16,7 @@ namespace TownOfUs.Roles.Neutral;
 public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IGuessable
 {
     public DoomableType DoomHintType => DoomableType.Protective;
-    public static string LocaleKey => "Survivor";
+    public string LocaleKey => "Survivor";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
@@ -35,8 +35,8 @@ public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         {
             return new List<CustomButtonWikiDescription>
             {
-                new(TouLocale.GetParsed($"TouRole{LocaleKey}Vest", "Vest"),
-                    TouLocale.GetParsed($"TouRole{LocaleKey}VestWikiDescription"),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Safeguard", "Safeguard"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}SafeguardWikiDescription"),
                     TouNeutAssets.VestSprite)
             };
         }

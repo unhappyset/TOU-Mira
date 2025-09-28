@@ -18,7 +18,7 @@ public sealed class TraitorRole(IntPtr cppPtr)
     public RoleBehaviour? SelectedRole { get; set; }
     public DoomableType DoomHintType => DoomableType.Trickster;
     public bool NoSpawn => true;
-    public static string LocaleKey => "Traitor";
+    public string LocaleKey => "Traitor";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

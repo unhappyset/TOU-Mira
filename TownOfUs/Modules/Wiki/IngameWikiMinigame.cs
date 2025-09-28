@@ -533,6 +533,11 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
                 {
                     amount = (int)customRole.GetCount()!;
                     chance = (int)customRole.GetChance()!;
+                    if (SoftWikiEntries.RoleEntries.ContainsKey(role))
+                    {
+                        SoftWikiEntries.RoleEntries.GetValueOrDefault(role)!.EntryName = customRole.RoleName;
+                        SoftWikiEntries.RoleEntries.GetValueOrDefault(role)!.GetAdvancedDescription = customRole.RoleDescription + MiscUtils.AppendOptionsText(role.GetType());
+                    }
                 }
                 else if (customRole == null)
                 {
@@ -541,6 +546,17 @@ public sealed class IngameWikiMinigame(nint cppPtr) : Minigame(cppPtr)
 
                     amount = roleOptions.GetNumPerGame(role.Role);
                     chance = roleOptions.GetChancePerGame(role.Role);
+                    var roleEntry = SoftWikiEntries.RoleEntries.GetValueOrDefault(role)!;
+                    roleEntry.EntryName = TranslationController.Instance.GetString(role.StringName);
+                    roleEntry.GetAdvancedDescription = TranslationController.Instance.GetString(role.BlurbNameLong);
+                    if (roleEntry.GetAdvancedDescription == "STRMISS")
+                    {
+                        var baseName = ($"{role.StringName}").Replace("Role", "");
+                        if (Enum.TryParse<StringNames>($"RolesHelp_{baseName}_01", out var helpName))
+                        {
+                            roleEntry.GetAdvancedDescription = TranslationController.Instance.GetString(helpName);
+                        }
+                    }
                 }
 
                 var amountTxt = newItem.transform.FindChild("AmountTxt").gameObject.GetComponent<TextMeshPro>();

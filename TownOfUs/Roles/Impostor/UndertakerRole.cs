@@ -39,7 +39,7 @@ public sealed class UndertakerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<AltruistRole>());
     public DoomableType DoomHintType => DoomableType.Death;
-    public static string LocaleKey => "Undertaker";
+    public string LocaleKey => "Undertaker";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

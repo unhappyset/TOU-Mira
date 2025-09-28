@@ -67,7 +67,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
     }
 
     public DoomableType DoomHintType => DoomableType.Fearmonger;
-    public static string LocaleKey => "Prosecutor";
+    public string LocaleKey => "Prosecutor";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

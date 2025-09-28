@@ -36,12 +36,13 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<VigilanteRole>());
     public DoomableType DoomHintType => DoomableType.Insight;
-    public static string LocaleKey => "Doomsayer";
+    public string LocaleKey => "Doomsayer";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
 
     public string RoleLongDescription =>
-        $"Win by guessing the roles of {(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin} players";
+        TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription").Replace("<guessCount>",
+            $"{(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin}");
 
     public Color RoleColor => TownOfUsColors.Doomsayer;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
@@ -79,11 +80,12 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
     public string GetAdvancedDescription()
     {
+        var opts = OptionGroupSingleton<DoomsayerOptions>.Instance;
+        var shownDesc = TouLocale.GetParsed(opts.CantObserve
+            ? "TouRoleDoomsayerWikiDescription"
+            : "TouRoleDoomsayerWikiDescriptionIfCanObserve");
         return
-            $"The {RoleName} is a Neutral Evil role that wins by guessing {(int)OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin} players' roles." +
-            (OptionGroupSingleton<DoomsayerOptions>.Instance.CantObserve
-                ? string.Empty
-                : " They may observe players to get a hint of what their roles are the following meeting.") +
+            shownDesc.Replace("<guessCount>", $"{(int)opts.DoomsayerGuessesToWin}") +
             MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -94,8 +96,8 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Observe",
-            "Observe a player, gaining a hint in the next meeting what their role could be.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Observe", "Observe"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}ObserveWikiDescription"),
             TouNeutAssets.Observe)
             };
         }
@@ -186,6 +188,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         {
             var role = player.Object.Data.Role;
             var doomableRole = role as IDoomable;
+            var undoomableRole = role as IUnguessable;
             var hintType = DoomableType.Default;
             var cachedMod =
                 player.Object.GetModifiers<BaseModifier>().FirstOrDefault(x => x is ICachedRole) as ICachedRole;
@@ -195,11 +198,9 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                 doomableRole = role as IDoomable;
             }
 
-            var unguessableMod =
-                player.Object.GetModifiers<BaseModifier>().FirstOrDefault(x => x is IUnguessable) as IUnguessable;
-            if (unguessableMod != null)
+            if (undoomableRole != null)
             {
-                role = unguessableMod.AppearAs;
+                role = undoomableRole.AppearAs;
                 doomableRole = role as IDoomable;
             }
 
@@ -208,45 +209,16 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                 hintType = doomableRole.DoomHintType;
             }
 
-            switch (hintType)
+            var fallback = TouLocale.GetParsed("TouRoleDoomsayerRoleHintDefault");
+            var hint = TouLocale.GetParsed($"TouRoleDoomsayerRoleHint{hintType}");
+
+            if (hint.Contains("STRMISS"))
             {
-                case DoomableType.Perception:
-                    reportBuilder.AppendLine(TownOfUsPlugin.Culture,
-                        $"You observe that {player.PlayerName} has an altered perception of reality\n");
-                    break;
-                case DoomableType.Insight:
-                    reportBuilder.AppendLine(TownOfUsPlugin.Culture,
-                        $"You observe that {player.PlayerName} has an insight for private information\n");
-                    break;
-                case DoomableType.Death:
-                    reportBuilder.AppendLine(TownOfUsPlugin.Culture,
-                        $"You observe that {player.PlayerName} has an unusual obsession with dead bodies\n");
-                    break;
-                case DoomableType.Hunter:
-                    reportBuilder.AppendLine(TownOfUsPlugin.Culture,
-                        $"You observe that {player.PlayerName} is well trained in hunting down prey\n");
-                    break;
-                case DoomableType.Fearmonger:
-                    reportBuilder.AppendLine(TownOfUsPlugin.Culture,
-                        $"You observe that {player.PlayerName} spreads fear amonst the group\n");
-                    break;
-                case DoomableType.Protective:
-                    reportBuilder.AppendLine(TownOfUsPlugin.Culture,
-                        $"You observe that {player.PlayerName} hides to guard themself or others\n");
-                    break;
-                case DoomableType.Trickster:
-                    reportBuilder.AppendLine(TownOfUsPlugin.Culture,
-                        $"You observe that {player.PlayerName} has a trick up their sleeve\n");
-                    break;
-                case DoomableType.Relentless:
-                    reportBuilder.AppendLine(TownOfUsPlugin.Culture,
-                        $"You observe that {player.PlayerName} is capable of performing relentless attacks\n");
-                    break;
-                case DoomableType.Default:
-                    // Get it? Because they're not from this "Town" of Us? heh...
-                    reportBuilder.AppendLine(TownOfUsPlugin.Culture,
-                        $"You observe that {player.PlayerName} is not from this town\n");
-                    break;
+                reportBuilder.AppendLine(TownOfUsPlugin.Culture, $"{fallback.Replace("<player>", player.PlayerName)}\n");
+            }
+            else
+            {
+                reportBuilder.AppendLine(TownOfUsPlugin.Culture, $"{hint.Replace("<player>", player.PlayerName)}\n");
             }
 
             var roles = RoleManager.Instance.AllRoles.ToArray()
@@ -254,7 +226,6 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                     x is not IUnguessable || x is not IDoomable) && !x.IsDead).ToList();
             roles = roles.OrderBy(x => x.GetRoleName()).ToList();
             var lastRole = roles[roles.Count - 1];
-            roles.Remove(roles[roles.Count - 1]);
             
             if (hintType != DoomableType.Default)
             {
@@ -262,7 +233,6 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                     .Where(x => x is IDoomable doomRole && doomRole.DoomHintType == hintType && x is not IUnguessable)
                     .OrderBy(x => x.GetRoleName()).ToList();
                 lastRole = roles[roles.Count - 1];
-                roles.Remove(roles[roles.Count - 1]);
             }
 
             if (roles.Count != 0)
@@ -270,11 +240,15 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                 reportBuilder.Append(TownOfUsPlugin.Culture, $"(");
                 foreach (var role2 in roles)
                 {
-                    reportBuilder.Append(TownOfUsPlugin.Culture, $"#{role2.GetRoleName().ToLowerInvariant().Replace(" ", "-")}, ");
+                    if (role2 == lastRole)
+                    {
+                        reportBuilder.Append(TownOfUsPlugin.Culture, $"#{lastRole.GetRoleName().ToLowerInvariant().Replace(" ", "-")})");
+                    }
+                    else
+                    {
+                        reportBuilder.Append(TownOfUsPlugin.Culture, $"#{role2.GetRoleName().ToLowerInvariant().Replace(" ", "-")}, ");
+                    }
                 }
-
-                reportBuilder = reportBuilder.Remove(reportBuilder.Length - 2, 2);
-                reportBuilder.Append(TownOfUsPlugin.Culture, $" or #{lastRole.GetRoleName().ToLowerInvariant().Replace(" ", "-")})");
             }
 
             player.Object.RemoveModifier<DoomsayerObservedModifier>();
@@ -284,7 +258,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
         if (HudManager.Instance && report.Length > 0)
         {
-            var title = $"<color=#{TownOfUsColors.Doomsayer.ToHtmlStringRGBA()}>Doomsayer Report</color>";
+            var title = $"<color=#{TownOfUsColors.Doomsayer.ToHtmlStringRGBA()}>{TouLocale.Get("TouRoleDoomsayerMessageTitle")}</color>";
             MiscUtils.AddFakeChat(Player.Data, title, report, false, true);
         }
     }
@@ -384,8 +358,8 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             if (IncorrectGuesses > 0 && opts.DoomsayerGuessAllAtOnce)
             {
                 var text = NumberOfGuesses - AllVictims.Count == 1
-                    ? "<b>Only one guess was incorrect!</b>"
-                    : $"<b>{NumberOfGuesses - AllVictims.Count} guesses were incorrect.</b>";
+                    ? $"<b>{TouLocale.GetParsed("TouRoleDoomsayerMisguessOne")}</b>"
+                    : $"<b>{TouLocale.GetParsed("TouRoleDoomsayerMisguessMultiple").Replace("<misguessCount>", $"{NumberOfGuesses - AllVictims.Count}")}</b>";
                 var notif1 = Helpers.CreateAndShowNotification(
                     text, Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
 

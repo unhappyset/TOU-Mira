@@ -119,7 +119,8 @@ public static class DeathEventHandlers
                     mirror.ContainedRole = null;
                     break;
                 default:
-                    if (role is not ITownOfUsRole touRole || touRole.LocaleKey == "KEY_MISS")
+                    var touRole = role as ITownOfUsRole;
+                    if (touRole == null || touRole.LocaleKey == "KEY_MISS")
                     {
                         break;
                     }
@@ -128,10 +129,10 @@ public static class DeathEventHandlers
                     break;
             }
 
-            if (source.Data.Role is PhantomTouRole)
+            if (source.Data.Role is PhantomTouRole phantomTouRole)
             {
                 role = source.Data.Role;
-                cod = PhantomTouRole.LocaleKey;
+                cod = phantomTouRole.LocaleKey;
             }
             
             deathHandler2.CauseOfDeath = role is MirrorcasterRole ? cod : TouLocale.Get($"DiedTo{cod}");

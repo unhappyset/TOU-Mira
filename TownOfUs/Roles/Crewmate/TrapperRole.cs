@@ -20,7 +20,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     [HideFromIl2Cpp] public List<RoleBehaviour> TrappedPlayers { get; set; } = new();
 
     public DoomableType DoomHintType => DoomableType.Insight;
-    public static string LocaleKey => "Trapper";
+    public string LocaleKey => "Trapper";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

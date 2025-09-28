@@ -17,7 +17,7 @@ public sealed class AurialRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 {
     private readonly Dictionary<(Vector3, int), ArrowBehaviour> _senseArrows = new();
     public DoomableType DoomHintType => DoomableType.Perception;
-    public static string LocaleKey => "Aurial";
+    public string LocaleKey => "Aurial";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");

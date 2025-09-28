@@ -9,7 +9,7 @@ namespace TownOfUs.Buttons.Impostor;
 
 public sealed class BomberPlantButton : TownOfUsRoleButton<BomberRole>, IAftermathableButton, IDiseaseableButton
 {
-    public override string Name => "Place";
+    public override string Name => TouLocale.Get("TouRoleBomberPlace", "Place");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Impostor;
     public override float Cooldown => PlayerControl.LocalPlayer.GetKillCooldown() + MapCooldown;
@@ -32,7 +32,7 @@ public sealed class BomberPlantButton : TownOfUsRoleButton<BomberRole>, IAfterma
     protected override void OnClick()
     {
         OverrideSprite(TouImpAssets.DetonatingSprite.LoadAsset());
-        OverrideName("Detonating");
+        OverrideName(TouLocale.Get("TouRoleBomberDetonating", "Detonating"));
 
         PlayerControl.LocalPlayer.killTimer = EffectDuration + 1f;
 
@@ -42,7 +42,7 @@ public sealed class BomberPlantButton : TownOfUsRoleButton<BomberRole>, IAfterma
     public override void OnEffectEnd()
     {
         OverrideSprite(TouImpAssets.PlaceSprite.LoadAsset());
-        OverrideName("Place");
+        OverrideName(TouLocale.Get("TouRoleBomberPlace", "Place"));
 
         PlayerControl.LocalPlayer.SetKillTimer(PlayerControl.LocalPlayer.GetKillCooldown());
 
