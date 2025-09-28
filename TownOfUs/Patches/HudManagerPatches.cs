@@ -746,6 +746,15 @@ public static class HudManagerPatches
 
             return;
         }
+        
+        if (AmongUsClient.Instance.AmHost && GameStartManager.InstanceExists)
+        {
+            CancelCountdownStart.CancelStartButton.gameObject.SetActive(GameStartManager.Instance.startState is GameStartManager.StartingStates.Countdown);
+
+            var startTexttransform = GameStartManager.Instance.GameStartText.transform;
+            startTexttransform.localPosition = new Vector3(startTexttransform.localPosition.x, 2f,
+                startTexttransform.localPosition.z);
+        }
 
         foreach (var player in PlayerControl.AllPlayerControls.ToArray())
         {
