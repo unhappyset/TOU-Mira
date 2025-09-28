@@ -310,7 +310,7 @@
   <string name="TouRoleImitatorNeutralCounterparts">中立对应表</string>
   <string name="TouRoleImitatorNeutralCounterpartsWikiDescription">失忆者 ⇨ 医生 |末日预言者 ⇨ 侠客 |行刑者 ⇨ 告密者\%nl\%混沌 ⇨ 警长 |守护天使 ⇨ 牧师 |审判官 ⇨ 神谕者\%nl\%小丑 ⇨ 水管工 |雇佣兵 ⇨ 护卫者\%nl\%瘟疫之源/万疫之神 ⇨ 感应者 |噬魂兽 ⇨ 招魂师 |月下狼人 ⇨ 巡猎者</string>
   <string name="TouRoleImitatorImpostorCounterparts">伪装者对应表</string>
-  <string name="TouRoleImitatorImpostorCounterpartsWikiDescription">爆破手 ⇨ 陷阱师 |催眠师 ⇨ 观测者 |清理者 ⇨ 侧写师\%nl\%矿工 ⇨ 工程师 |赏金猎人 ⇨ 追踪者\%nl\%送葬者 ⇨ 殉道者 |狂战士 ⇨ 老兵</string>
+  <string name="TouRoleImitatorImpostorCounterpartsWikiDescription">爆破手 ⇨ 陷阱师 |催眠师 ⇨ 观测者 |清理者 ⇨ 侧写师\%nl\%矿工 ⇨ 工程师 |赏金猎人 ⇨ 追踪者\%nl\%送葬者 ⇨ 殉道者 |巫术师 ⇨ 老兵</string>
   <string name="TouOptionImitatorImitateNeutrals">效仿特定中立职业作为相似船员职业</string>
   <string name="TouOptionImitatorImitateImpostors">效仿特定伪装者职业作为相似船员职业</string>
   <string name="TouRoleInvestigator">调查员</string>
@@ -1170,4 +1170,22 @@
   <string name="TouRoleAmnesiacRememberWikiDescription">回忆尸体的职业。如果尸体的职业是独特的职业，你会回忆基础阵营的职业。</string>
   <string name="TouOptionIncreasedWhen2">当2+个伪装者存在时，增加击杀冷却时间</string>
   <string name="TouModifierDiseasedWikiDescription">击杀你的凶手的击杀冷却时间乘以 \%cooldownMultiplier\%。</string>
+  <string name="TouRoleDoomsayerMisguessOne">只有一次猜测错误！</string>
+  <string name="TouRoleDoomsayerMisguessMultiple">\%misguessCount\%次猜测错误。</string>
+  <string name="TouRoleDoomsayerMessageTitle">末日报告</string>
+  <string name="TouRoleDoomsayerRoleHintPerception">你观察到\%player\%对现实有不同的感知</string>
+  <string name="TouRoleDoomsayerRoleHintInsight">你观察到\%player\%对隐私信息有洞察力</string>
+  <string name="TouRoleDoomsayerRoleHintDeath">你观察到\%player\%对尸体有异常的执着</string>
+  <string name="TouRoleDoomsayerRoleHintHunter">你观察到\%player\%擅长追猎猎物</string>
+  <string name="TouRoleDoomsayerRoleHintFearmonger">你观察到\%player\%在队伍中散播恐惧</string>
+  <string name="TouRoleDoomsayerRoleHintProtective">你观察到\%player\%会隐藏自己或保护他人</string>
+  <string name="TouRoleDoomsayerRoleHintTrickster">你观察到\%player\%暗藏诡计</string>
+  <string name="TouRoleDoomsayerRoleHintRelentless">你观察到\%player\%能够发动无情的攻击</string>
+  <string name="TouRoleDoomsayerRoleHintDefault">你观察到\%player\%并不来自这座小镇</string>
+  <string name="TouRoleDoomsayerWikiDescriptionIfCanObserve">末日预言者是一名中立邪恶型职业，通过猜中\%guessCount\%名玩家的身份获胜。他们可在会议前洞察玩家，获得其身份线索。</string>
+  <string name="TouRoleWarlockBurstKill">充能击杀</string>
+  <string name="TouRoleWarlockBurstActive">充能激活（可击杀）</string>
+  <string name="TouRoleEclipsalUnblinding">取消致盲</string>
+  <string name="TouRoleJanitorCleaning">清理中</string>
+  <string name="TouRoleMorphlingUnmorph">取消化形</string>
 </resources>
