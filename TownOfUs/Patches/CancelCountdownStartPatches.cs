@@ -20,7 +20,7 @@ internal static class CancelCountdownStart
 
         var cancelLabel = CancelStartButton.buttonText;
         cancelLabel.gameObject.GetComponent<TextTranslatorTMP>()?.OnDestroy();
-        cancelLabel.text = "Cancel";
+        cancelLabel.text = "";
 
         var cancelButtonInactiveRenderer = CancelStartButton.inactiveSprites.GetComponent<SpriteRenderer>();
         cancelButtonInactiveRenderer.color = new Color(0.8f, 0f, 0f, 1f);
@@ -69,6 +69,10 @@ internal static class CancelCountdownStart
         if (sec == -1)
         {
             SoundManager.Instance.StopSound(__instance.gameStartSound);
+        }
+        else
+        {
+            CancelStartButton.gameObject.SetActive(false);
         }
     }
 }

@@ -120,7 +120,7 @@ public static class DeathEventHandlers
                     break;
                 default:
                     var touRole = role as ITownOfUsRole;
-                    if (touRole == null || touRole.LocaleKey == "KEY_MISS")
+                    if (touRole == null || touRole.LocaleKey == "KEY_MISS" || TouLocale.Get($"DiedTo{touRole.LocaleKey}").Contains("STRMISS"))
                     {
                         break;
                     }
