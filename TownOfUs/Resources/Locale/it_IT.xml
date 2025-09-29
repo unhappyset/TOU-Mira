@@ -40,7 +40,7 @@
   <string name="ShowVents">Mostra Condotti Nella Mappa</string>
   <string name="ShowSummaryMessage">Mostra Sommario Messaggi</string>
   <string name="ColorPlayerName">Nomi Giocatori Colorati</string>
-  <string name="ButtonUIFactor">Fattore Di Scala Del Pulsante</string>
+  <string name="ButtonUIFactor">Fattore Di Scala Dei Pulsanti</string>
   <string name="PreciseCooldowns">I Tempi Di Recupero Dei Pulsanti Sono Decimali Sotto I 10s</string>
   <string name="ArrowStyle">Stile Freccia</string>
   <string name="ArrowDefault">Predefinito</string>
@@ -60,11 +60,11 @@
   <string name="WikiRoleGuideTab">Guida Ruoli</string>
   <string name="Chance">Possibilità</string>
   <string name="GameOutlier">Valore Anomalo Del Gioco</string>
-  <string name="CrewmateInvestigative">Astronauta Investigativo</string>
+  <string name="CrewmateInvestigative">Astronauti Investigativi</string>
   <string name="CrewmateKilling">Astronauti Uccisori</string>
   <string name="CrewmatePower">Astronauti Governatori</string>
   <string name="CrewmateProtective">Astronauti Protettivi</string>
-  <string name="CrewmateSupport">Astronauti Supporti</string>
+  <string name="CrewmateSupport">Astronauti Supporto</string>
   <string name="NeutralBenign">Neutrale Benigno</string>
   <string name="NeutralEvil">Neutrale Cattivo</string>
   <string name="NeutralKilling">Neutrale Uccisore</string>
@@ -91,7 +91,7 @@
   <string name="ImpKilling">Impostore Uccisore</string>
   <string name="ImpPower">Impostore Governatore</string>
   <string name="ImpSupport">Impostore Supporto</string>
-  <string name="GameKeyword">Gioco</string>
+  <string name="GameKeyword">Partita</string>
   <string name="CrewmateKeyword">Astronauta</string>
   <string name="CrewKeyword">Astronauta</string>
   <string name="NeutralKeyword">Neutrale</string>
@@ -107,7 +107,7 @@
   <string name="CrewmateUtility">Utilità Astronauta</string>
   <string name="CrewmateVisibility">Visibilità Astronauta</string>
   <string name="CrewmatePostmortem">Postmortem Astronauta</string>
-  <string name="CrewmatePassive">Passive Astronauta</string>
+  <string name="CrewmatePassive">Astronauta Passivo</string>
   <string name="NeutralAlliance">Alleanza Neutrale</string>
   <string name="NeutralUtility">Utilità Neutrale</string>
   <string name="NeutralVisibility">Visibilità Neutrale</string>
@@ -130,11 +130,11 @@
   <string name="NonCrewVisibility">No Visibilità Astronauta</string>
   <string name="NonCrewPostmortem">No Postmortem Astronauta</string>
   <string name="NonCrewPassive">No Passive Astronauta</string>
-  <string name="UseCrewmateTeamColor">Usa Colori Basici Astronauta</string>
-  <string name="ShowShieldHud">Mostra Scudi in HUD</string>
+  <string name="UseCrewmateTeamColor">Usa Colori Astronauta Base</string>
+  <string name="ShowShieldHud">Mostra Scudi Sull'Interfaccia</string>
   <string name="Modifier">Modificatore</string>
-  <string name="SetRoleList">Setta Lista Ruoli</string>
-  <string name="NeutralFactionList">Lista Fazioni Neutrali</string>
+  <string name="SetRoleList">Imposta Lista Ruoli</string>
+  <string name="NeutralFactionList">Lista Fazione Neutrali</string>
   <string name="NeutralBenigns">Neutrali Benigni</string>
   <string name="NeutralEvils">Neutrali Cattivi</string>
   <string name="AssailantUtility">Utilità Assaliante</string>
@@ -208,4 +208,7 @@
   <string name="TouRoleClericBarrier">Barriera</string>
   <string name="TouRoleClericBarrierWikiDescription">Impedisci ad un Astronauta di essere interagito. Lo scudo durerà per \%BarrierCooldown\% secondi.</string>
   <string name="PlayerHasNoModifiers">Nessun Modificatore</string>
+  <string name="ClientTabGameplay">Gioco</string>
+  <string name="External">Esterno</string>
+  <string name="ShowVanillaWikiEntries">Mostra Voci Vanilla Nella Wiki</string>
 </resources>

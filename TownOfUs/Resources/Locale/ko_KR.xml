@@ -23,4 +23,25 @@
   <string name="ShowVents">환풍구 지도에서 보이기</string>
   <string name="ColorPlayerName">색 있는 플레이어 이름</string>
   <string name="UseCrewmateTeamColor">기본적인 크루원 색 사용하기</string>
+  <string name="DeadSeeGhosts">다른 귀신들 보이기</string>
+  <string name="Jungle">정글</string>
+  <string name="Mint">민트</string>
+  <string name="Olive">올리브</string>
+  <string name="Chocolate">초콜릿</string>
+  <string name="SkyBlue">하늘색</string>
+  <string name="Beige">베이지</string>
+  <string name="Magenta">마젠타</string>
+  <string name="SeaGreen">바다 녹색</string>
+  <string name="Snow">눈</string>
+  <string name="Grass">잔디</string>
+  <string name="CottonCandy">솜사탕</string>
+  <string name="Rainbow">무지개</string>
+  <string name="BackButtonText">뒤로가기</string>
+  <string name="Glass">유리</string>
+  <string name="Ash">재</string>
+  <string name="Gold">금</string>
+  <string name="Nacho">나초</string>
+  <string name="Turquoise">청록</string>
+  <string name="Lilac">라일락</string>
+  <string name="Watermelon">수박</string>
 </resources>
