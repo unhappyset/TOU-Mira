@@ -77,6 +77,12 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TargetString();
     public string RoleLongDescription => TargetString();
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription").Replace("<symbol>", "<color=#B3FFFFFF>★</color>") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
     public Color RoleColor => TownOfUsColors.GuardianAngel;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
@@ -124,13 +130,6 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
             TouNeutAssets.ProtectSprite)
             };
         }
-    }
-
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is a Neutral Benign that needs to protect their target (signified by <color=#B3FFFFFF>★</color>) from getting killed/ejected." +
-            MiscUtils.AppendOptionsText(GetType());
     }
 
     public override void Initialize(PlayerControl player)

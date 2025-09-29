@@ -52,11 +52,10 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
     {
         return ITownOfUsRole.SetNewTabText(this);
     }
-
     public string GetAdvancedDescription()
     {
         return
-            $"The {RoleName} is an Impostor Support role that can stop a player from speaking (marked with <color=#2A1119>M</color>) in the next meeting" +
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription").Replace("<symbol>", "<color=#2A1119>M</color>") +
             MiscUtils.AppendOptionsText(GetType());
     }
 
