@@ -65,7 +65,7 @@ public sealed class MirrorcasterMagicMirrorButton : TownOfUsRoleButton<Mirrorcas
 
                     EffectActive = true;
                     Timer = EffectDuration;
-                    OverrideName("Protecting");
+                    OverrideName(TouLocale.Get("TouRoleMirrorcasterMagicMirrorProtecting", "Protecting"));
                     TargetWasValid = !plr.HasDied();
                 }
                 else
@@ -109,6 +109,6 @@ public sealed class MirrorcasterMagicMirrorButton : TownOfUsRoleButton<Mirrorcas
 
         TargetWasValid = false;
         MirrorcasterRole.RpcClearMagicMirror(PlayerControl.LocalPlayer);
-        OverrideName("Magic Mirror");
+        OverrideName(TouLocale.Get("TouRoleMirrorcasterMagicMirror", "Magic Mirror"));
     }
 }
