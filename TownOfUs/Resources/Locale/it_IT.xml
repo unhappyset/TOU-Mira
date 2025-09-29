@@ -91,7 +91,7 @@
   <string name="ImpKilling">Impostore Uccisore</string>
   <string name="ImpPower">Impostore Governatore</string>
   <string name="ImpSupport">Impostore Supporto</string>
-  <string name="GameKeyword">Gioco</string>
+  <string name="GameKeyword">Partita</string>
   <string name="CrewmateKeyword">Astronauta</string>
   <string name="CrewKeyword">Astronauta</string>
   <string name="NeutralKeyword">Neutrale</string>
@@ -130,8 +130,8 @@
   <string name="NonCrewVisibility">No Visibilità Astronauta</string>
   <string name="NonCrewPostmortem">No Postmortem Astronauta</string>
   <string name="NonCrewPassive">No Passive Astronauta</string>
-  <string name="UseCrewmateTeamColor">Usa Colori Basici Astronauta</string>
-  <string name="ShowShieldHud">Mostra Scudi in HUD</string>
+  <string name="UseCrewmateTeamColor">Usa Colori Astronauta Base</string>
+  <string name="ShowShieldHud">Mostra Scudi Sull'Interfaccia</string>
   <string name="Modifier">Modificatore</string>
   <string name="SetRoleList">Setta Lista Ruoli</string>
   <string name="NeutralFactionList">Lista Fazioni Neutrali</string>
@@ -208,4 +208,5 @@
   <string name="TouRoleClericBarrier">Barriera</string>
   <string name="TouRoleClericBarrierWikiDescription">Impedisci ad un Astronauta di essere interagito. Lo scudo durerà per \%BarrierCooldown\% secondi.</string>
   <string name="PlayerHasNoModifiers">Nessun Modificatore</string>
+  <string name="ClientTabGameplay">Gioco</string>
 </resources>
