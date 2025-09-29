@@ -129,14 +129,14 @@ public static class ProsecutorEvents
                 {
                     if (OptionGroupSingleton<ProsecutorOptions>.Instance.ExileOnCrewmate)
                     {
+                        if (pros.Player.TryGetModifier<CelebrityModifier>(out var celeb))
+                        {
+                            celeb.Announced = true;
+                        }
                         pros.Player.Exiled();
                         DeathHandlerModifier.UpdateDeathHandler(pros.Player, TouLocale.Get("DiedToPunishment"),
                             DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse,
                             lockInfo: DeathHandlerOverride.SetTrue);
-                        if (@pros.Player.TryGetModifier<CelebrityModifier>(out var celeb))
-                        {
-                            celeb.Announced = true;
-                        }
                     }
                     else
                     {
