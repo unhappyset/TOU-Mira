@@ -1037,7 +1037,6 @@
   <!-- Executioner -->
   <!-- Executioner Wiki / Description -->
   <string name="TouRoleExecutioner">Executioner</string>
-  <string name="TouRoleExecutionerIntroBlurb">Get \%target\% voted out to win.</string>
   <string name="TouRoleExecutionerTabDescription">Get \%target\% voted out to win.</string>
   <string name="TouRoleExecutionerMissingTargetDescription">Get your target voted out to win.</string>
   <string name="TouRoleExecutionerWikiDescription">The Executioner is a Neutral Evil role that wins by getting their target (signified by \%symbol\%) ejected in a meeting.</string>
@@ -1069,9 +1068,8 @@
   <!-- Guardian Angel -->
   <!-- Guardian Angel Wiki / Abilities -->
   <string name="TouRoleGuardianAngel">Guardian Angel</string>
-  <string name="TouRoleGuardianAngelIntroBlurb">Protect \%target\% With Your Life!</string>
-  <string name="TouRoleGuardianAngelTabDescription">Protect \%target\% With Your Life!</string>
-  <string name="TouRoleGuardianAngelIfNoTarget">Protect Your Target With Your Life!</string>
+  <string name="TouRoleGuardianAngelTabDescription">Protect \%target\% with your life!</string>
+  <string name="TouRoleGuardianAngelIfNoTarget">Protect your target with your life!</string>
   <string name="TouRoleGuardianAngelWikiDescription">The Guardian Angel is a Neutral Benign that needs to protect their target (signified by \%symbol\%) from getting killed/ejected.</string>
   <string name="TouRoleGuardianAngelProtect">Protect</string>
   <string name="TouRoleGuardianAngelProtectWikiDescription">Protect your target from getting killed.</string>

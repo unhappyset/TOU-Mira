@@ -75,7 +75,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
     public DoomableType DoomHintType => DoomableType.Protective;
     public string LocaleKey => "GuardianAngel";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
-    public string RoleDescription => TargetString();
+    public string RoleDescription => TargetString(true);
     public string RoleLongDescription => TargetString();
     public string GetAdvancedDescription()
     {
@@ -83,6 +83,22 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription").Replace("<symbol>", "<color=#B3FFFFFF>★</color>") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
+    private static string _missingTargetDesc = TouLocale.GetParsed("TouRoleGuardianAngelIfNoTarget");
+    private static string _targetDesc = TouLocale.GetParsed("TouRoleGuardianAngelTabDescription");
+
+    private string TargetString(bool capitalize = false)
+    {
+        var desc = capitalize ? _missingTargetDesc.ToUpperInvariant() : _missingTargetDesc;
+        if (Target && Target != null)
+        {
+            desc = capitalize ? _targetDesc.ToUpperInvariant() : _targetDesc;
+            desc = desc.Replace("<target>", $"{Target.Data.PlayerName}");
+        }
+
+        return desc;
+    }
+
     public Color RoleColor => TownOfUsColors.GuardianAngel;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
@@ -135,6 +151,9 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
+        _missingTargetDesc = TouLocale.GetParsed("TouRoleGuardianAngelIfNoTarget");
+        _targetDesc = TouLocale.GetParsed("TouRoleGuardianAngelTabDescription");
+
         if (TutorialManager.InstanceExists && Target == null && Player.AmOwner && Player.IsHost() &&
             AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
         {
@@ -226,16 +245,6 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
                     new Action<float>(p => { Player.GetModifier<ScatterModifier>()?.OnRoundStart(); })));
             }
         }
-    }
-
-    private string TargetString()
-    {
-        if (!Target)
-        {
-            return "Protect Your Target With Your Life!";
-        }
-
-        return $"Protect {Target?.Data.PlayerName} With Your Life!";
     }
 
     [MethodRpc((uint)TownOfUsRpc.SetGATarget)]

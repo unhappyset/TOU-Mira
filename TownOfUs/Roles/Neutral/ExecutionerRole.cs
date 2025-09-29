@@ -73,7 +73,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
     public DoomableType DoomHintType => DoomableType.Trickster;
     public string LocaleKey => "Executioner";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
-    public string RoleDescription => TargetString();
+    public string RoleDescription => TargetString(true);
     public string RoleLongDescription => TargetString();
     public string GetAdvancedDescription()
     {
@@ -81,6 +81,22 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription").Replace("<symbol>", "<color=#643B1FFF>X</color>") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
+    private static string _missingTargetDesc = TouLocale.GetParsed("TouRoleExecutionerMissingTargetDescription");
+    private static string _targetDesc = TouLocale.GetParsed("TouRoleExecutionerTabDescription");
+
+    private string TargetString(bool capitalize = false)
+    {
+        var desc = capitalize ? _missingTargetDesc.ToUpperInvariant() : _missingTargetDesc;
+        if (Target && Target != null)
+        {
+            desc = capitalize ? _targetDesc.ToUpperInvariant() : _targetDesc;
+            desc = desc.Replace("<target>", $"{Target.Data.PlayerName}");
+        }
+
+        return desc;
+    }
+
     public Color RoleColor => TownOfUsColors.Executioner;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
@@ -113,6 +129,9 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
+
+        _missingTargetDesc = TouLocale.GetParsed("TouRoleExecutionerMissingTargetDescription");
+        _targetDesc = TouLocale.GetParsed("TouRoleExecutionerTabDescription");
 
         if (!OptionGroupSingleton<ExecutionerOptions>.Instance.CanButton)
         {
@@ -179,16 +198,6 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
     public override bool DidWin(GameOverReason gameOverReason)
     {
         return TargetVoted;
-    }
-
-    private string TargetString()
-    {
-        if (!Target)
-        {
-            return "Get your target voted out to win.";
-        }
-
-        return $"Get {Target?.Data.PlayerName} voted out to win.";
     }
 
     public void CheckTargetDeath(PlayerControl? victim)
