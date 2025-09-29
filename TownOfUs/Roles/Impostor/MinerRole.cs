@@ -81,8 +81,8 @@ public sealed class MinerRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Mine",
-            "Place a vent where you are standing. These vents won't connect to already existing vents on the map but with each other.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Mine", "Mine"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}MineWikiDescription"),
             TouImpAssets.MineSprite)
             };
         }

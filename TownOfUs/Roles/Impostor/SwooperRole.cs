@@ -47,11 +47,11 @@ public sealed class SwooperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Swoop",
-            "Turn invisible to all players except Impostors.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Swoop", "Swoop"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}SwoopWikiDescription"),
             TouImpAssets.SwoopSprite),
-        new("Unswoop",
-            "Cancel your swoop early, or let it finish fully to make yourself visible once again.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Unswoop", "Unswoop"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}UnswoopWikiDescription"),
             TouImpAssets.UnswoopSprite)
             };
         }

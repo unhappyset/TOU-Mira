@@ -66,11 +66,9 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Blackmail",
-            "Silence a player for the next meeting. They will be unable to speak." +
-            "They also will not be able to vote until less or equal amount of people are alive than the blackmailer settings allow." +
-            "The blackmail will be visible to other players only if the setting is toggled",
-            TouImpAssets.BlackmailSprite)
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Blackmail", "Blackmail"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}BlackmailWikiDescription"),
+                    TouImpAssets.BlackmailSprite)
             };
         }
     }

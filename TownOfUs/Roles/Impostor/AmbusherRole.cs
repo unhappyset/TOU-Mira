@@ -61,16 +61,16 @@ public sealed class AmbusherRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Pursue",
-            "Pursue a player to be able to ambush another player next to them at a later time.",
-            TouImpAssets.PursueSprite),
-        new("Ambush",
-        "Ambush the closest player to the pursued target to kill them.",
-        TouImpAssets.AmbushSprite)
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Pursue", "Pursue"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}PursueWikiDescription"),
+                    TouImpAssets.PursueSprite),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Ambush", "Ambush"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}AmbushWikiDescription"),
+                    TouImpAssets.AmbushSprite)
             };
         }
     }
-    
+
     public void LobbyStart()
     {
         Clear();

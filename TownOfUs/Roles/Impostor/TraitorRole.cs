@@ -52,8 +52,8 @@ public sealed class TraitorRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Change Role",
-            "The Traitor can change their role to one of the provided role cards, or gamble on the random. Once they select a role, they stay as that role until they die. However, they must still be guessed as Traitor.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}ChangeRole", "Change Role"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}ChangeRoleWikiDescription"),
             TouImpAssets.TraitorSelect)
             };
         }

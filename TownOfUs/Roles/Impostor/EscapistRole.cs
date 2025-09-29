@@ -83,11 +83,11 @@ public sealed class EscapistRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Mark",
-            "Mark a location for later use.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Mark", "Mark"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}MarkWikiDescription"),
             TouImpAssets.MarkSprite),
-        new("Recall",
-            "Recall to the marked location.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Recall", "Recall"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}RecallWikiDescription"),
             TouImpAssets.RecallSprite)
             };
         }

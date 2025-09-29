@@ -74,11 +74,11 @@ public sealed class UndertakerRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Drag",
-            "Drag a dead body, if allowed through settings you can also take it into a vent.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Drag", "Drag"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}DragWikiDescription"),
             TouImpAssets.DragSprite),
-        new("Drop",
-            "Drop the dragged dead body, stopping it from being dragged any further.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Drop", "Drop"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}DropWikiDescription"),
             TouImpAssets.DropSprite)
             };
         }

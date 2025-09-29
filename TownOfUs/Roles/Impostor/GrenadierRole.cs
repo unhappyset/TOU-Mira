@@ -45,8 +45,8 @@ public sealed class GrenadierRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Flash",
-            "Throw down a grenade flashing all players in it's radius.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Flash", "Flash"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}FlashWikiDescription"),
             TouImpAssets.FlashSprite)
             };
         }

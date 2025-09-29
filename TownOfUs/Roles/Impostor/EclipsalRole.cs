@@ -42,9 +42,9 @@ public sealed class EclipsalRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Blind",
-            "Blinding players causes their fog of war to overtake their screen, only letting them see the map and prevents reporting. After a while, they will regain their vision and have vision like normal.",
-            TouImpAssets.BlindSprite)
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Blind", "Blind"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}BlindWikiDescription"),
+                    TouImpAssets.BlindSprite)
             };
         }
     }

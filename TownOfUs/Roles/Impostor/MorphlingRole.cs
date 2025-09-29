@@ -69,11 +69,11 @@ public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Sample",
-            "Take a DNA sample of a player to morph into them later.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Sample", "Sample"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}SampleWikiDescription"),
             TouImpAssets.SampleSprite),
-        new("Morph",
-            "Morph into the appearance of the sampled player, which can be cancelled early.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Morph", "Morph"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}MorphWikiDescription"),
             TouImpAssets.MorphSprite)
             };
         }

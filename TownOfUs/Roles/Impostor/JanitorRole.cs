@@ -76,8 +76,8 @@ public sealed class JanitorRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Clean",
-            "Clean a dead body, making it disapear and making it unreportable.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Clean", "Clean"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}CleanWikiDescription"),
             TouImpAssets.CleanButtonSprite)
             };
         }

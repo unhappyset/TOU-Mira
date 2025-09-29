@@ -73,11 +73,11 @@ public sealed class HypnotistRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Hypnotize",
-            "Hypnotize a player, causing them to see the game differently than non-hypnotized players if mass hysteria is active.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Hypnotize", "Hypnotize"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}HypnotizeWikiDescription"),
             TouImpAssets.HypnotiseButtonSprite),
-        new("Mass Hysteria (Meeting)",
-            "Cause all hypnotised players to have different visuals applied to players on their screen the following round.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}MassHysteriaWiki", "Mass Hysteria (Meeting)"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}MassHysteriaWikiDescription"),
             TouAssets.HysteriaCleanSprite)
             };
         }

@@ -57,9 +57,10 @@ public sealed class BomberRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Place",
-            $"Place a bomb, showing the radius in which it'll kill, killing up to {(int)OptionGroupSingleton<BomberOptions>.Instance.MaxKillsInDetonation} player(s)",
-            TouImpAssets.PlaceSprite)
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Place", "Place"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}PlaceWikiDescription").Replace("<maxKills>",
+                        $"{(int)OptionGroupSingleton<BomberOptions>.Instance.MaxKillsInDetonation}"),
+                    TouImpAssets.PlaceSprite)
             };
         }
     }

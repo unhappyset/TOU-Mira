@@ -45,17 +45,14 @@ public sealed class VenererRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Camouflage",
-            "Stage 1 of the abilities.\n" +
-            "You will appear as a gray bean for all players, allowing you to sneak away from kills.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Camouflage", "Camouflage"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}CamouflageWikiDescription"),
             TouImpAssets.CamouflageSprite),
-        new("Sprint",
-            "Stage 2 of the abilities.\n" +
-            "You will gain the speed of the Flash while hidden from camo.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Sprint", "Sprint"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}SprintWikiDescription"),
             TouImpAssets.SprintSprite),
-        new("Freeze",
-            "The Final Stage of the abilities.\n" +
-            "You will slow down players around you in a radius, as well as being fast and hidden from camo.",
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Freeze", "Freeze"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}FreezeWikiDescription"),
             TouImpAssets.FreezeSprite)
             };
         }

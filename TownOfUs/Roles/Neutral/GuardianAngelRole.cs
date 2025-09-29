@@ -141,9 +141,9 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Protect",
-            "Protect your target from getting killed.",
-            TouNeutAssets.ProtectSprite)
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Protect", "Protect"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}ProtectWikiDescription"),
+                    TouNeutAssets.ProtectSprite)
             };
         }
     }
