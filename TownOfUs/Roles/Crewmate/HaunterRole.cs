@@ -68,6 +68,11 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     {
         Setup = true;
 
+        if (HudManagerPatches.CamouflageCommsEnabled)
+        {
+            Player.SetCamouflage(false);
+        }
+
         if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Setup HaunterRole '{Player.Data.PlayerName}'");
         Player.gameObject.layer = LayerMask.NameToLayer("Players");
 
@@ -178,6 +183,11 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         if (TutorialManager.InstanceExists)
         {
             Setup = true;
+
+            if (HudManagerPatches.CamouflageCommsEnabled)
+            {
+                Player.SetCamouflage(false);
+            }
 
             Coroutines.Start(SetTutorialCollider(Player));
 

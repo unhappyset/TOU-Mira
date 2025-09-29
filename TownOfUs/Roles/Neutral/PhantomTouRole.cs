@@ -52,6 +52,11 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
     {
         Setup = true;
 
+        if (HudManagerPatches.CamouflageCommsEnabled)
+        {
+            Player.SetCamouflage(false);
+        }
+
         if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Setup PhantomTouRole '{Player.Data.PlayerName}'");
         Player.gameObject.layer = LayerMask.NameToLayer("Players");
 
@@ -166,6 +171,11 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
         if (TutorialManager.InstanceExists)
         {
             Setup = true;
+
+            if (HudManagerPatches.CamouflageCommsEnabled)
+            {
+                Player.SetCamouflage(false);
+            }
 
             Coroutines.Start(SetTutorialCollider(Player));
 

@@ -280,6 +280,11 @@ public static class HudManagerPatches
             var appearanceType = player.GetAppearanceType();
             if (isActive)
             {
+                if (player.Data.Role is IGhostRole)
+                {
+                    continue;
+                }
+
                 if (appearanceType != TownOfUsAppearances.Swooper && appearanceType != TownOfUsAppearances.Camouflage)
                 {
                     player.SetCamouflage();
