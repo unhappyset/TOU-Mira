@@ -19,15 +19,18 @@ public sealed class SpyModifier : TouGameModifier, IWikiDiscoverable, IColoredMo
     public override string LocaleKey => "Spy";
     public override string ModifierName => TouLocale.Get($"TouRole{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
+
     public override string GetDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription")
                + MiscUtils.AppendOptionsText(CustomRoleSingleton<SpyRole>.Instance.GetType());
     }
+
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Spy;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 

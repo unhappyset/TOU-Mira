@@ -35,7 +35,8 @@ public sealed class GrenadierFlashButton : TownOfUsRoleButton<GrenadierRole>, IA
 
         PlayerControl.LocalPlayer.RpcAddModifier<GrenadierFlashModifier>(PlayerControl.LocalPlayer);
         var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}All players around you are now flashbanged!</color></b>", Color.white, new Vector3(0f, 1f, -150f),
+            $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}All players around you are now flashbanged!</color></b>",
+            Color.white, new Vector3(0f, 1f, -150f),
             spr: TouRoleIcons.Grenadier.LoadAsset());
         notif1.AdjustNotification();
 

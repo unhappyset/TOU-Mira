@@ -121,7 +121,8 @@ public class NeutralGhostRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownOfUsR
         Logger<TownOfUsPlugin>.Message($"NeutralGhostRole.DidWin - role: {role.GetRoleName()} DidWin: {win}");
 
         // Yes, this is bad, but we don't want to break the end game screen to allow other mods to still work with tou mira - Atony
-        if (role is JesterRole && win && OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.EndsGame)
+        if (role is JesterRole && win &&
+            OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.EndsGame)
         {
             Logger<TownOfUsPlugin>.Info($"Jester - Player: {Player.Data.PlayerName}");
             Player.Data.IsDead = false;

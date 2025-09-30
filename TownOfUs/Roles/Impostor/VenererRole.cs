@@ -16,13 +16,14 @@ public sealed class VenererRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorConcealing;
@@ -47,13 +48,13 @@ public sealed class VenererRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
             {
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Camouflage", "Camouflage"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}CamouflageWikiDescription"),
-            TouImpAssets.CamouflageSprite),
+                    TouImpAssets.CamouflageSprite),
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Sprint", "Sprint"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}SprintWikiDescription"),
-            TouImpAssets.SprintSprite),
+                    TouImpAssets.SprintSprite),
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Freeze", "Freeze"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}FreezeWikiDescription"),
-            TouImpAssets.FreezeSprite)
+                    TouImpAssets.FreezeSprite)
             };
         }
     }

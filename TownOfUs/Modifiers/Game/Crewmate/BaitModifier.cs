@@ -15,14 +15,17 @@ public sealed class BaitModifier : TouGameModifier, IWikiDiscoverable
     public override string LocaleKey => "Bait";
     public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
+
     public override string GetDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription") + MiscUtils.AppendOptionsText(GetType());
     }
+
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Bait;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 
@@ -65,7 +68,7 @@ public sealed class BaitModifier : TouGameModifier, IWikiDiscoverable
                 $"<b>{TownOfUsColors.Bait.ToTextColor()}{target.Data.PlayerName} was a Bait, causing you to self report.</color></b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouModifierIcons.Bait.LoadAsset());
 
-            notif1.AdjustNotification();    
+            notif1.AdjustNotification();
         }
     }
 }

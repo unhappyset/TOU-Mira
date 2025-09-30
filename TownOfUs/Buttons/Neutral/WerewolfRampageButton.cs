@@ -15,6 +15,7 @@ public sealed class WerewolfRampageButton : TownOfUsRoleButton<WerewolfRole>, IA
     public override float Cooldown => OptionGroupSingleton<WerewolfOptions>.Instance.RampageCooldown + MapCooldown;
     public override float EffectDuration => OptionGroupSingleton<WerewolfOptions>.Instance.RampageDuration;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.RampageSprite;
+
     public override bool CanClick()
     {
         return base.CanClick() && Role?.Rampaging == false;

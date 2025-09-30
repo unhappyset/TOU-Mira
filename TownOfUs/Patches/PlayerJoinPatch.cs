@@ -51,7 +51,8 @@ public static class PlayerJoinPatch
         SpectatorRole.FixedCam = false;
 
         var time = 0f;
-        if (GameHistory.EndGameSummary != string.Empty && LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.ShowSummaryMessageToggle.Value)
+        if (GameHistory.EndGameSummary != string.Empty && LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance
+                .ShowSummaryMessageToggle.Value)
         {
             var factionText = string.Empty;
             var msg = string.Empty;

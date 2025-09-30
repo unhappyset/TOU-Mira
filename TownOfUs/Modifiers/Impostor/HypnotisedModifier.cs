@@ -56,10 +56,10 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
 
         // Logger<TownOfUsPlugin>.Message($"HypnotisedModifier.Hysteria - {Player.Data.PlayerName}");
         var players = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.HasDied() && x != Player).ToList();
-        
+
         var bodyType = Random.RandomRangeInt(0, 10);
         var bodyShape = PlayerBodyTypes.Normal;
-            
+
         if (bodyType == 1)
         {
             bodyShape = PlayerBodyTypes.Horse;
@@ -78,7 +78,7 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
         }
 
         Player.MyPhysics.SetForcedBodyType(bodyShape);
-        
+
         foreach (var player in players)
         {
             player.MyPhysics.SetForcedBodyType(bodyShape);
@@ -86,7 +86,7 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
             if (hidden == 0)
             {
                 var morph = new VisualAppearance(Player.GetDefaultModifiedAppearance(), TownOfUsAppearances.Morph);
-                
+
                 player.RawSetAppearance(morph);
                 if (bodyShape is PlayerBodyTypes.Seeker)
                 {
@@ -132,7 +132,7 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
                 $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You are under a Mass Hysteria!</color></b>", Color.white,
                 spr: TouRoleIcons.Hypnotist.LoadAsset());
 
-            notif1.AdjustNotification();    
+            notif1.AdjustNotification();
         }
 
         HysteriaActive = true;
@@ -144,7 +144,7 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
         {
             return;
         }
-        
+
         if (!Player.AmOwner)
         {
             return;
@@ -158,6 +158,7 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
             {
                 continue;
             }
+
             player.RawSetAppearance(player.GetDefaultModifiedAppearance());
             player.cosmetics.ToggleNameVisible(true);
         }

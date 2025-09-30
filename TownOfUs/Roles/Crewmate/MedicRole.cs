@@ -24,8 +24,7 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
     private MeetingMenu meetingMenu;
     public override bool IsAffectedByComms => false;
 
-    [HideFromIl2Cpp]
-    public PlayerControl? Shielded { get; set; }
+    [HideFromIl2Cpp] public PlayerControl? Shielded { get; set; }
 
     public void FixedUpdate()
     {
@@ -45,7 +44,7 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return

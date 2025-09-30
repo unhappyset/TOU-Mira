@@ -33,7 +33,7 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
-    
+
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -45,11 +45,14 @@ public sealed class PoliticianRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
                     TouLocale.GetParsed($"TouRole{LocaleKey}CampaignWikiDescription"),
                     TouCrewAssets.CampaignButtonSprite),
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}RevealWiki", "Reveal"),
-                    TouLocale.GetParsed(OptionGroupSingleton<PoliticianOptions>.Instance.PreventCampaign ? $"TouRole{LocaleKey}RevealWikiDescriptionPunished" : $"TouRole{LocaleKey}RevealWikiDescription"),
+                    TouLocale.GetParsed(OptionGroupSingleton<PoliticianOptions>.Instance.PreventCampaign
+                        ? $"TouRole{LocaleKey}RevealWikiDescriptionPunished"
+                        : $"TouRole{LocaleKey}RevealWikiDescription"),
                     TouAssets.RevealCleanSprite)
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Politician;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;

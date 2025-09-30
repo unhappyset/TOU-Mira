@@ -47,7 +47,7 @@ public sealed class EclipsalBlindModifier(PlayerControl player) : DisabledModifi
                 $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You were blinded by an Eclipsal!</color></b>", Color.white,
                 spr: TouRoleIcons.Eclipsal.LoadAsset());
 
-            notif1.AdjustNotification();    
+            notif1.AdjustNotification();
         }
     }
 

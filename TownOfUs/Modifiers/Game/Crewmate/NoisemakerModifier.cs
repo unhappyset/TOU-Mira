@@ -16,15 +16,19 @@ public sealed class NoisemakerModifier : TouGameModifier, IWikiDiscoverable
     public override string LocaleKey => "Noisemaker";
     public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
+
     public override string GetDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription").Replace("<noiseTime>", $"{OptionGroupSingleton<NoisemakerOptions>.Instance.AlertDuration}");
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription").Replace("<noiseTime>",
+            $"{OptionGroupSingleton<NoisemakerOptions>.Instance.AlertDuration}");
     }
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription")
                + MiscUtils.AppendOptionsText(GetType());
     }
+
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Noisemaker;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 

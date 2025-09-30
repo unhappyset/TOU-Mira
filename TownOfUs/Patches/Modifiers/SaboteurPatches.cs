@@ -22,7 +22,7 @@ public static class SaboteurPatches
         {
             return;
         }
-        
+
         if (PlayerControl.AllPlayerControls.Count <= 1)
         {
             return;

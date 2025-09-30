@@ -55,12 +55,14 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
         if (missType is MisfireOptions.Sheriff or MisfireOptions.Both)
         {
             PlayerControl.LocalPlayer.RpcCustomMurder(PlayerControl.LocalPlayer);
-            DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, TouLocale.Get("DiedToSuicide"), DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
+            DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, TouLocale.Get("DiedToSuicide"),
+                DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
         }
 
         FailedShot = true;
 
-        var notif1 = Helpers.CreateAndShowNotification($"<b>{TouLocale.GetParsed("TouRoleSheriffMisfireFeedback")}</b>", Color.white,
+        var notif1 = Helpers.CreateAndShowNotification($"<b>{TouLocale.GetParsed("TouRoleSheriffMisfireFeedback")}</b>",
+            Color.white,
             spr: TouRoleIcons.Sheriff.LoadAsset());
 
         notif1.AdjustNotification();
@@ -159,6 +161,7 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
                     {
                         Misfire();
                     }
+
                     break;
             }
         }
@@ -179,6 +182,7 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
         {
             return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover());
         }
+
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 }

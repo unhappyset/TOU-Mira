@@ -26,11 +26,15 @@ public sealed class FlashModifier : UniversalGameModifier, IWikiDiscoverable, IV
 
     public override string GetDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription").Replace("<flashSpeed>", $"{Math.Round(OptionGroupSingleton<FlashOptions>.Instance.FlashSpeed, 2)}");
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription").Replace("<flashSpeed>",
+            $"{Math.Round(OptionGroupSingleton<FlashOptions>.Instance.FlashSpeed, 2)}");
     }
+
     public string GetAdvancedDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<flashSpeed>", $"{Math.Round(OptionGroupSingleton<FlashOptions>.Instance.FlashSpeed, 2)}") + MiscUtils.AppendOptionsText(GetType());
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<flashSpeed>",
+                   $"{Math.Round(OptionGroupSingleton<FlashOptions>.Instance.FlashSpeed, 2)}") +
+               MiscUtils.AppendOptionsText(GetType());
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];

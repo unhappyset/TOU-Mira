@@ -31,13 +31,14 @@ public sealed class MayorRole(IntPtr cppPtr)
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     public Color RoleColor => TownOfUsColors.Mayor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
@@ -85,6 +86,7 @@ public sealed class MayorRole(IntPtr cppPtr)
         {
             traitorMod.Clear();
         }
+
         if (MeetingHud.Instance && !DisabledAnimation)
         {
             var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == player.PlayerId);
@@ -168,6 +170,7 @@ public sealed class MayorRole(IntPtr cppPtr)
         {
             return;
         }
+
         var targetVoteArea = MeetingHud.Instance.playerStates.First(x => x.TargetPlayerId == plr.PlayerId);
         Coroutines.Start(CoAnimateReveal(targetVoteArea));
     }

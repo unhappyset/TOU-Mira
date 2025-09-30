@@ -49,6 +49,7 @@ public static class DetectiveEvents
             {
                 continue;
             }
+
             scene.gameObject.SetActive(false);
         }
 
@@ -60,6 +61,7 @@ public static class DetectiveEvents
                 {
                     continue;
                 }
+
                 scene.gameObject.SetActive(true);
             }
         }

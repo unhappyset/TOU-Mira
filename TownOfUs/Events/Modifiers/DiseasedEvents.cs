@@ -31,7 +31,7 @@ public static class DiseasedEvents
             $"<b>{TownOfUsColors.Diseased.ToTextColor()}{@event.Target.Data.PlayerName} was Diseased, causing your kill cooldown to multiply by {Math.Round(cdMultiplier, 2)}.</color></b>",
             Color.white, new Vector3(0f, 1f, -20f), spr: TouModifierIcons.Diseased.LoadAsset());
 
-            notif1.AdjustNotification();    
+        notif1.AdjustNotification();
 
         source.SetKillTimer(source.GetKillCooldown() * cdMultiplier);
         var buttons = CustomButtonManager.Buttons.Where(x => x.Enabled(source.Data.Role)).OfType<IDiseaseableButton>();

@@ -33,10 +33,12 @@ public static class PhantomEvents
                     $"<b>You have successfully won as the {TownOfUsColors.Phantom.ToTextColor()}Phantom</color>, as you finished your tasks postmortem!</b>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Phantom.LoadAsset());
 
-                notif1.AdjustNotification();        HudManagerPatches.ZoomButton.SetActive(true);
+                notif1.AdjustNotification();
+                HudManagerPatches.ZoomButton.SetActive(true);
                 if (OptionGroupSingleton<PhantomOptions>.Instance.PhantomWin is PhantomWinOptions.Spooks)
                 {
-                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "null", -1, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "null", -1,
+                        DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
                     var notif2 = Helpers.CreateAndShowNotification(
                         $"<b>You have one round to spook a player of your choice to death, choose wisely.</b>",
                         Color.white, new Vector3(0f, 0.85f, -20f));
@@ -49,7 +51,8 @@ public static class PhantomEvents
                     $"<b>The {TownOfUsColors.Phantom.ToTextColor()}Phantom</color>, {phantom.Player.Data.PlayerName}, has successfully won, as they completed their tasks postmortem!</b>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Phantom.LoadAsset());
 
-                notif1.AdjustNotification();    }
+                notif1.AdjustNotification();
+            }
         }
     }
 }

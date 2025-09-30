@@ -89,17 +89,22 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         {
             Player.AddModifier<BasicGhostModifier>();
         }
+
         DeathHandlerModifier.UpdateDeathHandler(Player, "Spectating", 0, DeathHandlerOverride.SetFalse);
 
         if (!Player.AmOwner)
+        {
             return;
+        }
 
         ShowHud = false;
         FixedCam = true;
         ShowShadows = false;
 
         if (!HudManager.InstanceExists)
+        {
             return;
+        }
 
         HudManager.Instance.PlayerCam.SetTarget(Player);
         HudManager.Instance.ShadowQuad.gameObject.SetActive(ShowShadows);
@@ -115,7 +120,9 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         ShowShadows = true;
 
         if (!targetPlayer || !targetPlayer.AmOwner || !HudManager.InstanceExists)
+        {
             return;
+        }
 
         HudManager.Instance.PlayerCam.SetTarget(targetPlayer);
         HudManager.Instance.ShadowQuad.gameObject.SetActive(ShowShadows);
@@ -139,10 +146,14 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
         }
 
         if (Input.GetKeyDown(KeyCode.F1))
+        {
             FixedCam = !FixedCam;
+        }
 
         if (Input.GetKeyDown(KeyCode.K))
+        {
             HudManager.Instance.PlayerCam.SetTarget(Player);
+        }
 
         if (Input.GetKeyDown(KeyCode.I))
         {
@@ -161,7 +172,9 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
             CurrentTarget--;
 
             if (CurrentTarget <= -1)
+            {
                 CurrentTarget = TrackedPlayers.Count - 1;
+            }
 
             HudManager.Instance.PlayerCam.SetTarget(TrackedPlayers[CurrentTarget]);
         }
@@ -171,7 +184,9 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
             CurrentTarget++;
 
             if (CurrentTarget >= TrackedPlayers.Count)
+            {
                 CurrentTarget = 0;
+            }
 
             HudManager.Instance.PlayerCam.SetTarget(TrackedPlayers[CurrentTarget]);
         }
@@ -190,7 +205,11 @@ public sealed class SpectatorRole(IntPtr cppPtr) : RoleBehaviour(cppPtr), ITownO
     {
         foreach (var player in PlayerControl.AllPlayerControls)
 
+        {
             if (!TrackedSpectators.Contains(player.Data.PlayerName))
+            {
                 TrackedPlayers.Add(player);
+            }
+        }
     }
 }

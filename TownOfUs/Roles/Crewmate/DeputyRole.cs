@@ -22,14 +22,13 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     private MeetingMenu meetingMenu;
     public override bool IsAffectedByComms => false;
 
-    [HideFromIl2Cpp]
-    public PlayerControl? Killer { get; set; }
+    [HideFromIl2Cpp] public PlayerControl? Killer { get; set; }
     public DoomableType DoomHintType => DoomableType.Relentless;
     public string LocaleKey => "Deputy";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
@@ -54,7 +53,10 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     public Color RoleColor => TownOfUsColors.Deputy;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
-    public bool IsPowerCrew => Killer || ModifierUtils.GetActiveModifiers<DeputyCampedModifier>().Any(); // Only stop end game checks if the deputy can actually kill someone
+
+    public bool IsPowerCrew =>
+        Killer || ModifierUtils.GetActiveModifiers<DeputyCampedModifier>()
+            .Any(); // Only stop end game checks if the deputy can actually kill someone
 
     public CustomRoleConfiguration Configuration => new(this)
     {
@@ -156,13 +158,15 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         }
         else
         {
-            var title = $"<color=#{TownOfUsColors.Deputy.ToHtmlStringRGBA()}>{TouLocale.Get("TouRoleDeputyMessageTitle")}</color>";
+            var title =
+                $"<color=#{TownOfUsColors.Deputy.ToHtmlStringRGBA()}>{TouLocale.Get("TouRoleDeputyMessageTitle")}</color>";
             var msg = TouLocale.Get("TouRoleDeputyMissedShot");
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.Deputy.ToTextColor()}{msg}</b></color>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Deputy.LoadAsset());
-            notif1.AdjustNotification();}
+            notif1.AdjustNotification();
+        }
 
         if (Player.AmOwner)
         {

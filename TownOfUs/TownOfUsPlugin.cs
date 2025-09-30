@@ -43,7 +43,7 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
     ///     Determines if the current build is a dev build or not. This will change certain visuals as well as always grab news locally to be up to date.
     /// </summary>
     public static bool IsDevBuild => true;
-    
+
     /// <inheritdoc />
     public string OptionsTitleText => "TOU Mira";
 
@@ -72,7 +72,8 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
             ModCompatibility
                 .Initialize; // Initialise AFTER the mods are loaded to ensure maximum parity (no need for the soft dependency either then)
         IL2CPPChainloader.Instance.Finished +=
-            ModNewsFetcher.CheckForNews; // Checks for mod announcements after everything is loaded to avoid Epic Games crashing
+            ModNewsFetcher
+                .CheckForNews; // Checks for mod announcements after everything is loaded to avoid Epic Games crashing
 
         var path = Path.GetDirectoryName(Assembly.GetAssembly(typeof(TownOfUsPlugin))!.Location) + "\\touhats.catalog";
         AddressablesLoader.RegisterCatalog(path);

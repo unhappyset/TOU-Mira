@@ -27,7 +27,7 @@ public class LocalizedLocalSliderSettingAttribute(
     string? formatString = null,
     bool roundValue = false,
     MiraNumberSuffixes suffixType = MiraNumberSuffixes.None
-    ) : LocalSliderSettingAttribute(name, description:description)
+) : LocalSliderSettingAttribute(name, description: description)
 {
     private readonly string? _name = name;
     private readonly string? _description = description;
@@ -35,6 +35,7 @@ public class LocalizedLocalSliderSettingAttribute(
     /// <inheritdoc/>
     public override LocalizedLocalSliderSetting CreateSetting(Type tab, ConfigEntryBase configEntryBase)
     {
-        return new LocalizedLocalSliderSetting(tab, configEntryBase, _name, _description, new FloatRange(min, max), displayValue, suffixType, formatString, roundValue);
+        return new LocalizedLocalSliderSetting(tab, configEntryBase, _name, _description, new FloatRange(min, max),
+            displayValue, suffixType, formatString, roundValue);
     }
 }

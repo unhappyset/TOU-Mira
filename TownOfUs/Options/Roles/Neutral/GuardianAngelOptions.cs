@@ -26,7 +26,7 @@ public sealed class GuardianAngelOptions : AbstractOptionGroup<GuardianAngelTouR
 
     [ModdedToggleOption("Target Knows GA Exists")]
     public bool GATargetKnows { get; set; } = true;
-    
+
     [ModdedToggleOption("GA Knows Targets Role")]
     public bool GAKnowsTargetRole { get; set; } = true;
 

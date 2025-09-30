@@ -62,7 +62,7 @@ public sealed class SeerRevealButton : TownOfUsRoleButton<SeerRole, PlayerContro
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You have revealed that {target.Data.PlayerName} is {possiblyGood} evil!</color></b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Seer.LoadAsset());
-            notif1.AdjustNotification();    
+            notif1.AdjustNotification();
 
             if (options.ShowCrewmateKillingAsRed)
             {
@@ -116,7 +116,7 @@ public sealed class SeerRevealButton : TownOfUsRoleButton<SeerRole, PlayerContro
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{Palette.CrewmateBlue.ToTextColor()}You have revealed that {target.Data.PlayerName} is {possiblyGood} good!</color></b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Seer.LoadAsset());
-            notif1.AdjustNotification();    
+            notif1.AdjustNotification();
 
             if (!options.ShowNeutralBenignAsRed)
             {

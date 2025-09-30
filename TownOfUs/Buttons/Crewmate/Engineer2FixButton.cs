@@ -25,6 +25,7 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
     {
         Button?.cooldownTimerText.gameObject.SetActive(false);
     }
+
     public override void ClickHandler()
     {
         if (!CanClick() || PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() ||
@@ -32,7 +33,7 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
         {
             return;
         }
-        
+
         OnClick();
 
         if (HasEffect)
@@ -74,7 +75,7 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
             List<LoadableAsset<AudioClip>> audio = [TouAudio.EngiFix1, TouAudio.EngiFix2, TouAudio.EngiFix3];
             TouAudio.PlaySound(audio.Random()!, 4f);
             EngineerTouRole.EngineerFix(PlayerControl.LocalPlayer);
-            
+
             if (LimitedUses)
             {
                 UsesLeft--;
@@ -89,7 +90,8 @@ public sealed class EngineerFixButton : TownOfUsRoleButton<EngineerTouRole>
                     }
                 }
 
-                TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+                TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance
+                    .UseCrewmateTeamColorToggle.Value;
             }
         }
     }

@@ -20,6 +20,7 @@ public sealed class ScavengerArrowModifier(PlayerControl owner, Color color) : A
             tmp.ResetText();
         }
     }
+
     public override void OnMeetingStart()
     {
         base.OnMeetingStart();

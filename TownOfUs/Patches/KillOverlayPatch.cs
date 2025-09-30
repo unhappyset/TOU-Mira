@@ -42,6 +42,7 @@ public static class KillOverlayPatch
 
         Coroutines.Start(CoKillDestroy());
     }
+
     public static void Postfix(OverlayKillAnimation __instance)
     {
         Coroutines.Start(CoKillDestroy());

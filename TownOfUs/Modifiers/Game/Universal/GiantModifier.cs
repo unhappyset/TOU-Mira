@@ -27,14 +27,19 @@ public sealed class GiantModifier : UniversalGameModifier, IWikiDiscoverable, IV
 
     public override string GetDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription").Replace("<giantSpeed>",  $"{Math.Round(OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed, 2)}");
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription").Replace("<giantSpeed>",
+            $"{Math.Round(OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed, 2)}");
     }
+
     public string GetAdvancedDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<giantSpeed>",  $"{Math.Round(OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed, 2)}") + MiscUtils.AppendOptionsText(GetType());    
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<giantSpeed>",
+                   $"{Math.Round(OptionGroupSingleton<GiantOptions>.Instance.GiantSpeed, 2)}") +
+               MiscUtils.AppendOptionsText(GetType());
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
     public override int GetAssignmentChance()
     {
         return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.GiantChance;

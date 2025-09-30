@@ -28,6 +28,7 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription") + MiscUtils.AppendOptionsText(GetType());
@@ -40,9 +41,9 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
         {
             return new List<CustomButtonWikiDescription>
             {
-        new(TouLocale.Get($"TouModifier{LocaleKey}Disperse"),
-            TouLocale.GetParsed($"TouModifier{LocaleKey}DisperseWikiDescription"),
-            TouAssets.DisperseSprite)
+                new(TouLocale.Get($"TouModifier{LocaleKey}Disperse"),
+                    TouLocale.GetParsed($"TouModifier{LocaleKey}DisperseWikiDescription"),
+                    TouAssets.DisperseSprite)
             };
         }
     }

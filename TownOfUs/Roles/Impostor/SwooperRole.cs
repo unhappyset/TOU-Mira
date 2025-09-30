@@ -16,13 +16,14 @@ public sealed class SwooperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorConcealing;
@@ -49,10 +50,10 @@ public sealed class SwooperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
             {
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Swoop", "Swoop"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}SwoopWikiDescription"),
-            TouImpAssets.SwoopSprite),
+                    TouImpAssets.SwoopSprite),
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Unswoop", "Unswoop"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}UnswoopWikiDescription"),
-            TouImpAssets.UnswoopSprite)
+                    TouImpAssets.UnswoopSprite)
             };
         }
     }

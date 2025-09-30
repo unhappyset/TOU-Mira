@@ -75,10 +75,12 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TargetString(true);
     public string RoleLongDescription => TargetString();
+
     public string GetAdvancedDescription()
     {
         return
-            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription").Replace("<symbol>", "<color=#643B1FFF>X</color>") +
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription")
+                .Replace("<symbol>", "<color=#643B1FFF>X</color>") +
             MiscUtils.AppendOptionsText(GetType());
     }
 

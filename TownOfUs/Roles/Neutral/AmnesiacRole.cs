@@ -33,7 +33,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
@@ -54,9 +54,12 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Amnesiac;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
+
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
+
     // This is so the role can be guessed without requiring it to be enabled normally
     public bool CanBeGuessed =>
         (MiscUtils.GetPotentialRoles()
@@ -114,7 +117,8 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{target.CachedPlayerData.PlayerName} was an {TownOfUsColors.Amnesiac.ToTextColor()}Amnesiac</color>, so their role cannot be picked up.</b>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Amnesiac.LoadAsset());
-                notif1.AdjustNotification();    }
+                notif1.AdjustNotification();
+            }
 
             return;
         }
@@ -125,13 +129,16 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
         player.ChangeRole((ushort)roleWhenAlive.Role);
         if (player.Data.Role is InquisitorRole inquis)
         {
-            inquis.Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().Where(x => x != player).ToList();
-            inquis.TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>().Where(x => x.Player != player)
+            inquis.Targets = ModifierUtils.GetPlayersWithModifier<InquisitorHereticModifier>().Where(x => x != player)
+                .ToList();
+            inquis.TargetRoles = ModifierUtils.GetActiveModifiers<InquisitorHereticModifier>()
+                .Where(x => x.Player != player)
                 .Select([HideFromIl2Cpp](x) => x.TargetRole).OrderBy([HideFromIl2Cpp](x) => x.GetRoleName()).ToList();
         }
         else if (player.Data.Role is PlaguebearerRole || player.Data.Role is PestilenceRole)
         {
-            ModifierUtils.GetActiveModifiers<PlaguebearerInfectedModifier>().Do(x => x.ModifierComponent?.RemoveModifier(x));
+            ModifierUtils.GetActiveModifiers<PlaguebearerInfectedModifier>()
+                .Do(x => x.ModifierComponent?.RemoveModifier(x));
         }
         else if (player.Data.Role is ArsonistRole)
         {
@@ -143,7 +150,8 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
         }
         else if (player.Data.Role is GuardianAngelTouRole ga)
         {
-            var gaTarget = ModifierUtils.GetPlayersWithModifier<GuardianAngelTargetModifier>().FirstOrDefault(x => x.PlayerId == target.PlayerId);
+            var gaTarget = ModifierUtils.GetPlayersWithModifier<GuardianAngelTargetModifier>()
+                .FirstOrDefault(x => x.PlayerId == target.PlayerId);
 
             if (gaTarget != null && gaTarget.TryGetModifier<GuardianAngelTargetModifier>(out var gaMod))
             {
@@ -153,7 +161,8 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
         }
         else if (player.Data.Role is ExecutionerRole exe)
         {
-            var exeTarget = ModifierUtils.GetPlayersWithModifier<ExecutionerTargetModifier>().FirstOrDefault(x => x.PlayerId == target.PlayerId);
+            var exeTarget = ModifierUtils.GetPlayersWithModifier<ExecutionerTargetModifier>()
+                .FirstOrDefault(x => x.PlayerId == target.PlayerId);
 
             if (exeTarget != null && exeTarget.TryGetModifier<ExecutionerTargetModifier>(out var exeMod))
             {
@@ -180,9 +189,11 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>You remembered that you were like {target.Data.PlayerName}, the {player.Data.Role.TeamColor.ToTextColor()}{player.Data.Role.GetRoleName()}</color>.</b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Amnesiac.LoadAsset());
-            notif1.AdjustNotification();}
+            notif1.AdjustNotification();
+        }
 
-        if (roleWhenAlive is not VampireRole && (roleWhenAlive.MaxCount <= 1 || (roleWhenAlive.MaxCount <= PlayerControl.AllPlayerControls
+        if (roleWhenAlive is not VampireRole && (roleWhenAlive.MaxCount <= 1 || (roleWhenAlive.MaxCount <= PlayerControl
+                .AllPlayerControls
                 .ToArray().Count(x => x.Data.Role.Role == roleWhenAlive.Role))))
         {
             if (target.IsCrewmate())
@@ -225,7 +236,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
         {
             player.AddModifier<NeutralKillerAssassinModifier>();
         }
-        
+
         var touAbilityEvent2 = new TouAbilityEvent(AbilityType.AmnesiacPostRemember, player, target);
         MiraEventManager.InvokeEvent(touAbilityEvent2);
     }

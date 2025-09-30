@@ -137,7 +137,7 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
         potentialVictims = [];
 
         var roles = MiscUtils.GetPotentialRoles().Where(roleMatch).ToList();
-        
+
         // This code adds Amne, Surv, Jester, and Merc based on Guardian Angel and Executioner Death settings
         var allRoles = MiscUtils.AllRoles.Where(roleMatch).Where(x => x is IGuessable && !roles.Contains(x)).ToList();
 
@@ -151,7 +151,7 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
                 }
             }
         }
-        
+
         var newRoleList = roles.OrderBy(x =>
             LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.SortGuessingByAlignmentToggle.Value
                 ? MiscUtils.GetParsedRoleAlignment(x) + x.GetRoleName()

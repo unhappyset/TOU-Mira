@@ -31,7 +31,8 @@ public sealed class JailedModifier(byte jailorId) : BaseModifier
     public override void OnMeetingStart()
     {
         Clear();
-        if (GameData.Instance.GetPlayerById(JailorId).Object.HasDied() || GameData.Instance.GetPlayerById(JailorId).Object.Data.Role is not JailorRole || Player.HasDied() ||
+        if (GameData.Instance.GetPlayerById(JailorId).Object.HasDied() ||
+            GameData.Instance.GetPlayerById(JailorId).Object.Data.Role is not JailorRole || Player.HasDied() ||
             !MeetingHud.Instance)
         {
             return;
@@ -54,7 +55,7 @@ public sealed class JailedModifier(byte jailorId) : BaseModifier
                 $"<b>{TownOfUsColors.Jailor.ToTextColor()}{text}</color></b>", Color.white,
                 spr: TouRoleIcons.Jailor.LoadAsset());
 
-            notif1.AdjustNotification();    
+            notif1.AdjustNotification();
         }
 
         foreach (var voteArea in MeetingHud.Instance.playerStates)

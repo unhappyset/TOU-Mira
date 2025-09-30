@@ -68,14 +68,16 @@ public static class PlaguebearerEvents
                     $"<b>The crew know of the {TownOfUsColors.Pestilence.ToTextColor()}Pestilence</color>.</b>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Pestilence.LoadAsset());
 
-                notif1.AdjustNotification();    }
+                notif1.AdjustNotification();
+            }
             else
             {
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>The {TownOfUsColors.Plaguebearer.ToTextColor()}plague</color> has consumed the crew. {TownOfUsColors.Pestilence.ToTextColor()}Pestilence</color>, Horseman of the Apocalypse, has emerged!</b>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Pestilence.LoadAsset());
 
-                notif1.AdjustNotification();    }
+                notif1.AdjustNotification();
+            }
         }
     }
 }

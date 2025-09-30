@@ -48,9 +48,12 @@ public static class ExecutionerEvents
     {
         foreach (var executioner in CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>())
         {
-            if (!executioner.AboutToWin) executioner.Voters.Clear();
+            if (!executioner.AboutToWin)
+            {
+                executioner.Voters.Clear();
+            }
         }
-        
+
         if (@event.TriggeredByIntro)
         {
             return;
@@ -75,11 +78,13 @@ public static class ExecutionerEvents
                 notif1.AdjustNotification();
 
                 PlayerControl.LocalPlayer.RpcPlayerExile();
-                
+
                 if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
                 {
                     CustomButtonSingleton<ExeTormentButton>.Instance.SetActive(true, exe);
-                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, TouLocale.Get("DiedToWinning"), DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer,
+                        TouLocale.Get("DiedToWinning"), DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue,
+                        lockInfo: DeathHandlerOverride.SetTrue);
                     var notif2 = Helpers.CreateAndShowNotification(
                         $"<b>You have one round to torment a player of your choice to death, choose wisely.</b>",
                         Color.white, new Vector3(0f, 0.85f, -20f));
@@ -87,7 +92,9 @@ public static class ExecutionerEvents
                 }
                 else
                 {
-                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, TouLocale.Get("DiedToWinning"), DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer,
+                        TouLocale.Get("DiedToWinning"), DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse,
+                        lockInfo: DeathHandlerOverride.SetTrue);
                 }
             }
             else
@@ -96,16 +103,17 @@ public static class ExecutionerEvents
                     $"<b>The {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, {exe.Player.Data.PlayerName}, has successfully won, as their target was exiled!</b>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Executioner.LoadAsset());
 
-                notif1.AdjustNotification();    }
+                notif1.AdjustNotification();
+            }
         }
     }
-    
+
     [RegisterEvent]
     public static void HandleVoteEventHandler(HandleVoteEvent @event)
     {
         var votingPlayer = @event.Player;
         var suspectPlayer = @event.TargetPlayerInfo;
-        
+
         if (suspectPlayer == null || !suspectPlayer._object.TryGetModifier<ExecutionerTargetModifier>(out var exeMod))
         {
             return;
@@ -117,7 +125,7 @@ public static class ExecutionerEvents
             exeRole.Voters.Add(votingPlayer.PlayerId);
         }
     }
- 
+
     [RegisterEvent]
     public static void EjectionEventHandler(EjectionEvent @event)
     {
@@ -127,7 +135,7 @@ public static class ExecutionerEvents
         {
             return;
         }
-        
+
         var exe = GameData.Instance.GetPlayerById(exeMod.OwnerId).Object;
         if (exe != null && !exe.HasDied() && exe.Data.Role is ExecutionerRole exeRole)
         {
@@ -136,12 +144,12 @@ public static class ExecutionerEvents
             {
                 exeRole.TargetVoted = true;
             }
-            
+
             if (exe.AmOwner && OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
             {
                 var allVoters = PlayerControl.AllPlayerControls.ToArray()
                     .Where(x => exeRole.Voters.Contains(x.PlayerId) && !x.AmOwner);
-                
+
                 if (!allVoters.Any())
                 {
                     return;

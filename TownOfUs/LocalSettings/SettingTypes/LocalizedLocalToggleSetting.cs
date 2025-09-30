@@ -23,12 +23,13 @@ public class LocalizedLocalToggleSetting : LocalToggleSetting
         ConfigEntryBase configEntry,
         string? name = null,
         string? description = null
-        ) : base(tab, configEntry, name, description)
+    ) : base(tab, configEntry, name, description)
     {
     }
 
     /// <inheritdoc />
-    public override GameObject CreateOption(ToggleButtonBehaviour toggle, SlideBar slider, Transform parent, ref float offset, ref int order, bool last)
+    public override GameObject CreateOption(ToggleButtonBehaviour toggle, SlideBar slider, Transform parent,
+        ref float offset, ref int order, bool last)
     {
         var toggleObject = Object.Instantiate(toggle, parent).GetComponent<ToggleButtonBehaviour>();
         var tmp = toggleObject.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
@@ -51,7 +52,8 @@ public class LocalizedLocalToggleSetting : LocalToggleSetting
         toggleObject.BaseText = CustomStringName.CreateAndRegister(localeName);
         UpdateToggleText(toggleObject.Text, localeName, GetValue());
         toggleObject.name = localeName;
-        toggleObject.Background.color = GetValue() ? Tab!.TabAppearance.ToggleActiveColor : Tab!.TabAppearance.ToggleInactiveColor;
+        toggleObject.Background.color =
+            GetValue() ? Tab!.TabAppearance.ToggleActiveColor : Tab!.TabAppearance.ToggleInactiveColor;
         passiveButton.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
         rollover.OverColor = Tab!.TabAppearance.ToggleHoverColor;
 
@@ -59,7 +61,8 @@ public class LocalizedLocalToggleSetting : LocalToggleSetting
         {
             SetValue(!GetValue());
             UpdateToggleText(toggleObject.Text, localeName, GetValue());
-            toggleObject.Background.color = GetValue() ? Tab!.TabAppearance.ToggleActiveColor : Tab!.TabAppearance.ToggleInactiveColor;
+            toggleObject.Background.color =
+                GetValue() ? Tab!.TabAppearance.ToggleActiveColor : Tab!.TabAppearance.ToggleInactiveColor;
         }));
         passiveButton.OnMouseOver.AddListener((UnityAction)(() =>
         {
@@ -71,7 +74,8 @@ public class LocalizedLocalToggleSetting : LocalToggleSetting
         passiveButton.OnMouseOut.AddListener((UnityAction)(() =>
         {
             UpdateToggleText(toggleObject.Text, localeName, GetValue());
-            toggleObject.Background.color = GetValue() ? Tab!.TabAppearance.ToggleActiveColor : Tab!.TabAppearance.ToggleInactiveColor;
+            toggleObject.Background.color =
+                GetValue() ? Tab!.TabAppearance.ToggleActiveColor : Tab!.TabAppearance.ToggleInactiveColor;
         }));
 
         Helpers.DivideSize(toggleObject.gameObject, 1.1f);
@@ -82,14 +86,20 @@ public class LocalizedLocalToggleSetting : LocalToggleSetting
             offset += 0.5f;
             order = 1;
         }
+
         if (last)
+        {
             offset += 0.6f;
+        }
 
         return toggleObject.gameObject;
     }
 
     public static void UpdateToggleText(TextMeshPro tmp, string localeName, bool value)
     {
-        tmp.text = TouLocale.Get(localeName) + ": " + DestroyableSingleton<TranslationController>.Instance.GetString(value ? StringNames.SettingsOn : StringNames.SettingsOff);
+        tmp.text = TouLocale.Get(localeName) + ": " +
+                   DestroyableSingleton<TranslationController>.Instance.GetString(value
+                       ? StringNames.SettingsOn
+                       : StringNames.SettingsOff);
     }
 }

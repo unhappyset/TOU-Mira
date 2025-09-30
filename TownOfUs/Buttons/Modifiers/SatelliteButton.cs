@@ -53,7 +53,8 @@ public sealed class SatelliteButton : TownOfUsButton
         {
             var notif1 = Helpers.CreateAndShowNotification("<b>No bodies were found on the map.</b>", Color.white,
                 new Vector3(0f, 1f, -20f), spr: TouModifierIcons.Satellite.LoadAsset());
-            notif1.AdjustNotification();}
+            notif1.AdjustNotification();
+        }
 
         if (OptionGroupSingleton<SatelliteOptions>.Instance.OneUsePerRound)
         {

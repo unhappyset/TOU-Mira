@@ -17,14 +17,13 @@ namespace TownOfUs.Roles.Impostor;
 
 public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
-    [HideFromIl2Cpp]
-    public PlayerControl? Sampled { get; set; }
+    [HideFromIl2Cpp] public PlayerControl? Sampled { get; set; }
     public DoomableType DoomHintType => DoomableType.Perception;
     public string LocaleKey => "Morphling";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
@@ -71,10 +70,10 @@ public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
             {
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Sample", "Sample"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}SampleWikiDescription"),
-            TouImpAssets.SampleSprite),
+                    TouImpAssets.SampleSprite),
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Morph", "Morph"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}MorphWikiDescription"),
-            TouImpAssets.MorphSprite)
+                    TouImpAssets.MorphSprite)
             };
         }
     }

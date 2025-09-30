@@ -27,10 +27,12 @@ public sealed class BomberRole(IntPtr cppPtr)
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+
     public string GetAdvancedDescription()
     {
         return
-            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription").Replace("<detonateDelay>", $"{OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay}") +
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription").Replace("<detonateDelay>",
+                $"{OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay}") +
             MiscUtils.AppendOptionsText(GetType());
     }
 

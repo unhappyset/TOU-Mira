@@ -44,6 +44,7 @@ public static class TouLocale
         { "<nl>", "\n" },
         { "<and>", "&" },
     };
+
     // Language, Xml Name, then Value
     public static Dictionary<SupportedLangs, Dictionary<string, string>> TouLocalization { get; } = [];
     public static Dictionary<ToggleButtonBehaviour, string> LocalizedToggles { get; } = [];
@@ -63,7 +64,7 @@ public static class TouLocale
         {
             return translation;
         }
-        
+
         if (TouLocalization.TryGetValue(SupportedLangs.English, out var translationsEng) &&
             translationsEng.TryGetValue(name, out var translationEng))
         {
@@ -72,7 +73,9 @@ public static class TouLocale
 
         return defaultValue ?? "STRMISS_" + name;
     }
-    public static string GetParsed(string name, string? defaultValue = null, Dictionary<string, string>? parseList = null)
+
+    public static string GetParsed(string name, string? defaultValue = null,
+        Dictionary<string, string>? parseList = null)
     {
         var text = defaultValue ?? "STRMISS_" + name;
 
@@ -80,24 +83,25 @@ public static class TouLocale
             TranslationController.InstanceExists
                 ? TranslationController.Instance.currentLanguage.languageID
                 : SupportedLangs.English;
-        
+
         if (TouLocalization.TryGetValue(SupportedLangs.English, out var translationsEng) &&
             translationsEng.TryGetValue(name, out var translationEng))
         {
             text = translationEng;
         }
-        
+
         if (TouLocalization.TryGetValue(currentLanguage, out var translations) &&
             translations.TryGetValue(name, out var translation))
         {
             text = translation;
         }
-        
+
         text = Regex.Replace(text, @"\%([^%]+)\%", @"<$1>");
         if (text.Contains("\\<"))
         {
             text = text.Replace("\\<", "<");
         }
+
         if (text.Contains("\\>"))
         {
             text = text.Replace("\\>", ">");
@@ -115,7 +119,7 @@ public static class TouLocale
                 text = text.Replace(tmpText.Key, tmpText.Value);
             }
         }
-        
+
         return text;
     }
 
@@ -146,10 +150,11 @@ public static class TouLocale
                 Logger.LogError($"Language is not added: {locale.Key.ToDisplayString()}");
                 continue;
             }
+
             Logger.LogWarning($"Language is being added: {locale.Key.ToDisplayString()}");
             using StreamReader reader = new(resourceStream);
             string xmlContent = reader.ReadToEnd();
-            
+
             TouLocalization.TryAdd(locale.Key, []);
             ParseXmlFile(xmlContent, locale.Key);
         }
@@ -172,6 +177,7 @@ public static class TouLocale
                 Logger.LogError($"Invalid locale iso name: {localeName}");
                 continue;
             }
+
             Logger.LogWarning($"Adding locale for: {localeName} in {file}");
 
             var language = LangList.FirstOrDefault(x => x.Value == localeName + ".xml").Key;
@@ -179,7 +185,7 @@ public static class TouLocale
             var xmlContent = File.ReadAllText(file);
             ParseXmlFile(xmlContent, language);
         }
-        
+
         var translations = Directory.GetFiles(directory, "*.txt");
         foreach (var file in translations)
         {
@@ -219,7 +225,7 @@ public static class TouLocale
             }
         }
     }
-    
+
     public static void ParseXmlFile(string xmlContent, SupportedLangs language)
     {
         XmlDocument xmlDoc = new XmlDocument();
@@ -237,24 +243,25 @@ public static class TouLocale
                     {
                         string name = node.Attributes["name"]!.Value;
                         string value = node.InnerText;
-                        
+
                         if (TouLocalization[language].ContainsKey(name))
                         {
                             var ogValuePair = TouLocalization[language].FirstOrDefault(x => x.Key == name);
                             TouLocalization[language].Remove(ogValuePair.Key);
                         }
-                        
+
                         TouLocalization[language].TryAdd(name, value);
-                        
+
                         /*if (language is SupportedLangs.English && !TouLocaleList.ContainsKey(name))
                         {
                             var stringName = CustomStringName.CreateAndRegister(name);
                             TouLocaleList.TryAdd(name, stringName);
                         }*/
-                        
                     }
                 }
-                Logger.LogWarning($"{TouLocalization[language].Count} Localization strings added to {language.ToDisplayString()}!");
+
+                Logger.LogWarning(
+                    $"{TouLocalization[language].Count} Localization strings added to {language.ToDisplayString()}!");
             }
             else
             {

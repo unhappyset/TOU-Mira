@@ -29,10 +29,11 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public string GetAdvancedDescription()
     {
         return
-            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription").Replace("<revealAccuracy>", $"{OptionGroupSingleton<OracleOptions>.Instance.RevealAccuracyPercentage}") +
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription").Replace("<revealAccuracy>",
+                $"{OptionGroupSingleton<OracleOptions>.Instance.RevealAccuracyPercentage}") +
             MiscUtils.AppendOptionsText(GetType());
     }
-    
+
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -44,11 +45,13 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
                     TouLocale.GetParsed($"TouRole{LocaleKey}BlessWikiDescription"),
                     TouCrewAssets.BlessSprite),
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Confess", "Confess"),
-                    TouLocale.GetParsed($"TouRole{LocaleKey}ConfessWikiDescription").Replace("<revealAccuracy>", $"{OptionGroupSingleton<OracleOptions>.Instance.RevealAccuracyPercentage}"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}ConfessWikiDescription").Replace("<revealAccuracy>",
+                        $"{OptionGroupSingleton<OracleOptions>.Instance.RevealAccuracyPercentage}"),
                     TouCrewAssets.ConfessSprite)
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Oracle;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
@@ -172,6 +175,7 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             mod.SavedFromExile = true;
         }
     }
+
     [MethodRpc((uint)TownOfUsRpc.OracleBlessNotify)]
     public static void RpcOracleBlessNotify(PlayerControl oracle, PlayerControl source, PlayerControl target)
     {
@@ -187,7 +191,7 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>Your blessing has saved {TownOfUsColors.Oracle.ToTextColor()}{target.Data.PlayerName}</color> from getting guessed!</b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Oracle.LoadAsset());
-            notif1.AdjustNotification();    
+            notif1.AdjustNotification();
         }
         else if (source.AmOwner)
         {
@@ -195,7 +199,7 @@ public sealed class OracleRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}{target.Data.PlayerName}</color> survived due to being blessed by an {TownOfUsColors.Oracle.ToTextColor()}Oracle</color>!</b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Oracle.LoadAsset());
-            notif1.AdjustNotification();    
+            notif1.AdjustNotification();
         }
     }
 }

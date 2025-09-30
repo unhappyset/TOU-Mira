@@ -26,11 +26,14 @@ public sealed class MiniModifier : UniversalGameModifier, IWikiDiscoverable, IVi
 
     public override string GetDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription").Replace("<miniSpeed>",  $"{Math.Round(OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed, 2)}");
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription").Replace("<miniSpeed>",
+            $"{Math.Round(OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed, 2)}");
     }
+
     public string GetAdvancedDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<miniSpeed>",  $"{Math.Round(OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed, 2)}");
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<miniSpeed>",
+            $"{Math.Round(OptionGroupSingleton<MiniOptions>.Instance.MiniSpeed, 2)}");
     }
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];

@@ -43,8 +43,10 @@ public sealed class ArsonistDouseButton : TownOfUsRoleButton<ArsonistRole, Playe
     {
         if (!OptionGroupSingleton<LoversOptions>.Instance.LoversKillEachOther && PlayerControl.LocalPlayer.IsLover())
         {
-            return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover() && !x.HasModifier<ArsonistDousedModifier>());
+            return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false,
+                x => !x.IsLover() && !x.HasModifier<ArsonistDousedModifier>());
         }
+
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance,
             predicate: x => !x.HasModifier<ArsonistDousedModifier>());
     }

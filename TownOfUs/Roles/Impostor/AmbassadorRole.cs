@@ -91,11 +91,13 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
         return AvailableRetrainsString.Replace("<retrainsLeft>", $"{RetrainsAvailable}").Replace("<retrainsTotal>",
             $"{OptionGroupSingleton<AmbassadorOptions>.Instance.MaxRetrains}");
     }
+
     public string RetrainCdString()
     {
         return RetrainCooldownString.Replace("<roundsLeft>", $"{RoundsCooldown}").Replace("<roundsTotal>",
             $"{OptionGroupSingleton<AmbassadorOptions>.Instance.RoundCooldown}");
     }
+
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
@@ -128,10 +130,21 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
     {
         RoleBehaviourStubs.OnMeetingStart(this);
 
-        if (RetrainsAvailable <= 0) return;
+        if (RetrainsAvailable <= 0)
+        {
+            return;
+        }
+
         if (DeathEventHandlers.CurrentRound <
-            (int)OptionGroupSingleton<AmbassadorOptions>.Instance.RoundWhenAvailable) return;
-        if (RoundsCooldown > 0) return;
+            (int)OptionGroupSingleton<AmbassadorOptions>.Instance.RoundWhenAvailable)
+        {
+            return;
+        }
+
+        if (RoundsCooldown > 0)
+        {
+            return;
+        }
 
         if (Player.AmOwner)
         {
@@ -196,7 +209,8 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                     TouLocale.GetParsed("TouRoleAmbassadorNeedKills")
                         .Replace("<requiredKills>", $"{(int)opt.KillsNeeded}");
                 var notif1 =
-                    Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Ambassador.LoadAsset());
+                    Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f),
+                        spr: TouRoleIcons.Ambassador.LoadAsset());
 
                 notif1.AdjustNotification();
                 return;
@@ -313,7 +327,10 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
             --ambassadorRole.RetrainsAvailable;
             ambassadorRole.RoundsCooldown = cooldown;
             var currentTime = 0f;
-            if (player.AmOwner) currentTime = player.killTimer;
+            if (player.AmOwner)
+            {
+                currentTime = player.killTimer;
+            }
 
             player.AddModifier<AmbassadorRetrainedModifier>((ushort)player.Data.Role.Role);
             player.ChangeRole(role);
@@ -336,7 +353,8 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                 var notif1 = Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f),
                     spr: newRole.RoleIconWhite ?? TouRoleIcons.Ambassador.LoadAsset());
 
-                notif1.AdjustNotification();    }
+                notif1.AdjustNotification();
+            }
         }
         else if (PlayerControl.LocalPlayer.IsImpostor() &&
                  (!OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode || ambassador.AmOwner))
@@ -355,7 +373,8 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
             var notif1 = Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f),
                 spr: newRole.RoleIconWhite ?? TouRoleIcons.Ambassador.LoadAsset());
 
-            notif1.AdjustNotification();}
+            notif1.AdjustNotification();
+        }
     }
 
     [MethodRpc((uint)TownOfUsRpc.RetrainImpostor)]
@@ -376,9 +395,11 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                     TouLocale.GetParsed("TouRoleAmbassadorRetrainCancelled")
                         .Replace("<player>", ambassador.SelectedPlr.PlayerName);
                 var notif1 =
-                    Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Ambassador.LoadAsset());
+                    Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f),
+                        spr: TouRoleIcons.Ambassador.LoadAsset());
 
-                notif1.AdjustNotification();        if (ambassador.Player.AmOwner)
+                notif1.AdjustNotification();
+                if (ambassador.Player.AmOwner)
                 {
                     ambassador.meetingMenu.Actives[ambassador.SelectedPlr.PlayerId] = false;
                 }
@@ -420,7 +441,7 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                     ? ambassador.SelectedRole.RoleIconWhite
                     : TouRoleIcons.Ambassador.LoadAsset());
 
-            notif1.AdjustNotification();    
+            notif1.AdjustNotification();
         }
     }
 }

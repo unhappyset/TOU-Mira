@@ -24,6 +24,7 @@ public class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription");
@@ -40,8 +41,10 @@ public class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
     {
         return 0;
     }
+
     public override int CustomAmount =>
-        (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.DoubleShotAmount + (int)OptionGroupSingleton<NeutralModifierOptions>.Instance.DoubleShotAmount;
+        (int)OptionGroupSingleton<ImpostorModifierOptions>.Instance.DoubleShotAmount +
+        (int)OptionGroupSingleton<NeutralModifierOptions>.Instance.DoubleShotAmount;
 
     public override int CustomChance
     {
@@ -55,6 +58,7 @@ public class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
             {
                 return (impChance + neutChance) / 2;
             }
+
             if ((int)impOpt.DoubleShotAmount > 0)
             {
                 return impChance;
@@ -63,6 +67,7 @@ public class DoubleShotModifier : TouGameModifier, IWikiDiscoverable
             {
                 return neutChance;
             }
+
             return 0;
         }
     }

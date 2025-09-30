@@ -11,15 +11,18 @@ public sealed class FrostyModifier : TouGameModifier, IWikiDiscoverable
     public override string LocaleKey => "Frosty";
     public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
+
     public override string GetDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription")
                + MiscUtils.AppendOptionsText(GetType());
     }
+
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Frosty;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 

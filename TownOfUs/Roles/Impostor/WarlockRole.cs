@@ -17,13 +17,14 @@ public sealed class WarlockRole(IntPtr cppPtr)
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
@@ -50,7 +51,7 @@ public sealed class WarlockRole(IntPtr cppPtr)
             {
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}BurstKill", "Burst Kill"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}KillWikiDescription"),
-            TouAssets.KillSprite)
+                    TouAssets.KillSprite)
             };
         }
     }

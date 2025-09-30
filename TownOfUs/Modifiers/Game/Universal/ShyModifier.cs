@@ -34,6 +34,7 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription") + MiscUtils.AppendOptionsText(GetType());
@@ -108,6 +109,7 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
                 StopShy = true;
                 SetVisibility(Player, 1f);
             }
+
             return;
         }
 
@@ -137,7 +139,8 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
         {
             SetVisibility(Player, 1f, true);
         }
-        else if (Player.GetAppearanceType() == TownOfUsAppearances.Morph || Player.GetAppearanceType() == TownOfUsAppearances.Mimic)
+        else if (Player.GetAppearanceType() == TownOfUsAppearances.Morph ||
+                 Player.GetAppearanceType() == TownOfUsAppearances.Mimic)
         {
             SetVisibility(Player, 1f);
         }
@@ -193,10 +196,14 @@ public sealed class ShyModifier : UniversalGameModifier, IWikiDiscoverable
         cosmetics.skin.layer.color = cosmetics.skin.layer.color.SetAlpha(transparency);
         if (player.cosmetics.GetLongBoi() != null)
         {
-            player.cosmetics.GetLongBoi().headSprite.color = player.cosmetics.GetLongBoi().headSprite.color.SetAlpha(transparency);
-            player.cosmetics.GetLongBoi().neckSprite.color = player.cosmetics.GetLongBoi().neckSprite.color.SetAlpha(transparency);
-            player.cosmetics.GetLongBoi().foregroundNeckSprite.color = player.cosmetics.GetLongBoi().foregroundNeckSprite.color.SetAlpha(transparency);
+            player.cosmetics.GetLongBoi().headSprite.color =
+                player.cosmetics.GetLongBoi().headSprite.color.SetAlpha(transparency);
+            player.cosmetics.GetLongBoi().neckSprite.color =
+                player.cosmetics.GetLongBoi().neckSprite.color.SetAlpha(transparency);
+            player.cosmetics.GetLongBoi().foregroundNeckSprite.color =
+                player.cosmetics.GetLongBoi().foregroundNeckSprite.color.SetAlpha(transparency);
         }
+
         if (player.cosmetics.currentPet != null)
         {
             foreach (var rend in player.cosmetics.currentPet.renderers)

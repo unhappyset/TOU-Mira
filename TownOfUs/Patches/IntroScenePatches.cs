@@ -1,5 +1,4 @@
-﻿
-using HarmonyLib;
+﻿using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 using TownOfUs.Options;
@@ -20,7 +19,9 @@ public static class IntroScenePatches
             foreach (var player in PlayerControl.AllPlayerControls)
             {
                 if (SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
+                {
                     teamToDisplay.Remove(player);
+                }
             }
         }
     }
@@ -52,7 +53,9 @@ public static class IntroScenePatches
         foreach (var spec in PlayerControl.AllPlayerControls)
         {
             if (!spec || !SpectatorRole.TrackedSpectators.Contains(spec.Data.PlayerName))
+            {
                 continue;
+            }
 
             spec!.Visible = false;
             spec.Die(DeathReason.Exile, false);
@@ -76,7 +79,10 @@ public static class IntroScenePatches
         __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
         __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
 
-        if (!OptionGroupSingleton<RoleOptions>.Instance.RoleListEnabled) return;
+        if (!OptionGroupSingleton<RoleOptions>.Instance.RoleListEnabled)
+        {
+            return;
+        }
 
         var players = GameData.Instance.PlayerCount;
 
@@ -118,7 +124,10 @@ public static class IntroScenePatches
             }
         }
 
-        if (!buckets.Any(x => x is RoleListOption.Any)) return;
+        if (!buckets.Any(x => x is RoleListOption.Any))
+        {
+            return;
+        }
 
 
         __instance.ImpostorText.text =

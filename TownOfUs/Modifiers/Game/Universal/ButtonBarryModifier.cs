@@ -28,10 +28,12 @@ public sealed class ButtonBarryModifier : UniversalGameModifier, IWikiDiscoverab
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription") + MiscUtils.AppendOptionsText(GetType());
     }
+
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -40,9 +42,10 @@ public sealed class ButtonBarryModifier : UniversalGameModifier, IWikiDiscoverab
             return new List<CustomButtonWikiDescription>
             {
                 new(TouLocale.Get($"TouModifier{LocaleKey}Button"),
-                    TouLocale.GetParsed($"TouModifier{LocaleKey}ButtonWikiDescription").Replace("<barryUses>", $"{Math.Round(OptionGroupSingleton<ButtonBarryOptions>.Instance.MaxNumButtons, 0)}"),
+                    TouLocale.GetParsed($"TouModifier{LocaleKey}ButtonWikiDescription").Replace("<barryUses>",
+                        $"{Math.Round(OptionGroupSingleton<ButtonBarryOptions>.Instance.MaxNumButtons, 0)}"),
                     TouAssets.BarryButtonSprite)
-                    };
+            };
         }
     }
 

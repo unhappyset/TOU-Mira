@@ -28,11 +28,13 @@ public abstract class TownOfUsButton : CustomActionButton
     public override ButtonLocation Location => ButtonLocation.BottomRight;
 
     public override string CooldownTimerFormatString =>
-        Timer <= 10f && LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value ? "0.0" : "0";
+        Timer <= 10f && LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+            ? "0.0"
+            : "0";
 
     public virtual bool UsableInDeath => false;
     public virtual bool ShouldPauseInVent => true;
-    
+
     public PassiveButton PassiveComp { get; set; }
 
     public virtual int ConsoleBind()
@@ -54,6 +56,7 @@ public abstract class TownOfUsButton : CustomActionButton
         {
             bind = Keybinds.VentConsole;
         }
+
         return bind;
     }
 
@@ -124,7 +127,8 @@ public abstract class TownOfUsButton : CustomActionButton
             Button.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+        TownOfUsColors.UseBasic =
+            LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
 
         PassiveComp = Button.GetComponent<PassiveButton>();
     }
@@ -139,7 +143,8 @@ public abstract class TownOfUsButton : CustomActionButton
             Button!.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+        TownOfUsColors.UseBasic =
+            LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
     }
 
     public override bool CanUse()
@@ -159,7 +164,8 @@ public abstract class TownOfUsButton : CustomActionButton
             return false;
         }
 
-        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        if (!PlayerControl.LocalPlayer.CanMove ||
+            PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return false;
         }
@@ -200,7 +206,8 @@ public abstract class TownOfUsButton : CustomActionButton
                 }
             }
 
-            TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+            TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance
+                .UseCrewmateTeamColorToggle.Value;
         }
 
         OnClick();
@@ -229,7 +236,9 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
     public override ButtonLocation Location => ButtonLocation.BottomRight;
 
     public override string CooldownTimerFormatString =>
-        Timer <= 10f && LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value ? "0.0" : "0";
+        Timer <= 10f && LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+            ? "0.0"
+            : "0";
 
     public virtual bool ShouldPauseInVent => true;
     public virtual bool UsableInDeath => false;
@@ -255,6 +264,7 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
         {
             bind = Keybinds.VentConsole;
         }
+
         return bind;
     }
 
@@ -319,7 +329,8 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
             return false;
         }
 
-        if (!PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        if (!PlayerControl.LocalPlayer.CanMove ||
+            PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return false;
         }
@@ -359,7 +370,8 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
             Button.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+        TownOfUsColors.UseBasic =
+            LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
 
         PassiveComp = Button.GetComponent<PassiveButton>();
     }
@@ -374,7 +386,8 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
             Button!.usesRemainingSprite.color = TextOutlineColor;
         }
 
-        TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+        TownOfUsColors.UseBasic =
+            LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
     }
 
     public override void ClickHandler()
@@ -396,7 +409,8 @@ public abstract class TownOfUsTargetButton<T> : CustomActionButton<T> where T : 
                     }
                 }
 
-                TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+                TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance
+                    .UseCrewmateTeamColorToggle.Value;
             }
 
             OnClick();
@@ -470,7 +484,8 @@ public abstract class TownOfUsRoleButton<TRole, TTarget> : TownOfUsTargetButton<
         if (target is PlayerControl playerTarget)
         {
             return base.IsTargetValid(target) && !playerTarget.inVent &&
-                   !playerTarget.GetModifiers<DisabledModifier>().Any(mod => !mod.CanBeInteractedWith) && !SpectatorRole.TrackedSpectators.Contains(playerTarget.Data.PlayerName);
+                   !playerTarget.GetModifiers<DisabledModifier>().Any(mod => !mod.CanBeInteractedWith) &&
+                   !SpectatorRole.TrackedSpectators.Contains(playerTarget.Data.PlayerName);
         }
 
         return base.IsTargetValid(target);

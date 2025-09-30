@@ -67,6 +67,7 @@ public static class LogoPatch
             render.flipY = true;
             render.color = new Color(1f, 1f, 1f, 0.65f);
         }
+
         var tint = GameObject.Find("MainUI").transform.GetChild(0).gameObject;
         if (tint != null)
         {

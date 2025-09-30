@@ -12,10 +12,10 @@ public sealed class AmbusherOptions : AbstractOptionGroup<AmbusherRole>
 
     [ModdedNumberOption("Ambush Uses Per Game", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float MaxAmbushes { get; set; } = 0f;
-    
+
     [ModdedNumberOption("Ambush Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float AmbushCooldown { get; set; } = 25f;
-    
+
     [ModdedNumberOption("Pursue Arrow Update Interval", 0f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float UpdateInterval { get; set; } = 2.5f;
 

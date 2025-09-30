@@ -33,18 +33,21 @@ public static class ChatPatches
         {
             if (!LobbyBehaviour.Instance)
             {
-                MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "You cannot select your spectate status outside of the lobby!");
+                MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>",
+                    "You cannot select your spectate status outside of the lobby!");
             }
             else
             {
                 if (SpectatorRole.TrackedSpectators.Contains(PlayerControl.LocalPlayer.Data.PlayerName))
                 {
-                    MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "You are no longer a spectator!");
+                    MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>",
+                        "You are no longer a spectator!");
                     RpcRemoveSpectator(PlayerControl.LocalPlayer);
                 }
                 else
                 {
-                    MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>", "Set yourself as a spectator!");
+                    MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>",
+                        "Set yourself as a spectator!");
                     RpcSelectSpectator(PlayerControl.LocalPlayer);
                 }
             }
@@ -129,7 +132,10 @@ public static class ChatPatches
                     msg =
                         "The player name must be at least 1 character long, and cannot be more than 12 characters long!";
                 }
-                else if (PlayerControl.AllPlayerControls.ToArray().Any(x => x.Data.PlayerName.ToLower(CultureInfo.InvariantCulture).Trim() == textRegular.ToLower(CultureInfo.InvariantCulture).Trim() && x.Data.PlayerId != PlayerControl.LocalPlayer.PlayerId))
+                else if (PlayerControl.AllPlayerControls.ToArray().Any(x =>
+                             x.Data.PlayerName.ToLower(CultureInfo.InvariantCulture).Trim() ==
+                             textRegular.ToLower(CultureInfo.InvariantCulture).Trim() &&
+                             x.Data.PlayerId != PlayerControl.LocalPlayer.PlayerId))
                 {
                     msg = $"Another player has a name too similar to {textRegular}! Please try a different name.";
                 }
@@ -155,7 +161,8 @@ public static class ChatPatches
 
             List<string> randomNames =
             [
-                "Atony", "Alchlc", "angxlwtf", "Digi", "Donners", "K3ndo", "DragonBreath", "Pietro", "Nix", "Daemon", "6pak",
+                "Atony", "Alchlc", "angxlwtf", "Digi", "Donners", "K3ndo", "DragonBreath", "Pietro", "Nix", "Daemon",
+                "6pak",
                 "twix", "xerm", "XtraCube", "Zeo", "Slushie", "chloe", "moon", "decii", "Northie", "GD", "Chilled",
                 "Himi", "Riki", "Leafly", "miniduikboot"
             ];

@@ -22,6 +22,7 @@ public static class DeputyEvents
         {
             DeputyRole.OnRoundStart();
         }
+
         foreach (var dep in CustomRoleUtils.GetActiveRolesOfType<DeputyRole>())
         {
             dep.Killer = null;
@@ -96,7 +97,7 @@ public static class DeputyEvents
                 $"<b>{TownOfUsColors.Deputy.ToTextColor()}Your camped target, {target.Data.PlayerName}, has died! Avenge them in the meeting.</color></b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Deputy.LoadAsset());
 
-            notif1.AdjustNotification();    
+            notif1.AdjustNotification();
             Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Deputy));
         }
     }

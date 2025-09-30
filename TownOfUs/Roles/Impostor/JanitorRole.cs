@@ -42,6 +42,7 @@ public sealed class JanitorRole(IntPtr cppPtr)
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+
     public string GetAdvancedDescription()
     {
         return
@@ -75,7 +76,7 @@ public sealed class JanitorRole(IntPtr cppPtr)
             {
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Clean", "Clean"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}CleanWikiDescription"),
-            TouImpAssets.CleanButtonSprite)
+                    TouImpAssets.CleanButtonSprite)
             };
         }
     }

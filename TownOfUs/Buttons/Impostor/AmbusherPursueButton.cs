@@ -34,7 +34,7 @@ public sealed class AmbusherPursueButton : TownOfUsRoleButton<AmbusherRole, Play
         }
 
         Role.Pursued = Target;
-        
+
         Color color = Palette.PlayerColors[Target.GetDefaultAppearance().ColorId];
         var update = OptionGroupSingleton<AmbusherOptions>.Instance.UpdateInterval;
 

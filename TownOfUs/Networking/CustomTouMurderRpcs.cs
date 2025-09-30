@@ -26,18 +26,21 @@ public static class CustomTouMurderRpcs
         {
             return;
         }
+
         var role = source.GetRoleWhenAlive();
         if (source.Data.Role is IGhostRole)
         {
             role = source.Data.Role;
         }
+
         var touRole = role as ITownOfUsRole;
         if (touRole == null || touRole.RoleAlignment is not RoleAlignment.NeutralEvil)
         {
             return;
         }
+
         source.AddModifier<IndirectAttackerModifier>(true);
-        
+
         var cod = "Killer";
         if (touRole.LocaleKey != "KEY_MISS")
         {
@@ -53,7 +56,7 @@ public static class CustomTouMurderRpcs
         source.CustomMurder(
             target,
             MurderResultFlags.Succeeded);
-        
+
         source.RemoveModifier<IndirectAttackerModifier>();
     }
 }

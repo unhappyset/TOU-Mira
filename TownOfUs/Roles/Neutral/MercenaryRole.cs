@@ -32,7 +32,7 @@ public sealed class MercenaryRole(IntPtr cppPtr)
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
@@ -56,9 +56,12 @@ public sealed class MercenaryRole(IntPtr cppPtr)
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Mercenary;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
+
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
+
     // This is so the role can be guessed without requiring it to be enabled normally
     public bool CanBeGuessed =>
         (MiscUtils.GetPotentialRoles()
@@ -101,7 +104,9 @@ public sealed class MercenaryRole(IntPtr cppPtr)
     {
         var bribed = ModifierUtils.GetPlayersWithModifier<MercenaryBribedModifier>(x => x.Mercenary == Player);
 
-        return bribed.Any(x => x.Data.Role.DidWin(gameOverReason) || x.GetModifiers<GameModifier>().Any(x => x.DidWin(gameOverReason) == true));
+        return bribed.Any(x =>
+            x.Data.Role.DidWin(gameOverReason) ||
+            x.GetModifiers<GameModifier>().Any(x => x.DidWin(gameOverReason) == true));
     }
 
     public void AddPayment()

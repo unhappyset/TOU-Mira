@@ -361,6 +361,7 @@ public static class HudManagerPatches
                 {
                     continue;
                 }
+
                 var revealMods = player.GetModifiers<RevealModifier>().ToList();
 
                 var playerName = player.GetDefaultAppearance().PlayerName ?? "Unknown";
@@ -412,13 +413,15 @@ public static class HudManagerPatches
                     if (revealedRole != null)
                     {
                         color = revealedRole.ShownRole!.TeamColor;
-                        roleName = $"<size=80%>{color.ToTextColor()}{revealedRole.ShownRole!.GetRoleName()}</color></size>";
+                        roleName =
+                            $"<size=80%>{color.ToTextColor()}{revealedRole.ShownRole!.GetRoleName()}</color></size>";
                     }
 
                     if (!player.HasModifier<VampireBittenModifier>() && role is VampireRole)
                     {
                         roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
                     }
+
                     if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
                     {
                         roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
@@ -448,16 +451,20 @@ public static class HudManagerPatches
                         color = roleWhenAlive.TeamColor;
 
                         roleName = $"<size=80%>{color.ToTextColor()}{roleWhenAlive.GetRoleName()}</color></size>";
-                        if (PlayerControl.LocalPlayer.HasDied() && !player.HasModifier<VampireBittenModifier>() && roleWhenAlive is VampireRole)
+                        if (PlayerControl.LocalPlayer.HasDied() && !player.HasModifier<VampireBittenModifier>() &&
+                            roleWhenAlive is VampireRole)
                         {
                             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
                         }
+
                         if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
                         {
                             roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
                         }
                     }
-                    if (PlayerControl.LocalPlayer.HasDied() && player.TryGetModifier<DeathHandlerModifier>(out var deathMod))
+
+                    if (PlayerControl.LocalPlayer.HasDied() &&
+                        player.TryGetModifier<DeathHandlerModifier>(out var deathMod))
                     {
                         var deathReason =
                             $"<size=60%>『{Color.yellow.ToTextColor()}{deathMod.CauseOfDeath}</color>』</size>\n";
@@ -487,6 +494,7 @@ public static class HudManagerPatches
                     {
                         roleName += " ";
                     }
+
                     roleName += $"<size=80%>{player.TaskInfo()}</size>";
                 }
 
@@ -522,7 +530,7 @@ public static class HudManagerPatches
                            ((PlayerControl.LocalPlayer.HasDied() && genOpt.TheDeadKnow) ||
                             GuardianAngelTouRole.GASeesRoleVisibilityFlag(player) ||
                             SleuthModifier.SleuthVisibilityFlag(player) ||
-                           revealMods.Any(x => x.Visible && x.RevealRole)))))
+                            revealMods.Any(x => x.Visible && x.RevealRole)))))
                     {
                         roleName = "";
                         color = Color.white;
@@ -557,7 +565,7 @@ public static class HudManagerPatches
         else
         {
             var isVisible = (PlayerControl.LocalPlayer.TryGetModifier<DeathHandlerModifier>(out var deathHandler) &&
-                            !deathHandler.DiedThisRound) || TutorialManager.InstanceExists;
+                             !deathHandler.DiedThisRound) || TutorialManager.InstanceExists;
 
             foreach (var player in PlayerControl.AllPlayerControls)
             {
@@ -608,7 +616,8 @@ public static class HudManagerPatches
                     if (revealedRole != null)
                     {
                         color = revealedRole.ShownRole!.TeamColor;
-                        roleName = $"<size=80%>{color.ToTextColor()}{revealedRole.ShownRole!.GetRoleName()}</color></size>";
+                        roleName =
+                            $"<size=80%>{color.ToTextColor()}{revealedRole.ShownRole!.GetRoleName()}</color></size>";
                     }
 
                     if (!player.HasModifier<VampireBittenModifier>() && player.Data.Role is VampireRole)
@@ -624,6 +633,7 @@ public static class HudManagerPatches
                             ? $"<size=80%>{color.ToTextColor()}{player.Data.Role.GetRoleName()}</color> ({cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.GetRoleName()}</color>)</size>"
                             : $"<size=80%>{cache.CachedRole.TeamColor.ToTextColor()}{cache.CachedRole.GetRoleName()}</color> ({color.ToTextColor()}{player.Data.Role.GetRoleName()}</color>)</size>";
                     }
+
                     if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
                     {
                         roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
@@ -648,12 +658,15 @@ public static class HudManagerPatches
                         {
                             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
                         }
+
                         if (player.HasModifier<AmbassadorRetrainedModifier>() && player.IsImpostor())
                         {
                             roleName += "<size=80%><color=#FFFFFF> (<color=#D63F42>Retrained</color>)</color></size>";
                         }
                     }
-                    if (PlayerControl.LocalPlayer.HasDied() && isVisible && player.TryGetModifier<DeathHandlerModifier>(out var deathMod))
+
+                    if (PlayerControl.LocalPlayer.HasDied() && isVisible &&
+                        player.TryGetModifier<DeathHandlerModifier>(out var deathMod))
                     {
                         var deathReason =
                             $"<size=75%>『{Color.yellow.ToTextColor()}{deathMod.CauseOfDeath}</color>』</size>\n";
@@ -677,13 +690,15 @@ public static class HudManagerPatches
                 }
 
                 if (((taskOpt.ShowTaskRound && player.AmOwner) || (PlayerControl.LocalPlayer.HasDied() &&
-                                                                   taskOpt.ShowTaskDead && isVisible)) && (player.IsCrewmate() ||
-                        player.Data.Role is PhantomTouRole))
+                                                                   taskOpt.ShowTaskDead && isVisible)) &&
+                    (player.IsCrewmate() ||
+                     player.Data.Role is PhantomTouRole))
                 {
                     if (roleName != string.Empty)
                     {
                         roleName += " ";
                     }
+
                     roleName += $"<size=80%>{player.TaskInfo()}</size>";
                 }
 
@@ -754,7 +769,8 @@ public static class HudManagerPatches
 
         if (CancelCountdownStart.CancelStartButton && AmongUsClient.Instance.AmHost)
         {
-            CancelCountdownStart.CancelStartButton.gameObject.SetActive(GameStartManager.Instance.startState is GameStartManager.StartingStates.Countdown);
+            CancelCountdownStart.CancelStartButton.gameObject.SetActive(
+                GameStartManager.Instance.startState is GameStartManager.StartingStates.Countdown);
         }
 
         foreach (var player in PlayerControl.AllPlayerControls.ToArray())
@@ -770,10 +786,13 @@ public static class HudManagerPatches
             {
                 playerInfo = $"<size=80%>{TownOfUsColors.Jester.ToTextColor()}{StoredHostLocale}";
             }
+
             if (SpectatorRole.TrackedSpectators.Contains(playerName))
             {
                 playerInfo =
-                    playerInfo != "" ? $"{playerInfo} {Color.yellow.ToTextColor()}({StoredSpectatingLocale})</color>" : $"<size=80%>{Color.yellow.ToTextColor()}({StoredSpectatingLocale})";
+                    playerInfo != ""
+                        ? $"{playerInfo} {Color.yellow.ToTextColor()}({StoredSpectatingLocale})</color>"
+                        : $"<size=80%>{Color.yellow.ToTextColor()}({StoredSpectatingLocale})";
             }
 
             playerName = playerInfo != "" ? $"{playerInfo}</color></size>\n{playerName}" : playerName;
@@ -1030,8 +1049,10 @@ public static class HudManagerPatches
             {
                 text = text.Replace("Neutral", "<color=#8A8A8A>Neutral</color>");
             }
+
             listsNew.Add(text);
         }
+
         NeutralBenigns = listsNew[0];
         NeutralEvils = listsNew[1];
         NeutralOutliers = listsNew[2];
@@ -1073,7 +1094,9 @@ public static class HudManagerPatches
         Coroutines.Start(CoResizeUI());
         if (!_registeredSoftModifiers)
         {
-            var modifiers = MiscUtils.AllModifiers.Where(x => x.ParentMod != MiraPluginManager.GetPluginByGuid("auavengers.tou.mira") && x is GameModifier && x is not IWikiDiscoverable);
+            var modifiers = MiscUtils.AllModifiers.Where(x =>
+                x.ParentMod != MiraPluginManager.GetPluginByGuid("auavengers.tou.mira") && x is GameModifier &&
+                x is not IWikiDiscoverable);
             foreach (var modifier in modifiers)
             {
                 SoftWikiEntries.RegisterModifierEntry(modifier);

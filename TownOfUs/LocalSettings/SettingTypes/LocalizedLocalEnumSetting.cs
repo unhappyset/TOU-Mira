@@ -52,7 +52,8 @@ public class LocalizedLocalEnumSetting : LocalEnumSetting
     }
 
     /// <inheritdoc />
-    public override GameObject CreateOption(ToggleButtonBehaviour toggle, SlideBar slider, Transform parent, ref float offset, ref int order, bool last)
+    public override GameObject CreateOption(ToggleButtonBehaviour toggle, SlideBar slider, Transform parent,
+        ref float offset, ref int order, bool last)
     {
         var button = Object.Instantiate(toggle, parent).GetComponent<PassiveButton>();
         var tmp = button.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
@@ -68,6 +69,7 @@ public class LocalizedLocalEnumSetting : LocalEnumSetting
             highlight.color = Tab!.TabAppearance.EnumHoverColor;
             highlight.gameObject.SetActive(false);
         }
+
         toggleComp.Destroy();
 
         if (last && order == 1)
@@ -105,6 +107,7 @@ public class LocalizedLocalEnumSetting : LocalEnumSetting
             {
                 tmp.text = Description;
             }
+
             highlight?.gameObject.SetActive(true);
         }));
         button.OnMouseOut.AddListener((UnityAction)(() =>
@@ -121,8 +124,11 @@ public class LocalizedLocalEnumSetting : LocalEnumSetting
             offset += 0.5f;
             order = 1;
         }
+
         if (last)
+        {
             offset += 0.6f;
+        }
 
         return button.gameObject;
     }
@@ -130,6 +136,7 @@ public class LocalizedLocalEnumSetting : LocalEnumSetting
     /// <inheritdoc/>
     protected override string GetValueText()
     {
-        return $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{TouLocale.Get(Name)}: <b>{TouLocale.Get(Values[GetValue()])}</font></b>";
+        return
+            $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{TouLocale.Get(Name)}: <b>{TouLocale.Get(Values[GetValue()])}</font></b>";
     }
 }

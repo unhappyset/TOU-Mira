@@ -18,15 +18,18 @@ public sealed class InvestigatorModifier : TouGameModifier, IWikiDiscoverable, I
     public override string LocaleKey => "Investigator";
     public override string ModifierName => TouLocale.Get($"TouRole{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
+
     public override string GetDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription")
                + MiscUtils.AppendOptionsText(CustomRoleSingleton<InvestigatorRole>.Instance.GetType());
     }
+
     public override LoadableAsset<Sprite>? ModifierIcon => TouRoleIcons.Investigator;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 

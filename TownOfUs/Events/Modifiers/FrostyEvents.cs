@@ -27,7 +27,7 @@ public static class FrostyEvents
                 $"<b>{TownOfUsColors.Frosty.ToTextColor()}{@event.Target.Data.PlayerName} was Frosty, causing you to be slower for {Math.Round(OptionGroupSingleton<FrostyOptions>.Instance.ChillDuration, 2)} seconds.</color></b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouModifierIcons.Frosty.LoadAsset());
 
-            notif1.AdjustNotification();    
+            notif1.AdjustNotification();
         }
 
         @event.Source.AddModifier<FrozenModifier>();

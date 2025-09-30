@@ -20,7 +20,7 @@ public sealed class GlitchOptions : AbstractOptionGroup<GlitchRole>
 
     [ModdedToggleOption("Move While Using Mimic Menu (KB ONLY)")]
     public bool MoveWithMenu { get; set; } = true;
-    
+
     [ModdedNumberOption("Hack Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float HackCooldown { get; set; } = 25f;
 

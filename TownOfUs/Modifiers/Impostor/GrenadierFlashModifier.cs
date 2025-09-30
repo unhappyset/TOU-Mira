@@ -44,7 +44,8 @@ public sealed class GrenadierFlashModifier(PlayerControl grenadier) : DisabledMo
                 $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You were flashed by a Grenadier!</color></b>", Color.white,
                 spr: TouRoleIcons.Grenadier.LoadAsset());
 
-            notif1.AdjustNotification();    notif1.transform.localPosition = new Vector3(0f, 1f, -150f);
+            notif1.AdjustNotification();
+            notif1.transform.localPosition = new Vector3(0f, 1f, -150f);
         }
     }
 

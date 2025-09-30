@@ -16,14 +16,19 @@ public sealed class RottingModifier : TouGameModifier, IWikiDiscoverable
     public override string LocaleKey => "Rotting";
     public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
+
     public override string GetDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription").Replace("<rotDelay>", $"{OptionGroupSingleton<RottingOptions>.Instance.RotDelay}");
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription").Replace("<rotDelay>",
+            $"{OptionGroupSingleton<RottingOptions>.Instance.RotDelay}");
     }
+
     public string GetAdvancedDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<rotDelay>", $"{OptionGroupSingleton<RottingOptions>.Instance.RotDelay}");
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<rotDelay>",
+            $"{OptionGroupSingleton<RottingOptions>.Instance.RotDelay}");
     }
+
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Rotting;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 

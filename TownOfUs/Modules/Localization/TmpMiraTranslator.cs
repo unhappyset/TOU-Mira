@@ -21,6 +21,7 @@ public class TmpMiraTranslator(IntPtr cppPtr) : MonoBehaviour(cppPtr), IMiraTran
         {
             return;
         }
+
         TextMeshPro component = GetComponent<TextMeshPro>();
         string text = parseStr ? TouLocale.GetParsed(stringName, defaultStr) : TouLocale.Get(stringName, defaultStr);
         if (component != null)

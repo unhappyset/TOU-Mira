@@ -24,8 +24,7 @@ public sealed class ScavengerRole(IntPtr cppPtr)
 {
     public bool GameStarted { get; set; }
     public float TimeRemaining { get; set; }
-    [HideFromIl2Cpp]
-    public PlayerControl? Target { get; set; }
+    [HideFromIl2Cpp] public PlayerControl? Target { get; set; }
     public bool Scavenging { get; set; }
 
     public void FixedUpdate()
@@ -52,7 +51,7 @@ public sealed class ScavengerRole(IntPtr cppPtr)
             GameStarted = false;
             return;
         }
-        
+
         if (!GameStarted && Player.killTimer > 0f)
         {
             GameStarted = true;
@@ -97,13 +96,14 @@ public sealed class ScavengerRole(IntPtr cppPtr)
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
@@ -163,7 +163,7 @@ public sealed class ScavengerRole(IntPtr cppPtr)
 
             scav.Target =
                 player.GetClosestLivingPlayer(false, float.MaxValue, true, x => !x.HasModifier<FirstDeadShield>())!;
-            
+
             if (player.HasModifier<LoverModifier>())
             {
                 scav.Target = player.GetClosestLivingPlayer(false, float.MaxValue, true,
@@ -211,7 +211,7 @@ public sealed class ScavengerRole(IntPtr cppPtr)
 
             // get new target
             Target = Player.GetClosestLivingPlayer(false, float.MaxValue, true)!;
-            
+
             if (Player.HasModifier<LoverModifier>())
             {
                 Target = Player.GetClosestLivingPlayer(false, float.MaxValue, true,

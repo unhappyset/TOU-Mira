@@ -32,7 +32,11 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
 
     public void AssignTargets()
     {
-        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"SelectGATargets");
+        if (TownOfUsPlugin.IsDevBuild)
+        {
+            Logger<TownOfUsPlugin>.Error($"SelectGATargets");
+        }
+
         var evilTargetPercent = (int)OptionGroupSingleton<GuardianAngelOptions>.Instance.EvilTargetPercent;
 
         var gas = PlayerControl.AllPlayerControls.ToArray()
@@ -66,7 +70,11 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
             Random rndIndex = new();
             var randomTarget = filtered[rndIndex.Next(0, filtered.Count)];
 
-            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Info($"Setting GA Target: {randomTarget.Data.PlayerName}");
+            if (TownOfUsPlugin.IsDevBuild)
+            {
+                Logger<TownOfUsPlugin>.Info($"Setting GA Target: {randomTarget.Data.PlayerName}");
+            }
+
             RpcSetGATarget(ga, randomTarget);
         }
     }
@@ -77,10 +85,12 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TargetString(true);
     public string RoleLongDescription => TargetString();
+
     public string GetAdvancedDescription()
     {
         return
-            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription").Replace("<symbol>", "<color=#B3FFFFFF>★</color>") +
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription")
+                .Replace("<symbol>", "<color=#B3FFFFFF>★</color>") +
             MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -173,7 +183,8 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
         if (TutorialManager.InstanceExists && Player.AmOwner)
         {
             var players = ModifierUtils
-                .GetPlayersWithModifier<GuardianAngelTargetModifier>([HideFromIl2Cpp](x) => x.OwnerId == Player.PlayerId)
+                .GetPlayersWithModifier<
+                    GuardianAngelTargetModifier>([HideFromIl2Cpp](x) => x.OwnerId == Player.PlayerId)
                 .ToList();
             players.Do(x => x.RpcRemoveModifier<GuardianAngelTargetModifier>());
         }
@@ -186,12 +197,15 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
-        var gaMod = ModifierUtils.GetActiveModifiers<GuardianAngelTargetModifier>().FirstOrDefault(x => x.OwnerId == Player.PlayerId);
+        var gaMod = ModifierUtils.GetActiveModifiers<GuardianAngelTargetModifier>()
+            .FirstOrDefault(x => x.OwnerId == Player.PlayerId);
         if (gaMod == null)
         {
             return false;
         }
-        return gaMod.Player.Data.Role.DidWin(gameOverReason) || gaMod.Player.GetModifiers<GameModifier>().Any(x => x.DidWin(gameOverReason) == true);
+
+        return gaMod.Player.Data.Role.DidWin(gameOverReason) ||
+               gaMod.Player.GetModifiers<GameModifier>().Any(x => x.DidWin(gameOverReason) == true);
     }
 
     public static bool GASeesRoleVisibilityFlag(PlayerControl player)
@@ -222,7 +236,11 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
             return;
         }
 
-        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"OnPlayerDeath '{victim.Data.PlayerName}'");
+        if (TownOfUsPlugin.IsDevBuild)
+        {
+            Logger<TownOfUsPlugin>.Error($"OnPlayerDeath '{victim.Data.PlayerName}'");
+        }
+
         if (Target == null || victim == Target)
         {
             var roleType = OptionGroupSingleton<GuardianAngelOptions>.Instance.OnTargetDeath switch
@@ -235,7 +253,11 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
                 _ => (ushort)RoleTypes.Crewmate
             };
 
-            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"OnPlayerDeath - ChangeRole: '{roleType}'");
+            if (TownOfUsPlugin.IsDevBuild)
+            {
+                Logger<TownOfUsPlugin>.Error($"OnPlayerDeath - ChangeRole: '{roleType}'");
+            }
+
             Player.ChangeRole(roleType);
 
             if ((roleType == RoleId.Get<JesterRole>() && OptionGroupSingleton<JesterOptions>.Instance.ScatterOn) ||

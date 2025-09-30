@@ -33,6 +33,7 @@ public class LocalizedLocalNumberSettingAttribute(
     /// <inheritdoc/>
     public override LocalizedLocalNumberSetting CreateSetting(Type tab, ConfigEntryBase configEntryBase)
     {
-        return new LocalizedLocalNumberSetting(tab, configEntryBase, _name, _description, new FloatRange(min, max), increment, suffixType, formatString);
+        return new LocalizedLocalNumberSetting(tab, configEntryBase, _name, _description, new FloatRange(min, max),
+            increment, suffixType, formatString);
     }
 }

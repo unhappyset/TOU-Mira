@@ -26,19 +26,24 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
     public override string LocaleKey => "Lover";
     public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
     public override string IntroInfo => LoverString();
+
     public override string GetDescription()
     {
         return LoverString();
     }
+
     public string GetAdvancedDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<symbol>", "<color=#FF66CCFF>♥</color>") + MiscUtils.AppendOptionsText(GetType());
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription")
+            .Replace("<symbol>", "<color=#FF66CCFF>♥</color>") + MiscUtils.AppendOptionsText(GetType());
     }
+
     public string LoverString()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}Info")
             .Replace("<player>", OtherLover != null ? OtherLover.Data.PlayerName : "???");
     }
+
     public override string Symbol => "♥";
     public override float IntroSize => 3f;
     public override Color FreeplayFileColor => new Color32(220, 220, 220, 255);
@@ -75,7 +80,8 @@ public sealed class LoverModifier : AllianceGameModifier, IWikiDiscoverable, IAs
             var impTargetPercent = (int)loveOpt.LovingImpPercent;
 
             var players = PlayerControl.AllPlayerControls.ToArray()
-                .Where(x => !x.HasDied() && !x.HasModifier<ExecutionerTargetModifier>() && !x.HasModifier<AllianceGameModifier>() &&
+                .Where(x => !x.HasDied() && !x.HasModifier<ExecutionerTargetModifier>() &&
+                            !x.HasModifier<AllianceGameModifier>() &&
                             x.Data.Role is not InquisitorRole && (loveOpt.NeutralLovers || !x.IsNeutral())).ToList();
             players.Shuffle();
 

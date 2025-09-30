@@ -13,4 +13,3 @@ public static class DisconnectHandler2
         SpectatorRole.TrackedSpectators.Remove(player.Data.PlayerName);
     }
 }
-

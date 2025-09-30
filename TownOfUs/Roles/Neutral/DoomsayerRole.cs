@@ -98,7 +98,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             {
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Observe", "Observe"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}ObserveWikiDescription"),
-            TouNeutAssets.Observe)
+                    TouNeutAssets.Observe)
             };
         }
     }
@@ -160,7 +160,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             meetingMenu?.Dispose();
             meetingMenu = null!;
         }
-        
+
         if (!Player.HasModifier<BasicGhostModifier>() && AllGuessesCorrect)
         {
             Player.AddModifier<BasicGhostModifier>();
@@ -214,7 +214,8 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
             if (hint.Contains("STRMISS"))
             {
-                reportBuilder.AppendLine(TownOfUsPlugin.Culture, $"{fallback.Replace("<player>", player.PlayerName)}\n");
+                reportBuilder.AppendLine(TownOfUsPlugin.Culture,
+                    $"{fallback.Replace("<player>", player.PlayerName)}\n");
             }
             else
             {
@@ -226,7 +227,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                     x is not IUnguessable || x is not IDoomable) && !x.IsDead).ToList();
             roles = roles.OrderBy(x => x.GetRoleName()).ToList();
             var lastRole = roles[roles.Count - 1];
-            
+
             if (hintType != DoomableType.Default)
             {
                 roles = MiscUtils.AllRoles
@@ -242,11 +243,13 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                 {
                     if (role2 == lastRole)
                     {
-                        reportBuilder.Append(TownOfUsPlugin.Culture, $"#{lastRole.GetRoleName().ToLowerInvariant().Replace(" ", "-")})");
+                        reportBuilder.Append(TownOfUsPlugin.Culture,
+                            $"#{lastRole.GetRoleName().ToLowerInvariant().Replace(" ", "-")})");
                     }
                     else
                     {
-                        reportBuilder.Append(TownOfUsPlugin.Culture, $"#{role2.GetRoleName().ToLowerInvariant().Replace(" ", "-")}, ");
+                        reportBuilder.Append(TownOfUsPlugin.Culture,
+                            $"#{role2.GetRoleName().ToLowerInvariant().Replace(" ", "-")}, ");
                     }
                 }
             }
@@ -258,7 +261,8 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
         if (HudManager.Instance && report.Length > 0)
         {
-            var title = $"<color=#{TownOfUsColors.Doomsayer.ToHtmlStringRGBA()}>{TouLocale.Get("TouRoleDoomsayerMessageTitle")}</color>";
+            var title =
+                $"<color=#{TownOfUsColors.Doomsayer.ToHtmlStringRGBA()}>{TouLocale.Get("TouRoleDoomsayerMessageTitle")}</color>";
             MiscUtils.AddFakeChat(Player.Data, title, report, false, true);
         }
     }
@@ -285,7 +289,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         {
             return;
         }
-        
+
         if (Minigame.Instance != null)
         {
             return;
@@ -377,10 +381,10 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                     }
                     else
                     {
-                        Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false,
+                        Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false,
+                            showKillAnim: false,
                             playKillSound: false);
                     }
-
                 }
                 else
                 {
@@ -411,6 +415,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
                     return;
                 }
+
                 // no incorrect guesses so this should be the target not the Doomsayer
                 Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false,
                     playKillSound: false);
@@ -442,7 +447,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         {
             return false;
         }
-        
+
         if (touRole?.RoleAlignment == RoleAlignment.CrewmateInvestigative)
         {
             return OptionGroupSingleton<DoomsayerOptions>.Instance.DoomGuessInvest;

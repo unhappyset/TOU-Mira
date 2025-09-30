@@ -21,12 +21,14 @@ public static class TouCrewAssets
     public static LoadableAsset<Sprite> BlessSprite { get; } =
         new LoadableBundleAsset<Sprite>("BlessButton", TouAssets.MainBundle);
 
-    public static LoadableAsset<Sprite> SeerSprite { get; } = new LoadableBundleAsset<Sprite>("SeerButton", TouAssets.MainBundle);
+    public static LoadableAsset<Sprite> SeerSprite { get; } =
+        new LoadableBundleAsset<Sprite>("SeerButton", TouAssets.MainBundle);
 
     public static LoadableAsset<Sprite> TrackSprite { get; } =
         new LoadableBundleAsset<Sprite>("TrackButton", TouAssets.MainBundle);
 
-    public static LoadableAsset<Sprite> TrapSprite { get; } = new LoadableBundleAsset<Sprite>("TrapButton", TouAssets.MainBundle);
+    public static LoadableAsset<Sprite> TrapSprite { get; } =
+        new LoadableBundleAsset<Sprite>("TrapButton", TouAssets.MainBundle);
 
     public static LoadableAsset<Sprite> CampButtonSprite { get; } =
         new LoadableBundleAsset<Sprite>("CampButton", TouAssets.MainBundle);
@@ -34,7 +36,8 @@ public static class TouCrewAssets
     public static LoadableAsset<Sprite> StalkButtonSprite { get; } =
         new LoadableBundleAsset<Sprite>("StalkButton", TouAssets.MainBundle);
 
-    public static LoadableAsset<Sprite> JailSprite { get; } = new LoadableBundleAsset<Sprite>("JailButton", TouAssets.MainBundle);
+    public static LoadableAsset<Sprite> JailSprite { get; } =
+        new LoadableBundleAsset<Sprite>("JailButton", TouAssets.MainBundle);
 
     public static LoadableAsset<Sprite> AlertSprite { get; } =
         new LoadableBundleAsset<Sprite>("AlertButton", TouAssets.MainBundle);
@@ -59,9 +62,10 @@ public static class TouCrewAssets
 
     public static LoadableAsset<Sprite> MagicMirrorSprite { get; } =
         new LoadableBundleAsset<Sprite>("MagicMirrorButton", TouAssets.MainBundle);
-    
+
     public static LoadableAsset<Sprite> UnleashSprite { get; } =
         new LoadableBundleAsset<Sprite>("UnleashButton", TouAssets.MainBundle);
+
     public static LoadableAsset<Sprite> FortifySprite { get; } =
         new LoadableBundleAsset<Sprite>("FortifyButton", TouAssets.MainBundle);
 

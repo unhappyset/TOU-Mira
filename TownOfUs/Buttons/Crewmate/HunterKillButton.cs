@@ -62,6 +62,7 @@ public sealed class HunterKillButton : TownOfUsRoleButton<HunterRole, PlayerCont
         {
             return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover());
         }
+
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 

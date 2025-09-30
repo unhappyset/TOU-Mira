@@ -109,7 +109,7 @@ public static class Extensions
         {
             return true;
         }
-        
+
         return false;
     }
 

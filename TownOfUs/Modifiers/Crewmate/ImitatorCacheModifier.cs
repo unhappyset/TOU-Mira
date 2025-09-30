@@ -49,7 +49,11 @@ public sealed class ImitatorCacheModifier : BaseModifier, ICachedRole
     {
         if (!Player.IsCrewmate())
         {
-            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Removed Imitator Cache Modifier On Meeting Start");
+            if (TownOfUsPlugin.IsDevBuild)
+            {
+                Logger<TownOfUsPlugin>.Error($"Removed Imitator Cache Modifier On Meeting Start");
+            }
+
             ModifierComponent?.RemoveModifier(this);
             return;
         }
@@ -167,7 +171,11 @@ public sealed class ImitatorCacheModifier : BaseModifier, ICachedRole
     {
         if (!Player.IsCrewmate())
         {
-            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Removed Imitator Cache Modifier On Attempt To Update Role");
+            if (TownOfUsPlugin.IsDevBuild)
+            {
+                Logger<TownOfUsPlugin>.Error($"Removed Imitator Cache Modifier On Attempt To Update Role");
+            }
+
             ModifierComponent?.RemoveModifier(this);
             return;
         }

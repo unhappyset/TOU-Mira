@@ -10,6 +10,7 @@ public static class DiscordStatus
     [HarmonyPrefix]
     public static void Prefix([HarmonyArgument(0)] Activity activity)
     {
-        activity.Details += $" - Town of Us Mira v{TownOfUsPlugin.Version}" + (TownOfUsPlugin.IsDevBuild ? " (DEV)" : string.Empty);
+        activity.Details += $" - Town of Us Mira v{TownOfUsPlugin.Version}" +
+                            (TownOfUsPlugin.IsDevBuild ? " (DEV)" : string.Empty);
     }
 }

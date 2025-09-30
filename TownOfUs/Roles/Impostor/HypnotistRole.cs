@@ -44,12 +44,14 @@ public sealed class HypnotistRole(IntPtr cppPtr)
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription").Replace("<symbol>", "<color=#D53F42>@</color>") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
@@ -75,10 +77,10 @@ public sealed class HypnotistRole(IntPtr cppPtr)
             {
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Hypnotize", "Hypnotize"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}HypnotizeWikiDescription"),
-            TouImpAssets.HypnotiseButtonSprite),
+                    TouImpAssets.HypnotiseButtonSprite),
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}MassHysteriaWiki", "Mass Hysteria (Meeting)"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}MassHysteriaWikiDescription"),
-            TouAssets.HysteriaCleanSprite)
+                    TouAssets.HysteriaCleanSprite)
             };
         }
     }

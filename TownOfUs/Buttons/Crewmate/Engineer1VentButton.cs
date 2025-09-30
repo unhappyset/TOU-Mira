@@ -69,12 +69,14 @@ public sealed class EngineerVentButton : TownOfUsRoleButton<EngineerTouRole, Ven
             return false;
         }
 
-        if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() || PlayerControl.LocalPlayer
+                .GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return false;
         }
 
-        return ((Timer <= 0 && !PlayerControl.LocalPlayer.inVent && Target != null) || PlayerControl.LocalPlayer.inVent) && (MaxUses == 0 || UsesLeft > 0);
+        return ((Timer <= 0 && !PlayerControl.LocalPlayer.inVent && Target != null) ||
+                PlayerControl.LocalPlayer.inVent) && (MaxUses == 0 || UsesLeft > 0);
     }
 
     public override void ClickHandler()

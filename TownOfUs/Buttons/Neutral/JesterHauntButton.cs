@@ -32,13 +32,15 @@ public sealed class JesterHauntButton : TownOfUsButton
         {
             return;
         }
+
         var playerMenu = CustomPlayerMenu.Create();
         playerMenu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material =
             PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
         playerMenu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material =
             PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.material;
         playerMenu.Begin(
-            plr => !plr.HasDied() && plr.HasModifier<MisfortuneTargetModifier>() && !plr.HasModifier<InvulnerabilityModifier>() && plr != PlayerControl.LocalPlayer,
+            plr => !plr.HasDied() && plr.HasModifier<MisfortuneTargetModifier>() &&
+                   !plr.HasModifier<InvulnerabilityModifier>() && plr != PlayerControl.LocalPlayer,
             plr =>
             {
                 playerMenu.ForceClose();

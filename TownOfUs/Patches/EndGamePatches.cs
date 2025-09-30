@@ -67,7 +67,9 @@ public static class EndGamePatches
                 }
                 else
                 {
-                    roleName = TranslationController.Instance.GetString(role.Player.IsImpostor() ? StringNames.Impostor : StringNames.Crewmate);
+                    roleName = TranslationController.Instance.GetString(role.Player.IsImpostor()
+                        ? StringNames.Impostor
+                        : StringNames.Crewmate);
                 }
 
                 playerRoleString.Append(TownOfUsPlugin.Culture, $"{color.ToTextColor()}{roleName}</color> > ");
@@ -105,7 +107,8 @@ public static class EndGamePatches
                 var modColor = MiscUtils.GetRoleColour(modifierName.Replace(" ", string.Empty));
                 if (modColor == TownOfUsColors.Impostor)
                 {
-                    modColor = MiscUtils.GetModifierColour(modifiers.FirstOrDefault(x => x.ModifierName == modifierName)!);
+                    modColor = MiscUtils.GetModifierColour(
+                        modifiers.FirstOrDefault(x => x.ModifierName == modifierName)!);
                 }
 
                 modifierCount--;
@@ -122,8 +125,8 @@ public static class EndGamePatches
 
             if (playerControl.IsRole<PhantomTouRole>() || playerTeam == ModdedRoleTeams.Crewmate)
             {
-                    playerRoleString.Append(TownOfUsPlugin.Culture,
-                        $" {playerControl.TaskInfo()}");
+                playerRoleString.Append(TownOfUsPlugin.Culture,
+                    $" {playerControl.TaskInfo()}");
             }
 
             var killedPlayers = GameHistory.KilledPlayers.Count(x =>
@@ -168,12 +171,17 @@ public static class EndGamePatches
                         $" | {TownOfUsColors.Impostor.ToTextColor()}Misguesses: {stats.IncorrectAssassinKills}</color>");
                 }
             }
+
             if (playerControl.TryGetModifier<DeathHandlerModifier>(out var deathHandler))
             {
                 playerRoleString.Append(TownOfUsPlugin.Culture,
                     $" | {Color.yellow.ToTextColor()}{deathHandler.CauseOfDeath}</color>");
-                if (deathHandler.KilledBy != string.Empty) playerRoleString.Append(TownOfUsPlugin.Culture,
-                    $" {deathHandler.KilledBy}");
+                if (deathHandler.KilledBy != string.Empty)
+                {
+                    playerRoleString.Append(TownOfUsPlugin.Culture,
+                        $" {deathHandler.KilledBy}");
+                }
+
                 playerRoleString.Append(TownOfUsPlugin.Culture,
                     $" (R{deathHandler.RoundOfDeath})");
             }

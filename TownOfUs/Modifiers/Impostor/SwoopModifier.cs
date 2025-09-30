@@ -24,8 +24,9 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
 
     public VisualAppearance GetVisualAppearance()
     {
-        var playerColor = (PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.DiedOtherRound() && OptionGroupSingleton<GeneralOptions>
-            .Instance.TheDeadKnow))
+        var playerColor = (PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.DiedOtherRound() &&
+                                                                      OptionGroupSingleton<GeneralOptions>
+                                                                          .Instance.TheDeadKnow))
             ? new Color(0f, 0f, 0f, 0.1f)
             : Color.clear;
 
@@ -99,7 +100,7 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
         {
             Player.cosmetics.ToggleNameVisible(false);
         }
-        
+
         var mushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
         if (mushroom && mushroom.IsActive)
         {

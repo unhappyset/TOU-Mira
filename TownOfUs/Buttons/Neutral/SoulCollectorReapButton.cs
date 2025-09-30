@@ -40,7 +40,7 @@ public sealed class SoulCollectorReapButton : TownOfUsRoleButton<SoulCollectorRo
                 $"<b>{TownOfUsColors.SoulCollector.ToTextColor()}You have taken {Target.Data.PlayerName}'s soul from their body, leaving a soulless player behind.</color></b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.SoulCollector.LoadAsset());
 
-            notif1.AdjustNotification();    
+            notif1.AdjustNotification();
         }
     }
 

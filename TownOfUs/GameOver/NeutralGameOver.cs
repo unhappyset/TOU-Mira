@@ -25,7 +25,8 @@ public sealed class NeutralGameOver : CustomGameOver
 
         var mainRole = role;
 
-        Logger<TownOfUsPlugin>.Error($"VerifyCondition - mainRole: '{mainRole.GetRoleName()}', IsDead: '{role.IsDead}'");
+        Logger<TownOfUsPlugin>.Error(
+            $"VerifyCondition - mainRole: '{mainRole.GetRoleName()}', IsDead: '{role.IsDead}'");
 
         if (role.IsDead && role is not PhantomTouRole or HaunterRole)
         {

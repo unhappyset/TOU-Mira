@@ -28,17 +28,18 @@ public static class HauntMenuMinigamePatch
             return;
         }
 
-        if (!TutorialManager.InstanceExists && !PlayerControl.LocalPlayer.DiedOtherRound() && PlayerControl.LocalPlayer.Data.Role is not SpectatorRole)
+        if (!TutorialManager.InstanceExists && !PlayerControl.LocalPlayer.DiedOtherRound() &&
+            PlayerControl.LocalPlayer.Data.Role is not SpectatorRole)
         {
             __instance.Close();
             __instance.NameText.text = string.Empty;
             __instance.FilterText.text = string.Empty;
-            
+
             var text = "You must wait until next round to haunt!";
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{text}</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Spectator.LoadAsset());
-            
-            notif1.AdjustNotification();    
+
+            notif1.AdjustNotification();
             return;
         }
 
@@ -47,7 +48,8 @@ public static class HauntMenuMinigamePatch
 
         var modifiers = target.GetModifiers<GameModifier>().Where(x => x is not ExcludedGameModifier)
             .OrderBy(x => x.ModifierName).ToList();
-        __instance.FilterText.text = $"<color=#FFFFFF><size=100%>({TouLocale.Get("PlayerHasNoModifiers")})</size></color>";
+        __instance.FilterText.text =
+            $"<color=#FFFFFF><size=100%>({TouLocale.Get("PlayerHasNoModifiers")})</size></color>";
         if (modifiers.Count != 0)
         {
             var modifierTextBuilder = new StringBuilder("<color=#FFFFFF><size=100%>(");

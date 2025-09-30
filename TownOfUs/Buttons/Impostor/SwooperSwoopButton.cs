@@ -52,12 +52,14 @@ public sealed class SwooperSwoopButton : TownOfUsRoleButton<SwooperRole>, IAfter
             return false;
         }
 
-        if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() || PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        if (PlayerControl.LocalPlayer.HasModifier<GlitchHackedModifier>() || PlayerControl.LocalPlayer
+                .GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
         {
             return false;
         }
 
-        return ((Timer <= 0 && !EffectActive && (MaxUses == 0 || UsesLeft > 0)) || (EffectActive && Timer <= EffectDuration - 2f));
+        return ((Timer <= 0 && !EffectActive && (MaxUses == 0 || UsesLeft > 0)) ||
+                (EffectActive && Timer <= EffectDuration - 2f));
     }
 
     protected override void OnClick()

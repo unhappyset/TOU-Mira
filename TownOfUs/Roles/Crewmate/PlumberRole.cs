@@ -46,7 +46,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
-    
+
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -97,19 +97,27 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
                 foreach (var ventPair in VentsBlocked)
                 {
                     var vent = Helpers.GetVentById(ventPair.Key);
-                    if (vent == null) continue;
+                    if (vent == null)
+                    {
+                        continue;
+                    }
+
                     var text2 = duration == 0 ? string.Empty : $": {ventPair.Value} Round(s) Remaining";
                     stringB.Append(CultureInfo.InvariantCulture,
                         $"\n{MiscUtils.GetRoomName(vent.transform.position)} Vent{text2}");
                 }
             }
+
             if (FutureBlocks.Count > 0)
             {
                 foreach (var ventId in FutureBlocks)
                 {
                     var vent = Helpers.GetVentById(ventId);
-                    if (vent == null) continue;
-                        
+                    if (vent == null)
+                    {
+                        continue;
+                    }
+
                     stringB.Append(CultureInfo.InvariantCulture,
                         $"\n<color=#BFBFBF>{MiscUtils.GetRoomName(vent.transform.position)} Vent: Preparing...</color>");
                 }
@@ -122,8 +130,12 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
-        if (TutorialManager.InstanceExists) Clear();
+        if (TutorialManager.InstanceExists)
+        {
+            Clear();
+        }
     }
+
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
@@ -135,14 +147,18 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     {
         FutureBlocks.Clear();
     }
-    
+
     public void Clear()
     {
         if (Barricades.Count > 0)
         {
             foreach (var barricade in Barricades.Select(x => x.Key))
             {
-                if (barricade == null) continue;
+                if (barricade == null)
+                {
+                    continue;
+                }
+
                 Destroy(barricade);
             }
         }
@@ -151,13 +167,18 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
         VentsBlocked.Clear();
         Barricades.Clear();
     }
+
     public static void ClearAll()
     {
         if (Barricades.Count > 0)
         {
             foreach (var barricade in Barricades.Select(x => x.Key))
             {
-                if (barricade == null) continue;
+                if (barricade == null)
+                {
+                    continue;
+                }
+
                 Destroy(barricade);
             }
         }
@@ -233,7 +254,7 @@ public sealed class PlumberRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
                 }
             }
 
-            Barricades.Add(new (barricade, (int)OptionGroupSingleton<PlumberOptions>.Instance.BarricadeRoundDuration));
+            Barricades.Add(new(barricade, (int)OptionGroupSingleton<PlumberOptions>.Instance.BarricadeRoundDuration));
         }
 
         FutureBlocks.Clear();
