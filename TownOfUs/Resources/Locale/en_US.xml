@@ -733,8 +733,14 @@
   <string name="TouRoleAmbassadorRetrainWiki">Retrain (Meeting)</string>
   <string name="TouRoleAmbassadorRetrainWikiDescription">Retrain yourself or other impostors into a role within their alignment. Impostor Killing roles can be turned into any non-Power roles, and Concealing/Support roles can become Concealing or Support roles.</string>
   <string name="TouRoleAmbassadorRetrainsAvailable">\%retrainsLeft\% / \%retrainsTotal\% Retrains Remaining</string>
-  <string name="TouRoleAmbassadorRetrainWaiting">Retrain on Round \%currentRound\%</string>
+  <string name="TouRoleAmbassadorRetrainWaiting">Retrain on Round \%roundToWait\%</string>
   <string name="TouRoleAmbassadorRetrainCooldown">Round Cooldown: \%roundsLeft\% / \%roundsTotal\%</string>
+  <string name="TouRoleAmbassadorChooseRole">Choose a role for retraining.</string>
+  <string name="TouRoleAmbassadorConfirmPromptTitle">Ambassador Retrain</string>
+  <string name="TouRoleAmbassadorConfirmPromptText">Are you sure you want to be retrained into \%newRole\%?\%nl\%This change is permanent.</string>
+  <string name="TouRoleAmbassadorConfirmPromptDeny">Deny</string>
+  <string name="TouRoleAmbassadorConfirmPromptAccept">Accept</string>
+  <string name="TouRoleAmbassadorRetrainedPlayerTag">Retrained</string>
   <!-- Ambassador Options -->
   <string name="TouOptionAmbassadorMaxRetrainsAvailable">Max Retrains Available</string>
   <string name="TouOptionAmbassadorRetrainRequiresConfirmation">Retrain Requires Confirmation</string>

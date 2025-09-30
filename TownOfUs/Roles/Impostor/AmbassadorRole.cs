@@ -77,14 +77,31 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
         var stringB = ITownOfUsRole.SetNewTabText(this);
 
         stringB.AppendLine(CultureInfo.InvariantCulture,
-            $"{RetrainsAvailable} / {OptionGroupSingleton<AmbassadorOptions>.Instance.MaxRetrains} Retrains Remaining");
+            $"{RetrainsString()}");
 
         return stringB;
     }
 
+    public static string AvailableRetrainsString = TouLocale.GetParsed("TouRoleAmbassadorRetrainsAvailable");
+    public static string RetrainWaitString = TouLocale.GetParsed("TouRoleAmbassadorRetrainWaiting");
+    public static string RetrainCooldownString = TouLocale.GetParsed("TouRoleAmbassadorRetrainCooldown");
+
+    public string RetrainsString()
+    {
+        return AvailableRetrainsString.Replace("<retrainsLeft>", $"{RetrainsAvailable}").Replace("<retrainsTotal>",
+            $"{OptionGroupSingleton<AmbassadorOptions>.Instance.MaxRetrains}");
+    }
+    public string RetrainCdString()
+    {
+        return RetrainCooldownString.Replace("<roundsLeft>", $"{RoundsCooldown}").Replace("<roundsTotal>",
+            $"{OptionGroupSingleton<AmbassadorOptions>.Instance.RoundCooldown}");
+    }
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
+        AvailableRetrainsString = TouLocale.GetParsed("TouRoleAmbassadorRetrainsAvailable");
+        RetrainWaitString = TouLocale.GetParsed("TouRoleAmbassadorRetrainWaiting");
+        RetrainCooldownString = TouLocale.GetParsed("TouRoleAmbassadorRetrainCooldown");
 
         RetrainsAvailable = (int)OptionGroupSingleton<AmbassadorOptions>.Instance.MaxRetrains;
 
@@ -181,7 +198,8 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                 var notif1 =
                     Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Ambassador.LoadAsset());
 
-                notif1.AdjustNotification();        return;
+                notif1.AdjustNotification();
+                return;
             }
         }
 
@@ -397,7 +415,7 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
 
             text = text.Replace("<newRole>",
                 $"{TownOfUsColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.GetRoleName()}</color>");
-            var notif1 = Helpers.CreateAndShowNotification(text, Color.white,
+            var notif1 = Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f),
                 spr: ambassador.SelectedRole.RoleIconWhite != null
                     ? ambassador.SelectedRole.RoleIconWhite
                     : TouRoleIcons.Ambassador.LoadAsset());

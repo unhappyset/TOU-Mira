@@ -27,14 +27,14 @@ public static class MeetingHudTimerPatch
         {
             case AmbassadorRole ambass:
                 var ambassOpt = OptionGroupSingleton<AmbassadorOptions>.Instance;
-                newText = $"\n{ambass.RetrainsAvailable} / {ambassOpt.MaxRetrains} Retrains Remaining";
+                newText = $"\n{ambass.RetrainsString()}";
                 if (DeathEventHandlers.CurrentRound < (int)ambassOpt.RoundWhenAvailable)
                 {
-                    newText = $"{newText} | Retrain on Round {(int)ambassOpt.RoundWhenAvailable}";
+                    newText = $"{newText} | {AmbassadorRole.RetrainWaitString.Replace("<roundToWait>", $"{(int)ambassOpt.RoundWhenAvailable}")}";
                 }
                 else if (ambass.RoundsCooldown > 0)
                 {
-                    newText = $"{newText} | Round Cooldown: {ambass.RoundsCooldown} / {(int)ambassOpt.RoundCooldown}";
+                    newText = $"{newText} | {ambass.RetrainCdString()}";
                 }
                 break;
             case ProsecutorRole pros:
