@@ -845,9 +845,7 @@
   <string name="TouRoleAmnesiacWikiDescription">失忆者是一名中立善良型职业，可以通过回忆一具尸体的身份获得新身份。利用你回忆的身份赢得游戏。</string>
   <string name="TouOptionAmnesiacShowArrows">失忆者获得指向尸体的箭头</string>
   <string name="TouOptionAmnesiacArrowDelay">死亡后箭头出现时间</string>
-  <string name="TouRoleExecutionerIntroBlurb">投票放逐\%target\%即可获胜。</string>
   <string name="TouRoleExecutionerTabDescription">投票放逐\%target\%即可获胜。</string>
-  <string name="TouRoleExecutionerValueIfNoTarget">你的目标</string>
   <string name="TouRoleExecutionerWikiDescription">行刑者是一名中立邪恶型职业，只要让带有\%symbol\%标记的目标在会议中被放逐即可获胜。</string>
   <string name="TouOptionExecutionerBecomesTargetDeath">目标死亡后，行刑者变为</string>
   <string name="TouOptionExecutionerCanButton">行刑者可召开会议</string>
@@ -866,7 +864,6 @@
   <string name="TouOptionGlitchHackCooldown">黑入冷却</string>
   <string name="TouOptionGlitchHackDuration">黑入持续时间</string>
   <string name="TouOptionGlitchCan Vent">混沌可进通风口</string>
-  <string name="TouRoleGuardianAngelIntroBlurb">保护\%target\%免于被击杀！</string>
   <string name="TouRoleGuardianAngelTabDescription">保护\%target\%免于被击杀！</string>
   <string name="TouRoleGuardianAngelIfNoTarget">保护你的目标免于被击杀！</string>
   <string name="TouRoleGuardianAngelWikiDescription">守护天使是一名中立善良型职业，需要保护带有%symbol\%标记的目标不被击杀或放逐。</string>
