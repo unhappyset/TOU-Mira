@@ -28,7 +28,7 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
@@ -49,6 +49,7 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorPower;
@@ -69,15 +70,18 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
         MaxRoleCount = 1,
         Icon = TouRoleIcons.Ambassador
     };
+
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
 
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"{RetrainsAvailable} / {OptionGroupSingleton<AmbassadorOptions>.Instance.MaxRetrains} Retrains Remaining");
+        stringB.AppendLine(CultureInfo.InvariantCulture,
+            $"{RetrainsAvailable} / {OptionGroupSingleton<AmbassadorOptions>.Instance.MaxRetrains} Retrains Remaining");
 
         return stringB;
     }
+
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
@@ -97,9 +101,9 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                 TouAssets.RetrainSprite,
                 IsExempt,
                 activeColor: new Color32(200, 80, 80, 255))
-                {
-                    Position = new Vector3(-0.40f, 0f, -3f),
-                };
+            {
+                Position = new Vector3(-0.40f, 0f, -3f),
+            };
         }
     }
 
@@ -108,12 +112,14 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
         RoleBehaviourStubs.OnMeetingStart(this);
 
         if (RetrainsAvailable <= 0) return;
-        if (DeathEventHandlers.CurrentRound < (int)OptionGroupSingleton<AmbassadorOptions>.Instance.RoundWhenAvailable) return;
+        if (DeathEventHandlers.CurrentRound <
+            (int)OptionGroupSingleton<AmbassadorOptions>.Instance.RoundWhenAvailable) return;
         if (RoundsCooldown > 0) return;
 
         if (Player.AmOwner)
         {
-            meetingMenu?.GenButtons(MeetingHud.Instance, Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
+            meetingMenu?.GenButtons(MeetingHud.Instance,
+                Player.AmOwner && !Player.HasDied() && !Player.HasModifier<JailedModifier>());
         }
     }
 
@@ -157,30 +163,35 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
             meetingMenu.Actives[SelectedPlr.PlayerId] = false;
             RpcRetrain(PlayerControl.LocalPlayer);
         }
-        
+
         var opt = OptionGroupSingleton<AmbassadorOptions>.Instance;
         if ((int)opt.KillsNeeded > 0)
         {
             var killedAmbassPlayers = GameHistory.KilledPlayers.Count(x =>
                 x.KillerId == Player.PlayerId && x.VictimId != Player.PlayerId);
-            
+
             var killedPlayerPlayers = GameHistory.KilledPlayers.Count(x =>
                 x.KillerId == voteArea.GetPlayer()?.PlayerId && x.VictimId != voteArea.GetPlayer()?.PlayerId);
-            
+
             if (killedAmbassPlayers < (int)opt.KillsNeeded && killedPlayerPlayers < (int)opt.KillsNeeded)
             {
                 var text =
-                    $"<b>You or the impostor you are trying to retrain must have at least {(int)opt.KillsNeeded} kills.</b>";
-                var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: TouRoleIcons.Ambassador.LoadAsset());
+                    TouLocale.GetParsed("TouRoleAmbassadorNeedKills")
+                        .Replace("<requiredKills>", $"{(int)opt.KillsNeeded}");
+                var notif1 =
+                    Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Ambassador.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-                return;
+                notif1.AdjustNotification();        return;
             }
         }
-        
-        var excluded = MiscUtils.AllRoles.Where(x => x is ISpawnChange { NoSpawn: true } || x is ITownOfUsRole { RoleAlignment: RoleAlignment.ImpostorPower }).Select(x => x.Role).ToList();
-        var impRoles = MiscUtils.GetRolesToAssign(ModdedRoleTeams.Impostor, x => !excluded.Contains(x.Role)).Select(x => x.RoleType).ToList();
+
+        var excluded = MiscUtils.AllRoles
+            .Where(x => x is ISpawnChange { NoSpawn: true } || x is ITownOfUsRole
+            {
+                RoleAlignment: RoleAlignment.ImpostorPower
+            }).Select(x => x.Role).ToList();
+        var impRoles = MiscUtils.GetRolesToAssign(ModdedRoleTeams.Impostor, x => !excluded.Contains(x.Role))
+            .Select(x => x.RoleType).ToList();
 
         foreach (var player2 in PlayerControl.AllPlayerControls)
         {
@@ -191,13 +202,14 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                 {
                     impRoles.Remove((ushort)role!.Role);
                 }
+
                 if (player2.TryGetModifier<AmbassadorRetrainedModifier>(out var retrained))
                 {
                     impRoles.Remove((ushort)retrained.PreviousRole.Role);
                 }
             }
         }
-        
+
         var roleList = MiscUtils.GetPotentialRoles()
             .Where(role => role is ICustomRole)
             .Where(role => impRoles.Contains(RoleId.Get(role.GetType())))
@@ -230,6 +242,7 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                         meetingMenu.Actives[voteArea.TargetPlayerId] = true;
                         RpcRetrain(PlayerControl.LocalPlayer, player.PlayerId, (ushort)role.Role);
                     }
+
                     trainMenu.Close();
                 }
             );
@@ -244,30 +257,36 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
     }
 
     [MethodRpc((uint)TownOfUsRpc.RetrainConfirm)]
-    public static void RpcRetrainConfirm(PlayerControl ambassador, PlayerControl player, int cooldown, ushort role = 0, bool accepted = false)
+    public static void RpcRetrainConfirm(PlayerControl ambassador, PlayerControl player, int cooldown, ushort role = 0,
+        bool accepted = false)
     {
         if (ambassador.Data.Role is not AmbassadorRole ambassadorRole)
         {
             Logger<TownOfUsPlugin>.Error("RpcRetrainConfirm - Invalid ambassador");
             return;
         }
+
         if (player != ambassadorRole.SelectedPlr?._object)
         {
             Logger<TownOfUsPlugin>.Error("RpcRetrainConfirm - Retrainee is not valid!");
             return;
         }
-        if (ambassadorRole.SelectedPlr == null || ambassadorRole.SelectedRole == null || ambassadorRole.Player.Data.IsDead || ambassadorRole.SelectedPlr.IsDead)
+
+        if (ambassadorRole.SelectedPlr == null || ambassadorRole.SelectedRole == null ||
+            ambassadorRole.Player.Data.IsDead || ambassadorRole.SelectedPlr.IsDead)
         {
             ambassadorRole.Clear();
             Logger<TownOfUsPlugin>.Error("RpcRetrainConfirm - A player or role check failed");
             return;
         }
+
         if (MeetingHud.Instance || ExileController.Instance)
         {
-            Logger<TownOfUsPlugin>.Error("RpcRetrainConfirm - You thought you were slick, huh? No, you can't retrain outside of rounds!");
+            Logger<TownOfUsPlugin>.Error(
+                "RpcRetrainConfirm - You thought you were slick, huh? No, you can't retrain outside of rounds!");
             return;
         }
-        
+
         ambassadorRole.Clear();
         var newRole = RoleManager.Instance.GetRole((RoleTypes)role)!;
 
@@ -285,36 +304,40 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                 (!OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode || ambassador.AmOwner))
             {
                 var text =
-                    $"<b>{player.Data.PlayerName} has now been retrained into {newRole.GetRoleName()}!</b>";
+                    TouLocale.GetParsed("TouRoleAmbassadorPlayerHasBeenRetrained")
+                        .Replace("<player>", player.Data.PlayerName);
 
                 if (player.AmOwner)
                 {
                     player.SetKillTimer(currentTime);
                     text =
-                        $"<b>You have accepted your retrain into the {newRole.GetRoleName()}!</b>";
+                        TouLocale.GetParsed("TouRoleAmbassadorYouHaveAccepted");
                 }
-                var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: newRole.RoleIconWhite ?? TouRoleIcons.Ambassador.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-            }
+                text = text.Replace("<newRole>", newRole.GetRoleName());
+                var notif1 = Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f),
+                    spr: newRole.RoleIconWhite ?? TouRoleIcons.Ambassador.LoadAsset());
+
+                notif1.AdjustNotification();    }
         }
         else if (PlayerControl.LocalPlayer.IsImpostor() &&
                  (!OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode || ambassador.AmOwner))
         {
             var text =
-                $"<b>{player.Data.PlayerName} has denied their retrain into {newRole.GetRoleName()}!</b>";
+                TouLocale.GetParsed("TouRoleAmbassadorPlayerHasDenied").Replace("<player>", player.Data.PlayerName);
 
             if (player.AmOwner)
             {
                 text =
-                    $"<b>You have denied your retrain into the {newRole.GetRoleName()}!</b>";
+                    TouLocale.GetParsed("TouRoleAmbassadorYouDeniedRetrain");
             }
-            var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: newRole.RoleIconWhite ?? TouRoleIcons.Ambassador.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-        }
+            text = text.Replace("<newRole>", newRole.GetRoleName());
+
+            var notif1 = Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f),
+                spr: newRole.RoleIconWhite ?? TouRoleIcons.Ambassador.LoadAsset());
+
+            notif1.AdjustNotification();}
     }
 
     [MethodRpc((uint)TownOfUsRpc.RetrainImpostor)]
@@ -332,12 +355,12 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
                 (!OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode || player.AmOwner))
             {
                 var text =
-                    $"<b>Ambassador retraining for {ambassador.SelectedPlr.PlayerName} was cancelled</b>";
-                var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: TouRoleIcons.Ambassador.LoadAsset());
+                    TouLocale.GetParsed("TouRoleAmbassadorRetrainCancelled")
+                        .Replace("<player>", ambassador.SelectedPlr.PlayerName);
+                var notif1 =
+                    Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Ambassador.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-                if (ambassador.Player.AmOwner)
+                notif1.AdjustNotification();        if (ambassador.Player.AmOwner)
                 {
                     ambassador.meetingMenu.Actives[ambassador.SelectedPlr.PlayerId] = false;
                 }
@@ -354,28 +377,32 @@ public sealed class AmbassadorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownO
             (!OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode || player.AmOwner))
         {
             var text =
-                $"<b>The Ambassador has decided to retrain {ambassador.SelectedPlr.PlayerName} into {TownOfUsColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.GetRoleName()}</color></b>";
+                TouLocale.GetParsed("TouRoleAmbassadorDecidedToRetrain")
+                    .Replace("<player>", ambassador.SelectedPlr.PlayerName);
             if (ambassador.SelectedPlr.Object.AmOwner && player.AmOwner)
             {
                 text =
-                    $"<b>You have decided to retrain yourself into {TownOfUsColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.GetRoleName()}</color></b>";
+                    TouLocale.GetParsed("TouRoleAmbassadorDecidedToRetrainYourself");
             }
             else if (ambassador.SelectedPlr.Object == player)
             {
                 text =
-                    $"<b>The Ambassador has decided to retrain themselves into {TownOfUsColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.GetRoleName()}</color></b>";
-
+                    TouLocale.GetParsed("TouRoleAmbassadorDecidedToRetrainSelf");
             }
             else if (ambassador.SelectedPlr.Object.AmOwner)
             {
                 text =
-                    $"<b>The Ambassador has decided to retrain you into {TownOfUsColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.GetRoleName()}</color></b>";
-
+                    TouLocale.GetParsed("TouRoleAmbassadorDecidedToRetrainYou");
             }
-            var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: ambassador.SelectedRole.RoleIconWhite != null ? ambassador.SelectedRole.RoleIconWhite : TouRoleIcons.Ambassador.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            text = text.Replace("<newRole>",
+                $"{TownOfUsColors.ImpSoft.ToTextColor()}{ambassador.SelectedRole.GetRoleName()}</color>");
+            var notif1 = Helpers.CreateAndShowNotification(text, Color.white,
+                spr: ambassador.SelectedRole.RoleIconWhite != null
+                    ? ambassador.SelectedRole.RoleIconWhite
+                    : TouRoleIcons.Ambassador.LoadAsset());
+
+            notif1.AdjustNotification();    
         }
     }
 }

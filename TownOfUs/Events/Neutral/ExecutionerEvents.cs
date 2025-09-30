@@ -70,10 +70,9 @@ public static class ExecutionerEvents
             {
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>You have successfully won as the {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, as your target was exiled!</b>",
-                    Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
+                    Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Executioner.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                notif1.AdjustNotification();
 
                 PlayerControl.LocalPlayer.RpcPlayerExile();
                 
@@ -83,10 +82,8 @@ public static class ExecutionerEvents
                     DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, TouLocale.Get("DiedToWinning"), DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
                     var notif2 = Helpers.CreateAndShowNotification(
                         $"<b>You have one round to torment a player of your choice to death, choose wisely.</b>",
-                        Color.white);
-
-                    notif2.Text.SetOutlineThickness(0.35f);
-                    notif2.transform.localPosition = new Vector3(0f, 0.85f, -20f);
+                        Color.white, new Vector3(0f, 0.85f, -20f));
+                    notif2.AdjustNotification();
                 }
                 else
                 {
@@ -97,11 +94,9 @@ public static class ExecutionerEvents
             {
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>The {TownOfUsColors.Executioner.ToTextColor()}Executioner</color>, {exe.Player.Data.PlayerName}, has successfully won, as their target was exiled!</b>",
-                    Color.white, spr: TouRoleIcons.Executioner.LoadAsset());
+                    Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Executioner.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-            }
+                notif1.AdjustNotification();    }
         }
     }
     

@@ -94,16 +94,14 @@ public sealed class DetectiveTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.Detective.ToTextColor()}{player.Data.PlayerName} was at the scene of {deadPlayer.Data.PlayerName}'s death!\nThey might be the killer or a witness.</b></color>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Detective.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
-        }
+            notif1.AdjustNotification();}
         else
         {
             Coroutines.Start(MiscUtils.CoFlash(Color.green));
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.Detective.ToTextColor()}{player.Data.PlayerName} was not at the scene of the crime.</b></color>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Detective.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
-        }
+            notif1.AdjustNotification();}
     }
 
     public void Report(byte deadPlayerId)

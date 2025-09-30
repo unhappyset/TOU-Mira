@@ -37,7 +37,7 @@ public sealed class MercenaryGuardButton : TownOfUsRoleButton<MercenaryRole, Pla
         var notif1 = Helpers.CreateAndShowNotification(
             $"<b>Once {Target.Data.PlayerName} is interacted with, you will get one gold.</b>", Color.white,
             new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mercenary.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
+        notif1.AdjustNotification();
     }
 
     public override PlayerControl? GetTarget()

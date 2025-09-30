@@ -54,8 +54,7 @@ public sealed class JailedModifier(byte jailorId) : BaseModifier
                 $"<b>{TownOfUsColors.Jailor.ToTextColor()}{text}</color></b>", Color.white,
                 spr: TouRoleIcons.Jailor.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            notif1.AdjustNotification();    
         }
 
         foreach (var voteArea in MeetingHud.Instance.playerStates)

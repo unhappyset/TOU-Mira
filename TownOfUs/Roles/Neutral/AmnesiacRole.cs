@@ -114,8 +114,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{target.CachedPlayerData.PlayerName} was an {TownOfUsColors.Amnesiac.ToTextColor()}Amnesiac</color>, so their role cannot be picked up.</b>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Amnesiac.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-            }
+                notif1.AdjustNotification();    }
 
             return;
         }
@@ -181,8 +180,7 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>You remembered that you were like {target.Data.PlayerName}, the {player.Data.Role.TeamColor.ToTextColor()}{player.Data.Role.GetRoleName()}</color>.</b>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Amnesiac.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
-        }
+            notif1.AdjustNotification();}
 
         if (roleWhenAlive is not VampireRole && (roleWhenAlive.MaxCount <= 1 || (roleWhenAlive.MaxCount <= PlayerControl.AllPlayerControls
                 .ToArray().Count(x => x.Data.Role.Role == roleWhenAlive.Role))))

@@ -263,8 +263,7 @@ public sealed class PhantomTouRole(IntPtr cppPtr)
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{TownOfUsColors.Phantom.ToTextColor()}You are now clickable by players!</b></color>", Color.white,
                     new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Phantom.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-            }
+                notif1.AdjustNotification();    }
         }
 
         if (completedTasks == realTasks.Count)

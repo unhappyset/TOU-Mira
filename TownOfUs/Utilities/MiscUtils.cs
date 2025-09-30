@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using AmongUs.Data;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using MiraAPI.GameOptions;
@@ -12,6 +13,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using TMPro;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
@@ -1484,5 +1486,21 @@ public static class MiscUtils
         return text;
     }
 
+    private static List<SupportedLangs> _languagesToBold = new List<SupportedLangs>
+    {
+        SupportedLangs.Russian,
+        SupportedLangs.Japanese,
+        SupportedLangs.SChinese,
+        SupportedLangs.TChinese,
+        SupportedLangs.Korean
+    };
+    public static void AdjustNotification(this LobbyNotificationMessage notification)
+    {
+        if (!_languagesToBold.Contains(DataManager.Settings.Language.CurrentLanguage))
+        {
+            notification.Text.fontStyle = FontStyles.Bold;
+            notification.Text.SetOutlineThickness(0.35f);
+        }
+    }
     public static IEnumerable<T> Excluding<T>(this IEnumerable<T> source, Func<T, bool> predicate) => source.Where(x => !predicate(x)); // Added for easier inversion and reading
 }

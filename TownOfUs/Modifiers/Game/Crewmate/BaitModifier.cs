@@ -63,10 +63,9 @@ public sealed class BaitModifier : TouGameModifier, IWikiDiscoverable
 
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.Bait.ToTextColor()}{target.Data.PlayerName} was a Bait, causing you to self report.</color></b>",
-                Color.white, spr: TouModifierIcons.Bait.LoadAsset());
+                Color.white, new Vector3(0f, 1f, -20f), spr: TouModifierIcons.Bait.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            notif1.AdjustNotification();    
         }
     }
 }

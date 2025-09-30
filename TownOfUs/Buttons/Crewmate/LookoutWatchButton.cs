@@ -44,6 +44,6 @@ public sealed class WatchButton : TownOfUsRoleButton<LookoutRole, PlayerControl>
         var notif1 = Helpers.CreateAndShowNotification(
             $"<b>You will know what roles interact with {Target.Data.PlayerName} if they are not dead by next meeting.</b>",
             Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Lookout.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
+        notif1.AdjustNotification();
     }
 }

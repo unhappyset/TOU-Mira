@@ -162,8 +162,7 @@ public sealed class DeputyRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.Deputy.ToTextColor()}{msg}</b></color>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Deputy.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
-        }
+            notif1.AdjustNotification();}
 
         if (Player.AmOwner)
         {

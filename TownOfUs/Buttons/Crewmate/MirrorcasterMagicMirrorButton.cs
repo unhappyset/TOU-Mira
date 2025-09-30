@@ -93,19 +93,16 @@ public sealed class MirrorcasterMagicMirrorButton : TownOfUsRoleButton<Mirrorcas
         else
         {
             var notif1 = Helpers.CreateAndShowNotification($"<b>The player you tried to protect was already dead!</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mirrorcaster.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
-        }
+            notif1.AdjustNotification();}
 
         if (Role.Protected != null && Role.Protected.HasDied())
         {
             var notif1 = Helpers.CreateAndShowNotification($"<b>{Role.Protected.Data.PlayerName} died to an indirect attack, which your mirrors couldn't protect from.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mirrorcaster.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
-        }
+            notif1.AdjustNotification();}
         else if (Role.Protected != null && !Role.Protected.HasDied())
         {
             var notif1 = Helpers.CreateAndShowNotification($"<b>{Role.Protected.Data.PlayerName} was not attacked.</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mirrorcaster.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
-        }
+            notif1.AdjustNotification();}
 
         TargetWasValid = false;
         MirrorcasterRole.RpcClearMagicMirror(PlayerControl.LocalPlayer);

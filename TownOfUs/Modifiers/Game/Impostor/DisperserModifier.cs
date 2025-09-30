@@ -75,8 +75,7 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
             $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}Everyone has been dispersed to a vent!</color></b>", Color.white,
             spr: TouModifierIcons.Disperser.LoadAsset());
 
-        notif1.Text.SetOutlineThickness(0.35f);
-        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        notif1.AdjustNotification();
     }
 
     public static void DispersePlayersToCoordinates(Dictionary<byte, Vector2> coordinates)

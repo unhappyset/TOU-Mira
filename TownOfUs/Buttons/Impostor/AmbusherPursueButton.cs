@@ -44,9 +44,8 @@ public sealed class AmbusherPursueButton : TownOfUsRoleButton<AmbusherRole, Play
 
         var notif1 = Helpers.CreateAndShowNotification(
             $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You are now pursuing {Target.Data.PlayerName}. Ambush anyone near them at any time you wish.</b></color>",
-            Color.white, spr: TouRoleIcons.Ambusher.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
-        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Ambusher.LoadAsset());
+        notif1.AdjustNotification();
 
         CustomButtonSingleton<AmbusherAmbushButton>.Instance.SetActive(true, Role);
         CustomButtonSingleton<AmbusherAmbushButton>.Instance.ResetCooldownAndOrEffect();

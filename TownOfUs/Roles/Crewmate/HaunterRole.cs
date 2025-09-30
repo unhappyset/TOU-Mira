@@ -300,8 +300,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{TownOfUsColors.Haunter.ToTextColor()}You are now clickable by players!</b></color>", Color.white,
                     new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-            }
+                notif1.AdjustNotification();    }
         }
 
         if (!Revealed && tasksRemaining == (int)OptionGroupSingleton<HaunterOptions>.Instance.NumTasksLeftBeforeAlerted)
@@ -314,8 +313,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{TownOfUsColors.Haunter.ToTextColor()}You have alerted the Killers!</b></color>", Color.white,
                     new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-            }
+                notif1.AdjustNotification();    }
             else if (IsTargetOfHaunter(PlayerControl.LocalPlayer))
             {
                 // Logger<TownOfUsPlugin>.Error($"CheckTaskRequirements IsTargetOfHaunter");
@@ -325,8 +323,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{TownOfUsColors.Haunter.ToTextColor()}A Haunter is loose, catch them before they reveal you!</b></color>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-            }
+                notif1.AdjustNotification();    }
         }
         
         if (!CompletedAllTasks && completedTasks == realTasks.Count)
@@ -339,8 +336,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{TownOfUsColors.Haunter.ToTextColor()}You have revealed the Killers!</b></color>", Color.white,
                     new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-            }
+                notif1.AdjustNotification();    }
             else if (IsTargetOfHaunter(PlayerControl.LocalPlayer))
             {
                 // Logger<TownOfUsPlugin>.Error($"CheckTaskRequirements IsTargetOfHaunter");
@@ -350,8 +346,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{TownOfUsColors.Haunter.ToTextColor()}The Haunter has completed their tasks!</b></color>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-            }
+                notif1.AdjustNotification();    }
         }
         if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Haunter Stage for '{Player.Data.PlayerName}': {TaskStage.ToDisplayString()} - ({completedTasks} / {realTasks.Count})");
     }

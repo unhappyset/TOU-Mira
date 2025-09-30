@@ -5,6 +5,7 @@ using MiraAPI.Utilities.Assets;
 using TownOfUs.Modifiers.Impostor.Venerer;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles.Impostor;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Buttons.Impostor;
@@ -44,10 +45,9 @@ public sealed class VenererAbilityButton : TownOfUsRoleButton<VenererRole>, IAft
         {
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You have unlocked the {ability.ToString()} ability for getting a kill. {(EffectActive ? "You must wait until your current ability is over." : string.Empty)}</color></b>",
-                Color.white, spr: TouRoleIcons.Venerer.LoadAsset());
+                Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Venerer.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            notif1.AdjustNotification();    
         }
 
         if (EffectActive)

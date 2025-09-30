@@ -71,10 +71,8 @@ public sealed class TaskmasterModifier : TouGameModifier, IWikiDiscoverable
 
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{TownOfUsColors.Taskmaster.ToTextColor()}The task '{taskText}' has been completed for you.</b></color>",
-                    Color.white, spr: TouModifierIcons.Taskmaster.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-            }
+                    Color.white, new Vector3(0f, 1f, -20f), spr: TouModifierIcons.Taskmaster.LoadAsset());
+                notif1.AdjustNotification();    }
         }
     }
 }

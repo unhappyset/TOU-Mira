@@ -361,10 +361,9 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                     ? $"<b>{TouLocale.GetParsed("TouRoleDoomsayerMisguessOne")}</b>"
                     : $"<b>{TouLocale.GetParsed("TouRoleDoomsayerMisguessMultiple").Replace("<misguessCount>", $"{NumberOfGuesses - AllVictims.Count}")}</b>";
                 var notif1 = Helpers.CreateAndShowNotification(
-                    text, Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
+                    text, Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Doomsayer.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                notif1.AdjustNotification();
 
                 Coroutines.Start(MiscUtils.CoFlash(Color.red));
             }

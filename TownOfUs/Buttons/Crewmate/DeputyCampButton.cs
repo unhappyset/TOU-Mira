@@ -53,6 +53,6 @@ public sealed class CampButton : TownOfUsRoleButton<DeputyRole, PlayerControl>
         var notif1 = Helpers.CreateAndShowNotification(
             $"<b>Wait for {Target.Data.PlayerName}'s death so you can avenge them in the meeting.</b>", Color.white,
             new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Deputy.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
+        notif1.AdjustNotification();
     }
 }

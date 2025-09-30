@@ -28,10 +28,9 @@ public sealed class TraitorCacheModifier : BaseModifier, ICachedRole
         {
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You are a new role, and you are only guessable as Traitor now!</color></b>",
-                Color.white, spr: TouRoleIcons.Traitor.LoadAsset());
+                Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Traitor.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            notif1.AdjustNotification();    
         }
 
         var touAbilityEvent = new TouAbilityEvent(AbilityType.TraitorChangeRole, Player);

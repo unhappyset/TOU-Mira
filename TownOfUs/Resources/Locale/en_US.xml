@@ -732,6 +732,9 @@
   <string name="TouRoleAmbassadorRetrain">Retrain</string>
   <string name="TouRoleAmbassadorRetrainWiki">Retrain (Meeting)</string>
   <string name="TouRoleAmbassadorRetrainWikiDescription">Retrain yourself or other impostors into a role within their alignment. Impostor Killing roles can be turned into any non-Power roles, and Concealing/Support roles can become Concealing or Support roles.</string>
+  <string name="TouRoleAmbassadorRetrainsAvailable">\%retrainsLeft\% / \%retrainsTotal\% Retrains Remaining</string>
+  <string name="TouRoleAmbassadorRetrainWaiting">Retrain on Round \%currentRound\%</string>
+  <string name="TouRoleAmbassadorRetrainCooldown">Round Cooldown: \%roundsLeft\% / \%roundsTotal\%</string>
   <!-- Ambassador Options -->
   <string name="TouOptionAmbassadorMaxRetrainsAvailable">Max Retrains Available</string>
   <string name="TouOptionAmbassadorRetrainRequiresConfirmation">Retrain Requires Confirmation</string>
@@ -739,15 +742,15 @@
   <string name="TouOptionAmbassadorRoundInWhichRetrainingIsPossible">Round In Which Retraining Is Possible</string>
   <string name="TouOptionAmbassadorRoundsNeededToRetrainAgain">Rounds Needed To Retrain Again</string>
   <!-- Ambassador Feedback -->
-  <string name="TouRoleAmbassadorDecidedToRetrainYou">The Ambassador has decided to retrain you into \%ImpSoftColor\%\%newRoleNiceName\%\%resetColor\%</string>
-  <string name="TouRoleAmbassadorDecidedToRetrainSelf">The Ambassador has decided to retrain themselves into \%ImpSoftColor\%\%newRoleNiceName\%\%resetColor\%</string>
-  <string name="TouRoleAmbassadorDecidedToRetrainYourself">You have decided to retrain yourself into \%ImpSoftColor\%\%newRoleNiceName\%\%resetColor\%</string>
-  <string name="TouRoleAmbassadorDecidedToRetrain">The Ambassador has decided to retrain \%player\% into \%ImpSoftColor\%\%newRoleNiceName\%\%resetColor\%</string>
+  <string name="TouRoleAmbassadorDecidedToRetrainYou">The Ambassador has decided to retrain you into \%newRole\%</string>
+  <string name="TouRoleAmbassadorDecidedToRetrainSelf">The Ambassador has decided to retrain themselves into \%newRole\%</string>
+  <string name="TouRoleAmbassadorDecidedToRetrainYourself">You have decided to retrain yourself into \%newRole\%</string>
+  <string name="TouRoleAmbassadorDecidedToRetrain">The Ambassador has decided to retrain \%player\% into \%newRole\%</string>
   <string name="TouRoleAmbassadorRetrainCancelled">Ambassador retraining for \%player\% was cancelled</string>
-  <string name="TouRoleAmbassadorYouDeniedRetrain">You have denied your retraining into the \%newRoleNiceName\%!</string>
-  <string name="TouRoleAmbassadorPlayerHasDenied">\%player\% has denied their retraining into \%newRoleNiceName\%!</string>
-  <string name="TouRoleAmbassadorYouHaveAccepted">You have accepted your retraining into the \%newRoleNiceName\%!</string>
-  <string name="TouRoleAmbassadorPlayerHasBeenRetrained">\%player\% has now been retrained into \%newRoleNiceName\%!</string>
+  <string name="TouRoleAmbassadorYouDeniedRetrain">You have denied your retraining into the \%newRole\%!</string>
+  <string name="TouRoleAmbassadorPlayerHasDenied">\%player\% has denied their retraining into \%newRole\%!</string>
+  <string name="TouRoleAmbassadorYouHaveAccepted">You have accepted your retraining into the \%newRole\%!</string>
+  <string name="TouRoleAmbassadorPlayerHasBeenRetrained">\%player\% has now been retrained into \%newRole\%!</string>
   <string name="TouRoleAmbassadorNeedKills">You or the impostor you are trying to retrain must have at least \%requiredKills\% kills.</string>
   <!-- Ambusher Wiki / Abilities -->
   <string name="TouRoleAmbusher">Ambusher</string>
