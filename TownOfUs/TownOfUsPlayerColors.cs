@@ -41,7 +41,7 @@ public static class TownOfUsPlayerColors
         ColorBrightness = CustomColorBrightness.Darker
     };
 
-    public static CustomColor SeaGreen { get; } = new("Sea Green",
+    public static CustomColor SeaGreen { get; } = new("SeaGreen",
         new Color32(61, 255, 181, byte.MaxValue),
         new Color32(31, 128, 91, byte.MaxValue))
     {
@@ -69,7 +69,8 @@ public static class TownOfUsPlayerColors
         ColorBrightness = CustomColorBrightness.Lighter
     };
 
-    public static CustomColor Plum { get; } = new("Plum", new Color32(79, 0, 127, byte.MaxValue),
+    public static CustomColor Plum { get; } = new("Plum",
+        new Color32(79, 0, 127, byte.MaxValue),
         new Color32(55, 0, 95, byte.MaxValue))
     {
         ColorBrightness = CustomColorBrightness.Darker
@@ -166,11 +167,12 @@ public static class TownOfUsPlayerColors
         ColorBrightness = CustomColorBrightness.Lighter
     };
 
-    public static CustomColor Ash { get; } =
-        new("Ash", new Color32(11, 14, 19, byte.MaxValue), new Color32(4, 5, 7, byte.MaxValue))
-        {
-            ColorBrightness = CustomColorBrightness.Darker
-        };
+    public static CustomColor Ash { get; } = new("Ash",
+        new Color32(11, 14, 19, byte.MaxValue),
+        new Color32(4, 5, 7, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Darker
+    };
 
     public static CustomColor Midnight { get; } = new("Midnight",
         new Color32(16, 46, 104, byte.MaxValue),
@@ -235,9 +237,9 @@ public static class TownOfUsPlayerColors
         ColorBrightness = CustomColorBrightness.Lighter
     };
 
-    public static CustomColor Rainbow { get; } =
-        new("Rainbow", new Color32(0, 0, 0, byte.MaxValue))
-        {
-            ColorBrightness = CustomColorBrightness.Lighter
-        };
+    public static CustomColor Rainbow { get; } = new("Rainbow",
+        new Color32(0, 0, 0, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Lighter
+    };
 }
