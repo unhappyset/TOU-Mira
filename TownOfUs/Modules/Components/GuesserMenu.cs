@@ -154,7 +154,7 @@ public sealed class GuesserMenu(IntPtr cppPtr) : Minigame(cppPtr)
         
         var newRoleList = roles.OrderBy(x =>
             LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.SortGuessingByAlignmentToggle.Value
-                ? x.GetRoleAlignment().ToDisplayString() + x.GetRoleName()
+                ? MiscUtils.GetParsedRoleAlignment(x) + x.GetRoleName()
                 : x.GetRoleName()).ToList();
 
         for (var i = 0; i < newRoleList.Count; i++)

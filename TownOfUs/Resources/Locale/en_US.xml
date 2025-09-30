@@ -690,6 +690,7 @@
   <string name="TouRoleVeteranTabDescription">Alert to kill whoever who interacts with you.</string>
   <string name="TouRoleVeteranWikiDescription">The Veteran is a Crewmate Killing role that can go on alert and kill anyone who interacts with them.</string>
   <string name="TouRoleVeteranAlert">Alert</string>
+  <string name="TouRoleVeteranAlerting">Alerting</string>
   <string name="TouRoleVeteranAlertWikiDescription">When the Veteran is on alert, any player who interacts with them will be instantly killed, except Pestilence and shielded players, who will ignore the attack.</string>
   <!-- Veteran Options -->
   <string name="TouOptionVeteranAlertCooldown">Alert Cooldown</string>

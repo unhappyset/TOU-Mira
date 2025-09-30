@@ -7,7 +7,6 @@ using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
-using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules;
 using TownOfUs.Options;
@@ -55,11 +54,7 @@ public static class HauntMenuMinigamePatch
             var first = true;
             foreach (var modifier in modifiers)
             {
-                var color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-                if (modifier is IColoredModifier colorMod)
-                {
-                    color = colorMod.ModifierColor;
-                }
+                var color = MiscUtils.GetModifierColour(modifier);
 
                 if (!first)
                 {

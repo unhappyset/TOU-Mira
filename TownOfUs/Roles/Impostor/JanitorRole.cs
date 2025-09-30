@@ -41,10 +41,7 @@ public sealed class JanitorRole(IntPtr cppPtr)
     public string LocaleKey => "Janitor";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
-    public string RoleLongDescription => "Clean bodies to hide kills" +
-                                         (OptionGroupSingleton<JanitorOptions>.Instance.CleanDelay == 0
-                                             ? string.Empty
-                                             : "\n<b>You must stay next to the body while cleaning.</b>");
+    public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
     public string GetAdvancedDescription()
     {
         return

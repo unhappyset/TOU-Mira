@@ -14,6 +14,7 @@ using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TMPro;
+using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
@@ -343,6 +344,38 @@ public static class MiscUtils
 
         return localizedName;
     }
+    public static string GetParsedModifierFaction(ModifierFaction faction, bool coloredText = false)
+    {
+        var localizedName = TouLocale.Get($"{faction}");
+
+        if (coloredText)
+        {
+            if (localizedName.Contains("Crewmate") || localizedName.Contains(TouLocale.Get("CrewmateKeyword")))
+            {
+                localizedName = $"<color=#68ACF4>{localizedName}";
+            }
+            else if (localizedName.Contains("Impostor") || localizedName.Contains(TouLocale.Get("ImpostorKeyword")))
+            {
+                localizedName = $"<color=#D63F42>{localizedName}";
+            }
+            else if (localizedName.Contains("Neutral") || localizedName.Contains(TouLocale.Get("NeutralKeyword")))
+            {
+                localizedName = $"<color=#8A8A8A>{localizedName}";
+            }
+            else if (localizedName.Contains("Game") || localizedName.Contains(TouLocale.Get("GameKeyword")))
+            {
+                localizedName = $"<color=#888888>{localizedName}";
+            }
+            else
+            {
+                localizedName = $"<color=#FFFFFF>{localizedName}";
+            }
+
+            localizedName += "</color>";
+        }
+        
+        return localizedName;
+    }
     public static string GetParsedRoleAlignment(ICustomRole role, bool coloredText = false)
     {
         var localeName = $"{role.GetRoleAlignment()}";
@@ -530,6 +563,49 @@ public static class MiscUtils
     {
         return ModifierUtils.GetPlayersWithModifier<T>().FirstOrDefault();
     }
+    public static string GetLocaleKey(ITownOfUsRole role)
+    {
+        return role.LocaleKey;
+    }
+    public static string GetLocaleKey(ICustomRole role)
+    {
+        var name = role.RoleName;
+        if (role is ITownOfUsRole touRole)
+        {
+            name = touRole.LocaleKey;
+        }
+        return name;
+    }
+    public static string GetLocaleKey(RoleBehaviour role)
+    {
+        var name = role.GetRoleName();
+        if (role is ITownOfUsRole touRole)
+        {
+            name = touRole.LocaleKey;
+        }
+        return name;
+    }
+    public static string GetLocaleKey(GameModifier modifier)
+    {
+        return GetLocaleKey(modifier as BaseModifier);
+    }
+    public static string GetLocaleKey(BaseModifier modifier)
+    {
+        var name = modifier.ModifierName;
+        if (modifier is TouGameModifier touMod)
+        {
+            name = touMod.LocaleKey;
+        }
+        else if (modifier is AllianceGameModifier allyMod)
+        {
+            name = allyMod.LocaleKey;
+        }
+        else if (modifier is UniversalGameModifier uniMod)
+        {
+            name = uniMod.LocaleKey;
+        }
+        return name;
+    }
 
     public static Color GetRoleColour(string name)
     {
@@ -543,6 +619,57 @@ public static class MiscUtils
         var colour = (Color)pInfo.GetValue(null)!;
 
         return colour;
+    }
+
+    public static Color GetModifierColour(BaseModifier modifier)
+    {
+        var color = GetRoleColour(GetLocaleKey(modifier).Replace(" ", string.Empty));
+        if (modifier is IColoredModifier colorMod)
+        {
+            color = colorMod.ModifierColor;
+        }
+
+        return color;
+    }
+    public static Color GetModifierColour(GameModifier modifier)
+    {
+        var color = GetRoleColour(GetLocaleKey(modifier).Replace(" ", string.Empty));
+        if (modifier is IColoredModifier colorMod)
+        {
+            color = colorMod.ModifierColor;
+        }
+
+        return color;
+    }
+    public static Color GetModifierColour(TouGameModifier modifier)
+    {
+        var color = GetRoleColour(GetLocaleKey(modifier).Replace(" ", string.Empty));
+        if (modifier is IColoredModifier colorMod)
+        {
+            color = colorMod.ModifierColor;
+        }
+
+        return color;
+    }
+    public static Color GetModifierColour(UniversalGameModifier modifier)
+    {
+        var color = GetRoleColour(GetLocaleKey(modifier).Replace(" ", string.Empty));
+        if (modifier is IColoredModifier colorMod)
+        {
+            color = colorMod.ModifierColor;
+        }
+
+        return color;
+    }
+    public static Color GetModifierColour(AllianceGameModifier modifier)
+    {
+        var color = GetRoleColour(GetLocaleKey(modifier).Replace(" ", string.Empty));
+        if (modifier is IColoredModifier colorMod)
+        {
+            color = colorMod.ModifierColor;
+        }
+
+        return color;
     }
 
     public static string RoleNameLookup(RoleTypes roleType)

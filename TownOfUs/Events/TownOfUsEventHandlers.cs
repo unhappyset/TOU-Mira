@@ -25,7 +25,6 @@ using TownOfUs.Buttons.Impostor;
 using TownOfUs.Buttons.Modifiers;
 using TownOfUs.Buttons.Neutral;
 using TownOfUs.Events.TouEvents;
-using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Game.Universal;
@@ -63,23 +62,13 @@ public static class TownOfUsEventHandlers
         {
             ModifierText.text = $"<size={modifier.IntroSize}>{modifier.IntroInfo}</size>";
 
-            ModifierText.color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-            if (ModifierText.color == TownOfUsColors.Impostor) ModifierText.color = MiscUtils.GetRoleColour(modifier.LocaleKey.Replace(" ", string.Empty));
-            if (modifier is IColoredModifier colorMod)
-            {
-                ModifierText.color = colorMod.ModifierColor;
-            }
+            ModifierText.color = MiscUtils.GetModifierColour(modifier);
         }
         else if (uniModifier != null && option is ModReveal.Universal)
         {
             ModifierText.text = $"<size=4><color=#FFFFFF>{TouLocale.Get("Modifier")}: </color>{uniModifier.ModifierName}</size>";
 
-            ModifierText.color = MiscUtils.GetRoleColour(uniModifier.ModifierName.Replace(" ", string.Empty));
-            if (ModifierText.color == TownOfUsColors.Impostor) ModifierText.color = MiscUtils.GetRoleColour(uniModifier.LocaleKey.Replace(" ", string.Empty));
-            if (uniModifier is IColoredModifier colorMod)
-            {
-                ModifierText.color = colorMod.ModifierColor;
-            }
+            ModifierText.color = MiscUtils.GetModifierColour(uniModifier);
         }
         else
         {
@@ -112,12 +101,7 @@ public static class TownOfUsEventHandlers
         var teamModifier = PlayerControl.LocalPlayer.GetModifiers<TouGameModifier>().FirstOrDefault();
         if (teamModifier != null && OptionGroupSingleton<GeneralOptions>.Instance.TeamModifierReveal)
         {
-            var color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
-            if (color == TownOfUsColors.Impostor) color = MiscUtils.GetRoleColour(teamModifier.LocaleKey.Replace(" ", string.Empty));
-            if (teamModifier is IColoredModifier colorMod)
-            {
-                color = colorMod.ModifierColor;
-            }
+            var color = MiscUtils.GetModifierColour(teamModifier);
 
             instance.RoleBlurbText.text =
                 $"<size={teamModifier.IntroSize}>\n</size>{instance.RoleBlurbText.text}\n<size={teamModifier.IntroSize}><color=#{color.ToHtmlStringRGBA()}>{teamModifier.IntroInfo}</color></size>";
@@ -147,12 +131,7 @@ public static class TownOfUsEventHandlers
         var teamModifier = PlayerControl.LocalPlayer.GetModifiers<TouGameModifier>().FirstOrDefault();
         if (teamModifier != null && OptionGroupSingleton<GeneralOptions>.Instance.TeamModifierReveal)
         {
-            var color = MiscUtils.GetRoleColour(teamModifier.ModifierName.Replace(" ", string.Empty));
-            if (color == TownOfUsColors.Impostor) color = MiscUtils.GetRoleColour(teamModifier.LocaleKey.Replace(" ", string.Empty));
-            if (teamModifier is IColoredModifier colorMod)
-            {
-                color = colorMod.ModifierColor;
-            }
+            var color = MiscUtils.GetModifierColour(teamModifier);
 
             cutscene.RoleBlurbText.text =
                 $"<size={teamModifier.IntroSize}>\n</size>{cutscene.RoleBlurbText.text}\n<size={teamModifier.IntroSize}><color=#{color.ToHtmlStringRGBA()}>{teamModifier.IntroInfo}</color></size>";

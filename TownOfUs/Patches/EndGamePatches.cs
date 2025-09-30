@@ -8,7 +8,6 @@ using MiraAPI.Utilities;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using TownOfUs.Events;
-using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
@@ -106,22 +105,7 @@ public static class EndGamePatches
                 var modColor = MiscUtils.GetRoleColour(modifierName.Replace(" ", string.Empty));
                 if (modColor == TownOfUsColors.Impostor)
                 {
-                    switch (modifiers.FirstOrDefault(x => x.ModifierName == modifierName))
-                    {
-                        case UniversalGameModifier uniMod:
-                            modColor = MiscUtils.GetRoleColour(uniMod.LocaleKey.Replace(" ", string.Empty));
-                            break;
-                        case TouGameModifier touMod:
-                            modColor = MiscUtils.GetRoleColour(touMod.LocaleKey.Replace(" ", string.Empty));
-                            break;
-                        case AllianceGameModifier allyMod:
-                            modColor = MiscUtils.GetRoleColour(allyMod.LocaleKey.Replace(" ", string.Empty));
-                            break;
-                    }
-                }
-                if (modifiers.FirstOrDefault(x => x.ModifierName == modifierName) is IColoredModifier colorMod)
-                {
-                    modColor = colorMod.ModifierColor;
+                    modColor = MiscUtils.GetModifierColour(modifiers.FirstOrDefault(x => x.ModifierName == modifierName)!);
                 }
 
                 modifierCount--;
@@ -215,11 +199,7 @@ public static class EndGamePatches
             var alliance = playerControl.GetModifiers<AllianceGameModifier>().FirstOrDefault();
             if (alliance != null)
             {
-                var modColor = MiscUtils.GetRoleColour(alliance.ModifierName.Replace(" ", string.Empty));
-                if (alliance is IColoredModifier colorMod)
-                {
-                    modColor = colorMod.ModifierColor;
-                }
+                var modColor = MiscUtils.GetModifierColour(alliance);
 
                 playerName.Append(TownOfUsPlugin.Culture,
                     $" <b>{modColor.ToTextColor()}<size=60%>{alliance.Symbol}</size></color></b>");

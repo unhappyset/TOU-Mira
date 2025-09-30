@@ -22,11 +22,11 @@ public sealed class VeteranAlertButton : TownOfUsRoleButton<VeteranRole>
     protected override void OnClick()
     {
         PlayerControl.LocalPlayer.RpcAddModifier<VeteranAlertModifier>();
-        OverrideName("Alerting");
+        OverrideName(TouLocale.Get("TouRoleVeteranAlerting", "Alerting"));
     }
 
     public override void OnEffectEnd()
     {
-        OverrideName("Alert");
+        OverrideName(TouLocale.Get("TouRoleVeteranAlert", "Alert"));
     }
 }

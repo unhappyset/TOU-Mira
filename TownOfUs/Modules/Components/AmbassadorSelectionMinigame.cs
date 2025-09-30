@@ -129,8 +129,8 @@ public sealed class AmbassadorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr
         
         foreach (var role in availableRoles)
         {
-            var teamName = role.GetRoleAlignment().ToDisplayString();
-
+            var teamName = MiscUtils.GetParsedRoleAlignment(role);
+            
             if (role is ITownOfUsRole touRole)
             {
                 teamName = touRole.RoleAlignment.ToDisplayString();
