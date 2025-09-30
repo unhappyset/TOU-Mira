@@ -143,7 +143,6 @@ public sealed class SeerRevealButton : TownOfUsRoleButton<SeerRole, PlayerContro
             var notif2 =
                 Helpers.CreateAndShowNotification($"<b>They must be a {possibleAlignment}</b>", Palette.CrewmateBlue);
             notif2.AdjustNotification();
-            notif2.transform.localPosition = new Vector3(0f, 1f, -20f);
         }
     }
 

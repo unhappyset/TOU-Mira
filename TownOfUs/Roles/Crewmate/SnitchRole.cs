@@ -167,8 +167,7 @@ public sealed class SnitchRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{TownOfUsColors.Snitch.ToTextColor()}{text}</color></b>", Color.white,
-                    new Vector3(0f, 1f, -20f),
-                    spr: TouRoleIcons.Snitch.LoadAsset());
+                    new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Snitch.LoadAsset());
 
                 notif1.AdjustNotification();
             }

@@ -62,8 +62,7 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
         FailedShot = true;
 
         var notif1 = Helpers.CreateAndShowNotification($"<b>{TouLocale.GetParsed("TouRoleSheriffMisfireFeedback")}</b>",
-            Color.white,
-            spr: TouRoleIcons.Sheriff.LoadAsset());
+            Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Sheriff.LoadAsset());
 
         notif1.AdjustNotification();
 

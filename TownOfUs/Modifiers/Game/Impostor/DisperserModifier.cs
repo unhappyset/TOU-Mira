@@ -74,7 +74,7 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
 
         var notif1 = Helpers.CreateAndShowNotification(
             $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}Everyone has been dispersed to a vent!</color></b>", Color.white,
-            spr: TouModifierIcons.Disperser.LoadAsset());
+            new Vector3(0f, 1f, -20f), spr: TouModifierIcons.Disperser.LoadAsset());
 
         notif1.AdjustNotification();
     }

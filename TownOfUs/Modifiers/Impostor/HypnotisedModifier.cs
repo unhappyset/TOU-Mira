@@ -130,7 +130,7 @@ public sealed class HypnotisedModifier(PlayerControl hypnotist) : BaseModifier
         {
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You are under a Mass Hysteria!</color></b>", Color.white,
-                spr: TouRoleIcons.Hypnotist.LoadAsset());
+                new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Hypnotist.LoadAsset());
 
             notif1.AdjustNotification();
         }

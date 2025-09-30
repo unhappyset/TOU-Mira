@@ -53,7 +53,7 @@ public sealed class JailedModifier(byte jailorId) : BaseModifier
 
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.Jailor.ToTextColor()}{text}</color></b>", Color.white,
-                spr: TouRoleIcons.Jailor.LoadAsset());
+                new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Jailor.LoadAsset());
 
             notif1.AdjustNotification();
         }
