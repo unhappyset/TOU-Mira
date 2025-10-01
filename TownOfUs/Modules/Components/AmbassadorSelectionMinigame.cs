@@ -9,7 +9,6 @@ using Reactor.Utilities;
 using Reactor.Utilities.Attributes;
 using Reactor.Utilities.Extensions;
 using TMPro;
-using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
@@ -56,17 +55,17 @@ public sealed class AmbassadorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr
 
         StatusText.font = HudManager.Instance.TaskPanel.taskText.font;
         StatusText.fontMaterial = HudManager.Instance.TaskPanel.taskText.fontMaterial;
-        StatusText.text = "Choose a role for retraining.";
+        StatusText.text = TouLocale.Get("TouRoleAmbassadorChooseRole");
         StatusText.gameObject.SetActive(false);
 
         RoleName.font = HudManager.Instance.TaskPanel.taskText.font;
         RoleName.fontMaterial = HudManager.Instance.TaskPanel.taskText.fontMaterial;
-        RoleName.text = "Random";
+        RoleName.text = TouLocale.Get("Random");
         RoleName.gameObject.SetActive(false);
 
         RoleTeam.font = HudManager.Instance.TaskPanel.taskText.font;
         RoleTeam.fontMaterial = HudManager.Instance.TaskPanel.taskText.fontMaterial;
-        RoleTeam.text = "Random Impostor";
+        RoleTeam.text = TouLocale.Get("TouRoleAmbassadorRandomImpostorOption");
         RoleTeam.gameObject.SetActive(false);
 
         RoleIcon.sprite = TouRoleIcons.RandomImp.LoadAsset();
@@ -131,11 +130,6 @@ public sealed class AmbassadorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr
         {
             var teamName = MiscUtils.GetParsedRoleAlignment(role);
 
-            if (role is ITownOfUsRole touRole)
-            {
-                teamName = touRole.RoleAlignment.ToDisplayString();
-            }
-
             var roleName = role.GetRoleName();
             var roleImg = TouRoleIcons.RandomAny.LoadAsset();
 
@@ -171,7 +165,7 @@ public sealed class AmbassadorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr
             card.OnClick.AddListener((UnityAction)(() => { clickHandler.Invoke(role); }));
         }
 
-        var randomCard = CreateCard("Random", "Random Impostor", TouRoleIcons.RandomImp.LoadAsset(),
+        var randomCard = CreateCard(TouLocale.Get("Random"), TouLocale.Get("TouRoleAmbassadorRandomImpostorOption"), TouRoleIcons.RandomImp.LoadAsset(),
             TownOfUsColors.Impostor);
         randomCard.OnClick.RemoveAllListeners();
         randomCard.OnClick.AddListener((UnityAction)(() =>

@@ -9,7 +9,6 @@ using Reactor.Utilities;
 using Reactor.Utilities.Attributes;
 using Reactor.Utilities.Extensions;
 using TMPro;
-using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
@@ -45,7 +44,7 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
 
         StatusText.font = HudManager.Instance.TaskPanel.taskText.font;
         StatusText.fontMaterial = HudManager.Instance.TaskPanel.taskText.fontMaterial;
-        StatusText.text = "Select a role.";
+        StatusText.text = TouLocale.Get("TouRoleTraitorRoleSelectTitle");
         StatusText.gameObject.SetActive(false);
     }
 
@@ -98,11 +97,6 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
         {
             var teamName = MiscUtils.GetParsedRoleAlignment(role);
 
-            if (role is ITownOfUsRole touRole)
-            {
-                teamName = touRole.RoleAlignment.ToDisplayString();
-            }
-
             var roleName = role.GetRoleName();
             var roleImg = TouRoleIcons.RandomAny.LoadAsset();
 
@@ -140,7 +134,7 @@ public sealed class TraitorSelectionMinigame(IntPtr cppPtr) : Minigame(cppPtr)
             z++;
         }
 
-        var randomCard = CreateCard("Random", "Random\nImpostor", TouRoleIcons.RandomImp.LoadAsset(), z,
+        var randomCard = CreateCard(TouLocale.Get("Random"), TouLocale.GetParsed("TouRoleTraitorRandomImpostorCard"), TouRoleIcons.RandomImp.LoadAsset(), z,
             TownOfUsColors.Impostor);
         randomCard.OnClick.RemoveAllListeners();
         randomCard.OnClick.AddListener((UnityAction)(() =>

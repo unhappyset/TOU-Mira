@@ -107,6 +107,7 @@
   <string name="SpecialImp">Special Imp</string>
   <string name="RandomImp">Random Imp</string>
   <string name="Any">Any</string>
+  <string name="Random">Random</string>
   <string name="CrewInvestigative">Crew Investigative</string>
   <string name="CrewKilling">Crew Killing</string>
   <string name="CrewPower">Crew Power</string>
@@ -286,7 +287,7 @@
   <!-- Detective Wiki / Abilities -->
   <string name="TouRoleDetective">Detective</string>
   <string name="TouRoleDetectiveIntroBlurb">Inspect Crime Scenes To Catch The Killer</string>
-  <string name="TouRoleDetectiveTabDescription">Inspect crime scenes, then examine players to see if they were at the scene.</string>
+  <string name="TouRoleDetectiveTabDescription">Inspect crime scenes, then examine players to\%nl\%see if they were at the scene.</string>
   <string name="TouRoleDetectiveWikiDescription">The Detective can inspect a crime scene and examine players to see if they were at the crime scene, flashing red if they were there.</string>
   <string name="TouRoleDetectiveInspect">Inspect</string>
   <string name="TouRoleDetectiveInspectWikiDescription">Crime scenes will spawn with all dead bodies. Inspect the crime scene and then examine players to discover clues. During the next meeting, you will recieve a report revealing the killer's role.</string>
@@ -422,7 +423,7 @@
   <!-- Medic Wiki / Abilities -->
   <string name="TouRoleMedic">Medic</string>
   <string name="TouRoleMedicIntroBlurb">Create A Shield To Protect A Crewmate</string>
-  <string name="TouRoleMedicTabDescription">Protect a crewmate with a shield to protect them from attacks</string>
+  <string name="TouRoleMedicTabDescription">Protect a crewmate with a shield to defend them from attacks</string>
   <string name="TouRoleMedicWikiDescription">The Medic is a Crewmate Protective role that can give a Shield to a player.</string>
   <string name="TouRoleMedicShield">Shield</string>
   <string name="TouRoleMedicShieldWikiDescription">Give a Shield to a player, protecting them from being killed by others</string>
@@ -737,6 +738,7 @@
   <string name="TouRoleAmbassadorRetrainWaiting">Retrain on Round \%roundToWait\%</string>
   <string name="TouRoleAmbassadorRetrainCooldown">Round Cooldown: \%roundsLeft\% / \%roundsTotal\%</string>
   <string name="TouRoleAmbassadorChooseRole">Choose a role for retraining.</string>
+  <string name="TouRoleAmbassadorRandomImpostorOption">Random Impostor</string>
   <string name="TouRoleAmbassadorConfirmPromptTitle">Ambassador Retrain</string>
   <string name="TouRoleAmbassadorConfirmPromptText">Are you sure you want to be retrained into \%newRole\%?\%nl\%This change is permanent.</string>
   <string name="TouRoleAmbassadorConfirmPromptDeny">Deny</string>
@@ -819,7 +821,7 @@
   <!-- Escapist Wiki / Abilities -->
   <string name="TouRoleEscapist">Escapist</string>
   <string name="TouRoleEscapistIntroBlurb">Get Away From Kills With Ease</string>
-  <string name="TouRoleEscapistTabDescription">Mark a location, then recall to the location at any time to flee the scene of the crime</string>
+  <string name="TouRoleEscapistTabDescription">Mark a location, then recall to the location at\%nl\%any time to flee the scene of the crime</string>
   <string name="TouRoleEscapistWikiDescription">The Escapist is an Impostor Concealing role that can mark a location and then recall (teleport) to that location.</string>
   <string name="TouRoleEscapistMark">Mark</string>
   <string name="TouRoleEscapistMarkWikiDescription">Mark a location for later use.</string>
@@ -905,8 +907,9 @@
   <!-- Scavenger Wiki / Description -->
   <string name="TouRoleScavenger">Scavenger</string>
   <string name="TouRoleScavengerIntroBlurb">Hunt Down Your Prey</string>
-  <string name="TouRoleScavengerTabDescription">Kill your given targets for a reduced cooldown. If you fail to kill them, you will get penalized.</string>
+  <string name="TouRoleScavengerTabDescription">Kill your given targets for a reduced cooldown.\%nl\%If you fail to kill them, you will get penalized.</string>
   <string name="TouRoleScavengerWikiDescription">The Scavenger is an Impostor Killing role that gets new targets after every kill and when the round starts. If they kill their target, they get a reduced kill cooldown, but if they don't, their cooldown is increased significantly.</string>
+  <string name="TouRoleScavengerYourNextTarget">Is Your Next Target.</string>
   <!-- Scavenger Options -->
   <string name="TouOptionScavengerScavengeDuration">Scavenge Duration</string>
   <string name="TouOptionScavengerScavengeDurationIncreasePerKill">Scavenge Duration Increase Per Kill</string>
@@ -933,6 +936,8 @@
   <string name="TouRoleTraitorWikiDescription">The Traitor is an Impostor Power role that spawns after a meeting, in which the spawn conditions are suitable. The Traitor will always be a crewmate, and they may change to a few select roles.</string>
   <string name="TouRoleTraitorChangeRole">Change Role</string>
   <string name="TouRoleTraitorChangeRoleWikiDescription">The Traitor can change their role to one of the provided role cards, or gamble on the random. Once they select a role, they stay as that role until they die. However, they must still be guessed as Traitor.</string>
+  <string name="TouRoleTraitorRoleSelectTitle">Select a role.</string>
+  <string name="TouRoleTraitorRandomImpostorCard">Random\%nl\%Impostor</string>
   <!-- Traitor Options -->
   <string name="TouOptionTraitorMinimumPeopleAlive">Minimum People Alive When Traitor Can Spawn</string>
   <string name="TouOptionTraitorTraitorWontSpawnIfNKIsAlive">Traitor Won't Spawn If NK Is Alive</string>
@@ -956,7 +961,7 @@
   <!-- Venerer Wiki / Abilities -->
   <string name="TouRoleVenerer">Venerer</string>
   <string name="TouRoleVenererIntroBlurb">With Each Kill Your Ability Becomes Stronger</string>
-  <string name="TouRoleVenererTabDescription">Kill players to unlock ability perks. Your perks allow you to be camouflaged, then fast, and finally slow others down in your path.</string>
+  <string name="TouRoleVenererTabDescription">Kill players to unlock ability perks. Your perks allow you\%nl\%to camouflage, sprint, and slow others down in your path.</string>
   <string name="TouRoleVenererWikiDescription">The Venerer is an Impostor Concealing role that can kill players to gain new abilities, preventing others from catching them! However, the ability will be used immediately as they receive it, which will stack up.</string>
   <string name="TouRoleVenererCamouflage">Camouflage</string>
   <string name="TouRoleVenererCamouflageWikiDescription">Stage 1 of the abilities.\%nl\%You will appear as a gray bean for all players, allowing you to sneak away from kills.</string>
@@ -1146,7 +1151,7 @@
   <!-- Mercenary Wiki / Abilities -->
   <string name="TouRoleMercenary">Mercenary</string>
   <string name="TouRoleMercenaryIntroBlurb">Bribe The Crewmates</string>
-  <string name="TouRoleMercenaryTabDescription">Guard players to get gold when they're interacted with, and then bribe the winners!</string>
+  <string name="TouRoleMercenaryTabDescription">Guard players to get gold upon interaction,\%nl\%then bribe the winners!</string>
   <string name="TouRoleMercenaryWikiDescription">The Mercenary is a Neutral Benign role that can only win by bribing players, allowing them to gain multiple win conditions.</string>
   <string name="TouRoleMercenaryGuard">Guard</string>
   <string name="TouRoleMercenaryGuardWikiDescription">Guarding a player allows the Mercenary to absorb an ability used on the target. This will grant them gold, for Bribing. If any bribed targets win, the Mercenary will win with them.</string>
@@ -1237,7 +1242,7 @@
   <!-- Werewolf Wiki / Abilities -->
   <string name="TouRoleWerewolf">Werewolf</string>
   <string name="TouRoleWerewolfIntroBlurb">Rampage To Kill Everyone</string>
-  <string name="TouRoleWerewolfTabDescription">Rampage to kill quickly, increase your vision, and vent away temporarily</string>
+  <string name="TouRoleWerewolfTabDescription">Rampage to kill quickly, increase your\%nl\%vision, and vent away temporarily</string>
   <string name="TouRoleWerewolfWikiDescription">The Werewolf is a Neutral Killing role that wins by being the last killer alive. They can go on a rampage to gain the ability to kill.</string>
   <string name="TouRoleWerewolfRampage">Rampage</string>
   <string name="TouRoleWerewolfRampageWikiDescription">Go on a Rampage, gaining the ability to kill and gain Impostor vision. During the Rampage your kill cooldown is significantly lower.</string>
