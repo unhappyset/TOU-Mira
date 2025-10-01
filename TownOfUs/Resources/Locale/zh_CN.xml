@@ -1185,4 +1185,21 @@
   <string name="TouRoleEclipsalUnblinding">取消致盲</string>
   <string name="TouRoleJanitorCleaning">清理中</string>
   <string name="TouRoleMorphlingUnmorph">取消化形</string>
+  <string name="TouRoleDeputyMessageTitle">副手反馈</string>
+  <string name="TouRoleMirrorcasterMagicMirrorProtecting">保护中</string>
+  <string name="TouRoleAmbassadorRetrainsAvailable">剩余\%retrainsLeft\% / \%retrainsTotal\%次覆写</string>
+  <string name="TouRoleAmbassadorRetrainWaiting">第 \%roundToWait\%回合可覆写</string>
+  <string name="TouRoleAmbassadorRetrainCooldown">转变冷却：\%roundsLeft\% / \%roundsTotal\%</string>
+  <string name="TouRoleAmbassadorChooseRole">选择一个职业进行覆写。</string>
+  <string name="TouRoleAmbassadorConfirmPromptTitle">伪面使的覆写</string>
+  <string name="TouRoleAmbassadorConfirmPromptText">您确定要覆写成为 \%newRole\%?\%nl\%这项变更是永久的。</string>
+  <string name="TouRoleAmbassadorConfirmPromptDeny">拒绝</string>
+  <string name="TouRoleAmbassadorConfirmPromptAccept">接受</string>
+  <string name="TouRoleAmbassadorRetrainedPlayerTag">已覆写</string>
+  <string name="TouRoleBomberDetonating">引爆</string>
+  <string name="TouRoleExecutionerMissingTargetDescription">让你的目标被投票放逐即可获胜。</string>
+  <string name="TouRoleExecutionerTorment">折磨</string>
+  <string name="TouRoleGlitchUnmimic">取消模仿</string>
+  <string name="TouRoleJesterHaunt">缠扰</string>
+  <string name="TouRolePhantomSpook">惊吓</string>
 </resources>
