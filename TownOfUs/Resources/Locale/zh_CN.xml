@@ -241,7 +241,7 @@
   <string name="TouRoleDeputyMissedShot">你空枪了！他们要么不是杀手，要么是无敌的。</string>
   <string name="TouRoleDetective">侧写师</string>
   <string name="TouRoleDetectiveIntroBlurb">调查犯罪现场以抓捕凶手</string>
-  <string name="TouRoleDetectiveTabDescription">调查犯罪现场，然后检查玩家是否在现场。</string>
+  <string name="TouRoleDetectiveTabDescription">调查犯罪现场，\%nl\%然后检查玩家是否在现场。</string>
   <string name="TouRoleDetectiveWikiDescription">侧写师可以检查犯罪现场并调查玩家是否在犯罪现场，如果他们在那里，则闪烁红色。</string>
   <string name="TouRoleDetectiveInspect">调查</string>
   <string name="TouRoleDetectiveInspectWikiDescription">犯罪现场将与所有尸体一起生成。调查犯罪现场，然后检查玩家以发现线索。在下一次会议上，您将收到一份报告，揭示凶手的职业。</string>
@@ -547,7 +547,7 @@
   <string name="TouOptionVampireNewVampiresConvert">新吸血魔可转化</string>
   <string name="TouOptionVampireCanVent">吸血魔可进通风口</string>
   <string name="TouRoleMercenaryIntroBlurb">贿赂船员</string>
-  <string name="TouRoleMercenaryTabDescription">守护船员，然后贿赂获胜者！</string>
+  <string name="TouRoleMercenaryTabDescription">守护船员，获取金币，\%nl\%然后贿赂获胜者！</string>
   <string name="TouRoleMercenaryWikiDescription">雇佣兵是一名中立善良型职业，只能通过贿赂玩家来获胜，可以获得多个胜利条件。</string>
   <string name="TouRoleMercenaryGuard">守护</string>
   <string name="TouRoleMercenaryGuardWikiDescription">守护一名玩家可以为雇佣兵吸收对目标使用的能力，并获得金币用于贿赂。如果被贿赂的目标获胜，雇佣兵也会一同获胜。</string>
@@ -626,7 +626,7 @@
   <string name="TouOptionWerewolfKillCooldown">狂暴击杀冷却</string>
   <string name="TouOptionWerewolfCanVent">月下狼人狂暴时可进通风口</string>
   <string name="TouRoleWerewolfIntroBlurb">狂暴杀死所有人</string>
-  <string name="TouRoleWerewolfTabDescription">快速狂暴杀敌，提升你的视野，并暂时可以进入通风口</string>
+  <string name="TouRoleWerewolfTabDescription">快速狂暴杀敌，提升你的视野，\%nl\%并暂时可以进入通风口</string>
   <string name="TouRoleWerewolfWikiDescription">月下狼人是一名中立击杀型职业，通过成为场上最后的杀手获胜。可以进入狂暴状态获得击杀能力。</string>
   <string name="TouRoleWerewolfRampage">狂暴</string>
   <string name="TouRoleWerewolfRampageWikiDescription">进入狂暴状态，获得击杀和伪装者视野。狂暴期间击杀冷却大幅降低。</string>
@@ -760,7 +760,7 @@
   <string name="TouOptionMedicShowReportsInChat">显示法医报告</string>
   <string name="TouOptionMediumRevealAppearanceOfMediateTarget">显示招魂对象外观</string>
   <string name="TouRoleVenererIntroBlurb">每次击杀能力更强</string>
-  <string name="TouRoleVenererTabDescription">击杀玩家以解锁能力加成。你的技能允许你隐形，然后变得快速，最后还能减慢你路径上其他人的速度。</string>
+  <string name="TouRoleVenererTabDescription">击杀玩家以解锁能力加成。\%nl\%你的技能允许你隐形，然后变得快速，最后还能减慢你路径上其他人的速度。</string>
   <string name="TouRoleVenererWikiDescription">狩猎者是一名伪装者隐蔽型职业，可以通过击杀玩家获得新能力，防止被抓住！但每次获得新能力时会立即使用，并且能力会叠加。</string>
   <string name="TouRoleVenererCamouflage">伪装</string>
   <string name="TouRoleVenererCamouflageWikiDescription">能力第一阶段。\%nl\%n你在所有玩家眼中会变成灰豆，可以悄悄离开击杀现场。</string>
@@ -918,7 +918,7 @@
   <string name="TouOptionUndertakerCanVentWithBody">可带尸体进通风口</string>
   <string name="TouOptionUndertakerUndertakerCanKillWithTeammate">送葬者可与队友一起击杀</string>
   <string name="TouRoleEscapistIntroBlurb">轻松脱离击杀现场</string>
-  <string name="TouRoleEscapistTabDescription">标记一个位置，然后随时回溯到该位置以逃离犯罪现场</string>
+  <string name="TouRoleEscapistTabDescription">标记一个位置，\%nl\%然后随时回溯到该位置以逃离犯罪现场</string>
   <string name="TouRoleEscapistWikiDescription">逃逸者是一名伪装者隐蔽型职业，可以标记一个位置并随后传送（回溯）到该位置。</string>
   <string name="TouRoleEscapistMark">标记</string>
   <string name="TouRoleEscapistMarkWikiDescription">标记一个位置以备后用。</string>
@@ -938,7 +938,7 @@
   <string name="TouOptionGrenadierFlashRadius">闪光半径</string>
   <string name="TouOptionGrenadierGrenadierCanVent">掷弹兵可进通风口</string>
   <string name="TouRoleScavengerIntroBlurb">追猎你的猎物</string>
-  <string name="TouRoleScavengerTabDescription">击杀指定目标可获得更短的击杀冷却。如果你未能杀死他们，你将受到惩罚。</string>
+  <string name="TouRoleScavengerTabDescription">击杀指定目标可获得更短的击杀冷却。\%nl\%如果你未能杀死他们，你将受到惩罚。</string>
   <string name="TouRoleScavengerWikiDescription">赏金猎人是一名伪装者击杀型职业，每次击杀和回合开始都会获得新目标。击杀目标可获得更短的击杀冷却，未击杀目标则冷却大幅增加。</string>
   <string name="TouOptionScavengerScavengeDuration">赏金持续时间</string>
   <string name="TouOptionScavengerScavengeDurationIncreasePerKill">每次击杀增加赏金持续时间</string>
@@ -1202,4 +1202,10 @@
   <string name="TouRoleGlitchUnmimic">取消模仿</string>
   <string name="TouRoleJesterHaunt">缠扰</string>
   <string name="TouRolePhantomSpook">惊吓</string>
+  <string name="Random">随机</string>
+  <string name="TouRoleVeteranAlerting">警戒中</string>
+  <string name="TouRoleAmbassadorRandomImpostorOption">随机伪装者</string>
+  <string name="TouRoleScavengerYourNextTarget">是你的下个目标。</string>
+  <string name="TouRoleTraitorRoleSelectTitle">选择一个职业。</string>
+  <string name="TouRoleTraitorRandomImpostorCard">随机\%nl\%伪装者</string>
 </resources>
