@@ -26,7 +26,8 @@ public static class ExecutionerEvents
     {
         if (@event.DeathReason is DeathReason.Exile)
         {
-            if (!@event.Player.TryGetModifier<ExecutionerTargetModifier>(out var exeMod))
+            var victim = @event.Player;
+            if (!victim.TryGetModifier<ExecutionerTargetModifier>(out var exeMod))
             {
                 return;
             }
@@ -34,7 +35,14 @@ public static class ExecutionerEvents
             var exe = GameData.Instance.GetPlayerById(exeMod.OwnerId).Object;
             if (exe != null && !exe.HasDied() && exe.Data.Role is ExecutionerRole exeRole && exeRole.AboutToWin)
             {
-                exeRole.TargetVoted = true;
+                if (victim.IsCrewmate())
+                {
+                    exeRole.TargetVoted = true;
+                }
+                else
+                {
+                    exeRole.TargetVotedAsEvil = true;
+                }
             }
         }
         else
@@ -59,16 +67,34 @@ public static class ExecutionerEvents
             return;
         }
 
-        if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.EndsGame)
-        {
-            return;
-        }
-
+        var winOption = OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin;
+        
         var exe = CustomRoleUtils.GetActiveRolesOfType<ExecutionerRole>()
             .FirstOrDefault(x => x.AboutToWin && !x.Player.HasDied());
+
+        if (winOption is ExeWinOptions.EndsGame)
+        {
+            if (exe != null && exe.Target != null && !exe.Target.IsCrewmate())
+            {
+                winOption = ExeWinOptions.Torments;
+            }
+            else
+            {
+                return;
+            }
+        }
+
         if (exe != null)
         {
-            exe.TargetVoted = true;
+            var victim = exe.Target!;
+            if (victim.IsCrewmate())
+            {
+                exe.TargetVoted = true;
+            }
+            else
+            {
+                exe.TargetVotedAsEvil = true;
+            }
             if (exe.Player.AmOwner)
             {
                 var notif1 = Helpers.CreateAndShowNotification(
@@ -79,7 +105,7 @@ public static class ExecutionerEvents
 
                 PlayerControl.LocalPlayer.RpcPlayerExile();
 
-                if (OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
+                if (winOption is ExeWinOptions.Torments)
                 {
                     CustomButtonSingleton<ExeTormentButton>.Instance.SetActive(true, exe);
                     DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer,
@@ -142,10 +168,23 @@ public static class ExecutionerEvents
             exeRole.AboutToWin = true;
             if (!PlayerControl.LocalPlayer.IsHost())
             {
-                exeRole.TargetVoted = true;
+                if (exiled.IsCrewmate())
+                {
+                    exeRole.TargetVoted = true;
+                }
+                else
+                {
+                    exeRole.TargetVotedAsEvil = true;
+                }
+            }
+            var winOption = OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin;
+
+            if (!exiled.IsCrewmate() && winOption is ExeWinOptions.EndsGame)
+            {
+                winOption = ExeWinOptions.Torments;
             }
 
-            if (exe.AmOwner && OptionGroupSingleton<ExecutionerOptions>.Instance.ExeWin is ExeWinOptions.Torments)
+            if (exe.AmOwner && winOption is ExeWinOptions.Torments)
             {
                 var allVoters = PlayerControl.AllPlayerControls.ToArray()
                     .Where(x => exeRole.Voters.Contains(x.PlayerId) && !x.AmOwner);

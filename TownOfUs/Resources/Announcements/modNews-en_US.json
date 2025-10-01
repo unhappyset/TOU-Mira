@@ -386,11 +386,11 @@
       ]
     },
     {
-      "Date": "2025-09-29T12:50:00Z",
+      "Date": "2025-10-01T12:50:00Z",
       "Number": "100022",
       "ShortTitle": "TOU: Mira v1.2.2",
-      "SubTitle": "I'm sorry, I don't speak Yapanese",
-      "Title": "More Localization & Bugfixes",
+      "SubTitle": "I hereby declare you guilty.",
+      "Title": "Judge, Jury, Executioner",
       "Text": [
         "\n\n<b> This update adds a lot more localization for roles, which apply to everything except options, color names, and meeting abilities.</b>",
         "\n\nAgain, the Mira team really appreciates all of your support, thank you so much for playing the mod!",
@@ -399,6 +399,8 @@
         "\n- All wiki entries are ready for localization.",
         "\n\n\r<size=105%>Crewmate Role Bugfixes:</size>",
         "\n- If a Prosecutor is punished and dies as a Celebrity, their death is no longer displayed.",
+        "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
+        "\n- If an Executioner's target becomes a Vampire, they will no longer be able to end the game, but will still win.",
         "\n\n\r<size=105%>Other Bugfixes:</size>",
         "\n- FFA Impostor Mode now hides impostor names from the chat.",
         "\n- Haunter and Phantom no longer appear camouflaged during comms."

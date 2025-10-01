@@ -28,6 +28,8 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
 {
     public PlayerControl? Target { get; set; }
     public bool TargetVoted { get; set; }
+    // If the Executioner's target is evil, then they will not be able to end the game, and will instead torment.
+    public bool TargetVotedAsEvil { get; set; }
     public bool AboutToWin { get; set; }
 
     [HideFromIl2Cpp] public List<byte> Voters { get; set; } = [];
@@ -116,7 +118,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
         return ITownOfUsRole.SetNewTabText(this);
     }
 
-    public bool MetWinCon => TargetVoted;
+    public bool MetWinCon => TargetVoted || TargetVotedAsEvil;
 
     public bool WinConditionMet()
     {
@@ -173,7 +175,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
             players.Do(x => x.RpcRemoveModifier<ExecutionerTargetModifier>());
         }
 
-        if (!Player.HasModifier<BasicGhostModifier>() && TargetVoted)
+        if (!Player.HasModifier<BasicGhostModifier>() && (TargetVoted || TargetVotedAsEvil))
         {
             Player.AddModifier<BasicGhostModifier>();
         }
@@ -199,12 +201,12 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
-        return TargetVoted;
+        return TargetVoted || TargetVotedAsEvil;
     }
 
     public void CheckTargetDeath(PlayerControl? victim)
     {
-        if (Player.HasDied() || AboutToWin || TargetVoted)
+        if (Player.HasDied() || AboutToWin || TargetVoted || TargetVotedAsEvil)
         {
             return;
         }
