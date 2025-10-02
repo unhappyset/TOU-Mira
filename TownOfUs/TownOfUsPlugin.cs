@@ -75,7 +75,7 @@ public partial class TownOfUsPlugin : BasePlugin, IMiraPlugin
             ModNewsFetcher
                 .CheckForNews; // Checks for mod announcements after everything is loaded to avoid Epic Games crashing
 
-        var path = Path.GetDirectoryName(Assembly.GetAssembly(typeof(TownOfUsPlugin))!.Location) + "\\touhats.catalog";
+        var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, "touhats.catalog");
         AddressablesLoader.RegisterCatalog(path);
         AddressablesLoader.RegisterHats("touhats");
 
