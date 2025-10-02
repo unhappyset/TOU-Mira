@@ -27,31 +27,33 @@ public static class ChatPatches
             return true;
         }
 
+        var systemName = "<color=#8BFDFD>System</color>";
+
         var spaceLess = text.Replace(" ", string.Empty);
 
         if (spaceLess.StartsWith("/spec", StringComparison.OrdinalIgnoreCase))
         {
             if (!LobbyBehaviour.Instance)
             {
-                MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>",
+                MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, systemName,
                     "You cannot select your spectate status outside of the lobby!");
             }
             else
             {
                 if (SpectatorRole.TrackedSpectators.Contains(PlayerControl.LocalPlayer.Data.PlayerName))
                 {
-                    MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>",
+                    MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, systemName,
                         "You are no longer a spectator!");
                     RpcRemoveSpectator(PlayerControl.LocalPlayer);
                 }
                 else if (!OptionGroupSingleton<GeneralOptions>.Instance.EnableSpectators)
                 {
-                    MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>",
+                    MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, systemName,
                         "The host has disabled /spec!");
                 }
                 else
                 {
-                    MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>",
+                    MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, systemName,
                         "Set yourself as a spectator!");
                     RpcSelectSpectator(PlayerControl.LocalPlayer);
                 }
@@ -67,7 +69,7 @@ public static class ChatPatches
         if (spaceLess.StartsWith("/", StringComparison.OrdinalIgnoreCase)
             && spaceLess.Contains("summary", StringComparison.OrdinalIgnoreCase))
         {
-            var title = "<color=#8BFDFD>System</color>";
+            var title = systemName;
             var msg = "No game summary to show!";
             if (GameHistory.EndGameSummary != string.Empty)
             {
@@ -92,7 +94,7 @@ public static class ChatPatches
 
         if (spaceLess.StartsWith("/nerfme", StringComparison.OrdinalIgnoreCase))
         {
-            var title = "<color=#8BFDFD>System</color>";
+            var title = systemName;
             var msg = "You cannot Nerf yourself outside of the lobby!";
             if (LobbyBehaviour.Instance)
             {
@@ -111,7 +113,7 @@ public static class ChatPatches
 
         if (spaceLess.StartsWith("/setname", StringComparison.OrdinalIgnoreCase))
         {
-            var title = "<color=#8BFDFD>System</color>";
+            var title = systemName;
             if (text.StartsWith("/setname ", StringComparison.OrdinalIgnoreCase))
             {
                 textRegular = textRegular[9..];
@@ -162,7 +164,7 @@ public static class ChatPatches
 
         if (spaceLess.StartsWith("/help", StringComparison.OrdinalIgnoreCase))
         {
-            var title = "<color=#8BFDFD>System</color>";
+            var title = systemName;
 
             List<string> randomNames =
             [
@@ -190,7 +192,7 @@ public static class ChatPatches
 
         if (spaceLess.StartsWith("/jail", StringComparison.OrdinalIgnoreCase))
         {
-            var title = "<color=#8BFDFD>System</color>";
+            var title = systemName;
 
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title,
                 "The mod no longer supports /jail chat. Use the red in-game chat button instead.");
@@ -204,7 +206,7 @@ public static class ChatPatches
 
         if (spaceLess.StartsWith("/", StringComparison.OrdinalIgnoreCase))
         {
-            var title = "<color=#8BFDFD>System</color>";
+            var title = systemName;
 
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title,
                 "Invalid command. If you need information on chat commands, type /help. If you are trying to know what a role or modifier does, check out the in-game wiki by pressing the globe icon on the top right of your screen.");
