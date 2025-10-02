@@ -403,7 +403,9 @@
         "\n- If an Executioner's target becomes a Vampire, they will no longer be able to end the game, but will still win.",
         "\n\n\r<size=105%>Other Bugfixes:</size>",
         "\n- FFA Impostor Mode now hides impostor names from the chat.",
-        "\n- Haunter and Phantom no longer appear camouflaged during comms."
+        "\n- Haunter and Phantom no longer appear camouflaged during comms.",
+        "\n\n\r<size=105%>Additions:</size>",
+        "\n- Toggle Spectators options is under General Options."
       ]
     }
   ]

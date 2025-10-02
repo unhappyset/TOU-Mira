@@ -281,6 +281,7 @@
   <string name="TouRoleDeputyCamp">Camp</string>
   <string name="TouRoleDeputyCampWikiDescription">Camp a player to be alerted once they die. After their death, you may attempt to shoot the killer. If your shot is successful, the killer dies, if not, nothing will happen.</string>
   <!-- Deputy Feedback -->
+  <string name="TouRoleDeputyCampNotif">Wait for \%player\%'s death so you can blast their killer in the meeting.</string>
   <string name="TouRoleDeputyMessageTitle">Deputy Feedback</string>
   <string name="TouRoleDeputyMissedShot">You missed your shot! They are either not the killer or are invincible.</string>
   <!-- Detective - Crewmate Investigative -->
@@ -293,6 +294,7 @@
   <string name="TouRoleDetectiveInspectWikiDescription">Crime scenes will spawn with all dead bodies. Inspect the crime scene and then examine players to discover clues. During the next meeting, you will recieve a report revealing the killer's role.</string>
   <string name="TouRoleDetectiveExamine">Examine</string>
   <string name="TouRoleDetectiveExamineWikiDescription">Examine players after inspecting a crime scene. You will be told if the player was at the crime scene.</string>
+  <string name="TouRoleDetectiveInspectNotif">You have inspected the crime scene of \%player\%. The killer or anyone that steps foot in the crime scene will flash red when examined.</string>
   <!-- Detective Options -->
   <string name="TouOptionDetectiveExamineCooldown">Examine Cooldown</string>
   <string name="TouOptionDetectiveReportOn">Show Detective Reports</string>
@@ -342,6 +344,7 @@
   <string name="TouRoleHunterStalk">Stalk</string>
   <string name="TouRoleHunterStalking">Stalking</string>
   <string name="TouRoleHunterStalkWikiDescription">Choose a target to stalk. You can stalk \%hunterMaxStalkUsages\% players. If they use any ability while stalked, they're added to your hitlist and can be killed.</string>
+  <string name="TouRoleHunterStalkNotif">If \%player\% uses an ability, you will be able to kill them at any time in the round.</string>
   <!-- Hunter Options -->
   <string name="TouOptionHunterKillCooldown">Hunter Kill Cooldown</string>
   <string name="TouOptionHunterStalkCooldown">Hunter Stalk Cooldown</string>
@@ -406,6 +409,7 @@
   <string name="TouRoleLookoutWikiDescription">The Lookout is a Crewmate Investigative role that can watch other players during rounds. During meetings, they will see all roles who interact with each watched player.</string>
   <string name="TouRoleLookoutWatch">Watch</string>
   <string name="TouRoleLookoutWatchWikiDescription">Watch a player or multiple, the next meeting you will know which players interacted with the watched ones.</string>
+  <string name="TouRoleLookoutWatchNotif">You will know what roles interact with \%player\% next meeting.</string>
   <!-- Lookout Options -->
   <string name="TouOptionLookoutWatchCooldown">Watch Cooldown</string>
   <string name="TouOptionLookoutMaxWatches">Max Players That Can be Watched</string>
@@ -519,6 +523,7 @@
   <string name="TouRolePlumberFlushWikiDescription">Flushing the vents makes every vent open and close, kicking out anyone actively in a vent. The Plumber also gets an arrow pointing to every flushed player for one second.</string>
   <string name="TouRolePlumberBlock">Block</string>
   <string name="TouRolePlumberBlockWikiDescription">Block a vent by placing a barricade on it for the next round, preventing players from using it.</string>
+  <string name="TouRolePlumberBlockNotif">This vent will be blocked at the beginning of the next round.</string>
   <!-- Plumber Options -->
   <string name="TouOptionPlumberFlushCooldown">Flush Cooldown</string>
   <string name="TouOptionPlumberBlockCooldown">Block Cooldown</string>
