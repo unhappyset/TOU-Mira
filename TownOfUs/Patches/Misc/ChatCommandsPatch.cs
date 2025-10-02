@@ -44,6 +44,11 @@ public static class ChatPatches
                         "You are no longer a spectator!");
                     RpcRemoveSpectator(PlayerControl.LocalPlayer);
                 }
+                else if (!OptionGroupSingleton<GeneralOptions>.Instance.EnableSpectators)
+                {
+                    MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>",
+                        "The host has disabled /spec!");
+                }
                 else
                 {
                     MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#8BFDFD>System</color>",
@@ -171,7 +176,7 @@ public static class ChatPatches
                       "/help - Shows this message\n" +
                       "/nerfme - Cuts your vision in half\n" +
                       $"/setname - Change your name to whatever text follows the command (like /setname {randomNames.Random()}) for the next match.\n" +
-                      "/spec - Allows you to spectate for the rest of the game automatically.\n" +
+                      "/spec - Allows you to spectate for the rest of the game automatically. (if enabled by the host)\n" +
                       "/summary - Shows the previous end game summary\n</size>";
 
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg);
@@ -286,6 +291,11 @@ public static class ChatPatches
     [MethodRpc((uint)TownOfUsRpc.SelectSpectator, SendImmediately = true)]
     public static void RpcSelectSpectator(PlayerControl player)
     {
+        if (!OptionGroupSingleton<GeneralOptions>.Instance.EnableSpectators.Value)
+        {
+            return;
+        }
+
         if (!SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
         {
             SpectatorRole.TrackedSpectators.Add(player.Data.PlayerName);

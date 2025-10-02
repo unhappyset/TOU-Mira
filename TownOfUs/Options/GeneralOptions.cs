@@ -2,6 +2,8 @@
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
+using Reactor.Utilities;
+using TownOfUs.Roles.Other;
 
 namespace TownOfUs.Options;
 
@@ -12,9 +14,6 @@ public sealed class GeneralOptions : AbstractOptionGroup
 
     [ModdedEnumOption("Modifier Type To Show In Role Intro", typeof(ModReveal))]
     public ModReveal ModifierReveal { get; set; } = ModReveal.Universal;
-
-    /*[ModdedToggleOption("Non-Basic Vanilla Roles Are Guessable")]
-    public bool GuessVanillaRoles { get; set; } = true;*/
 
     [ModdedToggleOption("Show Faction Modifier On Role Reveal")]
     public bool TeamModifierReveal { get; set; } = true;
@@ -43,6 +42,19 @@ public sealed class GeneralOptions : AbstractOptionGroup
 
     [ModdedToggleOption("The Dead Know Everything")]
     public bool TheDeadKnow { get; set; } = true;
+
+    public ModdedToggleOption EnableSpectators { get; set; } = new("Allow More Spectators", true)
+    {
+        ChangedEvent = x =>
+        {
+            var list = SpectatorRole.TrackedSpectators;
+            foreach (var name in list)
+            {
+                SpectatorRole.TrackedSpectators.Remove(name);
+            }
+            Logger<TownOfUsPlugin>.Debug("Removed all spectators.");
+        },
+    };
 
     [ModdedNumberOption("Game Start Cooldowns", 10f, 30f, 2.5f, MiraNumberSuffixes.Seconds, "0.#")]
     public float GameStartCd { get; set; } = 10f;

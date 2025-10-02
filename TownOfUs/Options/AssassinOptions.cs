@@ -42,6 +42,9 @@ public sealed class AssassinOptions : AbstractOptionGroup
     [ModdedToggleOption("Assassin Can Kill More Than Once Per Meeting")]
     public bool AssassinMultiKill { get; set; } = true;
 
+    [ModdedToggleOption("Non-Basic Vanilla Roles Are Guessable")]
+    public bool GuessVanillaRoles { get; set; } = true;
+
     [ModdedToggleOption("Assassin Can Guess \"Crewmate\"")]
     public bool AssassinCrewmateGuess { get; set; } = false;
 
