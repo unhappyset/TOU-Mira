@@ -22,6 +22,11 @@ public sealed class GrenadierFlashButton : TownOfUsRoleButton<GrenadierRole>, IA
     public override int MaxUses => (int)OptionGroupSingleton<GrenadierOptions>.Instance.MaxFlashes;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.FlashSprite;
 
+    public void AftermathHandler()
+    {
+        ClickHandler();
+    }
+
     protected override void OnClick()
     {
         var flashRadius = OptionGroupSingleton<GrenadierOptions>.Instance.FlashRadius;

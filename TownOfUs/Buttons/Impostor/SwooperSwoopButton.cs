@@ -20,6 +20,23 @@ public sealed class SwooperSwoopButton : TownOfUsRoleButton<SwooperRole>, IAfter
     public override int MaxUses => (int)OptionGroupSingleton<SwooperOptions>.Instance.MaxSwoops;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.SwoopSprite;
 
+    public void AftermathHandler()
+    {
+        if (!EffectActive)
+        {
+            PlayerControl.LocalPlayer.RpcAddModifier<SwoopModifier>();
+            UsesLeft--;
+            if (MaxUses != 0)
+            {
+                Button?.SetUsesRemaining(UsesLeft);
+            }
+        }
+        else
+        {
+            OnEffectEnd();
+        }
+    }
+
     public override void ClickHandler()
     {
         if (!CanUse())

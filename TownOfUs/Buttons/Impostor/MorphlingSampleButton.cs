@@ -19,6 +19,31 @@ public sealed class MorphlingSampleButton : TownOfUsRoleButton<MorphlingRole, Pl
     public override int MaxUses => (int)OptionGroupSingleton<MorphlingOptions>.Instance.MaxSamples;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.SampleSprite;
 
+    public void AftermathHandler()
+    {
+        var body = PlayerControl.LocalPlayer.GetNearestDeadBody(Distance);
+        if (body == null)
+        {
+            return;
+        }
+        var player = MiscUtils.PlayerById(body.ParentId);
+
+        if (player == null)
+        {
+            return;
+        }
+
+        Role.Sampled = player;
+
+        var notif1 = Helpers.CreateAndShowNotification(
+            $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You have sampled {player.Data.PlayerName}. The sample will be reset after this round.</b></color>",
+            Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Morphling.LoadAsset());
+        notif1.AdjustNotification();
+
+        CustomButtonSingleton<MorphlingMorphButton>.Instance.SetActive(true, Role);
+        CustomButtonSingleton<MorphlingMorphButton>.Instance.ResetCooldownAndOrEffect();
+        SetActive(false, Role);
+    }
     public override bool Enabled(RoleBehaviour? role)
     {
         return base.Enabled(role) && Role is { Sampled: null };

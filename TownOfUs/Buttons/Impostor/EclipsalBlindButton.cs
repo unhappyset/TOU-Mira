@@ -19,6 +19,11 @@ public sealed class EclipsalBlindButton : TownOfUsRoleButton<EclipsalRole>, IAft
     public override float EffectDuration => OptionGroupSingleton<EclipsalOptions>.Instance.BlindDuration;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.BlindSprite;
 
+    public void AftermathHandler()
+    {
+        ClickHandler();
+    }
+
     protected override void OnClick()
     {
         OverrideName(TouLocale.Get("TouRoleEclipsalUnblinding", "Unblinding"));

@@ -60,6 +60,11 @@ public sealed class MinerPlaceVentButton : TownOfUsRoleButton<MinerRole>, IAfter
         return hits.Count == 0 && noConflict && !ModCompatibility.GetPlayerElevator(PlayerControl.LocalPlayer).Item1;
     }
 
+    public void AftermathHandler()
+    {
+        ClickHandler();
+    }
+
     protected override void OnClick()
     {
         SavedPos = PlayerControl.LocalPlayer.transform.position;

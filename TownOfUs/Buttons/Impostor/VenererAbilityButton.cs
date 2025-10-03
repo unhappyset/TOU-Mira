@@ -109,6 +109,11 @@ public sealed class VenererAbilityButton : TownOfUsRoleButton<VenererRole>, IAft
         UpdateButton(_queuedAbility);
         _queuedAbility = VenererAbility.None;
     }
+    
+    public void AftermathHandler()
+    {
+        ClickHandler();
+    }
 
     protected override void OnClick()
     {

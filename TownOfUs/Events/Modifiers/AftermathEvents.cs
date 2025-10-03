@@ -46,6 +46,6 @@ public static class AftermathEvents
                 break;
         }
 
-        button.ClickHandler();
+        button.AftermathHandler();
     }
 }

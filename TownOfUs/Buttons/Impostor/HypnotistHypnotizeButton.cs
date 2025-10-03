@@ -28,6 +28,11 @@ public sealed class HypnotistHypnotizeButton : TownOfUsRoleButton<HypnotistRole,
         return base.CanUse() && !Role.HysteriaActive;
     }
 
+    public void AftermathHandler()
+    {
+        PlayerControl.LocalPlayer.RpcAddModifier<HypnotisedModifier>(PlayerControl.LocalPlayer);
+    }
+
     protected override void OnClick()
     {
         if (Target == null)

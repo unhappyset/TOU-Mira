@@ -27,6 +27,11 @@ public sealed class GlitchHackButton : TownOfUsRoleButton<GlitchRole, PlayerCont
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 
+    public void AftermathHandler()
+    {
+        TouAudio.PlaySound(TouAudio.HackedSound);
+        PlayerControl.LocalPlayer.RpcAddModifier<GlitchHackedModifier>(PlayerControl.LocalPlayer.PlayerId);
+    }
     protected override void OnClick()
     {
         if (Target == null)

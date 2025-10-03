@@ -504,7 +504,7 @@ public interface IAftermathableBodyButton : IAftermathableButton
 
 public interface IAftermathableButton
 {
-    void ClickHandler();
+    void AftermathHandler();
 }
 
 public interface IDiseaseableButton

@@ -30,6 +30,10 @@ public sealed class BomberPlantButton : TownOfUsRoleButton<BomberRole>, IAfterma
         return base.CanUse() && Usable;
     }
 
+    public void AftermathHandler()
+    {
+        ClickHandler();
+    }
     protected override void OnClick()
     {
         OverrideSprite(TouImpAssets.DetonatingSprite.LoadAsset());

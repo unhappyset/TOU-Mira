@@ -93,7 +93,10 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
             var button = CustomButtonSingleton<SwooperSwoopButton>.Instance;
             button.OverrideSprite(TouImpAssets.SwoopSprite.LoadAsset());
             button.OverrideName(TouLocale.Get("TouRoleSwooperSwoop", "Swoop"));
-            TouAudio.PlaySound(TouAudio.SwooperDeactivateSound);
+            if (MeetingHud.Instance == null)
+            {
+                TouAudio.PlaySound(TouAudio.SwooperDeactivateSound);
+            }
         }
 
         if (HudManagerPatches.CamouflageCommsEnabled)

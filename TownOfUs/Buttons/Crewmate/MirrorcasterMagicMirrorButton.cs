@@ -2,6 +2,7 @@
 using MiraAPI.Hud;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
+using Reactor.Utilities.Extensions;
 using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles.Crewmate;
@@ -42,6 +43,21 @@ public sealed class MirrorcasterMagicMirrorButton : TownOfUsRoleButton<Mirrorcas
         }
 
         OnClick();
+    }
+
+    public void AftermathHandler()
+    {
+        var player = PlayerControl.AllPlayerControls.ToArray().Where(plr => !plr.HasDied()).Random();
+        if (player == null)
+        {
+            return;
+        }
+
+        MirrorcasterRole.RpcMagicMirror(PlayerControl.LocalPlayer, player);
+        EffectActive = true;
+        Timer = EffectDuration;
+        OverrideName(TouLocale.Get("TouRoleMirrorcasterMagicMirrorProtecting", "Protecting"));
+        TargetWasValid = true;
     }
 
     protected override void OnClick()

@@ -66,6 +66,25 @@ public sealed class MorphlingMorphButton : TownOfUsRoleButton<MorphlingRole>, IA
         return ((Timer <= 0 && !EffectActive) || (EffectActive && Timer <= EffectDuration - 2f));
     }
 
+    public void AftermathHandler()
+    {
+        if (!EffectActive)
+        {
+            PlayerControl.LocalPlayer.RpcAddModifier<MorphlingMorphModifier>(Role.Sampled!);
+            OverrideName(TouLocale.Get("TouRoleMorphlingUnmorph", "Unmorph"));
+            UsesLeft--;
+            if (MaxUses != 0)
+            {
+                Button?.SetUsesRemaining(UsesLeft);
+            }
+        }
+        else
+        {
+            PlayerControl.LocalPlayer.RpcRemoveModifier<MorphlingMorphModifier>();
+            OverrideName(TouLocale.Get("TouRoleMorphlingMorph", "Morph"));
+        }
+    }
+
     protected override void OnClick()
     {
         if (!EffectActive)

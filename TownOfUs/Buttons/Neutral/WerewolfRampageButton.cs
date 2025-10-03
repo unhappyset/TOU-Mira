@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Neutral;
 
-public sealed class WerewolfRampageButton : TownOfUsRoleButton<WerewolfRole>, IAftermathableButton
+public sealed class WerewolfRampageButton : TownOfUsRoleButton<WerewolfRole>
 {
     public override string Name => TouLocale.Get("TouRoleWerewolfRampage", "Rampage");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
