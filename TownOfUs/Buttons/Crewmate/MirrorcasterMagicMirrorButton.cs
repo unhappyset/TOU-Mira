@@ -92,27 +92,33 @@ public sealed class MirrorcasterMagicMirrorButton : TownOfUsRoleButton<Mirrorcas
 
     public override void OnEffectEnd()
     {
+        var text = string.Empty;
         if (TargetWasValid)
         {
             DecreaseUses();
         }
         else
         {
-            var notif1 = Helpers.CreateAndShowNotification($"<b>The player you tried to protect was already dead!</b>",
-                Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mirrorcaster.LoadAsset());
-            notif1.AdjustNotification();
+            text = TouLocale.GetParsed("TouRoleMirrorcasterAlreadyDiedNotif");
         }
 
         if (Role.Protected != null && Role.Protected.HasDied())
         {
-            var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{Role.Protected.Data.PlayerName} died to an indirect attack, which your mirrors couldn't protect from.</b>",
-                Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mirrorcaster.LoadAsset());
-            notif1.AdjustNotification();
+            text = TouLocale.GetParsed("TouRoleMirrorcasterTargetDiedNotif");
         }
         else if (Role.Protected != null && !Role.Protected.HasDied())
         {
-            var notif1 = Helpers.CreateAndShowNotification($"<b>{Role.Protected.Data.PlayerName} was not attacked.</b>",
+            text = TouLocale.GetParsed("TouRoleMirrorcasterTargetDidNotDieNotif");
+        }
+
+        if (text.Contains("<player>") && Role.Protected != null)
+        {
+            text = text.Replace("<player>", Role.Protected.Data.PlayerName);
+        }
+
+        if (text != string.Empty)
+        {
+            var notif1 = Helpers.CreateAndShowNotification(text,
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mirrorcaster.LoadAsset());
             notif1.AdjustNotification();
         }

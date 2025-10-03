@@ -99,7 +99,7 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
 
     private string TargetString(bool capitalize = false)
     {
-        var desc = capitalize ? _missingTargetDesc.ToUpperInvariant() : _missingTargetDesc;
+        var desc = capitalize ? _missingTargetDesc.ToUpperInvariant().Replace("<Target>", "<target>") : _missingTargetDesc;
         if (Target && Target != null)
         {
             desc = capitalize ? _targetDesc.ToUpperInvariant() : _targetDesc;

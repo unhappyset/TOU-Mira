@@ -91,7 +91,7 @@ public sealed class ExecutionerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownO
 
     private string TargetString(bool capitalize = false)
     {
-        var desc = capitalize ? _missingTargetDesc.ToUpperInvariant() : _missingTargetDesc;
+        var desc = capitalize ? _missingTargetDesc.ToUpperInvariant().Replace("<Target>", "<target>") : _missingTargetDesc;
         if (Target && Target != null)
         {
             desc = capitalize ? _targetDesc.ToUpperInvariant() : _targetDesc;

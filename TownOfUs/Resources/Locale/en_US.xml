@@ -464,6 +464,9 @@
   <string name="TouRoleMirrorcasterMagicMirrorWikiDescription">Place a Mirror on a player. If the player is attacked directly, then you will be notified, and you will be able to unleash onto another player. Roles that ignore the Magic Mirror are Arsonist, Veteran, Pestilence, Bomber (if the player is bombed), and a few others.</string>
   <string name="TouRoleMirrorcasterUnleash">Unleash</string>
   <string name="TouRoleMirrorcasterUnleashWikiDescription">Once the Magic Mirror shatters, use its power to unleash the attack onto another player!</string>
+  <string name="TouRoleMirrorcasterAlreadyDiedNotif">The player you tried to protect was already dead!</string>
+  <string name="TouRoleMirrorcasterTargetDiedNotif">\%player\% died to an indirect attack, which your mirrors couldn't protect from.</string>
+  <string name="TouRoleMirrorcasterTargetDidNotDieNotif">\%player\% was not attacked.</string>
   <!-- Mirrorcaster Options -->
   <string name="TouOptionMirrorcasterWhoGetsMurderAttemptIndicator">Who Gets Murder Attempt Indicator</string>
   <string name="TouOptionMirrorcasterMagicMirrorCooldown">Magic Mirror Cooldown</string>
