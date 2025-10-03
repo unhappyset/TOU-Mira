@@ -29,7 +29,6 @@ public static class BlackmailedPlayerArea
         var amOwner = playerInfo?.Object?.AmOwner;
         var bmOwns = bmMod.BlackMailerId == PlayerControl.LocalPlayer.PlayerId;
         var targetSeeOnly = OptionGroupSingleton<BlackmailerOptions>.Instance.OnlyTargetSeesBlackmail;
-        var maxAliveNeeded = OptionGroupSingleton<BlackmailerOptions>.Instance.MaxAliveForVoting;
 
         if (amOwner == true || bmOwns || !targetSeeOnly)
         {
@@ -47,20 +46,6 @@ public static class BlackmailedPlayerArea
             BmOverlay.gameObject.SetActive(true);
             __instance.ColorBlindName.gameObject.SetActive(false);
         }
-
-        if (Helpers.GetAlivePlayers().Count > maxAliveNeeded)
-        {
-            __instance.SetVote(252);
-            if (targetSeeOnly)
-            {
-                __instance.Flag.enabled = false;
-            }
-
-            if (amOwner == true)
-            {
-                MeetingHud.Instance.Confirm(252);
-            }
-        }
     }
 
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
@@ -72,6 +57,30 @@ public static class BlackmailedPlayerArea
             {
                 shookAlready = true;
                 __instance.StartCoroutine(Effects.SwayX(BmOverlay.transform));
+            }
+            var bmOpt = OptionGroupSingleton<BlackmailerOptions>.Instance;
+            var maxAliveNeeded = (int)bmOpt.MaxAliveForVoting;
+            var targetSeeOnly = bmOpt.OnlyTargetSeesBlackmail;
+
+            if (__instance.state == MeetingHud.VoteStates.NotVoted && (Helpers.GetAlivePlayers().Count > maxAliveNeeded))
+            {
+                foreach (var player in ModifierUtils.GetPlayersWithModifier<BlackmailedModifier>())
+                {
+                    var playerState = __instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == player.PlayerId);
+                    if (playerState != null && !playerState.DidVote)
+                    {
+                        playerState.SetVote(252);
+                        if (targetSeeOnly)
+                        {
+                            playerState.Flag.enabled = false;
+                        }
+
+                        if (player.AmOwner)
+                        {
+                            MeetingHud.Instance.Confirm(252);
+                        }
+                    }
+                }
             }
         }
     }
