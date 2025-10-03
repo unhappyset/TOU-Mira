@@ -66,4 +66,14 @@ public sealed class MagicMirrorModifier(PlayerControl mirrorcaster) : BaseShield
             MedicShield?.SetActive(!Player.IsConcealed() && IsVisible && ShowShield);
         }
     }
+
+    public override void OnDeath(DeathReason reason)
+    {
+        ModifierComponent?.RemoveModifier(this);
+    }
+
+    public override void OnMeetingStart()
+    {
+        ModifierComponent?.RemoveModifier(this);
+    }
 }

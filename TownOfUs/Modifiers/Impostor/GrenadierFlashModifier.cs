@@ -148,6 +148,11 @@ public sealed class GrenadierFlashModifier(PlayerControl grenadier) : DisabledMo
         }
     }
 
+    public override void OnMeetingStart()
+    {
+        ModifierComponent?.RemoveModifier(this);
+    }
+
     private void SetFlash(Color color)
     {
         if (flash != null)

@@ -116,7 +116,7 @@ public sealed class MirrorcasterMagicMirrorButton : TownOfUsRoleButton<Mirrorcas
             text = text.Replace("<player>", Role.Protected.Data.PlayerName);
         }
 
-        if (text != string.Empty)
+        if (text != string.Empty && MeetingHud.Instance == null)
         {
             var notif1 = Helpers.CreateAndShowNotification(text,
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mirrorcaster.LoadAsset());

@@ -87,6 +87,16 @@ public sealed class ClericBarrierModifier(PlayerControl cleric) : BaseShieldModi
         }
     }
 
+    public override void OnDeath(DeathReason reason)
+    {
+        ModifierComponent?.RemoveModifier(this);
+    }
+
+    public override void OnMeetingStart()
+    {
+        ModifierComponent?.RemoveModifier(this);
+    }
+
     public override void OnDeactivate()
     {
         if (ClericBarrier?.gameObject != null)

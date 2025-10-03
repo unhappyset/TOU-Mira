@@ -46,6 +46,27 @@ public sealed class DragModifier(byte bodyId) : BaseModifier
         }
     }
 
+    public override void OnMeetingStart()
+    {
+        ModifierComponent?.RemoveModifier(this);
+        if (Player.AmOwner)
+        {
+            CustomButtonSingleton<UndertakerDragDropButton>.Instance.SetDrag();
+        }
+
+        if (DeadBody == null)
+        {
+            return;
+        }
+
+        var dropPos = DeadBody.transform.position;
+        dropPos.z = dropPos.y / 1000f;
+        DeadBody.transform.position = dropPos;
+
+        var touAbilityEvent = new TouAbilityEvent(AbilityType.UndertakerDrop, Player, DeadBody);
+        MiraEventManager.InvokeEvent(touAbilityEvent);
+    }
+
     public override void OnDeath(DeathReason reason)
     {
         ModifierComponent?.RemoveModifier(this);
