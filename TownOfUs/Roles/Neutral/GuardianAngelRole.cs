@@ -99,10 +99,10 @@ public sealed class GuardianAngelTouRole(IntPtr cppPtr) : NeutralRole(cppPtr), I
 
     private string TargetString(bool capitalize = false)
     {
-        var desc = capitalize ? _missingTargetDesc.ToTitleCase().Replace("<Target>", "<target>") : _missingTargetDesc;
+        var desc = capitalize ? _missingTargetDesc.ToTitleCase() : _missingTargetDesc;
         if (Target && Target != null)
         {
-            desc = capitalize ? _targetDesc.ToTitleCase() : _targetDesc;
+            desc = capitalize ? _targetDesc.ToTitleCase().Replace("<Target>", "<target>") : _targetDesc;
             desc = desc.Replace("<target>", $"{Target.Data.PlayerName}");
         }
 

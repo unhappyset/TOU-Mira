@@ -1074,6 +1074,8 @@ public static class HudManagerPatches
             "SpecialCrew",
             "NonImp",
             "CommonNeutral",
+            "SpecialNeutral",
+            "WildcardNeutral",
             "RandomNeutral",
             "NeutralBenign",
             "NeutralEvil",

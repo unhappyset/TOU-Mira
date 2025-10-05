@@ -101,6 +101,8 @@
   <string name="SpecialCrew">Special Crew</string>
   <string name="RandomCrew">Random Crew</string>
   <string name="CommonNeutral">Common Neutral</string>
+  <string name="SpecialNeutral">Special Neutral</string>
+  <string name="WildcardNeutral">Wildcard Neutral</string>
   <string name="RandomNeutral">Random Neutral</string>
   <string name="NonImp">Non-Imp</string>
   <string name="CommonImp">Common Imp</string>

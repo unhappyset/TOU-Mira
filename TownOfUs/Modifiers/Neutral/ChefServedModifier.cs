@@ -12,6 +12,7 @@ public sealed class ChefServedModifier(PlayerControl chef, int servingType, int 
 {
     public bool Alerted;
     public override float Duration => OptionGroupSingleton<ChefOptions>.Instance.SideEffectDuration.Value;
+    public float HalfDuration { get; set; }
     public override bool AutoStart => false;
     public override bool RemoveOnComplete => false;
     public PlatterType FoodType => (PlatterType)servingType;
@@ -20,12 +21,14 @@ public sealed class ChefServedModifier(PlayerControl chef, int servingType, int 
     public override bool HideOnUi => true;
 
     public PlayerControl Chef { get; } = chef;
-    public float SpeedFactor { get; set; }
+    public float SpeedFactor { get; set; } = 1f;
     public bool HasFinished { get; set; }
 
     public override void OnActivate()
     {
         base.OnActivate();
+        SpeedFactor = 1f;
+        HalfDuration = Duration / 2f;
 
         if (OptionGroupSingleton<ChefOptions>.Instance.ServingSideEffects)
         {
@@ -62,7 +65,7 @@ public sealed class ChefServedModifier(PlayerControl chef, int servingType, int 
                 SpeedFactor = 1f;
                 HasFinished = true;
             }
-            else if (FoodType is PlatterType.Burger && TimeRemaining <= 30f &&
+            else if (FoodType is PlatterType.Burger && TimeRemaining <= HalfDuration &&
                 OptionGroupSingleton<ChefOptions>.Instance.ServingSideEffects)
             {
                 SpeedFactor = 0.5f;

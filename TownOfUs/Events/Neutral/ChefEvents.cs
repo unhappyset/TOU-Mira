@@ -1,9 +1,11 @@
 ﻿using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TownOfUs.Modifiers;
+using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -48,6 +50,11 @@ public static class ChefEvents
         if (@event.TriggeredByIntro)
         {
             return;
+        }
+        var servings = ModifierUtils.GetActiveModifiers<ChefServedModifier>().Where(x => !x.HasFinished).ToList();
+        foreach (var serving in servings)
+        {
+            serving.StartTimer();
         }
 
         var chef = CustomRoleUtils.GetActiveRolesOfType<ChefRole>().FirstOrDefault();

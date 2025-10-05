@@ -33,7 +33,7 @@ public static class PlayerSpeedPatch
             __result *= drag.SpeedFactor;
         }
 
-        if (pc.TryGetModifier<ChefServedModifier>(out var served))
+        if (pc.TryGetModifier<ChefServedModifier>(out var served) && served.TimerActive)
         {
             __result *= served.SpeedFactor;
         }
