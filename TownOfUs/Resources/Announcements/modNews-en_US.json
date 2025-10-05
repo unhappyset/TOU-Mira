@@ -403,6 +403,7 @@
         "\n- Jailor no longer errors out from certain kills.",
         "\n\n\r<size=105%>Neutral Role Bugfixes:</size>",
         "\n- If an Executioner's target becomes a Vampire, they will no longer be able to end the game, but will still win.",
+        "\n- Mercenary can no longer become Phantom if they bribed a player, or had their role taken by an Amnesiac.",
         "\n\n\r<size=105%>Impostor Role Bugfixes:</size>",
         "\n- Blackmailed victims are prevented from voting correctly.",
         "\n- Undertaker properly drops dead bodies.",
@@ -415,6 +416,7 @@
         "\n- Inquisitor is no longer a Neutral Evil, but rather a Neutral Outlier alongside the new neutral role.",
         "\n\n\r<size=105%>Additions:</size>",
         "\n- Toggle Spectators options is under General Options.",
+        "\n- New Neutral Buckets: Neutral Wildcard (Non-Killing Neutrals) and Neutral Special (Neutral Killing and Outlier)",
         "\n- New Neutral Outlier Role: The Chef!\nThis role takes the dead bodies of players and feeds them to others, which all fulfills their quota to leave in victory!"
       ]
     }

@@ -106,7 +106,7 @@ public sealed class MercenaryRole(IntPtr cppPtr)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
 
-        if (!Player.HasModifier<BasicGhostModifier>() && ModifierUtils.GetPlayersWithModifier<MercenaryBribedModifier>(x => x.Mercenary == Player).Any())
+        if (!Player.HasModifier<BasicGhostModifier>() && ModifierUtils.GetActiveModifiers<MercenaryBribedModifier>(x => x.Mercenary == Player).Any())
         {
             Player.AddModifier<BasicGhostModifier>();
         }
