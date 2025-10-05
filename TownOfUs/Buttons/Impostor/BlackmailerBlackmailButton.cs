@@ -22,6 +22,7 @@ public sealed class BlackmailerBlackmailButton : TownOfUsRoleButton<BlackmailerR
     public void AftermathHandler()
     {
         BlackmailerRole.RpcBlackmail(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer);
+        Timer = 60f;
     }
 
     protected override void OnClick()
