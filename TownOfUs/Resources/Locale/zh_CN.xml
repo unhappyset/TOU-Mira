@@ -2,7 +2,7 @@
 <resources>
   <string name="FoolsMode">愚人节模式</string>
   <string name="TertiaryAbility">第三技能(黑入技能)</string>
-  <string name="ModifierAbility">附加属性技能</string>
+  <string name="ModifierAbility">附加职业技能</string>
   <string name="ClientOptionsButton">我们的小镇Mira客户端设置</string>
   <string name="DeadSeeGhosts">死后显示其他鬼魂</string>
   <string name="ShowVents">在地图上显示通风口</string>
@@ -46,7 +46,7 @@
   <string name="WikiRoleGuideTab">职业指南</string>
   <string name="SearchboxHeadsUp">点击这里搜索</string>
   <string name="Roles">职业</string>
-  <string name="Modifiers">附加属性</string>
+  <string name="Modifiers">附加职业</string>
   <string name="Amount">数量</string>
   <string name="Chance">概率</string>
   <string name="Options">设置</string>
@@ -270,7 +270,7 @@
   <string name="TouRoleHaunterIntroBlurb">揭晓后期的伪装者！</string>
   <string name="TouRoleHaunterTabDescription">完成所有任务而不被抓住，以揭露伪装者！</string>
   <string name="TouRoleHaunterWikiDescription">冤魂是一个船员鬼魂型且可以做任务的职业。他们将以半透明玩家的形象出现。如果他们完成了所有任务，所有活着的玩家都会看到伪装者是谁。但是，如果伪装者先点击它们，他们就会变成普通的鬼魂。伪装者在冤魂完成任务之前不久或当他们完成任务时收到警告。</string>
-  <string name="Modifier">附加属性</string>
+  <string name="Modifier">附加职业</string>
   <string name="SetRoleList">设置职业列表</string>
   <string name="NeutralFactionList">中立职业类型列表</string>
   <string name="NeutralBenigns">中立善良型</string>
@@ -1162,7 +1162,7 @@
   <string name="TouOptionPlumberGetMoreFromTasks">完成任务可获得更多路障</string>
   <string name="ClientTabGameplay">游戏玩法</string>
   <string name="ShowVanillaWikiEntries">展示原版维基条目</string>
-  <string name="PlayerHasNoModifiers">无附加属性</string>
+  <string name="PlayerHasNoModifiers">无附加职业</string>
   <string name="TouRoleAmnesiacRemember">回忆</string>
   <string name="TouRoleAmnesiacRememberWikiDescription">回忆尸体的职业。如果尸体的职业是独特的职业，你会回忆基础阵营的职业。</string>
   <string name="TouOptionIncreasedWhen2">当2+个伪装者存在时，增加击杀冷却时间</string>
