@@ -11,6 +11,8 @@ public static class DiscordStatus
 {
     private const long ClientId = 1380592659000721489;
     private const uint SteamAppId = 945360;
+    private static string ModInfo = $"TOU:M v{TownOfUsPlugin.Version}" + (TownOfUsPlugin.IsDevBuild ? " (DEV)" : string.Empty);
+    private static string ModCount = "0 Mods";
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(DiscordManager), nameof(DiscordManager.Start))]
@@ -30,9 +32,8 @@ public static class DiscordStatus
     [HarmonyPatch(typeof(ActivityManager), nameof(ActivityManager.UpdateActivity))]
     public static void ActivityManagerUpdateActivityPrefix(ActivityManager __instance, [HarmonyArgument(0)] Activity activity)
     {
-        activity.Details += $" TOU:M v{TownOfUsPlugin.Version}" +
-                            (TownOfUsPlugin.IsDevBuild ? " (DEV)" : string.Empty);
-        activity.State += $" | {IL2CPPChainloader.Instance.Plugins.Count} Mods";
+        activity.Details = (string.IsNullOrEmpty(activity.Details)) ? ModInfo : ModInfo + " | " + activity.Details;
+        activity.State = (string.IsNullOrEmpty(activity.State)) ? ModCount : $"{ModCount} | {activity.State}";
         activity.Assets.LargeImage = "icon";
     }
 
@@ -45,6 +46,7 @@ public static class DiscordStatus
         activityManager.add_OnActivityJoin((Action<string>)__instance.HandleJoinRequest);
         SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
         {
+            ModCount = $"{IL2CPPChainloader.Instance.Plugins.Count} Mods";
             __instance.OnSceneChange(scene.name);
         }));
         __instance.SetInMenus();
