@@ -11,6 +11,7 @@ using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Buttons.Neutral;
+using TownOfUs.Events.Neutral;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modifiers.Neutral;
@@ -87,7 +88,8 @@ public sealed class ChefRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
-        _tabCounter = TouLocale.GetParsed("TouRoleChefTabCounter").Replace("<bodiesTotal>", $"{(int)OptionGroupSingleton<ChefOptions>.Instance.ServingsNeeded}");
+        _tabCounter = TouLocale.GetParsed("TouRoleChefTabCounter").Replace("<bodiesTotal>",
+            $"{(int)OptionGroupSingleton<ChefOptions>.Instance.ServingsNeeded}");
 
         var serveMods = ModifierUtils.GetActiveModifiers<ChefServedModifier>().ToList();
         BodiesServed = serveMods.Count;
@@ -99,6 +101,20 @@ public sealed class ChefRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole
         if (Player.AmOwner)
         {
             CustomButtonSingleton<ChefServeButton>.Instance.UpdateServingType();
+
+            if (!OptionGroupSingleton<ChefOptions>.Instance.ChefArrows)
+            {
+                return;
+            }
+
+            var deadBodies = UnityEngine.Object.FindObjectsOfType<DeadBody>().ToArray();
+            foreach (var deadPlayer in PlayerControl.AllPlayerControls.ToArray().Where(x => x.HasDied()))
+            {
+                if (deadBodies.Select(x => x.ParentId).Contains(deadPlayer.PlayerId))
+                {
+                    Coroutines.Start(ChefEvents.CoCreateChefArrow(deadPlayer));
+                }
+            }
         }
     }
 

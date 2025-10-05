@@ -12,6 +12,7 @@ using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Events.TouEvents;
 using TownOfUs.Interfaces;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modifiers.Game.Neutral;
 using TownOfUs.Modifiers.Neutral;
@@ -224,6 +225,11 @@ public sealed class AmnesiacRole(IntPtr cppPtr)
             {
                 target.ChangeRole(RoleId.Get<MercenaryRole>());
                 player.AddModifier<MercenaryBribedModifier>(target)!.alerted = true;
+
+                if (!target.HasModifier<BasicGhostModifier>())
+                {
+                    target.AddModifier<BasicGhostModifier>();
+                }
             }
         }
 

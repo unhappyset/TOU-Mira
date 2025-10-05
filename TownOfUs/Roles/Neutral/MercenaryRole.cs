@@ -6,11 +6,13 @@ using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Buttons.Neutral;
 using TownOfUs.Interfaces;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Crewmate;
@@ -98,6 +100,16 @@ public sealed class MercenaryRole(IntPtr cppPtr)
         }
 
         return stringB;
+    }
+    
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+
+        if (!Player.HasModifier<BasicGhostModifier>() && ModifierUtils.GetPlayersWithModifier<MercenaryBribedModifier>(x => x.Mercenary == Player).Any())
+        {
+            Player.AddModifier<BasicGhostModifier>();
+        }
     }
 
     public override bool DidWin(GameOverReason gameOverReason)

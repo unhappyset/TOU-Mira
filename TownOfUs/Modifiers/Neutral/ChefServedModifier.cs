@@ -30,7 +30,7 @@ public sealed class ChefServedModifier(PlayerControl chef, int servingType, int 
         SpeedFactor = 1f;
         HalfDuration = Duration / 2f;
 
-        if (OptionGroupSingleton<ChefOptions>.Instance.ServingSideEffects)
+        if (Duration > 0f)
         {
             switch (FoodType)
             {
@@ -65,8 +65,7 @@ public sealed class ChefServedModifier(PlayerControl chef, int servingType, int 
                 SpeedFactor = 1f;
                 HasFinished = true;
             }
-            else if (FoodType is PlatterType.Burger && TimeRemaining <= HalfDuration &&
-                OptionGroupSingleton<ChefOptions>.Instance.ServingSideEffects)
+            else if (FoodType is PlatterType.Burger && TimeRemaining <= HalfDuration)
             {
                 SpeedFactor = 0.5f;
             }
@@ -98,6 +97,10 @@ public sealed class ChefServedModifier(PlayerControl chef, int servingType, int 
         }
 
         Alerted = true;
+        if (Duration <= 1f)
+        {
+            HasFinished = true;
+        }
 
         if (!Player.AmOwner)
         {

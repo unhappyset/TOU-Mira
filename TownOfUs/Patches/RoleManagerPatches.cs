@@ -590,14 +590,6 @@ public static class TouRoleManagerPatches
         crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, commonNeutRoles, RoleListOption.NeutCommon,
             RoleListOption.NeutRandom));
 
-        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, commonNeutRoles, RoleListOption.NeutWildcard));
-        
-        var wildcardNeutRoles = commonNeutRoles;
-
-        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, neutOutlierRoles, RoleListOption.NeutWildcard));
-
-        wildcardNeutRoles.AddRange(neutOutlierRoles);
-
         var randomNeutRoles = commonNeutRoles;
 
         crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, specialNeutRoles, RoleListOption.NeutSpecial,
@@ -606,6 +598,14 @@ public static class TouRoleManagerPatches
         randomNeutRoles.AddRange(specialNeutRoles);
 
         randomNeutRoles.AddRange(commonNeutRoles);
+
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, commonNeutRoles, RoleListOption.NeutWildcard));
+        
+        var wildcardNeutRoles = commonNeutRoles;
+
+        crewRoles.AddRange(MiscUtils.ReadFromBucket(buckets, neutOutlierRoles, RoleListOption.NeutWildcard));
+
+        wildcardNeutRoles.AddRange(neutOutlierRoles);
 
         randomNeutRoles.AddRange(wildcardNeutRoles);
 
@@ -829,7 +829,7 @@ public static class TouRoleManagerPatches
     [HarmonyPrefix]
     public static bool AssignRoleOnDeathPatch(RoleManager __instance, PlayerControl player, bool specialRolesAllowed)
     {
-        // Note: I know this is a like for like recreation of the AssignRoleOnDeath function but for some reason
+        // Note: I know this is a one-to-one recreation of the AssignRoleOnDeath function, but for some reason,
         // the original won't spawn the Phantom and just spawns Neutral Ghost instead
 
         if (TownOfUsPlugin.IsDevBuild)
@@ -914,7 +914,7 @@ public static class TouRoleManagerPatches
             return true;
         }
 
-        var players = GameData.Instance.PlayerCount;
+        var players = GameData.Instance.PlayerCount - SpectatorRole.TrackedSpectators.Count;
         var impostors = 0;
         var list = OptionGroupSingleton<RoleOptions>.Instance;
         var maxSlots = players < 15 ? players : 15;

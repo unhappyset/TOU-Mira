@@ -1,11 +1,15 @@
-﻿using MiraAPI.Events;
+﻿using System.Collections;
+using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using Reactor.Utilities;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
+using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -14,6 +18,42 @@ namespace TownOfUs.Events.Neutral;
 
 public static class ChefEvents
 {
+    [RegisterEvent]
+    public static void AfterMurderEventHandler(AfterMurderEvent @event)
+    {
+        if (!CustomRoleUtils.GetActiveRolesOfType<ChefRole>().Any())
+        {
+            return;
+        }
+
+        if (!OptionGroupSingleton<ChefOptions>.Instance.ChefArrows)
+        {
+            return;
+        }
+
+        Coroutines.Start(CoCreateChefArrow(@event.Target));
+    }
+
+    public static IEnumerator CoCreateChefArrow(PlayerControl target)
+    {
+        yield return new WaitForSeconds(OptionGroupSingleton<ChefOptions>.Instance.ChefArrowDelay.Value);
+
+        var deadBody = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == target.PlayerId);
+
+        if (deadBody == null)
+        {
+            yield break;
+        }
+
+        foreach (var chef in CustomRoleUtils.GetActiveRolesOfType<ChefRole>().Select(x => x.Player))
+        {
+            if (chef.AmOwner)
+            {
+                chef.AddModifier<ChefArrowModifier>(deadBody, TownOfUsColors.Chef);
+            }
+        }
+    }
+    
     [RegisterEvent]
     public static void EjectionEventHandler(EjectionEvent @event)
     {
