@@ -137,10 +137,11 @@ public static class ProsecutorEvents
                             celeb.Announced = true;
                         }
 
-                        pros.Player.Exiled();
                         DeathHandlerModifier.UpdateDeathHandler(pros.Player, TouLocale.Get("DiedToPunishment"),
                             DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse,
                             lockInfo: DeathHandlerOverride.SetTrue);
+
+                        pros.Player.Exiled();
                     }
                     else
                     {
