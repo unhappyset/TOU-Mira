@@ -126,15 +126,9 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         }
 
         // this sound normally plays on the source only
-        if (!hunter.AmOwner)
-        {
             SoundManager.Instance.PlaySound(hunter.KillSfx, false, 0.8f);
-        }
 
         // this kill animations normally plays on the target only
-        if (!target.AmOwner)
-        {
-            HudManager.Instance.KillOverlay.ShowKillAnimation(hunter.Data, target.Data);
-        }
+        HudManager.Instance.KillOverlay.ShowKillAnimation(hunter.Data, target.Data);
     }
 }
