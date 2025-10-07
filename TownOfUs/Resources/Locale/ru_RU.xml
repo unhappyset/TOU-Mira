@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string name="TertiaryAbility">Дополнительная способность (Взлом)</string>
-  <string name="ModifierAbility">Способность модификатора</string>
+  <string name="ModifierAbility">Способность атрибута</string>
   <string name="ClientOptionsButton">Настройки клиента ToU</string>
   <string name="DeadSeeGhosts">Показывать других призраков при смерти</string>
   <string name="ShowVents">Отображать вент. шахты на карте</string>
@@ -34,7 +34,7 @@
   <string name="WikiRoleGuideTab">Сборник ролей</string>
   <string name="SearchboxHeadsUp">Искать</string>
   <string name="Roles">Роли</string>
-  <string name="Modifiers">Модификаторы</string>
+  <string name="Modifiers">Атрибуты</string>
   <string name="Amount">Кол-во</string>
   <string name="Chance">Шанс</string>
   <string name="Options">Настройки</string>
@@ -97,7 +97,7 @@
   <string name="Ash">Пепельный</string>
   <string name="Crimson">Багровый</string>
   <string name="BackButtonText">Назад</string>
-  <string name="Modifier">Модификатор</string>
+  <string name="Modifier">Атрибут</string>
   <string name="SetRoleList">Список ролей</string>
   <string name="NeutralFactionList">Список Нейтралов</string>
   <string name="NeutralBenigns">Добрый Нейтралы</string>
@@ -542,7 +542,7 @@
   <string name="TouRoleTrapperTabDescription">Устанавливайте ловушки по всей карте,\%nl\%чтобы раскрывать роли подошедших к ним</string>
   <string name="TouRolePestilenceYouAreText">Вы -</string>
   <string name="ClientTabGameplay">Игровой процесс</string>
-  <string name="PlayerHasNoModifiers">Без модификаторов</string>
+  <string name="PlayerHasNoModifiers">Без атрибутов</string>
   <string name="TouRoleSwapperSwap">Поменять</string>
   <string name="TouRoleSwapperSwapWiki">Поменять (Собрание)</string>
   <string name="TouRoleSwapperSwapWikiDescription">Выберите двух игроков, чтобы поменять количество голосов в них на собрании!</string>
@@ -590,7 +590,7 @@
   <string name="TouOptionVigilanteCanGuessNeutralBenignRoles">Может угадывать Нейтральных-мирных</string>
   <string name="TouOptionVigilanteCanGuessNeutralEvilRoles">Может угадывать Нейтральных Злодеев</string>
   <string name="TouOptionVigilanteCanGuessNeutralKillingRoles">Может угадывать Нейтральных Убийц</string>
-  <string name="TouOptionVigilanteCanGuessKillerModifiers">Может угадывать Модификаторы Убийц</string>
+  <string name="TouOptionVigilanteCanGuessKillerModifiers">Может угадывать Атрибуты Убийц</string>
   <string name="TouOptionVigilanteCanGuessAlliances">Может угадывать фракции</string>
   <string name="TouOptionVigilanteSafeShotsAvailable">Возможностей промахнуться</string>
   <string name="TouRoleWarden">Хранитель</string>
@@ -1062,7 +1062,7 @@
   <string name="TouModifierEgotist">Эгоист</string>
   <string name="TouModifierEgotistIntroBlurb">Предайте экипаж, чтобы потешить своё эго</string>
   <string name="TouModifierEgotistTabDescription">Бросьте вызов команде, победите с убийцами.</string>
-  <string name="TouModifierEgotistWikiDescription">Эгоист - Модификатор Экипажа (помеченный \%symbol\%). Эгоист может победить только в том случае, если экипаж проиграет, даже будучи мёртвым. Если после окончания собрания не осталось ни одного члена экипажа - вы победите, но игра продолжится.</string>
+  <string name="TouModifierEgotistWikiDescription">Эгоист - Атрибут Экипажа (помеченный \%symbol\%). Эгоист может победить только в том случае, если экипаж проиграет, даже будучи мёртвым. Если после окончания собрания не осталось ни одного члена экипажа - вы победите, но игра продолжится.</string>
   <string name="TouModifierLover">Любовник</string>
   <string name="TouModifierLoverInfo">Вы влюблены в \%player\%.</string>
   <string name="TouModifierLoverWikiDescription">В качестве любовника вы можете переписываться со своим партнёром (помеченным \%symbol\%) во время раунда, вы победите вместе, если останетесь в финальной тройке.</string>
@@ -1126,7 +1126,7 @@
   <string name="TouModifierDisperser">Разбрасыватель</string>
   <string name="TouModifierDisperserIntroBlurb">Вы можете разбросать игроков по вентиляциям.</string>
   <string name="TouModifierDisperserTabDescription">Разделите экипаж.</string>
-  <string name="TouModifierDisperserWikiDescription">Разбрасывайте всех на карте по разным вентиляциям, учитывая, что они не Недвижимые. Вы не сможете иметь любые другие модификаторы кнопок с Разбрасывателем.</string>
+  <string name="TouModifierDisperserWikiDescription">Разбрасывайте всех на карте по разным вентиляциям, учитывая, что они не Недвижимые. Вы не сможете иметь любые другие атрибуты кнопок с Разбрасывателем.</string>
   <string name="TouModifierDisperserDisperse">Разброс</string>
   <string name="TouModifierDisperserDisperseWikiDescription">Вы можете разбросать игроков по случайным вентиляциям раз за игру.</string>
   <string name="TouModifierSaboteur">Саботирующий</string>
