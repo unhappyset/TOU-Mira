@@ -67,11 +67,11 @@
   <string name="Chance">Wahrscheinlichkeit</string>
   <string name="Options">Optionen</string>
   <string name="SetRoleList">Setze Rollen Liste</string>
-  <string name="GameOutlier">Spiel Außsetzer</string>
+  <string name="GameOutlier">Spiel Ausreißer</string>
   <string name="CrewmatePower">Machtvolle Besatzung</string>
   <string name="CrewmateProtective">Beschützende Besatzung</string>
-  <string name="NeutralBenign">Gütige Neutrale</string>
-  <string name="NeutralEvil">Böse Neutrale</string>
+  <string name="NeutralBenign">Neutraler Gütiger</string>
+  <string name="NeutralEvil">Böser Neutraler</string>
   <string name="NeutralKilling">Neutraler Mörder</string>
   <string name="ImpostorConcealing">Verbergende Verräter</string>
   <string name="ImpostorPower">Machtvolle Verräter</string>
@@ -205,4 +205,6 @@
   <string name="TouOptionSheriffMisfireKills">Fehlzündung tötet</string>
   <string name="TouRoleSnitch">Petze</string>
   <string name="TouRolePolitician">Politiker</string>
+  <string name="NeutralOutlier">Neutraler Ausreißer</string>
+  <string name="SpecialNeutral">Speziale Neutrale</string>
 </resources>
