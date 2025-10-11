@@ -459,7 +459,7 @@
   <!-- Mirrorcaster Wiki / Abilities -->
   <string name="TouRoleMirrorcaster">Mirrorcaster</string>
   <string name="TouRoleMirrorcasterIntroBlurb">Reflect Attacks Onto Others</string>
-  <string name="TouRoleMirrorcasterTabDescription">Protect a player with a Magic Mirror.\%nl\%f they are directly attacked, then\%nl\%unleash the attack onto another player!</string>
+  <string name="TouRoleMirrorcasterTabDescription">Protect a player with a Magic Mirror.\%nl\%If they are directly attacked, then\%nl\%unleash the attack onto another player!</string>
   <string name="TouRoleMirrorcasterWikiDescription">The Mirrorcaster is a Crewmate Protective role that can cast a Magic Mirror on a player to protect them. If attacked directly, the Mirrorcaster can then unleash onto another player.</string>
   <string name="TouRoleMirrorcasterMagicMirror">Magic Mirror</string>
   <string name="TouRoleMirrorcasterMagicMirrorProtecting">Protecting</string>
