@@ -77,6 +77,5 @@ public enum TownOfUsRpc : uint
     RemoveSpectator,
     CookBody,
     ServeBody,
-    Hex,
-    HexBomb
+    Hex
 }

@@ -13,6 +13,7 @@ using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Modules.Components;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles;
@@ -61,6 +62,18 @@ public static class LogicGameFlowPatches
             return true;
         }
 
+        return false;
+    }
+
+    public static bool CheckEndGameViaHexBomb(LogicGameFlowNormal instance)
+    {
+        var hexBomb = ShipStatus.Instance.Systems[(SystemTypes)HexBombSabotageSystem.SabotageId]
+            .Cast<HexBombSabotageSystem>();
+        if (hexBomb != null && hexBomb.Stage == HexBombStage.Finished && HexBombSabotageSystem.BombFinished)
+        {
+            instance.Manager.RpcEndGame(GameOverReason.ImpostorsBySabotage, false);
+            return true;
+        }
         return false;
     }
 
@@ -166,6 +179,11 @@ public static class LogicGameFlowPatches
                 __instance.EndGameForSabotage();
                 criticalSabotage.ClearSabotage();
             }
+        }
+
+        if (CheckEndGameViaHexBomb(__instance))
+        {
+            return false;
         }
 
         if (CheckEndGameViaTasks(__instance))

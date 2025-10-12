@@ -314,6 +314,9 @@ public static class TownOfUsEventHandlers
         CustomButtonSingleton<VeteranAlertButton>.Instance.ExtraUses = 0;
         CustomButtonSingleton<VeteranAlertButton>.Instance.SetUses((int)OptionGroupSingleton<VeteranOptions>.Instance
             .MaxNumAlerts);
+        
+        CustomButtonSingleton<SpellslingerHexButton>.Instance.SetUses((int)OptionGroupSingleton<SpellslingerOptions>.Instance
+            .MaxHexes);
 
         CustomButtonSingleton<JailorJailButton>.Instance.ExecutedACrew = false;
 
