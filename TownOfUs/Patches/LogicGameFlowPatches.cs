@@ -67,9 +67,7 @@ public static class LogicGameFlowPatches
 
     public static bool CheckEndGameViaHexBomb(LogicGameFlowNormal instance)
     {
-        var hexBomb = ShipStatus.Instance.Systems[(SystemTypes)HexBombSabotageSystem.SabotageId]
-            .Cast<HexBombSabotageSystem>();
-        if (hexBomb != null && hexBomb.Stage == HexBombStage.Finished && HexBombSabotageSystem.BombFinished)
+        if (HexBombSabotageSystem.BombFinished)
         {
             instance.Manager.RpcEndGame(GameOverReason.ImpostorsBySabotage, false);
             return true;

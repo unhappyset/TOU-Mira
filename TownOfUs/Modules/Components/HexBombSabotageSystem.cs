@@ -2,7 +2,6 @@ using Hazel;
 using Il2CppInterop.Runtime.Injection;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
-using MiraAPI.Utilities;
 using Reactor.Utilities.Attributes;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles.Impostor;
@@ -63,21 +62,30 @@ public sealed class HexBombSabotageSystem(nint cppPtr) : Il2CppSystem.Object(cpp
             {
                 Stage = HexBombStage.Countdown;
                 TimeRemaining = OptionGroupSingleton<SpellslingerOptions>.Instance.HexBombDuration;
+                BombFinished = false;
                 IsDirty = true;
             }
             else if (Stage == HexBombStage.Countdown)
             {
                 Stage = HexBombStage.Finished;
                 TimeRemaining = 3f;
+                BombFinished = false;
                 IsDirty = true;
             }
             else if (Stage == HexBombStage.Finished)
             {
                 IsDirty = true;
-                var spellslinger = CustomRoleUtils.GetActiveRolesOfType<SpellslingerRole>().FirstOrDefault();
-                if (PlayerControl.LocalPlayer.IsHost() && spellslinger != null)
+                if (TutorialManager.InstanceExists)
                 {
-                    BombFinished = true;
+                    Stage = HexBombStage.None;
+                }
+                else
+                {
+                    var spellslinger = CustomRoleUtils.GetActiveRolesOfType<SpellslingerRole>().FirstOrDefault();
+                    if (spellslinger != null)
+                    {
+                        BombFinished = true;
+                    }
                 }
             }
         }

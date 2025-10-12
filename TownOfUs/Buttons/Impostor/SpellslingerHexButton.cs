@@ -29,6 +29,6 @@ public sealed class SpellslingerHexButton : TownOfUsRoleButton<SpellslingerRole,
             return;
         }
 
-        SpellslingerRole.RpcHex(PlayerControl.LocalPlayer, Target);
+        Target.RpcAddModifier<SpellslingerHexedModifier>(PlayerControl.LocalPlayer);
     }
 }

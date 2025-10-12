@@ -1,15 +1,15 @@
 using System.Text;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.GameOptions;
 using MiraAPI.Roles;
-using Reactor.Networking.Attributes;
 using TownOfUs.Utilities;
 using UnityEngine;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
-using Reactor.Utilities;
 using TownOfUs.Modifiers.Impostor;
 using MiraAPI.Patches.Stubs;
 using TownOfUs.Modules.Components;
+using TownOfUs.Options;
 
 namespace TownOfUs.Roles.Impostor;
 
@@ -129,36 +129,11 @@ public sealed class SpellslingerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITow
         return sb;
     }
 
-    [MethodRpc((uint)TownOfUsRpc.Hex, SendImmediately = true)]
-    public static void RpcHex(PlayerControl player, PlayerControl target)
-    {
-        var canBeHexed = PlayerControl.AllPlayerControls.ToArray().Where(x => !x.HasDied() && !x.IsImpostor()).ToList();
-
-        if (player.Data.Role is not SpellslingerRole)
-        {
-            Logger<TownOfUsPlugin>.Error("RpcHex - Invalid Spellslinger");
-            return;
-        }
-
-        if (canBeHexed.Contains(target))
-        {
-            target.AddModifier<SpellslingerHexedModifier>();
-
-            if (player.AmOwner)
-            {
-                var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{target.CachedPlayerData.PlayerName} is hexed!</b>",
-                    Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Spellslinger.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
-            }
-        }
-    }
-
     public static bool EveryoneHexed()
     {
         return PlayerControl.AllPlayerControls
             .ToArray()
-            .Where(p => !p.HasDied() && !p.IsImpostor())
+            .Where(p => p.Data.Role is not SpellslingerRole && !p.HasDied() && (!p.IsImpostor() || OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode))
             .All(p => p.HasModifier<SpellslingerHexedModifier>());
     }
 
