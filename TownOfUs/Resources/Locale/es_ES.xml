@@ -286,4 +286,8 @@
   <string name="TouOptionHaunterRevealNeutralRoles">Revelar Roles Neutrales</string>
   <string name="TouOptionHaunterCanBeClickedBy">Puede Ser Clickeado Por</string>
   <string name="TouRoleHaunterSelfAlertFeedback">¡Has alertado a los Asesinos!</string>
+  <string name="ClientTabGameplay">Juego</string>
+  <string name="ShowVanillaWikiEntries">Mostrar Entradas Base de la Wiki</string>
+  <string name="PlayerHasNoModifiers">No modificadores</string>
+  <string name="SpecialNeutral">Neutral Especial</string>
 </resources>
