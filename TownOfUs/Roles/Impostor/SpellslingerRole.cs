@@ -8,48 +8,12 @@ using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using TownOfUs.Modifiers.Impostor;
 using MiraAPI.Patches.Stubs;
-using TownOfUs.Modules.Components;
 using TownOfUs.Options;
 
 namespace TownOfUs.Roles.Impostor;
 
 public sealed class SpellslingerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
-    private bool _bombed;
-
-    public void FixedUpdate()
-    {
-        if (_bombed || Player == null || Player.Data == null || !Player.AmOwner || Player.Data.Role is not SpellslingerRole || Player.HasDied())
-            return;
-
-        if (!EveryoneHexed())
-            return;
-
-        if (ShipStatus.Instance.Systems.ContainsKey(SystemTypes.LifeSupp))
-        {
-            var lifeSuppSystemType = ShipStatus.Instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
-            if (lifeSuppSystemType != null)
-            {
-                lifeSuppSystemType.Countdown = 10000f;
-            }
-        }
-
-        foreach (var systemType2 in ShipStatus.Instance.Systems.Values)
-        {
-            var sabo = systemType2.TryCast<ICriticalSabotage>();
-            if (sabo == null)
-            {
-                continue;
-            }
-
-            sabo.ClearSabotage();
-        }
-        
-        ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Sabotage, HexBombSabotageSystem.SabotageId);
-
-        _bombed = true;
-    }
-
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "Spellslinger";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
@@ -70,7 +34,7 @@ public sealed class SpellslingerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITow
         new(TouLocale.GetParsed($"TouRole{LocaleKey}Hex", "Hex"),
             TouLocale.GetParsed($"TouRole{LocaleKey}HexWikiDescription"),
             TouImpAssets.HexSprite),
-        new(TouLocale.GetParsed($"TouRole{LocaleKey}HexBomb", "Hex Bomb (Passive)"),
+        new(TouLocale.GetParsed($"TouRole{LocaleKey}HexBomb", "Hex Bomb"),
             TouLocale.GetParsed($"TouRole{LocaleKey}HexBombWikiDescription"),
             TouImpAssets.HexSprite)
     ];
