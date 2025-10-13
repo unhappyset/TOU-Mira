@@ -86,8 +86,8 @@ public sealed class HexBombSabotageTask(nint cppPtr) : PlayerTask(cppPtr)
             {
                 HudManager.Instance.FullScreen.color = new Color(Palette.CrewmateBlue.r, Palette.CrewmateBlue.g, Palette.CrewmateBlue.b, playSound ? 0.18f : 0.34f);
                 HudManager.Instance.FullScreen.gameObject.SetActive(true);
-                HudManager.Instance.PlayerCam.shakeAmount = _ogShakeAmt;
-                HudManager.Instance.PlayerCam.shakePeriod = _ogShakePeriod;
+                HudManager.Instance.PlayerCam.shakeAmount = 0f;
+                HudManager.Instance.PlayerCam.shakePeriod = 1f;
 
                 playSound = !playSound;
                 if (playSound)
