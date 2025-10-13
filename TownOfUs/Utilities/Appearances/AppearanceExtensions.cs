@@ -181,11 +181,11 @@ public static class AppearanceExtensions
             player.Data.Outfits.Remove(player.CurrentOutfitType);
         }
 
-        player.CurrentOutfitType = (PlayerOutfitType)appearance.AppearanceType;
-        if (appearance.AppearanceType is not TownOfUsAppearances.Default && appearance.AppearanceType is not TownOfUsAppearances.Swooper)
+        /*player.CurrentOutfitType = (PlayerOutfitType)appearance.AppearanceType;
+        if (player.CurrentOutfitType != 0 && player.CurrentOutfitType != (PlayerOutfitType)TownOfUsAppearances.Swooper)
         {
             player.Data.SetOutfit(player.CurrentOutfitType, appearance);
-        }
+        }*/
     }
 
     public static TownOfUsAppearances GetAppearanceType(this PlayerControl player)
