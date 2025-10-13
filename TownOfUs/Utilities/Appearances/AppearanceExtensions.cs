@@ -182,7 +182,7 @@ public static class AppearanceExtensions
         }
 
         player.CurrentOutfitType = (PlayerOutfitType)appearance.AppearanceType;
-        if (appearance.AppearanceType != 0)
+        if (appearance.AppearanceType is not TownOfUsAppearances.Default && appearance.AppearanceType is not TownOfUsAppearances.Swooper)
         {
             player.Data.SetOutfit(player.CurrentOutfitType, appearance);
         }
