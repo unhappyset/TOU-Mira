@@ -433,6 +433,18 @@
         "\n- New Neutral Outlier Role: The Chef!\nThis role takes the dead bodies of players and feeds them to others, which all fulfills their quota to leave in victory!",
         "\n- New Impostor Power Role: The Spellslinger!\nThis role hexes players to then set off a hex bomb, in which the crew will need to get rid of the Spellslinger or finish their tasks against the hex clock."
       ]
+    },
+    {
+      "Date": "2025-12-14T12:51:00Z",
+      "Number": "100027",
+      "ShortTitle": "TOU: Mira v1.3.1",
+      "SubTitle": "Just an API change",
+      "Title": "Update For AU v17.0.1",
+      "Text": [
+        "<b> This update purely changes the MiraAPI version we use, and requires a fresh install for Among Us v17.0.1</b>",
+        "\n\nThe Mira team really appreciates all of your support, thank you so much for playing the mod!",
+        "\n\n★ <link=https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.3.1>TOU Mira v1.3.1 Download</link> ★ <link=https://au-avengers.github.io/docs.toum.gg/>Mod Guide & Details</link> ★"
+      ]
     }
   ]
 }
