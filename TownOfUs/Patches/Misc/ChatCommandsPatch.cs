@@ -94,7 +94,6 @@ public static class ChatPatches
 
         if (spaceLess.StartsWith("/nerfme", StringComparison.OrdinalIgnoreCase))
         {
-            var title = systemName;
             var msg = "You cannot Nerf yourself outside of the lobby!";
             if (LobbyBehaviour.Instance)
             {
@@ -102,7 +101,7 @@ public static class ChatPatches
                 msg = $"Toggled Nerf Status To {VisionPatch.NerfMe}!";
             }
 
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg);
+            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, systemName, msg);
 
             __instance.freeChatField.Clear();
             __instance.quickChatMenu.Clear();
@@ -113,7 +112,6 @@ public static class ChatPatches
 
         if (spaceLess.StartsWith("/setname", StringComparison.OrdinalIgnoreCase))
         {
-            var title = systemName;
             if (text.StartsWith("/setname ", StringComparison.OrdinalIgnoreCase))
             {
                 textRegular = textRegular[9..];
@@ -153,7 +151,7 @@ public static class ChatPatches
                 }
             }
 
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg);
+            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, systemName, msg);
 
             __instance.freeChatField.Clear();
             __instance.quickChatMenu.Clear();
@@ -164,12 +162,10 @@ public static class ChatPatches
 
         if (spaceLess.StartsWith("/help", StringComparison.OrdinalIgnoreCase))
         {
-            var title = systemName;
-
             List<string> randomNames =
             [
                 "Atony", "Alchlc", "angxlwtf", "Digi", "Donners", "K3ndo", "DragonBreath", "Pietro", "Nix", "Daemon",
-                "6pak",
+                "6pak", "Chipseq",
                 "twix", "xerm", "XtraCube", "Zeo", "Slushie", "chloe", "moon", "decii", "Northie", "GD", "Chilled",
                 "Himi", "Riki", "Leafly", "miniduikboot"
             ];
@@ -181,7 +177,7 @@ public static class ChatPatches
                       "/spec - Allows you to spectate for the rest of the game automatically. (if enabled by the host)\n" +
                       "/summary - Shows the previous end game summary\n</size>";
 
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg);
+            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, systemName, msg);
 
             __instance.freeChatField.Clear();
             __instance.quickChatMenu.Clear();
@@ -192,9 +188,7 @@ public static class ChatPatches
 
         if (spaceLess.StartsWith("/jail", StringComparison.OrdinalIgnoreCase))
         {
-            var title = systemName;
-
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title,
+            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, systemName,
                 "The mod no longer supports /jail chat. Use the red in-game chat button instead.");
 
             __instance.freeChatField.Clear();
@@ -206,9 +200,7 @@ public static class ChatPatches
 
         if (spaceLess.StartsWith("/", StringComparison.OrdinalIgnoreCase))
         {
-            var title = systemName;
-
-            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title,
+            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, systemName,
                 "Invalid command. If you need information on chat commands, type /help. If you are trying to know what a role or modifier does, check out the in-game wiki by pressing the globe icon on the top right of your screen.");
 
             __instance.freeChatField.Clear();
