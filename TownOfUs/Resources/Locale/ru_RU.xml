@@ -215,9 +215,9 @@
   <string name="TouRoleAltruistWikiDescription">Альтруист - Защищающий Член Экипажа, который может возрождать мёртвых игроков в группах. Однако, информация о месте и о возрождённых передаётся всем Предателям.</string>
   <string name="TouRoleAltruistReviveWikiDescription">Возрождайте группу трупов рядом с собой. Вы будете заморожены, пока все не возродятся. Предатели получат стрелку на вас во время возрождения, будьте осторожнее.</string>
   <string name="TouRoleAurial">Ауриал</string>
-  <string name="TouRoleAurialIntroBlurb">Чувствуйте колебания вашей ауры</string>
-  <string name="TouRoleAurialTabDescription">Вы почувствуйте любого игрока, который использует способность рядом с вами</string>
-  <string name="TouRoleAurialWikiDescription">Ауриал - Расследующий Член Экипажа, который узнаёт каждый раз как кто-то использует способность рядом с ним.</string>
+  <string name="TouRoleAurialIntroBlurb">Чувствуйте колебания вашей ауры.</string>
+  <string name="TouRoleAurialTabDescription">Вы почувствуете любого игрока, который использует способность рядом с вами</string>
+  <string name="TouRoleAurialWikiDescription">Ауриал - Расследующий Член Экипажа, который узнает, если кто-то использует рядом с ним способность.</string>
   <string name="TouOptionAurialAuraInnerRadius">Радиус узнавания цвета игрока, использовавшего способность</string>
   <string name="TouOptionAurialAuraOuterRadius">Макс. радиус ауры</string>
   <string name="TouOptionAurialSenseDuration">Длительность чувствительности</string>
@@ -917,7 +917,7 @@
   <string name="TouOptionGuardianAngelEvilOdds">Шанс того, что цель будет злодеем</string>
   <string name="TouRoleInquisitor">Инквизитор</string>
   <string name="TouRoleInquisitorIntroBlurb">Уничтожьте Еретиков!</string>
-  <string name="TouRoleInquisitorTabDescription">Уничтожьте Еретиков любым способом..\%nl\%Вы побеждаете после смерти каждого еретика.\%nl\%Если они все мертвы после окончания собрания\%nl\%вы победите</string>
+  <string name="TouRoleInquisitorTabDescription">Уничтожьте Еретиков любым способом.\%nl\%Вы побеждаете после смерти каждого еретика.\%nl\%Если все еретики мертвы после окончания собрания\%nl\%вы победите</string>
   <string name="TouRoleInquisitorTabAddition">Роли Еретиков:</string>
   <string name="TouRoleInquisitorWikiDescription">Инквизитор - Нейтральный Останец, который побеждает, если все Еретики умирают. Инквизитору известны только роли целей, и ему предстоит самому вычислить этих игроков (для мёртвых они помечены \%symbol\%) и добиться их смерти любыми способами.</string>
   <string name="TouRoleInquisitorMessageTitle">Отзыв Инквизитора</string>
@@ -1258,4 +1258,6 @@
   <string name="TouRoleSpellslingerMessageTitle">Предупреждение заклинателя</string>
   <string name="TouRoleSpellslingerGlobalWarning">\%role\% заложил заколдованную бомбу! Найдите его до того, как выйдет время! После этого собрания останется \%time\% секунд.</string>
   <string name="TouRoleSpellslingerWarningNotif">\%role\% взорвёт магическую бомбу через \%time\% секунд!</string>
+  <string name="DiedToSpellslingerHexBomb">Дезинтегрирован</string>
+  <string name="TouRoleSpellslingerTabHexFinished">Все игроки были прокляты.</string>
 </resources>
