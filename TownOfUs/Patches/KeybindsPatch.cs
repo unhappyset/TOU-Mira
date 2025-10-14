@@ -23,7 +23,6 @@ public static class Bindings
 
         if (!PlayerControl.LocalPlayer.Data.IsDead && !PlayerControl.LocalPlayer.IsImpostor())
         {
-
             var kill = __instance.KillButton;
             var vent = __instance.ImpostorVentButton;
 
@@ -55,7 +54,8 @@ public static class Bindings
 
         var contPlayer = ConsoleJoystick.player;
         var buttonList = CustomButtonManager.Buttons.Where(x =>
-            x.Enabled(PlayerControl.LocalPlayer.Data.Role) && x.Button != null && x.Button.isActiveAndEnabled && x.CanUse()).ToList();
+            x.Enabled(PlayerControl.LocalPlayer.Data.Role) && x.Button != null && x.Button.isActiveAndEnabled &&
+            x.CanUse()).ToList();
 
         foreach (var button in buttonList.Where(x => x is TownOfUsButton))
         {
@@ -64,12 +64,13 @@ public static class Bindings
             {
                 continue;
             }
-            
+
             if (contPlayer.GetButtonDown(touButton.ConsoleBind()))
             {
                 touButton.PassiveComp.OnClick.Invoke();
             }
         }
+
         foreach (var button in buttonList.Where(x => x is TownOfUsTargetButton<DeadBody>))
         {
             var touButton = button as TownOfUsTargetButton<DeadBody>;
@@ -77,13 +78,13 @@ public static class Bindings
             {
                 continue;
             }
-            
+
             if (contPlayer.GetButtonDown(touButton.ConsoleBind()))
             {
                 touButton.PassiveComp.OnClick.Invoke();
             }
         }
-        
+
         foreach (var button in buttonList.Where(x => x is TownOfUsTargetButton<Vent>))
         {
             var touButton = button as TownOfUsTargetButton<Vent>;
@@ -91,13 +92,13 @@ public static class Bindings
             {
                 continue;
             }
-            
+
             if (contPlayer.GetButtonDown(touButton.ConsoleBind()))
             {
                 touButton.PassiveComp.OnClick.Invoke();
             }
         }
-        
+
         foreach (var button in buttonList.Where(x => x is TownOfUsTargetButton<PlayerControl>))
         {
             var touButton = button as TownOfUsTargetButton<PlayerControl>;
@@ -105,7 +106,7 @@ public static class Bindings
             {
                 continue;
             }
-            
+
             if (contPlayer.GetButtonDown(touButton.ConsoleBind()))
             {
                 touButton.PassiveComp.OnClick.Invoke();

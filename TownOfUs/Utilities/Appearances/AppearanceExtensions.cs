@@ -63,7 +63,7 @@ public static class AppearanceExtensions
 
     public static void SetCamouflage(this PlayerControl player, bool toggle = true)
     {
-        if (toggle && player.GetAppearanceType() != TownOfUsAppearances.Camouflage)
+        if (toggle && player.GetAppearanceType() != TownOfUsAppearances.Camouflage && !player.HasDied())
         {
             player.RawSetAppearance(new VisualAppearance(player.GetDefaultAppearance(), TownOfUsAppearances.Camouflage)
             {
@@ -78,7 +78,8 @@ public static class AppearanceExtensions
                 Size = player.GetAppearance().Size
             });
         }
-        else if (!toggle && player.GetModifiers<BaseModifier>().Any(x => x is IVisualAppearance visual && visual.VisualPriority))
+        else if (!toggle && player.GetModifiers<BaseModifier>()
+                     .Any(x => x is IVisualAppearance visual && visual.VisualPriority))
         {
             var mod = player.GetModifiers<BaseModifier>()
                 .FirstOrDefault(x => x is IVisualAppearance visual2 && visual2.VisualPriority);
@@ -147,7 +148,7 @@ public static class AppearanceExtensions
 
         if (appearance.PlayerMaterialVisorColor != null)
         {
-            player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, 
+            player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor,
                 (Color)appearance.PlayerMaterialVisorColor);
             if (player.cosmetics.GetLongBoi() != null)
             {
@@ -181,7 +182,9 @@ public static class AppearanceExtensions
         }
 
         player.CurrentOutfitType = (PlayerOutfitType)appearance.AppearanceType;
-        if (appearance.AppearanceType != 0)
+
+        // This was originally removed by Pietro, but without it, ladders and ziplines are extremely broken
+        if (player.CurrentOutfitType != 0)
         {
             player.Data.SetOutfit(player.CurrentOutfitType, appearance);
         }

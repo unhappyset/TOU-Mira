@@ -39,13 +39,14 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -62,6 +63,7 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Jailor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
@@ -124,7 +126,9 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             }
 
             var title = $"<color=#{TownOfUsColors.Jailor.ToHtmlStringRGBA()}>Jailor Feedback</color>";
-            MiscUtils.AddFakeChat(Jailed.Data, title, "Communicate with your jailee in the <b>RED</b> private chatbox next to the <b>REGULAR</b> chatbox.", false,
+            MiscUtils.AddFakeChat(Jailed.Data, title,
+                "Communicate with your jailee in the <b>RED</b> private chatbox next to the <b>REGULAR</b> chatbox.",
+                false,
                 true);
         }
 
@@ -245,10 +249,9 @@ public sealed class JailorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             }
 
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{text}</b>", Color.white, spr: TouRoleIcons.Jailor.LoadAsset());
+                $"<b>{text}</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Jailor.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+            notif1.AdjustNotification();
         }
 
         return Listener;

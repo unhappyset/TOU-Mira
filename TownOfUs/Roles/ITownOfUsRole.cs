@@ -30,7 +30,8 @@ public interface ITownOfUsRole : ICustomRole
                 prefix = "The";
             }
 
-            if (RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase) || LocaleKey.StartsWith("the", StringComparison.OrdinalIgnoreCase))
+            if (RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase) ||
+                LocaleKey.StartsWith("the", StringComparison.OrdinalIgnoreCase))
             {
                 prefix = "";
             }
@@ -38,6 +39,7 @@ public interface ITownOfUsRole : ICustomRole
             return TouLocale.Get($"YouAre{prefix}");
         }
     }
+
     public virtual string YouWereText
     {
         get
@@ -53,7 +55,8 @@ public interface ITownOfUsRole : ICustomRole
                 prefix = "The";
             }
 
-            if (RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase) || LocaleKey.StartsWith("the", StringComparison.OrdinalIgnoreCase))
+            if (RoleName.StartsWith("the", StringComparison.OrdinalIgnoreCase) ||
+                LocaleKey.StartsWith("the", StringComparison.OrdinalIgnoreCase))
             {
                 prefix = "";
             }
@@ -155,7 +158,8 @@ public interface ITownOfUsRole : ICustomRole
         var stringB = new StringBuilder();
         stringB.AppendLine(CultureInfo.InvariantCulture,
             $"{role.RoleColor.ToTextColor()}{youAre}<b> {role.RoleName}.</b></color>");
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(alignment, true)}</b></size>");
+        stringB.AppendLine(CultureInfo.InvariantCulture,
+            $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(alignment, true)}</b></size>");
         stringB.Append("<size=70%>");
         stringB.AppendLine(CultureInfo.InvariantCulture, $"{role.RoleLongDescription}");
 
@@ -175,7 +179,8 @@ public interface ITownOfUsRole : ICustomRole
         var stringB = new StringBuilder();
         stringB.AppendLine(CultureInfo.InvariantCulture,
             $"{role.RoleColor.ToTextColor()}{youAre}<b> {role.RoleName}.</b></color>");
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(alignment, true)}</b></size>");
+        stringB.AppendLine(CultureInfo.InvariantCulture,
+            $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(alignment, true)}</b></size>");
         stringB.Append("<size=70%>");
         stringB.AppendLine(CultureInfo.InvariantCulture, $"{role.RoleLongDescription}");
 

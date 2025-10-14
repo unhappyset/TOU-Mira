@@ -25,6 +25,7 @@ public abstract class UniversalGameModifier : GameModifier
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        return !role.Player.GetModifierComponent().HasModifier<UniversalGameModifier>(true) && !role.TryCast<SpectatorRole>();
+        return !role.Player.GetModifierComponent().HasModifier<UniversalGameModifier>(true) &&
+               !role.TryCast<SpectatorRole>();
     }
 }

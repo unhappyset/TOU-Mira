@@ -27,13 +27,14 @@ public sealed class PestilenceRole(IntPtr cppPtr)
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     public Color RoleColor => TownOfUsColors.Pestilence;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
@@ -70,7 +71,8 @@ public sealed class PestilenceRole(IntPtr cppPtr)
         var stringB = new StringBuilder();
         stringB.AppendLine(CultureInfo.InvariantCulture,
             $"{RoleColor.ToTextColor()}{YouAreText}<b> {RoleName},\n<size=80%>{RoleDescription}</size></b></color>");
-        stringB.AppendLine(CultureInfo.InvariantCulture, $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(RoleAlignment, true)}</b></size>");
+        stringB.AppendLine(CultureInfo.InvariantCulture,
+            $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(RoleAlignment, true)}</b></size>");
         stringB.Append("<size=70%>");
         stringB.AppendLine(CultureInfo.InvariantCulture, $"{RoleLongDescription}");
 

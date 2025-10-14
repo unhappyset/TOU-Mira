@@ -35,6 +35,7 @@ public sealed class WarlockKillButton : TownOfUsRoleButton<WarlockRole, PlayerCo
         {
             KeybindIcon.transform.localPosition = new Vector3(0.4f, 0.45f, -9f);
         }
+
         _killName = TranslationController.Instance.GetStringWithDefault(StringNames.KillLabel, "Kill");
         _burstKill = TouLocale.Get("TouRoleWarlockBurstKill", "Burst Kill");
         _burstActive = TouLocale.Get("TouRoleWarlockBurstActive", "Burst Active");

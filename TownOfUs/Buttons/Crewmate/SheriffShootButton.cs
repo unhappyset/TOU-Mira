@@ -55,16 +55,16 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
         if (missType is MisfireOptions.Sheriff or MisfireOptions.Both)
         {
             PlayerControl.LocalPlayer.RpcCustomMurder(PlayerControl.LocalPlayer);
-            DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, TouLocale.Get("DiedToSuicide"), DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
+            DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, TouLocale.Get("DiedToSuicide"),
+                DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
         }
 
         FailedShot = true;
 
-        var notif1 = Helpers.CreateAndShowNotification($"<b>{TouLocale.GetParsed("TouRoleSheriffMisfireFeedback")}</b>", Color.white,
-            spr: TouRoleIcons.Sheriff.LoadAsset());
+        var notif1 = Helpers.CreateAndShowNotification($"<b>{TouLocale.GetParsed("TouRoleSheriffMisfireFeedback")}</b>",
+            Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Sheriff.LoadAsset());
 
-        notif1.Text.SetOutlineThickness(0.35f);
-        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        notif1.AdjustNotification();
 
         Coroutines.Start(MiscUtils.CoFlash(Color.red));
     }
@@ -101,17 +101,8 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
             return;
         }
 
-        var alignment = RoleAlignment.CrewmateSupport;
+        var alignment = Target.Data.Role.GetRoleAlignment();
         var options = OptionGroupSingleton<SheriffOptions>.Instance;
-
-        if (Target.Data.Role is ITownOfUsRole touRole)
-        {
-            alignment = touRole.RoleAlignment;
-        }
-        else if (Target.IsImpostor())
-        {
-            alignment = RoleAlignment.ImpostorSupport;
-        }
 
         if (!(PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) &&
               !allyMod.GetsPunished) &&
@@ -126,6 +117,18 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
                 case RoleAlignment.CrewmatePower:
                 case RoleAlignment.CrewmateSupport:
                     Misfire();
+                    break;
+
+                case RoleAlignment.NeutralOutlier:
+                    if (!options.ShootNeutralOutlier)
+                    {
+                        Misfire();
+                    }
+                    else
+                    {
+                        PlayerControl.LocalPlayer.RpcCustomMurder(Target);
+                    }
+
                     break;
 
                 case RoleAlignment.NeutralKilling:
@@ -152,7 +155,7 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
 
                     break;
                 default:
-                    if (Target.IsImpostor())
+                    if (Target.IsImpostor() || Target.IsNeutral())
                     {
                         PlayerControl.LocalPlayer.RpcCustomMurder(Target);
                     }
@@ -160,6 +163,7 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
                     {
                         Misfire();
                     }
+
                     break;
             }
         }
@@ -180,6 +184,7 @@ public sealed class SheriffShootButton : TownOfUsRoleButton<SheriffRole, PlayerC
         {
             return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover());
         }
+
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 }

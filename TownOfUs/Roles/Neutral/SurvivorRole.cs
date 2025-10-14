@@ -13,14 +13,15 @@ using UnityEngine;
 
 namespace TownOfUs.Roles.Neutral;
 
-public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IGuessable
+public sealed class SurvivorRole(IntPtr cppPtr)
+    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IGuessable
 {
     public DoomableType DoomHintType => DoomableType.Protective;
     public string LocaleKey => "Survivor";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
@@ -41,9 +42,12 @@ public sealed class SurvivorRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Survivor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
+
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
+
     // This is so the role can be guessed without requiring it to be enabled normally
     public bool CanBeGuessed =>
         (MiscUtils.GetPotentialRoles()

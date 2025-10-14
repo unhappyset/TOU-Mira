@@ -43,6 +43,7 @@ public sealed class JuggernautKillButton : TownOfUsRoleButton<JuggernautRole, Pl
         {
             return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover());
         }
+
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 

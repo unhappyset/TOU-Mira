@@ -20,8 +20,7 @@ namespace TownOfUs.Roles.Crewmate;
 
 public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
 {
-    [HideFromIl2Cpp]
-    public PlayerVoteArea? ProsecuteButton { get; private set; }
+    [HideFromIl2Cpp] public PlayerVoteArea? ProsecuteButton { get; private set; }
 
     public bool HasProsecuted { get; private set; }
 
@@ -46,7 +45,8 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
             return;
         }
 
-        ProsecuteButton.gameObject.SetActive(!HideProsButton && meeting.state == MeetingHud.VoteStates.NotVoted && !SelectingProsecuteVictim);
+        ProsecuteButton.gameObject.SetActive(!HideProsButton && meeting.state == MeetingHud.VoteStates.NotVoted &&
+                                             !SelectingProsecuteVictim);
 
         if (!ProsecuteButton.gameObject.active)
         {
@@ -78,7 +78,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
-    
+
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -92,6 +92,7 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Prosecutor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
@@ -151,7 +152,8 @@ public sealed class ProsecutorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCr
         ProsecuteButton.transform.localPosition = skip.transform.localPosition + new Vector3(0f, -0.17f, 0f);
 
         ProsecuteButton.gameObject.GetComponentInChildren<TextTranslatorTMP>().Destroy();
-        ProsecuteButton.gameObject.GetComponentInChildren<TextMeshPro>().text = TouLocale.GetParsed($"TouRole{LocaleKey}Prosecute").ToUpperInvariant();
+        ProsecuteButton.gameObject.GetComponentInChildren<TextMeshPro>().text =
+            TouLocale.GetParsed($"TouRole{LocaleKey}Prosecute").ToUpperInvariant();
         ProsecuteButton.gameObject.name = "button_prosecuteButton";
 
         foreach (var plr in meeting.playerStates.AddItem(skip))

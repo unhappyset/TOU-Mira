@@ -19,6 +19,7 @@ public sealed class TiebreakerModifier : UniversalGameModifier, IWikiDiscoverabl
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription") + MiscUtils.AppendOptionsText(GetType());

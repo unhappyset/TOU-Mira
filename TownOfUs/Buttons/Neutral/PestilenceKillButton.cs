@@ -30,6 +30,7 @@ public sealed class PestilenceKillButton : TownOfUsRoleButton<PestilenceRole, Pl
         {
             return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover());
         }
+
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 

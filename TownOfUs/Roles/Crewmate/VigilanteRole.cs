@@ -36,13 +36,14 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
-    
+
     public Color RoleColor => TownOfUsColors.Vigilante;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateKilling;
@@ -205,10 +206,9 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{TownOfUsColors.Vigilante.ToTextColor()}Your Multi Shot has prevented you from dying this meeting! You have {SafeShotsLeft} safe shot(s) left!</color></b>",
-                    Color.white, spr: TouRoleIcons.Vigilante.LoadAsset());
+                    Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Vigilante.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                notif1.AdjustNotification();
 
                 shapeMenu.Close();
 
@@ -221,14 +221,17 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             if (victim != Player)
             {
                 meetingMenu?.HideSingle(victim.PlayerId);
-                DeathHandlerModifier.RpcUpdateDeathHandler(victim, TouLocale.Get("DiedToGuess"), DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, TouLocale.GetParsed("DiedByStringBasic").Replace("<player>", Player.Data.PlayerName), lockInfo: DeathHandlerOverride.SetTrue);
+                DeathHandlerModifier.RpcUpdateDeathHandler(victim, TouLocale.Get("DiedToGuess"),
+                    DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse,
+                    TouLocale.GetParsed("DiedByStringBasic").Replace("<player>", Player.Data.PlayerName),
+                    lockInfo: DeathHandlerOverride.SetTrue);
             }
             else
             {
-                DeathHandlerModifier.RpcUpdateDeathHandler(victim, TouLocale.Get("DiedToMisguess"), DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+                DeathHandlerModifier.RpcUpdateDeathHandler(victim, TouLocale.Get("DiedToMisguess"),
+                    DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse,
+                    lockInfo: DeathHandlerOverride.SetTrue);
             }
-
-            MaxKills--;
 
             shapeMenu.Close();
         }
@@ -263,10 +266,11 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             return false;
         }
 
-        var touRole = role as ITownOfUsRole;
+        var alignment = role.GetRoleAlignment();
 
         // If Vigilante is Egotist, then guessing investigative roles is based off assassin settings
-        if (!OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessInvest && touRole?.RoleAlignment == RoleAlignment.CrewmateInvestigative)
+        if (!OptionGroupSingleton<AssassinOptions>.Instance.AssassinGuessInvest &&
+            alignment == RoleAlignment.CrewmateInvestigative)
         {
             return false;
         }
@@ -281,19 +285,24 @@ public sealed class VigilanteRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             return true;
         }
 
-        if (touRole?.RoleAlignment == RoleAlignment.NeutralBenign)
+        if (alignment == RoleAlignment.NeutralBenign)
         {
             return options.VigilanteGuessNeutralBenign;
         }
 
-        if (touRole?.RoleAlignment == RoleAlignment.NeutralEvil)
+        if (alignment == RoleAlignment.NeutralEvil)
         {
             return options.VigilanteGuessNeutralEvil;
         }
 
-        if (touRole?.RoleAlignment == RoleAlignment.NeutralKilling)
+        if (alignment == RoleAlignment.NeutralKilling)
         {
             return options.VigilanteGuessNeutralKilling;
+        }
+
+        if (alignment == RoleAlignment.NeutralOutlier)
+        {
+            return options.VigilanteGuessNeutralOutlier;
         }
 
         return false;

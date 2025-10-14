@@ -64,7 +64,8 @@ public class LocalizedLocalNumberSetting : LocalNumberSetting
     }
 
     /// <inheritdoc />
-    public override GameObject CreateOption(ToggleButtonBehaviour toggle, SlideBar slider, Transform parent, ref float offset, ref int order, bool last)
+    public override GameObject CreateOption(ToggleButtonBehaviour toggle, SlideBar slider, Transform parent,
+        ref float offset, ref int order, bool last)
     {
         var button = Object.Instantiate(toggle, parent).GetComponent<PassiveButton>();
         var tmp = button.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
@@ -80,6 +81,7 @@ public class LocalizedLocalNumberSetting : LocalNumberSetting
             highlight.color = Tab!.TabAppearance.NumberHoverColor;
             highlight.gameObject.SetActive(false);
         }
+
         toggleComp.Destroy();
 
         if (last && order == 1)
@@ -117,6 +119,7 @@ public class LocalizedLocalNumberSetting : LocalNumberSetting
             {
                 tmp.text = Description;
             }
+
             highlight?.gameObject.SetActive(true);
         }));
         button.OnMouseOut.AddListener((UnityAction)(() =>
@@ -133,8 +136,11 @@ public class LocalizedLocalNumberSetting : LocalNumberSetting
             offset += 0.5f;
             order = 1;
         }
+
         if (last)
+        {
             offset += 0.6f;
+        }
 
         return button.gameObject;
     }
@@ -144,6 +150,7 @@ public class LocalizedLocalNumberSetting : LocalNumberSetting
     {
         var value = GetValue();
         var formated = Helpers.FormatValue(value, SuffixType, FormatString);
-        return $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{TouLocale.Get(Name)}: <b>{formated}</font></b>";
+        return
+            $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{TouLocale.Get(Name)}: <b>{formated}</font></b>";
     }
 }

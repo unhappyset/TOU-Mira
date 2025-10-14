@@ -16,13 +16,14 @@ public sealed class VenererRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorConcealing;
@@ -45,18 +46,15 @@ public sealed class VenererRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Camouflage",
-            "Stage 1 of the abilities.\n" +
-            "You will appear as a gray bean for all players, allowing you to sneak away from kills.",
-            TouImpAssets.CamouflageSprite),
-        new("Sprint",
-            "Stage 2 of the abilities.\n" +
-            "You will gain the speed of the Flash while hidden from camo.",
-            TouImpAssets.SprintSprite),
-        new("Freeze",
-            "The Final Stage of the abilities.\n" +
-            "You will slow down players around you in a radius, as well as being fast and hidden from camo.",
-            TouImpAssets.FreezeSprite)
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Camouflage", "Camouflage"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}CamouflageWikiDescription"),
+                    TouImpAssets.CamouflageSprite),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Sprint", "Sprint"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}SprintWikiDescription"),
+                    TouImpAssets.SprintSprite),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Freeze", "Freeze"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}FreezeWikiDescription"),
+                    TouImpAssets.FreezeSprite)
             };
         }
     }

@@ -11,10 +11,12 @@ public sealed class AftermathModifier : TouGameModifier, IWikiDiscoverable
     public override string LocaleKey => "Aftermath";
     public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
+
     public override string GetDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription");

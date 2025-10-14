@@ -24,12 +24,10 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
 {
     public override bool IsAffectedByComms => false;
 
-    [HideFromIl2Cpp]
-    public PlayerControl? Protected { get; set; }
+    [HideFromIl2Cpp] public PlayerControl? Protected { get; set; }
     public int UnleashesAvailable { get; set; }
     public string UnleashString { get; set; }
-    [HideFromIl2Cpp]
-    public RoleBehaviour? ContainedRole { get; set; }
+    [HideFromIl2Cpp] public RoleBehaviour? ContainedRole { get; set; }
 
     public void FixedUpdate()
     {
@@ -56,7 +54,7 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
-    
+
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -73,6 +71,7 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Mirrorcaster;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
@@ -82,7 +81,11 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
         IntroSound = CustomRoleUtils.GetIntroSound(RoleTypes.Scientist),
         Icon = TouRoleIcons.Mirrorcaster
     };
-    public bool IsPowerCrew => UnleashesAvailable > 0 || ModifierUtils.GetActiveModifiers<MagicMirrorModifier>().Any(); // Always disable end game checks if there is an Unleash available
+
+    public bool IsPowerCrew =>
+        UnleashesAvailable > 0 ||
+        ModifierUtils.GetActiveModifiers<MagicMirrorModifier>()
+            .Any(); // Always disable end game checks if there is an Unleash available
 
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
@@ -120,11 +123,12 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
     public void SetProtectedPlayer(PlayerControl? player)
     {
         Protected?.RemoveModifier<MagicMirrorModifier>();
-        
+
         Protected = (player?.HasDied() == true) ? null : player;
 
         Protected?.AddModifier<MagicMirrorModifier>(Player);
     }
+
     public static void DangerAnim()
     {
         Coroutines.Start(MiscUtils.CoFlash(new Color32(144, 162, 195, 255)));
@@ -156,9 +160,10 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
             Logger<TownOfUsPlugin>.Error("ClearMagicMirror - Invalid mirrorcaster");
             return;
         }
+
         role.UnleashesAvailable--;
     }
-    
+
     public static void ClearMagicMirror(PlayerControl mc)
     {
         if (mc.Data.Role is not MirrorcasterRole role)
@@ -166,11 +171,13 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
             Logger<TownOfUsPlugin>.Error("ClearMagicMirror - Invalid mirrorcaster");
             return;
         }
+
         role?.SetProtectedPlayer(null);
     }
 
     [MethodRpc((uint)TownOfUsRpc.MagicMirrorAttacked)]
-    public static void RpcMagicMirrorAttacked(PlayerControl mirrorcaster, PlayerControl source, PlayerControl protectedPlayer)
+    public static void RpcMagicMirrorAttacked(PlayerControl mirrorcaster, PlayerControl source,
+        PlayerControl protectedPlayer)
     {
         if (mirrorcaster.Data.Role is not MirrorcasterRole role)
         {
@@ -180,7 +187,7 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
 
         role.SetProtectedPlayer(null);
         role.UnleashesAvailable++;
-        
+
         var cod = "Killed";
         var killerRole = source.GetRoleWhenAlive();
         var checkForCod = true;
@@ -219,20 +226,54 @@ public sealed class MirrorcasterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITou
                     cod = "Rampaged";
                     break;
             }
+
             role.ContainedRole = killerRole;
         }
+
         role.UnleashString = cod;
-        
+
         var opt = OptionGroupSingleton<MirrorcasterOptions>.Instance;
+        var attackInfo = opt.AttackInformationGiven;
         if (mirrorcaster.AmOwner)
         {
             CustomButtonSingleton<MirrorcasterMagicMirrorButton>.Instance.ResetCooldownAndOrEffect();
             CustomButtonSingleton<MirrorcasterUnleashButton>.Instance.ResetCooldownAndOrEffect();
             DangerAnim();
-            var text = (opt.KnowAttackType && role.ContainedRole != null) ? $"<b>{protectedPlayer.Data.PlayerName} was attacked by the {role.ContainedRole.GetRoleName()}! You can now unleash the attack onto another player!</b></color>" :
-                $"<b>{protectedPlayer.Data.PlayerName} was attacked! You can now unleash the attack onto another player!</b>";
-            var notif1 = Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Mirrorcaster.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
+            var text =
+                $"{protectedPlayer.Data.PlayerName} was attacked! You can now unleash the attack onto another player!";
+            switch (attackInfo)
+            {
+                case MirrorAttackInfo.Role:
+                    if (role.ContainedRole != null)
+                    {
+                        text =
+                            $"{protectedPlayer.Data.PlayerName} was attacked by the {role.ContainedRole.GetRoleName()}! You can now unleash the attack onto another player!";
+                    }
+                    break;
+                case MirrorAttackInfo.Faction:
+                    var faction = TouLocale.Get("CrewmateKeyword");
+                    if (source.IsNeutral())
+                    {
+                        faction = TouLocale.Get("NeutralKeyword");
+                    }
+                    else if (source.IsImpostor())
+                    {
+                        faction = TouLocale.Get("ImpKeyword");
+                    }
+                    text =
+                        $"{protectedPlayer.Data.PlayerName} was attacked by a {MiscUtils.GetColoredFactionString(faction)}! You can now unleash the attack onto another player!";
+                    break;
+                case MirrorAttackInfo.Subalignment:
+                    if (role.ContainedRole != null)
+                    {
+                        text =
+                            $"{protectedPlayer.Data.PlayerName} was attacked by a {MiscUtils.GetParsedRoleAlignment(role.ContainedRole, true)}! You can now unleash the attack onto another player!";
+                    }
+                    break;
+            }
+            var notif1 = Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f),
+                spr: TouRoleIcons.Mirrorcaster.LoadAsset());
+            notif1.AdjustNotification();
         }
         else if (opt.WhoGetsNotification is MirrorOption.MirrorcasterAndKiller && source.AmOwner)
         {

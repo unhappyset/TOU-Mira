@@ -1,5 +1,4 @@
-﻿
-using HarmonyLib;
+﻿using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 using TownOfUs.Options;
@@ -20,39 +19,47 @@ public static class IntroScenePatches
             foreach (var player in PlayerControl.AllPlayerControls)
             {
                 if (SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
+                {
                     teamToDisplay.Remove(player);
+                }
             }
         }
     }
+    
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
+    [HarmonyPriority(Priority.Last)]
+    [HarmonyPrefix]
+    public static bool ImpostorBeginPatch(IntroCutscene __instance)
+    {
+        if ( /* OptionGroupSingleton<GeneralOptions>.Instance.ImpsKnowRoles &&  */
+            !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode)
+        {
+            return true;
+        }
 
+        __instance.TeamTitle.text =
+            DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Impostor, Array.Empty<Object>());
+        __instance.TeamTitle.color = Palette.ImpostorRed;
+
+        var player = __instance.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, true);
+        __instance.ourCrewmate = player;
+
+        return false;
+    }
+    
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
-    [HarmonyPriority(Priority.Last)]
     [HarmonyPostfix]
     public static void ShowTeamPatchPostfix(IntroCutscene __instance)
     {
-        if (PlayerControl.LocalPlayer.IsImpostor())
-        {
-            if (OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode)
-            {
-                __instance.TeamTitle.text =
-                    DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Impostor,
-                        Array.Empty<Object>());
-                __instance.TeamTitle.color = Palette.ImpostorRed;
-
-                var player = __instance.CreatePlayer(0, 1, PlayerControl.LocalPlayer.Data, true);
-                __instance.ourCrewmate = player;
-            }
-        }
-        else
-        {
-            SetHiddenImpostors(__instance);
-        }
+        SetHiddenImpostors(__instance);
 
         foreach (var spec in PlayerControl.AllPlayerControls)
         {
             if (!spec || !SpectatorRole.TrackedSpectators.Contains(spec.Data.PlayerName))
+            {
                 continue;
+            }
 
             spec!.Visible = false;
             spec.Die(DeathReason.Exile, false);
@@ -76,7 +83,10 @@ public static class IntroScenePatches
         __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[FF1919FF]", "<color=#FF1919FF>");
         __instance.ImpostorText.text = __instance.ImpostorText.text.Replace("[]", "</color>");
 
-        if (!OptionGroupSingleton<RoleOptions>.Instance.RoleListEnabled) return;
+        if (!OptionGroupSingleton<RoleOptions>.Instance.RoleListEnabled)
+        {
+            return;
+        }
 
         var players = GameData.Instance.PlayerCount;
 
@@ -118,7 +128,10 @@ public static class IntroScenePatches
             }
         }
 
-        if (!buckets.Any(x => x is RoleListOption.Any)) return;
+        if (!buckets.Any(x => x is RoleListOption.Any))
+        {
+            return;
+        }
 
 
         __instance.ImpostorText.text =

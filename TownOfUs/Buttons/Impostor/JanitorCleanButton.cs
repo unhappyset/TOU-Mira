@@ -31,6 +31,18 @@ public sealed class JanitorCleanButton : TownOfUsRoleButton<JanitorRole, DeadBod
         return PlayerControl.LocalPlayer.GetNearestDeadBody(Distance);
     }
 
+    public void AftermathHandler()
+    {
+        var body = PlayerControl.LocalPlayer.GetNearestDeadBody(Distance);
+        if (body == null)
+        {
+            return;
+        }
+        CleaningBody = body;
+
+        OnEffectEnd();
+    }
+
     protected override void OnClick()
     {
         if (Target == null)

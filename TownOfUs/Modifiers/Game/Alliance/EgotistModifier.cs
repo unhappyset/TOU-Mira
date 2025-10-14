@@ -17,14 +17,18 @@ public sealed class EgotistModifier : AllianceGameModifier, IWikiDiscoverable
     public override string LocaleKey => "Egotist";
     public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
+
     public override string GetDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<symbol>", "<color=#669966>#</color>");
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription")
+            .Replace("<symbol>", "<color=#669966>#</color>");
     }
+
     public override string Symbol => "#";
     public override float IntroSize => 4f;
     public override bool DoesTasks => false;
@@ -36,6 +40,7 @@ public sealed class EgotistModifier : AllianceGameModifier, IWikiDiscoverable
 
     public int Priority { get; set; } = 5;
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
+
     public override void OnActivate()
     {
         base.OnActivate();
@@ -43,7 +48,7 @@ public sealed class EgotistModifier : AllianceGameModifier, IWikiDiscoverable
         {
             Player.AddModifier<BasicGhostModifier>();
         }
-        
+
         if (Player.HasModifier<TraitorCacheModifier>())
         {
             Player.RemoveModifier<TraitorCacheModifier>();

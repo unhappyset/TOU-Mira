@@ -36,8 +36,13 @@ public sealed class TraitorChangeButton : TownOfUsRoleButton<TraitorRole>
     {
         if (Role.ChosenRoles.Count == 0)
         {
-            var excluded = MiscUtils.AllRoles.Where(x => x is ISpawnChange { NoSpawn: true } || x is ITownOfUsRole { RoleAlignment: RoleAlignment.ImpostorPower }).Select(x => x.Role).ToList();
-            var impRoles = MiscUtils.GetRolesToAssign(ModdedRoleTeams.Impostor, x => !excluded.Contains(x.Role)).Select(x => x.RoleType).ToList();
+            var excluded = MiscUtils.AllRoles
+                .Where(x => x is ISpawnChange { NoSpawn: true } || x is ITownOfUsRole
+                {
+                    RoleAlignment: RoleAlignment.ImpostorPower
+                }).Select(x => x.Role).ToList();
+            var impRoles = MiscUtils.GetRolesToAssign(ModdedRoleTeams.Impostor, x => !excluded.Contains(x.Role))
+                .Select(x => x.RoleType).ToList();
 
             var roleList = MiscUtils.GetPotentialRoles()
                 .Where(role => role is ICustomRole)

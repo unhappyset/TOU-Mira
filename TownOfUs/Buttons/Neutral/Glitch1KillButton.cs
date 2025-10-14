@@ -41,6 +41,7 @@ public sealed class GlitchKillButton : TownOfUsRoleButton<GlitchRole, PlayerCont
         {
             return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover());
         }
+
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 }

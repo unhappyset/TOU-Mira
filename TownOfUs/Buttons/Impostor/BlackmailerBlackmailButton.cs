@@ -19,6 +19,12 @@ public sealed class BlackmailerBlackmailButton : TownOfUsRoleButton<BlackmailerR
     public override int MaxUses => (int)OptionGroupSingleton<BlackmailerOptions>.Instance.MaxBlackmails;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.BlackmailSprite;
 
+    public void AftermathHandler()
+    {
+        BlackmailerRole.RpcBlackmail(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer);
+        Timer = 60f;
+    }
+
     protected override void OnClick()
     {
         if (Target == null)

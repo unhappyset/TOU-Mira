@@ -11,14 +11,19 @@ public static class FollowerCameraPatches
     public static bool Prefix(FollowerCamera __instance)
     {
         if (!SpectatorRole.FixedCam)
+        {
             return true;
+        }
 
         if (!__instance.Target || __instance.Locked)
+        {
             return false;
+        }
 
         var v = (Vector2)__instance.Target.transform.position + __instance.Offset;
 
-        if (__instance.shakeAmount > 0f && DataManager.Settings.Gameplay.ScreenShake && __instance.OverrideScreenShakeEnabled)
+        if (__instance.shakeAmount > 0f && DataManager.Settings.Gameplay.ScreenShake &&
+            __instance.OverrideScreenShakeEnabled)
         {
             var num = Time.fixedTime * __instance.shakePeriod;
             var num2 = (Mathf.PerlinNoise(0.5f, num) * 2f) - 1f;

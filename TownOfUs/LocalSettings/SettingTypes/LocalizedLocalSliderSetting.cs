@@ -38,7 +38,7 @@ public class LocalizedLocalSliderSetting : LocalSliderSetting
     /// Gets the suffix for the number value.
     /// </summary>
     public MiraNumberSuffixes SuffixType { get; }
-    
+
     /// <summary>
     /// Gets the locale name.
     /// </summary>
@@ -88,11 +88,14 @@ public class LocalizedLocalSliderSetting : LocalSliderSetting
     }
 
     /// <inheritdoc />
-    public override GameObject CreateOption(ToggleButtonBehaviour toggle, SlideBar slider, Transform parent, ref float offset, ref int order, bool last)
+    public override GameObject CreateOption(ToggleButtonBehaviour toggle, SlideBar slider, Transform parent,
+        ref float offset, ref int order, bool last)
     {
         var newSlider = Object.Instantiate(slider, parent).GetComponent<SlideBar>();
         var rollover = newSlider.GetComponent<ButtonRolloverHandler>();
-        newSlider.Title = newSlider.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>(); // Why the hell slider has a title property that is not even assigned???
+        newSlider.Title =
+            newSlider.transform.FindChild("Text_TMP")
+                .GetComponent<TextMeshPro>(); // Why the hell slider has a title property that is not even assigned???
         newSlider.Title.GetComponent<TextTranslatorTMP>().Destroy();
         newSlider.gameObject.SetActive(true);
         newSlider.Bar.color = Tab!.TabAppearance.SliderColor;
@@ -100,7 +103,9 @@ public class LocalizedLocalSliderSetting : LocalSliderSetting
         SliderObject = newSlider;
 
         if (order == 2)
+        {
             offset += 0.5f;
+        }
 
         newSlider.Bar.transform.localPosition = new Vector3(2.85f, 0, 0);
         newSlider.transform.localPosition = new Vector3(-2.12f, 1.85f - offset, -7);
@@ -111,7 +116,8 @@ public class LocalizedLocalSliderSetting : LocalSliderSetting
         rollover.OutColor = Tab!.TabAppearance.SliderColor;
         rollover.OverColor = Tab!.TabAppearance.SliderHoverColor;
         newSlider.Title.transform.localPosition = new Vector3(0.5f, 0, -1f);
-        newSlider.Title.horizontalAlignment = DisplayValue ? HorizontalAlignmentOptions.Left : HorizontalAlignmentOptions.Center;
+        newSlider.Title.horizontalAlignment =
+            DisplayValue ? HorizontalAlignmentOptions.Left : HorizontalAlignmentOptions.Center;
         newSlider.Title.text = GetValueText();
 
         newSlider.OnValueChange.AddListener((UnityAction)(() =>
@@ -137,11 +143,14 @@ public class LocalizedLocalSliderSetting : LocalSliderSetting
             var value = GetValue();
             var formated = Helpers.FormatValue(value, SuffixType, FormatString);
             var maxFormated = Helpers.FormatValue(SliderRange.max, SuffixType, FormatString);
-            return $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{TouLocale.Get(LocaleKey)}: <b>{formated} / {maxFormated}</font></b>";
+            return
+                $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{TouLocale.Get(LocaleKey)}: <b>{formated} / {maxFormated}</font></b>";
         }
 
-        return $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{TouLocale.Get(LocaleKey)}</font></b>";
+        return
+            $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{TouLocale.Get(LocaleKey)}</font></b>";
     }
+
     /// <inheritdoc/>
     public static string GetLocalizedValueText(LocalizedLocalSliderSetting slider, string localeName)
     {
@@ -150,9 +159,11 @@ public class LocalizedLocalSliderSetting : LocalSliderSetting
             var value = slider.GetValue();
             var formated = Helpers.FormatValue(value, slider.SuffixType, slider.FormatString);
             var maxFormated = Helpers.FormatValue(slider.SliderRange.max, slider.SuffixType, slider.FormatString);
-            return $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{TouLocale.Get(localeName)}: <b>{formated} / {maxFormated}</font></b>";
+            return
+                $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{TouLocale.Get(localeName)}: <b>{formated} / {maxFormated}</font></b>";
         }
 
-        return $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{TouLocale.Get(localeName)}</font></b>";
+        return
+            $"<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - Chat Message Masked\">{TouLocale.Get(localeName)}</font></b>";
     }
 }

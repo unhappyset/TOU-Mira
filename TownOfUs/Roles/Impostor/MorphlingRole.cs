@@ -17,14 +17,14 @@ namespace TownOfUs.Roles.Impostor;
 
 public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
-    [HideFromIl2Cpp]
-    public PlayerControl? Sampled { get; set; }
+    [HideFromIl2Cpp] public PlayerControl? Sampled { get; set; }
     public DoomableType DoomHintType => DoomableType.Perception;
     public string LocaleKey => "Morphling";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+    public static string MorphedString = TouLocale.GetParsed("TouRoleMorphlingTabMorphed");
+
     public string GetAdvancedDescription()
     {
         return
@@ -53,10 +53,10 @@ public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
 
-        if (Player.HasModifier<MorphlingMorphModifier>())
+        if (Sampled != null && Player.HasModifier<MorphlingMorphModifier>())
         {
             stringB.Append(CultureInfo.InvariantCulture,
-                $"\n<b>Morphed As:</b> {Sampled!.Data.Color.ToTextColor()}{Sampled.Data.PlayerName}</color>");
+                $"\n<b>{MorphedString.Replace("<player>", $"{Sampled.Data.Color.ToTextColor()}{Sampled.Data.PlayerName}</color>")}</b>");
         }
 
         return stringB;
@@ -69,12 +69,12 @@ public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Sample",
-            "Take a DNA sample of a player to morph into them later.",
-            TouImpAssets.SampleSprite),
-        new("Morph",
-            "Morph into the appearance of the sampled player, which can be cancelled early.",
-            TouImpAssets.MorphSprite)
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Sample", "Sample"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}SampleWikiDescription"),
+                    TouImpAssets.SampleSprite),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Morph", "Morph"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}MorphWikiDescription"),
+                    TouImpAssets.MorphSprite)
             };
         }
     }
@@ -89,6 +89,7 @@ public sealed class MorphlingRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
+        MorphedString = TouLocale.GetParsed("TouRoleMorphlingTabMorphed");
         CustomButtonSingleton<MorphlingMorphButton>.Instance.SetActive(false, this);
     }
 

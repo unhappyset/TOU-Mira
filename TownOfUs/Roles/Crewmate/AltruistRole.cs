@@ -30,7 +30,7 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
@@ -45,12 +45,13 @@ public sealed class AltruistRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         {
             return new List<CustomButtonWikiDescription>
             {
-        new(TouLocale.GetParsed($"TouRole{LocaleKey}Revive", "Revive"),
-            TouLocale.GetParsed($"TouRole{LocaleKey}ReviveWikiDescription"),
-            TouCrewAssets.ReviveSprite)
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Revive", "Revive"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}ReviveWikiDescription"),
+                    TouCrewAssets.ReviveSprite)
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Altruist;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;

@@ -98,7 +98,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             {
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Observe", "Observe"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}ObserveWikiDescription"),
-            TouNeutAssets.Observe)
+                    TouNeutAssets.Observe)
             };
         }
     }
@@ -160,7 +160,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
             meetingMenu?.Dispose();
             meetingMenu = null!;
         }
-        
+
         if (!Player.HasModifier<BasicGhostModifier>() && AllGuessesCorrect)
         {
             Player.AddModifier<BasicGhostModifier>();
@@ -214,7 +214,8 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
             if (hint.Contains("STRMISS"))
             {
-                reportBuilder.AppendLine(TownOfUsPlugin.Culture, $"{fallback.Replace("<player>", player.PlayerName)}\n");
+                reportBuilder.AppendLine(TownOfUsPlugin.Culture,
+                    $"{fallback.Replace("<player>", player.PlayerName)}\n");
             }
             else
             {
@@ -226,7 +227,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                     x is not IUnguessable || x is not IDoomable) && !x.IsDead).ToList();
             roles = roles.OrderBy(x => x.GetRoleName()).ToList();
             var lastRole = roles[roles.Count - 1];
-            
+
             if (hintType != DoomableType.Default)
             {
                 roles = MiscUtils.AllRoles
@@ -242,11 +243,13 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                 {
                     if (role2 == lastRole)
                     {
-                        reportBuilder.Append(TownOfUsPlugin.Culture, $"#{lastRole.GetRoleName().ToLowerInvariant().Replace(" ", "-")})");
+                        reportBuilder.Append(TownOfUsPlugin.Culture,
+                            $"#{lastRole.GetRoleName().ToLowerInvariant().Replace(" ", "-")})");
                     }
                     else
                     {
-                        reportBuilder.Append(TownOfUsPlugin.Culture, $"#{role2.GetRoleName().ToLowerInvariant().Replace(" ", "-")}, ");
+                        reportBuilder.Append(TownOfUsPlugin.Culture,
+                            $"#{role2.GetRoleName().ToLowerInvariant().Replace(" ", "-")}, ");
                     }
                 }
             }
@@ -258,7 +261,8 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
         if (HudManager.Instance && report.Length > 0)
         {
-            var title = $"<color=#{TownOfUsColors.Doomsayer.ToHtmlStringRGBA()}>{TouLocale.Get("TouRoleDoomsayerMessageTitle")}</color>";
+            var title =
+                $"<color=#{TownOfUsColors.Doomsayer.ToHtmlStringRGBA()}>{TouLocale.Get("TouRoleDoomsayerMessageTitle")}</color>";
             MiscUtils.AddFakeChat(Player.Data, title, report, false, true);
         }
     }
@@ -285,7 +289,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
         {
             return;
         }
-        
+
         if (Minigame.Instance != null)
         {
             return;
@@ -361,10 +365,9 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                     ? $"<b>{TouLocale.GetParsed("TouRoleDoomsayerMisguessOne")}</b>"
                     : $"<b>{TouLocale.GetParsed("TouRoleDoomsayerMisguessMultiple").Replace("<misguessCount>", $"{NumberOfGuesses - AllVictims.Count}")}</b>";
                 var notif1 = Helpers.CreateAndShowNotification(
-                    text, Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
+                    text, Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Doomsayer.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                notif1.AdjustNotification();
 
                 Coroutines.Start(MiscUtils.CoFlash(Color.red));
             }
@@ -378,10 +381,10 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
                     }
                     else
                     {
-                        Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false,
+                        Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false,
+                            showKillAnim: false,
                             playKillSound: false);
                     }
-
                 }
                 else
                 {
@@ -412,6 +415,7 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
 
                     return;
                 }
+
                 // no incorrect guesses so this should be the target not the Doomsayer
                 Player.RpcCustomMurder(victim, createDeadBody: false, teleportMurderer: false, showKillAnim: false,
                     playKillSound: false);
@@ -438,13 +442,12 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
     private static bool IsRoleValid(RoleBehaviour role)
     {
         var unguessableRole = role as IUnguessable;
-        var touRole = role as ITownOfUsRole;
         if (role.IsDead || role is IGhostRole || (unguessableRole != null && !unguessableRole.IsGuessable))
         {
             return false;
         }
-        
-        if (touRole?.RoleAlignment == RoleAlignment.CrewmateInvestigative)
+
+        if (role.GetRoleAlignment() == RoleAlignment.CrewmateInvestigative)
         {
             return OptionGroupSingleton<DoomsayerOptions>.Instance.DoomGuessInvest;
         }
@@ -455,18 +458,17 @@ public sealed class DoomsayerRole(IntPtr cppPtr)
     [MethodRpc((uint)TownOfUsRpc.DoomsayerWin)]
     public static void RpcDoomsayerWin(PlayerControl player)
     {
-        if (player.Data.Role is not DoomsayerRole)
+        if (player.Data.Role is not DoomsayerRole doom)
         {
             Logger<TownOfUsPlugin>.Error("RpcDoomsayerWin - Invalid Doomsayer");
             return;
         }
 
-        var doom = player.GetRole<DoomsayerRole>();
-        doom!.AllGuessesCorrect = true;
-
         if (GameHistory.PlayerStats.TryGetValue(player.PlayerId, out var stats))
         {
-            stats.CorrectAssassinKills++;
+            stats.CorrectAssassinKills = doom.NumberOfGuesses;
         }
+        
+        doom.AllGuessesCorrect = true;
     }
 }

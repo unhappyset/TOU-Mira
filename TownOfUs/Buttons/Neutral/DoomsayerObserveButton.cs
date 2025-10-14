@@ -44,9 +44,8 @@ public sealed class DoomsayerObserveButton : TownOfUsRoleButton<DoomsayerRole, P
 
         var notif1 = Helpers.CreateAndShowNotification(
             $"<b>{TownOfUsColors.Doomsayer.ToTextColor()}You will recieve a report on {Target.Data.PlayerName} during the next meeting. This will help you narrow down their role.</color></b>",
-            Color.white, spr: TouRoleIcons.Doomsayer.LoadAsset());
+            Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Doomsayer.LoadAsset());
 
-        notif1.Text.SetOutlineThickness(0.35f);
-        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        notif1.AdjustNotification();
     }
 }

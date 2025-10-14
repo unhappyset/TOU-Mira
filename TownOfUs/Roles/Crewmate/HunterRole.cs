@@ -29,13 +29,14 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -45,7 +46,8 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
             {
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Stalk", "Stalk"),
                     TouLocale.GetParsed($"TouRole{LocaleKey}StalkWikiDescription")
-                        .Replace("<hunterMaxStalkUsages>", $"{(int)OptionGroupSingleton<HunterOptions>.Instance.StalkUses}"),
+                        .Replace("<hunterMaxStalkUsages>",
+                            $"{(int)OptionGroupSingleton<HunterOptions>.Instance.StalkUses}"),
                     TouCrewAssets.StalkButtonSprite)
             };
         }
@@ -74,7 +76,8 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         stringB.AppendLine(CultureInfo.InvariantCulture, $"{TouLocale.Get("TouRoleHunterStalking")}: <b>{stalked}</b>");
         if (CaughtPlayers.Count != 0)
         {
-            stringB.AppendLine(CultureInfo.InvariantCulture, $"<b>{TouLocale.Get("TouRoleHunterCaughtPlayersText")}</b>");
+            stringB.AppendLine(CultureInfo.InvariantCulture,
+                $"<b>{TouLocale.Get("TouRoleHunterCaughtPlayersText")}</b>");
         }
 
         foreach (var player in CaughtPlayers)
@@ -123,15 +126,9 @@ public sealed class HunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRo
         }
 
         // this sound normally plays on the source only
-        if (!hunter.AmOwner)
-        {
             SoundManager.Instance.PlaySound(hunter.KillSfx, false, 0.8f);
-        }
 
         // this kill animations normally plays on the target only
-        if (!target.AmOwner)
-        {
-            HudManager.Instance.KillOverlay.ShowKillAnimation(hunter.Data, target.Data);
-        }
+        HudManager.Instance.KillOverlay.ShowKillAnimation(hunter.Data, target.Data);
     }
 }

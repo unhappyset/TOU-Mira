@@ -18,8 +18,7 @@ public sealed class DetectiveTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
 {
     public override bool IsAffectedByComms => false;
 
-    [HideFromIl2Cpp]
-    public CrimeSceneComponent? InvestigatingScene { get; set; }
+    [HideFromIl2Cpp] public CrimeSceneComponent? InvestigatingScene { get; set; }
 
     [HideFromIl2Cpp] public List<byte> InvestigatedPlayers { get; init; } = new();
 
@@ -28,13 +27,14 @@ public sealed class DetectiveTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -42,15 +42,16 @@ public sealed class DetectiveTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
         {
             return new List<CustomButtonWikiDescription>
             {
-        new(TouLocale.GetParsed($"TouRole{LocaleKey}Inspect", "Inspect"),
-            TouLocale.GetParsed($"TouRole{LocaleKey}InspectWikiDescription"),
-            TouCrewAssets.InspectSprite),
-        new(TouLocale.GetParsed($"TouRole{LocaleKey}Examine", "Examine"),
-            TouLocale.GetParsed($"TouRole{LocaleKey}ExamineWikiDescription"),
-            TouCrewAssets.ExamineSprite)
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Inspect", "Inspect"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}InspectWikiDescription"),
+                    TouCrewAssets.InspectSprite),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Examine", "Examine"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}ExamineWikiDescription"),
+                    TouCrewAssets.ExamineSprite)
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Detective;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
@@ -94,7 +95,7 @@ public sealed class DetectiveTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.Detective.ToTextColor()}{player.Data.PlayerName} was at the scene of {deadPlayer.Data.PlayerName}'s death!\nThey might be the killer or a witness.</b></color>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Detective.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.AdjustNotification();
         }
         else
         {
@@ -102,7 +103,7 @@ public sealed class DetectiveTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.Detective.ToTextColor()}{player.Data.PlayerName} was not at the scene of the crime.</b></color>",
                 Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Detective.LoadAsset());
-            notif1.Text.SetOutlineThickness(0.35f);
+            notif1.AdjustNotification();
         }
     }
 

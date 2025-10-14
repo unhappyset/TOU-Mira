@@ -5,7 +5,9 @@ namespace TownOfUs;
 
 public static class TownOfUsColors
 {
-    public static bool UseBasic { get; set; } = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+    public static bool UseBasic { get; set; } =
+        LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+
     public static Color Crewmate => Palette.CrewmateRoleBlue;
     public static Color Impostor => Palette.ImpostorRed;
     public static Color ImpSoft => new Color32(214, 64, 66, 255);
@@ -56,6 +58,7 @@ public static class TownOfUsColors
     public static Color Mercenary => new Color32(140, 102, 153, 255);
     public static Color Survivor => new Color32(255, 230, 77, 255);
 
+    public static Color Chef => new Color32(218, 162, 103, 255);
     public static Color Doomsayer => new Color32(0, 255, 128, 255);
     public static Color Executioner => new Color32(99, 59, 31, 255);
     public static Color Inquisitor => new Color32(217, 66, 145, 255);
@@ -108,5 +111,4 @@ public static class TownOfUsColors
 
     // Neutral Modifiers
     public static Color Camouflaged => Color.gray;
-
 }

@@ -30,17 +30,20 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     public bool Setup { get; set; }
     public bool Caught { get; set; }
     public bool Faded { get; set; }
+
     public bool CanBeClicked
     {
         get
         {
-            return TaskStage is GhostTaskStage.Clickable || TaskStage is GhostTaskStage.Revealed || TaskStage is GhostTaskStage.CompletedTasks;
+            return TaskStage is GhostTaskStage.Clickable || TaskStage is GhostTaskStage.Revealed ||
+                   TaskStage is GhostTaskStage.CompletedTasks;
         }
         set
         {
             // Left Alone
         }
     }
+
     public GhostTaskStage TaskStage { get; private set; } = GhostTaskStage.Unclickable;
     public bool GhostActive => Setup && !Caught;
 
@@ -56,7 +59,8 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
 
         if (options.HaunterCanBeClickedBy == HaunterRoleClickableType.NonCrew &&
             !(PlayerControl.LocalPlayer.IsImpostor() || PlayerControl.LocalPlayer.Is(RoleAlignment.NeutralKilling)
-                || PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(out var allyMod) && allyMod.GetsPunished))
+                                                     || PlayerControl.LocalPlayer.TryGetModifier<AllianceGameModifier>(
+                                                         out var allyMod) && allyMod.GetsPunished))
         {
             return false;
         }
@@ -68,7 +72,16 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     {
         Setup = true;
 
-        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Setup HaunterRole '{Player.Data.PlayerName}'");
+        if (HudManagerPatches.CamouflageCommsEnabled)
+        {
+            Player.SetCamouflage(false);
+        }
+
+        if (TownOfUsPlugin.IsDevBuild)
+        {
+            Logger<TownOfUsPlugin>.Error($"Setup HaunterRole '{Player.Data.PlayerName}'");
+        }
+
         Player.gameObject.layer = LayerMask.NameToLayer("Players");
 
         Player.gameObject.GetComponent<PassiveButton>().OnClick = new Button.ButtonClickedEvent();
@@ -108,6 +121,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             // Logger<TownOfUsPlugin>.Message($"HaunterRole.FadeUpdate UnFaded");
         }
     }
+
     public void FixedUpdate()
     {
         if (Player == null || Player.Data.Role is not HaunterRole || MeetingHud.Instance)
@@ -120,7 +134,11 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
 
     public void Clicked()
     {
-        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Message($"HaunterRole.Clicked");
+        if (TownOfUsPlugin.IsDevBuild)
+        {
+            Logger<TownOfUsPlugin>.Message($"HaunterRole.Clicked");
+        }
+
         Caught = true;
         Player.Exiled();
 
@@ -136,13 +154,14 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     public Color RoleColor => TownOfUsColors.Haunter;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;
@@ -178,6 +197,11 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         if (TutorialManager.InstanceExists)
         {
             Setup = true;
+
+            if (HudManagerPatches.CamouflageCommsEnabled)
+            {
+                Player.SetCamouflage(false);
+            }
 
             Coroutines.Start(SetTutorialCollider(Player));
 
@@ -275,6 +299,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
         {
             return;
         }
+
         var realTasks = Player.myTasks.ToArray()
             .Where(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>()).ToList();
 
@@ -288,9 +313,10 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
             if (Player.AmOwner)
             {
                 var notif1 = Helpers.CreateAndShowNotification(
-                    $"<b>{TownOfUsColors.Haunter.ToTextColor()}You are now clickable by players!</b></color>", Color.white,
+                    $"<b>{TownOfUsColors.Haunter.ToTextColor()}You are now clickable by players!</b></color>",
+                    Color.white,
                     new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
             }
         }
 
@@ -304,7 +330,7 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{TownOfUsColors.Haunter.ToTextColor()}You have alerted the Killers!</b></color>", Color.white,
                     new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
             }
             else if (IsTargetOfHaunter(PlayerControl.LocalPlayer))
             {
@@ -315,21 +341,21 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{TownOfUsColors.Haunter.ToTextColor()}A Haunter is loose, catch them before they reveal you!</b></color>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
             }
         }
-        
+
         if (!CompletedAllTasks && completedTasks == realTasks.Count)
         {
             TaskStage = GhostTaskStage.CompletedTasks;
-            
+
             if (Player.AmOwner)
             {
                 Coroutines.Start(MiscUtils.CoFlash(Color.white));
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{TownOfUsColors.Haunter.ToTextColor()}You have revealed the Killers!</b></color>", Color.white,
                     new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
             }
             else if (IsTargetOfHaunter(PlayerControl.LocalPlayer))
             {
@@ -340,10 +366,15 @@ public sealed class HaunterRole(IntPtr cppPtr) : CrewmateGhostRole(cppPtr), ITow
                 var notif1 = Helpers.CreateAndShowNotification(
                     $"<b>{TownOfUsColors.Haunter.ToTextColor()}The Haunter has completed their tasks!</b></color>",
                     Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Haunter.LoadAsset());
-                notif1.Text.SetOutlineThickness(0.35f);
+                notif1.AdjustNotification();
             }
         }
-        if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Haunter Stage for '{Player.Data.PlayerName}': {TaskStage.ToDisplayString()} - ({completedTasks} / {realTasks.Count})");
+
+        if (TownOfUsPlugin.IsDevBuild)
+        {
+            Logger<TownOfUsPlugin>.Error(
+                $"Haunter Stage for '{Player.Data.PlayerName}': {TaskStage.ToDisplayString()} - ({completedTasks} / {realTasks.Count})");
+        }
     }
 
     public static bool IsTargetOfHaunter(PlayerControl player)

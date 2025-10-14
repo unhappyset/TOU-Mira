@@ -13,9 +13,11 @@ using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Modules.Components;
 using TownOfUs.Options;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles;
+using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities;
 
 namespace TownOfUs.Patches;
@@ -64,6 +66,16 @@ public static class LogicGameFlowPatches
         return false;
     }
 
+    public static bool CheckEndGameViaHexBomb(LogicGameFlowNormal instance)
+    {
+        if (HexBombSabotageSystem.BombFinished && SpellslingerRole.EveryoneHexed() && CustomRoleUtils.GetActiveRolesOfType<SpellslingerRole>().Any())
+        {
+            instance.Manager.RpcEndGame(GameOverReason.ImpostorsBySabotage, false);
+            return true;
+        }
+        return false;
+    }
+
     [HarmonyPatch(typeof(GameData), nameof(GameData.RecomputeTaskCounts))]
     [HarmonyPrefix]
     private static bool RecomputeTasksPatch(GameData __instance)
@@ -78,8 +90,11 @@ public static class LogicGameFlowPatches
         for (var i = 0; i < __instance.AllPlayers.Count; i++)
         {
             var playerInfo = __instance.AllPlayers.ToArray()[i];
-            if (playerInfo.Disconnected || !playerInfo.Object || playerInfo.Tasks == null || playerInfo.Object == null) continue;
-            
+            if (playerInfo == null || playerInfo.Disconnected || !playerInfo.Object || playerInfo.Tasks == null || playerInfo.Object == null)
+            {
+                continue;
+            }
+
             if ((GameOptionsManager.Instance.currentNormalGameOptions.GhostsDoTasks || !playerInfo.IsDead) &&
                 !playerInfo._object.IsImpostor() &&
                 !(
@@ -125,7 +140,7 @@ public static class LogicGameFlowPatches
         {
             return false;
         }
-        
+
         // Prevents game end on exile screen
         if (ExileController.Instance)
         {
@@ -163,6 +178,11 @@ public static class LogicGameFlowPatches
                 __instance.EndGameForSabotage();
                 criticalSabotage.ClearSabotage();
             }
+        }
+
+        if (CheckEndGameViaHexBomb(__instance))
+        {
+            return false;
         }
 
         if (CheckEndGameViaTasks(__instance))

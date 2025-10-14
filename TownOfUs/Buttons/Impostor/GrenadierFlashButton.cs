@@ -7,6 +7,7 @@ using Reactor.Utilities;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Options.Roles.Impostor;
 using TownOfUs.Roles.Impostor;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Buttons.Impostor;
@@ -21,6 +22,11 @@ public sealed class GrenadierFlashButton : TownOfUsRoleButton<GrenadierRole>, IA
     public override int MaxUses => (int)OptionGroupSingleton<GrenadierOptions>.Instance.MaxFlashes;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.FlashSprite;
 
+    public void AftermathHandler()
+    {
+        ClickHandler();
+    }
+
     protected override void OnClick()
     {
         var flashRadius = OptionGroupSingleton<GrenadierOptions>.Instance.FlashRadius;
@@ -34,11 +40,10 @@ public sealed class GrenadierFlashButton : TownOfUsRoleButton<GrenadierRole>, IA
 
         PlayerControl.LocalPlayer.RpcAddModifier<GrenadierFlashModifier>(PlayerControl.LocalPlayer);
         var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}All players around you are now flashbanged!</color></b>", Color.white,
+            $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}All players around you are now flashbanged!</color></b>",
+            Color.white, new Vector3(0f, 1f, -150f),
             spr: TouRoleIcons.Grenadier.LoadAsset());
-        
-        notif1.Text.SetOutlineThickness(0.35f);
-        notif1.transform.localPosition = new Vector3(0f, 1f, -150f);
+        notif1.AdjustNotification();
 
         Coroutines.Start(
             Effects.Shake(HudManager.Instance.PlayerCam.transform, 0.2f, 0.1f, true, true).WrapToManaged());

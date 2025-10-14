@@ -13,6 +13,8 @@ public static class EnsureSpecAlwaysInvis
     public static void Prefix(PlayerControl __instance, ref bool value)
     {
         if (value)
+        {
             value &= !__instance.Is((RoleTypes)RoleId.Get<SpectatorRole>());
+        }
     }
 }

@@ -6,11 +6,13 @@ using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
+using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using TownOfUs.Buttons.Neutral;
 using TownOfUs.Interfaces;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Crewmate;
@@ -32,7 +34,7 @@ public sealed class MercenaryRole(IntPtr cppPtr)
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
@@ -56,9 +58,12 @@ public sealed class MercenaryRole(IntPtr cppPtr)
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Mercenary;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
+
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
+
     // This is so the role can be guessed without requiring it to be enabled normally
     public bool CanBeGuessed =>
         (MiscUtils.GetPotentialRoles()
@@ -81,27 +86,39 @@ public sealed class MercenaryRole(IntPtr cppPtr)
         var stringB = ITownOfUsRole.SetNewTabText(this);
         var players = ModifierUtils.GetPlayersWithModifier<MercenaryBribedModifier>();
 
-        stringB.Append(CultureInfo.InvariantCulture, $"\n<b>Gold:</b> {Gold}");
+        stringB.Append(CultureInfo.InvariantCulture, $"\n<b>{TouLocale.GetParsed("TouRoleMercenaryTabGoldCounter").Replace("<count>", $"{Gold}")}</b>");
 
         var playerControls = players as PlayerControl[] ?? [.. players];
         if (playerControls.Length != 0)
         {
-            stringB.Append("\n<b>Bribed:</b>");
-        }
+            stringB.Append(CultureInfo.InvariantCulture, $"\n<b>{TouLocale.Get("TouRoleMercenaryTabBribedInfo")}</b>");
 
-        foreach (var player in playerControls)
-        {
-            stringB.Append(CultureInfo.InvariantCulture, $"\n{player.Data.PlayerName}");
+            foreach (var player in playerControls)
+            {
+                stringB.Append(CultureInfo.InvariantCulture, $"\n{player.Data.PlayerName}");
+            }
         }
 
         return stringB;
+    }
+    
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+
+        if (!Player.HasModifier<BasicGhostModifier>() && ModifierUtils.GetActiveModifiers<MercenaryBribedModifier>(x => x.Mercenary == Player).Any())
+        {
+            Player.AddModifier<BasicGhostModifier>();
+        }
     }
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
         var bribed = ModifierUtils.GetPlayersWithModifier<MercenaryBribedModifier>(x => x.Mercenary == Player);
 
-        return bribed.Any(x => x.Data.Role.DidWin(gameOverReason) || x.GetModifiers<GameModifier>().Any(x => x.DidWin(gameOverReason) == true));
+        return bribed.Any(x =>
+            x.Data.Role.DidWin(gameOverReason) ||
+            x.GetModifiers<GameModifier>().Any(x => x.DidWin(gameOverReason) == true));
     }
 
     public void AddPayment()

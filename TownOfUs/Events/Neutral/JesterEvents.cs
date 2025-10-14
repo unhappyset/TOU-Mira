@@ -14,6 +14,7 @@ using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TownOfUs.Events.Neutral;
@@ -46,22 +47,24 @@ public static class JesterEvents
                 {
                     text = text.Replace(jestRoleName, $"{TownOfUsColors.Jester.ToTextColor()}{jestRoleName}</color>");
                 }
-                var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: TouRoleIcons.Jester.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                var notif1 = Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f),
+                    spr: TouRoleIcons.Jester.LoadAsset());
+
+                notif1.AdjustNotification();
                 if (OptionGroupSingleton<JesterOptions>.Instance.JestWin is JestWinOptions.Haunts)
                 {
                     CustomButtonSingleton<JesterHauntButton>.Instance.SetActive(true, jester);
-                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "null", -1, DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
-                    var notif2 = Helpers.CreateAndShowNotification(TouLocale.GetParsed("TouNotifJesterHauntOwner"), Color.white);
-
-                    notif2.Text.SetOutlineThickness(0.35f);
-                    notif2.transform.localPosition = new Vector3(0f, 0.85f, -20f);
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "null", -1,
+                        DeathHandlerOverride.SetTrue, lockInfo: DeathHandlerOverride.SetTrue);
+                    var notif2 = Helpers.CreateAndShowNotification(TouLocale.GetParsed("TouNotifJesterHauntOwner"),
+                        Color.white, new Vector3(0f, 0.85f, -20f));
+                    notif2.AdjustNotification();
                 }
                 else
                 {
-                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "null", -1, DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
+                    DeathHandlerModifier.RpcUpdateDeathHandler(PlayerControl.LocalPlayer, "null", -1,
+                        DeathHandlerOverride.SetFalse, lockInfo: DeathHandlerOverride.SetTrue);
                 }
             }
             else
@@ -71,15 +74,15 @@ public static class JesterEvents
                 {
                     text = text.Replace(jestRoleName, $"{TownOfUsColors.Jester.ToTextColor()}{jestRoleName}</color>");
                 }
+
                 if (text.Contains("<player>"))
                 {
                     text = text.Replace("<player>", jester.Player.Data.PlayerName);
                 }
-                
-                var notif1 = Helpers.CreateAndShowNotification(text, Color.white, spr: TouRoleIcons.Jester.LoadAsset());
 
-                notif1.Text.SetOutlineThickness(0.35f);
-                notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                var notif1 = Helpers.CreateAndShowNotification(text, Color.white, new Vector3(0f, 1f, -20f),
+                    spr: TouRoleIcons.Jester.LoadAsset());
+                notif1.AdjustNotification();
             }
         }
     }
@@ -89,10 +92,13 @@ public static class JesterEvents
     {
         foreach (var jester in CustomRoleUtils.GetActiveRolesOfType<JesterRole>())
         {
-            if (!jester.AboutToWin) jester.Voters.Clear();
+            if (!jester.AboutToWin)
+            {
+                jester.Voters.Clear();
+            }
         }
     }
-    
+
     [RegisterEvent]
     public static void HandleVoteEventHandler(HandleVoteEvent @event)
     {
@@ -106,7 +112,7 @@ public static class JesterEvents
 
         jester.Voters.Add(votingPlayer.PlayerId);
     }
- 
+
     [RegisterEvent]
     public static void EjectionEventHandler(EjectionEvent @event)
     {
@@ -116,7 +122,7 @@ public static class JesterEvents
         {
             return;
         }
-        
+
         jest.SentWinMsg = false;
         jest.AboutToWin = true;
         if (!PlayerControl.LocalPlayer.IsHost())
@@ -137,7 +143,7 @@ public static class JesterEvents
             {
                 player.AddModifier<MisfortuneTargetModifier>();
             }
-            
+
             CustomButtonSingleton<JesterHauntButton>.Instance.Show = true;
         }
     }

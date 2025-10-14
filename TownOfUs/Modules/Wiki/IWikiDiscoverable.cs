@@ -12,7 +12,9 @@ public interface IWikiDiscoverable
 
     public string SecondTabName => TouLocale.Get("WikiAbilitiesTab", "Abilities");
     public bool IsHiddenFromList => false;
-    public uint FakeTypeId => ModifierManager.GetModifierTypeId(GetType()) ?? throw new InvalidOperationException("Modifier is not registered.");
+
+    public uint FakeTypeId => ModifierManager.GetModifierTypeId(GetType()) ??
+                              throw new InvalidOperationException("Modifier is not registered.");
 
     public string GetAdvancedDescription()
     {

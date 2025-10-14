@@ -17,7 +17,7 @@ public sealed class PlumberOptions : AbstractOptionGroup<PlumberRole>
 
     [ModdedNumberOption("Max Number Of Barricades", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxBarricades { get; set; } = 3f;
-    
+
     [ModdedNumberOption("Amount Of Rounds Barricades Last", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float BarricadeRoundDuration { get; set; } = 2f;
 

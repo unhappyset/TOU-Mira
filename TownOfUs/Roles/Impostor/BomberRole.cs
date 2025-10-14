@@ -28,6 +28,14 @@ public sealed class BomberRole(IntPtr cppPtr)
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
 
+    public string GetAdvancedDescription()
+    {
+        return
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription").Replace("<detonateDelay>",
+                $"{OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay}") +
+            MiscUtils.AppendOptionsText(GetType());
+    }
+
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorKilling;
@@ -44,13 +52,6 @@ public sealed class BomberRole(IntPtr cppPtr)
         return ITownOfUsRole.SetNewTabText(this);
     }
 
-    public string GetAdvancedDescription()
-    {
-        return
-            $"The {RoleName} is an Impostor Killing role that can drop a bomb on the map, which detonates after {OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay} second(s)" +
-            MiscUtils.AppendOptionsText(GetType());
-    }
-
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -58,9 +59,10 @@ public sealed class BomberRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Place",
-            $"Place a bomb, showing the radius in which it'll kill, killing up to {(int)OptionGroupSingleton<BomberOptions>.Instance.MaxKillsInDetonation} player(s)",
-            TouImpAssets.PlaceSprite)
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Place", "Place"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}PlaceWikiDescription").Replace("<maxKills>",
+                        $"{(int)OptionGroupSingleton<BomberOptions>.Instance.MaxKillsInDetonation}"),
+                    TouImpAssets.PlaceSprite)
             };
         }
     }

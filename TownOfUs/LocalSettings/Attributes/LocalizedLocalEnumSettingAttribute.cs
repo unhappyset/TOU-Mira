@@ -16,7 +16,7 @@ public class LocalizedLocalEnumSettingAttribute(
     string? name = null,
     string? description = null,
     string[]? names = null
-    ) : LocalEnumSettingAttribute(name, description)
+) : LocalEnumSettingAttribute(name, description)
 {
     private readonly string? _name = name;
     private readonly string? _description = description;
@@ -24,6 +24,7 @@ public class LocalizedLocalEnumSettingAttribute(
     /// <inheritdoc/>
     public override LocalizedLocalEnumSetting CreateSetting(Type tab, ConfigEntryBase configEntryBase)
     {
-        return new LocalizedLocalEnumSetting(tab, configEntryBase, configEntryBase.SettingType, _name, _description, names);
+        return new LocalizedLocalEnumSetting(tab, configEntryBase, configEntryBase.SettingType, _name, _description,
+            names);
     }
 }

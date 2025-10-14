@@ -12,12 +12,16 @@ using UnityEngine;
 
 namespace TownOfUs.Buttons.Crewmate;
 
-public sealed class MirrorcasterUnleashButton : TownOfUsRoleButton<MirrorcasterRole, PlayerControl>, IDiseaseableButton, IKillButton
+public sealed class MirrorcasterUnleashButton : TownOfUsRoleButton<MirrorcasterRole, PlayerControl>, IDiseaseableButton,
+    IKillButton
 {
     public override string Name => TouLocale.Get("TouRoleMirrorcasterUnleash", "Unleash");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TownOfUsColors.Mirrorcaster;
-    public override float Cooldown => OptionGroupSingleton<MirrorcasterOptions>.Instance.UnleashCooldown.Value + MapCooldown;
+
+    public override float Cooldown =>
+        OptionGroupSingleton<MirrorcasterOptions>.Instance.UnleashCooldown.Value + MapCooldown;
+
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.UnleashSprite;
 
     public void SetDiseasedTimer(float multiplier)
@@ -43,6 +47,7 @@ public sealed class MirrorcasterUnleashButton : TownOfUsRoleButton<MirrorcasterR
         {
             return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover());
         }
+
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 
@@ -54,8 +59,9 @@ public sealed class MirrorcasterUnleashButton : TownOfUsRoleButton<MirrorcasterR
         }
 
         var isValid = base.IsTargetValid(target);
-        
-        if (isValid && target != null && target.TryGetModifier<MagicMirrorModifier>(out var mirrorMod) && mirrorMod.Mirrorcaster == PlayerControl.LocalPlayer)
+
+        if (isValid && target != null && target.TryGetModifier<MagicMirrorModifier>(out var mirrorMod) &&
+            mirrorMod.Mirrorcaster == PlayerControl.LocalPlayer)
         {
             isValid = false;
         }

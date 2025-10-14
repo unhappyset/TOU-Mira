@@ -71,6 +71,7 @@ public sealed class AltruistReviveButton : TownOfUsRoleButton<AltruistRole>
                 AltruistRole.RpcRevive(PlayerControl.LocalPlayer, player);
             }
         }
+
         OverrideName(TouLocale.Get("TouRoleAltruistReviving", "Reviving"));
     }
 

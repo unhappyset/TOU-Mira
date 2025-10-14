@@ -28,6 +28,7 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription") + MiscUtils.AppendOptionsText(GetType());
@@ -40,9 +41,9 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
         {
             return new List<CustomButtonWikiDescription>
             {
-        new(TouLocale.Get($"TouModifier{LocaleKey}Disperse"),
-            TouLocale.GetParsed($"TouModifier{LocaleKey}DisperseWikiDescription"),
-            TouAssets.DisperseSprite)
+                new(TouLocale.Get($"TouModifier{LocaleKey}Disperse"),
+                    TouLocale.GetParsed($"TouModifier{LocaleKey}DisperseWikiDescription"),
+                    TouAssets.DisperseSprite)
             };
         }
     }
@@ -73,10 +74,9 @@ public sealed class DisperserModifier : TouGameModifier, IWikiDiscoverable
 
         var notif1 = Helpers.CreateAndShowNotification(
             $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}Everyone has been dispersed to a vent!</color></b>", Color.white,
-            spr: TouModifierIcons.Disperser.LoadAsset());
+            new Vector3(0f, 1f, -20f), spr: TouModifierIcons.Disperser.LoadAsset());
 
-        notif1.Text.SetOutlineThickness(0.35f);
-        notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+        notif1.AdjustNotification();
     }
 
     public static void DispersePlayersToCoordinates(Dictionary<byte, Vector2> coordinates)

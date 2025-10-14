@@ -17,10 +17,8 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
 {
     private MeetingMenu meetingMenu;
 
-    [HideFromIl2Cpp]
-    public PlayerVoteArea? Swap1 { get; set; }
-    [HideFromIl2Cpp]
-    public PlayerVoteArea? Swap2 { get; set; }
+    [HideFromIl2Cpp] public PlayerVoteArea? Swap1 { get; set; }
+    [HideFromIl2Cpp] public PlayerVoteArea? Swap2 { get; set; }
     public DoomableType DoomHintType => DoomableType.Trickster;
     public string LocaleKey => "Swapper";
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
@@ -33,7 +31,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
-    
+
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -47,6 +45,7 @@ public sealed class SwapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewR
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Swapper;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;

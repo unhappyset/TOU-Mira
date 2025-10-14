@@ -25,7 +25,7 @@ public sealed class GuardianAngelProtectButton : TownOfUsRoleButton<GuardianAnge
         {
             return;
         }
-        
+
         Role.Target.RpcAddModifier<GuardianAngelProtectModifier>(PlayerControl.LocalPlayer);
     }
 }

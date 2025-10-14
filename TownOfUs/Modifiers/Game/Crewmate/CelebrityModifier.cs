@@ -21,14 +21,17 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
     public override string LocaleKey => "Celebrity";
     public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
+
     public override string GetDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription");
     }
+
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Celebrity;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 
@@ -81,6 +84,7 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
         {
             role = source.Data.Role;
         }
+
         switch (role)
         {
             case SheriffRole:
@@ -123,8 +127,14 @@ public sealed class CelebrityModifier : TouGameModifier, IWikiDiscoverable
                 cod = "spooked";
                 break;
             case MirrorcasterRole mirror:
-                cod = mirror.UnleashString != string.Empty ? mirror.UnleashString.ToLower(CultureInfo.InvariantCulture) : "killed";
-                if (mirror.ContainedRole != null) role = mirror.ContainedRole;
+                cod = mirror.UnleashString != string.Empty
+                    ? mirror.UnleashString.ToLower(CultureInfo.InvariantCulture)
+                    : "killed";
+                if (mirror.ContainedRole != null)
+                {
+                    role = mirror.ContainedRole;
+                }
+
                 break;
         }
 

@@ -14,6 +14,11 @@ public sealed class EscapistMarkButton : TownOfUsRoleButton<EscapistRole>, IAfte
     public override float InitialCooldown => 0.001f;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.MarkSprite;
 
+    public void AftermathHandler()
+    {
+        ClickHandler();
+    }
+
     public override bool Enabled(RoleBehaviour? role)
     {
         return base.Enabled(role) && Role is { MarkedLocation: null };

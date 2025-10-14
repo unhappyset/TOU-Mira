@@ -21,10 +21,8 @@ namespace TownOfUs.Roles.Impostor;
 public sealed class EscapistRole(IntPtr cppPtr)
     : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
-    [HideFromIl2Cpp]
-    public Vector2? MarkedLocation { get; set; }
-    [HideFromIl2Cpp]
-    public GameObject? EscapeMark { get; set; }
+    [HideFromIl2Cpp] public Vector2? MarkedLocation { get; set; }
+    [HideFromIl2Cpp] public GameObject? EscapeMark { get; set; }
 
     public void FixedUpdate()
     {
@@ -52,13 +50,14 @@ public sealed class EscapistRole(IntPtr cppPtr)
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorConcealing;
@@ -83,12 +82,12 @@ public sealed class EscapistRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Mark",
-            "Mark a location for later use.",
-            TouImpAssets.MarkSprite),
-        new("Recall",
-            "Recall to the marked location.",
-            TouImpAssets.RecallSprite)
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Mark", "Mark"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}MarkWikiDescription"),
+                    TouImpAssets.MarkSprite),
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Recall", "Recall"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}RecallWikiDescription"),
+                    TouImpAssets.RecallSprite)
             };
         }
     }

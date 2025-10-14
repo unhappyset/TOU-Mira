@@ -53,6 +53,7 @@ public sealed class Bomb : IDisposable
             _obj.Destroy();
             yield break;
         }
+
         List<PlayerControl> killList = new();
         foreach (var player in affected)
         {
@@ -82,7 +83,10 @@ public sealed class Bomb : IDisposable
         foreach (var player in killList)
         {
             if (!player.HasDied() || _bomber == null)
+            {
                 continue;
+            }
+
             DeathHandlerModifier.RpcUpdateDeathHandler(player, TouLocale.Get("DiedToBomberBomb"),
                 DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetTrue,
                 TouLocale.GetParsed("DiedByStringBasic").Replace("<player>", _bomber.Data.PlayerName),

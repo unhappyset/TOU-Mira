@@ -46,6 +46,7 @@ public sealed class WerewolfKillButton : TownOfUsRoleButton<WerewolfRole, Player
         {
             return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover());
         }
+
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 }

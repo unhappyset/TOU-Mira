@@ -19,13 +19,14 @@ public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
-    
+
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -39,6 +40,7 @@ public sealed class TrackerTouRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownO
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Tracker;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateInvestigative;

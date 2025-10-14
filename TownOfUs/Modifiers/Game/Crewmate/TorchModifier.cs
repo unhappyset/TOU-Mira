@@ -12,14 +12,17 @@ public sealed class TorchModifier : TouGameModifier, IWikiDiscoverable
     public override string LocaleKey => "Torch";
     public override string ModifierName => TouLocale.Get($"TouModifier{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurb");
+
     public override string GetDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription");
     }
+
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Torch;
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
 

@@ -43,13 +43,14 @@ public sealed class MinerRole(IntPtr cppPtr)
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
+
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
@@ -81,9 +82,9 @@ public sealed class MinerRole(IntPtr cppPtr)
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Mine",
-            "Place a vent where you are standing. These vents won't connect to already existing vents on the map but with each other.",
-            TouImpAssets.MineSprite)
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Mine", "Mine"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}MineWikiDescription"),
+                    TouImpAssets.MineSprite)
             };
         }
     }
@@ -138,7 +139,7 @@ public sealed class MinerRole(IntPtr cppPtr)
         ShipStatus.Instance.AllVents = allVents.ToArray();
 
         miner.Vents.Add(vent);
-        
+
         PlainShipRoom? plainShipRoom = null;
 
         var allRooms2 = ShipStatus.Instance.FastRooms;
@@ -149,7 +150,7 @@ public sealed class MinerRole(IntPtr cppPtr)
                 plainShipRoom = plainShipRoom2;
             }
         }
-        
+
         var mapId = (MapNames)GameOptionsManager.Instance.currentNormalGameOptions.MapId;
         if (TutorialManager.InstanceExists)
         {

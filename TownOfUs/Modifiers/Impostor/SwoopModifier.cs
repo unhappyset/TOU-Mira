@@ -24,8 +24,9 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
 
     public VisualAppearance GetVisualAppearance()
     {
-        var playerColor = (PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.DiedOtherRound() && OptionGroupSingleton<GeneralOptions>
-            .Instance.TheDeadKnow))
+        var playerColor = (PlayerControl.LocalPlayer.IsImpostor() || (PlayerControl.LocalPlayer.DiedOtherRound() &&
+                                                                      OptionGroupSingleton<GeneralOptions>
+                                                                          .Instance.TheDeadKnow))
             ? new Color(0f, 0f, 0f, 0.1f)
             : Color.clear;
 
@@ -92,14 +93,17 @@ public sealed class SwoopModifier : ConcealedModifier, IVisualAppearance
             var button = CustomButtonSingleton<SwooperSwoopButton>.Instance;
             button.OverrideSprite(TouImpAssets.SwoopSprite.LoadAsset());
             button.OverrideName(TouLocale.Get("TouRoleSwooperSwoop", "Swoop"));
-            TouAudio.PlaySound(TouAudio.SwooperDeactivateSound);
+            if (MeetingHud.Instance == null)
+            {
+                TouAudio.PlaySound(TouAudio.SwooperDeactivateSound);
+            }
         }
 
         if (HudManagerPatches.CamouflageCommsEnabled)
         {
             Player.cosmetics.ToggleNameVisible(false);
         }
-        
+
         var mushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
         if (mushroom && mushroom.IsActive)
         {

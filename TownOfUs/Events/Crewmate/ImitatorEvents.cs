@@ -19,6 +19,7 @@ public static class ImitatorEvents
         {
             return;
         }
+
         var imitatorRoles = CustomRoleUtils.GetActiveRolesOfType<ImitatorRole>();
 
         if (imitatorRoles.Any())
@@ -29,10 +30,11 @@ public static class ImitatorEvents
                 {
                     continue;
                 }
+
                 imitatorPlayer.Player.AddModifier<ImitatorCacheModifier>();
             }
         }
-        
+
         var imitators = ModifierUtils.GetActiveModifiers<ImitatorCacheModifier>();
 
         if (!imitators.Any())
@@ -61,7 +63,11 @@ public static class ImitatorEvents
 
         if (player.HasModifier<ImitatorCacheModifier>() && !@event.NewRole.IsCrewmate())
         {
-            if (TownOfUsPlugin.IsDevBuild) Logger<TownOfUsPlugin>.Error($"Removed Imitator Cache Modifier On Role Change");
+            if (TownOfUsPlugin.IsDevBuild)
+            {
+                Logger<TownOfUsPlugin>.Error($"Removed Imitator Cache Modifier On Role Change");
+            }
+
             player.RemoveModifier<ImitatorCacheModifier>();
         }
     }

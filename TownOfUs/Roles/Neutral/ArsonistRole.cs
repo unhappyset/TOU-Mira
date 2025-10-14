@@ -26,12 +26,14 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     public string RoleLongDescription => OptionGroupSingleton<ArsonistOptions>.Instance.LegacyArsonist
         ? TouLocale.GetParsed($"TouRole{LocaleKey}TabDescriptionLegacy")
         : TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
-            TouLocale.GetParsed(OptionGroupSingleton<ArsonistOptions>.Instance.LegacyArsonist ? $"TouRole{LocaleKey}WikiAdditionLegacy" : $"TouRole{LocaleKey}WikiAddition") +
+            TouLocale.GetParsed(OptionGroupSingleton<ArsonistOptions>.Instance.LegacyArsonist
+                ? $"TouRole{LocaleKey}WikiAdditionLegacy"
+                : $"TouRole{LocaleKey}WikiAddition") +
             MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -47,11 +49,13 @@ public sealed class ArsonistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                     TouNeutAssets.DouseButtonSprite),
                 new(TouLocale.GetParsed($"TouRole{LocaleKey}Ignite", "Ignite"),
                     TouLocale.GetParsed(OptionGroupSingleton<ArsonistOptions>.Instance.LegacyArsonist
-                        ? $"TouRole{LocaleKey}IgniteWikiDescriptionLegacy" : $"TouRole{LocaleKey}IgniteWikiDescription"),
+                        ? $"TouRole{LocaleKey}IgniteWikiDescriptionLegacy"
+                        : $"TouRole{LocaleKey}IgniteWikiDescription"),
                     TouNeutAssets.IgniteButtonSprite)
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Arsonist;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;

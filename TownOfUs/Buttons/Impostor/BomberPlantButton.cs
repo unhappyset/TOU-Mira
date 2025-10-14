@@ -16,6 +16,7 @@ public sealed class BomberPlantButton : TownOfUsRoleButton<BomberRole>, IAfterma
     public override float EffectDuration => OptionGroupSingleton<BomberOptions>.Instance.DetonateDelay;
     public override int MaxUses => (int)OptionGroupSingleton<BomberOptions>.Instance.MaxBombs;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.PlaceSprite;
+
     public bool Usable { get; set; } = OptionGroupSingleton<BomberOptions>.Instance.CanBombFirstRound ||
                                        TutorialManager.InstanceExists;
 
@@ -23,12 +24,16 @@ public sealed class BomberPlantButton : TownOfUsRoleButton<BomberRole>, IAfterma
     {
         SetTimer(Cooldown * multiplier);
     }
-    
+
     public override bool CanUse()
     {
         return base.CanUse() && Usable;
     }
 
+    public void AftermathHandler()
+    {
+        ClickHandler();
+    }
     protected override void OnClick()
     {
         OverrideSprite(TouImpAssets.DetonatingSprite.LoadAsset());

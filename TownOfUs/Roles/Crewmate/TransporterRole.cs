@@ -33,13 +33,14 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
+
     public string GetAdvancedDescription()
     {
         return
             TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription") +
             MiscUtils.AppendOptionsText(GetType());
     }
-    
+
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
     {
@@ -53,6 +54,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             };
         }
     }
+
     public Color RoleColor => TownOfUsColors.Transporter;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
@@ -237,10 +239,12 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         {
             positions.Item1 = play1.Collider.bounds.center;
         }
+
         if (t2.TryCast<PlayerControl>() != null && t1.TryCast<DeadBody>() != null)
         {
             positions.Item2 = play2.Collider.bounds.center;
         }
+
         Transport(t1, positions.Item2);
         Transport(t2, positions.Item1);
         var touAbilityEvent = new TouAbilityEvent(AbilityType.TransporterTransport, transporter, t1, t2);
@@ -262,18 +266,18 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
                 }
             }
 
-            TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.UseCrewmateTeamColorToggle.Value;
+            TownOfUsColors.UseBasic = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance
+                .UseCrewmateTeamColorToggle.Value;
         }
 
         if (play1.AmOwner && t1 is PlayerControl || play2.AmOwner && t2 is PlayerControl)
         {
             var notif1 = Helpers.CreateAndShowNotification(
                 $"<b>{TownOfUsColors.Transporter.ToTextColor()}You were transported!</color></b>", Color.white,
-                spr: TouRoleIcons.Transporter.LoadAsset());
+                new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Transporter.LoadAsset());
 
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
-            
+            notif1.AdjustNotification();
+
             if (Minigame.Instance != null)
             {
                 Minigame.Instance.Close();
@@ -300,12 +304,12 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
             {
                 return null;
             }
-            
+
             if (pc.HasModifier<NoTransportModifier>())
             {
                 return null;
             }
-            
+
             if (pc.GetModifiers<BaseModifier>().Any(x => x is IUntransportable))
             {
                 return null;
@@ -440,6 +444,7 @@ public sealed class TransporterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         {
             mono.transform.position += cd.bounds.center - position;
         }
+
         if (player != null)
         {
             player.MyPhysics.ResetMoveState();

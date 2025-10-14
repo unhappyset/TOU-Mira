@@ -7,7 +7,6 @@ using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
-using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules;
 using TownOfUs.Options;
@@ -29,18 +28,18 @@ public static class HauntMenuMinigamePatch
             return;
         }
 
-        if (!TutorialManager.InstanceExists && !PlayerControl.LocalPlayer.DiedOtherRound() && PlayerControl.LocalPlayer.Data.Role is not SpectatorRole)
+        if (!TutorialManager.InstanceExists && !PlayerControl.LocalPlayer.DiedOtherRound() &&
+            PlayerControl.LocalPlayer.Data.Role is not SpectatorRole)
         {
             __instance.Close();
             __instance.NameText.text = string.Empty;
             __instance.FilterText.text = string.Empty;
-            
+
             var text = "You must wait until next round to haunt!";
             var notif1 = Helpers.CreateAndShowNotification(
-                $"<b>{text}</b>", Color.white, spr: TouRoleIcons.Spectator.LoadAsset());
-            
-            notif1.Text.SetOutlineThickness(0.35f);
-            notif1.transform.localPosition = new Vector3(0f, 1f, -20f);
+                $"<b>{text}</b>", Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Spectator.LoadAsset());
+
+            notif1.AdjustNotification();
             return;
         }
 
@@ -49,18 +48,15 @@ public static class HauntMenuMinigamePatch
 
         var modifiers = target.GetModifiers<GameModifier>().Where(x => x is not ExcludedGameModifier)
             .OrderBy(x => x.ModifierName).ToList();
-        __instance.FilterText.text = $"<color=#FFFFFF><size=100%>({TouLocale.Get("PlayerHasNoModifiers")})</size></color>";
+        __instance.FilterText.text =
+            $"<color=#FFFFFF><size=100%>({TouLocale.Get("PlayerHasNoModifiers")})</size></color>";
         if (modifiers.Count != 0)
         {
             var modifierTextBuilder = new StringBuilder("<color=#FFFFFF><size=100%>(");
             var first = true;
             foreach (var modifier in modifiers)
             {
-                var color = MiscUtils.GetRoleColour(modifier.ModifierName.Replace(" ", string.Empty));
-                if (modifier is IColoredModifier colorMod)
-                {
-                    color = colorMod.ModifierColor;
-                }
+                var color = MiscUtils.GetModifierColour(modifier);
 
                 if (!first)
                 {

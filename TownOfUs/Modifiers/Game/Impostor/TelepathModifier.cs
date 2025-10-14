@@ -14,8 +14,8 @@ public sealed class TelepathModifier : TouGameModifier, IWikiDiscoverable
     public override string ModifierName => TouLocale.Get("TouModifierTelepath", "Telepath");
     public override Color FreeplayFileColor => new Color32(255, 25, 25, 255);
 
-    public override string IntroInfo => OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath ?
-        TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurbNoDeath")
+    public override string IntroInfo => OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath
+        ? TouLocale.GetParsed($"TouModifier{LocaleKey}IntroBlurbNoDeath")
         : TouLocale.Get($"TouModifier{LocaleKey}IntroBlurb");
 
     public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Telepath;
@@ -36,16 +36,16 @@ public sealed class TelepathModifier : TouGameModifier, IWikiDiscoverable
     {
         var localekeyfull = $"TouModifier{LocaleKey}Description";
         return (OptionGroupSingleton<TelepathOptions>.Instance.KnowKillLocation
-                   ? TouLocale.GetParsed($"{localekeyfull}IfKnowWhen")
-                   : TouLocale.GetParsed($"{localekeyfull}Basic") 
-                     + (OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath &&
-                        !OptionGroupSingleton<TelepathOptions>.Instance.KnowDeathLocation
-                         ? TouLocale.GetParsed($"{localekeyfull}AddIfKnowDeath")
-                         : string.Empty)
-                     + (OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath &&
-                        OptionGroupSingleton<TelepathOptions>.Instance.KnowDeathLocation
-                         ? TouLocale.GetParsed($"{localekeyfull}AddIfKnowDeathLoc")
-                         : string.Empty));
+            ? TouLocale.GetParsed($"{localekeyfull}IfKnowWhen")
+            : TouLocale.GetParsed($"{localekeyfull}Basic")
+              + (OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath &&
+                 !OptionGroupSingleton<TelepathOptions>.Instance.KnowDeathLocation
+                  ? TouLocale.GetParsed($"{localekeyfull}AddIfKnowDeath")
+                  : string.Empty)
+              + (OptionGroupSingleton<TelepathOptions>.Instance.KnowDeath &&
+                 OptionGroupSingleton<TelepathOptions>.Instance.KnowDeathLocation
+                  ? TouLocale.GetParsed($"{localekeyfull}AddIfKnowDeathLoc")
+                  : string.Empty));
 #pragma warning restore S3358
     }
 
@@ -61,7 +61,8 @@ public sealed class TelepathModifier : TouGameModifier, IWikiDiscoverable
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        return base.IsModifierValidOn(role) && role.IsImpostor() && !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode &&
+        return base.IsModifierValidOn(role) && role.IsImpostor() &&
+               !OptionGroupSingleton<GeneralOptions>.Instance.FFAImpostorMode &&
                PlayerControl.AllPlayerControls.ToArray().Count(x => x.IsImpostor() && !x.HasDied()) != 1;
     }
 }

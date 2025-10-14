@@ -32,9 +32,9 @@ public sealed class HunterStalkButton : TownOfUsRoleButton<HunterRole, PlayerCon
         }
 
         var notif1 = Helpers.CreateAndShowNotification(
-            $"<b>If {Target.Data.PlayerName} uses an ability, you will be able to kill them at any time in the round.</b>",
+            $"<b>{TouLocale.GetParsed("TouRoleHunterStalkNotif").Replace("<player>", Target.Data.PlayerName)}</b>",
             Color.white, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Hunter.LoadAsset());
-        notif1.Text.SetOutlineThickness(0.35f);
+        notif1.AdjustNotification();
 
         Target.RpcAddModifier<HunterStalkedModifier>(PlayerControl.LocalPlayer);
         OverrideName(TouLocale.Get("TouRoleHunterStalking", "Stalking"));
@@ -51,6 +51,7 @@ public sealed class HunterStalkButton : TownOfUsRoleButton<HunterRole, PlayerCon
         {
             return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => !x.IsLover());
         }
+
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 }

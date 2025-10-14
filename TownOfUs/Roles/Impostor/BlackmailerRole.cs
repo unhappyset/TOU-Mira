@@ -36,7 +36,7 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
     public string RoleName => TouLocale.Get($"TouRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"TouRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"TouRole{LocaleKey}TabDescription");
-    
+
     public Color RoleColor => TownOfUsColors.Impostor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
@@ -56,7 +56,7 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
     public string GetAdvancedDescription()
     {
         return
-            $"The {RoleName} is an Impostor Support role that can stop a player from speaking (marked with <color=#2A1119>M</color>) in the next meeting" +
+            TouLocale.GetParsed($"TouRole{LocaleKey}WikiDescription").Replace("<symbol>", "<color=#2A1119>M</color>") +
             MiscUtils.AppendOptionsText(GetType());
     }
 
@@ -67,11 +67,9 @@ public sealed class BlackmailerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITown
         {
             return new List<CustomButtonWikiDescription>
             {
-        new("Blackmail",
-            "Silence a player for the next meeting. They will be unable to speak." +
-            "They also will not be able to vote until less or equal amount of people are alive than the blackmailer settings allow." +
-            "The blackmail will be visible to other players only if the setting is toggled",
-            TouImpAssets.BlackmailSprite)
+                new(TouLocale.GetParsed($"TouRole{LocaleKey}Blackmail", "Blackmail"),
+                    TouLocale.GetParsed($"TouRole{LocaleKey}BlackmailWikiDescription"),
+                    TouImpAssets.BlackmailSprite)
             };
         }
     }

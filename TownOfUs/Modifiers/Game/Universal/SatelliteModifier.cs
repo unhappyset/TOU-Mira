@@ -30,9 +30,12 @@ public sealed class SatelliteModifier : UniversalGameModifier, IWikiDiscoverable
     {
         return TouLocale.GetParsed($"TouModifier{LocaleKey}TabDescription");
     }
+
     public string GetAdvancedDescription()
     {
-        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<maxUses>", $"{Math.Round(OptionGroupSingleton<SatelliteOptions>.Instance.MaxNumCast, 0)}") + MiscUtils.AppendOptionsText(GetType());
+        return TouLocale.GetParsed($"TouModifier{LocaleKey}WikiDescription").Replace("<maxUses>",
+                   $"{Math.Round(OptionGroupSingleton<SatelliteOptions>.Instance.MaxNumCast, 0)}") +
+               MiscUtils.AppendOptionsText(GetType());
     }
 
     [HideFromIl2Cpp]
@@ -43,7 +46,8 @@ public sealed class SatelliteModifier : UniversalGameModifier, IWikiDiscoverable
             return new List<CustomButtonWikiDescription>
             {
                 new(TouLocale.Get($"TouModifier{LocaleKey}Broadcast"),
-                    TouLocale.GetParsed($"TouModifier{LocaleKey}BroadcastWikiDescription").Replace("<maxUses>", $"{Math.Round(OptionGroupSingleton<SatelliteOptions>.Instance.MaxNumCast, 0)}"),
+                    TouLocale.GetParsed($"TouModifier{LocaleKey}BroadcastWikiDescription").Replace("<maxUses>",
+                        $"{Math.Round(OptionGroupSingleton<SatelliteOptions>.Instance.MaxNumCast, 0)}"),
                     TouAssets.BroadcastSprite)
             };
         }
