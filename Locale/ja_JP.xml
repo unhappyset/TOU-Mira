@@ -305,20 +305,20 @@
   <string name="TouRoleDetectiveNotAtScene">\%player\% was not at the scene of the crime.</string>
   <!-- Engineer - Crewmate Investigative -->
   <!-- Engineer Wiki / Abilities -->
-  <string name="TouRoleEngineer">Engineer</string>
-  <string name="TouRoleEngineerIntroBlurb">Maintain Important Systems On The Ship</string>
-  <string name="TouRoleEngineerTabDescription">Vent around and fix sabotages remotely</string>
-  <string name="TouRoleEngineerWikiDescription">The Engineer is a Crewmate Support role that can vent and fix sabotages remotely.</string>
-  <string name="TouRoleEngineerFix">Fix</string>
-  <string name="TouRoleEngineerFixing">Fixing</string>
-  <string name="TouRoleEngineerFixWikiDescription">It doesn't matter where you are on the map, you can use your fix button to instantly fix the active sabotage. You can do this \%engiMaxFixes\% times per game.</string>
+  <string name="TouRoleEngineer">エンジニア</string>
+  <string name="TouRoleEngineerIntroBlurb">お船のメンテは忘れずに</string>
+  <string name="TouRoleEngineerTabDescription">ベントを使用し、サボタージュを修理する。</string>
+  <string name="TouRoleEngineerWikiDescription">[クルーメイト:サポート]\%nl\%クルーでありながらベントを使用できる。また、サボタージュを遠隔で修理できる。</string>
+  <string name="TouRoleEngineerFix">修理</string>
+  <string name="TouRoleEngineerFixing">修理中</string>
+  <string name="TouRoleEngineerFixWikiDescription">ゲーム中に\%engiMaxFixes\%回、どこにいてもサボタージュを修理できる。</string>
   <!-- Engineer Options -->
-  <string name="TouOptionEngineerMaxVents">Vent Uses Per Game</string>
-  <string name="TouOptionEngineerTaskUses">Get More Vent Uses From Completing Tasks</string>
-  <string name="TouOptionEngineerVentCooldown">Vent Cooldown</string>
-  <string name="TouOptionEngineerVentDuration">Vent Duration</string>
-  <string name="TouOptionEngineerMaxFixes">Fix Uses Per Game</string>
-  <string name="TouOptionEngineerFixDelay">Fix Delay</string>
+  <string name="TouOptionEngineerMaxVents">ベント使用回数</string>
+  <string name="TouOptionEngineerTaskUses">タスク完了で使用回数を増加</string>
+  <string name="TouOptionEngineerVentCooldown">ベントクールダウン</string>
+  <string name="TouOptionEngineerVentDuration">ベント内での最大潜伏時間</string>
+  <string name="TouOptionEngineerMaxFixes">修復回数</string>
+  <string name="TouOptionEngineerFixDelay">修復の遅延</string>
   <!-- Haunter - Crewmate Investigative -->
   <!-- Haunter Wiki / Description -->
   <string name="TouRoleHaunter">Haunter</string>
@@ -885,35 +885,35 @@
   <string name="TouOptionJanitorResetKillAndCleanCooldownsTogether">Reset Kill \%and\% Clean Cooldowns Together</string>
   <string name="TouOptionJanitorJanitorCanKillWithTeammate">Janitor Can Kill With Teammate</string>
   <!-- Miner Wiki / Abilities -->
-  <string name="TouRoleMiner">Miner</string>
-  <string name="TouRoleMinerIntroBlurb">From The Top, Make It Drop, That's A Vent</string>
-  <string name="TouRoleMinerTabDescription">Place interconnected vents around the map</string>
-  <string name="TouRoleMinerWikiDescription">The Miner is an Impostor Support role that can create vents.</string>
-  <string name="TouRoleMinerMine">Mine</string>
-  <string name="TouRoleMinerMineWikiDescription">Place a vent where you are standing. These vents won't connect to already existing vents on the map but with each other.</string>
+  <string name="TouRoleMiner">マイナー</string>
+  <string name="TouRoleMinerIntroBlurb">お出口はずっと先</string>
+  <string name="TouRoleMinerTabDescription">ベントを設置することができる。</string>
+  <string name="TouRoleMinerWikiDescription">[インポスター:サポート]\%nl\%ベントを設置することができる。</string>
+  <string name="TouRoleMinerMine">採掘</string>
+  <string name="TouRoleMinerMineWikiDescription">その場にベントが設置される。このベントは設置されたベント同士で繋がり、元々あったベントには接続されない。</string>
   <!-- Miner Options -->
-  <string name="TouOptionMinerNumberOfVentsPerGame">Number Of Miner Vents Per Game</string>
-  <string name="TouOptionMinerMineCooldown">Mine Cooldown</string>
-  <string name="TouOptionMinerMineVisibility">Mine Visibility</string>
-  <string name="TouOptionMinerMineDelay">Mine Delay</string>
-  <string name="TouOptionMinerCanKillWithTeammate">Miner Can Kill With Teammate</string>
+  <string name="TouOptionMinerNumberOfVentsPerGame">採掘最大回数</string>
+  <string name="TouOptionMinerMineCooldown">採掘クールダウン</string>
+  <string name="TouOptionMinerMineVisibility">ベントが見えるまでの時間</string>
+  <string name="TouOptionMinerMineDelay">採掘の遅延</string>
+  <string name="TouOptionMinerCanKillWithTeammate">相方と協力できる</string>
   <!-- Morphling Wiki / Abilities -->
-  <string name="TouRoleMorphling">Morphling</string>
-  <string name="TouRoleMorphlingIntroBlurb">Transform Into Crewmates</string>
-  <string name="TouRoleMorphlingTabDescription">Sample players and morph into them to disguise yourself.\%nl\%Your sample clears at the beginning of every round.</string>
-  <string name="TouRoleMorphlingTabMorphed">Morphed As: \%player\%</string>
-  <string name="TouRoleMorphlingWikiDescription">The Morphling is an Impostor Concealing role that can Sample a player and Morph into it's appearance.</string>
-  <string name="TouRoleMorphlingSample">Sample</string>
-  <string name="TouRoleMorphlingSampleWikiDescription">Take a DNA sample of a player to morph into them later.</string>
-  <string name="TouRoleMorphlingMorph">Morph</string>
-  <string name="TouRoleMorphlingUnmorph">Unmorph</string>
-  <string name="TouRoleMorphlingMorphWikiDescription">Morph into the appearance of the sampled player, which can be canceled early.</string>
+  <string name="TouRoleMorphling">モーフィング</string>
+  <string name="TouRoleMorphlingIntroBlurb">もう一人の僕。</string>
+  <string name="TouRoleMorphlingTabDescription">サンプルを採取して変身する。</string>
+  <string name="TouRoleMorphlingTabMorphed">\%player\%に変身した。</string>
+  <string name="TouRoleMorphlingWikiDescription">[インポスター:隠蔽]サンプルを採取したプレイヤーに変身できる。\%nl\%</string>
+  <string name="TouRoleMorphlingSample">サンプル</string>
+  <string name="TouRoleMorphlingSampleWikiDescription">DNAを採取する。</string>
+  <string name="TouRoleMorphlingMorph">変身</string>
+  <string name="TouRoleMorphlingUnmorph">解除</string>
+  <string name="TouRoleMorphlingMorphWikiDescription">サンプルを取ったプレイヤーに変身する。</string>
   <!-- Morphling Options -->
-  <string name="TouOptionMorphlingSamplesPerGame">Samples Per Game</string>
-  <string name="TouOptionMorphlingMorphUsesPerRound">Morph Uses Per Round</string>
-  <string name="TouOptionMorphlingMorphCooldown">Morph Cooldown</string>
-  <string name="TouOptionMorphlingMorphDuration">Morph Duration</string>
-  <string name="TouOptionMorphlingCanVent">Morphling Can Vent</string>
+  <string name="TouOptionMorphlingSamplesPerGame">サンプル採取回数</string>
+  <string name="TouOptionMorphlingMorphUsesPerRound">返信回数</string>
+  <string name="TouOptionMorphlingMorphCooldown">変身クールダウン</string>
+  <string name="TouOptionMorphlingMorphDuration">返信持続時間</string>
+  <string name="TouOptionMorphlingCanVent">ベントを使える</string>
   <!-- Scavenger Wiki / Description -->
   <string name="TouRoleScavenger">Scavenger</string>
   <string name="TouRoleScavengerIntroBlurb">Hunt Down Your Prey</string>
@@ -1170,9 +1170,9 @@
   <string name="TouOptionChefServingEffects">Servings Have Side Effects</string>
   <!-- Jester -->
   <!-- Jester Wiki / Description -->
-  <string name="TouRoleJester">Jester</string>
-  <string name="TouRoleJesterIntroBlurb">Get voted out!</string>
-  <string name="TouRoleJesterTabDescription">Be as suspicious as possible, and get voted out!</string>
+  <string name="TouRoleJester">ジェスター</string>
+  <string name="TouRoleJesterIntroBlurb">会議の人気者</string>
+  <string name="TouRoleJesterTabDescription">みんなの人気者になって追放されよう！</string>
   <string name="TouRoleJesterWikiDescription">The Jester is a Neutral Evil role that wins by getting themselves ejected.</string>
   <string name="TouRoleJesterHaunt">Haunt</string>
   <!-- Jester Messages -->
@@ -1310,13 +1310,13 @@
   <!-- Egotist - Crewmate Alliance -->
 	<!-- Egotist Wiki / Description -->
 	<string name="TouModifierEgotist">エゴイスト</string>
-	<string name="TouModifierEgotistIntroBlurb">そして、地球はあなた中心で回っています。</string>
+	<string name="TouModifierEgotistIntroBlurb">私が中心。</string>
 	<string name="TouModifierEgotistTabDescription">クルーを裏切り、キラーたちとの勝利を目指しましょう。</string>
 	<string name="TouModifierEgotistWikiDescription">エゴイストはクルーメイトにつくモディファイアです（\%symbol\% で表されます)。あなたのエゴイストとしての勝利条件はクルーメイトの敗北であり、死んでいても変わりません。会議終了時クルーメイトが全滅していた場合エゴイストは勝利となりますが、ゲームは続行されます。</string>
 	<!-- Lover - Universal Alliance -->
 	<!-- Lover Wiki / Description -->
 	<string name="TouModifierLover">ラバーズ</string>
-	<string name="TouModifierLoverInfo">そして、あなたは \%player\% と相思相愛です。</string>
+	<string name="TouModifierLoverInfo"> \%player\% と恋に落ちてしまった！</string>
 	<string name="TouModifierLoverWikiDescription">あなたは試合中、パートナー (\%symbol\% マークで表されます) と会話できます。あなたのラバーズとしての勝利条件は、生存者が三人になるまでパートナーと生き残ることです。</string>
 	<!-- Lover Options -->
 	<string name="TouOptionLoverDieAndRevive">ラバーズは共に死に、共に生き返る</string>
@@ -1330,8 +1330,8 @@
 
 	<!-- Button Barry -->
 	<!-- Button Barry Wiki / Abilities -->
-	<string name="TouModifierButtonBarry">招集者</string>
-	<string name="TouModifierButtonBarryTabDescription">あなたはどこに居ても緊急招集を行えます。</string>
+	<string name="TouModifierButtonBarry">ボタンバリー</string>
+	<string name="TouModifierButtonBarryTabDescription">どこでも！緊急会議！</string>
 	<string name="TouModifierButtonBarryWikiDescription">マップのどこに居ても緊急会議ボタンを押すことができます。</string>
 	<string name="TouModifierButtonBarryButton">緊急会議</string>
 	<string name="TouModifierButtonBarryButtonWikiDescription">マップのどこに居ても緊急会議を開始できます。\%barryUses\% 回能力を使用できます。</string>
@@ -1343,14 +1343,14 @@
 	<!-- Flash -->
 	<!-- Flash Wiki / Description -->
 	<string name="TouModifierFlash">フラッシュ</string>
-	<string name="TouModifierFlashTabDescription">あなたは通常の \%flashSpeed\% 倍の速度で動けます。</string>
+	<string name="TouModifierFlashTabDescription">圧倒的なスピード</string>
 	<string name="TouModifierFlashWikiDescription">あなたは通常の \%flashSpeed\% 倍の速度で動けます。</string>
 	<!-- Flash Options -->
 	<string name="TouOptionFlashSpeed">速度倍率</string>
 	<!-- Giant -->
 	<!-- Giant Wiki / Description -->
 	<string name="TouModifierGiant">ジャイアント</string>
-	<string name="TouModifierGiantTabDescription">あなたは通常のプレイヤーよりも大きく、 \%giantSpeed\% 倍遅いです。</string>
+	<string name="TouModifierGiantTabDescription">そして、あなたはでかい。</string>
 	<string name="TouModifierGiantWikiDescription">あなたは通常のプレイヤーよりも大きく、また \%giantSpeed\% 倍遅いです。</string>
 	<!-- Giant Options -->
 	<string name="TouOptionGiantSpeed">速度倍率</string>
@@ -1362,19 +1362,19 @@
 	<!-- Mini -->
 	<!-- Mini Wiki / Description -->
 	<string name="TouModifierMini">ミニ</string>
-	<string name="TouModifierMiniTabDescription">あなたは通常のプレイヤーよりも小さく、 \%miniSpeed\% 倍速いです。</string>
+	<string name="TouModifierMiniTabDescription">そして、あなたは子供だ</string>
 	<string name="TouModifierMiniWikiDescription">あなたは通常のプレイヤーよりも小さく、また \%miniSpeed\% 倍速いです。</string>
 	<!-- Mini Options -->
 	<string name="TouOptionMiniSpeed">速度倍率</string>
 	<!-- Radar -->
 	<!-- Radar Wiki / Description -->
 	<string name="TouModifierRadar">レーダー</string>
-	<string name="TouModifierRadarTabDescription">一番近いプレイヤーを指す矢印が表示されます。</string>
+	<string name="TouModifierRadarTabDescription">そこに居るのは分かっている</string>
 	<string name="TouModifierRadarWikiDescription">あなたは一番近いプレイヤーを指す矢印を見ることができます。</string>
 	<!-- Satellite -->
 	<!-- Satellite Wiki / Abilities -->
 	<string name="TouModifierSatellite">サテライト</string>
-	<string name="TouModifierSatelliteTabDescription">死体の位置を信号を通して把握できます。</string>
+	<string name="TouModifierSatelliteTabDescription">そしてまた誰がか死ぬ</string>
 	<string name="TouModifierSatelliteWikiDescription">マップ上で死体の位置を把握できます。この能力は \%maxUses\% 回まで使用できます。</string>
 	<string name="TouModifierSatelliteBroadcast">信号を送信</string>
 	<string name="TouModifierSatelliteBroadcastWikiDescription">あなたはマップ上で死体の位置を把握できます。この能力は試合中 \%maxUses\% 回まで使用できます。</string>
@@ -1386,7 +1386,7 @@
 	<!-- Shy -->
 	<!-- Shy Wiki / Description -->
 	<string name="TouModifierShy">シャイ</string>
-	<string name="TouModifierShyTabDescription">あなたは一定時間静止していると透明になります。</string>
+	<string name="TouModifierShyTabDescription">どうせ誰にも気づかれない</string>
 	<string name="TouModifierShyWikiDescription">あなたは一定時間静止していると周囲に溶け込み、透明になります。</string>
 	<!-- Shy Options -->
 	<string name="TouOptionShyDelay">透明になるまでの時間</string>
@@ -1399,19 +1399,19 @@
 	<string name="TouModifierSixthSenseWikiDescription">あなたに対して誰かが能力を使うと、あなたはそれを感知できます。</string>
 	<!-- Sleuth -->
 	<!-- Sleuth Wiki / Description -->
-	<string name="TouModifierSleuth">探偵</string>
+	<string name="TouModifierSleuth">スルース</string>
 	<string name="TouModifierSleuthTabDescription">あなたは通報した死体の役職を知ることができます。</string>
 	<string name="TouModifierSleuthWikiDescription">あなたはあなたが通報した死体の役職を知るができます。</string>
 	<!-- Tiebreaker -->
 	<!-- Tiebreaker Wiki / Description -->
 	<string name="TouModifierTiebreaker">タイブレーカー</string>
-	<string name="TouModifierTiebreakerTabDescription">同数投票の場合、あなたの投票によって決着がつきます。</string>
+	<string name="TouModifierTiebreakerTabDescription">一発逆転！</string>
 	<string name="TouModifierTiebreakerWikiDescription">同数投票の場合、あなたの投票が優先されます。</string>
 	<!-- Impostor Modifiers -->
 	<!-- Disperser -->
 	<!-- Disperser Wiki / Abilities -->
-	<string name="TouModifierDisperser">分散者</string>
-	<string name="TouModifierDisperserIntroBlurb">そして、あなたは他プレイヤーたちを分散させることができます。</string>
+	<string name="TouModifierDisperser">ディスパーサー</string>
+	<string name="TouModifierDisperserIntroBlurb">そして、混沌を起こせ。</string>
 	<string name="TouModifierDisperserTabDescription">クルーメイトたちを分散させます。</string>
 	<string name="TouModifierDisperserWikiDescription">移動不能なプレイヤー以外をランダムな通気口に移動させることができます。</string>
 	<string name="TouModifierDisperserDisperse">分散</string>
@@ -1420,14 +1420,14 @@
 
 	<!-- Saboteur -->
 	<!-- Saboteur Wiki / Description -->
-	<string name="TouModifierSaboteur">妨害工作員</string>
-	<string name="TouModifierSaboteurIntroBlurb">そして、あなたは妨害工作の達人です。</string>
-	<string name="TouModifierSaboteurTabDescription">あなたのサボタージュのクールダウンは通常よりも短縮されています。</string>
+	<string name="TouModifierSaboteur">サボタージャー</string>
+	<string name="TouModifierSaboteurIntroBlurb">そして、妨害せよ。</string>
+	<string name="TouModifierSaboteurTabDescription">通常よりサボタージュクールダウンが短い。</string>
 	<string name="TouModifierSaboteurWikiDescription">あなたのサボタージュのクールダウンは通常よりも短縮されています。</string>
 	<!-- Telepath -->
 	<!-- Telepath Wiki / Description -->
-	<string name="TouModifierTelepath">テレパシスト</string>
-	<string name="TouModifierTelepathIntroBlurbNoDeath">そして、あなたは仲間が行ったキルと仲間の死を知ることができます。</string>
+	<string name="TouModifierTelepath">テレパス</string>
+	<string name="TouModifierTelepathIntroBlurbNoDeath">そして、仲間の状態を把握せよ。</string>
 	<string name="TouModifierTelepathIntroBlurb">そして、あなたは仲間が行ったキルを知ることができます。</string>
 	<string name="TouModifierTelepathDescriptionBasic">あなたの仲間がキルしました</string>
 	<string name="TouModifierTelepathDescriptionIfKnowWhen">あなたの仲間が \%and\% でキルをしました</string>
@@ -1443,7 +1443,7 @@
 	<!-- Underdog -->
 	<!-- Underdog Wiki / Description -->
 	<string name="TouModifierUnderdog">ラストキラー</string>
-	<string name="TouModifierUnderdogIntroBlurb">そして、あなたは一人になることでキルクールダウンが短くなる。</string>
+	<string name="TouModifierUnderdogIntroBlurb">孤独の殺人鬼</string>
 	<string name="TouModifierUnderdogTabDescription">あなたの仲間が全員死亡すると、キルクールダウンが短縮されます。</string>
 	<string name="TouModifierUnderdogWikiDescription">あなたのキルクールダウンは、仲間が全員死亡することで短縮されます。</string>
 	<!-- Underdog Options -->
@@ -1454,15 +1454,15 @@
 	<!-- Double Shot -->
 	<!-- Double Shot Wiki / Description -->
 	<string name="TouModifierDoubleShot">ダブルショット</string>
-	<string name="TouModifierDoubleShotIntroBlurb">そして、あなたは二回の推察チャンスがあります。</string>
+	<string name="TouModifierDoubleShotIntroBlurb">二度目のチャンス</string>
 	<string name="TouModifierDoubleShotWikiDescription">あなたには推察時、追加のチャンスがあります。</string>
 	<string name="TouModifierDoubleShotTabDescription">もし推察に失敗しても、あなたにはもう一回チャンスがあります。</string>
 	<!-- Crewmate Modifiers -->
 
 	<!-- Aftermath -->
 	<!-- Aftermath Wiki / Description -->
-	<string name="TouModifierAftermath">二番刈り</string>
-	<string name="TouModifierAftermathIntroBlurb">あなたが死亡時、あなたを殺したプレイヤーは能力が自動的に発動されます。</string>
+	<string name="TouModifierAftermath">アフターマス</string>
+	<string name="TouModifierAftermathIntroBlurb">ただじゃ死ねない</string>
 	<string name="TouModifierAftermathTabDescription">あなたを殺したプレイヤーは能力の使用を強制されます。</string>
 	<string name="TouModifierAftermathWikiDescription">あなたの死亡時、あなたを殺したプレイヤーはあなたの死体か自分自身に対して能力を使わなければいけません。</string>
 	<!-- Bait -->
@@ -1472,18 +1472,18 @@
 	<string name="TouModifierBaitTabDescription">あなたを殺したプレイヤーはセルフレポートを強制されます。</string>
 	<string name="TouModifierBaitWikiDescription">あなたの死亡時、あなたを殺したプレイヤーは強制的にセルフレポートをさせられます。</string>
 	<!-- Bait Options -->
-	<string name="TouOptionBaitMinDelay">Min Bait Report Delay</string>
-	<string name="TouOptionBaitMaxDelay">Max Bait Report Delay</string>
+	<string name="TouOptionBaitMinDelay">最低遅延時間</string>
+	<string name="TouOptionBaitMaxDelay">最大遅延時間</string>
 	<!-- Celebrity -->
 	<!-- Celebrity Wiki / Description -->
-	<string name="TouModifierCelebrity">スター</string>
-	<string name="TouModifierCelebrityIntroBlurb">そして、あなたの死亡に関する情報は会議で発表されます。</string>
+	<string name="TouModifierCelebrity">セレブレティー</string>
+	<string name="TouModifierCelebrityIntroBlurb">そして、その死は皆が知ることになる。</string>
 	<string name="TouModifierCelebrityTabDescription">あなたが死んだ場合、あなたの死亡場所などが会議で発表されます。</string>
 	<string name="TouModifierCelebrityWikiDescription">あなたが死んだ場合、どこで殺されたか、どんな役職に殺されたかが会議で発表されます。</string>
 	<!-- Diseased -->
 	<!-- Diseased Wiki / Description -->
 	<string name="TouModifierDiseased">病人</string>
-	<string name="TouModifierDiseasedIntroBlurb">あなたの死亡時、あなたを殺したプレイヤーはキルクールダウンが増加します。</string>
+	<string name="TouModifierDiseasedIntroBlurb">そして、あなたを殺した人は後悔するだろう。</string>
 	<string name="TouModifierDiseasedTabDescription">あなたを殺したプレイヤーのキルクールダウンを増加させます。</string>
 	<string name="TouModifierDiseasedWikiDescription">あなたを殺したプレイヤーのキルクールダウンは \%cooldownMultiplier\% 倍になります。</string>
 	<!-- Diseased Options-->
@@ -1491,7 +1491,7 @@
 	<!-- Frosty -->
 	<!-- Frosty Wiki / Description -->
 	<string name="TouModifierFrosty">フロスティ</string>
-	<string name="TouModifierFrostyIntroBlurb">あなたの死亡時、あなたを殺したプレイヤーの移動速度を低下させます。</string>
+	<string name="TouModifierFrostyIntroBlurb">そして、凍えてしまえ。</string>
 	<string name="TouModifierFrostyTabDescription">一定時間あなたを殺したプレイヤーの移動速度を低下させます。</string>
 	<string name="TouModifierFrostyWikiDescription">あなたの死亡時、あなたを殺したプレイヤーは移動速度が低下します。</string>
 	<!-- Frosty Options -->
@@ -1499,20 +1499,20 @@
 	<string name="TouOptionFrostyChillStartSpeed">殺したプレイヤーの移動速度</string>
 	<!-- Investigator -->
 	<!-- Investigator Wiki / Description -->
-	<string name="TouModifierInvestigator">捜査官</string>
-	<string name="TouModifierInvestigatorIntroBlurb">そして、あなたは他人の足跡を見ることができます。</string>
+	<string name="TouModifierInvestigator">インヴェスティゲーター</string>
+	<string name="TouModifierInvestigatorIntroBlurb">そして、その足跡を辿れ。</string>
 	<string name="TouModifierInvestigatorTabDescription">あなたは他人の足跡を見ることができます。</string>
 	<string name="TouModifierInvestigatorWikiDescription">あなたはタスクターン中、他人の足跡を見ることができます。スウォープされたプレイヤーの足跡は見れません。</string>
 	<!-- Multitasker -->
 	<!-- Multitasker Wiki / Description -->
 	<string name="TouModifierMultitasker">マルチタスカー</string>
-	<string name="TouModifierMultitaskerIntroBlurb">そして、あなたはタスク中でも警戒を怠りません。</string>
+	<string name="TouModifierMultitaskerIntroBlurb">そして、常に注意を怠らない。</string>
 	<string name="TouModifierMultitaskerTabDescription">あなたのタスク画面は透明です。</string>
 	<string name="TouModifierMultitaskerWikiDescription">あなたのタスク画面は透明で、タスク中でも周囲を見ることができます。</string>
 	<!-- Noisemaker -->
 	<!-- Noisemaker Wiki / Description -->
 	<string name="TouModifierNoisemaker">ノイズメーカー</string>
-	<string name="TouModifierNoisemakerIntroBlurb">そして、あなたの死は全員に通知されます。</string>
+	<string name="TouModifierNoisemakerIntroBlurb">宇宙船の騒音事件</string>
 	<string name="TouModifierNoisemakerTabDescription">あなたの死亡時、全員にアラートが \%noiseTime\% 秒間鳴ります。</string>
 	<string name="TouModifierNoisemakerWikiDescription">あなたの死亡後、全員にアラートが表示されます。</string>
 	<!-- Noisemaker Options -->
@@ -1523,13 +1523,13 @@
 	<string name="TouOptionNoisemakerAlertDuration">アラートの表示時間</string>
 	<!-- Operative -->
 	<!-- Operative Wiki / Description -->
-	<string name="TouModifierOperative">工作員</string>
-	<string name="TouModifierOperativeIntroBlurb">そして、あなたはどこでもセキュリティシステムにアクセスできます。</string>
+	<string name="TouModifierOperative">オペレーティブ</string>
+	<string name="TouModifierOperativeIntroBlurb">そして、監視せよ。</string>
 	<string name="TouModifierOperativeTabDescription">充電さえあれば、あなたはどこでもカメラを使用することができます。</string>
 	<string name="TouModifierOperativeWikiDescription">どこでもカメラを使用することができますが、充電が必要です。</string>
 	<!-- Operative Options -->
 	<string name="TouOptionOperativeMiraDoorlog">ドアログ使用中に移動できる</string>
-	<string name="TouOptionOperativeStartingCharge">開始時の充電</string>
+	<string name="TouOptionOperativeStartingCharge">ゲーム開始時の充電</string>
 	<string name="TouOptionOperativeChargedEachRound">毎ターンカメラが充電される</string>
 	<string name="TouOptionOperativeChargedPerTask">タスクによってカメラが充電される</string>
 	<string name="TouOptionOperativeDisplayCooldown">カメラの使用クールダウン</string>
@@ -1537,7 +1537,7 @@
 	<!-- Rotting -->
 	<!-- Rotting Wiki / Description -->
 	<string name="TouModifierRotting">ロッティング</string>
-	<string name="TouModifierRottingIntroBlurb">そして、あなたの死後死体は腐り朽ち果てるだろう。</string>
+	<string name="TouModifierRottingIntroBlurb">腐敗、そして忘却の彼方。</string>
 	<string name="TouModifierRottingTabDescription">あなたの死体はあなたの死後 \%rotDelay\% 秒後に腐ります。</string>
 	<string name="TouModifierRottingWikiDescription">あなたの死体はあなたの死後 \%rotDelay\% 秒後に腐り、誰も通報できなくなります。</string>
 	<!-- Rotting Options -->
@@ -1545,11 +1545,11 @@
 	<!-- Scientist -->
 	<!-- Scientist Wiki / Description -->
 	<string name="TouModifierScientist">科学者</string>
-	<string name="TouModifierScientistIntroBlurb">そして、あなたはどこでもバイタルを使うことができます。</string>
+	<string name="TouModifierScientistIntroBlurb">そして、死を見逃さない。</string>
 	<string name="TouModifierScientistTabDescription">充電さえあれば、どこでもいつでもバイタルを使うことができます。</string>
 	<string name="TouModifierScientistWikiDescription">バイタルをいつでも使うことができますが、充電が必要です。</string>
 	<!-- Scientist Options -->
-	<string name="TouOptionScientistMoveVitals">バイタルを使用中も移動できる</string>
+	<string name="TouOptionScientistMoveVitals">バイタルを使用中に移動できる</string>
 	<string name="TouOptionScientistStartingCharge">開始時の充電</string>
 	<string name="TouOptionScientistChargedEachRound">毎ターンバイタルが充電される</string>
 	<string name="TouOptionScientistChargedPerTask">タスクによってバイタルが充電される</string>
@@ -1558,13 +1558,13 @@
 	<!-- Scout -->
 	<!-- Scout Wiki / Description -->
 	<string name="TouModifierScout">スカウト</string>
-	<string name="TouModifierScoutIntroBlurb">そして、あなたの視界は明るい場所でのみ広くなります。</string>
+	<string name="TouModifierScoutIntroBlurb">そして、全てを見よ。</string>
 	<string name="TouModifierScoutTabDescription">停電が起きていない間は視界がとても広いですが、逆に停電中はとても視界が狭くなります。</string>
 	<string name="TouModifierScoutWikiDescription">通常のクルーメイトの二倍の視界を持ちますが、停電中では通常よりも視界が狭くなります。</string>
 	<!-- Spy -->
 	<!-- Spy Wiki / Description -->
 	<string name="TouModifierSpy">スパイ</string>
-	<string name="TouModifierSpyIntroBlurb">そして、あなたはアドミンを人一倍使いこなします。</string>
+	<string name="TouModifierSpyIntroBlurb">そして、この船を監視せよ。</string>
 	<string name="TouModifierSpyTabDescription">アドミンから追加情報を得ることができます。</string>
 	<string name="TouModifierSpyWikiDescription">スパイはアドミンからどの部屋に誰がいるかがわかります。</string>
 	<!-- Taskmaster -->
@@ -1575,8 +1575,8 @@
 	<string name="TouModifierTaskmasterWikiDescription">毎ターン開始時、あなたのランダムな一つのタスクが自動的に完了されます。</string>
 	<!-- Torch -->
 	<!-- Torch Wiki / Description -->
-	<string name="TouModifierTorch">たいまつ</string>
-	<string name="TouModifierTorchIntroBlurb">そして、あなたは停電中でも目を光らせます。</string>
+	<string name="TouModifierTorch">トーチ</string>
+	<string name="TouModifierTorchIntroBlurb">そして、いつでも明るい。</string>
 	<string name="TouModifierTorchTabDescription">あなたの視界は停電中でも狭くなることはありません。</string>
 	<string name="TouModifierTorchWikiDescription">停電はあなたの視界に影響を及ぼしません。</string>
 </resources>
