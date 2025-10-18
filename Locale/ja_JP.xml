@@ -1278,20 +1278,20 @@
   <string name="TouOptionSurvivorScatterTimer">Survivor Scatter Timer</string>
   <!-- Vampire -->
   <!-- Vampire Wiki / Abilities -->
-  <string name="TouRoleVampire">Vampire</string>
-  <string name="TouRoleVampireIntroBlurb">Convert Crewmates And Kill The Rest</string>
-  <string name="TouRoleVampireTabDescription">Bite other players to convert them or kill them</string>
-  <string name="TouRoleVampireWikiDescription">The Vampire is a Neutral Killing role that wins by being the last killer(s) alive. They can bite, changing others into Vampires, or kill players.</string>
-  <string name="TouRoleVampireBite">Bite</string>
-  <string name="TouRoleVampireBiteWikiDescription">Bite a player. If the bitten player is convertible, and you have not exceeded the maximum number of vampires in a game yet, you convert them into a vampire. Otherwise, they will just die.</string>
+  <string name="TouRoleVampire">ヴァンパイア</string>
+  <string name="TouRoleVampireIntroBlurb">intro</string>
+  <string name="TouRoleVampireTabDescription">他人に噛みついて、その人を感染させるまたは殺すことができます。</string>
+  <string name="TouRoleVampireWikiDescription">ヴァンパイアはニュートラルのキル役職です。他陣営のキラーを全滅させた上で最後まで生き残ると勝利します。ヴァンパイアは他人の血を吸うことができ、吸った相手をヴァンパイアにするまたは殺すことができます。</string>
+  <string name="TouRoleVampireBite">吸血</string>
+  <string name="TouRoleVampireBiteWikiDescription">他人の血を吸います。吸った相手が役職を変更可能ならば、また1ゲームにおけるヴァンパイアの人数上限に達していなければ、あなたは相手をヴァンパイアへ変えることができます。もしも条件を満たしていなければ、相手は死亡します。</string>
   <!-- Vampire Options -->
-  <string name="TouOptionVampireBiteCooldown">Bite Cooldown</string>
-  <string name="TouOptionVampireMaxVamps">Max Number Of Vampires Per Game</string>
-  <string name="TouOptionVampireImpostorVision">Vampires Have Impostor Vision</string>
-  <string name="TouOptionVampireNewVampsAssassinate">New Vampires Can Assassinate</string>
-  <string name="TouOptionVampireValidConversions">Valid Conversions</string>
-  <string name="TouOptionVampireNewVampiresConvert">New Vampires Can Convert</string>
-  <string name="TouOptionVampireCanVent">Vampires Can Vent</string>
+  <string name="TouOptionVampireBiteCooldown">吸血クールダウン</string>
+  <string name="TouOptionVampireMaxVamps">最大ヴァンパイア人数</string>
+  <string name="TouOptionVampireImpostorVision">ヴァンパイアはインポスター視界を持つ</string>
+  <string name="TouOptionVampireNewVampsAssassinate">作られたヴァンパイアはキル能力を持つ</string>
+  <string name="TouOptionVampireValidConversions">役職変更可能</string>
+  <string name="TouOptionVampireNewVampiresConvert">作られたヴァンパイアも他人をヴァンパイアにできる</string>
+  <string name="TouOptionVampireCanVent">ヴァンパイアはベントを使える</string>
   <!-- Werewolf -->
   <!-- Werewolf Wiki / Abilities -->
   <string name="TouRoleWerewolf">Werewolf</string>
