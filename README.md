@@ -163,7 +163,7 @@
 | 2025.5.20  | 1.0.0       | [Download](https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.0) |
 
 <details>
-<summary>Older Versions</summary>
+<summary>旧バージョン</summary>
 
 | Among Us   | Mod Version  | Download Link                                                                                                         |
 |------------|--------------|-----------------------------------------------------------------------------------------------------------------------|
