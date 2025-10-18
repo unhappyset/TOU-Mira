@@ -149,7 +149,7 @@
 
 **免責事項：このMODは、ゲームが更新された際に最新版のAmong Usで動作することを保証するものではありません。**
 
-| Among Us   | MODリンク | ダウンロードリンク(TOU-Mira公式)                                             |
+| Among Us   | Modバージョン | ダウンロードリンク(TOU-Mira公式)                                             |
 |------------|-------------|-------------------------------------------------------------------------|
 | 2025.10.14 | 1.3.1       | [Download](https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.3.1) |
 | 2025.9.9   | 1.3.0       | [Download](https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.3.0) |
