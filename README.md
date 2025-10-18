@@ -41,12 +41,12 @@
 
 - [**コンテンツ**](#コンテンツ)
 - [**リリース**](#リリース)
-- [**変更内容**](https://au-avengers.github.io/docs.toum.gg/blog)
-- [**インストール方法**](https://au-avengers.github.io/docs.toum.gg/docs/install/intro)
+- [**変更内容-TOU Mira公式サイト**](https://au-avengers.github.io/docs.toum.gg/blog)
+- [**インストール方法-TOU Mira公式サイト**](https://au-avengers.github.io/docs.toum.gg/docs/install/intro)
   - [Windowsの方 (Epic, Itch, MS Store, Steam)](https://au-avengers.github.io/docs.toum.gg/docs/category/windows-install)
   - [Linuxの方 (Epic, Itch, Steam)](https://au-avengers.github.io/docs.toum.gg/docs/category/linux--steam-deck-install)
-- [**MOD情報**](https://au-avengers.github.io/docs.toum.gg/)
-- [**クレジット & リソース**](https://github.com/AU-Avengers/TOU-Mira/wiki/Credits)
+- [**MOD情報-TOU Mira公式サイト**](https://au-avengers.github.io/docs.toum.gg/)
+- [**クレジット & リソース-TOU Miraのwikiから**](https://github.com/AU-Avengers/TOU-Mira/wiki/Credits)
 - [**ライセンス**](#ライセンス)
 - [**著作権**](#著作権)
 
