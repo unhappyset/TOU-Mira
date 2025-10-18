@@ -1401,7 +1401,7 @@
 	<!-- Sleuth Wiki / Description -->
 	<string name="TouModifierSleuth">探偵</string>
 	<string name="TouModifierSleuthTabDescription">あなたは通報した死体の役職を知ることができます。</string>
-	<string name="TouModifierSleuthWikiDescription">あなたはあなたが通報した死体の役職を知るができます。</string>
+	<string name="TouModifierSleuthWikiDescription">あなたはあなたが通報した死体の役職を知ることができます。</string>
 	<!-- Tiebreaker -->
 	<!-- Tiebreaker Wiki / Description -->
 	<string name="TouModifierTiebreaker">タイブレーカー</string>
