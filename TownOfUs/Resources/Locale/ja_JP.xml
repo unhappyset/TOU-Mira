@@ -189,7 +189,7 @@
   <string name="DiedToMisguess">推察失敗</string>
   <string name="DiedToGuess">推殺</string>
   <string name="DiedToHeartbreak">失恋</string>
-  <string name="DiedToSheriff">正義執行t</string>
+  <string name="DiedToSheriff">正義執行</string>
   <string name="DiedToDeputy">撃破</string>
   <string name="DiedToVeteran">攻撃</string>
   <string name="DiedToJailor">処刑</string>
@@ -213,13 +213,13 @@
   <string name="TouFirstDeathShield">初手キルシールド</string>
   <string name="TouClericBarrier">聖職者シールド</string>
   <string name="TouMedicShield">メディックシールド</string>
-  <string name="TouWardenFort">ウォーデンフォートt</string>
+  <string name="TouWardenFort">ウォーデンフォート</string>
   <string name="TouDoused">油</string>
   <string name="TouHacked">ハック</string>
   <string name="TouFlash">フラッシュ</string>
   <string name="TouHypnosis">催眠</string>
   <string name="TouInfection">感染</string>
-  <string name="TouScatter">散布r</string>
+  <string name="TouScatter">散布</string>
   <!-- Common Terms -->
   <string name="TargetingNobody">なし</string>
   <!-- Spectator - Game Outlier -->
