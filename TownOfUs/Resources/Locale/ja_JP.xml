@@ -860,12 +860,12 @@
   <string name="TouRoleHypnotist">催眠術師</string>
   <string name="TouRoleHypnotistIntroBlurb">見て呉れの脆弱性</string>
   <string name="TouRoleHypnotistTabDescription">「あなた段々眠くなる」浅はかな催眠術</string>
-  <string name="TouRoleHypnotistWikiDescription">The Hypnotist is an Impostor Support role that can hypnotize players. During a meeting they can release Mass Hysteria, which makes all hypnotized players (marked with \%symbol\%) have different visuals applied to players the following round.</string>
+  <string name="TouRoleHypnotistWikiDescription">[インポスター:サポート]\%nl\%プレイヤーに催眠術をかけることができる。会議中に集団ヒステリーを発動でき、このとき催眠状態にされたプレイヤー(\%symbol\%でマークされている)が次のターンにプレイヤーが別のプレイヤーに見えてしまう。</string>
   <string name="TouRoleHypnotistHypnotize">催眠術</string>
-  <string name="TouRoleHypnotistHypnotizeWikiDescription">Hypnotize a player, causing them to see the game differently than non-hypnotized players if mass hysteria is active.</string>
-  <string name="TouRoleHypnotistMassHysteria">Mass Hysteria</string>
-  <string name="TouRoleHypnotistMassHysteriaWiki">Mass Hysteria (Meeting)</string>
-  <string name="TouRoleHypnotistMassHysteriaWikiDescription">[インポスター:サポート]\%nl\%プレイヤーに催眠術をかけ、催眠をかけられたプレイヤーはプレイヤーが別のプレイヤーに見えてしまう。</string>
+  <string name="TouRoleHypnotistHypnotizeWikiDescription">プレイヤーに催眠をかける。催眠状態にされたプレイヤーは集団ヒステリー時にプレイヤーが別にプレイヤーに見えてしまう。</string>
+  <string name="TouRoleHypnotistMassHysteria">集団ヒステリー</string>
+  <string name="TouRoleHypnotistMassHysteriaWiki">集団ヒステリー(会議)</string>
+  <string name="TouRoleHypnotistMassHysteriaWikiDescription">催眠を受けていたプレイヤーは、プレイヤーを視認するときに別のプレイヤーとして表示される。</string>
   <!-- Hypnotist Options -->
   <string name="TouOptionHypnotistHypnotizeCooldown">催眠術クールダウン</string>
   <string name="TouOptionHypnotistHypnotistCanKillWithTeammate">相方と協力できる</string>
