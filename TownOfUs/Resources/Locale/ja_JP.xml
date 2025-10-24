@@ -84,7 +84,7 @@
   <!-- Role Subalignments -->
   <string name="GameOutlier">特殊なゲーム</string>
   <string name="CrewmateInvestigative">調査</string>
-  <string name="CrewmateKilling">破邪顕正</string>
+  <string name="CrewmateKilling">殺害能力</string>
   <string name="CrewmatePower">権力</string>
   <string name="CrewmateProtective">守護</string>
   <string name="CrewmateSupport">サポート</string>
@@ -94,12 +94,12 @@
   <string name="NeutralKilling">暗殺者</string>
   <string name="ImpostorConcealing">隠蔽者</string>
   <string name="ImpostorKilling">殺人者</string>
-  <string name="ImpostorPower">インポスター 権力者r</string>
+  <string name="ImpostorPower">インポスター 権力者</string>
   <string name="ImpostorSupport">サポート</string>
   <!-- Role Buckets with Role List -->
   <string name="CommonCrew">通常クルー</string>
   <string name="SpecialCrew">スペシャルクルー</string>
-  <string name="RandomCrew">ランダムクルーw</string>
+  <string name="RandomCrew">ランダムクルー</string>
   <string name="CommonNeutral">通常ニュートラル</string>
   <string name="RandomNeutral">ランダムニュートラル</string>
   <string name="NonImp">非インポスター</string>
@@ -108,12 +108,12 @@
   <string name="RandomImp">ランダムインポスター</string>
   <string name="Any">どれでも</string>
   <string name="CrewInvestigative">クルー 調査</string>
-  <string name="CrewKilling">クルー 破邪顕正</string>
+  <string name="CrewKilling">クルー 殺害能力</string>
   <string name="CrewPower">クルー 権力</string>
   <string name="CrewProtective">クルー 守護</string>
   <string name="CrewSupport">クルー サポート</string>
   <string name="ImpConcealing">インポスター 隠蔽</string>
-  <string name="ImpKilling">インポスター 殺害</string>
+  <string name="ImpKilling">インポスター 殺害能力</string>
   <string name="ImpPower">インポスター 権力</string>
   <string name="ImpSupport">インポスター サポート</string>
   <!-- Keywords for use in ui to mark certain text into a certain color -->
@@ -336,23 +336,23 @@
   <string name="TouRoleHaunterImpAlertFeedback">A Haunter is loose, catch them before they reveal you!</string>
   <!-- Hunter - Crewmate Killing -->
   <!-- Hunter Wiki / Abilities -->
-  <string name="TouRoleHunter">Hunter</string>
-  <string name="TouRoleHunterIntroBlurb">Stalk The \%color=#FF0000FF\%Impostors\%/color\%</string>
-  <string name="TouRoleHunterTabDescription">Stalk players to get alerted when they use an ability.\%nl\%Once they use an ability, you may kill them.</string>
-  <string name="TouRoleHunterCaughtPlayersText">Caught Players:</string>
-  <string name="TouRoleHunterWikiDescription">The Hunter is a Crewmate Killing role that can stalk players during the round. If a stalked player uses an ability, they can be killed by the Hunter at any point in the game, even Crew.</string>
-  <string name="TouRoleHunterStalk">Stalk</string>
-  <string name="TouRoleHunterStalking">Stalking</string>
-  <string name="TouRoleHunterStalkWikiDescription">Choose a target to stalk. You can stalk \%hunterMaxStalkUsages\% players. If they use any ability while stalked, they're added to your hitlist and can be killed.</string>
-  <string name="TouRoleHunterStalkNotif">If \%player\% uses an ability, you will be able to kill them at any time in the round.</string>
+  <string name="TouRoleHunter">ハンター</string>
+  <string name="TouRoleHunterIntroBlurb">行動を見逃すな</string>
+  <string name="TouRoleHunterTabDescription">追跡してインポスターを探し出せ。</string>
+  <string name="TouRoleHunterCaughtPlayersText">追跡中:</string>
+  <string name="TouRoleHunterWikiDescription">[クルーメイト:殺害能力]\%nl\%ラウンド中にプレイヤーを追跡できます。追跡対象が能力を使用した時、ハンターはそのプレイヤーのキルを試みることが可能です。それはクルーメイトも例外ではありません...</string>
+  <string name="TouRoleHunterStalk">追跡</string>
+  <string name="TouRoleHunterStalking">追跡中</string>
+  <string name="TouRoleHunterStalkWikiDescription">ラウンド中に追跡対象を選択してください。最大\%hunterMaxStalkUsages\%回追跡することが出来ます。追跡対象が能力を使用したら、そのプレイヤーはハンターの標的リストに追加され、キルすることが出来ます</string>
+  <string name="TouRoleHunterStalkNotif">\%player\%を追跡します。もし\%player\%が能力を使用したら通知が届きます。</string>
   <!-- Hunter Options -->
-  <string name="TouOptionHunterKillCooldown">Hunter Kill Cooldown</string>
-  <string name="TouOptionHunterStalkCooldown">Hunter Stalk Cooldown</string>
-  <string name="TouOptionHunterStalkDuration">Hunter Stalk Duration</string>
-  <string name="TouOptionHunterStalkUses">Max Stalk Uses</string>
-  <string name="TouOptionHunterTaskUses">Get More Uses From Completing Tasks</string>
-  <string name="TouOptionHunterRetributionOnVote">Hunter Kills Last Voter If Voted Out</string>
-  <string name="TouOptionHunterHunterBodyReport">Hunter Can Report Who They've Killed</string>
+  <string name="TouOptionHunterKillCooldown">キルクールダウン</string>
+  <string name="TouOptionHunterStalkCooldown">追跡クールダウン</string>
+  <string name="TouOptionHunterStalkDuration">追跡持続時間</string>
+  <string name="TouOptionHunterStalkUses">追跡使用可能数</string>
+  <string name="TouOptionHunterTaskUses">タスク完了で追跡使用可能数を増加させるか</string>
+  <string name="TouOptionHunterRetributionOnVote">キルされた時キラーを道連れするか</string>
+  <string name="TouOptionHunterHunterBodyReport">セルフレポート可</string>
   <!-- Imitator - Crewmate Support -->
   <!-- Imitator Wiki / Abilities -->
   <string name="TouRoleImitator">Imitator</string>
@@ -370,51 +370,50 @@
   <string name="TouOptionImitatorImitateImpostors">Imitate Specific Impostors As Similar Crew Roles</string>
   <!-- Investigator - Crewmate Investigative -->
   <!-- Investigator Wiki / Description -->
-  <string name="TouRoleInvestigator">Investigator</string>
-  <string name="TouRoleInvestigatorIntroBlurb">Find All Impostors By Examining Footprints.</string>
-  <string name="TouRoleInvestigatorTabDescription">You can see everyone's footprints.</string>
-  <string name="TouRoleInvestigatorWikiDescription">The Investigator is a Crewmate Investigative role can see player's footprints throughout the game. Swooped players' footprints will not be visible to the Investigator.</string>
+  <string name="TouRoleInvestigator">インヴェスティゲーター</string>
+  <string name="TouRoleInvestigatorIntroBlurb">殺人事件の真相は</string>
+  <string name="TouRoleInvestigatorTabDescription">全員の足跡を見ることができる。/string>
+  <string name="TouRoleInvestigatorWikiDescription">[クルーメイト:調査]\%nl\%ゲーム中、プレイヤーの足跡を見ることが出来ます。ただし、能力使用中のスウーパーの足跡は見えません。</string>
   <!-- Investigator Options -->
-  <string name="TouOptionInvestigatorFootprintSize">Footprint Size</string>
-  <string name="TouOptionInvestigatorFootprintInterval">Footprint Interval</string>
-  <string name="TouOptionInvestigatorFootprintDuration">Footprint Duration</string>
-  <string name="TouOptionInvestigatorShowAnonymousFootprints">Anonymous Footprint</string>
-  <string name="TouOptionInvestigatorShowFootprintVent">Footprint Vent Visible</string>
+  <string name="TouOptionInvestigatorFootprintSize">足跡サイズ</string>
+  <string name="TouOptionInvestigatorFootprintInterval">足跡が残る間隔</string>
+  <string name="TouOptionInvestigatorFootprintDuration">足跡持続時間</string>
+  <string name="TouOptionInvestigatorShowAnonymousFootprints">足跡の匿名化</string>
   <!-- Jailor - Crewmate Power -->
   <!-- Jailor Wiki / Abilities -->
-  <string name="TouRoleJailor">Jailor</string>
-  <string name="TouRoleJailorIntroBlurb">Jail And Execute The \%color=#FF0000FF\%Impostors\%/color\%</string>
-  <string name="TouRoleJailorTabDescription">Discuss with crewmates in meetings privately, and\%nl\%execute them if they are an evildoer</string>
-  <string name="TouRoleJailorWikiDescription">The Jailor is a Crewmate Power role that can jail other players. During a meeting, the Jailor can choose to execute their jailed player. (Unless the Jailor is an Imitator)</string>
-  <string name="TouRoleJailorJail">Jail</string>
-  <string name="TouRoleJailorJailWikiDescription">Jail a player. During the meeting everyone will see who is jailed. You can privately talk with your detained player using the instructions that are in the private chatbox</string>
-  <string name="TouRoleJailorExecute">Execute</string>
-  <string name="TouRoleJailorExecuteWiki">Execute (Meeting)</string>
-  <string name="TouRoleJailorExecuteWikiDescription">Execute the detained player. If the player is a crewmate, the Jailor will lose the ability to Jail.</string>
+  <string name="TouRoleJailor">ジェイラー</string>
+  <string name="TouRoleJailorIntroBlurb">冷酷な看守</string>
+  <string name="TouRoleJailorTabDescription">投獄したプレイヤーと非公開チャットで話すことが出来ます。投獄したプレイヤーがインポスターだと感じたら処刑してしまいましょう!</string>
+  <string name="TouRoleJailorWikiDescription">[クルーメイト:権力]\%nl\%ラウンド中、他のプレイヤーを投獄することが出来ます。会議中、投獄したプレイヤーと非公開チャットで話すことが出来ます。ジェイラーは投獄中のプレイヤーを即処刑にすることが可能です。(ただしイミテータージェイラーの場合は能力を使用できません)</string>
+  <string name="TouRoleJailorJail">投獄</string>
+  <string name="TouRoleJailorJailWikiDescription">プレイヤーを投獄します。誰が投獄されたかは、会議で全員が確認できます。投獄中のプレイヤーとは、非公開チャットで話すことが可能です。</string>
+  <string name="TouRoleJailorExecute">処刑</string>
+  <string name="TouRoleJailorExecuteWiki">処刑</string>
+  <string name="TouRoleJailorExecuteWikiDescription">投獄中のプレイヤーを処刑します。クルーメイトを処刑してしまうと投獄能力が使用できなくなってしまいます。</string>
   <!-- Jailor Options -->
-  <string name="TouOptionJailorJailCooldown">Jail Cooldown</string>
-  <string name="TouOptionJailorMaxExecutes">Max Number Of Executes</string>
-  <string name="TouOptionJailorJailInARow">Jail Same Person Twice In A Row</string>
-  <string name="TouOptionJailorJaileePublicChat">Jailee Can Use Public Chat</string>
+  <string name="TouOptionJailorJailCooldown">投獄クールダウン</string>
+  <string name="TouOptionJailorMaxExecutes">最大処刑回数</string>
+  <string name="TouOptionJailorJailInARow">連続で同じ人を投獄できるか</string>
+  <string name="TouOptionJailorJaileePublicChat">投獄されているプレイヤーが通常チャットを使用できるか</string>
   <!-- Jailor Feedback -->
-  <string name="TouRoleJailorJailorFeedback ">Communicate with your jailee in the \%b\%RED\%/b\% private chatbox next to the \%b\%REGULAR\%/b\% chatbox.</string>
-  <string name="TouRoleJailorCannotExecute">\%player\% cannot be executed! They must be Invulnerable or blessed!</string>
-  <string name="TouRoleJailorExecutedCrew">\%player\% was a crewmate! You can no longer jail anyone!</string>
-  <string name="TouRoleJailorExecutedEvil">\%player\% was successfully executed!</string>
+  <string name="TouRoleJailorJailorFeedback ">投獄中プレイヤーの話を聞きましょう！</string>
+  <string name="TouRoleJailorCannotExecute">\%player\%は処刑できません！不死身か祝福を受けています！</string>
+  <string name="TouRoleJailorExecutedCrew">\%player\%はクルーメイトでした。これ以上投獄を使用することはできません</string>
+  <string name="TouRoleJailorExecutedEvil">\%player\%の処刑に成功した。</string>
   <!-- Lookout - Crewmate Investigative -->
   <!-- Lookout Wiki / Abilities -->
-  <string name="TouRoleLookout">Lookout</string>
-  <string name="TouRoleLookoutIntroBlurb">Keep Your Eyes Wide Open</string>
-  <string name="TouRoleLookoutTabDescription">Watch other crewmates to see what roles interact with them</string>
-  <string name="TouRoleLookoutWikiDescription">The Lookout is a Crewmate Investigative role that can watch other players during rounds. During meetings, they will see all roles who interact with each watched player.</string>
-  <string name="TouRoleLookoutWatch">Watch</string>
-  <string name="TouRoleLookoutWatchWikiDescription">Watch a player or multiple, the next meeting you will know which players interacted with the watched ones.</string>
-  <string name="TouRoleLookoutWatchNotif">You will know what roles interact with \%player\% next meeting.</string>
+  <string name="TouRoleLookout">ルックアウト</string>
+  <string name="TouRoleLookoutIntroBlurb">干渉を逃さぬ目</string>
+  <string name="TouRoleLookoutTabDescription">他のプレイヤーを監視します。そのプレイヤーに対して何らかの能力が使われた場合、会議でどの役職が使ったか通知されます。</string>
+  <string name="TouRoleLookoutWikiDescription">[クルーメイト:調査]\%nl\%ラウンド中、監視能力を使用できます。監視対象のプレイヤーに対して能力が使われたら、どの役職が使ったか会議で通知されます。</string>
+  <string name="TouRoleLookoutWatch">監視</string>
+  <string name="TouRoleLookoutWatchWikiDescription">プレイヤーを監視対象に設定することができます。次の会議で、監視対象に使われた能力がどの役職の物かわかります。</string>
+  <string name="TouRoleLookoutWatchNotif">次の会議で、\%player\%への能力を確認します。</string>
   <!-- Lookout Options -->
-  <string name="TouOptionLookoutWatchCooldown">Watch Cooldown</string>
-  <string name="TouOptionLookoutMaxWatches">Max Players That Can be Watched</string>
-  <string name="TouOptionLookoutLoResetOnNewRound">Lookout Watches Reset After Each Round</string>
-  <string name="TouOptionLookoutTaskUses">Get More Uses From Completing Tasks</string>
+  <string name="TouOptionLookoutWatchCooldown">監視クールダウン</string>
+  <string name="TouOptionLookoutMaxWatches">監視使用可能数</string>
+  <string name="TouOptionLookoutLoResetOnNewRound">監視対象を会議後にリセットするか</string>
+  <string name="TouOptionLookoutTaskUses">タスク完了で監視使用可能数を増加させる</string>
   <!-- Mayor - Crewmate Power -->
   <!-- Mayor Wiki / Description -->
   <string name="TouRoleMayor">Mayor</string>
@@ -425,59 +424,59 @@
   <string name="TouRoleMayorWikiDescription">The Mayor is a Crewmate Power role that gains three votes and is revealed to all players, also changing their look in meetings.</string>
   <!-- Medic - Crewmate Protective -->
   <!-- Medic Wiki / Abilities -->
-  <string name="TouRoleMedic">Medic</string>
-  <string name="TouRoleMedicIntroBlurb">Create A Shield To Protect A Crewmate</string>
-  <string name="TouRoleMedicTabDescription">Protect a crewmate with a shield to defend them from attacks</string>
-  <string name="TouRoleMedicWikiDescription">The Medic is a Crewmate Protective role that can give a Shield to a player.</string>
-  <string name="TouRoleMedicShield">Shield</string>
-  <string name="TouRoleMedicShieldWikiDescription">Give a Shield to a player, protecting them from being killed by others</string>
+  <string name="TouRoleMedic">メディック</string>
+  <string name="TouRoleMedicIntroBlurb">もう誰かが死ぬのを見たくない</string>
+  <string name="TouRoleMedicTabDescription">クルーにシールドを付与し、キルから守る。</string>
+  <string name="TouRoleMedicWikiDescription">[クルーメイト:守護]\%nl\%他のプレイヤーに、キルを防ぐシールドを張ることが出来ます。</string>
+  <string name="TouRoleMedicShield">シールド</string>
+  <string name="TouRoleMedicShieldWikiDescription">他のプレイヤーにシールドを張ります。シールドがついてるプレイヤーがキルされた時、そのキルを防ぎます。</string>
   <!-- Medic Options -->
-  <string name="TouOptionMedicShowShieldedPlayer">Show Shielded Player</string>
-  <string name="TouOptionMedicWhoGetsMurderAttemptIndicator">Who Gets Murder Attempt Indicator</string>
-  <string name="TouOptionMedicCanGiveShieldAwayNextRound">Can Give Shield Away Next Round</string>
-  <string name="TouOptionMedicMaxAmountOfShieldUses">Max Amount of Shield Uses</string>
-  <string name="TouOptionMedicShieldBreaksOnMurderAttempt">Shield Breaks On Murder Attempt</string>
-  <string name="TouOptionMedicShowReportsInChat">Show Reports in Chat</string>
-  <string name="TouOptionMedicTimeWhereMedicWillHaveName">Time Where Medic Will Have Name</string>
-  <string name="TouOptionMedicTimeWhereMedicWillHaveColorType">Time Where Medic Will Have Color Type</string>
+  <string name="TouOptionMedicShowShieldedPlayer">シールドが見えるプレイヤー</string>
+  <string name="TouOptionMedicWhoGetsMurderAttemptIndicator">キルを防いだ通知が誰に届くか</string>
+  <string name="TouOptionMedicCanGiveShieldAwayNextRound">シールドをラウンド中複数回使えるか</string>
+  <string name="TouOptionMedicMaxAmountOfShieldUses">シールド使用可能回数</string>
+  <string name="TouOptionMedicShieldBreaksOnMurderAttempt">キルを防いだらシールドが消えるか</string>
+  <string name="TouOptionMedicShowReportsInChat">チャットでレポートを表示するか</string>
+  <string name="TouOptionMedicTimeWhereMedicWillHaveName">名前がわかる時間</string>
+  <string name="TouOptionMedicTimeWhereMedicWillHaveColorType">色がわかる時間</string>
   <!-- Medium - Crewmate Support -->
   <!-- Medium Wiki / Abilities -->
-  <string name="TouRoleMedium">Medium</string>
-  <string name="TouRoleMediumIntroBlurb">Watch The Spooky Ghosts</string>
-  <string name="TouRoleMediumTabDescription">Follow ghosts to get clues from them</string>
-  <string name="TouRoleMediumWikiDescription">The Medium is a Crewmate Support role who can Mediate to see one ghost per use. Both the Medium and Ghost then have an arrow showing them where each other are at all times.</string>
-  <string name="TouRoleMediumMediate">Mediate</string>
-  <string name="TouRoleMediumMediateWikiDescription">Communicate with the dead, which may lead you to the killers.</string>
+  <string name="TouRoleMedium">ミーディアム</string>
+  <string name="TouRoleMediumIntroBlurb">死霊を見よ</string>
+  <string name="TouRoleMediumTabDescription">幽霊を追いかけ、手掛かりを得よう。</string>
+  <string name="TouRoleMediumWikiDescription">[クルーメイト:サポート]\%nl\%霊視能力を使用することで、ランダムに選ばれた幽霊の、位置を確認できます。ミーディアムと幽霊の両方に、常に位置を示す矢印が表示されます。</string>
+  <string name="TouRoleMediumMediate">霊視</string>
+  <string name="TouRoleMediumMediateWikiDescription">ランダムに選ばれた幽霊の位置が常に矢印で表示されます。霊と交信してキラーの手掛かりを手に入れましょう！</string>
   <!-- Medium Options -->
-  <string name="TouOptionMediumMediateCooldown">Mediate Cooldown</string>
-  <string name="TouOptionMediumRevealAppearanceOfMediateTarget">Reveal Appearance of Mediate Target</string>
-  <string name="TouOptionMediumArrowVisibility">Arrow Visibility</string>
-  <string name="TouOptionMediumWhoisRevealed">Who is Revealed</string>
+  <string name="TouOptionMediumMediateCooldown">霊視クールダウン</string>
+  <string name="TouOptionMediumRevealAppearanceOfMediateTarget">霊視相手の外見を明らかにするか</string>
+  <string name="TouOptionMediumArrowVisibility">矢印が誰に見えるか</string>
+  <string name="TouOptionMediumWhoisRevealed">どの状態の幽霊を優先して表示するか</string>
   <!-- Mirrorcaster - Crewmate Protective -->
   <!-- Mirrorcaster Wiki / Abilities -->
-  <string name="TouRoleMirrorcaster">Mirrorcaster</string>
-  <string name="TouRoleMirrorcasterIntroBlurb">Reflect Attacks Onto Others</string>
-  <string name="TouRoleMirrorcasterTabDescription">Protect a player with a Magic Mirror.\%nl\%If they are directly attacked, then\%nl\%unleash the attack onto another player!</string>
-  <string name="TouRoleMirrorcasterWikiDescription">The Mirrorcaster is a Crewmate Protective role that can cast a Magic Mirror on a player to protect them. If attacked directly, the Mirrorcaster can then unleash onto another player.</string>
-  <string name="TouRoleMirrorcasterMagicMirror">Magic Mirror</string>
-  <string name="TouRoleMirrorcasterMagicMirrorProtecting">Protecting</string>
-  <string name="TouRoleMirrorcasterMagicMirrorWikiDescription">Place a Mirror on a player. If the player is attacked directly, then you will be notified, and you will be able to unleash onto another player. Roles that ignore the Magic Mirror are Arsonist, Veteran, Pestilence, Bomber (if the player is bombed), and a few others.</string>
-  <string name="TouRoleMirrorcasterUnleash">Unleash</string>
-  <string name="TouRoleMirrorcasterUnleashWikiDescription">Once the Magic Mirror shatters, use its power to unleash the attack onto another player!</string>
-  <string name="TouRoleMirrorcasterAlreadyDiedNotif">The player you tried to protect was already dead!</string>
-  <string name="TouRoleMirrorcasterTargetDiedNotif">\%player\% died to an indirect attack, which your mirrors couldn't protect from.</string>
-  <string name="TouRoleMirrorcasterTargetDidNotDieNotif">\%player\% was not attacked.</string>
+  <string name="TouRoleMirrorcaster">ミラーキャスター</string>
+  <string name="TouRoleMirrorcasterIntroBlurb">魔法の鏡は真を映す</string>
+  <string name="TouRoleMirrorcasterTabDescription">魔法の鏡でプレイヤーを守れ。</string>
+  <string name="TouRoleMirrorcasterWikiDescription">[クルーメイト:守護]\%nl\%マジックミラー能力で、他のプレイヤーに魔法の鏡を張ることが出来ます。魔法の鏡が貼られているプレイヤーが攻撃を受けた場合。その攻撃を別のプレイヤーへ放つことが出来ます。</string>
+  <string name="TouRoleMirrorcasterMagicMirror">マジックミラー</string>
+  <string name="TouRoleMirrorcasterMagicMirrorProtecting">守護中</string>
+  <string name="TouRoleMirrorcasterMagicMirrorWikiDescription">他のプレイヤーに魔法の鏡を張ります。魔法の鏡を張ったプレイヤーが攻撃を受けた場合、その攻撃を別のプレイヤーに放つことが出来ます。一部の攻撃は、魔法の鏡を貫通します。</string>
+  <string name="TouRoleMirrorcasterUnleash">解放</string>
+  <string name="TouRoleMirrorcasterUnleashWikiDescription">魔法の鏡で攻撃を守ったら、その力を別のプレイヤーに解き放て！</string>
+  <string name="TouRoleMirrorcasterAlreadyDiedNotif">守ろうとしたプレイヤーは既に死亡しています。</string>
+  <string name="TouRoleMirrorcasterTargetDiedNotif">\%player\%への攻撃を、魔法の鏡で防げませんでした。</string>
+  <string name="TouRoleMirrorcasterTargetDidNotDieNotif">\%player\%は、攻撃されませんでした。</string>
   <!-- Mirrorcaster Options -->
-  <string name="TouOptionMirrorcasterWhoGetsMurderAttemptIndicator">Who Gets Murder Attempt Indicator</string>
-  <string name="TouOptionMirrorcasterMagicMirrorCooldown">Magic Mirror Cooldown</string>
-  <string name="TouOptionMirrorcasterMagicMirrorDuration">Magic Mirror Duration</string>
+  <string name="TouOptionMirrorcasterWhoGetsMurderAttemptIndicator">キルを防いだ通知を誰に送るか</string>
+  <string name="TouOptionMirrorcasterMagicMirrorCooldown">マジックミラークールダウン</string>
+  <string name="TouOptionMirrorcasterMagicMirrorDuration">マジックミラー持続時間</string>
   <string name="TouOptionMirrorcasterUnleashCooldown">Unleash Cooldown</string>
-  <string name="TouOptionMirrorcasterKnowsTheAbsorbedTypeOfAttack">Mirrorcaster Knows The Absorbed Type Of Attack</string>
-  <string name="TouOptionMirrorcasterAccumulateMultipleUnleashes">Accumulate Multiple Unleashes</string>
-  <string name="TouOptionMirrorcasterMaxNumberOfMagicMirrors">Max Number Of Magic Mirrors</string>
+  <string name="TouOptionMirrorcasterKnowsTheAbsorbedTypeOfAttack">ミラーキャスターが防いだ攻撃の種類を分かるか</string>
+  <string name="TouOptionMirrorcasterAccumulateMultipleUnleashes">解放を複数蓄積するか</string>
+  <string name="TouOptionMirrorcasterMaxNumberOfMagicMirrors">マジックミラー使用可能回数</string>
   <!-- Mirrorcaster Feedback -->
-  <string name="TouRoleMirrorcasterAttackedMessageWithType">\%player\% was attacked by the \%attackerRole\%! You can now unleash the attack onto another player!</string>
-  <string name="TouRoleMirrorcasterAttackedMessageWithoutType">\%player\% was attacked! You can now unleash the attack onto another player!</string>
+  <string name="TouRoleMirrorcasterAttackedMessageWithType">\%player\%が\%attackerRole\%に攻撃されました！今なら受けた攻撃を解放することができます！</string>
+  <string name="TouRoleMirrorcasterAttackedMessageWithoutType">\%player\%が攻撃されました！今なら受けた攻撃を解放することができます！</string>
   <!-- Mystic - Crewmate Investigative -->
   <!-- Mystic Wiki / Description -->
   <string name="TouRoleMystic">Mystic</string>
