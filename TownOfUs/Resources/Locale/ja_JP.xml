@@ -372,7 +372,7 @@
   <!-- Investigator Wiki / Description -->
   <string name="TouRoleInvestigator">インヴェスティゲーター</string>
   <string name="TouRoleInvestigatorIntroBlurb">殺人事件の真相は</string>
-  <string name="TouRoleInvestigatorTabDescription">全員の足跡を見ることができる。/string>
+  <string name="TouRoleInvestigatorTabDescription">全員の足跡を見ることができる。</string>
   <string name="TouRoleInvestigatorWikiDescription">[クルーメイト:調査]\%nl\%ゲーム中、プレイヤーの足跡を見ることが出来ます。ただし、能力使用中のスウーパーの足跡は見えません。</string>
   <!-- Investigator Options -->
   <string name="TouOptionInvestigatorFootprintSize">足跡サイズ</string>
@@ -721,16 +721,16 @@
   <string name="TouOptionVigilanteCanGuessKillerModifiers">[モディファイア:キラー]を推察できるか</string>
   <string name="TouOptionVigilanteCanGuessAlliances">クルーメイトを推察できるか</string>
   <string name="TouOptionVigilanteSafeShotsAvailable">セーフショット数</string>
-  <!-- Warden - Crewmate Protective -->
-  <!-- Warden Wiki / Abilities -->
-  <string name="TouRoleWarden">Warden</string>
-  <string name="TouRoleWardenIntroBlurb">Fortify Crewmates</string>
-  <string name="TouRoleWardenTabDescription">Fortify crewmates to prevent interactions with them</string>
-  <string name="TouRoleWardenWikiDescription">The Warden is a Crewmate Protective role that can fortify players to prevent them from being interacted with. </string>
-  <string name="TouRoleWardenFortify">Fortify</string>
-  <string name="TouRoleWardenFortifyWikiDescription">Fortify a player to prevent them from being interacted with. If anyone tries to interact with a fortified player, the ability will not work and both the Warden and fortified player will be alerted with a purple flash.</string>
-  <!-- Warden Options -->
-  <string name="TouOptionWardenShowFortifyPlayer">Show Fortify Player</string>
+	<!-- Warden - Crewmate Protective -->
+	<!-- Warden Wiki / Abilities -->
+	<string name="TouRoleWarden">ウォーデン</string>
+	<string name="TouRoleWardenIntroBlurb">要塞は全てを守る</string>
+	<string name="TouRoleWardenTabDescription">クルーを強化し、干渉をさせない</string>
+	<string name="TouRoleWardenWikiDescription">[クルーメイト:守護]他のプレイヤーを強化して、干渉を受けなくさせます。</string>
+	<string name="TouRoleWardenFortify">強化</string>
+	<string name="TouRoleWardenFortifyWikiDescription">プレイヤーを強化し、要塞化します。要塞化中は能力の干渉を受けず、能力が使われるとウォーデンと要塞プレイヤーの画面に紫の閃光が通知されます。</string>
+	<!-- Warden Options -->
+	<string name="TouOptionWardenShowFortifyPlayer">要塞が見えるプレイヤー</string>
   <!-- Impostor Roles -->
   <!-- Ambassador Wiki / Abilities -->
   <string name="TouRoleAmbassador">アンバサダー</string>
@@ -784,19 +784,19 @@
   <string name="TouOptionAmbusherStopPursuingPlayerOnAmbush">奇襲使用時、追跡を解除</string>
   <string name="TouOptionAmbusherCanVent">ベントを使えるか</string>
   <!-- Blackmailer Wiki / Abilities -->
-  <string name="TouRoleBlackmailer">Blackmailer</string>
-  <string name="TouRoleBlackmailerIntroBlurb">Silence Crewmates During Meetings</string>
-  <string name="TouRoleBlackmailerTabDescription">Silence a crewmate for the next meeting</string>
-  <string name="TouRoleBlackmailerWikiDescription">The Blackmailer is an Impostor Support role that can stop a player from speaking (marked with \%symbol\%) in the next meeting</string>
-  <string name="TouRoleBlackmailerBlackmail">Blackmail</string>
-  <string name="TouRoleBlackmailerBlackmailWikiDescription">Silence a player for the next meeting. They will be unable to speak. They also will not be able to vote until less or equal number of people are alive than the blackmailer settings allow. The blackmail will be visible to other players only if the setting is toggled</string>
+  <string name="TouRoleBlackmailer">ブラックメイラー</string>
+  <string name="TouRoleBlackmailerIntroBlurb">SHHHHHHH！</string>
+  <string name="TouRoleBlackmailerTabDescription">次の会議で対象をを発言不可にする</string>
+  <string name="TouRoleBlackmailerWikiDescription">[インポスター:サポート]\%nl\%タスクターン中に脅迫メールを送り、送ったプレイヤーを次の会議で発言不可にします。(対象には\%symbol\%マークが付きます)</string>
+  <string name="TouRoleBlackmailerBlackmail">ブラックメール</string>
+  <string name="TouRoleBlackmailerBlackmailWikiDescription">次の会議でプレイヤーを発言禁止にする。そのプレイヤーは発言できないだけでなく、設定で指定された人数以下になるまでは投票もできない。</string>
   <!-- Blackmailer Options -->
-  <string name="TouOptionBlackmailerNumberOfBlackmailUsesPerGame">Number Of Blackmail Uses Per Game</string>
-  <string name="TouOptionBlackmailerBlackmailCooldown">Blackmail Cooldown</string>
-  <string name="TouOptionBlackmailerMaxPlayersAliveUntilVoting">Max Players Alive Until Voting</string>
-  <string name="TouOptionBlackmailerBlackmailSamePersonTwiceInARow">Blackmail Same Person Twice In A Row</string>
-  <string name="TouOptionBlackmailerOnlyTargetSeesBlackmail">Only Target Sees Blackmail</string>
-  <string name="TouOptionBlackmailerCanKillWithTeammate">Blackmailer Can Kill With Teammate</string>
+  <string name="TouOptionBlackmailerNumberOfBlackmailUsesPerGame">ブラックメール使用可能回数</string>
+  <string name="TouOptionBlackmailerBlackmailCooldown">ブラックメールクールダウン</string>
+  <string name="TouOptionBlackmailerMaxPlayersAliveUntilVoting">投票可能になる最大生存者数</string>
+  <string name="TouOptionBlackmailerBlackmailSamePersonTwiceInARow">同一プレイヤーを連続でブラックメール可能</string>
+  <string name="TouOptionBlackmailerOnlyTargetSeesBlackmail">対象にのみブラックメールが見える</string>
+  <string name="TouOptionBlackmailerCanKillWithTeammate">相方と協力できる</string>
   <!-- Bomber Wiki / Abilities -->
   <string name="TouRoleBomber">ボマー</string>
   <string name="TouRoleBomberIntroBlurb">素晴らしい芸術作品</string>
@@ -812,7 +812,7 @@
   <string name="TouOptionBomberMAxKillsInDetonation">最大キル数</string>
   <string name="TouOptionBomberAllImpostorsSeeBomb">味方が爆弾の範囲を見れるか</string>
   <string name="TouOptionBomberAllowBombinginFirstRound">初手ターンで設置できるか</string>
-  <string name="TouOptionBomberCanVent">ベント使用可能か</string>
+  <string name="TouOptionBomberCanVent">ベントを使えるか</string>
   <!-- Eclipsal Wiki / Abilities -->
   <string name="TouRoleEclipsal">エクリプサル</string>
 	<string name="TouRoleEclipsalIntroBlurb">全てを飲み込む影</string>
@@ -827,7 +827,7 @@
   <string name="TouOptionEclipsalBlindRadius">ブラインド範囲</string>
   <!-- Escapist Wiki / Abilities -->
   <string name="TouRoleEscapist">エスケイピスト</string>
-  <string name="TouRoleEscapistIntroBlurb">Get Away From Kills With Ease</string>
+  <string name="TouRoleEscapistIntroBlurb">華麗な逃走劇</string>
   <string name="TouRoleEscapistTabDescription">位置をマークし、テレポートしろ</string>
   <string name="TouRoleEscapistWikiDescription">[インポスター:隠蔽]\%nl\%事前に位置を設定し、その位置にテレポートできます。</string>
   <string name="TouRoleEscapistMark">マーキング</string>
@@ -952,19 +952,19 @@
   <string name="TouOptionSwooperSwoopCooldown">透明化クールダウン</string>
   <string name="TouOptionSwooperSwoopDuration">透明化持続時間</string>
   <string name="TouOptionSwooperCanVent">ベントを使えるか</string>
-  <!-- Traitor Wiki / Abilities -->
-  <string name="TouRoleTraitor">Traitor</string>
-  <string name="TouRoleTraitorIntroBlurb">Betray The Crewmates!</string>
-  <string name="TouRoleTraitorTabDescription">Betray the crewmates with a new impostor role!</string>
-  <string name="TouRoleTraitorWikiDescription">The Traitor is an Impostor Power role that spawns after a meeting, in which the spawn conditions are suitable. The Traitor will always be a crewmate, and they may change to a few select roles.</string>
-  <string name="TouRoleTraitorChangeRole">Change Role</string>
-  <string name="TouRoleTraitorChangeRoleWikiDescription">The Traitor can change their role to one of the provided role cards, or gamble on the random. Once they select a role, they stay as that role until they die. However, they must still be guessed as Traitor.</string>
-  <string name="TouRoleTraitorRoleSelectTitle">Select a role.</string>
-  <string name="TouRoleTraitorRandomImpostorCard">Random\%nl\%Impostor</string>
-  <!-- Traitor Options -->
-  <string name="TouOptionTraitorMinimumPeopleAlive">Minimum People Alive When Traitor Can Spawn</string>
-  <string name="TouOptionTraitorTraitorWontSpawnIfNKIsAlive">Traitor Won't Spawn If NK Is Alive</string>
-  <string name="TouOptionTraitorDisableExistingImpostorRoles">Disable Existing Impostor Roles</string>
+	<!-- Traitor Wiki / Abilities -->
+	<string name="TouRoleTraitor">トレイター</string>
+	<string name="TouRoleTraitorIntroBlurb">最悪の決断</string>
+	<string name="TouRoleTraitorTabDescription">クルーメイトを裏切り、暗躍しろ</string>
+	<string name="TouRoleTraitorWikiDescription">[インポスター:権力]アサイン条件が満たされた時、会議後にクルーメイトにアサインされます。トレイターに変化した後は、役職を変更することが出来ます。</string>
+	<string name="TouRoleTraitorChangeRole">チェンジ</string>
+	<string name="TouRoleTraitorChangeRoleWikiDescription">カードを選び、自身の役職を変更する。変更すると、死亡するまでその役職となる</string>
+	<string name="TouRoleTraitorRoleSelectTitle">Select</string>
+	<string name="TouRoleTraitorRandomImpostorCard">Random\%nl\%Impostor</string>
+	<!-- Traitor Options -->
+	<string name="TouOptionTraitorMinimumPeopleAlive">トレイターがアサインされる最小生存者数</string>
+	<string name="TouOptionTraitorTraitorWontSpawnIfNKIsAlive">NKが生存している場合アサインされない</string>
+	<string name="TouOptionTraitorDisableExistingImpostorRoles">既存のインポスター役を無効化</string>
   <!-- Undertaker Wiki / Abilities -->
   <string name="TouRoleUndertaker">アンダーテイカー</string>
   <string name="TouRoleUndertakerIntroBlurb">どこを探したって見つからない</string>
@@ -1017,7 +1017,7 @@
   <string name="TouRoleAmnesiac">アムネシア</string>
   <string name="TouRoleAmnesiacIntroBlurb">自分が何なのか分からない</string>
   <string name="TouRoleAmnesiacTabDescription">死体から役職を思い出せ。</string>
-  <string name="TouRoleAmnesiacWikiDescription">[ニュートラル:中立]死体から役職を思い出します。思い出した役職で勝ちましょう！</string>
+  <string name="TouRoleAmnesiacWikiDescription">[ニュートラル:中立者]死体から役職を思い出します。思い出した役職で勝ちましょう！</string>
   <string name="TouRoleAmnesiacRemember">リメンバー</string>
   <string name="TouRoleAmnesiacRememberWikiDescription">死体に対して使うことで、役職を思い出し、引き継ぎます。</string>
   <!-- Amnesiac Options -->
@@ -1045,7 +1045,7 @@
   <!-- Doomsayer -->
   <!-- Doomsayer Wiki / Abilities -->
   <string name="TouRoleDoomsayer">ドゥームセイヤー</string>
-  <string name="TouRoleDoomsayerIntroBlurb">Guess People's Roles To Win!</string>
+  <string name="TouRoleDoomsayerIntroBlurb">終末が迫っている</string>
   <string name="TouRoleDoomsayerTabDescription">％guessCount％人のプレイヤーを役職を当て、勝利せよ。</string>
   <string name="TouRoleDoomsayerWikiDescription">[ニュートラル:裏切者]他のプレイヤーの役職を、％guessCount％回推測し、成功させることで勝利します。</string>
   <string name="TouRoleDoomsayerWikiDescriptionIfCanObserve">[ニュートラル:裏切者]他のプレイヤーの役職を、％guessCount％回推測し、成功させることで勝利します。オブザーバー能力を使用することで、会議で役職の手掛かりを得ることが出来ます。</string>
@@ -1190,21 +1190,21 @@
   <string name="TouRoleJuggernautIntroBlurb">Your Power Grows With Every Kill</string>
   <string name="TouRoleJuggernautTabDescription">あなたがキルするごとにキルクールダウンが減少します。</string>
   <string name="TouRoleJuggernautTabKillCounter">キル数: \%count\%</string>
-  <string name="TouRoleJuggernautWikiDescription">ジャガーノートはニュートラルのキル役職です。他陣営のキラーを全滅させた上で最後まで生き残ると勝利します。キルするごとにキルクールダウンが減少するという特徴を持っています。</string>
+  <string name="TouRoleJuggernautWikiDescription">[ニュートラル:暗殺者]他陣営のキラーを全滅させた上で最後まで生き残ると勝利します。キルするごとにキルクールダウンが減少するという特徴を持っています。</string>
   <!-- Juggernaut Options -->
   <string name="TouOptionJuggernautInitialCooldown">初期キルクールダウン</string>
   <string name="TouOptionJuggernautCooldownReduction">短縮されるキルクールダウン</string>
-  <string name="TouOptionJuggernautCanVent">ベントを使用可能</string>
+  <string name="TouOptionJuggernautCanVent">ベントを使えるか</string>
   <!-- Mercenary -->
   <!-- Mercenary Wiki / Abilities -->
   <string name="TouRoleMercenary">傭兵</string>
-  <string name="TouRoleMercenaryIntroBlurb">クルーメイトに賄賂を贈りましょう</string>
+  <string name="TouRoleMercenaryIntroBlurb">平和の汚職金</string>
   <string name="TouRoleMercenaryTabDescription">報酬のためにクルーメイトを守り、賄賂を贈って共に勝利しましょう。</string>
   <string name="TouRoleMercenaryTabGoldCounter">所持金: \%count\%</string>
   <string name="TouRoleMercenaryTabBribedInfo">賄賂額:</string>
-  <string name="TouRoleMercenaryWikiDescription">傭兵はキル能力を持たないニュートラル役職です。傭兵は賄賂を贈ったプレイヤーたちと共にのみ勝利することができ、複数の勝利条件を獲得することができます。</string>
+  <string name="TouRoleMercenaryWikiDescription">[ニュートラル:中立者]傭兵は賄賂を贈ったプレイヤーたちと共にのみ勝利することができ、複数の勝利条件を獲得することができます。</string>
   <string name="TouRoleMercenaryGuard">守る</string>
-  <string name="TouRoleMercenaryGuardWikiDescription">守られたプレイヤーは、自分に対して使われた能力を傭兵に肩代わりさせることができます。This will grant them gold, for Bribing. If any bribed targets win, the Mercenary will win with them.</string>
+  <string name="TouRoleMercenaryGuardWikiDescription">守られたプレイヤーは、自分に対して使われた能力を傭兵に肩代わりさせることができます。</string>
   <string name="TouRoleMercenaryBribe">賄賂</string>
   <string name="TouRoleMercenaryBribeWikiDescription">傭兵は、賄賂を贈ったプレイヤーの勝利条件を獲得することができます。賄賂は十分な金を持っていなければ贈れません。</string>
   <!-- Mercenary Options -->
@@ -1213,31 +1213,30 @@
   <string name="TouOptionMercenaryBribeCost">賄賂に必要な所持金</string>
   <!-- Pestilence -->
   <!-- Pestilence Wiki / Description -->
-  <string name="TouRolePestilence">疫病</string>
+  <string name="TouRolePestilence">ペスティレンス</string>
   <string name="TouRolePestilenceIntroBlurb">アポカリプスを実現せよ</string>
   <string name="TouRolePestilenceTabDescription">あなたと関わった全ての人間を殺害しましょう。</string>
   <string name="TouRolePestilenceYouAreText">あなたは</string>
-  <string name="TouRolePestilenceWikiDescription">疫病はニュートラルのキル役職です。他陣営のキラーを全滅させた上で最後まで生き残ると勝利します。追放されるまたは推察に失敗さえしなければ死ぬことはありません。</string>
+  <string name="TouRolePestilenceWikiDescription">[ニュートラル:暗殺者]他陣営のキラーを全滅させた上で最後まで生き残ると勝利します。追放されるまたは推察に失敗さえしなければ死ぬことはありません。</string>
   <!-- Phantom -->
   <!-- Phantom Wiki / Description -->
   <string name="TouRolePhantom">ファントム</string>
   <string name="TouRolePhantomIntroBlurb"> </string>
   <!-- You cannot start the game as this role, and thus, it has no intro blurb -->
   <string name="TouRolePhantomTabDescription">捕まることなく全てのタスクを完了させましょう。</string>
-  <string name="TouRolePhantomWikiDescription">ファントムはニュートラルの幽霊役職です。勝利条件は生存しているプレイヤーがあなたをクリックする前に全てのタスクを完了させることです。</string>
+  <string name="TouRolePhantomWikiDescription">[ニュートラル:ゴースト]勝利条件は生存しているプレイヤーがあなたをクリックする前に全てのタスクを完了させることです。</string>
   <string name="TouRolePhantomSpook">亡霊</string>
   <!-- Phantom Options -->
   <string name="TouOptionPhantomTasksLeftClickable">クリック可能になるまでのタスク数</string>
   <string name="TouOptionPhantomWin">ファントム 勝利</string>
   <!-- Plaguebearer -->
   <!-- Plaguebearer Wiki / Abilities -->
-  <string name="TouRolePlaguebearer">ペストキャリヤー
-  </string>
-  <string name="TouRolePlaguebearerIntroBlurb">全員に \%color=#4D4D4DFF\%Pestilence\%/color\% を感染させよ</string>
-  <string name="TouRolePlaguebearerTabDescription">全員に \%color=#4D4D4DFF\%Pestilence\%/color\% を感染させよ</string>
+  <string name="TouRolePlaguebearer">プラグベアラー</string>
+  <string name="TouRolePlaguebearerIntroBlurb">\%color=#4D4D4DFF\%疫病\%/color\%を感染させよ</string>
+  <string name="TouRolePlaguebearerTabDescription">\%color=#4D4D4DFF\%疫病\%/color\%を感染させよ</string>
   <string name="TouRolePlaguebearerTabInfectCounter">未感染者: \%count\%</string>
   <string name="TouRolePlaguebearerTabInfectedInfo">感染者:</string>
-  <string name="TouRolePlaguebearerWikiDescription">ペスト医師はニュートラルのキル役職です。ペスト医師は全員に疫病を感染させる必要があります。</string>
+  <string name="TouRolePlaguebearerWikiDescription">[ニュートラル:暗殺者]全員に疫病を感染させることで、ペスティレンスに進化します。</string>
   <string name="TouRolePlaguebearerInfect">感染</string>
   <string name="TouRolePlaguebearerInfectWikiDescription">プレイヤーを感染状態にします。他プレイヤーが感染したプレイヤーやその死体に接触すると、そのプレイヤーは感染状態になります。</string>
   <!-- Rewritten for clarity and grammar issues -->
@@ -1247,24 +1246,24 @@
   <string name="TouOptionPlaguebearerInfectCooldown">感染クールダウン</string>
   <string name="TouOptionPlaguebearerAnnounceTransformation">疫病を変化可能</string>
   <string name="TouOptionPlaguebearerPestilenceKillCooldown">キルクールダウン</string>
-  <string name="TouOptionPlaguebearerPestilenceCanVent">ベントを使用可能</string>
+  <string name="TouOptionPlaguebearerPestilenceCanVent">ベントを使えるか</string>
   <!-- Soul Collector -->
   <!-- Soul Collector Wiki / Abilities -->
   <string name="TouRoleSoulCollector">ソウルコレクター</string>
   <string name="TouRoleSoulCollectorIntroBlurb">魂を刈り取る</string>
   <string name="TouRoleSoulCollectorTabDescription">ソウルコレクターは他人の命を刈り取り、永続的なマークをつけます。</string>
-  <string name="TouRoleSoulCollectorWikiDescription">ソウルコレクターはニュートラルのキル役職です。他プレイヤーの命を刈り取ります。死体を残す代わりに、魂を刈り取ったプレイヤーと同じ見た目のデコイが静止します。</string>
+  <string name="TouRoleSoulCollectorWikiDescription">[ニュートラル:暗殺者]他プレイヤーの命を刈り取ります。死体を残す代わりに、魂を刈り取ったプレイヤーと同じ見た目のデコイが静止します。</string>
   <string name="TouRoleSoulCollectorReap">刈り取る</string>
   <string name="TouRoleSoulCollectorReapWikiDescription">Reaping acts like a kill button, but instead of making a dead body, makes a fake player in its place, appearing alive.</string>
   <!-- Soul Collector Options -->
   <string name="TouOptionSoulCollectorReapCooldown">刈り取りクールダウン</string>
-  <string name="TouOptionSoulCollectorCanVent">ベントを使用可能</string>
+  <string name="TouOptionSoulCollectorCanVent">ベントを使えるか</string>
   <!-- Survivor -->
   <!-- Survivor Wiki / Abilities -->
   <string name="TouRoleSurvivor">サバイバー</string>
   <string name="TouRoleSurvivorIntroBlurb">生き残れ</string>
   <string name="TouRoleSurvivorTabDescription">勝利陣営に関係なく、最後まで生き残ることが勝利条件です。</string>
-  <string name="TouRoleSurvivorWikiDescription">サバイバーはキル能力を持たないニュートラル役職です。サバイバーは勝利陣営に関係なく最後まで生き残ることで勝利できます。</string>
+  <string name="TouRoleSurvivorWikiDescription">[ニュートラル:中立者]サバイバーは勝利陣営に関係なく最後まで生き残ることで勝利できます。</string>
   <!-- till to until for clarity -->
 
   <string name="TouRoleSurvivorSafeguard">安全保安員</string>
@@ -1280,7 +1279,7 @@
   <string name="TouRoleVampire">ヴァンパイア</string>
   <string name="TouRoleVampireIntroBlurb">伝染病は悪意を乗せる</string>
   <string name="TouRoleVampireTabDescription">他人に噛みついて、その人を感染させるまたは殺すことができます。</string>
-  <string name="TouRoleVampireWikiDescription">ヴァンパイアはニュートラルのキル役職です。他陣営のキラーを全滅させた上で最後まで生き残ると勝利します。ヴァンパイアは他人の血を吸うことができ、吸った相手をヴァンパイアにするまたは殺すことができます。</string>
+  <string name="TouRoleVampireWikiDescription">[ニュートラル:暗殺者]他陣営のキラーを全滅させた上で最後まで生き残ると勝利します。ヴァンパイアは他人の血を吸うことができ、吸った相手をヴァンパイアにするまたは殺すことができます。</string>
   <string name="TouRoleVampireBite">吸血</string>
   <string name="TouRoleVampireBiteWikiDescription">他人の血を吸います。吸った相手が役職を変更可能ならば、また1ゲームにおけるヴァンパイアの人数上限に達していなければ、あなたは相手をヴァンパイアへ変えることができます。もしも条件を満たしていなければ、相手は死亡します。</string>
   <!-- Vampire Options -->
@@ -1290,20 +1289,20 @@
   <string name="TouOptionVampireNewVampsAssassinate">作られたヴァンパイアはキル能力を持つ</string>
   <string name="TouOptionVampireValidConversions">役職変更可能</string>
   <string name="TouOptionVampireNewVampiresConvert">作られたヴァンパイアも他人をヴァンパイアにできる</string>
-  <string name="TouOptionVampireCanVent">ベントを使用可能</string>
+  <string name="TouOptionVampireCanVent">ベントを使えるか</string>
   <!-- Werewolf -->
   <!-- Werewolf Wiki / Abilities -->
   <string name="TouRoleWerewolf">狼男</string>
   <string name="TouRoleWerewolfIntroBlurb">intro</string>
   <string name="TouRoleWerewolfTabDescription">暴走し、大量キルを決めよ。暴走時、あなたの視界は増加しあなたはキル能力を得ます。</string>
-  <string name="TouRoleWerewolfWikiDescription">狼男はニュートラルのキル役職です。他陣営のキラーを全滅させた上で最後まで生き残ると勝利します。暴走によってキル能力を得ることができます。</string>
+  <string name="TouRoleWerewolfWikiDescription">[ニュートラル:暗殺者]他陣営のキラーを全滅させた上で最後まで生き残ると勝利します。暴走によってキル能力を得ることができます。</string>
   <string name="TouRoleWerewolfRampage">暴走</string>
   <string name="TouRoleWerewolfRampageWikiDescription">暴走状態に入ると、あなたはキル能力とインポスターの視界を獲得します。暴走時、あなたのキルクールダウンは大幅に減少します。</string>
   <!-- Werewolf Options -->
   <string name="TouOptionWerewolfRampageCooldown">暴走クールダウン</string>
   <string name="TouOptionWerewolfRampageDuration">暴走継続時間</string>
   <string name="TouOptionWerewolfKillCooldown">暴走時のキルクールダウン</string>
-  <string name="TouOptionWerewolfCanVent">暴走時ベントを使用可能</string>
+  <string name="TouOptionWerewolfCanVent">暴走時ベントを使えるか</string>
   <!-- Alliance Modifiers -->
 
   <!-- Egotist - Crewmate Alliance -->
