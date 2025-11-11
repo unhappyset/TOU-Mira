@@ -1,6 +1,6 @@
 > [!NOTE]
-> This repo is a rewrite of [Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R) and is under constant development, expect bugs.\
-> This mod is NOT for console versions of Among Us and is NOT host only either, please do not ask for a port or a rewrite.
+> このリポジトリは[Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R)の内容を書き直したもので、現在も開発中であるためバグが発生する可能性があります。
+> このMODはモバイル版『Among Us』向けではなく、ホスト専用でもありません。移植や書き直しについてはお断りします。
 
 -----------------------
 
@@ -8,46 +8,47 @@
   <img src="./Images/Logo.png" alt="Town of Us Mira"/>
   <p>Town Of Us Mira</p>
   <a href="https://store.steampowered.com/app/945360/Among_Us"> <img alt="Latest AU Version" src="https://badgen.net/static/AmongUs/2025.5.20/yellow"></a>
+    以下はTOU-Miraの公式サイトです。
   <a href="https://github.com/AU-Avengers/TOU-Mira/releases/"> <img alt="Latest Release" src="https://badgen.net/github/release/AU-Avengers/TOU-Mira?icon=github"></a>
   <a href="https://github.com/AU-Avengers/TOU-Mira/releases"> <img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/AU-Avengers/TOU-Mira/total"></a>
   <a href="https://discord.gg/ugyc4EVUYZ"> <img alt="Mod Discord" src="https://img.shields.io/discord/1039196456667582555.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2"></a>
 </div>
 <br/>
 
-An [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod based on Town of Salem, designed to be a rewrite of Town of Us Reactivated!
+「Town of Salem」をベースにした[Among Us](https://store.steampowered.com/app/945360/Among_Us)のMOD。「Town of Us Reactivated」の書き直し版として設計されています。
 
 -----------------------
 
-# Key Differences with TOU Mira
+# TOU Miraとの主な相違点
 
-- Revamped visuals
-- New roles (Ambassador, Ambusher, Inquisitor, Mirrorcaster)
-- New modifiers (Scout, Telepath, Operative)
-- Localization to numerous languages (coming after v1.1.1)
-- Vanilla role support (allowing players to use vanilla roles alongside modded roles)
-- Balance changes into the mix for players to use
-- Compatibility with a handful of other role mods that run on MiraAPI.
+- 刷新されたビジュアル
+- 新役職（Ambassador, Ambusher, Inquisitor, Mirrorcaster）
+- 新モデファイア（Scout, Telepath, Operative）
+- 多言語対応（v1.1.1以降に実装予定）
+- 基本役職サポート（MOD役職と基本役職の併用が可能）
+- プレイヤーが使用可能なバランス調整要素を追加
+- MiraAPI上で動作する他役職モッド各種との互換性
 
 -----------------------
 
 > [!TIP]
-> Join the Reactivated [Discord](https://discord.gg/ugyc4EVUYZ) if you have any problems or want to find people to play with!\
-> Check out the mod's [wiki](https://au-avengers.github.io/docs.toum.gg) for info!
+> 問題がある場合や一緒に遊ぶ仲間を探したい場合は、Reactivatedの公式[Discord](https://discord.gg/ugyc4EVUYZ)に参加してください！\
+> 詳細については、TOU-Mira MODの公式[Wiki](https://au-avengers.github.io/docs.toum.gg)をご覧ください！
 
 -----------------------
 
-# Contents
+# コンテンツ
 
-- [**Contents**](#contents)
-- [**Releases**](#releases)
-- [**Changelogs**](https://au-avengers.github.io/docs.toum.gg/blog)
-- [**Installation**](https://au-avengers.github.io/docs.toum.gg/docs/install/intro)
-  - [Windows Guides (Epic, Itch, MS Store, Steam)](https://au-avengers.github.io/docs.toum.gg/docs/category/windows-install)
-  - [Linux Guides (Epic, Itch, Steam)](https://au-avengers.github.io/docs.toum.gg/docs/category/linux--steam-deck-install)
-- [**Mod Info**](https://au-avengers.github.io/docs.toum.gg/)
-- [**Credits & Resources**](https://github.com/AU-Avengers/TOU-Mira/wiki/Credits)
-- [**License**](#license)
-- [**Copyright**](#copyright)
+- [**コンテンツ**](#コンテンツ)
+- [**リリース**](#リリース)
+- [**変更内容-TOU Mira公式サイト**](https://au-avengers.github.io/docs.toum.gg/blog)
+- [**インストール方法-TOU Mira公式サイト**](https://au-avengers.github.io/docs.toum.gg/docs/install/intro)
+  - [Windowsの方 (Epic, Itch, MS Store, Steam)](https://au-avengers.github.io/docs.toum.gg/docs/category/windows-install)
+  - [Linuxの方 (Epic, Itch, Steam)](https://au-avengers.github.io/docs.toum.gg/docs/category/linux--steam-deck-install)
+- [**MOD情報-TOU Mira公式サイト**](https://au-avengers.github.io/docs.toum.gg/)
+- [**クレジット & リソース-TOU Miraのwikiから**](https://github.com/AU-Avengers/TOU-Mira/wiki/Credits)
+- [**ライセンス**](#ライセンス)
+- [**著作権**](#著作権)
 
 -----------------------
 
@@ -144,11 +145,11 @@ An [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod based on T
 
 -----------------------
 
-# Releases
+# リリース
 
-**Disclaimer: The mod is *not* guaranteed to work on the latest versions of Among Us when the game updates.**
+**免責事項：このMODは、ゲームが更新された際に最新版のAmong Usで動作することを保証するものではありません。**
 
-| Among Us   | Mod Version | Download Link                                                           |
+| Among Us   | Modバージョン | ダウンロードリンク(TOU-Mira公式)                                             |
 |------------|-------------|-------------------------------------------------------------------------|
 | 2025.10.14 | 1.3.1       | [Download](https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.3.1) |
 | 2025.9.9   | 1.3.0       | [Download](https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.3.0) |
@@ -162,18 +163,18 @@ An [Among Us](https://store.steampowered.com/app/945360/Among_Us) mod based on T
 | 2025.5.20  | 1.0.0       | [Download](https://github.com/AU-Avengers/TOU-Mira/releases/tag/v1.0.0) |
 
 <details>
-<summary>Older Versions</summary>
+<summary>旧バージョン</summary>
 
-| Among Us   | Mod Version  | Download Link                                                                                                         |
+| Among Us   | Modバージョン  | ダウンロードリンク                                                                                                         |
 |------------|--------------|-----------------------------------------------------------------------------------------------------------------------|
 
 </details>
 
 -----------------------
 
-# License
-This software is distributed under the GNU GPLv3 License. BepInEx is distributed under the LGPL-2.1 License.
+# ライセンス
+このソフトウェアはGNU GPLv3ライセンスの下で配布されます。BepInExはLGPL-2.1ライセンスの下で配布されます。
 
-# Copyright
-<p align="center">This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC.</p>
+# 著作権
+<p align="center">このMODは『Among Us』またはInnersloth LLCとは一切関係がなく、本MODに含まれるコンテンツはInnersloth LLCによって承認または後援されていません。本MODに含まれる素材の一部はInnersloth LLCの所有されています。</p>
 <p align="center">© Innersloth LLC.</p>
